@@ -1,5 +1,5 @@
 <div align="center">
-<h1>Rouite 루티</h1>
+<h1>Routie 루티</h1>
 </div>
 
 ## 🌟 핵심 가치
