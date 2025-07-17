@@ -45,6 +45,7 @@ module.exports = {
       { namedComponents: 'arrow-function' },
     ],
     'react/require-default-props': 'off',
+    'react/no-unknown-property': ['error', { ignore: ['css'] }],
 
     // import 정리
     'import/no-extraneous-dependencies': ['error', { devDependencies: true }],
@@ -118,7 +119,7 @@ module.exports = {
     // Emotion 룰
     '@emotion/import-from-emotion': 'error',
     '@emotion/no-vanilla': 'error',
-    '@emotion/jsx-import': 'error',
+
   },
   ignorePatterns: ['dist', 'webpack.config.js'],
 };
