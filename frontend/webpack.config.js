@@ -16,7 +16,6 @@ module.exports = () => {
         '@components': path.resolve(__dirname, 'src/components/'),
         '@utils': path.resolve(__dirname, 'src/utils/'),
         '@hooks': path.resolve(__dirname, 'src/hooks/'),
-
       },
     },
     devServer: {
@@ -32,6 +31,10 @@ module.exports = () => {
           test: /\.tsx?$/,
           use: ['ts-loader'],
           exclude: /node_modules/,
+        },
+        {
+          test: /\.(png|jpg|jpeg|gif|svg)$/i,
+          type: 'asset',
         },
       ],
     },

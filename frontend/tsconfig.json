@@ -15,7 +15,8 @@
       "@components/*": ["src/components/*"],
       "@utils/*": ["src/utils/*"],
       "@hooks/*": ["src/hooks/*"]
-    }
+    },
+    "typeRoots": ["./node_modules/@types", "./@types"]
   },
   "include": ["src"]
 }
