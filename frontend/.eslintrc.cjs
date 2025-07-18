@@ -119,7 +119,13 @@ module.exports = {
     // Emotion 룰
     '@emotion/import-from-emotion': 'error',
     '@emotion/no-vanilla': 'error',
-
   },
+  // test 룰
+  'import/no-extraneous-dependencies': [
+    'error',
+    {
+      devDependencies: ['**/*.test.ts', '**/*.test.tsx'],
+    },
+  ],
   ignorePatterns: ['dist', 'webpack.config.js'],
 };

@@ -13,9 +13,6 @@ module.exports = () => {
       extensions: ['.ts', '.tsx', '.js'],
       alias: {
         '@': path.resolve(__dirname, 'src'),
-        '@components': path.resolve(__dirname, 'src/components/'),
-        '@utils': path.resolve(__dirname, 'src/utils/'),
-        '@hooks': path.resolve(__dirname, 'src/hooks/'),
       },
     },
     devServer: {
