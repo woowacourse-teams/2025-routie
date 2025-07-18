@@ -5,5 +5,8 @@
       "files": ["**/*.{js,jsx,ts,tsx}"],
       "customSyntax": "@stylelint/postcss-css-in-js"
     }
-  ]
+  ],
+  "rules": {
+    "font-family-name-quotes": null
+  }
 }
