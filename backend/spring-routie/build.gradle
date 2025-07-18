@@ -2,6 +2,8 @@ plugins {
 	id 'java'
 	id 'org.springframework.boot' version '3.5.3'
 	id 'io.spring.dependency-management' version '1.1.7'
+    id 'com.diffplug.spotless' version '7.1.0'
+    id 'checkstyle'
 }
 
 group = 'routie'
@@ -37,4 +39,19 @@ dependencies {
 
 tasks.named('test') {
 	useJUnitPlatform()
+}
+
+spotless {
+    java {
+        eclipse().configFile("config/formatter/eclipse-java-routie-style.xml")
+        importOrder()
+        removeUnusedImports()
+        trimTrailingWhitespace()
+        endWithNewline()
+    }
+}
+
+checkstyle {
+    toolVersion = "10.26.1"
+    configFile = file("config/checkstyle/checkstyle.xml")
 }
