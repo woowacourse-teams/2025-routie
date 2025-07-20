@@ -19,19 +19,20 @@ export const inputVariant = {
     border-color: ${theme.colors.red[100]};
     color: ${theme.colors.red[100]};
     background-color: ${theme.colors.red[50]};
-
+    
     &:focus {
       border-color: ${theme.colors.red[100]};
     }
   `,
 };
 
-const InputStyle = (variant: keyof typeof inputVariant) => css`
+export const InputStyle = (variant: keyof typeof inputVariant, icon?: string) => css`
   width: 100%;
   height: 3rem;
   padding: 0.4rem 0.8rem;
   border: 1px solid;
-  border-radius: 0.6rem;
+  border-radius: 8px;
+  ${icon ? 'padding-left: 2.5rem;' : ''}
 
   &::placeholder {
     font-size: ${theme.font.size.label};
@@ -44,7 +45,8 @@ const InputStyle = (variant: keyof typeof inputVariant) => css`
     height: 3rem;
     padding: 0.4rem 0.8rem;
     border: 3px solid;
-    border-radius: 0.6rem;
+    border-radius: 8px;
+    ${icon ? 'padding-left: 2.5rem;' : ''}
 
     outline: none;
   }
@@ -58,4 +60,19 @@ export const InputLabelStyle = css`
   color: ${theme.colors.black};
 `;
 
-export default InputStyle;
+export const InputIconStyle = css`
+  pointer-events: none;
+
+  position: absolute;
+  top: 50%;
+  left: 0.8rem;
+  transform: translateY(-50%);
+
+  width: 1.4rem;
+  height: 1.4rem;
+`;
+
+export const InputContainerStyle = css`
+  position: relative; 
+  width: 100%;
+  `;
