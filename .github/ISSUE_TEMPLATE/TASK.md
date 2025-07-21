@@ -6,5 +6,3 @@ title: "[TASK] 제목"
 ---
 
 ## Description
-
----

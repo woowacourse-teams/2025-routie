@@ -6,5 +6,3 @@ title: "[EPIC] 제목"
 ---
 
 ## Description
-
----
