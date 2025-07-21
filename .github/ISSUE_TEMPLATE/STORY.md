@@ -7,7 +7,6 @@ title: "[STORY] 제목"
 
 ## Description
 
-
 ## Tasks
 
 <!-- STORY 완료를 위해 필요한 작업 목록-->
