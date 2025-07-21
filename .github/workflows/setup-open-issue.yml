@@ -224,24 +224,23 @@ jobs:
             const prefix = Object.keys(titleMap).find(p => title.startsWith(p));
             if(prefix) {
               const taskOptionId = hierarchyField?.options?.find(o => o.name.toLowerCase() === titleMap[prefix])?.id;
-            }
-
-            if (hierarchyFieldId && taskOptionId) {
-              await github.graphql(`
-                mutation($projectId: ID!, $itemId: ID!, $fieldId: ID!, $optionId: String!) {
-                  updateProjectV2ItemFieldValue(input: {
-                    projectId: $projectId,
-                    itemId: $itemId,
-                    fieldId: $fieldId,
-                    value: { singleSelectOptionId: $optionId }
-                  }) {
-                    projectV2Item { id }
+              if (hierarchyFieldId && taskOptionId) {
+                await github.graphql(`
+                  mutation($projectId: ID!, $itemId: ID!, $fieldId: ID!, $optionId: String!) {
+                    updateProjectV2ItemFieldValue(input: {
+                      projectId: $projectId,
+                      itemId: $itemId,
+                      fieldId: $fieldId,
+                      value: { singleSelectOptionId: $optionId }
+                    }) {
+                      projectV2Item { id }
+                    }
                   }
-                }
-              `, {
-                projectId: projectNodeId,
-                itemId,
-                fieldId: hierarchyFieldId,
-                optionId: taskOptionId,
-              });
+                `, {
+                  projectId: projectNodeId,
+                  itemId,
+                  fieldId: hierarchyFieldId,
+                  optionId: taskOptionId,
+                });
+              }
             }
