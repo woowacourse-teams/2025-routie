@@ -1,6 +1,6 @@
 import { ComponentProps } from 'react';
 
-import ButtonStyle, { buttonVariant } from './Button.style';
+import { ButtonStyle, buttonVariant } from './Button.style';
 
 export interface ButtonProps extends ComponentProps<'button'> {
   variant: keyof typeof buttonVariant;

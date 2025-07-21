@@ -23,7 +23,7 @@ export const buttonVariant = {
   `,
 };
 
-const ButtonStyle = ({ variant }: ButtonProps) => css`
+export const ButtonStyle = ({ variant }: ButtonProps) => css`
   cursor: pointer;
 
   display: flex;
@@ -46,5 +46,3 @@ const ButtonStyle = ({ variant }: ButtonProps) => css`
     background-color: ${theme.colors.gray[100]};
   }
 `;
-
-export default ButtonStyle;
