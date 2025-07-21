@@ -53,6 +53,7 @@ jobs:
       - name: Build with Gradle
         uses: gradle/gradle-build-action@v3
         with:
+          build-root-directory: backend/spring-routie
           arguments: clean bootJar
 
       # gradle test 진행
