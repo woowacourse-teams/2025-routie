@@ -1,12 +1,5 @@
-import { ComponentProps } from 'react';
-
 import CardStyle from './Card.styles';
-
-interface CardProps extends ComponentProps<'div'> {
-  id: string;
-  variant?: 'default' | 'available' | 'unavailable' | 'disabled';
-  children?: React.ReactNode;
-}
+import { CardProps } from './Card.types';
 
 const Card = ({ id, variant = 'default', children }: CardProps) => {
   return (

@@ -1,11 +1,5 @@
-import { ComponentProps } from 'react';
-
-import TextStyle, { textVariant } from './Text.style';
-
-export interface TextProps extends ComponentProps<'p'> {
-  color?: string;
-  variant: keyof typeof textVariant;
-}
+import { TextStyle } from './Text.style';
+import { TextProps } from './Text.types';
 
 const Text = ({ children, ...props }: TextProps) => {
   return (

@@ -1,14 +1,9 @@
-import { ComponentProps } from 'react';
+import { ButtonStyle } from './Button.style';
+import { ButtonProps } from './Button.types';
 
-import { ButtonStyle, buttonVariant } from './Button.style';
-
-export interface ButtonProps extends ComponentProps<'button'> {
-  variant: keyof typeof buttonVariant;
-}
-
-const Button = ({ children, ...props }: ButtonProps) => {
+const Button = ({ children, variant, ...props }: ButtonProps) => {
   return (
-    <button css={ButtonStyle(props)} {...props}>
+    <button css={ButtonStyle({ variant })} {...props}>
       {children}
     </button>
   );

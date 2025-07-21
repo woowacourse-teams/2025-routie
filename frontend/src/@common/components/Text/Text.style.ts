@@ -1,10 +1,10 @@
-import { css } from '@emotion/react';
+import { css, SerializedStyles } from '@emotion/react';
 
 import theme from '@/styles/theme';
 
-import { TextProps } from './Text';
+import { TextProps, TextVariantProps } from './Text.types';
 
-export const textVariant = {
+const textVariant: Record<TextVariantProps, SerializedStyles> = {
   title: css`
     font-size: ${theme.font.size.heading};
     font-weight: ${theme.font.weight.bold};
@@ -27,12 +27,10 @@ export const textVariant = {
   `,
 };
 
-const TextStyle = ({ color, variant }: TextProps) => css`
+export const TextStyle = ({ color, variant }: TextProps) => css`
   box-sizing: border-box;
   max-width: 100%;
-  color: ${color ? color : 'black'};
+  color: ${color ?? theme.colors.black};
 
   ${variant && textVariant[variant]}
 `;
-
-export default TextStyle;

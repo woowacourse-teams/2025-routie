@@ -1,6 +1,6 @@
 import { css } from '@emotion/react';
 
-import { FlexProps } from './Flex';
+import FlexProps from './Flex.types';
 
 const FlexStyle = ({
   direction,

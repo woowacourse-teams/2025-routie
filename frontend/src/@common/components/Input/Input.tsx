@@ -1,5 +1,3 @@
-import { ComponentProps } from 'react';
-
 import clockIcon from '@/assets/icons/clock.svg';
 import searchIcon from '@/assets/icons/search.svg';
 
@@ -8,18 +6,8 @@ import {
   InputContainerStyle,
   InputIconStyle,
   InputLabelStyle,
-  inputVariant,
 } from './Input.style';
-
-interface InputProps extends ComponentProps<'input'> {
-  id: string;
-  type?: string;
-  label?: string;
-  placeholder?: string;
-  border?: boolean;
-  variant?: keyof typeof inputVariant;
-  icon?: 'search' | 'clock';
-}
+import { InputProps } from './Input.types';
 
 const Input = ({
   id,
@@ -40,7 +28,7 @@ const Input = ({
       <div css={InputContainerStyle}>
         {iconSrc && <img src={iconSrc} alt="input-icon" css={InputIconStyle} />}
         <input
-          css={InputStyle(variant, icon)}
+          css={InputStyle({ variant, icon })}
           id={id}
           type={type}
           placeholder={placeholder}
