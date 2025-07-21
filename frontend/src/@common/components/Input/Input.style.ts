@@ -1,8 +1,10 @@
-import { css } from '@emotion/react';
+import { css, SerializedStyles } from '@emotion/react';
 
 import theme from '@/styles/theme';
 
-export const inputVariant = {
+import { InputStyleProps, InputVariantProps } from './Input.types';
+
+const inputVariant: Record<InputVariantProps, SerializedStyles> = {
   primary: css`
     border-color: ${theme.colors.purple[400]};
 
@@ -26,10 +28,7 @@ export const inputVariant = {
   `,
 };
 
-export const InputStyle = (
-  variant: keyof typeof inputVariant,
-  icon?: string,
-) => css`
+export const InputStyle = ({ variant, icon }: InputStyleProps) => css`
   width: 100%;
   height: 3rem;
   padding: 0.4rem 0.8rem;

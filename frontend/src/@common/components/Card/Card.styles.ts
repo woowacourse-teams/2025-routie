@@ -1,8 +1,10 @@
-import { css } from '@emotion/react';
+import { css, SerializedStyles } from '@emotion/react';
 
 import theme from '@/styles/theme';
 
-const cardVariant = {
+import { CardVariantProps } from './Card.types';
+
+const cardVariant: Record<CardVariantProps, SerializedStyles> = {
   default: css`
     border: 1px solid ${theme.colors.purple[50]};
     border-left: 4px solid ${theme.colors.purple[100]};
