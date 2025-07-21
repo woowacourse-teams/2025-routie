@@ -1,7 +1,8 @@
 import { css } from '@emotion/react';
 
-import { TextProps } from './Text';
 import theme from '@/styles/theme';
+
+import { TextProps } from './Text';
 
 export const textVariant = {
   title: css`
