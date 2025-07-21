@@ -37,22 +37,7 @@ jobs:
             const { issue, repository } = context.payload;
             
             const labels = [];
-            
-            // 1. title 기반 라벨 추가 
-            const title = issue.title;
-            const titleLabelMap = {
-              '[TEST]': 'test',
-              '[FEATURE]': 'feature',
-              '[FIX]': 'fix',
-              '[STYLE]': 'style',
-              '[DOCS]': 'docs',
-              '[CHORE]': 'chore',
-              '[REFACTOR]': 'refactor'
-            };
-            const prefix = Object.keys(titleLabelMap).find(p => title.startsWith(p));
-            if (prefix) labels.push(titleLabelMap[prefix]);
-            
-            // 2. author 기반 라벨 추가
+            // author 기반 라벨 추가
             const feTeam = ['ohgus', 'AHHYUNJU', 'aydenote', 'jeongyou'];
             const beTeam = ['threepebbles', 'goohong', 'cookie-meringue', 'DongchannN'];
             
@@ -223,31 +208,39 @@ jobs:
               `);
             }
             
-            // 5. Hierarchy 필드 task로 설정
+            // 5. Issue title 기반 Hierarchy 필드 설정
             const hierarchyField = fields.find(f =>
               f.__typename === 'ProjectV2SingleSelectField' &&
               f.name?.toLowerCase() === 'hierarchy'
             );
-
             const hierarchyFieldId = hierarchyField?.id;
-            const taskOptionId = hierarchyField?.options?.find(o => o.name.toLowerCase() === 'task')?.id;
-
-            if (hierarchyFieldId && taskOptionId) {
-              await github.graphql(`
-                mutation($projectId: ID!, $itemId: ID!, $fieldId: ID!, $optionId: String!) {
-                  updateProjectV2ItemFieldValue(input: {
-                    projectId: $projectId,
-                    itemId: $itemId,
-                    fieldId: $fieldId,
-                    value: { singleSelectOptionId: $optionId }
-                  }) {
-                    projectV2Item { id }
+            
+            const title = issue.title;
+            const titleMap = {
+              '[EPIC]': 'epic',
+              '[STORY]': 'story',
+              '[TASK]': 'task'
+            };
+            const prefix = Object.keys(titleMap).find(p => title.startsWith(p));
+            if(prefix) {
+              const taskOptionId = hierarchyField?.options?.find(o => o.name.toLowerCase() === titleMap[prefix])?.id;
+              if (hierarchyFieldId && taskOptionId) {
+                await github.graphql(`
+                  mutation($projectId: ID!, $itemId: ID!, $fieldId: ID!, $optionId: String!) {
+                    updateProjectV2ItemFieldValue(input: {
+                      projectId: $projectId,
+                      itemId: $itemId,
+                      fieldId: $fieldId,
+                      value: { singleSelectOptionId: $optionId }
+                    }) {
+                      projectV2Item { id }
+                    }
                   }
-                }
-              `, {
-                projectId: projectNodeId,
-                itemId,
-                fieldId: hierarchyFieldId,
-                optionId: taskOptionId,
-              });
+                `, {
+                  projectId: projectNodeId,
+                  itemId,
+                  fieldId: hierarchyFieldId,
+                  optionId: taskOptionId,
+                });
+              }
             }
