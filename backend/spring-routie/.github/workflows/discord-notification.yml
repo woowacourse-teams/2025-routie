@@ -2,7 +2,7 @@ name: PR Label-based Discord Notification
 
 on:
   pull_request:
-    types: [opened, reopened, labeled]
+    types: [opened, synchronize, reopened]
 
 jobs:
   notify-discord:
