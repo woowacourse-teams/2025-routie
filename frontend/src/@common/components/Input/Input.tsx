@@ -3,7 +3,13 @@ import { ComponentProps } from 'react';
 import clockIcon from '@/assets/icons/clock.svg';
 import searchIcon from '@/assets/icons/search.svg';
 
-import { InputStyle, InputContainerStyle, InputIconStyle, InputLabelStyle, inputVariant } from './Input.style';
+import {
+  InputStyle,
+  InputContainerStyle,
+  InputIconStyle,
+  InputLabelStyle,
+  inputVariant,
+} from './Input.style';
 
 interface InputProps extends ComponentProps<'input'> {
   id: string;
@@ -12,7 +18,7 @@ interface InputProps extends ComponentProps<'input'> {
   placeholder?: string;
   border?: boolean;
   variant?: keyof typeof inputVariant;
-  icon?: 'search' | 'clock'
+  icon?: 'search' | 'clock';
 }
 
 const Input = ({
@@ -21,12 +27,10 @@ const Input = ({
   label,
   placeholder,
   variant = 'primary',
-  icon
+  icon,
 }: InputProps) => {
   const iconSrc =
-    icon === 'search' ? searchIcon :
-    icon === 'clock' ? clockIcon :
-    null;
+    icon === 'search' ? searchIcon : icon === 'clock' ? clockIcon : null;
 
   return (
     <>
@@ -34,20 +38,14 @@ const Input = ({
         {label}
       </label>
       <div css={InputContainerStyle}>
-      {iconSrc && (
-        <img
-          src={iconSrc}
-          alt='input-icon'
-          css={InputIconStyle}
+        {iconSrc && <img src={iconSrc} alt="input-icon" css={InputIconStyle} />}
+        <input
+          css={InputStyle(variant, icon)}
+          id={id}
+          type={type}
+          placeholder={placeholder}
+          disabled={variant === 'disabled'}
         />
-      )}
-      <input
-        css={InputStyle(variant, icon)}
-        id={id}
-        type={type}
-        placeholder={placeholder}
-        disabled={variant === 'disabled'}
-      />
       </div>
     </>
   );

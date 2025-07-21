@@ -19,14 +19,17 @@ export const inputVariant = {
     border-color: ${theme.colors.red[100]};
     color: ${theme.colors.red[100]};
     background-color: ${theme.colors.red[50]};
-    
+
     &:focus {
       border-color: ${theme.colors.red[100]};
     }
   `,
 };
 
-export const InputStyle = (variant: keyof typeof inputVariant, icon?: string) => css`
+export const InputStyle = (
+  variant: keyof typeof inputVariant,
+  icon?: string,
+) => css`
   width: 100%;
   height: 3rem;
   padding: 0.4rem 0.8rem;
@@ -73,6 +76,6 @@ export const InputIconStyle = css`
 `;
 
 export const InputContainerStyle = css`
-  position: relative; 
+  position: relative;
   width: 100%;
-  `;
+`;
