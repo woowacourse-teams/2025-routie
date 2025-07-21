@@ -1,0 +1,96 @@
+name: Setup Closed Issues
+
+on:
+  issues:
+    types: [ closed ]
+
+jobs:
+  setup_issue:
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+      contents: read
+
+    steps:
+      - name: Set End date
+        continue-on-error: true
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.PROJECT_V2_TOKEN }}
+          script: |
+            const { issue } = context.payload;
+            
+            // Project v2 ID
+            const projectNodeId = 'PVT_kwDOA_44FM4A9rer';
+            const fieldData = await github.graphql(`
+              query {
+                node(id: "${projectNodeId}") {
+                  ... on ProjectV2 {
+                    fields(first: 50) {
+                      nodes {
+                        __typename
+                        ... on ProjectV2FieldCommon {
+                            id
+                            name
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            `);
+            const fields = fieldData.node.fields.nodes;
+            
+            // 이 Issue를 포함하는 Item 찾기
+            const itemResp = await github.graphql(`
+              query {
+                node(id: "${projectNodeId}") {
+                  ... on ProjectV2 {
+                    items(first: 50) {
+                      nodes {
+                        id
+                        content {
+                          ... on Issue {
+                            id
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            `);
+
+            const itemNode = itemResp.node.items.nodes.find(
+              item => item.content?.id === issue.node_id
+            );
+            if (!itemNode) {
+              console.log("이 이슈에 해당하는 Project 항목을 찾을 수 없습니다.");
+              return;
+            }
+            const itemId = itemNode.id;
+            
+            // End date을 today로 설정
+            const endDateField = fields.find(f =>
+              f.__typename === 'ProjectV2Field' &&
+              f.name?.toLowerCase() === 'end date'
+            );
+            const endDateFieldId = endDateField?.id;
+            
+            const today = new Date();
+            const todayISOString = today.toISOString().split('T')[0];
+            
+            if (endDateFieldId) {
+              await github.graphql(`
+                mutation {
+                  updateProjectV2ItemFieldValue(input: {
+                    projectId: "${projectNodeId}",
+                    itemId: "${itemId}",
+                    fieldId: "${endDateFieldId}",
+                    value: { date: "${todayISOString}" }
+                  }) {
+                    projectV2Item { id }
+                  }
+                }
+              `);
+            }
