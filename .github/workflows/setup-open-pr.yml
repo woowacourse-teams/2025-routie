@@ -94,6 +94,53 @@ jobs:
               });
             }
 
+      - name: Notify Discord based on PR label
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_URL: ${{ github.event.pull_request.html_url }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          REPO: ${{ github.repository }}
+          WEBHOOK_BACKEND: ${{ secrets.DISCORD_WEBHOOK_BACKEND }}
+          WEBHOOK_FRONTEND: ${{ secrets.DISCORD_WEBHOOK_FRONTEND }}
+        run: |
+          OWNER=$(echo "$REPO" | cut -d'/' -f1)
+          REPO_NAME=$(echo "$REPO" | cut -d'/' -f2)
+          
+          LABELS=$(curl -s -H "Authorization: Bearer $GITHUB_TOKEN" \
+            "https://api.github.com/repos/$OWNER/$REPO_NAME/issues/$PR_NUMBER" \
+            | jq -r '.labels[].name')
+          
+          for LABEL in $LABELS; do
+            case "$LABEL" in
+              "backend")
+                WEBHOOK_URL="$WEBHOOK_BACKEND"
+                ;;
+              "frontend")
+                WEBHOOK_URL="$WEBHOOK_FRONTEND"
+                ;;
+              *)
+                continue
+                ;;
+            esac
+          
+            MESSAGE="$PR_URL"
+            if [ -z "$WEBHOOK_URL" ]; then
+              echo "Webhook URL not set for label $LABEL. Skipping."
+              continue
+            fi
+          
+            if [ -z "$MESSAGE" ]; then
+              echo "Message is empty. Skipping."
+              continue
+            fi
+          
+            PAYLOAD=$(jq -n --arg content "$MESSAGE" '{content: $content}')
+            curl --fail -H "Content-Type: application/json" \
+              -X POST \
+              -d "$PAYLOAD" \
+              "$WEBHOOK_URL"
+          done
+
       - name: Set Projects
         continue-on-error: true
         uses: actions/github-script@v7
