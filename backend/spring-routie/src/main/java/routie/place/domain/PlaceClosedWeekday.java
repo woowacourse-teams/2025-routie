@@ -17,13 +17,11 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Getter
 @Entity
-@Table(name = "place_closed_weekdays",
-        uniqueConstraints = {
-                @UniqueConstraint(
-                        name = "uk_place_closed_day",
-                        columnNames = {"place_id", "closed_day"}
-                )
-        })
+@Table(name = "place_closed_weekdays", uniqueConstraints = {
+        @UniqueConstraint(
+                name = "uk_place_closed_day", columnNames = {"place_id", "closed_day"}
+        )
+})
 @EntityListeners(AuditingEntityListener.class)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class PlaceClosedWeekday {

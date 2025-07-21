@@ -21,13 +21,11 @@ import routie.place.domain.Place;
 
 @Entity
 @Getter
-@Table(name = "routie_places",
-        uniqueConstraints = {
-                @UniqueConstraint(
-                        name = "uk_routie_sequence",
-                        columnNames = {"routie_id", "sequence"}
-                )
-        })
+@Table(name = "routie_places", uniqueConstraints = {
+        @UniqueConstraint(
+                name = "uk_routie_sequence", columnNames = {"routie_id", "sequence"}
+        )
+})
 @EntityListeners(AuditingEntityListener.class)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class RoutiePlace {
