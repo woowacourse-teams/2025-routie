@@ -80,7 +80,7 @@ public class RoutieSpaceControllerTest {
                 .contentType(ContentType.JSON)
                 .body(requestBody)
                 .when()
-                .post("/routie-spaces/{routieSpaceIdentifier}/place", routieSpaceIdentifier)
+                .post("/routie-spaces/{routieSpaceIdentifier}/places", routieSpaceIdentifier)
                 .then()
                 .log().all()
                 .extract().response();
@@ -131,18 +131,18 @@ public class RoutieSpaceControllerTest {
                 .contentType(ContentType.JSON)
                 .body(place1RequestBody)
                 .when()
-                .post("/routie-spaces/{routieSpaceIdentifier}/place", routieSpaceIdentifier);
+                .post("/routie-spaces/{routieSpaceIdentifier}/places", routieSpaceIdentifier);
         RestAssured
                 .given()
                 .contentType(ContentType.JSON)
                 .body(place2RequestBody)
                 .when()
-                .post("/routie-spaces/{routieSpaceIdentifier}/place", routieSpaceIdentifier);
+                .post("/routie-spaces/{routieSpaceIdentifier}/places", routieSpaceIdentifier);
 
         // when
         Response response = RestAssured
                 .when()
-                .get("/routie-spaces/{routieSpaceIdentifier}/place", routieSpaceIdentifier)
+                .get("/routie-spaces/{routieSpaceIdentifier}/places", routieSpaceIdentifier)
                 .then()
                 .log().all()
                 .extract().response();
