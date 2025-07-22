@@ -5,7 +5,7 @@ import { useAddPlaceForm } from '@/domains/places/hooks/useAddPlaceForm';
 import OptionalInfoSection from '../PlaceFormSection/OptionalInfoSection';
 import RequiredInfoSection from '../PlaceFormSection/RequiredInfoSection';
 
-import { ModalInputContainer } from './AddPlaceModal.styles';
+import { ModalInputContainerStyle } from './AddPlaceModal.styles';
 import AddPlaceModalButtons from './AddPlaceModalButtons';
 import AddPlaceModalHeader from './AddPlaceModalHeader';
 
@@ -27,14 +27,14 @@ const AddPlaceModal = ({ isOpen, onClose }: Omit<ModalProps, 'children'>) => {
       <form onSubmit={handleSubmit}>
         <Flex direction="column" width="44rem" gap={2}>
           <AddPlaceModalHeader onClose={handleClose} />
-          <div css={ModalInputContainer}>
+          <div css={ModalInputContainerStyle}>
             <RequiredInfoSection
               name={form.name}
               address={form.address}
               onChange={handleInputChange}
             />
           </div>
-          <div css={ModalInputContainer}>
+          <div css={ModalInputContainerStyle}>
             <OptionalInfoSection
               form={form}
               onChange={handleInputChange}
