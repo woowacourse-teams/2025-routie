@@ -25,7 +25,7 @@ const buttonVariant: Record<ButtonVariantProps, SerializedStyles> = {
   `,
 };
 
-export const ButtonStyle = ({ variant }: ButtonProps) => css`
+export const ButtonStyle = ({ variant, width = '100%' }: ButtonProps) => css`
   cursor: pointer;
 
   display: flex;
@@ -34,6 +34,7 @@ export const ButtonStyle = ({ variant }: ButtonProps) => css`
   justify-content: space-between;
 
   box-sizing: border-box;
+  width: ${width};
   max-width: 100%;
   padding: 1rem 0.8rem;
   border: none;
