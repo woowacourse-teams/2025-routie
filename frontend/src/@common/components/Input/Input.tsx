@@ -13,7 +13,9 @@ const Input = ({
   id,
   type,
   label,
-  placeholder,
+  placeholder = '',
+  value,
+  onChange,
   variant = 'primary',
   icon,
 }: InputProps) => {
@@ -34,6 +36,8 @@ const Input = ({
           id={id}
           type={type}
           placeholder={placeholder}
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
           disabled={variant === 'disabled'}
         />
       </div>
