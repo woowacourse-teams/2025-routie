@@ -38,14 +38,6 @@ public class RoutieSpace {
     @Column(name = "identifier", nullable = false)
     private String identifier;
 
-    @CreatedDate
-    @Column(name = "created_at")
-    private LocalDateTime createdAt;
-
-    @LastModifiedDate
-    @Column(name = "updated_at")
-    private LocalDateTime updatedAt;
-
     @OneToMany
     @JoinColumn(name = "routie_space_id", nullable = false)
     private List<Place> places = new ArrayList<>();
@@ -53,4 +45,12 @@ public class RoutieSpace {
     @OneToMany
     @JoinColumn(name = "routie_space_id", nullable = false)
     private List<Routie> routies = new ArrayList<>();
+
+    @CreatedDate
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
+
+    @LastModifiedDate
+    @Column(name = "updated_at")
+    private LocalDateTime updatedAt;
 }

@@ -3,11 +3,14 @@ package routie.place.domain;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
+import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -30,8 +33,9 @@ public class PlaceClosedWeekday {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "closed_day", nullable = false)
-    private String closedDay;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "closed_day", nullable = false, columnDefinition = "VARCHAR(255)")
+    private DayOfWeek closedDay;
 
     @CreatedDate
     @Column(name = "created_at")

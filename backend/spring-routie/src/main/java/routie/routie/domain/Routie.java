@@ -8,7 +8,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.OrderBy;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -30,12 +29,11 @@ public class Routie {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @OneToMany
+    @JoinColumn(name = "routie_id", nullable = false)
+    private List<RoutiePlace> routiePlaces = new ArrayList<>();
+
     @CreatedDate
     @Column(name = "created_at")
     private LocalDateTime createdAt;
-
-    @OneToMany
-    @OrderBy("sequence ASC")
-    @JoinColumn(name = "routie_id", nullable = false)
-    private List<RoutiePlace> routiePlaces = new ArrayList<>();
 }
