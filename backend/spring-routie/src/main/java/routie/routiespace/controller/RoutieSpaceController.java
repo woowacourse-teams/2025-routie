@@ -4,13 +4,16 @@ import jakarta.validation.Valid;
 import java.net.URI;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import routie.routiespace.controller.dto.request.RoutieSpaceNameRequest;
 import routie.routiespace.controller.dto.request.UpdateRoutieSpaceNameRequest;
+import routie.routiespace.controller.dto.response.RoutieSpaceNameResponse;
 import routie.routiespace.controller.dto.response.UpdateRoutieSpaceNameResponse;
 import routie.routiespace.domain.RoutieSpace;
 import routie.routiespace.service.RoutieSpaceService;
@@ -21,6 +24,16 @@ import routie.routiespace.service.RoutieSpaceService;
 public class RoutieSpaceController {
 
     private final RoutieSpaceService routieSpaceService;
+
+    @GetMapping("/{routieSpaceIdentifier}/name")
+    public ResponseEntity<RoutieSpaceNameResponse> readName(
+            @PathVariable final String routieSpaceIdentifier
+    ) {
+        RoutieSpaceNameResponse routieSpaceNameResponse = routieSpaceService.getRoutieSpaceName(
+                RoutieSpaceNameRequest.from(routieSpaceIdentifier)
+        );
+        return ResponseEntity.ok(routieSpaceNameResponse);
+    }
 
     @PostMapping
     public ResponseEntity<Void> create() {
