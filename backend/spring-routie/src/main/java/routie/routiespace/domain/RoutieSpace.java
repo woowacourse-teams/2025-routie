@@ -82,7 +82,7 @@ public class RoutieSpace {
             throw new IllegalArgumentException("루티 스페이스 이름은 비어있을 수 없습니다.");
         }
         if (name.length() > 50) {
-            throw new IllegalArgumentException("루티 스페이스 ��름은 50자 이하여야 합니다.");
+            throw new IllegalArgumentException("루티 스페이스 이름은 50자 이하여야 합니다.");
         }
     }
 }
