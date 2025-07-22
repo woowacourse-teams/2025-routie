@@ -1,5 +1,6 @@
 package routie.place.domain;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
@@ -10,6 +11,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -60,7 +62,7 @@ public class Place {
     @JoinColumn(name = "routie_space_id")
     private RoutieSpace routieSpace;
 
-    @OneToMany
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     @JoinColumn(name = "place_id", nullable = false)
     private List<PlaceClosedWeekday> closedWeekdays = new ArrayList<>();
 
@@ -81,9 +83,7 @@ public class Place {
             final LocalTime breakStartAt,
             final LocalTime breakEndAt,
             final RoutieSpace routieSpace,
-            final List<PlaceClosedWeekday> closedWeekdays,
-            final LocalDateTime createdAt,
-            final LocalDateTime updatedAt
+            final List<PlaceClosedWeekday> closedWeekdays
     ) {
         this(
                 null,
@@ -96,8 +96,8 @@ public class Place {
                 breakEndAt,
                 routieSpace,
                 closedWeekdays,
-                createdAt,
-                updatedAt
+                null,
+                null
         );
     }
 
@@ -110,15 +110,21 @@ public class Place {
             final LocalTime breakStartAt,
             final LocalTime breakEndAt,
             final RoutieSpace routieSpace,
-            final List<PlaceClosedWeekday> closedWeekdays
+            final List<DayOfWeek> closedDays
     ) {
         validateName(name);
         validateAddress(address);
         validateStayDurationMinutes(stayDurationMinutes);
         validateBreakTime(breakStartAt, breakEndAt);
 
+        List<PlaceClosedWeekday> closedWeekdays = new ArrayList<>();
+        if (closedDays != null) {
+            closedWeekdays = closedDays.stream()
+                    .map(PlaceClosedWeekday::new)
+                    .toList();
+        }
+
         return new Place(
-                null,
                 name,
                 address,
                 stayDurationMinutes,
@@ -127,9 +133,7 @@ public class Place {
                 breakStartAt,
                 breakEndAt,
                 routieSpace,
-                closedWeekdays,
-                null,
-                null
+                closedWeekdays
         );
     }
 

@@ -73,5 +73,4 @@ public class RoutieSpaceController {
         final PlaceListResponse placeListResponse = placeService.readPlaces(routieSpaceIdentifier);
         return ResponseEntity.ok(placeListResponse);
     }
-
 }

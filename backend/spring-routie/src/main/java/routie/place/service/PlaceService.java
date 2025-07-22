@@ -28,13 +28,6 @@ public class PlaceService {
         RoutieSpace routieSpace = routieSpaceRepository.findByIdentifier(routieSpaceIdentifier)
                 .orElseThrow(() -> new IllegalArgumentException("해당 루티 스페이스를 찾을 수 없습니다."));
 
-        List<PlaceClosedWeekday> closedWeekdays = new ArrayList<>();
-        if (placeCreateRequest.closedDays() != null) {
-            closedWeekdays = placeCreateRequest.closedDays().stream()
-                    .map(PlaceClosedWeekday::new)
-                    .toList();
-        }
-
         Place place = Place.create(
                 placeCreateRequest.name(),
                 placeCreateRequest.address(),
@@ -44,7 +37,7 @@ public class PlaceService {
                 placeCreateRequest.breakStartAt(),
                 placeCreateRequest.breakEndAt(),
                 routieSpace,
-                closedWeekdays
+                placeCreateRequest.closedDays()
         );
         return new PlaceCreateResponse(placeRepository.save(place).getId());
     }
