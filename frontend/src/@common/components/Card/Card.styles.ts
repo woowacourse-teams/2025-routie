@@ -42,6 +42,7 @@ const CardStyle = (
   width: string | undefined,
   height: string | undefined,
 ) => css`
+  box-sizing: border-box;
   width: ${width ? width : '100%'};
   height: ${height ? height : 'auto'};
   padding: 1.6rem;
