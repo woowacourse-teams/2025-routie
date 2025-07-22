@@ -1,5 +1,5 @@
 import Text from '@/@common/components/Text/Text';
-import { DateType } from '@/domain/places/types/date.types';
+import { DateType } from '@/domains/places/types/date.types';
 
 import {
   DateCheckboxInputStyle,

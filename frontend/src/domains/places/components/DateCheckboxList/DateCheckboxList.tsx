@@ -1,5 +1,5 @@
 import Flex from '@/@common/components/Flex/Flex';
-import { DateType } from '@/domain/places/types/date.types';
+import { DateType } from '@/domains/places/types/date.types';
 
 import { DAY_KR_LIST } from '../../constants/day';
 import DateCheckbox from '../DateCheckbox/DateCheckbox';
