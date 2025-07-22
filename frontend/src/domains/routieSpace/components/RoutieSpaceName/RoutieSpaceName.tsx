@@ -1,8 +1,9 @@
 import { useState } from 'react';
 
-import Button from '@/@common/components/Button/Button';
 import Flex from '@/@common/components/Flex/Flex';
+import IconButton from '@/@common/components/IconButton/IconButton';
 import Text from '@/@common/components/Text/Text';
+import editIcon from '@/assets/icons/edit.svg';
 
 import routieSpaceNameInputStyle from './RoutieSpaceName.style';
 
@@ -32,9 +33,7 @@ const RoutieSpaceName = () => {
       ) : (
         <Text variant="title">{name}</Text>
       )}
-      <Button variant="primary" onClick={handleClick}>
-        수정
-      </Button>
+      <IconButton icon={editIcon} onClick={handleClick} />
     </Flex>
   );
 };
