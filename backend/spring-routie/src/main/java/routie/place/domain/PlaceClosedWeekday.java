@@ -43,11 +43,11 @@ public class PlaceClosedWeekday {
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
-    public PlaceClosedWeekday(final DayOfWeek closedDay, final LocalDateTime createdAt) {
+    public PlaceClosedWeekday(final DayOfWeek closedDay) {
         this(
                 null,
                 closedDay,
-                createdAt
+                null
         );
     }
 }
