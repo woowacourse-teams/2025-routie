@@ -31,11 +31,11 @@ export const toggleStyle = (checked: boolean) => css`
     content: '';
 
     position: absolute;
-    top: 1px; /* 중앙 배치 (상하 마진 1px 유지) */
+    top: 1px;
     left: ${checked ? 'calc(100% - 14px)' : '1px'};
 
-    width: 12px; /* 14px → 12px로 변경 */
-    height: 12px; /* 14px → 12px로 변경 */
+    width: 12px;
+    height: 12px;
     border-radius: 50%;
 
     background-color: ${theme.colors.white};
