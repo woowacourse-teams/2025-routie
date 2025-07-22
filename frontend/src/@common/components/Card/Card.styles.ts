@@ -16,6 +16,13 @@ const cardVariant: Record<CardVariantProps, SerializedStyles> = {
     }
   `,
 
+  defaultStatic: css`
+    padding: 0.8rem;
+    border: 1px solid ${theme.colors.purple[50]};
+    border-left: 4px solid ${theme.colors.purple[100]};
+    background-color: ${theme.colors.white};
+  `,
+
   available: css`
     border-left: 4px solid ${theme.colors.green[100]};
     background-color: ${theme.colors.green[50]};
