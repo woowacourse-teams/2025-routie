@@ -64,7 +64,7 @@ public class RoutieSpace {
         return new RoutieSpace(
                 null,
                 DEFAULT_NAME,
-                identifierProvider.get(),
+                identifierProvider.provide(),
                 new ArrayList<>(),
                 new ArrayList<>(),
                 null,

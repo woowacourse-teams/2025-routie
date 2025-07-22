@@ -5,7 +5,7 @@ import routie.routiespace.domain.RoutieSpaceIdentifierProvider;
 public abstract class RandomRoutieSpaceIdentifierProvider implements RoutieSpaceIdentifierProvider {
 
     @Override
-    public final String get() {
+    public final String provide() {
         return generateRandomName();
     }
 
