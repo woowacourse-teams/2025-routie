@@ -61,7 +61,7 @@ public class RoutieSpaceController {
         return ResponseEntity.ok(updateRoutieSpaceNameResponse);
     }
 
-    @PostMapping("/{routieSpaceIdentifier}/place")
+    @PostMapping("/{routieSpaceIdentifier}/places")
     public ResponseEntity<PlaceCreateResponse> createPlace(
             @RequestBody final PlaceCreateRequest placeCreateRequest,
             @PathVariable final String routieSpaceIdentifier
@@ -70,7 +70,7 @@ public class RoutieSpaceController {
         return ResponseEntity.ok(placeCreateResponse);
     }
 
-    @GetMapping("/{routieSpaceIdentifier}/place")
+    @GetMapping("/{routieSpaceIdentifier}/places")
     public ResponseEntity<PlaceListResponse> readPlaces(@PathVariable final String routieSpaceIdentifier) {
         final PlaceListResponse placeListResponse = placeService.readPlaces(routieSpaceIdentifier);
         return ResponseEntity.ok(placeListResponse);
