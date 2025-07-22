@@ -12,8 +12,8 @@ public record PlaceCreateRequest(
         int stayDurationMinutes,
         @NotNull @JsonFormat(pattern = "HH:mm") LocalTime openAt,
         @NotNull @JsonFormat(pattern = "HH:mm") LocalTime closeAt,
-        @NotNull @JsonFormat(pattern = "HH:mm") LocalTime breakStartAt,
-        @NotNull @JsonFormat(pattern = "HH:mm") LocalTime breakEndAt,
+        @JsonFormat(pattern = "HH:mm") LocalTime breakStartAt,
+        @JsonFormat(pattern = "HH:mm") LocalTime breakEndAt,
         List<DayOfWeek> closedDays
 ) {
 }
