@@ -15,7 +15,7 @@ public class RoutieSpaceService {
     private final RoutieSpaceIdentifierProvider routieSpaceIdentifierProvider;
 
     @Transactional
-    public RoutieSpace add() {
+    public RoutieSpace addRoutieSpace() {
         RoutieSpace routieSpace = RoutieSpace.from(routieSpaceIdentifierProvider);
         return routieSpaceRepository.save(routieSpace);
     }

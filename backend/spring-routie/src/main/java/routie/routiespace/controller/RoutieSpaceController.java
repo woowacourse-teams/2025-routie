@@ -18,7 +18,7 @@ public class RoutieSpaceController {
 
     @PostMapping
     public ResponseEntity<Void> createRoutieSpace() {
-        RoutieSpace routieSpace = routieSpaceService.add();
+        RoutieSpace routieSpace = routieSpaceService.addRoutieSpace();
         URI location = URI.create(String.format("/routie-spaces/%s", routieSpace.getIdentifier()));
 
         return ResponseEntity.created(location).build();
