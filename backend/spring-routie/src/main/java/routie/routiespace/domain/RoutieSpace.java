@@ -30,6 +30,8 @@ import routie.routie.domain.Routie;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class RoutieSpace {
 
+    private static final String DEFAULT_NAME = "새 루티 스페이스";
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -56,22 +58,17 @@ public class RoutieSpace {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    public RoutieSpace(
-            final String name,
-            final String identifier,
-            final List<Place> places,
-            final List<Routie> routies,
-            final LocalDateTime createdAt,
-            final LocalDateTime updatedAt
+    public static RoutieSpace from(
+            final RoutieSpaceIdentifierProvider identifierProvider
     ) {
-        this(
+        return new RoutieSpace(
                 null,
-                name,
-                identifier,
-                places,
-                routies,
-                createdAt,
-                updatedAt
+                DEFAULT_NAME,
+                identifierProvider.provide(),
+                new ArrayList<>(),
+                new ArrayList<>(),
+                null,
+                null
         );
     }
 }
