@@ -13,6 +13,7 @@ import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 import java.time.LocalDateTime;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
@@ -27,6 +28,7 @@ import routie.place.domain.Place;
         )
 })
 @EntityListeners(AuditingEntityListener.class)
+@AllArgsConstructor(access = AccessLevel.PACKAGE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class RoutiePlace {
 
@@ -44,4 +46,13 @@ public class RoutiePlace {
     @CreatedDate
     @Column(name = "created_at")
     private LocalDateTime createdAt;
+
+    public RoutiePlace(final int sequence, final Place place, final LocalDateTime createdAt) {
+        this(
+                null,
+                sequence,
+                place,
+                createdAt
+        );
+    }
 }

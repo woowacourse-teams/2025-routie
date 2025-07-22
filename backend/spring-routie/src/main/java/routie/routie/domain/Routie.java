@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
@@ -22,6 +23,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @Getter
 @Table(name = "routies")
 @EntityListeners(AuditingEntityListener.class)
+@AllArgsConstructor(access = AccessLevel.PACKAGE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Routie {
 
@@ -36,4 +38,12 @@ public class Routie {
     @CreatedDate
     @Column(name = "created_at")
     private LocalDateTime createdAt;
+
+    public Routie(final List<RoutiePlace> routiePlaces, final LocalDateTime createdAt) {
+        this(
+                null,
+                routiePlaces,
+                createdAt
+        );
+    }
 }

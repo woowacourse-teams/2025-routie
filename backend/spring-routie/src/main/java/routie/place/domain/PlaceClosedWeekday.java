@@ -13,6 +13,7 @@ import jakarta.persistence.UniqueConstraint;
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
@@ -26,6 +27,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
         )
 })
 @EntityListeners(AuditingEntityListener.class)
+@AllArgsConstructor(access = AccessLevel.PACKAGE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class PlaceClosedWeekday {
 
@@ -40,4 +42,12 @@ public class PlaceClosedWeekday {
     @CreatedDate
     @Column(name = "created_at")
     private LocalDateTime createdAt;
+
+    public PlaceClosedWeekday(final DayOfWeek closedDay, final LocalDateTime createdAt) {
+        this(
+                null,
+                closedDay,
+                createdAt
+        );
+    }
 }

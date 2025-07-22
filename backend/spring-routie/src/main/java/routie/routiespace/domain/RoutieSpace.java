@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
@@ -25,6 +26,7 @@ import routie.routie.domain.Routie;
 @Entity
 @Table(name = "routie_spaces")
 @EntityListeners(AuditingEntityListener.class)
+@AllArgsConstructor(access = AccessLevel.PACKAGE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class RoutieSpace {
 
@@ -53,4 +55,23 @@ public class RoutieSpace {
     @LastModifiedDate
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
+
+    public RoutieSpace(
+            final String name,
+            final String identifier,
+            final List<Place> places,
+            final List<Routie> routies,
+            final LocalDateTime createdAt,
+            final LocalDateTime updatedAt
+    ) {
+        this(
+                null,
+                name,
+                identifier,
+                places,
+                routies,
+                createdAt,
+                updatedAt
+        );
+    }
 }

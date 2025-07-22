@@ -14,6 +14,7 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
@@ -24,6 +25,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @Getter
 @Table(name = "places")
 @EntityListeners(AuditingEntityListener.class)
+@AllArgsConstructor(access = AccessLevel.PACKAGE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Place {
 
@@ -63,4 +65,31 @@ public class Place {
     @LastModifiedDate
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
+
+    public Place(
+            final String name,
+            final String address,
+            final int stayDurationMinutes,
+            final LocalTime openAt,
+            final LocalTime closeAt,
+            final LocalTime breakStartAt,
+            final LocalTime breakEndAt,
+            final List<PlaceClosedWeekday> closedWeekdays,
+            final LocalDateTime createdAt,
+            final LocalDateTime updatedAt
+    ) {
+        this(
+                null,
+                name,
+                address,
+                stayDurationMinutes,
+                openAt,
+                closeAt,
+                breakStartAt,
+                breakEndAt,
+                closedWeekdays,
+                createdAt,
+                updatedAt
+        );
+    }
 }
