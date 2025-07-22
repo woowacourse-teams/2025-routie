@@ -34,30 +34,22 @@ const PlaceCard = () => {
         alignItems="flex-start"
       >
         <Flex justifyContent="space-between" width="100%" alignItems="center">
-          {isClicked ? (
-            <IconButton
-              icon={checkIcon}
-              variant="selected"
-              onClick={handleToggle}
-            />
-          ) : (
-            <IconButton
-              icon={plusIcon}
-              variant="select"
-              onClick={handleToggle}
-            />
-          )}
-
+          <IconButton
+            icon={isClicked ? checkIcon : plusIcon}
+            variant={isClicked ? 'selected' : 'select'}
+            onClick={handleToggle}
+          />
           <Flex gap={1}>
             <IconButton icon={editIcon} onClick={() => {}} />
             <IconButton icon={trashIcon} variant="delete" onClick={() => {}} />
           </Flex>
         </Flex>
-        <Text variant={'subTitle'}>경복궁</Text>
+
+        <Text variant="subTitle">경복궁</Text>
         <Text variant="caption" color={theme.colors.gray[200]}>
           서울특별시 종로구 사직로 161
         </Text>
-        <Pill type={'time'}>09:00-18:00</Pill>
+        <Pill type="time">09:00-18:00</Pill>
         <DatePreviewList value={[true, true, true, true, true, false, true]} />
       </Flex>
     </Card>
