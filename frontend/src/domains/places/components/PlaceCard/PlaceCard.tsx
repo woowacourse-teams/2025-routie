@@ -44,6 +44,7 @@ const PlaceCard = () => {
             <IconButton icon={trashIcon} variant="delete" onClick={() => {}} />
           </Flex>
         </Flex>
+
         <Text variant="subTitle">경복궁</Text>
         <Text variant="caption" color={theme.colors.gray[200]}>
           서울특별시 종로구 사직로 161
