@@ -10,7 +10,7 @@ import {
 const iconButtonVariant: Record<IconButtonVariantProps, SerializedStyles> = {
   delete: css`
     &:hover {
-      background-color: ${theme.colors.red[100]};
+      background-color: ${theme.colors.red[50]};
     }
   `,
   select: css`
@@ -29,7 +29,7 @@ const iconButtonVariant: Record<IconButtonVariantProps, SerializedStyles> = {
     background-color: ${theme.colors.green[50]};
 
     &:hover {
-      background-color: ${theme.colors.green[100]};
+      background-color: ${theme.colors.green[75]};
     }
   `,
 };
