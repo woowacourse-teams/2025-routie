@@ -5,7 +5,7 @@ import Text from '@/@common/components/Text/Text';
 
 const Home = () => {
   return (
-    <div>
+    <>
       <Header />
       <Flex direction="column" height="70dvh">
         <Button variant="primary">
@@ -25,7 +25,7 @@ const Home = () => {
           </Flex>
         </Button>
       </Flex>
-    </div>
+    </>
   );
 };
 
