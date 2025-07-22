@@ -9,6 +9,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -74,9 +75,7 @@ public class Place {
             final LocalTime closeAt,
             final LocalTime breakStartAt,
             final LocalTime breakEndAt,
-            final List<PlaceClosedWeekday> closedWeekdays,
-            final LocalDateTime createdAt,
-            final LocalDateTime updatedAt
+            final List<PlaceClosedWeekday> closedWeekdays
     ) {
         this(
                 null,
@@ -88,8 +87,30 @@ public class Place {
                 breakStartAt,
                 breakEndAt,
                 closedWeekdays,
-                createdAt,
-                updatedAt
+                null,
+                null
         );
+    }
+
+    public void modify(
+            final int stayDurationMinutes,
+            final LocalTime openAt,
+            final LocalTime closeAt,
+            final LocalTime breakStartAt,
+            final LocalTime breakEndAt,
+            final List<DayOfWeek> closedDays
+    ) {
+        this.stayDurationMinutes = stayDurationMinutes;
+        this.openAt = openAt;
+        this.closeAt = closeAt;
+        this.breakStartAt = breakStartAt;
+        this.breakEndAt = breakEndAt;
+
+        this.closedWeekdays.clear();
+        if (closedDays != null) {
+            closedDays.forEach(
+                    day -> this.closedWeekdays.add(new PlaceClosedWeekday(day))
+            );
+        }
     }
 }
