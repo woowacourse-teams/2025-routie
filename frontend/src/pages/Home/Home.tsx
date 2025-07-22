@@ -20,7 +20,7 @@ const Home = () => {
               루티 스페이스를 생성해
             </Text>
             <Text variant="title" color="white">
-              나만의 루티 스페이스 만들어보세요 👍
+              나만의 루티를 만들어보세요 👍
             </Text>
           </Flex>
         </Button>
