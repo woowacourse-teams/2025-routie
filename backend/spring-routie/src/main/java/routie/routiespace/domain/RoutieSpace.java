@@ -30,6 +30,8 @@ import routie.routie.domain.Routie;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class RoutieSpace {
 
+    private static final String DEFAULT_NAME = "새 루티 스페이스";
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
