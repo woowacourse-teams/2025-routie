@@ -14,7 +14,7 @@ const DateCheckboxList = ({
   onChange: handleCheckboxChange,
 }: DateCheckboxListProps) => {
   return (
-    <Flex direction="row" alignItems="center" justifyContent="center" gap={1}>
+    <Flex gap={1}>
       {DAY_KR_LIST.map((day, index) => (
         <DateCheckbox
           key={day}
