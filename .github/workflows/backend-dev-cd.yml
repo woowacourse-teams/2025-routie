@@ -42,7 +42,7 @@ jobs:
       - name: Build with Gradle
         uses: gradle/gradle-build-action@v3
         with:
-          gradle-wrapper-directory: backend/spring-routie
+          build-root-directory: backend/spring-routie
           arguments: clean bootJar
 
       - name: Test with Gradle
