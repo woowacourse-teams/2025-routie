@@ -13,6 +13,15 @@ const iconButtonVariant: Record<IconButtonVariantProps, SerializedStyles> = {
       background-color: ${theme.colors.red[50]};
     }
   `,
+
+  drag: css`
+    cursor: grab;
+
+   &:hover {
+    background-color: transparent;
+  }
+  `,
+
   select: css`
     width: 3rem;
     height: 3rem;
