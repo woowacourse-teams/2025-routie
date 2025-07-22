@@ -30,10 +30,16 @@ const cardVariant: Record<CardVariantProps, SerializedStyles> = {
   `,
 };
 
-const CardStyle = (variant: keyof typeof cardVariant) => css`
+const CardStyle = (
+  variant: keyof typeof cardVariant,
+  width: string | undefined,
+  height: string | undefined,
+) => css`
+  width: ${width ? width : '100%'};
+  height: ${height ? height : 'auto'};
   padding: 1.6rem;
   border-radius: 8px;
-  ${variant && cardVariant[variant]}
+  ${cardVariant[variant]}
 `;
 
 export default CardStyle;
