@@ -6,6 +6,7 @@ on:
     types: [opened, synchronize, reopened]
     paths:
       - 'backend/**'
+      - '.github/workflows/**'
 
 permissions:
   contents: read
@@ -46,10 +47,7 @@ jobs:
         run: chmod +x gradlew
 
       - name: Build with Gradle
-        uses: gradle/gradle-build-action@v3
-        with:
-          build-root-directory: backend/spring-routie
-          arguments: clean bootJar
+        run: ./gradlew clean bootJar
 
       # gradle test 진행
       - name: Test with Gradle
