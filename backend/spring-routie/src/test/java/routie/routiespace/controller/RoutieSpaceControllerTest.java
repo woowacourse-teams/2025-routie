@@ -18,7 +18,8 @@ public class RoutieSpaceControllerTest {
     @DisplayName("루티 스페이스를 생성한다")
     public void createRoutieSpace() {
         // given
-        Pattern locationUrlPattern = Pattern.compile("/routie-spaces/[a-zA-Z0-9-]+");
+        Pattern locationUrlPattern = Pattern.compile(
+                "/routie-spaces/[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}");
 
         // when
         Response response = RestAssured
