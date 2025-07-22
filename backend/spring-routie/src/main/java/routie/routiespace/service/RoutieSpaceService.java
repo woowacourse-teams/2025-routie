@@ -3,7 +3,9 @@ package routie.routiespace.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import routie.routiespace.controller.dto.request.RoutieSpaceNameRequest;
 import routie.routiespace.controller.dto.request.UpdateRoutieSpaceNameRequest;
+import routie.routiespace.controller.dto.response.RoutieSpaceNameResponse;
 import routie.routiespace.controller.dto.response.UpdateRoutieSpaceNameResponse;
 import routie.routiespace.domain.RoutieSpace;
 import routie.routiespace.domain.RoutieSpaceIdentifierProvider;
@@ -16,6 +18,14 @@ public class RoutieSpaceService {
     private final RoutieSpaceRepository routieSpaceRepository;
     private final RoutieSpaceIdentifierProvider routieSpaceIdentifierProvider;
 
+    @Transactional(readOnly = true)
+    public RoutieSpaceNameResponse getRoutieSpaceName(final RoutieSpaceNameRequest routieSpaceNameRequest) {
+        RoutieSpace routieSpace = routieSpaceRepository.findByIdentifier(routieSpaceNameRequest.identifier())
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 루티 스페이스입니다."));
+
+        return RoutieSpaceNameResponse.from(routieSpace);
+    }
+
     @Transactional
     public RoutieSpace addRoutieSpace() {
         RoutieSpace routieSpace = RoutieSpace.from(routieSpaceIdentifierProvider);
@@ -23,7 +33,7 @@ public class RoutieSpaceService {
     }
 
     @Transactional
-    public UpdateRoutieSpaceNameResponse updateRoutieSpaceName(
+    public UpdateRoutieSpaceNameResponse modifyRoutieSpaceName(
             final String routieSpaceIdentifier,
             final UpdateRoutieSpaceNameRequest updateRoutieSpaceNameRequest
     ) {
