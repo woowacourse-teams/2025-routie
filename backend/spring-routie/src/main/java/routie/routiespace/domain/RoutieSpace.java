@@ -58,22 +58,17 @@ public class RoutieSpace {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    public RoutieSpace(
-            final String name,
-            final String identifier,
-            final List<Place> places,
-            final List<Routie> routies,
-            final LocalDateTime createdAt,
-            final LocalDateTime updatedAt
+    public static RoutieSpace from(
+            final RoutieSpaceIdentifierProvider identifierProvider
     ) {
-        this(
+        return new RoutieSpace(
                 null,
-                name,
-                identifier,
-                places,
-                routies,
-                createdAt,
-                updatedAt
+                DEFAULT_NAME,
+                identifierProvider.get(),
+                new ArrayList<>(),
+                new ArrayList<>(),
+                null,
+                null
         );
     }
 }
