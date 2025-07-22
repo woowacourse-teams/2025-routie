@@ -24,4 +24,3 @@ public class RoutieSpaceController {
         return ResponseEntity.created(location).build();
     }
 }
-
