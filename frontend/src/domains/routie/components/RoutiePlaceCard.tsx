@@ -20,7 +20,7 @@ const RoutiePlaceCard = ({...props}:RoutiePlaceCardProps) => {
   return (
     <Card id={props.id} width="45rem" variant="defaultStatic" >
       <Flex justifyContent="flex-start" gap={1.5}>
-        <IconButton variant='drag' icon={dragIcon} onClick={()=>{}}></IconButton>
+        <IconButton variant='drag' icon={dragIcon} onClick={()=>{}} />
         <Flex direction="column" alignItems="flex-start" gap={1.1} width="100%">
           <Flex width="100%" justifyContent="space-between">
             <Text variant="caption">{props.name}</Text>
