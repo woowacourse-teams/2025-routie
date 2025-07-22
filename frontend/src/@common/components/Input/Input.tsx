@@ -13,7 +13,9 @@ const Input = ({
   id,
   type,
   label,
-  placeholder,
+  placeholder = '',
+  value,
+  onChange,
   variant = 'primary',
   icon,
 }: InputProps) => {
@@ -22,9 +24,11 @@ const Input = ({
 
   return (
     <>
-      <label css={InputLabelStyle} htmlFor={id}>
-        {label}
-      </label>
+      {label && (
+        <label css={InputLabelStyle} htmlFor={id}>
+          {label}
+        </label>
+      )}
       <div css={InputContainerStyle}>
         {iconSrc && <img src={iconSrc} alt="input-icon" css={InputIconStyle} />}
         <input
@@ -32,6 +36,8 @@ const Input = ({
           id={id}
           type={type}
           placeholder={placeholder}
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
           disabled={variant === 'disabled'}
         />
       </div>
