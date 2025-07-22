@@ -1,11 +1,6 @@
 name: CI on develop branch
 
 on:
-  push:
-    branches: [ "develop" ]
-    paths:
-      - 'backend/**'
-
   pull_request:
     branches: [ "develop" ]
     types: [opened, synchronize, reopened]
