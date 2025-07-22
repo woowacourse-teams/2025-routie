@@ -1,5 +1,7 @@
 package routie.routiespace.controller.dto.request;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import jakarta.validation.constraints.NotNull;
 import java.time.DayOfWeek;
 import java.time.LocalTime;
 import java.util.List;
@@ -8,10 +10,10 @@ public record PlaceCreateRequest(
         String name,
         String address,
         int stayDurationMinutes,
-        LocalTime openAt,
-        LocalTime closeAt,
-        LocalTime breakStartAt,
-        LocalTime breakEndAt,
+        @NotNull @JsonFormat(pattern = "HH:mm") LocalTime openAt,
+        @NotNull @JsonFormat(pattern = "HH:mm") LocalTime closeAt,
+        @NotNull @JsonFormat(pattern = "HH:mm") LocalTime breakStartAt,
+        @NotNull @JsonFormat(pattern = "HH:mm") LocalTime breakEndAt,
         List<DayOfWeek> closedDays
 ) {
 }
