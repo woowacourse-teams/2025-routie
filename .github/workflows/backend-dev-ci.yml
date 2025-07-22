@@ -2,7 +2,7 @@ name: CI on develop branch
 
 on:
   push:
-    branches: ["develop"]
+    branches: [ "develop" ]
     paths:
       - 'backend/**'
 

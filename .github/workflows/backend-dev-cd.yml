@@ -1,10 +1,10 @@
 name: CD on develop branch
 
 on:
-  workflow_run:
-    workflows: [ "CI on develop branch" ]
-    types:
-      - completed
+  push:
+    branches: [ "develop" ]
+    paths:
+      - 'backend/**'
 
 jobs:
   deploy-to-ec2:
@@ -26,13 +26,31 @@ jobs:
           java-version: '21'
           distribution: 'corretto'
 
+      - name: Gradle Caching
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties', '**/gradle.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
-      - name: Build Spring Boot Jar
-        run: ./gradlew clean bootJar
+      - name: Build with Gradle
+        uses: gradle/gradle-build-action@v3
+        with:
+          build-root-directory: backend/spring-routie
+          arguments: clean bootJar
 
-      - name: Restore application.yml (external to jar)
+      - name: Test with Gradle
+        run: ./gradlew test
+        env:
+          SPRING_PROFILES_ACTIVE: test
+
+      - name: Restore application.yml
         run: |
           mkdir -p config
           echo "${{ secrets.APPLICATION_YML_PROD }}" > config/application.yml
