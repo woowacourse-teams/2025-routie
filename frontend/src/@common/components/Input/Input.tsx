@@ -22,9 +22,11 @@ const Input = ({
 
   return (
     <>
-      <label css={InputLabelStyle} htmlFor={id}>
-        {label}
-      </label>
+      {label && (
+        <label css={InputLabelStyle} htmlFor={id}>
+          {label}
+        </label>
+      )}
       <div css={InputContainerStyle}>
         {iconSrc && <img src={iconSrc} alt="input-icon" css={InputIconStyle} />}
         <input
