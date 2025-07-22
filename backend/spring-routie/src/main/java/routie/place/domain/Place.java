@@ -100,17 +100,34 @@ public class Place {
             final LocalTime breakEndAt,
             final List<DayOfWeek> closedDays
     ) {
+        validateStayDurationMinutes(stayDurationMinutes);
+        validateBreakTime(breakStartAt, breakEndAt);
+
         this.stayDurationMinutes = stayDurationMinutes;
         this.openAt = openAt;
         this.closeAt = closeAt;
         this.breakStartAt = breakStartAt;
         this.breakEndAt = breakEndAt;
-
         this.closedWeekdays.clear();
         if (closedDays != null) {
             closedDays.forEach(
                     day -> this.closedWeekdays.add(new PlaceClosedWeekday(day))
             );
+        }
+    }
+
+    private void validateStayDurationMinutes(final int stayDurationMinutes) {
+        if (stayDurationMinutes < 0 || stayDurationMinutes > 1440) {
+            throw new IllegalArgumentException("체류 시간은 0분 이상 1440분 이하여야 합니다.");
+        }
+    }
+
+    private void validateBreakTime(final LocalTime breakStartAt, final LocalTime breakEndAt) {
+        boolean hasBreakStart = breakStartAt != null;
+        boolean hasBreakEnd = breakEndAt != null;
+
+        if (hasBreakStart != hasBreakEnd) {
+            throw new IllegalArgumentException("브레이크 타임 시작 시간과 종료 시간은 함께 존재해야 합니다.");
         }
     }
 }

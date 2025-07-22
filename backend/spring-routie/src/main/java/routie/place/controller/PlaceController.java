@@ -1,5 +1,6 @@
 package routie.place.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -22,7 +23,7 @@ public class PlaceController {
 
     @PatchMapping("/{placeId}")
     public ResponseEntity<Void> updatePlace(
-            @RequestBody final PlaceUpdateRequest placeUpdateRequest,
+            @Valid @RequestBody final PlaceUpdateRequest placeUpdateRequest,
             @PathVariable final long placeId
     ) {
         placeService.modifyPlace(placeUpdateRequest, placeId);
