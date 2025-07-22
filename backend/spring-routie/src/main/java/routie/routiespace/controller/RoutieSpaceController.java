@@ -62,8 +62,10 @@ public class RoutieSpaceController {
     }
 
     @PostMapping("/{routieSpaceIdentifier}/place")
-    public ResponseEntity<PlaceCreateResponse> createPlace(@RequestBody final PlaceCreateRequest placeCreateRequest,
-                                                           @PathVariable final String routieSpaceIdentifier) {
+    public ResponseEntity<PlaceCreateResponse> createPlace(
+            @RequestBody final PlaceCreateRequest placeCreateRequest,
+            @PathVariable final String routieSpaceIdentifier
+    ) {
         final PlaceCreateResponse placeCreateResponse = placeService.add(placeCreateRequest, routieSpaceIdentifier);
         return ResponseEntity.ok(placeCreateResponse);
     }

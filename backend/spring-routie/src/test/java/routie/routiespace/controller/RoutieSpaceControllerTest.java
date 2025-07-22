@@ -32,7 +32,6 @@ public class RoutieSpaceControllerTest {
         routieSpaceIdentifier = locationUrl.substring("/routie-spaces/".length());
     }
 
-
     @Test
     @DisplayName("루티 스페이스를 생성한다")
     public void createRoutieSpace() {
