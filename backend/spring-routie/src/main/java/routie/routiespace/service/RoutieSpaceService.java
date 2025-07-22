@@ -33,7 +33,7 @@ public class RoutieSpaceService {
     }
 
     @Transactional
-    public UpdateRoutieSpaceNameResponse updateRoutieSpaceName(
+    public UpdateRoutieSpaceNameResponse modifyRoutieSpaceName(
             final String routieSpaceIdentifier,
             final UpdateRoutieSpaceNameRequest updateRoutieSpaceNameRequest
     ) {

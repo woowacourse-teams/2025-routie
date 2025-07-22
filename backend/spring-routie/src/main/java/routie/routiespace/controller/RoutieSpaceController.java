@@ -48,7 +48,7 @@ public class RoutieSpaceController {
             @PathVariable final String routieSpaceIdentifier,
             @RequestBody @Valid final UpdateRoutieSpaceNameRequest updateRoutieSpaceNameRequest
     ) {
-        UpdateRoutieSpaceNameResponse updateRoutieSpaceNameResponse = routieSpaceService.updateRoutieSpaceName(
+        UpdateRoutieSpaceNameResponse updateRoutieSpaceNameResponse = routieSpaceService.modifyRoutieSpaceName(
                 routieSpaceIdentifier,
                 updateRoutieSpaceNameRequest
         );
