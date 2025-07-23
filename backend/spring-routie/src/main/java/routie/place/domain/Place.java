@@ -43,9 +43,6 @@ public class Place {
     @Column(name = "address", nullable = false)
     private String address;
 
-    @Column(name = "stay_duration_minutes")
-    private int stayDurationMinutes;
-
     @Column(name = "open_at")
     private LocalTime openAt;
 
@@ -77,7 +74,6 @@ public class Place {
     Place(
             final String name,
             final String address,
-            final int stayDurationMinutes,
             final LocalTime openAt,
             final LocalTime closeAt,
             final LocalTime breakStartAt,
@@ -89,7 +85,6 @@ public class Place {
                 null,
                 name,
                 address,
-                stayDurationMinutes,
                 openAt,
                 closeAt,
                 breakStartAt,
@@ -104,7 +99,6 @@ public class Place {
     public static Place create(
             final String name,
             final String address,
-            final int stayDurationMinutes,
             final LocalTime openAt,
             final LocalTime closeAt,
             final LocalTime breakStartAt,
@@ -114,7 +108,6 @@ public class Place {
     ) {
         validateName(name);
         validateAddress(address);
-        validateStayDurationMinutes(stayDurationMinutes);
         validateBreakTime(breakStartAt, breakEndAt);
 
         List<PlaceClosedWeekday> closedWeekdays = new ArrayList<>();
@@ -127,7 +120,6 @@ public class Place {
         return new Place(
                 name,
                 address,
-                stayDurationMinutes,
                 openAt,
                 closeAt,
                 breakStartAt,
@@ -135,36 +127,6 @@ public class Place {
                 routieSpace,
                 closedWeekdays
         );
-    }
-
-    public void modify(
-            final int stayDurationMinutes,
-            final LocalTime openAt,
-            final LocalTime closeAt,
-            final LocalTime breakStartAt,
-            final LocalTime breakEndAt,
-            final List<DayOfWeek> closedDays
-    ) {
-        validateStayDurationMinutes(stayDurationMinutes);
-        validateBreakTime(breakStartAt, breakEndAt);
-
-        this.stayDurationMinutes = stayDurationMinutes;
-        this.openAt = openAt;
-        this.closeAt = closeAt;
-        this.breakStartAt = breakStartAt;
-        this.breakEndAt = breakEndAt;
-        this.closedWeekdays.clear();
-        if (closedDays != null) {
-            closedDays.forEach(
-                    day -> this.closedWeekdays.add(new PlaceClosedWeekday(day))
-            );
-        }
-    }
-
-    private static void validateStayDurationMinutes(final int stayDurationMinutes) {
-        if (stayDurationMinutes < 0 || stayDurationMinutes > 1440) {
-            throw new IllegalArgumentException("체류 시간은 0분 이상 1440분 이하여야 합니다.");
-        }
     }
 
     private static void validateName(final String name) {
@@ -191,6 +153,27 @@ public class Place {
 
         if (hasBreakStart != hasBreakEnd) {
             throw new IllegalArgumentException("브레이크 타임 시작 시간과 종료 시간은 함께 존재해야 합니다.");
+        }
+    }
+
+    public void modify(
+            final LocalTime openAt,
+            final LocalTime closeAt,
+            final LocalTime breakStartAt,
+            final LocalTime breakEndAt,
+            final List<DayOfWeek> closedDays
+    ) {
+        validateBreakTime(breakStartAt, breakEndAt);
+
+        this.openAt = openAt;
+        this.closeAt = closeAt;
+        this.breakStartAt = breakStartAt;
+        this.breakEndAt = breakEndAt;
+        this.closedWeekdays.clear();
+        if (closedDays != null) {
+            closedDays.forEach(
+                    day -> this.closedWeekdays.add(new PlaceClosedWeekday(day))
+            );
         }
     }
 }

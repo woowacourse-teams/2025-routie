@@ -44,6 +44,7 @@ public class RoutieService {
         List<RoutiePlace> routiePlaces = request.routiePlaces().stream()
                 .map(r -> new RoutiePlace(
                         r.sequence(),
+                        r.stayDurationMinutes(),
                         Optional.ofNullable(placeMap.get(r.placeId()))
                                 .orElseThrow(
                                         () -> new IllegalArgumentException("해당하는 id의 장소를 찾을 수 없습니다: " + r.placeId()))

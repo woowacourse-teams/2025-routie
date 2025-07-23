@@ -51,7 +51,6 @@ public class PlaceControllerTest {
                 Place.create(
                         "테스트 카페",
                         "서울시 강남구 테스트로 123",
-                        60,
                         LocalTime.of(9, 0),
                         LocalTime.of(22, 0),
                         LocalTime.of(14, 0),
@@ -68,7 +67,6 @@ public class PlaceControllerTest {
         // given
         long placeId = testPlace.getId();
         Map<String, Object> updateRequest = Map.of(
-                "stayDurationMinutes", 120,
                 "openAt", "09:00",
                 "closeAt", "18:00",
                 "breakStartAt", "12:00",
@@ -100,72 +98,9 @@ public class PlaceControllerTest {
         // given
         long placeId = testPlace.getId();
         Map<String, Object> updateRequest = Map.of(
-                "stayDurationMinutes", 90,
                 "openAt", "10:00",
                 "closeAt", "22:00",
                 "closedDays", List.of("WEDNESDAY")
-        );
-
-        // when
-        Response response = RestAssured
-                .given()
-                .contentType(ContentType.JSON)
-                .body(updateRequest)
-                .when()
-                .patch("/places/" + placeId)
-                .then()
-                .log().all()
-                .extract().response();
-
-        HttpStatus actualHttpStatus = HttpStatus.valueOf(response.getStatusCode());
-        HttpStatus expectedHttpStatus = HttpStatus.OK;
-
-        // then
-        assertThat(expectedHttpStatus).isEqualTo(actualHttpStatus);
-    }
-
-    @Test
-    @DisplayName("장소를 수정한다 - 최소 체류시간")
-    public void updatePlaceWithMinimumStayDuration() {
-        // given
-        long placeId = testPlace.getId();
-        Map<String, Object> updateRequest = Map.of(
-                "stayDurationMinutes", 0,
-                "openAt", "00:00",
-                "closeAt", "23:59",
-                "closedDays", List.of()
-        );
-
-        // when
-        Response response = RestAssured
-                .given()
-                .contentType(ContentType.JSON)
-                .body(updateRequest)
-                .when()
-                .patch("/places/" + placeId)
-                .then()
-                .log().all()
-                .extract().response();
-
-        HttpStatus actualHttpStatus = HttpStatus.valueOf(response.getStatusCode());
-        HttpStatus expectedHttpStatus = HttpStatus.OK;
-
-        // then
-        assertThat(expectedHttpStatus).isEqualTo(actualHttpStatus);
-    }
-
-    @Test
-    @DisplayName("장소를 수정한다 - 최대 체류시간")
-    public void updatePlaceWithMaximumStayDuration() {
-        // given
-        long placeId = testPlace.getId();
-        Map<String, Object> updateRequest = Map.of(
-                "stayDurationMinutes", 1440,
-                "openAt", "08:00",
-                "closeAt", "20:00",
-                "breakStartAt", "14:00",
-                "breakEndAt", "15:00",
-                "closedDays", List.of("SATURDAY", "SUNDAY")
         );
 
         // when
@@ -231,7 +166,6 @@ public class PlaceControllerTest {
         assertThat(responseBody).isNotNull();
         assertThat(responseBody).contains("name");
         assertThat(responseBody).contains("address");
-        assertThat(responseBody).contains("stayDurationMinutes");
     }
 
     @Test
@@ -258,14 +192,12 @@ public class PlaceControllerTest {
         assertThat(responseBody).containsKeys(
                 "name",
                 "address",
-                "stayDurationMinutes",
                 "openAt",
                 "closeAt",
                 "breakStartAt",
                 "breakEndAt",
                 "closedDays"
         );
-        assertThat(responseBody.get("stayDurationMinutes")).isInstanceOf(Integer.class);
         assertThat(responseBody.get("closedDays")).isInstanceOf(List.class);
     }
 }
