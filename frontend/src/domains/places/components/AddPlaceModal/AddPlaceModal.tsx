@@ -2,6 +2,7 @@ import Flex from '@/@common/components/Flex/Flex';
 import Modal, { ModalProps } from '@/@common/components/Modal/Modal';
 import { useAddPlaceForm } from '@/domains/places/hooks/useAddPlaceForm';
 
+import { getCheckedDaysInEnglish } from '../../utils/getCheckedDaysInEnglish';
 import OptionalInfoSection from '../PlaceFormSection/OptionalInfoSection';
 import RequiredInfoSection from '../PlaceFormSection/RequiredInfoSection';
 
@@ -20,6 +21,16 @@ const AddPlaceModal = ({ isOpen, onClose }: Omit<ModalProps, 'children'>) => {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    const englishClosedDays = getCheckedDaysInEnglish(form.closedDays);
+
+    // TODO: API 요청 로직 연결 예정
+    const payload = {
+      ...form,
+      closedDays: englishClosedDays,
+    };
+
+    handleClose();
   };
 
   return (
@@ -41,7 +52,7 @@ const AddPlaceModal = ({ isOpen, onClose }: Omit<ModalProps, 'children'>) => {
               onToggleDay={handleToggleDay}
             />
           </div>
-          <AddPlaceModalButtons onClose={handleClose} />
+          <AddPlaceModalButtons />
         </Flex>
       </form>
     </Modal>
