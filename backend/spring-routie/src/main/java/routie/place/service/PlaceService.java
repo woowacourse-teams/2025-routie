@@ -20,7 +20,10 @@ public class PlaceService {
     private final RoutieSpaceRepository routieSpaceRepository;
 
     @Transactional
-    public PlaceCreateResponse add(final PlaceCreateRequest placeCreateRequest, final String routieSpaceIdentifier) {
+    public PlaceCreateResponse addPlace(
+            final PlaceCreateRequest placeCreateRequest,
+            final String routieSpaceIdentifier
+    ) {
         RoutieSpace routieSpace = routieSpaceRepository.findByIdentifier(routieSpaceIdentifier)
                 .orElseThrow(() -> new IllegalArgumentException("해당 루티 스페이스를 찾을 수 없습니다."));
 
