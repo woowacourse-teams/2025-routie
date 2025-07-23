@@ -7,7 +7,6 @@ public record RoutieUpdateRequest(
 ) {
     public record RoutiePlaceRequest(
             int sequence,
-            int stayDurationMinutes,
             Long placeId
     ) {
     }
