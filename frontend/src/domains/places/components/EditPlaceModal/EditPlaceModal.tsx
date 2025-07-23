@@ -50,6 +50,8 @@ const EditPlaceModal = ({
       ...form,
       closedDays: englishClosedDays,
     };
+
+    handleClose();
   };
 
   return (
@@ -72,7 +74,7 @@ const EditPlaceModal = ({
               onToggleDay={handleToggleDay}
             />
           </div>
-          <EditPlaceModalButtons onClose={handleClose} />
+          <EditPlaceModalButtons />
         </Flex>
       </form>
     </Modal>
