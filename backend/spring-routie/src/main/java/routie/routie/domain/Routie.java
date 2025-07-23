@@ -1,5 +1,6 @@
 package routie.routie.domain;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
@@ -31,7 +32,7 @@ public class Routie {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToMany
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     @JoinColumn(name = "routie_id", nullable = false)
     private List<RoutiePlace> routiePlaces = new ArrayList<>();
 
@@ -39,11 +40,19 @@ public class Routie {
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
-    public Routie(final List<RoutiePlace> routiePlaces, final LocalDateTime createdAt) {
+    public Routie(final List<RoutiePlace> routiePlaces) {
         this(
                 null,
                 routiePlaces,
-                createdAt
+                null
         );
+    }
+
+    public void modify(
+            final List<RoutiePlace> routiePlaces
+    ) {
+        if (routiePlaces != null) {
+            this.routiePlaces = routiePlaces;
+        }
     }
 }
