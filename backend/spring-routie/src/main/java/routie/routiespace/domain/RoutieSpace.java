@@ -42,8 +42,7 @@ public class RoutieSpace {
     @Column(name = "identifier", nullable = false)
     private String identifier;
 
-    @OneToMany
-    @JoinColumn(name = "routie_space_id", nullable = false)
+    @OneToMany(mappedBy = "routieSpace")
     private List<Place> places = new ArrayList<>();
 
     @OneToMany

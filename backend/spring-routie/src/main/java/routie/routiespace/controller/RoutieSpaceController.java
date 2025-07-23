@@ -11,8 +11,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import routie.place.service.PlaceService;
+import routie.routiespace.controller.dto.request.PlaceCreateRequest;
 import routie.routiespace.controller.dto.request.RoutieSpaceNameRequest;
 import routie.routiespace.controller.dto.request.UpdateRoutieSpaceNameRequest;
+import routie.routiespace.controller.dto.response.PlaceCreateResponse;
+import routie.routiespace.controller.dto.response.PlaceListResponse;
 import routie.routiespace.controller.dto.response.RoutieSpaceNameResponse;
 import routie.routiespace.controller.dto.response.UpdateRoutieSpaceNameResponse;
 import routie.routiespace.domain.RoutieSpace;
@@ -24,6 +28,7 @@ import routie.routiespace.service.RoutieSpaceService;
 public class RoutieSpaceController {
 
     private final RoutieSpaceService routieSpaceService;
+    private final PlaceService placeService;
 
     @GetMapping("/{routieSpaceIdentifier}/name")
     public ResponseEntity<RoutieSpaceNameResponse> readName(
@@ -54,5 +59,23 @@ public class RoutieSpaceController {
         );
 
         return ResponseEntity.ok(updateRoutieSpaceNameResponse);
+    }
+
+    @PostMapping("/{routieSpaceIdentifier}/places")
+    public ResponseEntity<PlaceCreateResponse> createPlace(
+            @RequestBody @Valid final PlaceCreateRequest placeCreateRequest,
+            @PathVariable final String routieSpaceIdentifier
+    ) {
+        final PlaceCreateResponse placeCreateResponse = placeService.addPlace(
+                placeCreateRequest,
+                routieSpaceIdentifier
+        );
+        return ResponseEntity.ok(placeCreateResponse);
+    }
+
+    @GetMapping("/{routieSpaceIdentifier}/places")
+    public ResponseEntity<PlaceListResponse> readPlaces(@PathVariable final String routieSpaceIdentifier) {
+        final PlaceListResponse placeListResponse = placeService.readPlaces(routieSpaceIdentifier);
+        return ResponseEntity.ok(placeListResponse);
     }
 }
