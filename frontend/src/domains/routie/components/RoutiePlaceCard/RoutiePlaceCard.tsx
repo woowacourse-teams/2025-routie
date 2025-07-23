@@ -8,31 +8,34 @@ import trashIcon from '@/assets/icons/trash.svg';
 import theme from '@/styles/theme';
 
 interface RoutiePlaceCardProps {
-    id: string;
+    id: number;
     name: string;
     address: string;
-    stay_duration_minutes:number;
-    open_at:string;
-    close_at:string
+    stayDurationMinutes: number;
+    openAt: string;
+    closeAt: string;
+    breakStartAt: string;
+    breakEndAt: string;
+    closedDays: string[];
 }
 
 const RoutiePlaceCard = ({...props}:RoutiePlaceCardProps) => {
   return (
-    <Card id={props.id} width="45rem" variant="defaultStatic" >
+    <Card id={props.id.toString()} width="45rem" variant="defaultStatic" >
       <Flex justifyContent="flex-start" gap={1.5}>
         <IconButton variant='drag' icon={dragIcon} onClick={()=>{}} />
         <Flex direction="column" alignItems="flex-start" gap={1.1} width="100%">
           <Flex width="100%" justifyContent="space-between">
             <Text variant="caption">{props.name}</Text>
             <Flex gap={0.4}>
-              <Pill variant='filled' type="time">{props.stay_duration_minutes}분</Pill>
+              <Pill variant='filled' type="time">{props.stayDurationMinutes}분</Pill>
               <IconButton icon={trashIcon} variant="delete" onClick={() => {}} />
             </Flex>
           </Flex>
           <Text variant="label" color={theme.colors.gray[200]}>
             {props.address}
           </Text>
-            <Pill type="time">{props.open_at.slice(0,5)}-{props.close_at.slice(0,5)}</Pill>
+            <Pill type="time">{props.openAt}-{props.closeAt}</Pill>
         </Flex>
       </Flex>
     </Card>
