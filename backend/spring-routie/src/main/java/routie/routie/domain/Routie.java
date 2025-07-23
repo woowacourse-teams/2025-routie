@@ -46,4 +46,12 @@ public class Routie {
                 null
         );
     }
+
+    public void modify(
+            final List<RoutiePlace> routiePlaces
+    ) {
+        if (routiePlaces != null) {
+            this.routiePlaces = routiePlaces;
+        }
+    }
 }
