@@ -47,12 +47,12 @@ public class RoutiePlace {
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
-    public RoutiePlace(final int sequence, final Place place, final LocalDateTime createdAt) {
+    public RoutiePlace(final int sequence, final Place place) {
         this(
                 null,
                 sequence,
                 place,
-                createdAt
+                null
         );
     }
 }

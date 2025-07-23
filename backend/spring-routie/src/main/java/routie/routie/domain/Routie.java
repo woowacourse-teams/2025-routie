@@ -39,11 +39,11 @@ public class Routie {
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
-    public Routie(final List<RoutiePlace> routiePlaces, final LocalDateTime createdAt) {
+    public Routie(final List<RoutiePlace> routiePlaces) {
         this(
                 null,
                 routiePlaces,
-                createdAt
+                null
         );
     }
 }
