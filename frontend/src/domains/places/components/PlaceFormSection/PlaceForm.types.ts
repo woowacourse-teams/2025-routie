@@ -16,4 +16,5 @@ export type FormAction =
       value: string;
     }
   | { type: 'TOGGLE_DAY'; index: number }
-  | { type: 'RESET' };
+  | { type: 'RESET' }
+  | { type: 'INITIALIZE'; payload: FormState };
