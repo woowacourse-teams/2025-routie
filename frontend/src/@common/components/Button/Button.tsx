@@ -1,9 +1,14 @@
 import { ButtonStyle } from './Button.style';
 import { ButtonProps } from './Button.types';
 
-const Button = ({ children, variant, ...props }: ButtonProps) => {
+const Button = ({
+  children,
+  variant,
+  width = '100%',
+  ...props
+}: ButtonProps) => {
   return (
-    <button css={ButtonStyle({ variant })} {...props}>
+    <button css={ButtonStyle({ variant, width })} {...props}>
       {children}
     </button>
   );
