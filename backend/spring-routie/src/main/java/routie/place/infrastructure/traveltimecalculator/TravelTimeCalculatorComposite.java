@@ -1,25 +1,16 @@
-package routie.place.infrastructure;
+package routie.place.infrastructure.traveltimecalculator;
 
-import java.util.ArrayList;
 import java.util.List;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.context.annotation.Primary;
-import org.springframework.stereotype.Component;
 import routie.place.domain.MovingStrategy;
 import routie.place.domain.Place;
 import routie.place.domain.TravelTimeCalculator;
 
-@Primary
-@Component
 public class TravelTimeCalculatorComposite implements TravelTimeCalculator {
 
     private final List<TravelTimeCalculator> travelTimeCalculators;
 
-    public TravelTimeCalculatorComposite(
-            @Qualifier("fakeDrivingTravelTimeCalculator") final TravelTimeCalculator fakeDrivingTravelTimeCalculator
-    ) {
-        this.travelTimeCalculators = new ArrayList<>();
-        this.travelTimeCalculators.add(fakeDrivingTravelTimeCalculator);
+    public TravelTimeCalculatorComposite(final List<TravelTimeCalculator> drivingTravelTimeCalculator) {
+        this.travelTimeCalculators = drivingTravelTimeCalculator;
     }
 
     @Override

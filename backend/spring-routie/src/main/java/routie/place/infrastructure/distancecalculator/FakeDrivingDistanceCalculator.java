@@ -1,11 +1,11 @@
-package routie.place.infrastructure;
+package routie.place.infrastructure.distancecalculator;
 
 import org.springframework.stereotype.Component;
 import routie.place.domain.DistanceCalculator;
 import routie.place.domain.MovingStrategy;
 import routie.place.domain.Place;
 
-@Component("fakeDrivingDistanceCalculator")
+@Component
 public class FakeDrivingDistanceCalculator implements DistanceCalculator {
 
     @Override

@@ -1,11 +1,11 @@
-package routie.place.infrastructure;
+package routie.place.infrastructure.traveltimecalculator;
 
 import org.springframework.stereotype.Component;
 import routie.place.domain.MovingStrategy;
 import routie.place.domain.Place;
 import routie.place.domain.TravelTimeCalculator;
 
-@Component("fakeDrivingTravelTimeCalculator")
+@Component
 public class FakeDrivingTravelTimeCalculator implements TravelTimeCalculator {
 
     @Override
