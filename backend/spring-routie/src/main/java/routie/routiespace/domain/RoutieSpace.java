@@ -42,8 +42,7 @@ public class RoutieSpace {
     @Column(name = "identifier", nullable = false)
     private String identifier;
 
-    @OneToMany
-    @JoinColumn(name = "routie_space_id", nullable = false)
+    @OneToMany(mappedBy = "routieSpace")
     private List<Place> places = new ArrayList<>();
 
     @OneToMany
@@ -70,5 +69,19 @@ public class RoutieSpace {
                 null,
                 null
         );
+    }
+
+    public void updateName(final String name) {
+        validateName(name);
+        this.name = name;
+    }
+
+    public void validateName(final String name) {
+        if (name == null || name.isBlank()) {
+            throw new IllegalArgumentException("루티 스페이스 이름은 비어있을 수 없습니다.");
+        }
+        if (name.length() > 50) {
+            throw new IllegalArgumentException("루티 스페이스 이름은 50자 이하여야 합니다.");
+        }
     }
 }
