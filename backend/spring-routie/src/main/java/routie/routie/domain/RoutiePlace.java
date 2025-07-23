@@ -39,6 +39,9 @@ public class RoutiePlace {
     @Column(name = "sequence", nullable = false)
     private int sequence;
 
+    @Column(name = "stay_duration_minutes")
+    private int stayDurationMinutes;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "place_id", nullable = false)
     private Place place;
@@ -47,10 +50,11 @@ public class RoutiePlace {
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
-    public RoutiePlace(final int sequence, final Place place) {
+    public RoutiePlace(final int sequence, final int stayDurationMinutes, final Place place) {
         this(
                 null,
                 sequence,
+                stayDurationMinutes,
                 place,
                 null
         );

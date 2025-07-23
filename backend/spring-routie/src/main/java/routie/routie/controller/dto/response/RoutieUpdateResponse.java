@@ -20,12 +20,14 @@ public record RoutieUpdateResponse(
     private record RoutiePlaceResponse(
             Long id,
             int sequence,
+            int stayDurationMinutes,
             Long placeId
     ) {
         private static RoutiePlaceResponse from(final RoutiePlace routiePlace) {
             return new RoutiePlaceResponse(
                     routiePlace.getId(),
                     routiePlace.getSequence(),
+                    routiePlace.getStayDurationMinutes(),
                     routiePlace.getPlace().getId()
             );
         }

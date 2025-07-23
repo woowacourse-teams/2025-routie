@@ -37,7 +37,6 @@ public class PlaceService {
         Place place = Place.create(
                 placeCreateRequest.name(),
                 placeCreateRequest.address(),
-                placeCreateRequest.stayDurationMinutes(),
                 placeCreateRequest.openAt(),
                 placeCreateRequest.closeAt(),
                 placeCreateRequest.breakStartAt(),
@@ -59,7 +58,6 @@ public class PlaceService {
     public void modifyPlace(final PlaceUpdateRequest placeUpdateRequest, final long placeId) {
         final Place place = getPlaceById(placeId);
         place.modify(
-                placeUpdateRequest.stayDurationMinutes(),
                 placeUpdateRequest.openAt(),
                 placeUpdateRequest.closeAt(),
                 placeUpdateRequest.breakStartAt(),
