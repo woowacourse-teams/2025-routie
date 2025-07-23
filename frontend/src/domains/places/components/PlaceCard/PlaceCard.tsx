@@ -11,9 +11,19 @@ import plusIcon from '@/assets/icons/plus.svg';
 import trashIcon from '@/assets/icons/trash.svg';
 import theme from '@/styles/theme';
 
+import { getCheckedListExcept } from '../../utils/getCheckedListExcept';
 import DatePreviewList from '../DatePreviewList/DatePreviewList';
 
-const PlaceCard = () => {
+interface PlaceCardProps {
+  id: number;
+  name: string;
+  address: string;
+  openAt: string;
+  closeAt: string;
+  closedDays: string[];
+}
+
+const PlaceCard = ({ ...props }: PlaceCardProps) => {
   const [isClicked, setIsClicked] = useState(false);
 
   const handleToggle = () => {
@@ -22,9 +32,8 @@ const PlaceCard = () => {
 
   return (
     <Card
-      id="경복궁"
+      id={props.id.toString()}
       width="20rem"
-      height="20rem"
       variant={isClicked ? 'available' : 'default'}
     >
       <Flex
@@ -45,12 +54,14 @@ const PlaceCard = () => {
           </Flex>
         </Flex>
 
-        <Text variant="subTitle">경복궁</Text>
+        <Text variant="subTitle">{props.name}</Text>
         <Text variant="caption" color={theme.colors.gray[200]}>
-          서울특별시 종로구 사직로 161
+          {props.address}
         </Text>
-        <Pill type="time">09:00-18:00</Pill>
-        <DatePreviewList value={[true, true, true, true, true, false, true]} />
+        <Pill type="time">
+          {props.openAt}-{props.closeAt}
+        </Pill>
+        <DatePreviewList value={getCheckedListExcept(props.closedDays)} />
       </Flex>
     </Card>
   );
