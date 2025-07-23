@@ -23,7 +23,7 @@ const AddPlaceModal = ({ isOpen, onClose }: Omit<ModalProps, 'children'>) => {
   };
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose}>
+    <Modal isOpen={isOpen} onClose={handleClose}>
       <form onSubmit={handleSubmit}>
         <Flex direction="column" width="44rem" gap={2}>
           <AddPlaceModalHeader onClose={handleClose} />
