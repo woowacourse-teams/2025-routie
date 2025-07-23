@@ -4,7 +4,7 @@ import Header from '@/@common/components/Header/Header';
 import Pill from '@/@common/components/Pill/Pill';
 import Text from '@/@common/components/Text/Text';
 import ToggleSwitch from '@/@common/components/ToggleSwitch/ToggleSwitch';
-import RoutiePlaceCard from '@/domains/routie/components/RoutiePlaceCard';
+import RoutiePlaceCard from '@/domains/routie/components/RoutiePlaceCard/RoutiePlaceCard';
 import RoutieSpaceName from '@/domains/routieSpace/components/RoutieSpaceName/RoutieSpaceName';
 import theme from '@/styles/theme';
 
@@ -13,55 +13,72 @@ import TimeInput from './TimeInput';
 
 const places = [
   {
-    id: '1',
+    id: 1,
     name: '카페 베네',
     address: '서울시 강남구 테헤란로 123',
     stayDurationMinutes: 60,
     openAt: '09:00',
     closeAt: '22:00',
+    breakStartAt: '12:00',
+    breakEndAt: '13:00',
+    closedDays: ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN'],
   },
   {
-    id: '2',
+    id: 2,
     name: '카페 베네',
     address: '서울시 강남구 테헤란로 123',
     stayDurationMinutes: 60,
     openAt: '09:00',
     closeAt: '22:00',
+    breakStartAt: '12:00',
+    breakEndAt: '13:00',
+    closedDays: ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN'],
   },
   {
-    id: '3',
+    id: 3,
     name: '카페 베네',
     address: '서울시 강남구 테헤란로 123',
     stayDurationMinutes: 60,
     openAt: '09:00',
     closeAt: '22:00',
+    breakStartAt: '12:00',
+    breakEndAt: '13:00',
+    closedDays: ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN'],
   },
   {
-    id: '4',
+    id: 4,
     name: '카페 베네',
     address: '서울시 강남구 테헤란로 123',
     stayDurationMinutes: 60,
     openAt: '09:00',
     closeAt: '22:00',
+    breakStartAt: '12:00',
+    breakEndAt: '13:00',
+    closedDays: ['MON', 'WED', 'THU', 'FRI', 'SAT', 'SUN'],
   },
   {
-    id: '5',
+    id: 5,
     name: '카페 베네',
     address: '서울시 강남구 테헤란로 123',
     stayDurationMinutes: 60,
     openAt: '09:00',
     closeAt: '22:00',
+    breakStartAt: '12:00',
+    breakEndAt: '13:00',
+    closedDays: ['FRI', 'SAT', 'SUN'],
   },
   {
-    id: '6',
+    id: 6,
     name: '카페 베네',
     address: '서울시 강남구 테헤란로 123',
     stayDurationMinutes: 60,
     openAt: '09:00',
     closeAt: '22:00',
+    breakStartAt: '12:00',
+    breakEndAt: '13:00',
+    closedDays: ['MON', 'TUE', 'SAT', 'SUN'],
   },
 ];
-
 const Sidebar = () => {
   return (
     <Flex direction="column" width="50rem" gap={1}>
