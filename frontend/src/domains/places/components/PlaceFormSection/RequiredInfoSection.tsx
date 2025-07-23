@@ -6,12 +6,14 @@ interface RequiredInfoSectionProps {
   name: string;
   address: string;
   onChange: (field: 'name' | 'address', value: string) => void;
+  disabled?: boolean;
 }
 
 const RequiredInfoSection = ({
   name,
   address,
   onChange,
+  disabled,
 }: RequiredInfoSectionProps) => {
   return (
     <Flex direction="column" alignItems="flex-start" width="100%" gap={2}>
@@ -26,6 +28,7 @@ const RequiredInfoSection = ({
           label="이름"
           placeholder="장소의 이름을 입력해주세요"
           required
+          variant={disabled ? 'disabled' : 'primary'}
         />
       </Flex>
       <Flex direction="column" alignItems="flex-start" gap={1} width="100%">
@@ -36,6 +39,7 @@ const RequiredInfoSection = ({
           label="주소"
           placeholder="장소의 주소를 입력해주세요"
           required
+          variant={disabled ? 'disabled' : 'primary'}
         />
       </Flex>
     </Flex>
