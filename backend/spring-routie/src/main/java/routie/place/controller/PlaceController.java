@@ -23,7 +23,7 @@ public class PlaceController {
 
     @PatchMapping("/{placeId}")
     public ResponseEntity<Void> updatePlace(
-            @Valid @RequestBody final PlaceUpdateRequest placeUpdateRequest,
+            @RequestBody @Valid final PlaceUpdateRequest placeUpdateRequest,
             @PathVariable final long placeId
     ) {
         placeService.modifyPlace(placeUpdateRequest, placeId);

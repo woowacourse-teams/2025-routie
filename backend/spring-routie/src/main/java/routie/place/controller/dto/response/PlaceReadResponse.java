@@ -1,5 +1,6 @@
 package routie.place.controller.dto.response;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import java.time.DayOfWeek;
 import java.time.LocalTime;
 import java.util.List;
@@ -10,10 +11,10 @@ public record PlaceReadResponse(
         String name,
         String address,
         int stayDurationMinutes,
-        LocalTime openAt,
-        LocalTime closeAt,
-        LocalTime breakStartAt,
-        LocalTime breakEndAt,
+        @JsonFormat(pattern = "HH:mm") LocalTime openAt,
+        @JsonFormat(pattern = "HH:mm") LocalTime closeAt,
+        @JsonFormat(pattern = "HH:mm") LocalTime breakStartAt,
+        @JsonFormat(pattern = "HH:mm") LocalTime breakEndAt,
         List<DayOfWeek> closedDays
 ) {
 

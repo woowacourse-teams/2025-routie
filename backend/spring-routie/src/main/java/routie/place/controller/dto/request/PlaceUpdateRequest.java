@@ -1,17 +1,17 @@
 package routie.place.controller.dto.request;
 
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import jakarta.validation.constraints.NotNull;
 import java.time.DayOfWeek;
 import java.time.LocalTime;
 import java.util.List;
 
 public record PlaceUpdateRequest(
-        @Min(value = 0, message = "체류 시간은 0분 이상이어야 합니다.") @Max(value = 1440, message = "체류 시간은 1440분(24시간) 이하여야 합니다.") int stayDurationMinutes,
-        LocalTime openAt,
-        LocalTime closeAt,
-        LocalTime breakStartAt,
-        LocalTime breakEndAt,
+        int stayDurationMinutes,
+        @NotNull @JsonFormat(pattern = "HH:mm") LocalTime openAt,
+        @NotNull @JsonFormat(pattern = "HH:mm") LocalTime closeAt,
+        @JsonFormat(pattern = "HH:mm") LocalTime breakStartAt,
+        @JsonFormat(pattern = "HH:mm") LocalTime breakEndAt,
         List<DayOfWeek> closedDays
 ) {
 

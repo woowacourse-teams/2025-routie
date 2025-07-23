@@ -1,6 +1,5 @@
 package routie.place.infrastructure.distancecalculator;
 
-
 import java.util.List;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
