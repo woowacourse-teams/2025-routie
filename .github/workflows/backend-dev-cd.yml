@@ -64,5 +64,5 @@ jobs:
       - name: Start Spring Boot Application with external config
         run: |
           JAR_NAME=$(ls build/libs/*.jar | head -n 1)
-          sudo nohup java -jar "$JAR_NAME" --server.port=80 --spring.config.location=./config/application.yml > app.log 2>&1 &
+          sudo nohup java -jar "$JAR_NAME" --spring.profiles.active=dev --server.port=80 --spring.config.location=./config/application.yml > app.log 2>&1 &
           echo "Started $JAR_NAME with external config"
