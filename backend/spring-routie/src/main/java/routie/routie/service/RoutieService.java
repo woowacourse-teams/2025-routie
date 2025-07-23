@@ -25,7 +25,6 @@ public class RoutieService {
     private final RoutieRepository routieRepository;
     private final PlaceRepository placeRepository;
 
-
     public RoutieReadResponse getRoutie(final Long id) {
         return RoutieReadResponse.from(routieRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("해당하는 id의 루티를 찾을 수 없습니다.")));
