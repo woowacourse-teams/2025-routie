@@ -53,7 +53,7 @@ jobs:
 
       - name: Kill existing Spring Process
         run: |
-          PID=$(lsof -ti:80 || true)
+          PID=$(sudo lsof -ti:80 || true)
           if [ -n "$PID" ]; then
             echo "Killing process on port 80: $PID"
             kill -9 "$PID"
