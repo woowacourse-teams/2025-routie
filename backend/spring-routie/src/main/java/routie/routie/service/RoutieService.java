@@ -1,6 +1,7 @@
 package routie.routie.service;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -18,6 +19,8 @@ import routie.routie.controller.dto.response.RoutieTimeValidationResponse;
 import routie.routie.controller.dto.response.RoutieUpdateResponse;
 import routie.routie.domain.Routie;
 import routie.routie.domain.RoutiePlace;
+import routie.routie.domain.ValidationStrategy;
+import routie.routie.domain.ValidityCalculator;
 import routie.routie.domain.route.Route;
 import routie.routie.domain.route.RouteCalculator;
 import routie.routie.domain.timeperiod.TimePeriod;
@@ -32,6 +35,7 @@ public class RoutieService {
     private final PlaceRepository placeRepository;
     private final TimePeriodCalculator timePeriodCalculator;
     private final RouteCalculator routeCalculator;
+    private final ValidityCalculator validityCalculator;
 
     public RoutieReadResponse getRoutie(final Long id) {
         return RoutieReadResponse.from(routieRepository.findById(id)
@@ -73,18 +77,29 @@ public class RoutieService {
             final LocalDateTime startDateTime,
             final LocalDateTime endDateTime
     ) {
-        Routie routie = routieRepository.findById(routieId)
-                .orElseThrow(() -> new IllegalArgumentException("해당하는 id의 루티를 찾을 수 없습니다."));
+        Routie routie = getRoutieById(routieId);
 
-        Map<Integer, Route> routeByFromSequence = routeCalculator.calculateRoutes(routie.getRoutiePlaces());
-        Map<Integer, TimePeriod> timePeriodBySequence = timePeriodCalculator.calculateTimePeriods(
+        Map<RoutiePlace, Route> routeByFromRoutiePlace = routeCalculator.calculateRoutes(routie.getRoutiePlaces());
+        Map<RoutiePlace, TimePeriod> timePeriodByRoutiePlace = timePeriodCalculator.calculateTimePeriods(
                 routie.getRoutiePlaces(),
                 startDateTime,
-                routeByFromSequence
+                routeByFromRoutiePlace
         );
-        
-        //TODO: 검증 기능 구현
+
+        calculateDefaultValidity(startDateTime, endDateTime, timePeriodByRoutiePlace);
+
+        Arrays.stream(ValidationStrategy.values())
+                .forEach(validationStrategy
+                        -> validityCalculator.calculateValidity(timePeriodByRoutiePlace, validationStrategy));
 
         return new RoutieTimeValidationResponse(true);
+    }
+
+    private void calculateDefaultValidity(
+            final LocalDateTime startDateTime,
+            final LocalDateTime endDateTime,
+            final Map<RoutiePlace, TimePeriod> timePeriodByRoutiePlace
+    ) {
+
     }
 }

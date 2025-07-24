@@ -1,7 +1,7 @@
 package routie.routie.domain.timeperiod;
 
 import java.time.LocalDateTime;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import org.springframework.stereotype.Component;
@@ -11,27 +11,28 @@ import routie.routie.domain.route.Route;
 @Component
 public class TimePeriodCalculator {
 
-    public Map<Integer, TimePeriod> calculateTimePeriods(
+    public Map<RoutiePlace, TimePeriod> calculateTimePeriods(
             final List<RoutiePlace> routiePlaces,
             final LocalDateTime initialStartTime,
-            final Map<Integer, Route> routeByFromSequence
+            final Map<RoutiePlace, Route> routeByFromRoutiePlace
     ) {
-        Map<Integer, TimePeriod> timePeriodBySequence = new HashMap<>();
-
+        Map<RoutiePlace, TimePeriod> timePeriodByPlace = new LinkedHashMap<>();
         LocalDateTime currentTime = initialStartTime;
 
-        for (int i = 1; i < routiePlaces.size() + 1; i++) {
-            RoutiePlace routiePlace = routiePlaces.get(i);
+        for (int i = 0; i < routiePlaces.size(); i++) {
+            RoutiePlace currentPlace = routiePlaces.get(i);
+
             LocalDateTime start = currentTime;
-            LocalDateTime end = start.plusMinutes(routiePlace.getPlace().getStayDurationMinutes());
+            LocalDateTime end = start.plusMinutes(currentPlace.getPlace().getStayDurationMinutes());
 
-            timePeriodBySequence.put(routiePlace.getSequence(), new TimePeriod(start, end));
+            timePeriodByPlace.put(currentPlace, new TimePeriod(start, end));
 
-            if (i < routeByFromSequence.size()) {
-                currentTime = end.plusMinutes(routeByFromSequence.get(i).duration());
+            if (i < routiePlaces.size() - 1) {
+                Route route = routeByFromRoutiePlace.get(currentPlace);
+                currentTime = end.plusMinutes(route.duration());
             }
         }
 
-        return timePeriodBySequence;
+        return timePeriodByPlace;
     }
 }
