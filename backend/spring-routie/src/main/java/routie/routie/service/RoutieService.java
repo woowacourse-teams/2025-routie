@@ -89,8 +89,8 @@ public class RoutieService {
         calculateDefaultValidity(startDateTime, endDateTime, timePeriodByRoutiePlace);
 
         Arrays.stream(ValidationStrategy.values())
-                .forEach(validationStrategy
-                        -> validityCalculator.calculateValidity(timePeriodByRoutiePlace, validationStrategy));
+                .forEach(validationStrategy -> validityCalculator.calculateValidity(timePeriodByRoutiePlace,
+                        validationStrategy));
 
         return new RoutieTimeValidationResponse(true);
     }
