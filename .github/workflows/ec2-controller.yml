@@ -26,3 +26,6 @@ jobs:
       - name: echo app.log
         run: |
           cat app.log
+      - name: echo jars
+        run: |
+          ls -al build/libs
