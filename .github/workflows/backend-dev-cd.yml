@@ -78,6 +78,7 @@ jobs:
         with:
           name: spring-boot-app
           path: backend/spring-routie/build/libs/*.jar
+          retention-days: 1
 
   download-and-deploy:
     name: Deploy to EC2
