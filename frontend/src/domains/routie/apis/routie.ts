@@ -55,7 +55,7 @@ export const editRoutieSequence = async (routiePlaces: RoutiePlaces) => {
 
   const response = await apiClient.patch(`/routies/${routieId}`, {
     routieId,
-    routiePlaces,
+    routiePlaces: routiePlaces.routiePlaces,
   });
 
   if (!response.ok) {
@@ -73,7 +73,6 @@ export const getDetailPlace = async (id: number) => {
   if (!routieSpaceUuid) {
     throw new Error('루티 스페이스 uuid가 없습니다.');
   }
-  
 
   const response = await apiClient.get(`/places/${id}`);
 

@@ -7,6 +7,7 @@ import Pill from '@/@common/components/Pill/Pill';
 import Text from '@/@common/components/Text/Text';
 import ToggleSwitch from '@/@common/components/ToggleSwitch/ToggleSwitch';
 import AddPlaceModal from '@/domains/places/components/AddPlaceModal/AddPlaceModal';
+import { editRoutieSequence } from '@/domains/routie/apis/routie';
 import RoutiePlaceCard from '@/domains/routie/components/RoutiePlaceCard/RoutiePlaceCard';
 import RoutieValidationResultCard from '@/domains/routie/components/RoutieValidationResultCard/RoutieValidationResultCard';
 import RoutieValidationUnavailableCard from '@/domains/routie/components/RoutieValidationUnavailableCard/RoutieValidationUnavailableCard';
@@ -42,24 +43,31 @@ const Sidebar = ({
   const [time, setTime] = useState(initialTime);
 
   useEffect(() => {
-    if (!routiePlaces) return;
+    if (!routiePlaces || routiePlaceList.length === 0) return;
 
-    const newItem = routiePlaces.routiePlaces.map((routiePlace) => {
+    const updatedSequence = routiePlaces.routiePlaces.map((routiePlace) => {
       const id = routiePlace.placeId;
       const changedIndex = routiePlaceList.findIndex((item) => id === item.id);
-
       return {
         ...routiePlace,
         sequence: changedIndex + 1,
       };
     });
-    console.log(newItem);
-    setRoutiePlaces({
+
+    const isUnchanged = routiePlaces.routiePlaces.every(
+      (r, idx) => r.sequence === updatedSequence[idx].sequence,
+    );
+    if (isUnchanged) return;
+
+    const newRoutiePlaces = {
       ...routiePlaces,
-      routiePlaces: newItem,
-    });
-  }, []);
-  // console.log(routiePlaces, routiePlaceList);
+      routiePlaces: updatedSequence,
+    };
+    setRoutiePlaces(newRoutiePlaces);
+
+    editRoutieSequence(newRoutiePlaces);
+  }, [routiePlaceList]);
+
   const openAddModal = () => {
     setAddModalOpen((prev) => !prev);
   };
