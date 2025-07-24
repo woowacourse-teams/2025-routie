@@ -14,10 +14,12 @@ import org.springframework.web.bind.annotation.RestController;
 import routie.place.service.PlaceService;
 import routie.routiespace.controller.dto.request.PlaceCreateRequest;
 import routie.routiespace.controller.dto.request.RoutieSpaceNameRequest;
+import routie.routiespace.controller.dto.request.RoutieSpaceRequest;
 import routie.routiespace.controller.dto.request.UpdateRoutieSpaceNameRequest;
 import routie.routiespace.controller.dto.response.PlaceCreateResponse;
 import routie.routiespace.controller.dto.response.PlaceListResponse;
 import routie.routiespace.controller.dto.response.RoutieSpaceNameResponse;
+import routie.routiespace.controller.dto.response.RoutieSpaceResponse;
 import routie.routiespace.controller.dto.response.UpdateRoutieSpaceNameResponse;
 import routie.routiespace.domain.RoutieSpace;
 import routie.routiespace.service.RoutieSpaceService;
@@ -29,6 +31,23 @@ public class RoutieSpaceController {
 
     private final RoutieSpaceService routieSpaceService;
     private final PlaceService placeService;
+    
+    @PostMapping
+    public ResponseEntity<Void> create() {
+        RoutieSpace routieSpace = routieSpaceService.addRoutieSpace();
+        URI location = URI.create(String.format("/routie-spaces/%s", routieSpace.getIdentifier()));
+
+        return ResponseEntity.created(location).build();
+    }
+
+    @GetMapping
+    public ResponseEntity<RoutieSpaceResponse> read(
+            @RequestBody @Valid final RoutieSpaceRequest routieSpaceRequest
+    ) {
+        RoutieSpaceResponse routieSpaceResponse = routieSpaceService.getRoutieSpaceByIdentifier(routieSpaceRequest);
+
+        return ResponseEntity.ok(routieSpaceResponse);
+    }
 
     @GetMapping("/{routieSpaceIdentifier}/name")
     public ResponseEntity<RoutieSpaceNameResponse> readName(
@@ -38,14 +57,6 @@ public class RoutieSpaceController {
                 RoutieSpaceNameRequest.from(routieSpaceIdentifier)
         );
         return ResponseEntity.ok(routieSpaceNameResponse);
-    }
-
-    @PostMapping
-    public ResponseEntity<Void> create() {
-        RoutieSpace routieSpace = routieSpaceService.addRoutieSpace();
-        URI location = URI.create(String.format("/routie-spaces/%s", routieSpace.getIdentifier()));
-
-        return ResponseEntity.created(location).build();
     }
 
     @PatchMapping("/{routieSpaceIdentifier}/name")
