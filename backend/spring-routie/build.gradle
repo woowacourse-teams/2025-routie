@@ -38,7 +38,7 @@ dependencies {
 
     // Validation
     implementation 'org.springframework.boot:spring-boot-starter-validation'
-    
+
     // MySQL
     runtimeOnly 'com.mysql:mysql-connector-j'
 
@@ -51,6 +51,9 @@ dependencies {
 
     // h2
     testRuntimeOnly 'com.h2database:h2'
+
+    // springdoc(Swagger)
+    implementation group: 'org.springdoc', name: 'springdoc-openapi-starter-webmvc-ui', version: '2.8.8'
 }
 
 tasks.named('test') {
