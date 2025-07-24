@@ -1,12 +1,10 @@
 spring:
-  config:
-    activate:
-      on-profile: dev
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: ${ROUTIE_DEV_DATABASE_URL}
-    username: ${ROUTIE_DEV_DATABASE_USERNAME}
-    password: ${ROUTIE_DEV_DATABASE_PASSWORD}
+    url: ${DEV_MYSQL_URL}
+    username: ${DEV_MYSQL_USERNAME}
+    password: ${DEV_MYSQL_PASSWORD}
+
   jpa:
     hibernate:
       ddl-auto: create-drop
@@ -15,3 +13,4 @@ spring:
         format_sql: true
         dialect: org.hibernate.dialect.MySQLDialect
     show-sql: true
+    
