@@ -87,7 +87,7 @@ const Sidebar = () => {
   const getDragProps = useCardDrag(routie, setRoutie);
 
   return (
-    <Flex direction="column" width="50rem" gap={1}>
+    <Flex direction="column" justifyContent='flex-start' alignItems='flex-start' width="50rem" gap={1}>
       <Header />
       <Flex direction="column" width="100%" gap={1.2} padding={1.6}>
         <Flex direction="column" width="100%" gap={1.2}>
