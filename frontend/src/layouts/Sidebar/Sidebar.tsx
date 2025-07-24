@@ -7,6 +7,7 @@ import Pill from '@/@common/components/Pill/Pill';
 import Text from '@/@common/components/Text/Text';
 import ToggleSwitch from '@/@common/components/ToggleSwitch/ToggleSwitch';
 import AddPlaceModal from '@/domains/places/components/AddPlaceModal/AddPlaceModal';
+import { PlaceCardProps } from '@/domains/places/components/PlaceCard/PlaceCard';
 import RoutiePlaceCard from '@/domains/routie/components/RoutiePlaceCard/RoutiePlaceCard';
 import RoutieValidationResultCard from '@/domains/routie/components/RoutieValidationResultCard/RoutieValidationResultCard';
 import RoutieValidationUnavailableCard from '@/domains/routie/components/RoutieValidationUnavailableCard/RoutieValidationUnavailableCard';
@@ -90,8 +91,13 @@ const places = [
   },
 ];
 
-const Sidebar = () => {
-  const [routie, setRoutie] = useState(places);
+interface SidebarProps {
+  placeList: PlaceCardProps[];
+  onPlaceChange: () => Promise<void>;
+}
+
+const Sidebar = ({ placeList, onPlaceChange }: SidebarProps) => {
+  const [routie, setRoutie] = useState(placeList);
   const getDragProps = useCardDrag(routie, setRoutie);
   const [addModalOpen, setAddModalOpen] = useState(false);
   const [isValidateActive, setIsValidateActive] = useState(false);
@@ -209,7 +215,11 @@ const Sidebar = () => {
           </Flex>
         </Flex>
       </Flex>
-      <AddPlaceModal isOpen={addModalOpen} onClose={closeAddModal} />
+      <AddPlaceModal
+        isOpen={addModalOpen}
+        onClose={closeAddModal}
+        onPlaceAdded={onPlaceChange}
+      />
     </>
   );
 };
