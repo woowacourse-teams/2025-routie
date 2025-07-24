@@ -37,7 +37,7 @@ const EditPlaceModal = ({ isOpen, onClose, id }: EditPlaceModalProps) => {
     };
 
     fetchData();
-  }, [isOpen, id, initializeForm]);
+  }, [isOpen, id]);
 
   const handleClose = () => {
     resetForm();
