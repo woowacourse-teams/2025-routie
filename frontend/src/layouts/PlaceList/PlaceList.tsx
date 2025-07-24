@@ -15,6 +15,15 @@ const PlaceList = () => {
     setPlaces((prev) => prev.filter((place) => place.id !== id));
   };
 
+  const refetchPlaceList = async () => {
+    try {
+      const newPlaceList = await getPlaceList();
+      setPlaces(newPlaceList);
+    } catch (error) {
+      console.error('장소 목록을 불러오는데 실패했습니다.', error);
+    }
+  };
+
   useEffect(() => {
     const fetchPlaces = async () => {
       try {
@@ -48,7 +57,12 @@ const PlaceList = () => {
           }}
         >
           {places.map((place) => (
-            <PlaceCard key={place.id} {...place} onDelete={handleDelete} />
+            <PlaceCard
+              key={place.id}
+              {...place}
+              onDelete={handleDelete}
+              onPlaceChange={refetchPlaceList}
+            />
           ))}
         </div>
       </Flex>
