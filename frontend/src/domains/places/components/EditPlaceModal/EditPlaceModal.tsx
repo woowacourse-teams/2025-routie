@@ -3,6 +3,7 @@ import { useEffect } from 'react';
 import Flex from '@/@common/components/Flex/Flex';
 import Modal, { ModalProps } from '@/@common/components/Modal/Modal';
 
+import editPlace from '../../apis/editPlace';
 import getPlace from '../../apis/getPlace';
 import { useAddPlaceForm } from '../../hooks/useAddPlaceForm';
 import { ModalInputContainerStyle } from '../AddPlaceModal/AddPlaceModal.styles';
@@ -14,9 +15,15 @@ import EditPlaceModalHeader from './EditPlaceModalHeader';
 
 interface EditPlaceModalProps extends Omit<ModalProps, 'children'> {
   id: number;
+  onPlaceChange: () => Promise<void>;
 }
 
-const EditPlaceModal = ({ isOpen, onClose, id }: EditPlaceModalProps) => {
+const EditPlaceModal = ({
+  isOpen,
+  onClose,
+  id,
+  onPlaceChange,
+}: EditPlaceModalProps) => {
   const {
     form,
     initializeForm,
@@ -44,8 +51,15 @@ const EditPlaceModal = ({ isOpen, onClose, id }: EditPlaceModalProps) => {
     onClose();
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    try {
+      const { name, address, ...rest } = form;
+      await editPlace({ placeId: id, editableFields: rest });
+      await onPlaceChange();
+    } catch (error) {
+      console.log(error);
+    }
     handleClose();
   };
 
