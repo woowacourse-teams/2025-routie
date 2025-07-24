@@ -1,5 +1,6 @@
 package routie.routiespace.domain;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
@@ -45,7 +46,7 @@ public class RoutieSpace {
     @OneToMany(mappedBy = "routieSpace")
     private List<Place> places = new ArrayList<>();
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "routie_space_id", nullable = false)
     private List<Routie> routies = new ArrayList<>();
 
@@ -60,12 +61,15 @@ public class RoutieSpace {
     public static RoutieSpace from(
             final RoutieSpaceIdentifierProvider identifierProvider
     ) {
+        List<Routie> routies = new ArrayList<>() {{
+            add(Routie.withoutRoutiePlaces());
+        }};
         return new RoutieSpace(
                 null,
                 DEFAULT_NAME,
                 identifierProvider.provide(),
                 new ArrayList<>(),
-                new ArrayList<>(),
+                routies,
                 null,
                 null
         );
