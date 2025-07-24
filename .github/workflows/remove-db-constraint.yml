@@ -1,0 +1,23 @@
+
+name: Remove Database Constraint
+
+on:
+  workflow_dispatch:
+
+jobs:
+  remove-constraint:
+    name: Remove uk_place_closed_day constraint
+    runs-on: [self-hosted]
+
+    steps:
+      - name: Remove constraint from place_closed_weekdays table
+        run: |
+          mysql
+            -u ${{ secrets.DB_USERNAME }} \
+            -p${{ secrets.DB_PASSWORD }} \
+            -D ${{ secrets.DB_NAME }} \
+            -e "ALTER TABLE \`place_closed_weekdays\` DROP CONSTRAINT \`uk_place_closed_day\`;"
+          
+          echo "Constraint uk_place_closed_day removed successfully
+"
+
