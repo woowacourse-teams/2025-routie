@@ -4,12 +4,12 @@ import java.util.List;
 import routie.routie.domain.Routie;
 import routie.routiespace.domain.RoutieSpace;
 
-public record RoutieSpaceResponse(
+public record RoutiesResponse(
         List<RoutieResponse> routies
 ) {
 
-    public static RoutieSpaceResponse from(final RoutieSpace routieSpace) {
-        return new RoutieSpaceResponse(
+    public static RoutiesResponse from(final RoutieSpace routieSpace) {
+        return new RoutiesResponse(
                 routieSpace.getRouties().stream()
                         .map(RoutieResponse::from)
                         .toList()
