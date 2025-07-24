@@ -79,7 +79,7 @@ jobs:
           PID=$(sudo lsof -ti:80 || true)
           if [ -n "$PID" ]; then
             echo "Killing process on port 80: $PID"
-            sudo kill -15 "$PID"
+            sudo kill -9 "$PID"
           else
             echo "No process found on port 80"
           fi
