@@ -1,14 +1,24 @@
+import { useNavigate } from 'react-router';
+
 import Button from '@/@common/components/Button/Button';
 import Flex from '@/@common/components/Flex/Flex';
 import Header from '@/@common/components/Header/Header';
 import Text from '@/@common/components/Text/Text';
 
 const Home = () => {
+  const navigate = useNavigate();
+
   return (
     <>
       <Header />
       <Flex direction="column" height="70dvh">
-        <Button variant="primary">
+        <Button
+          variant="primary"
+          onClick={() => {
+            navigate('/routie-spaces');
+          }}
+          width="fit-content"
+        >
           <Flex
             direction="column"
             gap={1}
