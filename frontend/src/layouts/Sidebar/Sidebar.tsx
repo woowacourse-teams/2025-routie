@@ -8,6 +8,8 @@ import Text from '@/@common/components/Text/Text';
 import ToggleSwitch from '@/@common/components/ToggleSwitch/ToggleSwitch';
 import AddPlaceModal from '@/domains/places/components/AddPlaceModal/AddPlaceModal';
 import RoutiePlaceCard from '@/domains/routie/components/RoutiePlaceCard/RoutiePlaceCard';
+import RoutieValidationResultCard from '@/domains/routie/components/RoutieValidationResultCard/RoutieValidationResultCard';
+import RoutieValidationUnavailableCard from '@/domains/routie/components/RoutieValidationUnavailableCard/RoutieValidationUnavailableCard';
 import { useCardDrag } from '@/domains/routie/hooks/useCardDrag';
 import RoutieSpaceName from '@/domains/routieSpace/components/RoutieSpaceName/RoutieSpaceName';
 import theme from '@/styles/theme';
@@ -88,6 +90,7 @@ const Sidebar = () => {
   const [routie, setRoutie] = useState(places);
   const getDragProps = useCardDrag(routie, setRoutie);
   const [addModalOpen, setAddModalOpen] = useState(false);
+  const [isValidateActive, setIsValidateActive] = useState(false);
 
   const openAddModal = () => {
     setAddModalOpen((prev) => !prev);
@@ -96,6 +99,11 @@ const Sidebar = () => {
   const closeAddModal = () => {
     setAddModalOpen((prev) => !prev);
   };
+
+  const handleValidateToggle = () => {
+    setIsValidateActive((prev) => !prev);
+  };
+
   return (
     <>
       <Flex
@@ -124,11 +132,19 @@ const Sidebar = () => {
             gap={1}
           >
             <Text variant="label">일정 검증 토글</Text>
-            <ToggleSwitch active={true} onToggle={() => {}} />
+            <ToggleSwitch
+              active={isValidateActive}
+              onToggle={handleValidateToggle}
+            />
           </Flex>
-          <TimeInput />
-          <RoutieValidationResultCard total_time="60" available={true} />
+
+          {isValidateActive ? (
+            <>
               <RoutieValidationResultCard total_time="60" valid={false} />
+            </>
+          ) : (
+            <RoutieValidationUnavailableCard />
+          )}
         </Flex>
         <Flex
           direction="column"
