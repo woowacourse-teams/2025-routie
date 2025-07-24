@@ -8,12 +8,18 @@ import Text from '@/@common/components/Text/Text';
 import ToggleSwitch from '@/@common/components/ToggleSwitch/ToggleSwitch';
 import AddPlaceModal from '@/domains/places/components/AddPlaceModal/AddPlaceModal';
 import RoutiePlaceCard from '@/domains/routie/components/RoutiePlaceCard/RoutiePlaceCard';
+import RoutieValidationResultCard from '@/domains/routie/components/RoutieValidationResultCard/RoutieValidationResultCard';
+import RoutieValidationUnavailableCard from '@/domains/routie/components/RoutieValidationUnavailableCard/RoutieValidationUnavailableCard';
 import { useCardDrag } from '@/domains/routie/hooks/useCardDrag';
 import RoutieSpaceName from '@/domains/routieSpace/components/RoutieSpaceName/RoutieSpaceName';
 import theme from '@/styles/theme';
 
-import RoutieValidationResultCard from './../../domains/routie/components/RoutieValidationResultCard/RoutieValidationResultCard';
 import TimeInput from './TimeInput';
+
+const initialTime = {
+  startAt: '09:00',
+  endAt: '22:00',
+};
 
 const places = [
   {
@@ -88,6 +94,8 @@ const Sidebar = () => {
   const [routie, setRoutie] = useState(places);
   const getDragProps = useCardDrag(routie, setRoutie);
   const [addModalOpen, setAddModalOpen] = useState(false);
+  const [isValidateActive, setIsValidateActive] = useState(false);
+  const [time, setTime] = useState(initialTime);
 
   const openAddModal = () => {
     setAddModalOpen((prev) => !prev);
@@ -96,6 +104,15 @@ const Sidebar = () => {
   const closeAddModal = () => {
     setAddModalOpen((prev) => !prev);
   };
+
+  const handleValidateToggle = () => {
+    setIsValidateActive((prev) => !prev);
+  };
+
+  const handleTimeChange = (field: string, value: string) => {
+    setTime((prev) => ({ ...prev, [field]: value }));
+  };
+
   return (
     <>
       <Flex
@@ -106,7 +123,14 @@ const Sidebar = () => {
         gap={1}
       >
         <Header />
-        <Flex direction="column" width="100%" gap={1.2} padding={1.6}>
+        <Flex
+          direction="column"
+          width="100%"
+          gap={1.2}
+          padding={1.6}
+          height="27.4rem"
+          justifyContent="flex-start"
+        >
           <Flex direction="column" width="100%" gap={1.2}>
             <RoutieSpaceName />
             <Button variant="primary" onClick={openAddModal}>
@@ -124,10 +148,20 @@ const Sidebar = () => {
             gap={1}
           >
             <Text variant="label">일정 검증 토글</Text>
-            <ToggleSwitch active={true} onToggle={() => {}} />
+            <ToggleSwitch
+              active={isValidateActive}
+              onToggle={handleValidateToggle}
+            />
           </Flex>
-          <TimeInput />
-          <RoutieValidationResultCard total_time="60" available={true} />
+
+          {isValidateActive ? (
+            <>
+              <RoutieValidationResultCard total_time="60" valid={false} />
+              <TimeInput time={time} onChange={handleTimeChange} />
+            </>
+          ) : (
+            <RoutieValidationUnavailableCard />
+          )}
         </Flex>
         <Flex
           direction="column"
