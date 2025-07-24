@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import routie.place.controller.dto.request.PlaceUpdateRequest;
 import routie.place.controller.dto.response.PlaceReadResponse;
 import routie.place.domain.Place;
+import routie.place.repository.PlaceClosedWeekdayRepository;
 import routie.place.repository.PlaceRepository;
 import routie.routiespace.controller.dto.request.PlaceCreateRequest;
 import routie.routiespace.controller.dto.response.PlaceCreateResponse;
@@ -20,6 +21,7 @@ public class PlaceService {
 
     private final PlaceRepository placeRepository;
     private final RoutieSpaceRepository routieSpaceRepository;
+    private final PlaceClosedWeekdayRepository placeClosedWeekdayRepository;
 
     public PlaceReadResponse getPlaceDetail(final long placeId) {
         final Place place = getPlaceById(placeId);
@@ -58,6 +60,10 @@ public class PlaceService {
     @Transactional
     public void modifyPlace(final PlaceUpdateRequest placeUpdateRequest, final long placeId) {
         final Place place = getPlaceById(placeId);
+
+        place.getClosedWeekdays()
+                .forEach(closedWeekday -> placeClosedWeekdayRepository.deleteById(closedWeekday.getId()));
+
         place.modify(
                 placeUpdateRequest.stayDurationMinutes(),
                 placeUpdateRequest.openAt(),
