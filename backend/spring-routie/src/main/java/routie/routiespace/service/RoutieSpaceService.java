@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import routie.routiespace.controller.dto.request.RoutieSpaceNameRequest;
-import routie.routiespace.controller.dto.request.RoutieSpaceRequest;
 import routie.routiespace.controller.dto.request.UpdateRoutieSpaceNameRequest;
 import routie.routiespace.controller.dto.response.RoutieSpaceNameResponse;
 import routie.routiespace.controller.dto.response.RoutieSpaceResponse;
@@ -46,10 +45,10 @@ public class RoutieSpaceService {
         return new UpdateRoutieSpaceNameResponse(routieSpace.getName());
     }
 
-    public RoutieSpaceResponse getRoutieSpaceByIdentifier(final RoutieSpaceRequest routieSpaceRequest) {
-        return RoutieSpaceResponse.from(
-                getRoutieSpaceByIdentifier(routieSpaceRequest.identifier())
-        );
+    public RoutieSpaceResponse getRoutieSpace(final String routieSpaceIdentifier) {
+        RoutieSpace routieSpace = getRoutieSpaceByIdentifier(routieSpaceIdentifier);
+
+        return RoutieSpaceResponse.from(routieSpace);
     }
 
     private RoutieSpace getRoutieSpaceByIdentifier(final String identifier) {

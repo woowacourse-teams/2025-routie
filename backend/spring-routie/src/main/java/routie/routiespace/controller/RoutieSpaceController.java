@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 import routie.place.service.PlaceService;
 import routie.routiespace.controller.dto.request.PlaceCreateRequest;
 import routie.routiespace.controller.dto.request.RoutieSpaceNameRequest;
-import routie.routiespace.controller.dto.request.RoutieSpaceRequest;
 import routie.routiespace.controller.dto.request.UpdateRoutieSpaceNameRequest;
 import routie.routiespace.controller.dto.response.PlaceCreateResponse;
 import routie.routiespace.controller.dto.response.PlaceListResponse;
@@ -31,7 +30,7 @@ public class RoutieSpaceController {
 
     private final RoutieSpaceService routieSpaceService;
     private final PlaceService placeService;
-    
+
     @PostMapping
     public ResponseEntity<Void> create() {
         RoutieSpace routieSpace = routieSpaceService.addRoutieSpace();
@@ -40,11 +39,11 @@ public class RoutieSpaceController {
         return ResponseEntity.created(location).build();
     }
 
-    @GetMapping
+    @GetMapping("/{routieSpaceIdentifier}")
     public ResponseEntity<RoutieSpaceResponse> read(
-            @RequestBody @Valid final RoutieSpaceRequest routieSpaceRequest
+            @PathVariable final String routieSpaceIdentifier
     ) {
-        RoutieSpaceResponse routieSpaceResponse = routieSpaceService.getRoutieSpaceByIdentifier(routieSpaceRequest);
+        RoutieSpaceResponse routieSpaceResponse = routieSpaceService.getRoutieSpace(routieSpaceIdentifier);
 
         return ResponseEntity.ok(routieSpaceResponse);
     }
