@@ -1,3 +1,5 @@
+import { useState } from 'react';
+
 import Button from '@/@common/components/Button/Button';
 import Flex from '@/@common/components/Flex/Flex';
 import Header from '@/@common/components/Header/Header';
@@ -5,6 +7,7 @@ import Pill from '@/@common/components/Pill/Pill';
 import Text from '@/@common/components/Text/Text';
 import ToggleSwitch from '@/@common/components/ToggleSwitch/ToggleSwitch';
 import RoutiePlaceCard from '@/domains/routie/components/RoutiePlaceCard/RoutiePlaceCard';
+import { useCardDrag } from '@/domains/routie/hooks/useCardDrag';
 import RoutieSpaceName from '@/domains/routieSpace/components/RoutieSpaceName/RoutieSpaceName';
 import theme from '@/styles/theme';
 
@@ -80,6 +83,9 @@ const places = [
   },
 ];
 const Sidebar = () => {
+  const [routie, setRoutie] = useState(places);
+  const getDragProps = useCardDrag(routie, setRoutie);
+
   return (
     <Flex direction="column" width="50rem" gap={1}>
       <Header />
@@ -127,10 +133,12 @@ const Sidebar = () => {
             boxSizing: 'border-box',
           }}
         >
-          {places.map((place, index) => {
+          {routie.map((place, index) => {
             return (
               <>
-                <RoutiePlaceCard key={place.id} {...place} />
+                <div key={place.id} {...getDragProps(index)}>
+                  <RoutiePlaceCard {...place} />
+                </div>
                 {index < places.length - 1 && (
                   <Flex gap={1}>
                     <Text variant="description">도보 15분</Text>
