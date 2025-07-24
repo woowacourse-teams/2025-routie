@@ -7,8 +7,8 @@ import routie.routie.domain.RoutiePlace;
 import routie.routie.domain.route.Route;
 
 public record RoutieReadResponse(
-        Long id,
-        List<RoutiePlaceResponse> places,
+        Long routieId,
+        List<RoutiePlaceResponse> routiePlaces,
         List<RouteResponse> routes
 ) {
     public static RoutieReadResponse from(final Routie routie, final List<Route> routes) {
