@@ -50,10 +50,10 @@ CREATE TABLE `place_closed_weekdays`
 
     CONSTRAINT `fk_place_closed_weekdays_place`
         FOREIGN KEY (`place_id`)
-            REFERENCES `places` (`id`),
-
-    CONSTRAINT `uk_place_closed_day`
-        UNIQUE (`place_id`, `closed_day`)
+            REFERENCES `places` (`id`)
+#
+#     CONSTRAINT `uk_place_closed_day`
+#         UNIQUE (`place_id`, `closed_day`)
 );
 
 -- 5. routie_places 테이블
