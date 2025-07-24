@@ -29,7 +29,7 @@ export interface PlaceCardProps {
   onDelete: (id: number) => void;
 }
 
-export const PlaceCard = ({ ...props }: PlaceCardProps) => {
+export const PlaceCard = ({ onDelete, ...props }: PlaceCardProps) => {
   const [isClicked, setIsClicked] = useState(false);
   const [editModalOpen, setEditModalOpen] = useState(false);
 
@@ -48,7 +48,7 @@ export const PlaceCard = ({ ...props }: PlaceCardProps) => {
   const handleDelete = async () => {
     try {
       await deletePlace(props.id);
-      props.onDelete(props.id);
+      onDelete(props.id);
     } catch (error) {
       console.error('장소 삭제를 실패했습니다.', error);
     }
