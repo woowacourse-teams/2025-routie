@@ -128,6 +128,7 @@ const Sidebar = () => {
           </Flex>
           <TimeInput />
           <RoutieValidationResultCard total_time="60" available={true} />
+              <RoutieValidationResultCard total_time="60" valid={false} />
         </Flex>
         <Flex
           direction="column"

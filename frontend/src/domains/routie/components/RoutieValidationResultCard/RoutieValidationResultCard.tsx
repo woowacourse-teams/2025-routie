@@ -5,15 +5,15 @@ import failIcon from '@/assets/icons/fail.svg';
 import successIcon from '@/assets/icons/success.svg';
 
 interface RoutieValidationResultCardProps {
-  available: boolean;
+  valid: boolean;
   total_time: string;
 }
 
 const RoutieValidationResultCard = ({
-  available,
+  valid,
   total_time,
 }: RoutieValidationResultCardProps) => {
-  const variant = available ? 'available' : 'unavailable';
+  const variant = valid ? 'available' : 'unavailable';
   return (
     <Card
       id="routie-validation-available-status-card"
@@ -22,10 +22,10 @@ const RoutieValidationResultCard = ({
       height="5.4rem"
     >
       <Flex width="100%" gap={1.5} justifyContent="flex-start" height="100%">
-        <img src={available ? successIcon : failIcon} alt="available" />
+        <img src={valid ? successIcon : failIcon} alt="available" />
         <Flex direction="column" gap={0.3} alignItems="flex-start">
           <Text variant="caption">
-            {available ? '일정 소화 가능' : '일정 소화 불가'}
+            {valid ? '일정 소화 가능' : '일정 소화 불가'}
           </Text>
           <Text variant="description">예상 소요 시간: {total_time}</Text>
         </Flex>
