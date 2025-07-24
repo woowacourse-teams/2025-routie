@@ -12,11 +12,9 @@ jobs:
     steps:
       - name: Remove constraint from place_closed_weekdays table
         run: |
-          mysql
-            -h ${{ secrets.DB_HOST }} \
-            -P ${{ secrets.DB_PORT }} \
-            -u ${{ secrets.DB_USERNAME }} \
-            -p${{ secrets.DB_PASSWORD }} \
+          sudo docker exec routie-mysql \
+            mysql -u ${{ secrets.DB_USERNAME }} \
+            -p ${{ secrets.DB_PASSWORD }} \
             -D ${{ secrets.DB_NAME }} \
             -e "ALTER TABLE \`place_closed_weekdays\` DROP CONSTRAINT \`uk_place_closed_day\`;"
           
