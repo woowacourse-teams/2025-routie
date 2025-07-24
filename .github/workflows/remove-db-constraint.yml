@@ -18,6 +18,5 @@ jobs:
             -D ${{ secrets.DB_NAME }} \
             -e "ALTER TABLE \`place_closed_weekdays\` DROP CONSTRAINT \`uk_place_closed_day\`;"
           
-          echo "Constraint uk_place_closed_day removed successfully
-"
+          echo "Constraint uk_place_closed_day removed successfully"
 
