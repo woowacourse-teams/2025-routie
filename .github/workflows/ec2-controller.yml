@@ -5,14 +5,11 @@ on:
 
 jobs:
   ec2-command:
-    name: Build and Upload JAR
-    runs-on: ubuntu-latest
-
-    defaults:
-      run:
-        working-directory: backend/spring-routie
+    name: EC2 controller
+    runs-on: [ self-hosted ]
 
     steps:
       - name: Input Shell Command
         run: |
           ps aux | grep java
+          sudo lsof -ti:80
