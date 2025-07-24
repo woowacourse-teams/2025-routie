@@ -1,0 +1,21 @@
+const createApiMethod = (method: string) => async (url: string, body?: any) => {
+  const response = await fetch(`${process.env.REACT_APP_API_URL}${url}`, {
+    method,
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: body ? JSON.stringify(body) : undefined,
+  });
+
+  if (!response.ok) {
+    throw new Error(`${method} 요청 실패`);
+  }
+  return response;
+};
+
+export const apiClient = {
+  get: createApiMethod('GET'),
+  post: createApiMethod('POST'),
+  patch: createApiMethod('PATCH'),
+  delete: createApiMethod('DELETE'),
+};
