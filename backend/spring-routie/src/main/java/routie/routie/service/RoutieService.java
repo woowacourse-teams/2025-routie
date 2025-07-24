@@ -1,6 +1,7 @@
 package routie.routie.service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -38,9 +39,12 @@ public class RoutieService {
     private final RouteCalculator routeCalculator;
     private final ValidityCalculator validityCalculator;
 
-    public RoutieReadResponse getRoutie(final Long id) {
-        return RoutieReadResponse.from(routieRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("해당하는 id의 루티를 찾을 수 없습니다.")));
+    public RoutieReadResponse getRoutie(final Long routieId) {
+        Routie routie = getRoutieById(routieId);
+        Map<RoutiePlace, Route> routeByFromRoutiePlace = routeCalculator.calculateRoutes(routie.getRoutiePlaces());
+        List<Route> routes = new ArrayList<>(routeByFromRoutiePlace.values());
+
+        return RoutieReadResponse.from(routie, routes);
     }
 
     @Transactional
