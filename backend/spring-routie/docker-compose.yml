@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.4.5
+    container_name: routie-mysql
+    ports:
+      - "33060:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DEV_MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${DEV_MYSQL_DATABASE_NAME}
+      MYSQL_USER: ${DEV_MYSQL_USERNAME}
+      MYSQL_PASSWORD: ${DEV_MYSQL_PASSWORD}
+    volumes:
+      - routie-mysql-data:/var/lib/mysql
+    restart: unless-stopped
+
+volumes:
+  routie-mysql-data:
+
