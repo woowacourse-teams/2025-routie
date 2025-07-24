@@ -12,34 +12,6 @@ interface PlaceListProps {
 }
 
 const PlaceList = ({ places, onDelete, onPlaceChange }: PlaceListProps) => {
-  // const [places, setPlaces] = useState<PlaceCardProps[]>([]);
-
-  // const handleDelete = (id: number) => {
-  //   setPlaces((prev) => prev.filter((place) => place.id !== id));
-  // };
-
-  // const refetchPlaceList = async () => {
-  //   try {
-  //     const newPlaceList = await getPlaceList();
-  //     setPlaces(newPlaceList);
-  //   } catch (error) {
-  //     console.error('장소 목록을 불러오는데 실패했습니다.', error);
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   const fetchPlaces = async () => {
-  //     try {
-  //       const data = await getPlaceList();
-  //       setPlaces(data);
-  //     } catch (error) {
-  //       console.error('장소 목록을 불러오는데 실패했습니다.', error);
-  //     }
-  //   };
-
-  //   fetchPlaces();
-  // }, []);
-
   return (
     <>
       <Flex
