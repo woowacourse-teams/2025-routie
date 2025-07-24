@@ -15,10 +15,16 @@ jobs:
             mysql -u ${{ secrets.DB_USERNAME }} \
             -p${{ secrets.DB_PASSWORD }} \
             -D ${{ secrets.DB_NAME }} \
-            -e "DELETE FROM \`place_closed_weekdays\`;
-                SET FOREIGN_KEY_CHECKS = 0;
-                ALTER TABLE \`place_closed_weekdays\` DROP INDEX \`uk_place_closed_day\`;
-                SET FOREIGN_KEY_CHECKS = 1;"
+            -e "DROP TABLE place_closed_weekdays;
+                CREATE TABLE place_closed_weekdays (
+                id bigint NOT NULL AUTO_INCREMENT,
+                closed_day varchar(255) NOT NULL,
+                created_at timestamp NULL DEFAULT NULL,
+                place_id bigint DEFAULT NULL,
+                PRIMARY KEY (id),
+                KEY fk_place_closed_weekdays_place (place_id),
+                CONSTRAINT fk_place_closed_weekdays_place FOREIGN KEY (place_id) REFERENCES places (id)
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;"
           
           echo "✅ Constraint uk_place_closed_day removed successfully"
 
