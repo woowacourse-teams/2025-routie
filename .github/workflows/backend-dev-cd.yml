@@ -82,7 +82,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: spring-boot-app
-          path: build/libs
+          path: backend/spring-routie/build/libs
 
       - name: Debug downloaded JARs
         run: ls -al build/libs
