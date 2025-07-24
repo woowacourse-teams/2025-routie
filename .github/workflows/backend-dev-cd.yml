@@ -58,8 +58,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: spring-boot-app
-          path: backend/spring-routie/build/libs/*.jar
-          retention-days: 1
+          path: backend/spring-routie/build/libs/
 
   download-and-deploy:
     name: Deploy to EC2
