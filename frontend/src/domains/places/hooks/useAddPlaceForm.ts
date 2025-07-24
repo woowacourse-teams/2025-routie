@@ -4,16 +4,19 @@ import {
   FormAction,
   FormState,
 } from '../components/PlaceFormSection/PlaceForm.types';
+import { getCheckedListFromClosedDays } from '../utils/getCheckedListFromClosedDays';
+
+import { getCheckedDaysInEnglish } from './../utils/getCheckedDaysInEnglish';
 
 const initialFormState: FormState = {
   name: '',
   address: '',
-  stayDurationMinutes: '0',
+  stayDurationMinutes: 0,
   openAt: '10:00',
   closeAt: '22:00',
   breakStartAt: '00:00',
   breakEndAt: '00:00',
-  closedDays: [true, true, true, true, true, true, true],
+  closedDays: ['MONDAY'],
 };
 
 const formReducer = (state: FormState, action: FormAction): FormState => {
@@ -21,9 +24,10 @@ const formReducer = (state: FormState, action: FormAction): FormState => {
     case 'UPDATE':
       return { ...state, [action.field]: action.value };
     case 'TOGGLE_DAY': {
-      const updated = [...state.closedDays];
+      const stringDays = [...state.closedDays];
+      const updated = getCheckedListFromClosedDays(stringDays);
       updated[action.index] = !updated[action.index];
-      return { ...state, closedDays: updated };
+      return { ...state, closedDays: getCheckedDaysInEnglish(updated) };
     }
     case 'RESET':
       return initialFormState;
