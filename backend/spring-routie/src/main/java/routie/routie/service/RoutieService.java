@@ -2,6 +2,7 @@ package routie.routie.service;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -86,20 +87,31 @@ public class RoutieService {
                 routeByFromRoutiePlace
         );
 
-        calculateDefaultValidity(startDateTime, endDateTime, timePeriodByRoutiePlace);
+        boolean isDefaultValid = calculateDefaultValidity(startDateTime, endDateTime, timePeriodByRoutiePlace);
+        boolean isStrategyValid = Arrays.stream(ValidationStrategy.values())
+                .allMatch(validationStrategy -> validityCalculator.calculateValidity(timePeriodByRoutiePlace,
+                        validationStrategy));
 
-        Arrays.stream(ValidationStrategy.values())
-                .forEach(validationStrategy
-                        -> validityCalculator.calculateValidity(timePeriodByRoutiePlace, validationStrategy));
-
-        return new RoutieTimeValidationResponse(true);
+        return new RoutieTimeValidationResponse(!isDefaultValid || !isStrategyValid);
     }
 
-    private void calculateDefaultValidity(
+    private boolean calculateDefaultValidity(
             final LocalDateTime startDateTime,
             final LocalDateTime endDateTime,
             final Map<RoutiePlace, TimePeriod> timePeriodByRoutiePlace
     ) {
+        return calculateTotalTimeValidity(startDateTime, endDateTime,
+                (LinkedHashMap<RoutiePlace, TimePeriod>) timePeriodByRoutiePlace);
+    }
 
+    private boolean calculateTotalTimeValidity(
+            final LocalDateTime startDateTime,
+            final LocalDateTime endDateTime,
+            final LinkedHashMap<RoutiePlace, TimePeriod> timePeriodByRoutiePlace
+    ) {
+        LocalDateTime firstPeriodStartTime = timePeriodByRoutiePlace.firstEntry().getValue().startTime();
+        LocalDateTime lastPeriodEndTime = timePeriodByRoutiePlace.lastEntry().getValue().endTime();
+
+        return !startDateTime.isBefore(firstPeriodStartTime) && !endDateTime.isAfter(lastPeriodEndTime);
     }
 }

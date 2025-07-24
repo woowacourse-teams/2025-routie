@@ -8,10 +8,10 @@ import routie.routie.domain.ValidityCalculator;
 import routie.routie.domain.timeperiod.TimePeriod;
 
 @Component
-public class HolidayValidityCalculator implements ValidityCalculator {
+public class OperationHoursValidityCalculator implements ValidityCalculator {
     @Override
     public boolean supportsStrategy(final ValidationStrategy validationStrategy) {
-        return validationStrategy == ValidationStrategy.IS_NOT_HOLIDAY;
+        return validationStrategy == ValidationStrategy.IS_WITHIN_OPERATION_HOURS;
     }
 
     @Override

@@ -11,7 +11,7 @@ import routie.routie.domain.timeperiod.TimePeriod;
 public class BreaktimeValidityCalculator implements ValidityCalculator {
     @Override
     public boolean supportsStrategy(final ValidationStrategy validationStrategy) {
-        return validationStrategy == ValidationStrategy.IS_NOT_HOLIDAY;
+        return validationStrategy == ValidationStrategy.IS_NOT_DURING_BREAKTIME;
     }
 
     @Override
