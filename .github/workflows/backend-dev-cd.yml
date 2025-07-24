@@ -73,6 +73,9 @@ jobs:
           echo "${{ secrets.DOCKER_COMPOSE_YML }}" > docker-compose.yml
           sudo docker compose up -d
 
+      - name: Clean old JARs
+        run: rm -f build/libs/*.jar
+
       - name: Download JAR Artifact
         uses: actions/download-artifact@v4
         with:
