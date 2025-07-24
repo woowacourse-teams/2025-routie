@@ -14,8 +14,12 @@ import { useCardDrag } from '@/domains/routie/hooks/useCardDrag';
 import RoutieSpaceName from '@/domains/routieSpace/components/RoutieSpaceName/RoutieSpaceName';
 import theme from '@/styles/theme';
 
-import RoutieValidationResultCard from './../../domains/routie/components/RoutieValidationResultCard/RoutieValidationResultCard';
 import TimeInput from './TimeInput';
+
+const initialTime = {
+  startAt: '09:00',
+  endAt: '22:00',
+};
 
 const places = [
   {
@@ -91,6 +95,7 @@ const Sidebar = () => {
   const getDragProps = useCardDrag(routie, setRoutie);
   const [addModalOpen, setAddModalOpen] = useState(false);
   const [isValidateActive, setIsValidateActive] = useState(false);
+  const [time, setTime] = useState(initialTime);
 
   const openAddModal = () => {
     setAddModalOpen((prev) => !prev);
@@ -102,6 +107,10 @@ const Sidebar = () => {
 
   const handleValidateToggle = () => {
     setIsValidateActive((prev) => !prev);
+  };
+
+  const handleTimeChange = (field: string, value: string) => {
+    setTime((prev) => ({ ...prev, [field]: value }));
   };
 
   return (
@@ -141,6 +150,7 @@ const Sidebar = () => {
           {isValidateActive ? (
             <>
               <RoutieValidationResultCard total_time="60" valid={false} />
+              <TimeInput time={time} onChange={handleTimeChange} />
             </>
           ) : (
             <RoutieValidationUnavailableCard />
