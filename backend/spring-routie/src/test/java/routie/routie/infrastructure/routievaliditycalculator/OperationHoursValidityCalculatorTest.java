@@ -14,9 +14,9 @@ import routie.routie.domain.RoutiePlace;
 import routie.routie.domain.ValidationStrategy;
 import routie.routie.domain.timeperiod.TimePeriod;
 
-class BusinessHoursValidityCalculatorTest {
+class OperationHoursValidityCalculatorTest {
 
-    private final BusinessHoursValidityCalculator calculator = new BusinessHoursValidityCalculator();
+    private final OperationHoursValidityCalculator calculator = new OperationHoursValidityCalculator();
 
     @Test
     @DisplayName("영업시간이 설정되지 않은 경우 항상 유효하다")
@@ -31,7 +31,7 @@ class BusinessHoursValidityCalculatorTest {
         Map<RoutiePlace, TimePeriod> timePeriodMap = Map.of(routiePlace, timePeriod);
 
         // when
-        boolean result = calculator.calculateValidity(timePeriodMap, ValidationStrategy.IS_NOT_HOLIDAY);
+        boolean result = calculator.calculateValidity(timePeriodMap, ValidationStrategy.IS_WITHIN_OPERATION_HOURS);
 
         // then
         assertThat(result).isTrue();
@@ -50,7 +50,7 @@ class BusinessHoursValidityCalculatorTest {
         Map<RoutiePlace, TimePeriod> timePeriodMap = Map.of(routiePlace, timePeriod);
 
         // when
-        boolean result = calculator.calculateValidity(timePeriodMap, ValidationStrategy.IS_NOT_HOLIDAY);
+        boolean result = calculator.calculateValidity(timePeriodMap, ValidationStrategy.IS_WITHIN_OPERATION_HOURS);
 
         // then
         assertThat(result).isTrue();
@@ -69,7 +69,7 @@ class BusinessHoursValidityCalculatorTest {
         Map<RoutiePlace, TimePeriod> timePeriodMap = Map.of(routiePlace, timePeriod);
 
         // when
-        boolean result = calculator.calculateValidity(timePeriodMap, ValidationStrategy.IS_NOT_HOLIDAY);
+        boolean result = calculator.calculateValidity(timePeriodMap, ValidationStrategy.IS_WITHIN_OPERATION_HOURS);
 
         // then
         assertThat(result).isTrue();
@@ -88,7 +88,7 @@ class BusinessHoursValidityCalculatorTest {
         Map<RoutiePlace, TimePeriod> timePeriodMap = Map.of(routiePlace, timePeriod);
 
         // when
-        boolean result = calculator.calculateValidity(timePeriodMap, ValidationStrategy.IS_NOT_HOLIDAY);
+        boolean result = calculator.calculateValidity(timePeriodMap, ValidationStrategy.IS_WITHIN_OPERATION_HOURS);
 
         // then
         assertThat(result).isTrue();
@@ -107,7 +107,7 @@ class BusinessHoursValidityCalculatorTest {
         Map<RoutiePlace, TimePeriod> timePeriodMap = Map.of(routiePlace, timePeriod);
 
         // when
-        boolean result = calculator.calculateValidity(timePeriodMap, ValidationStrategy.IS_NOT_HOLIDAY);
+        boolean result = calculator.calculateValidity(timePeriodMap, ValidationStrategy.IS_WITHIN_OPERATION_HOURS);
 
         // then
         assertThat(result).isFalse();
@@ -126,7 +126,7 @@ class BusinessHoursValidityCalculatorTest {
         Map<RoutiePlace, TimePeriod> timePeriodMap = Map.of(routiePlace, timePeriod);
 
         // when
-        boolean result = calculator.calculateValidity(timePeriodMap, ValidationStrategy.IS_NOT_HOLIDAY);
+        boolean result = calculator.calculateValidity(timePeriodMap, ValidationStrategy.IS_WITHIN_OPERATION_HOURS);
 
         // then
         assertThat(result).isFalse();
@@ -145,7 +145,7 @@ class BusinessHoursValidityCalculatorTest {
         Map<RoutiePlace, TimePeriod> timePeriodMap = Map.of(routiePlace, timePeriod);
 
         // when
-        boolean result = calculator.calculateValidity(timePeriodMap, ValidationStrategy.IS_NOT_HOLIDAY);
+        boolean result = calculator.calculateValidity(timePeriodMap, ValidationStrategy.IS_WITHIN_OPERATION_HOURS);
 
         // then
         assertThat(result).isFalse();
@@ -164,7 +164,7 @@ class BusinessHoursValidityCalculatorTest {
         Map<RoutiePlace, TimePeriod> timePeriodMap = Map.of(routiePlace, timePeriod);
 
         // when
-        boolean result = calculator.calculateValidity(timePeriodMap, ValidationStrategy.IS_NOT_HOLIDAY);
+        boolean result = calculator.calculateValidity(timePeriodMap, ValidationStrategy.IS_WITHIN_OPERATION_HOURS);
 
         // then
         assertThat(result).isFalse();
@@ -183,7 +183,7 @@ class BusinessHoursValidityCalculatorTest {
         Map<RoutiePlace, TimePeriod> timePeriodMap = Map.of(routiePlace, timePeriod);
 
         // when
-        boolean result = calculator.calculateValidity(timePeriodMap, ValidationStrategy.IS_NOT_HOLIDAY);
+        boolean result = calculator.calculateValidity(timePeriodMap, ValidationStrategy.IS_WITHIN_OPERATION_HOURS);
 
         // then
         assertThat(result).isTrue();
@@ -202,7 +202,7 @@ class BusinessHoursValidityCalculatorTest {
         Map<RoutiePlace, TimePeriod> timePeriodMap = Map.of(routiePlace, timePeriod);
 
         // when
-        boolean result = calculator.calculateValidity(timePeriodMap, ValidationStrategy.IS_NOT_HOLIDAY);
+        boolean result = calculator.calculateValidity(timePeriodMap, ValidationStrategy.IS_WITHIN_OPERATION_HOURS);
 
         // then
         assertThat(result).isFalse();

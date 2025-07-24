@@ -31,7 +31,7 @@ class BreaktimeValidityCalculatorTest {
         Map<RoutiePlace, TimePeriod> timePeriodMap = Map.of(routiePlace, timePeriod);
 
         // when
-        boolean result = calculator.calculateValidity(timePeriodMap, ValidationStrategy.IS_NOT_HOLIDAY);
+        boolean result = calculator.calculateValidity(timePeriodMap, ValidationStrategy.IS_NOT_DURING_BREAKTIME);
 
         // then
         assertThat(result).isTrue();
@@ -50,7 +50,7 @@ class BreaktimeValidityCalculatorTest {
         Map<RoutiePlace, TimePeriod> timePeriodMap = Map.of(routiePlace, timePeriod);
 
         // when
-        boolean result = calculator.calculateValidity(timePeriodMap, ValidationStrategy.IS_NOT_HOLIDAY);
+        boolean result = calculator.calculateValidity(timePeriodMap, ValidationStrategy.IS_NOT_DURING_BREAKTIME);
 
         // then
         assertThat(result).isTrue();
@@ -69,7 +69,7 @@ class BreaktimeValidityCalculatorTest {
         Map<RoutiePlace, TimePeriod> timePeriodMap = Map.of(routiePlace, timePeriod);
 
         // when
-        boolean result = calculator.calculateValidity(timePeriodMap, ValidationStrategy.IS_NOT_HOLIDAY);
+        boolean result = calculator.calculateValidity(timePeriodMap, ValidationStrategy.IS_NOT_DURING_BREAKTIME);
 
         // then
         assertThat(result).isFalse();
@@ -88,7 +88,7 @@ class BreaktimeValidityCalculatorTest {
         Map<RoutiePlace, TimePeriod> timePeriodMap = Map.of(routiePlace, timePeriod);
 
         // when
-        boolean result = calculator.calculateValidity(timePeriodMap, ValidationStrategy.IS_NOT_HOLIDAY);
+        boolean result = calculator.calculateValidity(timePeriodMap, ValidationStrategy.IS_NOT_DURING_BREAKTIME);
 
         // then
         assertThat(result).isFalse();
@@ -107,7 +107,7 @@ class BreaktimeValidityCalculatorTest {
         Map<RoutiePlace, TimePeriod> timePeriodMap = Map.of(routiePlace, timePeriod);
 
         // when
-        boolean result = calculator.calculateValidity(timePeriodMap, ValidationStrategy.IS_NOT_HOLIDAY);
+        boolean result = calculator.calculateValidity(timePeriodMap, ValidationStrategy.IS_NOT_DURING_BREAKTIME);
 
         // then
         assertThat(result).isFalse();
@@ -126,7 +126,7 @@ class BreaktimeValidityCalculatorTest {
         Map<RoutiePlace, TimePeriod> timePeriodMap = Map.of(routiePlace, timePeriod);
 
         // when
-        boolean result = calculator.calculateValidity(timePeriodMap, ValidationStrategy.IS_NOT_HOLIDAY);
+        boolean result = calculator.calculateValidity(timePeriodMap, ValidationStrategy.IS_NOT_DURING_BREAKTIME);
 
         // then
         assertThat(result).isTrue();
@@ -145,7 +145,7 @@ class BreaktimeValidityCalculatorTest {
         Map<RoutiePlace, TimePeriod> timePeriodMap = Map.of(routiePlace, timePeriod);
 
         // when
-        boolean result = calculator.calculateValidity(timePeriodMap, ValidationStrategy.IS_NOT_HOLIDAY);
+        boolean result = calculator.calculateValidity(timePeriodMap, ValidationStrategy.IS_NOT_DURING_BREAKTIME);
 
         // then
         assertThat(result).isFalse();
