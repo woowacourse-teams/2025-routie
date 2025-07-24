@@ -1,0 +1,18 @@
+name: EC2 controller
+
+on:
+  workflow_dispatch:
+
+jobs:
+  ec2-command:
+    name: Build and Upload JAR
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: backend/spring-routie
+
+    steps:
+      - name: Input Shell Command
+        run: |
+          ps aux | grep java
