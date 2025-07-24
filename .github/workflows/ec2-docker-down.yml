@@ -1,0 +1,14 @@
+name: docker compose down
+
+on:
+  workflow_dispatch:
+
+jobs:
+  docker-compose-down:
+    name: docker compose down
+    runs-on: [ self-hosted ]
+
+    steps:
+      - name: docker compose down
+        run: |
+          sudo docker compose down -v
