@@ -25,4 +25,4 @@ jobs:
     steps:
       - name: echo app.log
         run: |
-          echo app.log
+          cat app.log
