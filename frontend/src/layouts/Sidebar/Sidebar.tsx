@@ -6,6 +6,7 @@ import Header from '@/@common/components/Header/Header';
 import Pill from '@/@common/components/Pill/Pill';
 import Text from '@/@common/components/Text/Text';
 import ToggleSwitch from '@/@common/components/ToggleSwitch/ToggleSwitch';
+import AddPlaceModal from '@/domains/places/components/AddPlaceModal/AddPlaceModal';
 import RoutiePlaceCard from '@/domains/routie/components/RoutiePlaceCard/RoutiePlaceCard';
 import { useCardDrag } from '@/domains/routie/hooks/useCardDrag';
 import RoutieSpaceName from '@/domains/routieSpace/components/RoutieSpaceName/RoutieSpaceName';
@@ -82,82 +83,100 @@ const places = [
     closedDays: ['MON', 'TUE', 'SAT', 'SUN'],
   },
 ];
+
 const Sidebar = () => {
   const [routie, setRoutie] = useState(places);
   const getDragProps = useCardDrag(routie, setRoutie);
+  const [addModalOpen, setAddModalOpen] = useState(false);
 
+  const openAddModal = () => {
+    setAddModalOpen((prev) => !prev);
+  };
+
+  const closeAddModal = () => {
+    setAddModalOpen((prev) => !prev);
+  };
   return (
-    <Flex direction="column" justifyContent='flex-start' alignItems='flex-start' width="50rem" gap={1}>
-      <Header />
-      <Flex direction="column" width="100%" gap={1.2} padding={1.6}>
-        <Flex direction="column" width="100%" gap={1.2}>
-          <RoutieSpaceName />
-          <Button variant="primary">
-            <Flex width="100%">
-              <Text variant="subTitle" color="white">
-                + 장소 추가하기
-              </Text>
-            </Flex>
-          </Button>
-        </Flex>
-        <Flex
-          alignItems="flex-start"
-          justifyContent="flex-end"
-          width="100%"
-          gap={1}
-        >
-          <Text variant="label">일정 검증 토글</Text>
-          <ToggleSwitch active={true} onToggle={() => {}} />
-        </Flex>
-        <TimeInput />
-        <RoutieValidationResultCard total_time="60" available={true} />
-      </Flex>
+    <>
       <Flex
         direction="column"
+        justifyContent="flex-start"
         alignItems="flex-start"
-        width="100%"
-        gap={1.2}
-        style={{
-          padding: '0 1.6rem',
-        }}
+        width="50rem"
+        gap={1}
       >
-        <Text variant="subTitle">마이 루티</Text>
+        <Header />
+        <Flex direction="column" width="100%" gap={1.2} padding={1.6}>
+          <Flex direction="column" width="100%" gap={1.2}>
+            <RoutieSpaceName />
+            <Button variant="primary" onClick={openAddModal}>
+              <Flex width="100%">
+                <Text variant="subTitle" color="white">
+                  + 장소 추가하기
+                </Text>
+              </Flex>
+            </Button>
+          </Flex>
+          <Flex
+            alignItems="flex-start"
+            justifyContent="flex-end"
+            width="100%"
+            gap={1}
+          >
+            <Text variant="label">일정 검증 토글</Text>
+            <ToggleSwitch active={true} onToggle={() => {}} />
+          </Flex>
+          <TimeInput />
+          <RoutieValidationResultCard total_time="60" available={true} />
+        </Flex>
         <Flex
           direction="column"
-          gap={1}
-          justifyContent="flex-start"
+          alignItems="flex-start"
+          width="100%"
+          gap={1.2}
           style={{
-            overflowY: 'auto',
-            height: '59rem',
-            padding: '1.6rem 0 ',
-            boxSizing: 'border-box',
+            padding: '0 1.6rem',
           }}
         >
-          {routie.map((place, index) => {
-            return (
-              <>
-                <div key={place.id} {...getDragProps(index)}>
-                  <RoutiePlaceCard {...place} />
-                </div>
-                {index < places.length - 1 && (
-                  <Flex gap={1}>
-                    <Text variant="description">도보 15분</Text>
-                    <Pill type="distance">
-                      <Text
-                        variant="description"
-                        color={theme.colors.purple[400]}
-                      >
-                        2.0km
-                      </Text>
-                    </Pill>
-                  </Flex>
-                )}
-              </>
-            );
-          })}
+          <Text variant="subTitle">마이 루티</Text>
+          <Flex
+            direction="column"
+            gap={1}
+            justifyContent="flex-start"
+            style={{
+              overflowY: 'auto',
+              height: '59rem',
+              padding: '1.6rem 0 ',
+              boxSizing: 'border-box',
+            }}
+          >
+            {routie.map((place, index) => {
+              return (
+                <>
+                  <div key={place.id} {...getDragProps(index)}>
+                    <RoutiePlaceCard {...place} />
+                  </div>
+                  {index < places.length - 1 && (
+                    <Flex gap={1}>
+                      <Text variant="description">도보 15분</Text>
+                      <Pill type="distance">
+                        <Text
+                          variant="description"
+                          color={theme.colors.purple[400]}
+                        >
+                          2.0km
+                        </Text>
+                      </Pill>
+                    </Flex>
+                  )}
+                </>
+              );
+            })}
+          </Flex>
         </Flex>
       </Flex>
-    </Flex>
+      <AddPlaceModal isOpen={addModalOpen} onClose={closeAddModal} />
+    </>
   );
 };
 
