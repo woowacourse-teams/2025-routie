@@ -13,57 +13,81 @@ import theme from '@/styles/theme';
 
 import { getCheckedListExcept } from '../../utils/getCheckedListExcept';
 import DatePreviewList from '../DatePreviewList/DatePreviewList';
+import EditPlaceModal from '../EditPlaceModal/EditPlaceModal';
 
 interface PlaceCardProps {
   id: number;
   name: string;
   address: string;
+  stayDurationMinutes: number;
   openAt: string;
   closeAt: string;
+  breakStartAt: string;
+  breakEndAt: string;
   closedDays: string[];
 }
 
 const PlaceCard = ({ ...props }: PlaceCardProps) => {
   const [isClicked, setIsClicked] = useState(false);
+  const [editModalOpen, setEditModalOpen] = useState(false);
+
+  const openEditModal = () => {
+    setEditModalOpen((prev) => !prev);
+  };
+
+  const closeEditModal = () => {
+    setEditModalOpen((prev) => !prev);
+  };
 
   const handleToggle = () => {
     setIsClicked((prev) => !prev);
   };
 
   return (
-    <Card
-      id={props.id.toString()}
-      width="20rem"
-      variant={isClicked ? 'available' : 'default'}
-    >
-      <Flex
-        direction="column"
-        gap={2}
-        justifyContent="flex-start"
-        alignItems="flex-start"
+    <>
+      <Card
+        id={props.id.toString()}
+        width="20rem"
+        variant={isClicked ? 'available' : 'default'}
       >
-        <Flex justifyContent="space-between" width="100%" alignItems="center">
-          <IconButton
-            icon={isClicked ? checkIcon : plusIcon}
-            variant={isClicked ? 'selected' : 'select'}
-            onClick={handleToggle}
-          />
-          <Flex gap={1}>
-            <IconButton icon={editIcon} onClick={() => {}} />
-            <IconButton icon={trashIcon} variant="delete" onClick={() => {}} />
+        <Flex
+          direction="column"
+          gap={2}
+          justifyContent="flex-start"
+          alignItems="flex-start"
+        >
+          <Flex justifyContent="space-between" width="100%" alignItems="center">
+            <IconButton
+              icon={isClicked ? checkIcon : plusIcon}
+              variant={isClicked ? 'selected' : 'select'}
+              onClick={handleToggle}
+            />
+            <Flex gap={1}>
+              <IconButton icon={editIcon} onClick={openEditModal} />
+              <IconButton
+                icon={trashIcon}
+                variant="delete"
+                onClick={() => {}}
+              />
+            </Flex>
           </Flex>
-        </Flex>
 
-        <Text variant="subTitle">{props.name}</Text>
-        <Text variant="caption" color={theme.colors.gray[200]}>
-          {props.address}
-        </Text>
-        <Pill type="time">
-          {props.openAt}-{props.closeAt}
-        </Pill>
-        <DatePreviewList value={getCheckedListExcept(props.closedDays)} />
-      </Flex>
-    </Card>
+          <Text variant="subTitle">{props.name}</Text>
+          <Text variant="caption" color={theme.colors.gray[200]}>
+            {props.address}
+          </Text>
+          <Pill type="time">
+            {props.openAt}-{props.closeAt}
+          </Pill>
+          <DatePreviewList value={getCheckedListExcept(props.closedDays)} />
+        </Flex>
+      </Card>
+      <EditPlaceModal
+        isOpen={editModalOpen}
+        onClose={closeEditModal}
+        initialData={props}
+      />
+    </>
   );
 };
 export default PlaceCard;
