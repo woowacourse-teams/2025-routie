@@ -1,18 +1,40 @@
+import { useEffect } from 'react';
+
 import Flex from '@/@common/components/Flex/Flex';
 import Modal, { ModalProps } from '@/@common/components/Modal/Modal';
-import { useAddPlaceForm } from '@/domains/places/hooks/useAddPlaceForm';
 
+import { useAddPlaceForm } from '../../hooks/useAddPlaceForm';
 import { getCheckedDaysInEnglish } from '../../utils/getCheckedDaysInEnglish';
+import { ModalInputContainerStyle } from '../AddPlaceModal/AddPlaceModal.styles';
 import OptionalInfoSection from '../PlaceFormSection/OptionalInfoSection';
+import { FormState } from '../PlaceFormSection/PlaceForm.types';
 import RequiredInfoSection from '../PlaceFormSection/RequiredInfoSection';
 
-import { ModalInputContainerStyle } from './AddPlaceModal.styles';
-import AddPlaceModalButtons from './AddPlaceModalButtons';
-import AddPlaceModalHeader from './AddPlaceModalHeader';
+import EditPlaceModalButtons from './EditPlaceModalButtons';
+import EditPlaceModalHeader from './EditPlaceModalHeader';
 
-const AddPlaceModal = ({ isOpen, onClose }: Omit<ModalProps, 'children'>) => {
-  const { form, handleInputChange, handleToggleDay, resetForm } =
-    useAddPlaceForm();
+interface EditPlaceModalProps extends Omit<ModalProps, 'children'> {
+  initialData: FormState;
+}
+
+const EditPlaceModal = ({
+  isOpen,
+  onClose,
+  initialData,
+}: EditPlaceModalProps) => {
+  const {
+    form,
+    initializeForm,
+    handleInputChange,
+    handleToggleDay,
+    resetForm,
+  } = useAddPlaceForm();
+
+  useEffect(() => {
+    if (isOpen) {
+      initializeForm(initialData);
+    }
+  }, [isOpen, initialData]);
 
   const handleClose = () => {
     resetForm();
@@ -21,10 +43,9 @@ const AddPlaceModal = ({ isOpen, onClose }: Omit<ModalProps, 'children'>) => {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
     const englishClosedDays = getCheckedDaysInEnglish(form.closedDays);
 
-    // TODO: API 요청 로직 연결 예정
+    // TODO: API 요청 로직 연결 예정. payload를 서버로 보낼것임
     const payload = {
       ...form,
       closedDays: englishClosedDays,
@@ -37,12 +58,13 @@ const AddPlaceModal = ({ isOpen, onClose }: Omit<ModalProps, 'children'>) => {
     <Modal isOpen={isOpen} onClose={handleClose}>
       <form onSubmit={handleSubmit}>
         <Flex direction="column" width="44rem" gap={2}>
-          <AddPlaceModalHeader onClose={handleClose} />
+          <EditPlaceModalHeader onClose={handleClose} />
           <div css={ModalInputContainerStyle}>
             <RequiredInfoSection
               name={form.name}
               address={form.address}
               onChange={handleInputChange}
+              disabled={true}
             />
           </div>
           <div css={ModalInputContainerStyle}>
@@ -52,11 +74,11 @@ const AddPlaceModal = ({ isOpen, onClose }: Omit<ModalProps, 'children'>) => {
               onToggleDay={handleToggleDay}
             />
           </div>
-          <AddPlaceModalButtons />
+          <EditPlaceModalButtons />
         </Flex>
       </form>
     </Modal>
   );
 };
 
-export default AddPlaceModal;
+export default EditPlaceModal;
