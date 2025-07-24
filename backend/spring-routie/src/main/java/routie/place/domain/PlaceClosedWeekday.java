@@ -9,7 +9,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import jakarta.persistence.UniqueConstraint;
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import lombok.AccessLevel;
@@ -23,9 +22,9 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @Entity
 @Table(
         name = "place_closed_weekdays", uniqueConstraints = {
-                @UniqueConstraint(
-                        name = "uk_place_closed_day", columnNames = {"place_id", "closed_day"}
-                )
+//                @UniqueConstraint(
+//                        name = "uk_place_closed_day", columnNames = {"place_id", "closed_day"}
+//                )
         }
 )
 @EntityListeners(AuditingEntityListener.class)

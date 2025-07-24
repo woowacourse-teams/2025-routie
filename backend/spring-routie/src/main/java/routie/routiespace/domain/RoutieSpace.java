@@ -61,9 +61,11 @@ public class RoutieSpace {
     public static RoutieSpace from(
             final RoutieSpaceIdentifierProvider identifierProvider
     ) {
-        List<Routie> routies = new ArrayList<>() {{
-            add(Routie.withoutRoutiePlaces());
-        }};
+        List<Routie> routies = new ArrayList<>() {
+            {
+                add(Routie.withoutRoutiePlaces());
+            }
+        };
         return new RoutieSpace(
                 null,
                 DEFAULT_NAME,
