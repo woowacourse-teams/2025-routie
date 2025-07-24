@@ -27,6 +27,8 @@ const formReducer = (state: FormState, action: FormAction): FormState => {
     }
     case 'RESET':
       return initialFormState;
+    case 'INITIALIZE':
+      return { ...action.payload };
     default:
       return state;
   }
@@ -34,6 +36,10 @@ const formReducer = (state: FormState, action: FormAction): FormState => {
 
 export const useAddPlaceForm = () => {
   const [form, dispatch] = useReducer(formReducer, initialFormState);
+
+  const initializeForm = (data: FormState) => {
+    dispatch({ type: 'INITIALIZE', payload: data });
+  };
 
   const handleInputChange = (
     field: keyof Omit<FormState, 'closedDays'>,
@@ -52,6 +58,7 @@ export const useAddPlaceForm = () => {
 
   return {
     form,
+    initializeForm,
     handleInputChange,
     handleToggleDay,
     resetForm,
