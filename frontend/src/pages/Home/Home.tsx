@@ -10,13 +10,17 @@ const Home = () => {
   const navigate = useNavigate();
 
   const handleCreateRoutieSpace = async () => {
-    await createRoutieSpace();
+    try {
+      await createRoutieSpace();
 
-    const uuid = localStorage.getItem('routieSpaceUuid');
+      const uuid = localStorage.getItem('routieSpaceUuid');
 
-    if (!uuid) return;
+      if (!uuid) return;
 
-    navigate(`/routie-spaces?routieSpaceIdentifier=${uuid}`);
+      navigate(`/routie-spaces?routieSpaceIdentifier=${uuid}`);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
