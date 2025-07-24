@@ -1,12 +1,12 @@
 export type FormState = {
   name: string;
   address: string;
-  stayDurationMinutes: string;
+  stayDurationMinutes: number;
   openAt: string;
   closeAt: string;
   breakStartAt: string;
   breakEndAt: string;
-  closedDays: boolean[];
+  closedDays: string[];
 };
 
 export type FormAction =
