@@ -4,7 +4,6 @@ import Flex from '@/@common/components/Flex/Flex';
 import Modal, { ModalProps } from '@/@common/components/Modal/Modal';
 
 import { useAddPlaceForm } from '../../hooks/useAddPlaceForm';
-import { getCheckedDaysInEnglish } from '../../utils/getCheckedDaysInEnglish';
 import { ModalInputContainerStyle } from '../AddPlaceModal/AddPlaceModal.styles';
 import OptionalInfoSection from '../PlaceFormSection/OptionalInfoSection';
 import { FormState } from '../PlaceFormSection/PlaceForm.types';
@@ -43,14 +42,6 @@ const EditPlaceModal = ({
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const englishClosedDays = getCheckedDaysInEnglish(form.closedDays);
-
-    // TODO: API 요청 로직 연결 예정. payload를 서버로 보낼것임
-    const payload = {
-      ...form,
-      closedDays: englishClosedDays,
-    };
-
     handleClose();
   };
 

@@ -117,28 +117,30 @@ const places = [
 
 const PlaceList = () => {
   return (
-    <Flex
-      direction="column"
-      justifyContent="flex-start"
-      alignItems="flex-start"
-      width="100%"
-      height="100%"
-      padding={3}
-      gap={2}
-    >
-      <Text variant="title">장소 목록</Text>
-      <div
-        style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(5,1fr)',
-          gap: '2rem',
-        }}
+    <>
+      <Flex
+        direction="column"
+        justifyContent="flex-start"
+        alignItems="flex-start"
+        width="100%"
+        height="100%"
+        padding={3}
+        gap={2}
       >
-        {places.map((place) => (
-          <PlaceCard key={place.id} {...place} />
-        ))}
-      </div>
-    </Flex>
+        <Text variant="title">장소 목록</Text>
+        <div
+          style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(5,1fr)',
+            gap: '2rem',
+          }}
+        >
+          {places.map((place) => (
+            <PlaceCard key={place.id} {...place} />
+          ))}
+        </div>
+      </Flex>
+    </>
   );
 };
 
