@@ -2,6 +2,7 @@ import Flex from '@/@common/components/Flex/Flex';
 import Modal, { ModalProps } from '@/@common/components/Modal/Modal';
 import { useAddPlaceForm } from '@/domains/places/hooks/useAddPlaceForm';
 
+import addPlace from '../../apis/addPlace';
 import OptionalInfoSection from '../PlaceFormSection/OptionalInfoSection';
 import RequiredInfoSection from '../PlaceFormSection/RequiredInfoSection';
 
@@ -18,8 +19,13 @@ const AddPlaceModal = ({ isOpen, onClose }: Omit<ModalProps, 'children'>) => {
     onClose();
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    try {
+      await addPlace(form);
+    } catch (error) {
+      console.log(error);
+    }
     handleClose();
   };
 
