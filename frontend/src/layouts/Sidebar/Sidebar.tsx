@@ -123,7 +123,14 @@ const Sidebar = () => {
         gap={1}
       >
         <Header />
-        <Flex direction="column" width="100%" gap={1.2} padding={1.6}>
+        <Flex
+          direction="column"
+          width="100%"
+          gap={1.2}
+          padding={1.6}
+          height="27.4rem"
+          justifyContent="flex-start"
+        >
           <Flex direction="column" width="100%" gap={1.2}>
             <RoutieSpaceName />
             <Button variant="primary" onClick={openAddModal}>
