@@ -51,11 +51,14 @@ jobs:
         env:
           SPRING_PROFILES_ACTIVE: test
 
+      - name: Debug artifact path
+        run: ls -al build/libs
+
       - name: Upload JAR Artifact
         uses: actions/upload-artifact@v4
         with:
           name: spring-boot-app
-          path: build/libs/*.jar
+          path: backend/spring-routie/build/libs/*.jar
           retention-days: 1
 
   download-and-deploy:
@@ -82,6 +85,9 @@ jobs:
           name: spring-boot-app
           path: build/libs
 
+      - name: Debug downloaded JARs
+        run: ls -al build/libs
+
       - name: Restore application.yml
         run: |
           mkdir -p config
@@ -99,6 +105,13 @@ jobs:
 
       - name: Start Spring Boot Application with external config
         run: |
-          JAR_NAME=$(ls build/libs/*.jar | head -n 1)
-          sudo nohup java -jar "$JAR_NAME" --spring.profiles.active=dev --server.port=80 --spring.config.location=./config/application.yml > app.log 2>&1 &
-          echo "Started $JAR_NAME with external config"
+          JAR_NAME=$(ls -t build/libs/*.jar 2>/dev/null | head -n 1)
+          if [ -z "$JAR_NAME" ]; then
+            echo "No JAR file found. Deployment aborted."
+            exit 1
+          fi
+          echo "Starting $JAR_NAME"
+          sudo nohup java -jar "$JAR_NAME" \
+            --spring.profiles.active=dev \
+            --server.port=80 \
+            --spring.config.location=./config/application.yml > app.log 2>&1 &
