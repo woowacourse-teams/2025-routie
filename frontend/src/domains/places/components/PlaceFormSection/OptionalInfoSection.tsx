@@ -2,6 +2,7 @@ import Flex from '@/@common/components/Flex/Flex';
 import Input from '@/@common/components/Input/Input';
 import Text from '@/@common/components/Text/Text';
 
+import { getCheckedListFromClosedDays } from '../../utils/getCheckedListFromClosedDays';
 import DateCheckboxList from '../DateCheckboxList/DateCheckboxList';
 
 import { FormState } from './PlaceForm.types';
@@ -34,7 +35,7 @@ const OptionalInfoSection = ({
         <Input
           id="stayDurationMinutes"
           type="number"
-          value={form.stayDurationMinutes}
+          value={form.stayDurationMinutes.toString()}
           onChange={(value) => onChange('stayDurationMinutes', value)}
           label="체류 시간 (분)"
           placeholder="체류 시간을 입력해주세요"
@@ -83,7 +84,10 @@ const OptionalInfoSection = ({
       </Flex>
       <Flex direction="column" alignItems="flex-start" gap={1}>
         <Text variant="label">영업일</Text>
-        <DateCheckboxList value={form.closedDays} onChange={onToggleDay} />
+        <DateCheckboxList
+          value={getCheckedListFromClosedDays(form.closedDays)}
+          onChange={onToggleDay}
+        />
       </Flex>
     </Flex>
   );
