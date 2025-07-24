@@ -4,9 +4,24 @@ import Button from '@/@common/components/Button/Button';
 import Flex from '@/@common/components/Flex/Flex';
 import Header from '@/@common/components/Header/Header';
 import Text from '@/@common/components/Text/Text';
+import { createRoutieSpace } from '@/domains/routieSpace/apis/createRoutieSpace';
 
 const Home = () => {
   const navigate = useNavigate();
+
+  const handleCreateRoutieSpace = async () => {
+    try {
+      await createRoutieSpace();
+
+      const uuid = localStorage.getItem('routieSpaceUuid');
+
+      if (!uuid) return;
+
+      navigate(`/routie-spaces?routieSpaceIdentifier=${uuid}`);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   return (
     <>
@@ -14,9 +29,7 @@ const Home = () => {
       <Flex direction="column" height="70dvh">
         <Button
           variant="primary"
-          onClick={() => {
-            navigate('/routie-spaces');
-          }}
+          onClick={handleCreateRoutieSpace}
           width="fit-content"
         >
           <Flex
