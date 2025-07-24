@@ -11,11 +11,12 @@ import plusIcon from '@/assets/icons/plus.svg';
 import trashIcon from '@/assets/icons/trash.svg';
 import theme from '@/styles/theme';
 
+import deletePlace from '../../apis/deletePlace';
 import { getCheckedListExcept } from '../../utils/getCheckedListExcept';
 import DatePreviewList from '../DatePreviewList/DatePreviewList';
 import EditPlaceModal from '../EditPlaceModal/EditPlaceModal';
 
-interface PlaceCardProps {
+export interface PlaceCardProps {
   id: number;
   name: string;
   address: string;
@@ -25,9 +26,10 @@ interface PlaceCardProps {
   breakStartAt: string;
   breakEndAt: string;
   closedDays: string[];
+  onDelete: (id: number) => void;
 }
 
-const PlaceCard = ({ ...props }: PlaceCardProps) => {
+export const PlaceCard = ({ onDelete, ...props }: PlaceCardProps) => {
   const [isClicked, setIsClicked] = useState(false);
   const [editModalOpen, setEditModalOpen] = useState(false);
 
@@ -41,6 +43,15 @@ const PlaceCard = ({ ...props }: PlaceCardProps) => {
 
   const handleToggle = () => {
     setIsClicked((prev) => !prev);
+  };
+
+  const handleDelete = async () => {
+    try {
+      await deletePlace(props.id);
+      onDelete(props.id);
+    } catch (error) {
+      console.error('장소 삭제를 실패했습니다.', error);
+    }
   };
 
   return (
@@ -67,7 +78,7 @@ const PlaceCard = ({ ...props }: PlaceCardProps) => {
               <IconButton
                 icon={trashIcon}
                 variant="delete"
-                onClick={() => {}}
+                onClick={handleDelete}
               />
             </Flex>
           </Flex>
@@ -90,4 +101,3 @@ const PlaceCard = ({ ...props }: PlaceCardProps) => {
     </>
   );
 };
-export default PlaceCard;
