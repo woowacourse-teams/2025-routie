@@ -15,5 +15,5 @@
     },
     "types": ["vitest/globals", "@testing-library/jest-dom"]
   },
-  "include": ["src", "vitest.config.ts", "global.d.ts"]
+  "include": ["src", "vitest.config.ts", "global.d.ts", "vitest.setup.ts"]
 }
