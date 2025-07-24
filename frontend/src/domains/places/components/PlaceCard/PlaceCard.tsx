@@ -94,9 +94,9 @@ export const PlaceCard = ({ onDelete, ...props }: PlaceCardProps) => {
         </Flex>
       </Card>
       <EditPlaceModal
+        id={props.id}
         isOpen={editModalOpen}
         onClose={closeEditModal}
-        initialData={props}
       />
     </>
   );
