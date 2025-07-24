@@ -48,6 +48,12 @@ public class Routie {
         );
     }
 
+    public static Routie withoutRoutiePlaces() {
+        return new Routie(
+                new ArrayList<>()
+        );
+    }
+
     public void modify(
             final List<RoutiePlace> routiePlaces
     ) {
