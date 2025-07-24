@@ -15,7 +15,7 @@ jobs:
             mysql -u ${{ secrets.DB_USERNAME }} \
             -p${{ secrets.DB_PASSWORD }} \
             -D ${{ secrets.DB_NAME }} \
-            -e "DELETE TABLE IF EXISTS \`place_closed_weekdays\`;
+            -e "DELETE FROM \`place_closed_weekdays\`;
                 SET FOREIGN_KEY_CHECKS = 0;
                 ALTER TABLE \`place_closed_weekdays\` DROP INDEX \`uk_place_closed_day\`;
                 SET FOREIGN_KEY_CHECKS = 1;"
