@@ -1,0 +1,40 @@
+name: Manual Artifact Cleanup
+
+on:
+  workflow_dispatch:
+
+permissions:
+  actions: write
+
+jobs:
+  delete-artifacts:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Delete all spring-boot-app artifacts
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const artifactName = 'spring-boot-app';
+            let page = 1;
+            while (true) {
+              const res = await github.rest.actions.listArtifactsForRepo({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                per_page: 100,
+                page: page++,
+              });
+
+              if (res.data.artifacts.length === 0) break;
+
+              for (const artifact of res.data.artifacts) {
+                if (artifact.name === artifactName) {
+                  await github.rest.actions.deleteArtifact({
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    artifact_id: artifact.id,
+                  });
+                  console.log(`Deleted: ${artifact.name} (ID: ${artifact.id})`);
+                }
+              }
+            }
