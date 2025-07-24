@@ -50,7 +50,7 @@ jobs:
       - name: Restore application.yml
         run: |
           mkdir -p config
-          echo "${{ secrets.APPLICATION_YML_PROD }}" > config/application.yml
+          echo "${{ secrets.APPLICATION_YML_DEV }}" > config/application.yml
 
       - name: Kill existing Spring Process
         run: |
