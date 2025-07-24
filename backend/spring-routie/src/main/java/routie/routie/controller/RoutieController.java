@@ -45,7 +45,8 @@ public class RoutieController {
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) final LocalDateTime startDateTime,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) final LocalDateTime endDateTime
     ) {
-        RoutieTimeValidationResponse result = routieService.validateRoutie(routieId, startDateTime, endDateTime);
-        return ResponseEntity.ok(result);
+        RoutieTimeValidationResponse routieTimeValidationResponse = routieService.validateRoutie(routieId,
+                startDateTime, endDateTime);
+        return ResponseEntity.ok(routieTimeValidationResponse);
     }
 }
