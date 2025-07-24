@@ -24,8 +24,8 @@ import routie.routie.domain.timeperiod.TimePeriod;
 import routie.routie.domain.timeperiod.TimePeriodCalculator;
 import routie.routie.repository.RoutieRepository;
 
-@RequiredArgsConstructor
 @Service
+@RequiredArgsConstructor
 public class RoutieService {
 
     private final RoutieRepository routieRepository;
