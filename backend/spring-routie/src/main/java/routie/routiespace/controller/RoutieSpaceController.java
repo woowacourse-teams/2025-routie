@@ -18,7 +18,7 @@ import routie.routiespace.controller.dto.request.UpdateRoutieSpaceNameRequest;
 import routie.routiespace.controller.dto.response.PlaceCreateResponse;
 import routie.routiespace.controller.dto.response.PlaceListResponse;
 import routie.routiespace.controller.dto.response.RoutieSpaceNameResponse;
-import routie.routiespace.controller.dto.response.RoutieSpaceResponse;
+import routie.routiespace.controller.dto.response.RoutiesResponse;
 import routie.routiespace.controller.dto.response.UpdateRoutieSpaceNameResponse;
 import routie.routiespace.domain.RoutieSpace;
 import routie.routiespace.service.RoutieSpaceService;
@@ -39,13 +39,13 @@ public class RoutieSpaceController {
         return ResponseEntity.created(location).build();
     }
 
-    @GetMapping("/{routieSpaceIdentifier}")
-    public ResponseEntity<RoutieSpaceResponse> read(
+    @GetMapping("/{routieSpaceIdentifier}/routies")
+    public ResponseEntity<RoutiesResponse> readRouties(
             @PathVariable final String routieSpaceIdentifier
     ) {
-        RoutieSpaceResponse routieSpaceResponse = routieSpaceService.getRoutieSpace(routieSpaceIdentifier);
+        RoutiesResponse routiesResponse = routieSpaceService.getRouties(routieSpaceIdentifier);
 
-        return ResponseEntity.ok(routieSpaceResponse);
+        return ResponseEntity.ok(routiesResponse);
     }
 
     @GetMapping("/{routieSpaceIdentifier}/name")
