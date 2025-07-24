@@ -8,9 +8,9 @@ on:
   workflow_dispatch:
 
 jobs:
-  deploy-to-ec2:
-    name: Deploy to EC2
-    runs-on: [ self-hosted ]
+  build-and-upload:
+    name: Build and Upload JAR
+    runs-on: ubuntu-latest
 
     defaults:
       run:
@@ -46,6 +46,28 @@ jobs:
         run: ./gradlew test
         env:
           SPRING_PROFILES_ACTIVE: test
+
+      - name: Upload JAR Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: spring-boot-app
+          path: backend/spring-routie/build/libs/*.jar
+
+  download-and-deploy:
+    name: Deploy to EC2
+    runs-on: [ self-hosted ]
+    needs: build-and-upload
+
+    defaults:
+      run:
+        working-directory: backend/spring-routie
+
+    steps:
+      - name: Download JAR Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: spring-boot-app
+          path: build/libs
 
       - name: Restore application.yml
         run: |
