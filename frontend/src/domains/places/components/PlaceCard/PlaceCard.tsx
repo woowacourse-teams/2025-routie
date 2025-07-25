@@ -27,9 +27,14 @@ export interface PlaceCardProps {
   breakEndAt: string;
   closedDays: string[];
   onDelete: (id: number) => void;
+  onPlaceChange: () => Promise<void>;
 }
 
-export const PlaceCard = ({ onDelete, ...props }: PlaceCardProps) => {
+export const PlaceCard = ({
+  onDelete,
+  onPlaceChange,
+  ...props
+}: PlaceCardProps) => {
   const [isClicked, setIsClicked] = useState(false);
   const [editModalOpen, setEditModalOpen] = useState(false);
 
@@ -94,9 +99,10 @@ export const PlaceCard = ({ onDelete, ...props }: PlaceCardProps) => {
         </Flex>
       </Card>
       <EditPlaceModal
+        id={props.id}
         isOpen={editModalOpen}
         onClose={closeEditModal}
-        initialData={props}
+        onPlaceChange={onPlaceChange}
       />
     </>
   );

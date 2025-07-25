@@ -12,6 +12,10 @@ jobs:
     name: Build and Upload JAR
     runs-on: ubuntu-latest
 
+    permissions:
+      actions: write
+      contents: read
+
     defaults:
       run:
         working-directory: backend/spring-routie
@@ -47,11 +51,14 @@ jobs:
         env:
           SPRING_PROFILES_ACTIVE: test
 
+      - name: Debug artifact path
+        run: ls -al build/libs
+
       - name: Upload JAR Artifact
         uses: actions/upload-artifact@v4
         with:
           name: spring-boot-app
-          path: backend/spring-routie/build/libs/*.jar
+          path: backend/spring-routie/build/libs/
 
   download-and-deploy:
     name: Deploy to EC2
@@ -63,11 +70,22 @@ jobs:
         working-directory: backend/spring-routie
 
     steps:
+      - name: Restore docker-compose.yml and Run Containers
+        run: |
+          echo "${{ secrets.DOCKER_COMPOSE_YML }}" > docker-compose.yml
+          sudo docker compose up -d
+
+      - name: Clean old JARs
+        run: rm -f build/libs/*.jar
+
       - name: Download JAR Artifact
         uses: actions/download-artifact@v4
         with:
           name: spring-boot-app
-          path: build/libs
+          path: backend/spring-routie/build/libs
+
+      - name: Debug downloaded JARs
+        run: ls -al build/libs
 
       - name: Restore application.yml
         run: |
@@ -76,16 +94,23 @@ jobs:
 
       - name: Kill existing Spring Process
         run: |
-          PID=$(sudo lsof -ti:80 || true)
+          PID=$(sudo lsof -ti:8080 || true)
           if [ -n "$PID" ]; then
-            echo "Killing process on port 80: $PID"
+            echo "Killing process on port 8080: $PID"
             sudo kill -9 "$PID"
           else
-            echo "No process found on port 80"
+            echo "No process found on port 8080"
           fi
 
       - name: Start Spring Boot Application with external config
         run: |
-          JAR_NAME=$(ls build/libs/*.jar | head -n 1)
-          sudo nohup java -jar "$JAR_NAME" --spring.profiles.active=dev --server.port=80 --spring.config.location=./config/application.yml > app.log 2>&1 &
-          echo "Started $JAR_NAME with external config"
+          JAR_NAME=$(find build/libs -type f -name "*.jar" | head -n 1)
+          if [ -z "$JAR_NAME" ]; then
+            echo "No JAR file found. Deployment aborted."
+            exit 1
+          fi
+          echo "Starting $JAR_NAME"
+          sudo nohup java -jar "$JAR_NAME" \
+            --spring.profiles.active=dev \
+            --server.port=8080 \
+            --spring.config.location=./config/application.yml > app.log 2>&1 &

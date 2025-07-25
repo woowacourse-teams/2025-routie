@@ -1,0 +1,39 @@
+name: Remove Database Constraint (Safe Method)
+
+on:
+  workflow_dispatch:
+
+jobs:
+  remove-constraint:
+    name: Remove uk_place_closed_day constraint safely
+    runs-on: [self-hosted]
+
+    steps:
+      - name: Safe constraint removal
+        run: |
+          sudo docker exec routie-mysql \
+            mysql -u ${{ secrets.DB_USERNAME }} \
+            -p${{ secrets.DB_PASSWORD }} \
+            -D ${{ secrets.DB_NAME }} \
+            -e "DROP TABLE place_closed_weekdays;
+                CREATE TABLE place_closed_weekdays (
+                id bigint NOT NULL AUTO_INCREMENT,
+                closed_day varchar(255) NOT NULL,
+                created_at timestamp NULL DEFAULT NULL,
+                place_id bigint DEFAULT NULL,
+                PRIMARY KEY (id),
+                KEY fk_place_closed_weekdays_place (place_id),
+                CONSTRAINT fk_place_closed_weekdays_place FOREIGN KEY (place_id) REFERENCES places (id)
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;"
+          
+          echo "✅ Constraint uk_place_closed_day removed successfully"
+
+      - name: Verify removal
+        run: |
+          echo "=== Verification ==="
+          sudo docker exec routie-mysql \
+            mysql -u ${{ secrets.DB_USERNAME }} \
+            -p${{ secrets.DB_PASSWORD }} \
+            -D ${{ secrets.DB_NAME }} \
+            -e "SHOW INDEX FROM \`place_closed_weekdays\`;"
+

@@ -10,7 +10,15 @@ import { ModalInputContainerStyle } from './AddPlaceModal.styles';
 import AddPlaceModalButtons from './AddPlaceModalButtons';
 import AddPlaceModalHeader from './AddPlaceModalHeader';
 
-const AddPlaceModal = ({ isOpen, onClose }: Omit<ModalProps, 'children'>) => {
+interface AddPlaceModalProps extends Omit<ModalProps, 'children'> {
+  onPlaceAdded?: () => Promise<void>;
+}
+
+const AddPlaceModal = ({
+  isOpen,
+  onClose,
+  onPlaceAdded,
+}: AddPlaceModalProps) => {
   const { form, handleInputChange, handleToggleDay, resetForm } =
     useAddPlaceForm();
 
@@ -23,6 +31,9 @@ const AddPlaceModal = ({ isOpen, onClose }: Omit<ModalProps, 'children'>) => {
     e.preventDefault();
     try {
       await addPlace(form);
+      if (onPlaceAdded) {
+        await onPlaceAdded();
+      }
     } catch (error) {
       console.log(error);
     }
