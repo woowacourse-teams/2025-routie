@@ -23,24 +23,24 @@ public class RoutieController {
 
     private final RoutieService routieService;
 
-    @GetMapping("/{id}")
+    @GetMapping("/{routieId}")
     public ResponseEntity<RoutieReadResponse> readRoutie(
-            @PathVariable final Long id
+            @PathVariable final Long routieId
     ) {
-        return ResponseEntity.ok(routieService.getRoutie(id));
+        return ResponseEntity.ok(routieService.getRoutie(routieId));
     }
 
-    @PatchMapping("/{id}")
+    @PatchMapping("/{routieId}")
     public ResponseEntity<Void> updateRoutie(
-            @PathVariable final Long id,
+            @PathVariable final Long routieId,
             @RequestBody final RoutieUpdateRequest routieUpdateRequest
     ) {
-        routieService.modifyRoutie(id, routieUpdateRequest);
+        routieService.modifyRoutie(routieId, routieUpdateRequest);
 
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/routies/{routieId}/validity")
+    @GetMapping("/{routieId}/validity")
     public ResponseEntity<RoutieTimeValidationResponse> validateRoutieTime(
             @PathVariable final Long routieId,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) final LocalDateTime startDateTime,
