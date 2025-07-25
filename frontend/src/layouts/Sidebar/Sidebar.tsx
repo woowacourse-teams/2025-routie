@@ -156,8 +156,7 @@ const Sidebar = ({
               boxSizing: 'border-box',
             }}
           >
-            {routes &&
-              routiePlaces?.map((place, index) => {
+            {routiePlaces?.map((place, index) => {
                 return (
                   <>
                     <div key={place.placeId} {...getDragProps(index)}>
@@ -167,7 +166,9 @@ const Sidebar = ({
                       />
                     </div>
 
-                    {routiePlaces.length - 1 !== index && (
+                  {routiePlaces.length - 1 !== index &&
+                    routes &&
+                    routes[index] && (
                       <Flex key={place.id + index} gap={1}>
                         <Text variant="description">
                           {MOVING_STRATEGY[routes[index].movingStrategy]}{' '}
