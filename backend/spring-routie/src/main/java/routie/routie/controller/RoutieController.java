@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 import routie.routie.controller.dto.request.RoutieUpdateRequest;
 import routie.routie.controller.dto.response.RoutieReadResponse;
 import routie.routie.controller.dto.response.RoutieTimeValidationResponse;
-import routie.routie.controller.dto.response.RoutieUpdateResponse;
 import routie.routie.service.RoutieService;
 
 @RestController
@@ -32,11 +31,13 @@ public class RoutieController {
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<RoutieUpdateResponse> updateRoutie(
+    public ResponseEntity<Void> updateRoutie(
             @PathVariable final Long id,
             @RequestBody final RoutieUpdateRequest routieUpdateRequest
     ) {
-        return ResponseEntity.ok(routieService.modifyRoutie(id, routieUpdateRequest));
+        routieService.modifyRoutie(id, routieUpdateRequest);
+
+        return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/routies/{routieId}/validity")
