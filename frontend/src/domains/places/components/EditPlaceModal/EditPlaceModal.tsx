@@ -3,23 +3,26 @@ import { useEffect } from 'react';
 import Flex from '@/@common/components/Flex/Flex';
 import Modal, { ModalProps } from '@/@common/components/Modal/Modal';
 
+import editPlace from '../../apis/editPlace';
+import getPlace from '../../apis/getPlace';
 import { useAddPlaceForm } from '../../hooks/useAddPlaceForm';
 import { ModalInputContainerStyle } from '../AddPlaceModal/AddPlaceModal.styles';
 import OptionalInfoSection from '../PlaceFormSection/OptionalInfoSection';
-import { FormState } from '../PlaceFormSection/PlaceForm.types';
 import RequiredInfoSection from '../PlaceFormSection/RequiredInfoSection';
 
 import EditPlaceModalButtons from './EditPlaceModalButtons';
 import EditPlaceModalHeader from './EditPlaceModalHeader';
 
 interface EditPlaceModalProps extends Omit<ModalProps, 'children'> {
-  initialData: FormState;
+  id: number;
+  onPlaceChange: () => Promise<void>;
 }
 
 const EditPlaceModal = ({
   isOpen,
   onClose,
-  initialData,
+  id,
+  onPlaceChange,
 }: EditPlaceModalProps) => {
   const {
     form,
@@ -30,18 +33,33 @@ const EditPlaceModal = ({
   } = useAddPlaceForm();
 
   useEffect(() => {
-    if (isOpen) {
-      initializeForm(initialData);
-    }
-  }, [isOpen, initialData]);
+    if (!isOpen) return;
+    const fetchData = async () => {
+      try {
+        const initialData = await getPlace(id);
+        initializeForm(initialData);
+      } catch (error) {
+        console.error('장소 데이터 조회 실패:', error);
+      }
+    };
+
+    fetchData();
+  }, [isOpen, id]);
 
   const handleClose = () => {
     resetForm();
     onClose();
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    try {
+      const { name, address, ...rest } = form;
+      await editPlace({ placeId: id, editableFields: rest });
+      await onPlaceChange();
+    } catch (error) {
+      console.log(error);
+    }
     handleClose();
   };
 

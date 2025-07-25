@@ -1,6 +1,7 @@
 package routie.routie.service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -26,6 +27,7 @@ import routie.routie.domain.route.Route;
 import routie.routie.domain.route.RouteCalculator;
 import routie.routie.domain.timeperiod.TimePeriod;
 import routie.routie.domain.timeperiod.TimePeriodCalculator;
+import routie.routie.repository.RoutiePlaceRepository;
 import routie.routie.repository.RoutieRepository;
 
 @Service
@@ -37,35 +39,44 @@ public class RoutieService {
     private final TimePeriodCalculator timePeriodCalculator;
     private final RouteCalculator routeCalculator;
     private final ValidityCalculator validityCalculator;
+    private final RoutiePlaceRepository routiePlaceRepository;
 
-    public RoutieReadResponse getRoutie(final Long id) {
-        return RoutieReadResponse.from(routieRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("해당하는 id의 루티를 찾을 수 없습니다.")));
+    public RoutieReadResponse getRoutie(final Long routieId) {
+        Routie routie = getRoutieById(routieId);
+        Map<RoutiePlace, Route> routeByFromRoutiePlace = routeCalculator.calculateRoutes(routie.getRoutiePlaces());
+        List<Route> routes = new ArrayList<>(routeByFromRoutiePlace.values());
+
+        return RoutieReadResponse.from(routie, routes);
     }
 
     @Transactional
-    public RoutieUpdateResponse modifyRoutie(final Long id, final RoutieUpdateRequest request) {
-        Routie routie = getRoutieById(id);
+    public void modifyRoutie(final Long routieId, final RoutieUpdateRequest routieUpdateRequest) {
+        Routie routie = getRoutieById(routieId);
 
-        List<Long> placeIds = request.routiePlaces().stream()
+        List<Long> placeIds = routieUpdateRequest.routiePlaces().stream()
                 .map(RoutiePlaceRequest::placeId)
                 .toList();
 
         Map<Long, Place> placeMap = placeRepository.findAllById(placeIds).stream()
                 .collect(Collectors.toMap(Place::getId, Function.identity()));
 
-        List<RoutiePlace> routiePlaces = request.routiePlaces().stream()
+        List<Long> routiePlaceIds = routie.getRoutiePlaces().stream()
+                .map(RoutiePlace::getId)
+                .toList();
+
+        routiePlaceRepository.deleteAllById(routiePlaceIds);
+
+        List<RoutiePlace> routiePlaces = routieUpdateRequest.routiePlaces().stream()
                 .map(r -> new RoutiePlace(
                         r.sequence(),
                         Optional.ofNullable(placeMap.get(r.placeId()))
                                 .orElseThrow(
                                         () -> new IllegalArgumentException("해당하는 id의 장소를 찾을 수 없습니다: " + r.placeId()))
-                ))
-                .toList();
+                )).toList();
 
         routie.modify(routiePlaces);
 
-        return RoutieUpdateResponse.from(routie);
+        RoutieUpdateResponse.from(routie);
     }
 
     private Routie getRoutieById(final Long id) {

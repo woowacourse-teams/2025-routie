@@ -19,7 +19,7 @@ public class RouteCalculator {
     private final TravelTimeCalculator travelTimeCalculator;
 
     public Map<RoutiePlace, Route> calculateRoutes(final List<RoutiePlace> routiePlaces) {
-        Map<RoutiePlace, Route> routeByFromRoutiePlace = new LinkedHashMap<>();
+        LinkedHashMap<RoutiePlace, Route> routeByFromRoutiePlace = new LinkedHashMap<>();
 
         for (int sequence = 0; sequence < routiePlaces.size() - 1; sequence++) {
             RoutiePlace fromRoutiePlace = routiePlaces.get(sequence);
