@@ -1,42 +1,17 @@
-import { useEffect, useState } from 'react';
-
 import Flex from '@/@common/components/Flex/Flex';
 import Text from '@/@common/components/Text/Text';
-import getPlaceList from '@/domains/places/apis/getplaceList';
 import {
   PlaceCard,
   PlaceCardProps,
 } from '@/domains/places/components/PlaceCard/PlaceCard';
 
-const PlaceList = () => {
-  const [places, setPlaces] = useState<PlaceCardProps[]>([]);
+interface PlaceListProps {
+  places: PlaceCardProps[];
+  onDelete: (id: number) => void;
+  onPlaceChange: () => Promise<void>;
+}
 
-  const handleDelete = (id: number) => {
-    setPlaces((prev) => prev.filter((place) => place.id !== id));
-  };
-
-  const refetchPlaceList = async () => {
-    try {
-      const newPlaceList = await getPlaceList();
-      setPlaces(newPlaceList);
-    } catch (error) {
-      console.error('장소 목록을 불러오는데 실패했습니다.', error);
-    }
-  };
-
-  useEffect(() => {
-    const fetchPlaces = async () => {
-      try {
-        const data = await getPlaceList();
-        setPlaces(data);
-      } catch (error) {
-        console.error('장소 목록을 불러오는데 실패했습니다.', error);
-      }
-    };
-
-    fetchPlaces();
-  }, []);
-
+const PlaceList = ({ places, onDelete, onPlaceChange }: PlaceListProps) => {
   return (
     <>
       <Flex
@@ -60,8 +35,8 @@ const PlaceList = () => {
             <PlaceCard
               key={place.id}
               {...place}
-              onDelete={handleDelete}
-              onPlaceChange={refetchPlaceList}
+              onDelete={onDelete}
+              onPlaceChange={onPlaceChange}
             />
           ))}
         </div>
