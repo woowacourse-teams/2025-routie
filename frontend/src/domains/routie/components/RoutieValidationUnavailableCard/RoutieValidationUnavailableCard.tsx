@@ -14,8 +14,8 @@ const RoutieValidationUnavailableCard = () => {
       <Flex width="100%" gap={1.5} justifyContent="flex-start" height="100%">
         <img src={infoIcon} alt="info" />
         <Flex direction="column" gap={0.3} alignItems="flex-start">
-          <Text variant="caption">일정 상태 확인 불가</Text>
-          <Text variant="description">기능이 비활성화되어 있어요</Text>
+          <Text variant="caption">아직 준비중입니다</Text>
+          <Text variant="description">다음에 만나요 (3차 데모 오픈 예정)</Text>
         </Flex>
       </Flex>
     </Card>
