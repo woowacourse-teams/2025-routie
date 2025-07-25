@@ -1,6 +1,6 @@
 import { apiClient } from '@/apis';
 
-import { RoutiePlaces } from '../types/routie.types';
+import { Routie } from '../types/routie.types';
 
 export const getRoutieId = async () => {
   const routieSpaceUuid = localStorage.getItem('routieSpaceUuid');
@@ -45,7 +45,7 @@ export const getDetailRoutie = async () => {
   return data;
 };
 
-export const editRoutieSequence = async (routiePlaces: RoutiePlaces) => {
+export const editRoutieSequence = async (routiePlaces: Routie[]) => {
   const routieSpaceUuid = localStorage.getItem('routieSpaceUuid');
   const routieId = localStorage.getItem('routieId');
 
@@ -53,18 +53,10 @@ export const editRoutieSequence = async (routiePlaces: RoutiePlaces) => {
     throw new Error('루티 스페이스 uuid가 없습니다.');
   }
 
-  const response = await apiClient.patch(`/routies/${routieId}`, {
+  await apiClient.patch(`/routies/${routieId}`, {
     routieId,
-    routiePlaces: routiePlaces.routiePlaces,
+    routiePlaces,
   });
-
-  if (!response.ok) {
-    throw new Error('루티 수정 실패');
-  }
-
-  const data = await response.json();
-
-  return data;
 };
 
 export const getDetailPlace = async (id: number) => {
