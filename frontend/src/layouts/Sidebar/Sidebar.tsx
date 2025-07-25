@@ -74,11 +74,11 @@ const Sidebar = ({
 
   const handleDelete = (id: number) => {
     editRoutieSequence(routiePlaces.filter((item) => item.placeId !== id));
+    setRoutiePlaces(routiePlaces.filter((item) => item.placeId !== id));
   };
 
   const MOVING_STRATEGY = {
-    DRIVING: '자가',
-    WALKING: '도보',
+    DRIVING: '운전',
   };
 
   return (
@@ -179,26 +179,6 @@ const Sidebar = ({
                         </Pill>
                       </Flex>
                     )}
-                    {/* routes[index] */}
-                    {/* {index < routiePlaces.length - 1 &&
-                    routes?.map((route, index) => {
-                      return (
-                        <Flex key={index} gap={1}>
-                          <Text variant="description">
-                            {MOVING_STRATEGY[route.movingStrategy]}{' '}
-                            {route.duration}분
-                          </Text>
-                          <Pill type="distance">
-                            <Text
-                              variant="description"
-                              color={theme.colors.purple[400]}
-                            >
-                              {(route.distance / 1000).toFixed(1)}km
-                            </Text>
-                          </Pill>
-                        </Flex>
-                      );
-                    })} */}
                   </>
                 );
               })}
