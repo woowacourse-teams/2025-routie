@@ -94,12 +94,12 @@ jobs:
 
       - name: Kill existing Spring Process
         run: |
-          PID=$(sudo lsof -ti:80 || true)
+          PID=$(sudo lsof -ti:8080 || true)
           if [ -n "$PID" ]; then
-            echo "Killing process on port 80: $PID"
+            echo "Killing process on port 8080: $PID"
             sudo kill -9 "$PID"
           else
-            echo "No process found on port 80"
+            echo "No process found on port 8080"
           fi
 
       - name: Start Spring Boot Application with external config
@@ -112,5 +112,5 @@ jobs:
           echo "Starting $JAR_NAME"
           sudo nohup java -jar "$JAR_NAME" \
             --spring.profiles.active=dev \
-            --server.port=80 \
+            --server.port=8080 \
             --spring.config.location=./config/application.yml > app.log 2>&1 &
