@@ -42,6 +42,10 @@ const RoutieSpace = () => {
     fetchRoutieId();
   }, []);
 
+  useEffect(() => {
+    refetchPlaceList();
+  }, []);
+
   return (
     <>
       <Flex justifyContent="flex-start" height="100vh">
