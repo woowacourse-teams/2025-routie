@@ -12,7 +12,7 @@ import RoutiePlaceCard from '@/domains/routie/components/RoutiePlaceCard/RoutieP
 import RoutieValidationResultCard from '@/domains/routie/components/RoutieValidationResultCard/RoutieValidationResultCard';
 import RoutieValidationUnavailableCard from '@/domains/routie/components/RoutieValidationUnavailableCard/RoutieValidationUnavailableCard';
 import { useCardDrag } from '@/domains/routie/hooks/useCardDrag';
-import { RoutiePlace, RoutiePlaces } from '@/domains/routie/types/routie.types';
+import { Routes, Routie } from '@/domains/routie/types/routie.types';
 import RoutieSpaceName from '@/domains/routieSpace/components/RoutieSpaceName/RoutieSpaceName';
 import theme from '@/styles/theme';
 
@@ -25,48 +25,36 @@ const initialTime = {
 
 const Sidebar = ({
   routiePlaces,
-  routiePlaceList,
-  setRoutiePlaceList,
   setRoutiePlaces,
+  routes,
 }: {
-  setRefetch: React.Dispatch<React.SetStateAction<boolean>>;
-  setRoutiePlaces: React.Dispatch<
-    React.SetStateAction<RoutiePlaces | undefined>
-  >;
-  setRoutiePlaceList: React.Dispatch<React.SetStateAction<RoutiePlace[]>>;
-  routiePlaces: RoutiePlaces;
-  routiePlaceList: RoutiePlace[];
+  setRoutiePlaces: React.Dispatch<React.SetStateAction<Routie[] | undefined>>;
+  routiePlaces: Routie[];
+  routes: Routes[] | undefined;
 }) => {
-  const getDragProps = useCardDrag(routiePlaceList, setRoutiePlaceList);
+  const getDragProps = useCardDrag(routiePlaces, setRoutiePlaces);
   const [addModalOpen, setAddModalOpen] = useState(false);
   const [isValidateActive, setIsValidateActive] = useState(false);
   const [time, setTime] = useState(initialTime);
 
   useEffect(() => {
-    if (!routiePlaces || routiePlaceList.length === 0) return;
+    if (!routiePlaces) return;
 
-    const updatedSequence = routiePlaces.routiePlaces.map((routiePlace) => {
-      const id = routiePlace.placeId;
-      const changedIndex = routiePlaceList.findIndex((item) => id === item.id);
-      return {
-        ...routiePlace,
-        sequence: changedIndex + 1,
-      };
-    });
+    const updated = routiePlaces.map((item, index) => ({
+      ...item,
+      sequence: index + 1,
+    }));
 
-    const isUnchanged = routiePlaces.routiePlaces.every(
-      (r, idx) => r.sequence === updatedSequence[idx].sequence,
+    const isSequenceChanged = routiePlaces.some(
+      (item, index) => item.sequence !== index + 1,
     );
-    if (isUnchanged) return;
+    if (isSequenceChanged) {
+      const sortedPlaces = updated.sort((a, b) => a.sequence - b.sequence);
 
-    const newRoutiePlaces = {
-      ...routiePlaces,
-      routiePlaces: updatedSequence,
-    };
-    setRoutiePlaces(newRoutiePlaces);
-
-    editRoutieSequence(newRoutiePlaces);
-  }, [routiePlaceList]);
+      setRoutiePlaces(sortedPlaces);
+      editRoutieSequence(sortedPlaces);
+    }
+  }, [routiePlaces]);
 
   const openAddModal = () => {
     setAddModalOpen((prev) => !prev);
@@ -82,6 +70,15 @@ const Sidebar = ({
 
   const handleTimeChange = (field: string, value: string) => {
     setTime((prev) => ({ ...prev, [field]: value }));
+  };
+
+  const handleDelete = (id: number) => {
+    editRoutieSequence(routiePlaces.filter((item) => item.placeId !== id));
+  };
+
+  const MOVING_STRATEGY = {
+    DRIVING: '자가',
+    WALKING: '도보',
   };
 
   return (
@@ -155,28 +152,56 @@ const Sidebar = ({
               boxSizing: 'border-box',
             }}
           >
-            {routiePlaceList.map((place, index) => {
-              return (
-                <>
-                  <div key={place.id} {...getDragProps(index)}>
-                    <RoutiePlaceCard {...place} />
-                  </div>
-                  {index < routiePlaceList.length - 1 && (
-                    <Flex gap={1}>
-                      <Text variant="description">도보 15분</Text>
-                      <Pill type="distance">
-                        <Text
-                          variant="description"
-                          color={theme.colors.purple[400]}
-                        >
-                          2.0km
+            {routes &&
+              routiePlaces?.map((place, index) => {
+                return (
+                  <>
+                    <div key={place.placeId} {...getDragProps(index)}>
+                      <RoutiePlaceCard
+                        placeId={place.placeId}
+                        handleDelete={() => handleDelete(place.placeId)}
+                      />
+                    </div>
+
+                    {routiePlaces.length - 1 !== index && (
+                      <Flex key={place.id + index} gap={1}>
+                        <Text variant="description">
+                          {MOVING_STRATEGY[routes[index].movingStrategy]}{' '}
+                          {routes[index].duration}분
                         </Text>
-                      </Pill>
-                    </Flex>
-                  )}
-                </>
-              );
-            })}
+                        <Pill type="distance">
+                          <Text
+                            variant="description"
+                            color={theme.colors.purple[400]}
+                          >
+                            {(routes[index].distance / 1000).toFixed(1)}km
+                          </Text>
+                        </Pill>
+                      </Flex>
+                    )}
+                    {/* routes[index] */}
+                    {/* {index < routiePlaces.length - 1 &&
+                    routes?.map((route, index) => {
+                      return (
+                        <Flex key={index} gap={1}>
+                          <Text variant="description">
+                            {MOVING_STRATEGY[route.movingStrategy]}{' '}
+                            {route.duration}분
+                          </Text>
+                          <Pill type="distance">
+                            <Text
+                              variant="description"
+                              color={theme.colors.purple[400]}
+                            >
+                              {(route.distance / 1000).toFixed(1)}km
+                            </Text>
+                          </Pill>
+                        </Flex>
+                      );
+                    })} */}
+                  </>
+                );
+              })}
           </Flex>
         </Flex>
       </Flex>

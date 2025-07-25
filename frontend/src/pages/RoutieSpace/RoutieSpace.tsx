@@ -1,19 +1,14 @@
 import { useEffect, useState } from 'react';
 
 import Flex from '@/@common/components/Flex/Flex';
-import {
-  getDetailPlace,
-  getDetailRoutie,
-  getRoutieId,
-} from '@/domains/routie/apis/routie';
-import { RoutiePlace, RoutiePlaces } from '@/domains/routie/types/routie.types';
+import { getDetailRoutie, getRoutieId } from '@/domains/routie/apis/routie';
+import { Routes, Routie } from '@/domains/routie/types/routie.types';
 import PlaceList from '@/layouts/PlaceList/PlaceList';
 import Sidebar from '@/layouts/Sidebar/Sidebar';
 
 const RoutieSpace = () => {
-  const [routiePlaces, setRoutiePlaces] = useState<RoutiePlaces>();
-  const [routiePlaceList, setRoutiePlaceList] = useState<RoutiePlace[]>([]);
-  const [refetch, setRefetch] = useState<boolean>(false);
+  const [routiePlaces, setRoutiePlaces] = useState<Routie[] | undefined>();
+  const [routes, setRoutes] = useState<Routes[] | undefined>();
 
   useEffect(() => {
     const fetchRoutieId = async () => {
@@ -21,47 +16,25 @@ const RoutieSpace = () => {
         const routieId = await getRoutieId();
         localStorage.setItem('routieId', routieId);
         const routies = await getDetailRoutie();
-        setRoutiePlaces(routies);
+        setRoutiePlaces(routies.routiePlaces);
+        setRoutes(routies.routes);
       } catch (error) {
         console.error('Failed to get routieId:', error);
       }
     };
 
     fetchRoutieId();
-  }, [refetch]);
-
-  useEffect(() => {
-    if (routiePlaces) {
-      const placesIds = routiePlaces.routiePlaces.map(
-        (routiePlace) => routiePlace.id,
-      );
-
-      const fetchPlaces = async () => {
-        const places = await Promise.all(
-          placesIds.map(async (id: number) => {
-            const place = await getDetailPlace(id);
-            return { ...place, id };
-          }),
-        );
-
-        setRoutiePlaceList(places);
-      };
-
-      fetchPlaces();
-    }
-  }, [routiePlaces]);
+  }, []);
 
   return (
     <>
       <Flex justifyContent="flex-start" height="100vh">
         <Flex direction="column" justifyContent="flex-start" height="100%">
-          {routiePlaceList && routiePlaces && (
+          {routiePlaces && routiePlaces?.length > 0 && (
             <Sidebar
-              setRefetch={setRefetch}
               routiePlaces={routiePlaces}
-              routiePlaceList={routiePlaceList}
-              setRoutiePlaceList={setRoutiePlaceList}
               setRoutiePlaces={setRoutiePlaces}
+              routes={routes}
             />
           )}
         </Flex>
