@@ -15,9 +15,11 @@ import { RoutiePlace } from '../../types/routie.types';
 const RoutiePlaceCard = ({
   placeId,
   handleDelete,
+  onPlaceChange,
 }: {
   placeId: number;
   handleDelete: () => void;
+  onPlaceChange?: () => Promise<void>;
 }) => {
   const [place, setPlace] = useState<RoutiePlace>();
 
@@ -27,7 +29,7 @@ const RoutiePlaceCard = ({
       setPlace(detailPlace);
     };
     fetchDetailPlace();
-  }, []);
+  }, [placeId, onPlaceChange]);
 
   return (
     place && (

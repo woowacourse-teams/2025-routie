@@ -159,6 +159,7 @@ const Sidebar = ({
                     <RoutiePlaceCard
                       placeId={place.placeId}
                       handleDelete={() => handleDelete(place.placeId)}
+                      onPlaceChange={onPlaceChange}
                     />
                   </div>
 
