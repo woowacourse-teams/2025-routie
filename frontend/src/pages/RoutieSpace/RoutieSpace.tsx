@@ -30,13 +30,13 @@ const RoutieSpace = () => {
     <>
       <Flex justifyContent="flex-start" height="100vh">
         <Flex direction="column" justifyContent="flex-start" height="100%">
-          {routiePlaces && routiePlaces?.length > 0 && (
+          {
             <Sidebar
-              routiePlaces={routiePlaces}
+              routiePlaces={routiePlaces ?? []}
               setRoutiePlaces={setRoutiePlaces}
               routes={routes}
             />
-          )}
+          }
         </Flex>
         <Flex direction="column" justifyContent="flex-start" height="100%">
           <PlaceList />
