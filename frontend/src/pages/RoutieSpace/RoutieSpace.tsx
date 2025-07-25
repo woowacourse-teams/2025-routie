@@ -48,6 +48,7 @@ const RoutieSpace = () => {
         <Flex direction="column" justifyContent="flex-start" height="100%">
           {
             <Sidebar
+              onPlaceChange={refetchPlaceList}
               routiePlaces={routiePlaces ?? []}
               setRoutiePlaces={setRoutiePlaces}
               routes={routes}
