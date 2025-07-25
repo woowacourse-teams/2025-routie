@@ -22,6 +22,16 @@ const RoutieSpace = () => {
     }
   };
 
+  const refetchRoutieData = async () => {
+    try {
+      const routies = await getDetailRoutie();
+      setRoutiePlaces(routies.routiePlaces);
+      setRoutes(routies.routes);
+    } catch (error) {
+      console.error('루티 정보를 불러오는데 실패했습니다.', error);
+    }
+  };
+
   const handleDelete = (id: number) => {
     setPlaceList((prev) => prev.filter((place) => place.id !== id));
   };
@@ -64,6 +74,9 @@ const RoutieSpace = () => {
             places={placeList}
             onDelete={handleDelete}
             onPlaceChange={refetchPlaceList}
+            routiePlaces={routiePlaces ?? []}
+            setRoutiePlaces={setRoutiePlaces}
+            onRoutieDataChange={refetchRoutieData}
           />
         </Flex>
       </Flex>

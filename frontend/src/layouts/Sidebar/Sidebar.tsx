@@ -100,7 +100,6 @@ const Sidebar = ({
           width="100%"
           gap={1.2}
           padding={1.6}
-          height="27.4rem"
           justifyContent="flex-start"
         >
           <Flex direction="column" width="100%" gap={1.2}>
@@ -120,10 +119,7 @@ const Sidebar = ({
             gap={1}
           >
             <Text variant="label">일정 검증 토글</Text>
-            <ToggleSwitch
-              active={isValidateActive}
-              onToggle={handleValidateToggle}
-            />
+            <ToggleSwitch active={isValidateActive} onToggle={() => {}} />
           </Flex>
 
           {isValidateActive ? (
@@ -149,25 +145,26 @@ const Sidebar = ({
             direction="column"
             gap={1}
             justifyContent="flex-start"
+            height="calc(100dvh - 36rem)"
             style={{
               overflowY: 'auto',
-              height: '59rem',
               padding: '1.6rem 0 ',
               boxSizing: 'border-box',
             }}
           >
-            {routes &&
-              routiePlaces?.map((place, index) => {
-                return (
-                  <>
-                    <div key={place.placeId} {...getDragProps(index)}>
-                      <RoutiePlaceCard
-                        placeId={place.placeId}
-                        handleDelete={() => handleDelete(place.placeId)}
-                      />
-                    </div>
+            {routiePlaces?.map((place, index) => {
+              return (
+                <>
+                  <div key={place.placeId} {...getDragProps(index)}>
+                    <RoutiePlaceCard
+                      placeId={place.placeId}
+                      handleDelete={() => handleDelete(place.placeId)}
+                    />
+                  </div>
 
-                    {routiePlaces.length - 1 !== index && (
+                  {routiePlaces.length - 1 !== index &&
+                    routes &&
+                    routes[index] && (
                       <Flex key={place.id + index} gap={1}>
                         <Text variant="description">
                           {MOVING_STRATEGY[routes[index].movingStrategy]}{' '}
@@ -183,9 +180,9 @@ const Sidebar = ({
                         </Pill>
                       </Flex>
                     )}
-                  </>
-                );
-              })}
+                </>
+              );
+            })}
           </Flex>
         </Flex>
       </Flex>

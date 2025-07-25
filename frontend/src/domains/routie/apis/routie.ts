@@ -54,7 +54,6 @@ export const editRoutieSequence = async (routiePlaces: Routie[]) => {
   }
 
   await apiClient.patch(`/routies/${routieId}`, {
-    routieId,
     routiePlaces,
   });
 };

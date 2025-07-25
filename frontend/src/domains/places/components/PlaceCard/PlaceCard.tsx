@@ -28,14 +28,17 @@ export interface PlaceCardProps {
   closedDays: string[];
   onDelete: (id: number) => void;
   onPlaceChange: () => Promise<void>;
+  selected: boolean;
+  onSelect: () => Promise<void>;
 }
 
 export const PlaceCard = ({
   onDelete,
   onPlaceChange,
+  selected,
+  onSelect,
   ...props
 }: PlaceCardProps) => {
-  const [isClicked, setIsClicked] = useState(false);
   const [editModalOpen, setEditModalOpen] = useState(false);
 
   const openEditModal = () => {
@@ -46,8 +49,8 @@ export const PlaceCard = ({
     setEditModalOpen((prev) => !prev);
   };
 
-  const handleToggle = () => {
-    setIsClicked((prev) => !prev);
+  const handleToggle = async () => {
+    await onSelect();
   };
 
   const handleDelete = async () => {
@@ -64,7 +67,7 @@ export const PlaceCard = ({
       <Card
         id={props.id.toString()}
         width="20rem"
-        variant={isClicked ? 'available' : 'default'}
+        variant={selected ? 'available' : 'default'}
       >
         <Flex
           direction="column"
@@ -74,8 +77,8 @@ export const PlaceCard = ({
         >
           <Flex justifyContent="space-between" width="100%" alignItems="center">
             <IconButton
-              icon={isClicked ? checkIcon : plusIcon}
-              variant={isClicked ? 'selected' : 'select'}
+              icon={selected ? checkIcon : plusIcon}
+              variant={selected ? 'selected' : 'select'}
               onClick={handleToggle}
             />
             <Flex gap={1}>
