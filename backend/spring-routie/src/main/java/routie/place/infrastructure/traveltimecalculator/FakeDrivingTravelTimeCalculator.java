@@ -15,6 +15,6 @@ public class FakeDrivingTravelTimeCalculator implements TravelTimeCalculator {
 
     @Override
     public int calculateTravelTime(final Place from, final Place to, final MovingStrategy strategy) {
-        return 100 * 60;
+        return 100;
     }
 }
