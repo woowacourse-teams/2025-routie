@@ -13,6 +13,14 @@ export type RoutiePlaces = {
   };
 };
 
+export type Routes = {
+  fromSequence: number;
+  toSequence: number;
+  movingStrategy: 'DRIVING';
+  duration: number;
+  distance: number;
+};
+
 export type Routie = {
   id: number;
   sequence: number;
