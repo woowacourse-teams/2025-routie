@@ -23,15 +23,19 @@ const initialTime = {
   endAt: '22:00',
 };
 
-const Sidebar = ({
-  routiePlaces,
-  setRoutiePlaces,
-  routes,
-}: {
+interface SidebarProps {
+  onPlaceChange: () => Promise<void>;
   setRoutiePlaces: React.Dispatch<React.SetStateAction<Routie[] | undefined>>;
   routiePlaces: Routie[];
   routes: Routes[] | undefined;
-}) => {
+}
+
+const Sidebar = ({
+  onPlaceChange,
+  routiePlaces,
+  setRoutiePlaces,
+  routes,
+}: SidebarProps) => {
   const getDragProps = useCardDrag(routiePlaces, setRoutiePlaces);
   const [addModalOpen, setAddModalOpen] = useState(false);
   const [isValidateActive, setIsValidateActive] = useState(false);
@@ -185,7 +189,11 @@ const Sidebar = ({
           </Flex>
         </Flex>
       </Flex>
-      <AddPlaceModal isOpen={addModalOpen} onClose={closeAddModal} />
+      <AddPlaceModal
+        isOpen={addModalOpen}
+        onClose={closeAddModal}
+        onPlaceAdded={onPlaceChange}
+      />
     </>
   );
 };
