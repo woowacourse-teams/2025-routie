@@ -1,10 +1,10 @@
-name: Front CI
+name: Front CI on develop branch
 
 on:
   pull_request:
-    branches: [develop]
+    branches: [ develop ]
   push:
-    branches: [develop]
+    branches: [ develop ]
 
 jobs:
   build:
@@ -12,7 +12,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [20, 23]
+        node-version: [ 20, 23 ]
 
     defaults:
       run:

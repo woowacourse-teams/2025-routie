@@ -1,8 +1,8 @@
-name: Setup Opened PR
+name: Setup Opened PRs
 
 on:
   pull_request:
-    types: [opened, reopened]
+    types: [ opened, reopened ]
 
 jobs:
 

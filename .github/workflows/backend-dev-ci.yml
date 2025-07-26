@@ -1,9 +1,9 @@
-name: CI on develop branch
+name: Backend CI on develop branch
 
 on:
   pull_request:
     branches: [ "develop" ]
-    types: [opened, synchronize, reopened]
+    types: [ opened, synchronize, reopened ]
     paths:
       - 'backend/**'
 
