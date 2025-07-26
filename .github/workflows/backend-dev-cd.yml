@@ -43,16 +43,13 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
-      - name: Build with Gradle
-        run: ./gradlew clean bootJar
+      - name: BootJar with Gradle
+        run: ./gradlew bootJar
 
       - name: Test with Gradle
         run: ./gradlew test
         env:
           SPRING_PROFILES_ACTIVE: test
-
-      - name: Debug artifact path
-        run: ls -al build/libs
 
       - name: Upload JAR Artifact
         uses: actions/upload-artifact@v4
@@ -83,9 +80,6 @@ jobs:
         with:
           name: spring-boot-app
           path: backend/spring-routie/build/libs
-
-      - name: Debug downloaded JARs
-        run: ls -al build/libs
 
       - name: Restore application.yml
         run: |
