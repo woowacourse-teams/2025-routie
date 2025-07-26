@@ -1,12 +1,11 @@
-name: CI on develop branch
+name: Backend CI on develop branch
 
 on:
   pull_request:
     branches: [ "develop" ]
-    types: [opened, synchronize, reopened]
+    types: [ opened, synchronize, reopened ]
     paths:
       - 'backend/**'
-      - '.github/workflows/**'
 
 permissions:
   contents: read
@@ -46,8 +45,8 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
-      - name: Build with Gradle
-        run: ./gradlew clean bootJar
+      - name: BootJar with Gradle
+        run: ./gradlew bootJar
 
       # gradle test 진행
       - name: Test with Gradle
