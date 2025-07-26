@@ -6,7 +6,6 @@ on:
     types: [opened, synchronize, reopened]
     paths:
       - 'backend/**'
-      - '.github/workflows/**'
 
 permissions:
   contents: read
