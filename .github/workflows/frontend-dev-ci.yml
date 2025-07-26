@@ -3,6 +3,8 @@ name: Front CI on develop branch
 on:
   pull_request:
     branches: [ develop ]
+    paths:
+      - 'frontend/**'
   push:
     branches: [ develop ]
     paths:
