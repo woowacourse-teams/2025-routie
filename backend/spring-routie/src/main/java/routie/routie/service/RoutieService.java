@@ -111,6 +111,9 @@ public class RoutieService {
             final LocalDateTime endDateTime,
             final Map<RoutiePlace, TimePeriod> timePeriodByRoutiePlace
     ) {
+        if (timePeriodByRoutiePlace.isEmpty()) {
+            return true;
+        }
         return calculateTotalTimeValidity(startDateTime, endDateTime,
                 (LinkedHashMap<RoutiePlace, TimePeriod>) timePeriodByRoutiePlace);
     }
