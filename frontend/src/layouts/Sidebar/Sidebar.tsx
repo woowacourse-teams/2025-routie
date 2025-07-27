@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import Button from '@/@common/components/Button/Button';
 import Flex from '@/@common/components/Flex/Flex';
@@ -7,11 +7,12 @@ import Pill from '@/@common/components/Pill/Pill';
 import Text from '@/@common/components/Text/Text';
 import ToggleSwitch from '@/@common/components/ToggleSwitch/ToggleSwitch';
 import AddPlaceModal from '@/domains/places/components/AddPlaceModal/AddPlaceModal';
-import { PlaceCardProps } from '@/domains/places/components/PlaceCard/PlaceCard';
+import { editRoutieSequence } from '@/domains/routie/apis/routie';
 import RoutiePlaceCard from '@/domains/routie/components/RoutiePlaceCard/RoutiePlaceCard';
 import RoutieValidationResultCard from '@/domains/routie/components/RoutieValidationResultCard/RoutieValidationResultCard';
 import RoutieValidationUnavailableCard from '@/domains/routie/components/RoutieValidationUnavailableCard/RoutieValidationUnavailableCard';
 import { useCardDrag } from '@/domains/routie/hooks/useCardDrag';
+import { Routes, Routie } from '@/domains/routie/types/routie.types';
 import RoutieSpaceName from '@/domains/routieSpace/components/RoutieSpaceName/RoutieSpaceName';
 import theme from '@/styles/theme';
 
@@ -22,86 +23,42 @@ const initialTime = {
   endAt: '22:00',
 };
 
-const places = [
-  {
-    id: 1,
-    name: '카페 베네',
-    address: '서울시 강남구 테헤란로 123',
-    stayDurationMinutes: 60,
-    openAt: '09:00',
-    closeAt: '22:00',
-    breakStartAt: '12:00',
-    breakEndAt: '13:00',
-    closedDays: ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN'],
-  },
-  {
-    id: 2,
-    name: '카페 베네',
-    address: '서울시 강남구 테헤란로 123',
-    stayDurationMinutes: 60,
-    openAt: '09:00',
-    closeAt: '22:00',
-    breakStartAt: '12:00',
-    breakEndAt: '13:00',
-    closedDays: ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN'],
-  },
-  {
-    id: 3,
-    name: '카페 베네',
-    address: '서울시 강남구 테헤란로 123',
-    stayDurationMinutes: 60,
-    openAt: '09:00',
-    closeAt: '22:00',
-    breakStartAt: '12:00',
-    breakEndAt: '13:00',
-    closedDays: ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN'],
-  },
-  {
-    id: 4,
-    name: '카페 베네',
-    address: '서울시 강남구 테헤란로 123',
-    stayDurationMinutes: 60,
-    openAt: '09:00',
-    closeAt: '22:00',
-    breakStartAt: '12:00',
-    breakEndAt: '13:00',
-    closedDays: ['MON', 'WED', 'THU', 'FRI', 'SAT', 'SUN'],
-  },
-  {
-    id: 5,
-    name: '카페 베네',
-    address: '서울시 강남구 테헤란로 123',
-    stayDurationMinutes: 60,
-    openAt: '09:00',
-    closeAt: '22:00',
-    breakStartAt: '12:00',
-    breakEndAt: '13:00',
-    closedDays: ['FRI', 'SAT', 'SUN'],
-  },
-  {
-    id: 6,
-    name: '카페 베네',
-    address: '서울시 강남구 테헤란로 123',
-    stayDurationMinutes: 60,
-    openAt: '09:00',
-    closeAt: '22:00',
-    breakStartAt: '12:00',
-    breakEndAt: '13:00',
-    closedDays: ['MON', 'TUE', 'SAT', 'SUN'],
-  },
-];
-
 interface SidebarProps {
-  placeList: PlaceCardProps[];
   onPlaceChange: () => Promise<void>;
+  setRoutiePlaces: React.Dispatch<React.SetStateAction<Routie[] | undefined>>;
+  routiePlaces: Routie[];
+  routes: Routes[] | undefined;
 }
 
-const Sidebar = ({ placeList, onPlaceChange }: SidebarProps) => {
-  const [routie, setRoutie] = useState(placeList);
-  const getDragProps = useCardDrag(routie, setRoutie);
+const Sidebar = ({
+  onPlaceChange,
+  routiePlaces,
+  setRoutiePlaces,
+  routes,
+}: SidebarProps) => {
+  const getDragProps = useCardDrag(routiePlaces, setRoutiePlaces);
   const [addModalOpen, setAddModalOpen] = useState(false);
   const [isValidateActive, setIsValidateActive] = useState(false);
   const [time, setTime] = useState(initialTime);
+
+  useEffect(() => {
+    if (!routiePlaces) return;
+
+    const updated = routiePlaces.map((item, index) => ({
+      ...item,
+      sequence: index + 1,
+    }));
+
+    const isSequenceChanged = routiePlaces.some(
+      (item, index) => item.sequence !== index + 1,
+    );
+    if (isSequenceChanged) {
+      const sortedPlaces = updated.sort((a, b) => a.sequence - b.sequence);
+
+      setRoutiePlaces(sortedPlaces);
+      editRoutieSequence(sortedPlaces);
+    }
+  }, [routiePlaces]);
 
   const openAddModal = () => {
     setAddModalOpen((prev) => !prev);
@@ -119,6 +76,15 @@ const Sidebar = ({ placeList, onPlaceChange }: SidebarProps) => {
     setTime((prev) => ({ ...prev, [field]: value }));
   };
 
+  const handleDelete = (id: number) => {
+    editRoutieSequence(routiePlaces.filter((item) => item.placeId !== id));
+    setRoutiePlaces(routiePlaces.filter((item) => item.placeId !== id));
+  };
+
+  const MOVING_STRATEGY = {
+    DRIVING: '운전',
+  };
+
   return (
     <>
       <Flex
@@ -134,7 +100,6 @@ const Sidebar = ({ placeList, onPlaceChange }: SidebarProps) => {
           width="100%"
           gap={1.2}
           padding={1.6}
-          height="27.4rem"
           justifyContent="flex-start"
         >
           <Flex direction="column" width="100%" gap={1.2}>
@@ -154,10 +119,7 @@ const Sidebar = ({ placeList, onPlaceChange }: SidebarProps) => {
             gap={1}
           >
             <Text variant="label">일정 검증 토글</Text>
-            <ToggleSwitch
-              active={isValidateActive}
-              onToggle={handleValidateToggle}
-            />
+            <ToggleSwitch active={isValidateActive} onToggle={() => {}} />
           </Flex>
 
           {isValidateActive ? (
@@ -183,32 +145,42 @@ const Sidebar = ({ placeList, onPlaceChange }: SidebarProps) => {
             direction="column"
             gap={1}
             justifyContent="flex-start"
+            height="calc(100dvh - 36rem)"
             style={{
               overflowY: 'auto',
-              height: '59rem',
               padding: '1.6rem 0 ',
               boxSizing: 'border-box',
             }}
           >
-            {routie.map((place, index) => {
+            {routiePlaces?.map((place, index) => {
               return (
                 <>
-                  <div key={place.id} {...getDragProps(index)}>
-                    <RoutiePlaceCard {...place} />
+                  <div key={place.placeId} {...getDragProps(index)}>
+                    <RoutiePlaceCard
+                      placeId={place.placeId}
+                      handleDelete={() => handleDelete(place.placeId)}
+                      onPlaceChange={onPlaceChange}
+                    />
                   </div>
-                  {index < places.length - 1 && (
-                    <Flex gap={1}>
-                      <Text variant="description">도보 15분</Text>
-                      <Pill type="distance">
-                        <Text
-                          variant="description"
-                          color={theme.colors.purple[400]}
-                        >
-                          2.0km
+
+                  {routiePlaces.length - 1 !== index &&
+                    routes &&
+                    routes[index] && (
+                      <Flex key={place.id + index} gap={1}>
+                        <Text variant="description">
+                          {MOVING_STRATEGY[routes[index].movingStrategy]}{' '}
+                          {routes[index].duration}분
                         </Text>
-                      </Pill>
-                    </Flex>
-                  )}
+                        <Pill type="distance">
+                          <Text
+                            variant="description"
+                            color={theme.colors.purple[400]}
+                          >
+                            {(routes[index].distance / 1000).toFixed(1)}km
+                          </Text>
+                        </Pill>
+                      </Flex>
+                    )}
                 </>
               );
             })}
