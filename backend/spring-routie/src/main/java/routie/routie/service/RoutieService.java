@@ -123,6 +123,6 @@ public class RoutieService {
         LocalDateTime firstPeriodStartTime = timePeriodByRoutiePlace.firstEntry().getValue().startTime();
         LocalDateTime lastPeriodEndTime = timePeriodByRoutiePlace.lastEntry().getValue().endTime();
 
-        return !startDateTime.isBefore(firstPeriodStartTime) && !endDateTime.isAfter(lastPeriodEndTime);
+        return !firstPeriodStartTime.isBefore(startDateTime) && !lastPeriodEndTime.isAfter(endDateTime);
     }
 }
