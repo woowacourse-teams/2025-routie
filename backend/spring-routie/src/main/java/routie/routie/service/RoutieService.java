@@ -103,7 +103,7 @@ public class RoutieService {
                 .allMatch(validationStrategy -> validityCalculator.calculateValidity(timePeriodByRoutiePlace,
                         validationStrategy));
 
-        return new RoutieTimeValidationResponse(!isDefaultValid || !isStrategyValid);
+        return new RoutieTimeValidationResponse(isDefaultValid && isStrategyValid);
     }
 
     private boolean calculateDefaultValidity(
