@@ -77,8 +77,8 @@ public class RoutieSpaceController {
             @PathVariable final String routieSpaceIdentifier
     ) {
         final PlaceCreateResponse placeCreateResponse = placeService.addPlace(
-                placeCreateRequest,
-                routieSpaceIdentifier
+                routieSpaceIdentifier,
+                placeCreateRequest
         );
         return ResponseEntity.ok(placeCreateResponse);
     }
