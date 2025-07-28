@@ -1,9 +1,9 @@
 package routie.routiespace.controller.dto.request;
 
-import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotBlank;
 
 public record UpdateRoutieSpaceNameRequest(
-        @NotEmpty String name
+        @NotBlank String name
 ) {
 
 }
