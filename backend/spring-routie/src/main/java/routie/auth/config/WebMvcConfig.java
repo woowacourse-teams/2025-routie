@@ -9,12 +9,14 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Profile({"local", "dev"})
 public class WebMvcConfig implements WebMvcConfigurer {
 
+    private static final String LOCATION_HEADER_NAME = "Location";
+
     @Override
     public void addCorsMappings(final CorsRegistry registry) {
         registry.addMapping("/**")
                 .allowedOrigins("*")
                 .allowedMethods("*")
                 .allowedHeaders("*")
-                .exposedHeaders("Location");
+                .exposedHeaders(LOCATION_HEADER_NAME);
     }
 }
