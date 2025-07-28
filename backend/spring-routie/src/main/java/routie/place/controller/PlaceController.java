@@ -15,16 +15,16 @@ import routie.place.controller.dto.response.PlaceReadResponse;
 import routie.place.service.PlaceService;
 
 @RestController
-@RequestMapping("/places")
 @RequiredArgsConstructor
+@RequestMapping("/places")
 public class PlaceController {
 
     private final PlaceService placeService;
 
     @PatchMapping("/{placeId}")
     public ResponseEntity<Void> updatePlace(
-            @RequestBody @Valid final PlaceUpdateRequest placeUpdateRequest,
-            @PathVariable final long placeId
+            @PathVariable final long placeId,
+            @RequestBody @Valid final PlaceUpdateRequest placeUpdateRequest
     ) {
         placeService.modifyPlace(placeUpdateRequest, placeId);
         return ResponseEntity.ok().build();
