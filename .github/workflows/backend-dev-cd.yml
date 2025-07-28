@@ -1,4 +1,4 @@
-name: CD on develop branch
+name: Backend CD on develop branch
 
 on:
   push:
@@ -43,16 +43,13 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
-      - name: Build with Gradle
-        run: ./gradlew clean bootJar
-
       - name: Test with Gradle
         run: ./gradlew test
         env:
           SPRING_PROFILES_ACTIVE: test
 
-      - name: Debug artifact path
-        run: ls -al build/libs
+      - name: BootJar with Gradle
+        run: ./gradlew bootJar
 
       - name: Upload JAR Artifact
         uses: actions/upload-artifact@v4
@@ -84,9 +81,6 @@ jobs:
           name: spring-boot-app
           path: backend/spring-routie/build/libs
 
-      - name: Debug downloaded JARs
-        run: ls -al build/libs
-
       - name: Restore application.yml
         run: |
           mkdir -p config
@@ -104,7 +98,7 @@ jobs:
 
       - name: Start Spring Boot Application with external config
         run: |
-          JAR_NAME=$(find build/libs -type f -name "*.jar" | head -n 1)
+          JAR_NAME=$(ls build/libs/*.jar 2>/dev/null | head -n 1)
           if [ -z "$JAR_NAME" ]; then
             echo "No JAR file found. Deployment aborted."
             exit 1
