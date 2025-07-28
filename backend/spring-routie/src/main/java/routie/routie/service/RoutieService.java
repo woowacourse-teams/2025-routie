@@ -103,7 +103,7 @@ public class RoutieService {
                 .allMatch(validationStrategy -> validityCalculator.calculateValidity(timePeriodByRoutiePlace,
                         validationStrategy));
 
-        return new RoutieTimeValidationResponse(!isDefaultValid || !isStrategyValid);
+        return new RoutieTimeValidationResponse(isDefaultValid && isStrategyValid);
     }
 
     private boolean calculateDefaultValidity(
@@ -111,6 +111,9 @@ public class RoutieService {
             final LocalDateTime endDateTime,
             final Map<RoutiePlace, TimePeriod> timePeriodByRoutiePlace
     ) {
+        if (timePeriodByRoutiePlace.isEmpty()) {
+            return true;
+        }
         return calculateTotalTimeValidity(startDateTime, endDateTime,
                 (LinkedHashMap<RoutiePlace, TimePeriod>) timePeriodByRoutiePlace);
     }
@@ -123,6 +126,6 @@ public class RoutieService {
         LocalDateTime firstPeriodStartTime = timePeriodByRoutiePlace.firstEntry().getValue().startTime();
         LocalDateTime lastPeriodEndTime = timePeriodByRoutiePlace.lastEntry().getValue().endTime();
 
-        return !startDateTime.isBefore(firstPeriodStartTime) && !endDateTime.isAfter(lastPeriodEndTime);
+        return !firstPeriodStartTime.isBefore(startDateTime) && !lastPeriodEndTime.isAfter(endDateTime);
     }
 }

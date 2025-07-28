@@ -1,13 +1,13 @@
 spring:
   config:
     activate:
-      on-profile: dev
+      on-profile: local
 
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: ${DEV_MYSQL_URL}
-    username: ${DEV_MYSQL_USERNAME}
-    password: ${DEV_MYSQL_PASSWORD}
+    url: ${MYSQL_URL}
+    username: ${MYSQL_USERNAME}
+    password: ${MYSQL_PASSWORD}
 
   jpa:
     hibernate:
@@ -17,4 +17,3 @@ spring:
         format_sql: true
         dialect: org.hibernate.dialect.MySQLDialect
     show-sql: true
-

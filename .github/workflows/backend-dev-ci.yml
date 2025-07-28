@@ -1,12 +1,11 @@
-name: CI on develop branch
+name: Backend CI on develop branch
 
 on:
   pull_request:
     branches: [ "develop" ]
-    types: [opened, synchronize, reopened]
+    types: [ opened, synchronize, reopened ]
     paths:
       - 'backend/**'
-      - '.github/workflows/**'
 
 permissions:
   contents: read
@@ -25,14 +24,12 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      # Java 21 버전, correto 디스트리뷰션(OpenJDK 기반 디스트리뷰션) 세팅
       - name: Set up JDK 21
         uses: actions/setup-java@v4
         with:
           java-version: '21'
           distribution: 'corretto'
 
-      # gradle 캐싱을 통해 빌드 속도 개선
       - name: Gradle Caching
         uses: actions/cache@v4
         with:
@@ -46,23 +43,20 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
-      - name: Build with Gradle
-        run: ./gradlew clean bootJar
-
-      # gradle test 진행
       - name: Test with Gradle
         run: ./gradlew test
         env:
           SPRING_PROFILES_ACTIVE: test
 
-      # gradle test에 대한 리포트 작성
+      - name: BootJar with Gradle
+        run: ./gradlew bootJar
+
       - name: Publish Test Results
         uses: EnricoMi/publish-unit-test-result-action@v2
         if: always()
         with:
           files: '**/build/test-results/test/TEST-*.xml'
 
-      # 테스트 실패 시, 실패한 코드 라인에 Check 코멘트 등록
       - name: Comment to test failed code line
         uses: mikepenz/action-junit-report@v3
         if: always()

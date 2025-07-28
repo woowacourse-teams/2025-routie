@@ -39,27 +39,9 @@ public class BreaktimeValidityCalculator implements ValidityCalculator {
         final LocalTime visitStartTime = timePeriod.startTime().toLocalTime();
         final LocalTime visitEndTime = timePeriod.endTime().toLocalTime();
 
-        return isValidDepartureTime(visitStartTime, breakStartAt, breakEndAt) &&
-                isValidArrivalTime(visitEndTime, breakStartAt, breakEndAt);
-    }
+        boolean endsBeforeBreak = !visitEndTime.isAfter(breakStartAt);
+        boolean startsAfterBreak = !visitStartTime.isBefore(breakEndAt);
 
-    private boolean isValidDepartureTime(
-            final LocalTime departureTime,
-            final LocalTime breakStart,
-            final LocalTime breakEnd
-    ) {
-        return departureTime.isBefore(breakStart) ||
-                departureTime.equals(breakStart) ||
-                departureTime.isAfter(breakEnd);
-    }
-
-    private boolean isValidArrivalTime(
-            final LocalTime arrivalTime,
-            final LocalTime breakStart,
-            final LocalTime breakEnd
-    ) {
-        return arrivalTime.isBefore(breakStart) ||
-                arrivalTime.equals(breakEnd) ||
-                arrivalTime.isAfter(breakEnd);
+        return endsBeforeBreak || startsAfterBreak;
     }
 }
