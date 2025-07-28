@@ -27,7 +27,9 @@ public record PlaceReadResponse(
                 place.getCloseAt(),
                 place.getBreakStartAt(),
                 place.getBreakEndAt(),
-                place.getClosedWeekdays().stream().map(PlaceClosedWeekday::getClosedDay).toList()
+                place.getClosedWeekdays().stream()
+                        .map(PlaceClosedWeekday::getClosedDay)
+                        .toList()
         );
     }
 }
