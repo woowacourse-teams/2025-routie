@@ -38,7 +38,7 @@ public class PlaceController {
 
     @GetMapping("/{placeId}")
     public ResponseEntity<PlaceReadResponse> readPlace(@PathVariable final long placeId) {
-        final PlaceReadResponse placeReadResponse = placeService.getPlaceDetail(placeId);
+        final PlaceReadResponse placeReadResponse = placeService.getPlace(placeId);
         return ResponseEntity.ok(placeReadResponse);
     }
 }

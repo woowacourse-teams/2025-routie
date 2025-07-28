@@ -23,7 +23,7 @@ public class PlaceService {
     private final RoutieSpaceRepository routieSpaceRepository;
     private final PlaceClosedWeekdayRepository placeClosedWeekdayRepository;
 
-    public PlaceReadResponse getPlaceDetail(final long placeId) {
+    public PlaceReadResponse getPlace(final long placeId) {
         final Place place = getPlaceById(placeId);
         return PlaceReadResponse.from(place);
     }
