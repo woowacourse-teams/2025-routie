@@ -3,7 +3,7 @@ package routie.routiespace.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import routie.routiespace.controller.dto.request.UpdateRoutieSpaceNameRequest;
+import routie.routiespace.controller.dto.request.RoutieSpaceNameUpdateRequest;
 import routie.routiespace.controller.dto.response.RoutieSpaceNameResponse;
 import routie.routiespace.controller.dto.response.RoutiesResponse;
 import routie.routiespace.controller.dto.response.UpdateRoutieSpaceNameResponse;
@@ -34,12 +34,12 @@ public class RoutieSpaceService {
     @Transactional
     public UpdateRoutieSpaceNameResponse modifyRoutieSpaceName(
             final String routieSpaceIdentifier,
-            final UpdateRoutieSpaceNameRequest updateRoutieSpaceNameRequest
+            final RoutieSpaceNameUpdateRequest routieSpaceNameUpdateRequest
     ) {
         // TODO: 예외처리 구조 개선 예정
         RoutieSpace routieSpace = getRoutieSpaceByIdentifier(routieSpaceIdentifier);
 
-        routieSpace.updateName(updateRoutieSpaceNameRequest.name());
+        routieSpace.updateName(routieSpaceNameUpdateRequest.name());
 
         return new UpdateRoutieSpaceNameResponse(routieSpace.getName());
     }
