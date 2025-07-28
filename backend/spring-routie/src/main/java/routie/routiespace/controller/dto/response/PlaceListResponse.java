@@ -35,7 +35,7 @@ public record PlaceListResponse(
                     place.getOpenAt(),
                     place.getCloseAt(),
                     place.getClosedWeekdays().stream()
-                            .map(PlaceClosedWeekday::getClosedDay)
+                            .map(PlaceClosedWeekday::getClosedWeekday)
                             .toList()
             );
         }

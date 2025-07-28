@@ -32,7 +32,7 @@ public class ClosedDayValidityCalculator implements ValidityCalculator {
         TimePeriod period = entry.getValue();
 
         List<DayOfWeek> closedWeekdays = routiePlace.getPlace().getClosedWeekdays().stream()
-                .map(PlaceClosedWeekday::getClosedDay)
+                .map(PlaceClosedWeekday::getClosedWeekday)
                 .toList();
 
         DayOfWeek startDay = period.startTime().getDayOfWeek();
