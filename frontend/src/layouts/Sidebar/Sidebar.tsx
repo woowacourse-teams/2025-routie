@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 import Button from '@/@common/components/Button/Button';
 import Flex from '@/@common/components/Flex/Flex';
@@ -11,17 +11,13 @@ import { editRoutieSequence } from '@/domains/routie/apis/routie';
 import RoutiePlaceCard from '@/domains/routie/components/RoutiePlaceCard/RoutiePlaceCard';
 import RoutieValidationResultCard from '@/domains/routie/components/RoutieValidationResultCard/RoutieValidationResultCard';
 import RoutieValidationUnavailableCard from '@/domains/routie/components/RoutieValidationUnavailableCard/RoutieValidationUnavailableCard';
+import { useRoutieValidateContext } from '@/domains/routie/contexts/useRoutieValidateContext';
 import { useCardDrag } from '@/domains/routie/hooks/useCardDrag';
 import { Routes, Routie } from '@/domains/routie/types/routie.types';
 import RoutieSpaceName from '@/domains/routieSpace/components/RoutieSpaceName/RoutieSpaceName';
 import theme from '@/styles/theme';
 
 import TimeInput from './TimeInput';
-
-const initialTime = {
-  startAt: '09:00',
-  endAt: '22:00',
-};
 
 interface SidebarProps {
   onPlaceChange: () => Promise<void>;
@@ -38,8 +34,17 @@ const Sidebar = ({
 }: SidebarProps) => {
   const getDragProps = useCardDrag(routiePlaces, setRoutiePlaces);
   const [addModalOpen, setAddModalOpen] = useState(false);
-  const [isValidateActive, setIsValidateActive] = useState(false);
-  const [time, setTime] = useState(initialTime);
+  const {
+    isValidateActive,
+    routieTime,
+    isValidateRoutie,
+    handleValidateToggle,
+    handleTimeChange,
+  } = useRoutieValidateContext();
+
+  const totalMovingTime = useMemo(() => {
+    return routes?.reduce((acc, cur) => acc + cur.duration, 0) ?? 0;
+  }, [routes]);
 
   useEffect(() => {
     if (!routiePlaces) return;
@@ -68,14 +73,6 @@ const Sidebar = ({
     setAddModalOpen((prev) => !prev);
   };
 
-  const handleValidateToggle = () => {
-    setIsValidateActive((prev) => !prev);
-  };
-
-  const handleTimeChange = (field: string, value: string) => {
-    setTime((prev) => ({ ...prev, [field]: value }));
-  };
-
   const handleDelete = (id: number) => {
     editRoutieSequence(routiePlaces.filter((item) => item.placeId !== id));
     setRoutiePlaces(routiePlaces.filter((item) => item.placeId !== id));
@@ -101,6 +98,7 @@ const Sidebar = ({
           gap={1.2}
           padding={1.6}
           justifyContent="flex-start"
+          height="28rem"
         >
           <Flex direction="column" width="100%" gap={1.2}>
             <RoutieSpaceName />
@@ -112,20 +110,21 @@ const Sidebar = ({
               </Flex>
             </Button>
           </Flex>
-          <Flex
-            alignItems="flex-start"
-            justifyContent="flex-end"
-            width="100%"
-            gap={1}
-          >
-            <Text variant="label">일정 검증 토글</Text>
-            <ToggleSwitch active={isValidateActive} onToggle={() => {}} />
+          <Flex justifyContent="flex-end" width="100%" gap={1}>
+            <Text variant="caption">일정 검증 토글</Text>
+            <ToggleSwitch
+              active={isValidateActive}
+              onToggle={handleValidateToggle}
+            />
           </Flex>
 
           {isValidateActive ? (
             <>
-              <RoutieValidationResultCard total_time="60" valid={false} />
-              <TimeInput time={time} onChange={handleTimeChange} />
+              <RoutieValidationResultCard
+                total_time={totalMovingTime}
+                valid={isValidateRoutie}
+              />
+              <TimeInput time={routieTime} onChange={handleTimeChange} />
             </>
           ) : (
             <RoutieValidationUnavailableCard />
