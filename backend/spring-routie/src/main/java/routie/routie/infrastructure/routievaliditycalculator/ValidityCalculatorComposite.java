@@ -17,8 +17,8 @@ public class ValidityCalculatorComposite implements ValidityCalculator {
     }
 
     @Override
-    public boolean supportsStrategy(final ValidationStrategy strategy) {
-        return strategy != null;
+    public boolean supportsStrategy(final ValidationStrategy validationStrategy) {
+        return validationStrategy != null;
     }
 
     @Override
@@ -32,10 +32,10 @@ public class ValidityCalculatorComposite implements ValidityCalculator {
         );
     }
 
-    private ValidityCalculator selectValidityCalculator(final ValidationStrategy strategy) {
+    private ValidityCalculator selectValidityCalculator(final ValidationStrategy validationStrategy) {
         return routeValidityCalculators.stream()
-                .filter(calculator -> calculator.supportsStrategy(strategy))
+                .filter(calculator -> calculator.supportsStrategy(validationStrategy))
                 .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException("지원하지 않는 검증 방식입니다: " + strategy));
+                .orElseThrow(() -> new IllegalArgumentException("지원하지 않는 검증 방식입니다: " + validationStrategy));
     }
 }

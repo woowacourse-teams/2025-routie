@@ -73,7 +73,7 @@ public class PlaceControllerTest {
                 "closeAt", "18:00",
                 "breakStartAt", "12:00",
                 "breakEndAt", "13:00",
-                "closedDays", List.of("SUNDAY", "MONDAY")
+                "closedDayOfWeeks", List.of("SUNDAY", "MONDAY")
         );
 
         // when
@@ -103,7 +103,7 @@ public class PlaceControllerTest {
                 "stayDurationMinutes", 90,
                 "openAt", "10:00",
                 "closeAt", "22:00",
-                "closedDays", List.of("WEDNESDAY")
+                "closedDayOfWeeks", List.of("WEDNESDAY")
         );
 
         // when
@@ -133,7 +133,7 @@ public class PlaceControllerTest {
                 "stayDurationMinutes", 0,
                 "openAt", "00:00",
                 "closeAt", "23:59",
-                "closedDays", List.of()
+                "closedDayOfWeeks", List.of()
         );
 
         // when
@@ -165,7 +165,7 @@ public class PlaceControllerTest {
                 "closeAt", "20:00",
                 "breakStartAt", "14:00",
                 "breakEndAt", "15:00",
-                "closedDays", List.of("SATURDAY", "SUNDAY")
+                "closedDayOfWeeks", List.of("SATURDAY", "SUNDAY")
         );
 
         // when
@@ -263,9 +263,9 @@ public class PlaceControllerTest {
                 "closeAt",
                 "breakStartAt",
                 "breakEndAt",
-                "closedDays"
+                "closedDayOfWeeks"
         );
         assertThat(responseBody.get("stayDurationMinutes")).isInstanceOf(Integer.class);
-        assertThat(responseBody.get("closedDays")).isInstanceOf(List.class);
+        assertThat(responseBody.get("closedDayOfWeeks")).isInstanceOf(List.class);
     }
 }

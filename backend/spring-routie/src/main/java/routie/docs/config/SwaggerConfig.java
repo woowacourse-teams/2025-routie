@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Configuration;
 public class SwaggerConfig {
 
     @Bean
-    public OpenAPI roomEscapeOpenAPI() {
+    public OpenAPI routieOpenAPI() {
         String title = "Routie Docs";
         String description = "Routie API 문서입니다.";
 

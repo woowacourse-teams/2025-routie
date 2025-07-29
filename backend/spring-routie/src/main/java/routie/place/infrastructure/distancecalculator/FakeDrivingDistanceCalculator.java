@@ -9,12 +9,12 @@ import routie.place.domain.Place;
 public class FakeDrivingDistanceCalculator implements DistanceCalculator {
 
     @Override
-    public boolean supportsStrategy(final MovingStrategy strategy) {
-        return strategy.equals(MovingStrategy.DRIVING);
+    public boolean supportsStrategy(final MovingStrategy movingStrategy) {
+        return movingStrategy.equals(MovingStrategy.DRIVING);
     }
 
     @Override
-    public int calculateDistance(final Place from, final Place to, final MovingStrategy strategy) {
+    public int calculateDistance(final Place from, final Place to, final MovingStrategy movingStrategy) {
         return 1_000;
     }
 }

@@ -70,7 +70,7 @@ public class RoutieSpaceControllerTest {
                     "closeAt": "22:00",
                     "breakStartAt": "15:00",
                     "breakEndAt": "16:00",
-                    "closedDays": ["SUNDAY"]
+                    "closedDayOfWeeks": ["SUNDAY"]
                 }
                 """;
 
@@ -109,7 +109,7 @@ public class RoutieSpaceControllerTest {
                     "closeAt": "22:00",
                     "breakStartAt": "15:00",
                     "breakEndAt": "16:00",
-                    "closedDays": ["SUNDAY"]
+                    "closedDayOfWeeks": ["SUNDAY"]
                 }
                 """;
 
@@ -122,7 +122,7 @@ public class RoutieSpaceControllerTest {
                     "closeAt": "23:00",
                     "breakStartAt": null,
                     "breakEndAt": null,
-                    "closedDays": ["MONDAY", "TUESDAY"]
+                    "closedDayOfWeeks": ["MONDAY", "TUESDAY"]
                 }
                 """;
 
@@ -155,7 +155,7 @@ public class RoutieSpaceControllerTest {
         String firstPlaceAddress = response.jsonPath().getString("places[0].address");
         String firstPlaceOpenAt = response.jsonPath().getString("places[0].openAt");
         String firstPlaceCloseAt = response.jsonPath().getString("places[0].closeAt");
-        List<String> firstPlaceClosedDays = response.jsonPath().getList("places[0].closedDays");
+        List<String> firstPlaceClosedDays = response.jsonPath().getList("places[0].closedDayOfWeeks");
 
         // then
         assertThat(expectedHttpStatus).isEqualTo(actualHttpStatus);

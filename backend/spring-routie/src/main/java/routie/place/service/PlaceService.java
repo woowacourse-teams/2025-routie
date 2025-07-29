@@ -7,7 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import routie.place.controller.dto.request.PlaceUpdateRequest;
 import routie.place.controller.dto.response.PlaceReadResponse;
 import routie.place.domain.Place;
-import routie.place.repository.PlaceClosedWeekdayRepository;
+import routie.place.repository.PlaceClosedDayOfWeekRepository;
 import routie.place.repository.PlaceRepository;
 import routie.routiespace.controller.dto.request.PlaceCreateRequest;
 import routie.routiespace.controller.dto.response.PlaceCreateResponse;
@@ -21,17 +21,17 @@ public class PlaceService {
 
     private final PlaceRepository placeRepository;
     private final RoutieSpaceRepository routieSpaceRepository;
-    private final PlaceClosedWeekdayRepository placeClosedWeekdayRepository;
+    private final PlaceClosedDayOfWeekRepository placeClosedDayOfWeekRepository;
 
-    public PlaceReadResponse getPlaceDetail(final long placeId) {
+    public PlaceReadResponse getPlace(final long placeId) {
         final Place place = getPlaceById(placeId);
         return PlaceReadResponse.from(place);
     }
 
     @Transactional
     public PlaceCreateResponse addPlace(
-            final PlaceCreateRequest placeCreateRequest,
-            final String routieSpaceIdentifier
+            final String routieSpaceIdentifier,
+            final PlaceCreateRequest placeCreateRequest
     ) {
         RoutieSpace routieSpace = routieSpaceRepository.findByIdentifier(routieSpaceIdentifier)
                 .orElseThrow(() -> new IllegalArgumentException("해당 루티 스페이스를 찾을 수 없습니다."));
@@ -45,7 +45,7 @@ public class PlaceService {
                 placeCreateRequest.breakStartAt(),
                 placeCreateRequest.breakEndAt(),
                 routieSpace,
-                placeCreateRequest.closedDays()
+                placeCreateRequest.closedDayOfWeeks()
         );
         return new PlaceCreateResponse(placeRepository.save(place).getId());
     }
@@ -61,8 +61,8 @@ public class PlaceService {
     public void modifyPlace(final PlaceUpdateRequest placeUpdateRequest, final long placeId) {
         final Place place = getPlaceById(placeId);
 
-        place.getClosedWeekdays()
-                .forEach(closedWeekday -> placeClosedWeekdayRepository.deleteById(closedWeekday.getId()));
+        place.getPlaceClosedDayOfWeeks()
+                .forEach(closedDayOfWeek -> placeClosedDayOfWeekRepository.deleteById(closedDayOfWeek.getId()));
 
         place.modify(
                 placeUpdateRequest.stayDurationMinutes(),
@@ -70,7 +70,7 @@ public class PlaceService {
                 placeUpdateRequest.closeAt(),
                 placeUpdateRequest.breakStartAt(),
                 placeUpdateRequest.breakEndAt(),
-                placeUpdateRequest.closedDays()
+                placeUpdateRequest.closedDayOfWeeks()
         );
     }
 
