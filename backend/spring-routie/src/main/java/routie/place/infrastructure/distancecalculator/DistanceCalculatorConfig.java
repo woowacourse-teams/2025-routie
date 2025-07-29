@@ -11,7 +11,7 @@ public class DistanceCalculatorConfig {
 
     @Bean
     @Primary
-    public DistanceCalculatorComposite distanceCalculator(final List<DistanceCalculator> distanceCalculators) {
+    public DistanceCalculator distanceCalculator(final List<DistanceCalculator> distanceCalculators) {
         return new DistanceCalculatorComposite(distanceCalculators);
     }
 }
