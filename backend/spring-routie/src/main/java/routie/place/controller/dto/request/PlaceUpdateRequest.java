@@ -15,16 +15,4 @@ public record PlaceUpdateRequest(
         List<DayOfWeek> closedDays
 ) {
 
-    public PlaceUpdateRequest {
-        validateBreakTime(breakStartAt, breakEndAt);
-    }
-
-    private void validateBreakTime(final LocalTime breakStartAt, final LocalTime breakEndAt) {
-        boolean hasBreakStart = breakStartAt != null;
-        boolean hasBreakEnd = breakEndAt != null;
-
-        if (hasBreakStart != hasBreakEnd) {
-            throw new IllegalArgumentException("브레이크 타임 시작 시간과 종료 시간은 함께 존재해야 합니다.");
-        }
-    }
 }

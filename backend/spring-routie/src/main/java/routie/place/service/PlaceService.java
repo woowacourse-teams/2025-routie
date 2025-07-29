@@ -23,15 +23,15 @@ public class PlaceService {
     private final RoutieSpaceRepository routieSpaceRepository;
     private final PlaceClosedWeekdayRepository placeClosedWeekdayRepository;
 
-    public PlaceReadResponse getPlaceDetail(final long placeId) {
+    public PlaceReadResponse getPlace(final long placeId) {
         final Place place = getPlaceById(placeId);
         return PlaceReadResponse.from(place);
     }
 
     @Transactional
     public PlaceCreateResponse addPlace(
-            final PlaceCreateRequest placeCreateRequest,
-            final String routieSpaceIdentifier
+            final String routieSpaceIdentifier,
+            final PlaceCreateRequest placeCreateRequest
     ) {
         RoutieSpace routieSpace = routieSpaceRepository.findByIdentifier(routieSpaceIdentifier)
                 .orElseThrow(() -> new IllegalArgumentException("해당 루티 스페이스를 찾을 수 없습니다."));

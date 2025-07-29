@@ -13,8 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import routie.place.service.PlaceService;
 import routie.routiespace.controller.dto.request.PlaceCreateRequest;
-import routie.routiespace.controller.dto.request.RoutieSpaceNameRequest;
-import routie.routiespace.controller.dto.request.UpdateRoutieSpaceNameRequest;
+import routie.routiespace.controller.dto.request.RoutieSpaceNameUpdateRequest;
 import routie.routiespace.controller.dto.response.PlaceCreateResponse;
 import routie.routiespace.controller.dto.response.PlaceListResponse;
 import routie.routiespace.controller.dto.response.RoutieSpaceNameResponse;
@@ -52,20 +51,18 @@ public class RoutieSpaceController {
     public ResponseEntity<RoutieSpaceNameResponse> readName(
             @PathVariable final String routieSpaceIdentifier
     ) {
-        RoutieSpaceNameResponse routieSpaceNameResponse = routieSpaceService.getRoutieSpaceName(
-                RoutieSpaceNameRequest.from(routieSpaceIdentifier)
-        );
+        RoutieSpaceNameResponse routieSpaceNameResponse = routieSpaceService.getRoutieSpaceName(routieSpaceIdentifier);
         return ResponseEntity.ok(routieSpaceNameResponse);
     }
 
     @PatchMapping("/{routieSpaceIdentifier}/name")
     public ResponseEntity<UpdateRoutieSpaceNameResponse> updateName(
             @PathVariable final String routieSpaceIdentifier,
-            @RequestBody @Valid final UpdateRoutieSpaceNameRequest updateRoutieSpaceNameRequest
+            @RequestBody @Valid final RoutieSpaceNameUpdateRequest routieSpaceNameUpdateRequest
     ) {
         UpdateRoutieSpaceNameResponse updateRoutieSpaceNameResponse = routieSpaceService.modifyRoutieSpaceName(
                 routieSpaceIdentifier,
-                updateRoutieSpaceNameRequest
+                routieSpaceNameUpdateRequest
         );
 
         return ResponseEntity.ok(updateRoutieSpaceNameResponse);
@@ -77,8 +74,8 @@ public class RoutieSpaceController {
             @PathVariable final String routieSpaceIdentifier
     ) {
         final PlaceCreateResponse placeCreateResponse = placeService.addPlace(
-                placeCreateRequest,
-                routieSpaceIdentifier
+                routieSpaceIdentifier,
+                placeCreateRequest
         );
         return ResponseEntity.ok(placeCreateResponse);
     }

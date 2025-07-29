@@ -2,7 +2,7 @@ package routie.place.domain;
 
 public interface TravelTimeCalculator {
 
-    boolean supportsStrategy(MovingStrategy strategy);
+    boolean supportsStrategy(MovingStrategy movingStrategy);
 
-    int calculateTravelTime(Place from, Place to, MovingStrategy strategy);
+    int calculateTravelTime(Place from, Place to, MovingStrategy movingStrategy);
 }

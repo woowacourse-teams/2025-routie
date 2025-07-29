@@ -11,9 +11,7 @@ public class ValidityCalculatorConfig {
 
     @Bean
     @Primary
-    public ValidityCalculator validityCalculator(
-            final List<ValidityCalculator> validityCalculators
-    ) {
+    public ValidityCalculator validityCalculator(final List<ValidityCalculator> validityCalculators) {
         return new ValidityCalculatorComposite(validityCalculators);
     }
 }

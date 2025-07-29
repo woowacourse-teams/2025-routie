@@ -15,19 +15,19 @@ public class DistanceCalculatorComposite implements DistanceCalculator {
     }
 
     @Override
-    public boolean supportsStrategy(final MovingStrategy strategy) {
-        return strategy != null;
+    public boolean supportsStrategy(final MovingStrategy movingStrategy) {
+        return movingStrategy != null;
     }
 
     @Override
-    public int calculateDistance(final Place from, final Place to, final MovingStrategy strategy) {
-        return selectDistanceCalculator(strategy).calculateDistance(from, to, strategy);
+    public int calculateDistance(final Place from, final Place to, final MovingStrategy movingStrategy) {
+        return selectDistanceCalculator(movingStrategy).calculateDistance(from, to, movingStrategy);
     }
 
-    private DistanceCalculator selectDistanceCalculator(final MovingStrategy strategy) {
+    private DistanceCalculator selectDistanceCalculator(final MovingStrategy movingStrategy) {
         return distanceCalculators.stream()
-                .filter(calculator -> calculator.supportsStrategy(strategy))
+                .filter(calculator -> calculator.supportsStrategy(movingStrategy))
                 .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException("지원하지 않는 이동 방식입니다: " + strategy));
+                .orElseThrow(() -> new IllegalArgumentException("지원하지 않는 이동 방식입니다: " + movingStrategy));
     }
 }

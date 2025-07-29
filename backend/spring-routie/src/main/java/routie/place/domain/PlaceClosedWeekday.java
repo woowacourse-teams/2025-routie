@@ -37,17 +37,17 @@ public class PlaceClosedWeekday {
     private Long id;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "closed_day", nullable = false, columnDefinition = "VARCHAR(255)")
-    private DayOfWeek closedDay;
+    @Column(name = "closed_weekday", nullable = false, columnDefinition = "VARCHAR(255)")
+    private DayOfWeek closedWeekday;
 
     @CreatedDate
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
-    public PlaceClosedWeekday(final DayOfWeek closedDay) {
+    public PlaceClosedWeekday(final DayOfWeek closedWeekday) {
         this(
                 null,
-                closedDay,
+                closedWeekday,
                 null
         );
     }
