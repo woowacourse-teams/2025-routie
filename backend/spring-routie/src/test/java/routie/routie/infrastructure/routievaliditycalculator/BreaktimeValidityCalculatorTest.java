@@ -19,111 +19,16 @@ class BreaktimeValidityCalculatorTest {
     private final BreaktimeValidityCalculator calculator = new BreaktimeValidityCalculator();
 
     @Test
-    @DisplayName("브레이크 타임이 설정되지 않은 경우 항상 유효하다")
-    void shouldReturnTrueWhenNoBreaktimeSet() {
+    @DisplayName("브레이크 타임이 없는 경우 항상 true를 반환한다")
+    void validate_WithNoBreaktime_ShouldReturnTrue() {
         // given
-        Place place = createMockPlace(null, null);
-        RoutiePlace routiePlace = createMockRoutiePlace(place);
-        TimePeriod timePeriod = new TimePeriod(
-                LocalDateTime.of(2024, 1, 1, 10, 0),
-                LocalDateTime.of(2024, 1, 1, 11, 0)
-        );
-        Map<RoutiePlace, TimePeriod> timePeriodMap = Map.of(routiePlace, timePeriod);
-
-        // when
-        boolean result = calculator.calculateValidity(timePeriodMap, ValidationStrategy.IS_NOT_DURING_BREAKTIME);
-
-        // then
-        assertThat(result).isTrue();
-    }
-
-    @Test
-    @DisplayName("일반 브레이크 타임: 브레이크 타임 시작 직전 방문은 유효하다")
-    void shouldReturnTrueWhenVisitJustBeforeBreaktime() {
-        // given
-        Place place = createMockPlace(LocalTime.of(12, 0), LocalTime.of(13, 0));
-        RoutiePlace routiePlace = createMockRoutiePlace(place);
-        TimePeriod timePeriod = new TimePeriod(
-                LocalDateTime.of(2024, 1, 1, 11, 30),
-                LocalDateTime.of(2024, 1, 1, 11, 59)
-        );
-        Map<RoutiePlace, TimePeriod> timePeriodMap = Map.of(routiePlace, timePeriod);
-
-        // when
-        boolean result = calculator.calculateValidity(timePeriodMap, ValidationStrategy.IS_NOT_DURING_BREAKTIME);
-
-        // then
-        assertThat(result).isTrue();
-    }
-
-    @Test
-    @DisplayName("일반 브레이크 타임: 브레이크 타임 시작 시점 방문은 무효하다")
-    void shouldReturnFalseWhenVisitAtBreaktimeStart() {
-        // given
-        Place place = createMockPlace(LocalTime.of(12, 0), LocalTime.of(13, 0));
-        RoutiePlace routiePlace = createMockRoutiePlace(place);
-        TimePeriod timePeriod = new TimePeriod(
+        Place placeWithNoBreaktime = createMockPlace(null, null);
+        RoutiePlace routiePlace = createMockRoutiePlace(placeWithNoBreaktime);
+        TimePeriod visitPeriod = new TimePeriod(
                 LocalDateTime.of(2024, 1, 1, 12, 0),
-                LocalDateTime.of(2024, 1, 1, 12, 30)
-        );
-        Map<RoutiePlace, TimePeriod> timePeriodMap = Map.of(routiePlace, timePeriod);
-
-        // when
-        boolean result = calculator.calculateValidity(timePeriodMap, ValidationStrategy.IS_NOT_DURING_BREAKTIME);
-
-        // then
-        assertThat(result).isFalse();
-    }
-
-    @Test
-    @DisplayName("일반 브레이크 타임: 브레이크 타임 중간 방문은 무효하다")
-    void shouldReturnFalseWhenVisitDuringBreaktime() {
-        // given
-        Place place = createMockPlace(LocalTime.of(12, 0), LocalTime.of(13, 0));
-        RoutiePlace routiePlace = createMockRoutiePlace(place);
-        TimePeriod timePeriod = new TimePeriod(
-                LocalDateTime.of(2024, 1, 1, 12, 15),
-                LocalDateTime.of(2024, 1, 1, 12, 45)
-        );
-        Map<RoutiePlace, TimePeriod> timePeriodMap = Map.of(routiePlace, timePeriod);
-
-        // when
-        boolean result = calculator.calculateValidity(timePeriodMap, ValidationStrategy.IS_NOT_DURING_BREAKTIME);
-
-        // then
-        assertThat(result).isFalse();
-    }
-
-    @Test
-    @DisplayName("일반 브레이크 타임: 브레이크 타임 종료 시점 방문은 무효하다")
-    void shouldReturnFalseWhenVisitAtBreaktimeEnd() {
-        // given
-        Place place = createMockPlace(LocalTime.of(12, 0), LocalTime.of(13, 0));
-        RoutiePlace routiePlace = createMockRoutiePlace(place);
-        TimePeriod timePeriod = new TimePeriod(
-                LocalDateTime.of(2024, 1, 1, 12, 30),
                 LocalDateTime.of(2024, 1, 1, 13, 0)
         );
-        Map<RoutiePlace, TimePeriod> timePeriodMap = Map.of(routiePlace, timePeriod);
-
-        // when
-        boolean result = calculator.calculateValidity(timePeriodMap, ValidationStrategy.IS_NOT_DURING_BREAKTIME);
-
-        // then
-        assertThat(result).isFalse();
-    }
-
-    @Test
-    @DisplayName("일반 브레이크 타임: 브레이크 타임 종료 직후 방문은 유효하다")
-    void shouldReturnTrueWhenVisitJustAfterBreaktime() {
-        // given
-        Place place = createMockPlace(LocalTime.of(12, 0), LocalTime.of(13, 0));
-        RoutiePlace routiePlace = createMockRoutiePlace(place);
-        TimePeriod timePeriod = new TimePeriod(
-                LocalDateTime.of(2024, 1, 1, 13, 1),
-                LocalDateTime.of(2024, 1, 1, 14, 0)
-        );
-        Map<RoutiePlace, TimePeriod> timePeriodMap = Map.of(routiePlace, timePeriod);
+        Map<RoutiePlace, TimePeriod> timePeriodMap = Map.of(routiePlace, visitPeriod);
 
         // when
         boolean result = calculator.calculateValidity(timePeriodMap, ValidationStrategy.IS_NOT_DURING_BREAKTIME);
@@ -133,16 +38,111 @@ class BreaktimeValidityCalculatorTest {
     }
 
     @Test
-    @DisplayName("방문 시작은 유효하지만 종료가 브레이크 타임에 걸치는 경우 무효하다")
-    void shouldReturnFalseWhenVisitStartValidButEndInBreaktime() {
+    @DisplayName("방문이 브레이크 타임 시작 직전에 끝나면 true를 반환한다")
+    void validate_WhenVisitEndsJustBeforeBreaktime_ShouldReturnTrue() {
         // given
         Place place = createMockPlace(LocalTime.of(12, 0), LocalTime.of(13, 0));
         RoutiePlace routiePlace = createMockRoutiePlace(place);
-        TimePeriod timePeriod = new TimePeriod(
-                LocalDateTime.of(2024, 1, 1, 11, 30),
-                LocalDateTime.of(2024, 1, 1, 12, 30)
+        TimePeriod visitPeriod = new TimePeriod(
+                LocalDateTime.of(2024, 1, 1, 11, 0),
+                LocalDateTime.of(2024, 1, 1, 11, 59)
         );
-        Map<RoutiePlace, TimePeriod> timePeriodMap = Map.of(routiePlace, timePeriod);
+        Map<RoutiePlace, TimePeriod> timePeriodMap = Map.of(routiePlace, visitPeriod);
+
+        // when
+        boolean result = calculator.calculateValidity(timePeriodMap, ValidationStrategy.IS_NOT_DURING_BREAKTIME);
+
+        // then
+        assertThat(result).isTrue();
+    }
+
+    @Test
+    @DisplayName("방문이 브레이크 타임 시작 정각에 끝나면 true를 반환한다")
+    void validate_WhenVisitEndsAtBreaktimeStart_ShouldReturnTrue() {
+        // given
+        Place place = createMockPlace(LocalTime.of(12, 0), LocalTime.of(13, 0));
+        RoutiePlace routiePlace = createMockRoutiePlace(place);
+        TimePeriod visitPeriod = new TimePeriod(
+                LocalDateTime.of(2024, 1, 1, 11, 0),
+                LocalDateTime.of(2024, 1, 1, 12, 0)
+        );
+        Map<RoutiePlace, TimePeriod> timePeriodMap = Map.of(routiePlace, visitPeriod);
+
+        // when
+        boolean result = calculator.calculateValidity(timePeriodMap, ValidationStrategy.IS_NOT_DURING_BREAKTIME);
+
+        // then
+        assertThat(result).isTrue();
+    }
+
+    @Test
+    @DisplayName("방문이 브레이크 타임 종료 정각에 시작되면 true를 반환한다")
+    void validate_WhenVisitStartsAtBreaktimeEnd_ShouldReturnTrue() {
+        // given
+        Place place = createMockPlace(LocalTime.of(12, 0), LocalTime.of(13, 0));
+        RoutiePlace routiePlace = createMockRoutiePlace(place);
+        TimePeriod visitPeriod = new TimePeriod(
+                LocalDateTime.of(2024, 1, 1, 13, 0),
+                LocalDateTime.of(2024, 1, 1, 14, 0)
+        );
+        Map<RoutiePlace, TimePeriod> timePeriodMap = Map.of(routiePlace, visitPeriod);
+
+        // when
+        boolean result = calculator.calculateValidity(timePeriodMap, ValidationStrategy.IS_NOT_DURING_BREAKTIME);
+
+        // then
+        assertThat(result).isTrue();
+    }
+
+    @Test
+    @DisplayName("방문이 브레이크 타임과 일부 겹치면 false를 반환한다")
+    void validate_WhenVisitOverlapsSlightlyWithBreaktime_ShouldReturnFalse() {
+        // given
+        Place place = createMockPlace(LocalTime.of(12, 0), LocalTime.of(13, 0));
+        RoutiePlace routiePlace = createMockRoutiePlace(place);
+        TimePeriod visitPeriod = new TimePeriod(
+                LocalDateTime.of(2024, 1, 1, 11, 30),
+                LocalDateTime.of(2024, 1, 1, 12, 1) // 브레이크 타임과 1분 겹침
+        );
+        Map<RoutiePlace, TimePeriod> timePeriodMap = Map.of(routiePlace, visitPeriod);
+
+        // when
+        boolean result = calculator.calculateValidity(timePeriodMap, ValidationStrategy.IS_NOT_DURING_BREAKTIME);
+
+        // then
+        assertThat(result).isFalse();
+    }
+
+    @Test
+    @DisplayName("방문이 브레이크 타임 중에 시작되면 false를 반환한다")
+    void validate_WhenVisitStartsDuringBreaktime_ShouldReturnFalse() {
+        // given
+        Place place = createMockPlace(LocalTime.of(12, 0), LocalTime.of(13, 0));
+        RoutiePlace routiePlace = createMockRoutiePlace(place);
+        TimePeriod visitPeriod = new TimePeriod(
+                LocalDateTime.of(2024, 1, 1, 12, 30),
+                LocalDateTime.of(2024, 1, 1, 13, 30)
+        );
+        Map<RoutiePlace, TimePeriod> timePeriodMap = Map.of(routiePlace, visitPeriod);
+
+        // when
+        boolean result = calculator.calculateValidity(timePeriodMap, ValidationStrategy.IS_NOT_DURING_BREAKTIME);
+
+        // then
+        assertThat(result).isFalse();
+    }
+
+    @Test
+    @DisplayName("방문이 브레이크 타임 전체를 포함하면 false를 반환한다")
+    void validate_WhenVisitContainsBreaktime_ShouldReturnFalse() {
+        // given
+        Place place = createMockPlace(LocalTime.of(12, 0), LocalTime.of(13, 0));
+        RoutiePlace routiePlace = createMockRoutiePlace(place);
+        TimePeriod visitPeriod = new TimePeriod(
+                LocalDateTime.of(2024, 1, 1, 11, 0),
+                LocalDateTime.of(2024, 1, 1, 14, 0)
+        );
+        Map<RoutiePlace, TimePeriod> timePeriodMap = Map.of(routiePlace, visitPeriod);
 
         // when
         boolean result = calculator.calculateValidity(timePeriodMap, ValidationStrategy.IS_NOT_DURING_BREAKTIME);
