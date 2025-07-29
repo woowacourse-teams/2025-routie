@@ -5,7 +5,7 @@ import java.time.DayOfWeek;
 import java.time.LocalTime;
 import java.util.List;
 import routie.place.domain.Place;
-import routie.place.domain.PlaceClosedWeekday;
+import routie.place.domain.PlaceClosedDayOfWeek;
 
 public record PlaceListResponse(
         List<PlaceCardResponse> places
@@ -25,7 +25,7 @@ public record PlaceListResponse(
             String address,
             @JsonFormat(pattern = "HH:mm") LocalTime openAt,
             @JsonFormat(pattern = "HH:mm") LocalTime closeAt,
-            List<DayOfWeek> closedDays
+            List<DayOfWeek> closedDayOfWeeks
     ) {
         public static PlaceCardResponse from(final Place place) {
             return new PlaceCardResponse(
@@ -34,8 +34,8 @@ public record PlaceListResponse(
                     place.getAddress(),
                     place.getOpenAt(),
                     place.getCloseAt(),
-                    place.getClosedWeekdays().stream()
-                            .map(PlaceClosedWeekday::getClosedWeekday)
+                    place.getPlaceClosedDayOfWeeks().stream()
+                            .map(PlaceClosedDayOfWeek::getClosedDayOfWeek)
                             .toList()
             );
         }

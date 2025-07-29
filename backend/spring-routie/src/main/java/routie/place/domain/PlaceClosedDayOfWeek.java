@@ -21,33 +21,33 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @Getter
 @Entity
 @Table(
-        name = "place_closed_weekdays", uniqueConstraints = {
+        name = "place_closed_dayofweeks", uniqueConstraints = {
 //                @UniqueConstraint(
 //                        name = "uk_place_closed_day", columnNames = {"place_id", "closed_day"}
 //                )
-        }
+}
 )
 @EntityListeners(AuditingEntityListener.class)
 @AllArgsConstructor(access = AccessLevel.PACKAGE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class PlaceClosedWeekday {
+public class PlaceClosedDayOfWeek {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "closed_weekday", nullable = false, columnDefinition = "VARCHAR(255)")
-    private DayOfWeek closedWeekday;
+    @Column(name = "closed_dayofweek", nullable = false, columnDefinition = "VARCHAR(255)")
+    private DayOfWeek closedDayOfWeek;
 
     @CreatedDate
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
-    public PlaceClosedWeekday(final DayOfWeek closedWeekday) {
+    public PlaceClosedDayOfWeek(final DayOfWeek closedDayOfWeek) {
         this(
                 null,
-                closedWeekday,
+                closedDayOfWeek,
                 null
         );
     }
