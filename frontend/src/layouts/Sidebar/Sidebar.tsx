@@ -40,6 +40,7 @@ const Sidebar = ({
     isValidateRoutie,
     handleValidateToggle,
     handleTimeChange,
+    validateRoutie,
   } = useRoutieValidateContext();
 
   const totalMovingTime = useMemo(() => {
@@ -62,6 +63,7 @@ const Sidebar = ({
 
       setRoutiePlaces(sortedPlaces);
       editRoutieSequence(sortedPlaces);
+      validateRoutie();
     }
   }, [routiePlaces]);
 
