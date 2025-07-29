@@ -5,7 +5,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import routie.routiespace.controller.dto.request.RoutieSpaceNameUpdateRequest;
 import routie.routiespace.controller.dto.response.RoutieSpaceNameResponse;
-import routie.routiespace.controller.dto.response.RoutiesResponse;
 import routie.routiespace.controller.dto.response.UpdateRoutieSpaceNameResponse;
 import routie.routiespace.domain.RoutieSpace;
 import routie.routiespace.domain.RoutieSpaceIdentifierProvider;
@@ -42,12 +41,6 @@ public class RoutieSpaceService {
         routieSpace.updateName(routieSpaceNameUpdateRequest.name());
 
         return new UpdateRoutieSpaceNameResponse(routieSpace.getName());
-    }
-
-    public RoutiesResponse getRouties(final String routieSpaceIdentifier) {
-        RoutieSpace routieSpace = getRoutieSpaceByIdentifier(routieSpaceIdentifier);
-
-        return RoutiesResponse.from(routieSpace);
     }
 
     private RoutieSpace getRoutieSpaceByIdentifier(final String identifier) {

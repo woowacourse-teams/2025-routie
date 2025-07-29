@@ -1,4 +1,4 @@
-package routie.routiespace.controller.dto.response;
+package routie.place.controller.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import java.time.DayOfWeek;
