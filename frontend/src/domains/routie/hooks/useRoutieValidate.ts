@@ -56,7 +56,7 @@ const useRoutieValidate = (): UseRoutieValidateReturn => {
     }));
   }, []);
 
-  const validateRoutie = async () => {
+  const validateRoutie = useCallback(async () => {
     try {
       if (!isValidateActive) return;
 
@@ -66,11 +66,11 @@ const useRoutieValidate = (): UseRoutieValidateReturn => {
     } catch (error) {
       console.error(error);
     }
-  };
+  }, [isValidateActive, routieTime]);
 
   useEffect(() => {
     validateRoutie();
-  }, [isValidateActive, routieTime]);
+  }, [validateRoutie]);
 
   return {
     isValidateActive,
