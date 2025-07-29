@@ -75,3 +75,26 @@ export const getDetailPlace = async (id: number) => {
 
   return data;
 };
+
+export const getRoutieValidation = async (time: {
+  startDateTime: string;
+  endDateTime: string;
+}) => {
+  const routieId = localStorage.getItem('routieId');
+
+  if (!routieId) {
+    throw new Error('루티 id가 없습니다.');
+  }
+
+  const response = await apiClient.get(
+    `/routies/${routieId}/validity?startDateTime=${time.startDateTime}&endDateTime=${time.endDateTime}`,
+  );
+
+  if (!response.ok) {
+    throw new Error('일정 검증 실패');
+  }
+
+  const data = await response.json();
+
+  return data;
+};
