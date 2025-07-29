@@ -47,7 +47,7 @@ const useRoutieValidate = (): UseRoutieValidateReturn => {
       JSON.stringify(newIsValidateActive),
     );
     setIsValidateActive(newIsValidateActive);
-  }, []);
+  }, [isValidateActive]);
 
   const handleTimeChange = useCallback((field: string, value: string) => {
     setRoutieTime((prev) => ({
