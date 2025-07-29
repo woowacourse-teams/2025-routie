@@ -64,7 +64,7 @@ public class Place {
 
     @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     @JoinColumn(name = "place_id", nullable = false)
-    private List<PlaceClosedWeekday> placeClosedWeekdays = new ArrayList<>();
+    private List<PlaceClosedDayOfWeek> closedDayOfWeeks = new ArrayList<>();
 
     @CreatedDate
     @Column(name = "created_at")
@@ -83,7 +83,7 @@ public class Place {
             final LocalTime breakStartAt,
             final LocalTime breakEndAt,
             final RoutieSpace routieSpace,
-            final List<PlaceClosedWeekday> placeClosedWeekdays
+            final List<PlaceClosedDayOfWeek> closedDayOfWeeks
     ) {
         this(
                 null,
@@ -95,7 +95,7 @@ public class Place {
                 breakStartAt,
                 breakEndAt,
                 routieSpace,
-                placeClosedWeekdays,
+                closedDayOfWeeks,
                 null,
                 null
         );
@@ -110,17 +110,17 @@ public class Place {
             final LocalTime breakStartAt,
             final LocalTime breakEndAt,
             final RoutieSpace routieSpace,
-            final List<DayOfWeek> closedWeekdays
+            final List<DayOfWeek> closedDayOfWeeks
     ) {
         validateName(name);
         validateAddress(address);
         validateStayDurationMinutes(stayDurationMinutes);
         validateBreakTime(breakStartAt, breakEndAt);
 
-        List<PlaceClosedWeekday> placeClosedWeekdays = new ArrayList<>();
-        if (closedWeekdays != null) {
-            placeClosedWeekdays = closedWeekdays.stream()
-                    .map(PlaceClosedWeekday::new)
+        List<PlaceClosedDayOfWeek> placeClosedDayOfWeeks = new ArrayList<>();
+        if (closedDayOfWeeks != null) {
+            placeClosedDayOfWeeks = closedDayOfWeeks.stream()
+                    .map(PlaceClosedDayOfWeek::new)
                     .toList();
         }
 
@@ -133,7 +133,7 @@ public class Place {
                 breakStartAt,
                 breakEndAt,
                 routieSpace,
-                placeClosedWeekdays
+                placeClosedDayOfWeeks
         );
     }
 
@@ -176,7 +176,7 @@ public class Place {
             final LocalTime closeAt,
             final LocalTime breakStartAt,
             final LocalTime breakEndAt,
-            final List<DayOfWeek> closedWeekdays
+            final List<DayOfWeek> closedDayOfWeeks
     ) {
         validateStayDurationMinutes(stayDurationMinutes);
         validateBreakTime(breakStartAt, breakEndAt);
@@ -186,10 +186,10 @@ public class Place {
         this.closeAt = closeAt;
         this.breakStartAt = breakStartAt;
         this.breakEndAt = breakEndAt;
-        this.placeClosedWeekdays.clear();
-        if (closedWeekdays != null) {
-            closedWeekdays.forEach(
-                    day -> this.placeClosedWeekdays.add(new PlaceClosedWeekday(day))
+        this.closedDayOfWeeks.clear();
+        if (closedDayOfWeeks != null) {
+            closedDayOfWeeks.forEach(
+                    day -> this.closedDayOfWeeks.add(new PlaceClosedDayOfWeek(day))
             );
         }
     }

@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import org.springframework.stereotype.Component;
-import routie.place.domain.PlaceClosedWeekday;
+import routie.place.domain.PlaceClosedDayOfWeek;
 import routie.routie.domain.RoutiePlace;
 import routie.routie.domain.ValidationStrategy;
 import routie.routie.domain.ValidityCalculator;
@@ -31,13 +31,13 @@ public class ClosedDayValidityCalculator implements ValidityCalculator {
         RoutiePlace routiePlace = entry.getKey();
         TimePeriod period = entry.getValue();
 
-        List<DayOfWeek> closedWeekdays = routiePlace.getPlace().getPlaceClosedWeekdays().stream()
-                .map(PlaceClosedWeekday::getClosedWeekday)
+        List<DayOfWeek> closedDayOfWeeks = routiePlace.getPlace().getClosedDayOfWeeks().stream()
+                .map(PlaceClosedDayOfWeek::getClosedDayOfWeek)
                 .toList();
 
         DayOfWeek startDay = period.startTime().getDayOfWeek();
         DayOfWeek endDay = period.endTime().getDayOfWeek();
 
-        return !closedWeekdays.contains(startDay) && !closedWeekdays.contains(endDay);
+        return !closedDayOfWeeks.contains(startDay) && !closedDayOfWeeks.contains(endDay);
     }
 }

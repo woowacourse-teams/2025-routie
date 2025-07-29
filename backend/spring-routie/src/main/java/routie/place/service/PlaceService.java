@@ -7,7 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import routie.place.controller.dto.request.PlaceUpdateRequest;
 import routie.place.controller.dto.response.PlaceReadResponse;
 import routie.place.domain.Place;
-import routie.place.repository.PlaceClosedWeekdayRepository;
+import routie.place.repository.PlaceClosedDayOfWeekRepository;
 import routie.place.repository.PlaceRepository;
 import routie.routiespace.controller.dto.request.PlaceCreateRequest;
 import routie.routiespace.controller.dto.response.PlaceCreateResponse;
@@ -21,7 +21,7 @@ public class PlaceService {
 
     private final PlaceRepository placeRepository;
     private final RoutieSpaceRepository routieSpaceRepository;
-    private final PlaceClosedWeekdayRepository placeClosedWeekdayRepository;
+    private final PlaceClosedDayOfWeekRepository placeClosedDayOfWeekRepository;
 
     public PlaceReadResponse getPlace(final long placeId) {
         final Place place = getPlaceById(placeId);
@@ -45,7 +45,7 @@ public class PlaceService {
                 placeCreateRequest.breakStartAt(),
                 placeCreateRequest.breakEndAt(),
                 routieSpace,
-                placeCreateRequest.closedWeekdays()
+                placeCreateRequest.closedDayOfWeeks()
         );
         return new PlaceCreateResponse(placeRepository.save(place).getId());
     }
@@ -61,8 +61,8 @@ public class PlaceService {
     public void modifyPlace(final PlaceUpdateRequest placeUpdateRequest, final long placeId) {
         final Place place = getPlaceById(placeId);
 
-        place.getPlaceClosedWeekdays()
-                .forEach(closedWeekday -> placeClosedWeekdayRepository.deleteById(closedWeekday.getId()));
+        place.getClosedDayOfWeeks()
+                .forEach(closedDayOfWeek -> placeClosedDayOfWeekRepository.deleteById(closedDayOfWeek.getId()));
 
         place.modify(
                 placeUpdateRequest.stayDurationMinutes(),
@@ -70,7 +70,7 @@ public class PlaceService {
                 placeUpdateRequest.closeAt(),
                 placeUpdateRequest.breakStartAt(),
                 placeUpdateRequest.breakEndAt(),
-                placeUpdateRequest.closedWeekdays()
+                placeUpdateRequest.closedDayOfWeeks()
         );
     }
 
