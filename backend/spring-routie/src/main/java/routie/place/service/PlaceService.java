@@ -61,7 +61,7 @@ public class PlaceService {
     public void modifyPlace(final PlaceUpdateRequest placeUpdateRequest, final long placeId) {
         final Place place = getPlaceById(placeId);
 
-        place.getClosedDayOfWeeks()
+        place.getPlaceClosedDayOfWeeks()
                 .forEach(closedDayOfWeek -> placeClosedDayOfWeekRepository.deleteById(closedDayOfWeek.getId()));
 
         place.modify(

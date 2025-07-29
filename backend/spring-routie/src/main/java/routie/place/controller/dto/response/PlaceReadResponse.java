@@ -27,7 +27,7 @@ public record PlaceReadResponse(
                 place.getCloseAt(),
                 place.getBreakStartAt(),
                 place.getBreakEndAt(),
-                place.getClosedDayOfWeeks().stream()
+                place.getPlaceClosedDayOfWeeks().stream()
                         .map(PlaceClosedDayOfWeek::getClosedDayOfWeek)
                         .toList()
         );

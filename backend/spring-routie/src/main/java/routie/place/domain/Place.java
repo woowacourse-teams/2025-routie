@@ -64,7 +64,7 @@ public class Place {
 
     @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     @JoinColumn(name = "place_id", nullable = false)
-    private List<PlaceClosedDayOfWeek> closedDayOfWeeks = new ArrayList<>();
+    private List<PlaceClosedDayOfWeek> placeClosedDayOfWeeks = new ArrayList<>();
 
     @CreatedDate
     @Column(name = "created_at")
@@ -83,7 +83,7 @@ public class Place {
             final LocalTime breakStartAt,
             final LocalTime breakEndAt,
             final RoutieSpace routieSpace,
-            final List<PlaceClosedDayOfWeek> closedDayOfWeeks
+            final List<PlaceClosedDayOfWeek> placeClosedDayOfWeeks
     ) {
         this(
                 null,
@@ -95,7 +95,7 @@ public class Place {
                 breakStartAt,
                 breakEndAt,
                 routieSpace,
-                closedDayOfWeeks,
+                placeClosedDayOfWeeks,
                 null,
                 null
         );
@@ -186,10 +186,10 @@ public class Place {
         this.closeAt = closeAt;
         this.breakStartAt = breakStartAt;
         this.breakEndAt = breakEndAt;
-        this.closedDayOfWeeks.clear();
+        this.placeClosedDayOfWeeks.clear();
         if (closedDayOfWeeks != null) {
             closedDayOfWeeks.forEach(
-                    day -> this.closedDayOfWeeks.add(new PlaceClosedDayOfWeek(day))
+                    day -> this.placeClosedDayOfWeeks.add(new PlaceClosedDayOfWeek(day))
             );
         }
     }
