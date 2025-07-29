@@ -34,7 +34,7 @@ class ClosedDayValidityCalculatorTest {
     void calculateValidity_shouldReturnTrue_whenAllDaysAreOpen() {
         // given
         Place place = mock(Place.class);
-        when(place.getClosedWeekdays()).thenReturn(List.of()); // 항상 열려 있는 장소
+        when(place.getPlaceClosedWeekdays()).thenReturn(List.of()); // 항상 열려 있는 장소
 
         RoutiePlace routiePlace = mock(RoutiePlace.class);
         when(routiePlace.getPlace()).thenReturn(place);
@@ -58,7 +58,7 @@ class ClosedDayValidityCalculatorTest {
         // given
         PlaceClosedWeekday closed = new PlaceClosedWeekday(DayOfWeek.TUESDAY);
         Place place = mock(Place.class);
-        when(place.getClosedWeekdays()).thenReturn(List.of(closed));
+        when(place.getPlaceClosedWeekdays()).thenReturn(List.of(closed));
 
         RoutiePlace routiePlace = mock(RoutiePlace.class);
         when(routiePlace.getPlace()).thenReturn(place);
@@ -82,7 +82,7 @@ class ClosedDayValidityCalculatorTest {
         // given
         PlaceClosedWeekday closed = new PlaceClosedWeekday(DayOfWeek.WEDNESDAY);
         Place place = mock(Place.class);
-        when(place.getClosedWeekdays()).thenReturn(List.of(closed));
+        when(place.getPlaceClosedWeekdays()).thenReturn(List.of(closed));
 
         RoutiePlace routiePlace = mock(RoutiePlace.class);
         when(routiePlace.getPlace()).thenReturn(place);
@@ -106,7 +106,7 @@ class ClosedDayValidityCalculatorTest {
         // given
         PlaceClosedWeekday closed = new PlaceClosedWeekday(DayOfWeek.MONDAY); // 월요일만 휴무
         Place place = mock(Place.class);
-        when(place.getClosedWeekdays()).thenReturn(List.of(closed));
+        when(place.getPlaceClosedWeekdays()).thenReturn(List.of(closed));
 
         RoutiePlace routiePlace = mock(RoutiePlace.class);
         when(routiePlace.getPlace()).thenReturn(place);

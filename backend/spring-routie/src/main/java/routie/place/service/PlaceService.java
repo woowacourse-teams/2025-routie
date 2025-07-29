@@ -45,7 +45,7 @@ public class PlaceService {
                 placeCreateRequest.breakStartAt(),
                 placeCreateRequest.breakEndAt(),
                 routieSpace,
-                placeCreateRequest.closedDays()
+                placeCreateRequest.closedWeekdays()
         );
         return new PlaceCreateResponse(placeRepository.save(place).getId());
     }
@@ -61,7 +61,7 @@ public class PlaceService {
     public void modifyPlace(final PlaceUpdateRequest placeUpdateRequest, final long placeId) {
         final Place place = getPlaceById(placeId);
 
-        place.getClosedWeekdays()
+        place.getPlaceClosedWeekdays()
                 .forEach(closedWeekday -> placeClosedWeekdayRepository.deleteById(closedWeekday.getId()));
 
         place.modify(
@@ -70,7 +70,7 @@ public class PlaceService {
                 placeUpdateRequest.closeAt(),
                 placeUpdateRequest.breakStartAt(),
                 placeUpdateRequest.breakEndAt(),
-                placeUpdateRequest.closedDays()
+                placeUpdateRequest.closedWeekdays()
         );
     }
 

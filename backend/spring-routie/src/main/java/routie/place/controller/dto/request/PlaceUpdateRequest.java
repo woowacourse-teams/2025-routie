@@ -12,7 +12,7 @@ public record PlaceUpdateRequest(
         @NotNull @JsonFormat(pattern = "HH:mm") LocalTime closeAt,
         @JsonFormat(pattern = "HH:mm") LocalTime breakStartAt,
         @JsonFormat(pattern = "HH:mm") LocalTime breakEndAt,
-        List<DayOfWeek> closedDays
+        List<DayOfWeek> closedWeekdays
 ) {
 
 }

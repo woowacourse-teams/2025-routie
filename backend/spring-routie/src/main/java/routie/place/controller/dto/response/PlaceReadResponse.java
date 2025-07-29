@@ -15,7 +15,7 @@ public record PlaceReadResponse(
         @JsonFormat(pattern = "HH:mm") LocalTime closeAt,
         @JsonFormat(pattern = "HH:mm") LocalTime breakStartAt,
         @JsonFormat(pattern = "HH:mm") LocalTime breakEndAt,
-        List<DayOfWeek> closedDays
+        List<DayOfWeek> closedWeekdays
 ) {
 
     public static PlaceReadResponse from(final Place place) {
@@ -27,7 +27,7 @@ public record PlaceReadResponse(
                 place.getCloseAt(),
                 place.getBreakStartAt(),
                 place.getBreakEndAt(),
-                place.getClosedWeekdays().stream()
+                place.getPlaceClosedWeekdays().stream()
                         .map(PlaceClosedWeekday::getClosedWeekday)
                         .toList()
         );

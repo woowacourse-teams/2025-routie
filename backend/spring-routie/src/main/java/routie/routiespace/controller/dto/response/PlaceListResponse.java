@@ -25,7 +25,7 @@ public record PlaceListResponse(
             String address,
             @JsonFormat(pattern = "HH:mm") LocalTime openAt,
             @JsonFormat(pattern = "HH:mm") LocalTime closeAt,
-            List<DayOfWeek> closedDays
+            List<DayOfWeek> closedWeekdays
     ) {
         public static PlaceCardResponse from(final Place place) {
             return new PlaceCardResponse(
@@ -34,7 +34,7 @@ public record PlaceListResponse(
                     place.getAddress(),
                     place.getOpenAt(),
                     place.getCloseAt(),
-                    place.getClosedWeekdays().stream()
+                    place.getPlaceClosedWeekdays().stream()
                             .map(PlaceClosedWeekday::getClosedWeekday)
                             .toList()
             );

@@ -64,7 +64,7 @@ public class Place {
 
     @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     @JoinColumn(name = "place_id", nullable = false)
-    private List<PlaceClosedWeekday> closedWeekdays = new ArrayList<>();
+    private List<PlaceClosedWeekday> placeClosedWeekdays = new ArrayList<>();
 
     @CreatedDate
     @Column(name = "created_at")
@@ -83,7 +83,7 @@ public class Place {
             final LocalTime breakStartAt,
             final LocalTime breakEndAt,
             final RoutieSpace routieSpace,
-            final List<PlaceClosedWeekday> closedWeekdays
+            final List<PlaceClosedWeekday> placeClosedWeekdays
     ) {
         this(
                 null,
@@ -95,7 +95,7 @@ public class Place {
                 breakStartAt,
                 breakEndAt,
                 routieSpace,
-                closedWeekdays,
+                placeClosedWeekdays,
                 null,
                 null
         );
@@ -110,16 +110,16 @@ public class Place {
             final LocalTime breakStartAt,
             final LocalTime breakEndAt,
             final RoutieSpace routieSpace,
-            final List<DayOfWeek> closedDays
+            final List<DayOfWeek> closedWeekdays
     ) {
         validateName(name);
         validateAddress(address);
         validateStayDurationMinutes(stayDurationMinutes);
         validateBreakTime(breakStartAt, breakEndAt);
 
-        List<PlaceClosedWeekday> closedWeekdays = new ArrayList<>();
-        if (closedDays != null) {
-            closedWeekdays = closedDays.stream()
+        List<PlaceClosedWeekday> placeClosedWeekdays = new ArrayList<>();
+        if (closedWeekdays != null) {
+            placeClosedWeekdays = closedWeekdays.stream()
                     .map(PlaceClosedWeekday::new)
                     .toList();
         }
@@ -133,32 +133,8 @@ public class Place {
                 breakStartAt,
                 breakEndAt,
                 routieSpace,
-                closedWeekdays
+                placeClosedWeekdays
         );
-    }
-
-    public void modify(
-            final int stayDurationMinutes,
-            final LocalTime openAt,
-            final LocalTime closeAt,
-            final LocalTime breakStartAt,
-            final LocalTime breakEndAt,
-            final List<DayOfWeek> closedDays
-    ) {
-        validateStayDurationMinutes(stayDurationMinutes);
-        validateBreakTime(breakStartAt, breakEndAt);
-
-        this.stayDurationMinutes = stayDurationMinutes;
-        this.openAt = openAt;
-        this.closeAt = closeAt;
-        this.breakStartAt = breakStartAt;
-        this.breakEndAt = breakEndAt;
-        this.closedWeekdays.clear();
-        if (closedDays != null) {
-            closedDays.forEach(
-                    day -> this.closedWeekdays.add(new PlaceClosedWeekday(day))
-            );
-        }
     }
 
     private static void validateStayDurationMinutes(final int stayDurationMinutes) {
@@ -191,6 +167,30 @@ public class Place {
 
         if (hasBreakStart != hasBreakEnd) {
             throw new IllegalArgumentException("브레이크 타임 시작 시간과 종료 시간은 함께 존재해야 합니다.");
+        }
+    }
+
+    public void modify(
+            final int stayDurationMinutes,
+            final LocalTime openAt,
+            final LocalTime closeAt,
+            final LocalTime breakStartAt,
+            final LocalTime breakEndAt,
+            final List<DayOfWeek> closedWeekdays
+    ) {
+        validateStayDurationMinutes(stayDurationMinutes);
+        validateBreakTime(breakStartAt, breakEndAt);
+
+        this.stayDurationMinutes = stayDurationMinutes;
+        this.openAt = openAt;
+        this.closeAt = closeAt;
+        this.breakStartAt = breakStartAt;
+        this.breakEndAt = breakEndAt;
+        this.placeClosedWeekdays.clear();
+        if (closedWeekdays != null) {
+            closedWeekdays.forEach(
+                    day -> this.placeClosedWeekdays.add(new PlaceClosedWeekday(day))
+            );
         }
     }
 }
