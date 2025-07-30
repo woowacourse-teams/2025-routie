@@ -13,13 +13,13 @@ import org.junit.jupiter.api.Test;
 import routie.place.domain.Place;
 import routie.place.domain.PlaceClosedDayOfWeek;
 import routie.routie.domain.RoutiePlace;
-import routie.routie.domain.ValidationContext;
-import routie.routie.domain.ValidationStrategy;
+import routie.routie.domain.routievalidator.ValidationContext;
+import routie.routie.domain.routievalidator.ValidationStrategy;
 import routie.routie.domain.timeperiod.TimePeriod;
 
-class ClosedDayValidityCalculatorTest {
+class ClosedDayValidatorTest {
 
-    private final ClosedDayValidityCalculator calculator = new ClosedDayValidityCalculator();
+    private final ClosedDayValidator calculator = new ClosedDayValidator();
 
     @Test
     void supportsStrategy_shouldReturnTrue_forIS_NOT_CLOSED_DAY() {
@@ -32,7 +32,7 @@ class ClosedDayValidityCalculatorTest {
     }
 
     @Test
-    void calculateValidity_shouldReturnTrue_whenAllDaysAreOpen() {
+    void isValid_shouldReturnTrue_whenAllDaysAreOpen() {
         // given
         Place place = mock(Place.class);
         when(place.getPlaceClosedDayOfWeeks()).thenReturn(List.of()); // 항상 열려 있는 장소
@@ -49,14 +49,14 @@ class ClosedDayValidityCalculatorTest {
         ValidationContext validationContext = new ValidationContext(null, null, map);
 
         // when
-        boolean result = calculator.calculateValidity(validationContext, ValidationStrategy.IS_NOT_CLOSED_DAY);
+        boolean result = calculator.isValid(validationContext, ValidationStrategy.IS_NOT_CLOSED_DAY);
 
         // then
         assertTrue(result);
     }
 
     @Test
-    void calculateValidity_shouldReturnFalse_whenStartDayIsClosed() {
+    void isValid_shouldReturnFalse_whenStartDayIsClosed() {
         // given
         PlaceClosedDayOfWeek closed = new PlaceClosedDayOfWeek(DayOfWeek.TUESDAY);
         Place place = mock(Place.class);
@@ -74,14 +74,14 @@ class ClosedDayValidityCalculatorTest {
         ValidationContext validationContext = new ValidationContext(null, null, map);
 
         // when
-        boolean result = calculator.calculateValidity(validationContext, ValidationStrategy.IS_NOT_CLOSED_DAY);
+        boolean result = calculator.isValid(validationContext, ValidationStrategy.IS_NOT_CLOSED_DAY);
 
         // then
         assertFalse(result);
     }
 
     @Test
-    void calculateValidity_shouldReturnFalse_whenEndDayIsClosed() {
+    void isValid_shouldReturnFalse_whenEndDayIsClosed() {
         // given
         PlaceClosedDayOfWeek closed = new PlaceClosedDayOfWeek(DayOfWeek.WEDNESDAY);
         Place place = mock(Place.class);
@@ -99,14 +99,14 @@ class ClosedDayValidityCalculatorTest {
         ValidationContext validationContext = new ValidationContext(null, null, map);
 
         // when
-        boolean result = calculator.calculateValidity(validationContext, ValidationStrategy.IS_NOT_CLOSED_DAY);
+        boolean result = calculator.isValid(validationContext, ValidationStrategy.IS_NOT_CLOSED_DAY);
 
         // then
         assertFalse(result);
     }
 
     @Test
-    void calculateValidity_shouldReturnTrue_whenStartAndEndDaysAreOpen() {
+    void isValid_shouldReturnTrue_whenStartAndEndDaysAreOpen() {
         // given
         PlaceClosedDayOfWeek closed = new PlaceClosedDayOfWeek(DayOfWeek.MONDAY); // 월요일만 휴무
         Place place = mock(Place.class);
@@ -124,7 +124,7 @@ class ClosedDayValidityCalculatorTest {
         ValidationContext validationContext = new ValidationContext(null, null, map);
 
         // when
-        boolean result = calculator.calculateValidity(validationContext, ValidationStrategy.IS_NOT_CLOSED_DAY);
+        boolean result = calculator.isValid(validationContext, ValidationStrategy.IS_NOT_CLOSED_DAY);
 
         // then
         assertTrue(result);

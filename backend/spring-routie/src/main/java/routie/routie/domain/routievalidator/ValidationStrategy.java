@@ -1,4 +1,4 @@
-package routie.routie.domain;
+package routie.routie.domain.routievalidator;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

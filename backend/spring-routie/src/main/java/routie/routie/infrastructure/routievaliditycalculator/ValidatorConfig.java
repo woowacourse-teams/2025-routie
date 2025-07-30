@@ -4,14 +4,14 @@ import java.util.List;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
-import routie.routie.domain.ValidityCalculator;
+import routie.routie.domain.routievalidator.RoutieValidator;
 
 @Configuration
-public class ValidityCalculatorConfig {
+public class ValidatorConfig {
 
     @Bean
     @Primary
-    public ValidityCalculator validityCalculator(final List<ValidityCalculator> validityCalculators) {
-        return new ValidityCalculatorComposite(validityCalculators);
+    public RoutieValidator validator(final List<RoutieValidator> validators) {
+        return new ValidatorComposite(validators);
     }
 }

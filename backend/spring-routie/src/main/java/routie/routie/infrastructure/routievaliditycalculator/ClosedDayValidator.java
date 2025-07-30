@@ -2,26 +2,24 @@ package routie.routie.infrastructure.routievaliditycalculator;
 
 import java.time.DayOfWeek;
 import java.util.List;
-import java.util.Map;
 import java.util.Map.Entry;
 import org.springframework.stereotype.Component;
 import routie.place.domain.PlaceClosedDayOfWeek;
 import routie.routie.domain.RoutiePlace;
-import routie.routie.domain.ValidationStrategy;
-import routie.routie.domain.ValidityCalculator;
+import routie.routie.domain.routievalidator.RoutieValidator;
+import routie.routie.domain.routievalidator.ValidationContext;
+import routie.routie.domain.routievalidator.ValidationStrategy;
 import routie.routie.domain.timeperiod.TimePeriod;
 
-import routie.routie.domain.ValidationContext;
-
 @Component
-public class ClosedDayValidityCalculator implements ValidityCalculator {
+public class ClosedDayValidator implements RoutieValidator {
     @Override
     public boolean supportsStrategy(final ValidationStrategy validationStrategy) {
         return validationStrategy == ValidationStrategy.IS_NOT_CLOSED_DAY;
     }
 
     @Override
-    public boolean calculateValidity(
+    public boolean isValid(
             final ValidationContext validationContext,
             final ValidationStrategy validationStrategy
     ) {

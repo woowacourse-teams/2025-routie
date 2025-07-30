@@ -11,13 +11,13 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import routie.place.domain.Place;
 import routie.routie.domain.RoutiePlace;
-import routie.routie.domain.ValidationContext;
-import routie.routie.domain.ValidationStrategy;
+import routie.routie.domain.routievalidator.ValidationContext;
+import routie.routie.domain.routievalidator.ValidationStrategy;
 import routie.routie.domain.timeperiod.TimePeriod;
 
-class OperationHoursValidityCalculatorTest {
+class OperationHoursValidatorTest {
 
-    private final OperationHoursValidityCalculator calculator = new OperationHoursValidityCalculator();
+    private final OperationHoursValidator calculator = new OperationHoursValidator();
 
     @Test
     @DisplayName("영업시간이 설정되지 않은 경우 항상 유효하다")
@@ -33,7 +33,7 @@ class OperationHoursValidityCalculatorTest {
         ValidationContext validationContext = new ValidationContext(null, null, timePeriodMap);
 
         // when
-        boolean result = calculator.calculateValidity(validationContext, ValidationStrategy.IS_WITHIN_OPERATION_HOURS);
+        boolean result = calculator.isValid(validationContext, ValidationStrategy.IS_WITHIN_OPERATION_HOURS);
 
         // then
         assertThat(result).isTrue();
@@ -53,7 +53,7 @@ class OperationHoursValidityCalculatorTest {
         ValidationContext validationContext = new ValidationContext(null, null, timePeriodMap);
 
         // when
-        boolean result = calculator.calculateValidity(validationContext, ValidationStrategy.IS_WITHIN_OPERATION_HOURS);
+        boolean result = calculator.isValid(validationContext, ValidationStrategy.IS_WITHIN_OPERATION_HOURS);
 
         // then
         assertThat(result).isTrue();
@@ -73,7 +73,7 @@ class OperationHoursValidityCalculatorTest {
         ValidationContext validationContext = new ValidationContext(null, null, timePeriodMap);
 
         // when
-        boolean result = calculator.calculateValidity(validationContext, ValidationStrategy.IS_WITHIN_OPERATION_HOURS);
+        boolean result = calculator.isValid(validationContext, ValidationStrategy.IS_WITHIN_OPERATION_HOURS);
 
         // then
         assertThat(result).isTrue();
@@ -93,7 +93,7 @@ class OperationHoursValidityCalculatorTest {
         ValidationContext validationContext = new ValidationContext(null, null, timePeriodMap);
 
         // when
-        boolean result = calculator.calculateValidity(validationContext, ValidationStrategy.IS_WITHIN_OPERATION_HOURS);
+        boolean result = calculator.isValid(validationContext, ValidationStrategy.IS_WITHIN_OPERATION_HOURS);
 
         // then
         assertThat(result).isTrue();
@@ -113,7 +113,7 @@ class OperationHoursValidityCalculatorTest {
         ValidationContext validationContext = new ValidationContext(null, null, timePeriodMap);
 
         // when
-        boolean result = calculator.calculateValidity(validationContext, ValidationStrategy.IS_WITHIN_OPERATION_HOURS);
+        boolean result = calculator.isValid(validationContext, ValidationStrategy.IS_WITHIN_OPERATION_HOURS);
 
         // then
         assertThat(result).isFalse();
@@ -133,7 +133,7 @@ class OperationHoursValidityCalculatorTest {
         ValidationContext validationContext = new ValidationContext(null, null, timePeriodMap);
 
         // when
-        boolean result = calculator.calculateValidity(validationContext, ValidationStrategy.IS_WITHIN_OPERATION_HOURS);
+        boolean result = calculator.isValid(validationContext, ValidationStrategy.IS_WITHIN_OPERATION_HOURS);
 
         // then
         assertThat(result).isFalse();
@@ -153,7 +153,7 @@ class OperationHoursValidityCalculatorTest {
         ValidationContext validationContext = new ValidationContext(null, null, timePeriodMap);
 
         // when
-        boolean result = calculator.calculateValidity(validationContext, ValidationStrategy.IS_WITHIN_OPERATION_HOURS);
+        boolean result = calculator.isValid(validationContext, ValidationStrategy.IS_WITHIN_OPERATION_HOURS);
 
         // then
         assertThat(result).isFalse();
@@ -173,7 +173,7 @@ class OperationHoursValidityCalculatorTest {
         ValidationContext validationContext = new ValidationContext(null, null, timePeriodMap);
 
         // when
-        boolean result = calculator.calculateValidity(validationContext, ValidationStrategy.IS_WITHIN_OPERATION_HOURS);
+        boolean result = calculator.isValid(validationContext, ValidationStrategy.IS_WITHIN_OPERATION_HOURS);
 
         // then
         assertThat(result).isFalse();
@@ -193,7 +193,7 @@ class OperationHoursValidityCalculatorTest {
         ValidationContext validationContext = new ValidationContext(null, null, timePeriodMap);
 
         // when
-        boolean result = calculator.calculateValidity(validationContext, ValidationStrategy.IS_WITHIN_OPERATION_HOURS);
+        boolean result = calculator.isValid(validationContext, ValidationStrategy.IS_WITHIN_OPERATION_HOURS);
 
         // then
         assertThat(result).isTrue();
@@ -213,7 +213,7 @@ class OperationHoursValidityCalculatorTest {
         ValidationContext validationContext = new ValidationContext(null, null, timePeriodMap);
 
         // when
-        boolean result = calculator.calculateValidity(validationContext, ValidationStrategy.IS_WITHIN_OPERATION_HOURS);
+        boolean result = calculator.isValid(validationContext, ValidationStrategy.IS_WITHIN_OPERATION_HOURS);
 
         // then
         assertThat(result).isFalse();

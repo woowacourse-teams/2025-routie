@@ -1,10 +1,10 @@
-package routie.routie.domain;
+package routie.routie.domain.routievalidator;
 
-public interface ValidityCalculator {
+public interface RoutieValidator {
 
     boolean supportsStrategy(ValidationStrategy validationStrategy);
 
-    boolean calculateValidity(
+    boolean isValid(
             ValidationContext validationContext,
             ValidationStrategy validationStrategy
     );

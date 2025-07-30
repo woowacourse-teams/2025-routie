@@ -7,13 +7,13 @@ import java.util.Map;
 import java.util.Map.Entry;
 import org.springframework.stereotype.Component;
 import routie.routie.domain.RoutiePlace;
-import routie.routie.domain.ValidationContext;
-import routie.routie.domain.ValidationStrategy;
-import routie.routie.domain.ValidityCalculator;
+import routie.routie.domain.routievalidator.RoutieValidator;
+import routie.routie.domain.routievalidator.ValidationContext;
+import routie.routie.domain.routievalidator.ValidationStrategy;
 import routie.routie.domain.timeperiod.TimePeriod;
 
 @Component
-public class TotalTimeValidityCalculator implements ValidityCalculator {
+public class TotalTimeValidator implements RoutieValidator {
 
     @Override
     public boolean supportsStrategy(final ValidationStrategy validationStrategy) {
@@ -21,8 +21,8 @@ public class TotalTimeValidityCalculator implements ValidityCalculator {
     }
 
     @Override
-    public boolean calculateValidity(final ValidationContext validationContext,
-                                     final ValidationStrategy validationStrategy) {
+    public boolean isValid(final ValidationContext validationContext,
+                           final ValidationStrategy validationStrategy) {
         Map<RoutiePlace, TimePeriod> timePeriodByRoutiePlace = validationContext.timePeriodByRoutiePlace();
 
         if (timePeriodByRoutiePlace.isEmpty()) {

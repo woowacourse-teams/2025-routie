@@ -20,11 +20,11 @@ import routie.routie.controller.dto.response.RoutieTimeValidationResponse;
 import routie.routie.controller.dto.response.RoutieUpdateResponse;
 import routie.routie.domain.Routie;
 import routie.routie.domain.RoutiePlace;
-import routie.routie.domain.ValidationContext;
-import routie.routie.domain.ValidationStrategy;
-import routie.routie.domain.ValidityCalculator;
 import routie.routie.domain.route.Route;
 import routie.routie.domain.route.RouteCalculator;
+import routie.routie.domain.routievalidator.RoutieValidator;
+import routie.routie.domain.routievalidator.ValidationContext;
+import routie.routie.domain.routievalidator.ValidationStrategy;
 import routie.routie.domain.timeperiod.TimePeriod;
 import routie.routie.domain.timeperiod.TimePeriodCalculator;
 import routie.routie.repository.RoutiePlaceRepository;
@@ -37,10 +37,10 @@ public class RoutieService {
 
     private final RoutieSpaceRepository routieSpaceRepository;
     private final PlaceRepository placeRepository;
+    private final RoutiePlaceRepository routiePlaceRepository;
     private final TimePeriodCalculator timePeriodCalculator;
     private final RouteCalculator routeCalculator;
-    private final ValidityCalculator validityCalculator;
-    private final RoutiePlaceRepository routiePlaceRepository;
+    private final RoutieValidator routieValidator;
 
     public RoutieReadResponse getRoutie(final String routieSpaceIdentifier) {
         Routie routie = getRoutieSpaceByIdentifier(routieSpaceIdentifier).getRoutie();
@@ -100,11 +100,12 @@ public class RoutieService {
                 routeByFromRoutiePlace
         );
 
-        ValidationContext validationContext = new ValidationContext(startDateTime, endDateTime, timePeriodByRoutiePlace);
+        ValidationContext validationContext = new ValidationContext(startDateTime, endDateTime,
+                timePeriodByRoutiePlace);
 
         boolean isStrategyValid = Arrays.stream(ValidationStrategy.values())
                 .allMatch(validationStrategy ->
-                        validityCalculator.calculateValidity(validationContext, validationStrategy));
+                        routieValidator.isValid(validationContext, validationStrategy));
 
         return new RoutieTimeValidationResponse(isStrategyValid);
     }

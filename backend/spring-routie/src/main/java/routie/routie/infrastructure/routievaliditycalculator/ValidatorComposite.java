@@ -2,16 +2,16 @@ package routie.routie.infrastructure.routievaliditycalculator;
 
 import java.util.ArrayList;
 import java.util.List;
-import routie.routie.domain.ValidationContext;
-import routie.routie.domain.ValidationStrategy;
-import routie.routie.domain.ValidityCalculator;
+import routie.routie.domain.routievalidator.RoutieValidator;
+import routie.routie.domain.routievalidator.ValidationContext;
+import routie.routie.domain.routievalidator.ValidationStrategy;
 
-public class ValidityCalculatorComposite implements ValidityCalculator {
+public class ValidatorComposite implements RoutieValidator {
 
-    private final List<ValidityCalculator> routeValidityCalculators;
+    private final List<RoutieValidator> routeValidators;
 
-    public ValidityCalculatorComposite(final List<ValidityCalculator> routeValidityCalculator) {
-        this.routeValidityCalculators = new ArrayList<>(routeValidityCalculator);
+    public ValidatorComposite(final List<RoutieValidator> routeValidator) {
+        this.routeValidators = new ArrayList<>(routeValidator);
     }
 
     @Override
@@ -20,18 +20,18 @@ public class ValidityCalculatorComposite implements ValidityCalculator {
     }
 
     @Override
-    public boolean calculateValidity(
+    public boolean isValid(
             final ValidationContext validationContext,
             final ValidationStrategy validationStrategy
     ) {
-        return selectValidityCalculator(validationStrategy).calculateValidity(
+        return selectValidityCalculator(validationStrategy).isValid(
                 validationContext,
                 validationStrategy
         );
     }
 
-    private ValidityCalculator selectValidityCalculator(final ValidationStrategy validationStrategy) {
-        return routeValidityCalculators.stream()
+    private RoutieValidator selectValidityCalculator(final ValidationStrategy validationStrategy) {
+        return routeValidators.stream()
                 .filter(calculator -> calculator.supportsStrategy(validationStrategy))
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException("지원하지 않는 검증 방식입니다: " + validationStrategy));

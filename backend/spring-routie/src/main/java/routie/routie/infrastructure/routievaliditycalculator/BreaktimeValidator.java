@@ -3,20 +3,20 @@ package routie.routie.infrastructure.routievaliditycalculator;
 import java.time.LocalTime;
 import org.springframework.stereotype.Component;
 import routie.place.domain.Place;
-import routie.routie.domain.ValidationContext;
-import routie.routie.domain.ValidationStrategy;
-import routie.routie.domain.ValidityCalculator;
+import routie.routie.domain.routievalidator.RoutieValidator;
+import routie.routie.domain.routievalidator.ValidationContext;
+import routie.routie.domain.routievalidator.ValidationStrategy;
 import routie.routie.domain.timeperiod.TimePeriod;
 
 @Component
-public class BreaktimeValidityCalculator implements ValidityCalculator {
+public class BreaktimeValidator implements RoutieValidator {
     @Override
     public boolean supportsStrategy(final ValidationStrategy validationStrategy) {
         return validationStrategy == ValidationStrategy.IS_NOT_DURING_BREAKTIME;
     }
 
     @Override
-    public boolean calculateValidity(
+    public boolean isValid(
             final ValidationContext validationContext,
             final ValidationStrategy validationStrategy
     ) {
