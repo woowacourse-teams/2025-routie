@@ -7,13 +7,11 @@ import routie.routie.domain.RoutiePlace;
 import routie.routie.domain.route.Route;
 
 public record RoutieReadResponse(
-        Long routieId,
         List<RoutiePlaceResponse> routiePlaces,
         List<RouteResponse> routes
 ) {
     public static RoutieReadResponse from(final Routie routie, final List<Route> routes) {
         return new RoutieReadResponse(
-                routie.getId(),
                 routie.getRoutiePlaces().stream()
                         .map(RoutiePlaceResponse::from)
                         .toList(),

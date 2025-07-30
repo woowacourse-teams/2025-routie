@@ -7,8 +7,8 @@ public record RoutieUpdateRequest(
         @NotNull List<RoutiePlaceRequest> routiePlaces
 ) {
     public record RoutiePlaceRequest(
-            int sequence,
-            Long placeId
+            Long placeId,
+            int sequence
     ) {
     }
 }

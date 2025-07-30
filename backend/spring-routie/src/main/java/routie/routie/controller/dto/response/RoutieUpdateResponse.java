@@ -5,12 +5,10 @@ import routie.routie.domain.Routie;
 import routie.routie.domain.RoutiePlace;
 
 public record RoutieUpdateResponse(
-        Long id,
         List<RoutiePlaceResponse> places
 ) {
     public static RoutieUpdateResponse from(final Routie routie) {
         return new RoutieUpdateResponse(
-                routie.getId(),
                 routie.getRoutiePlaces().stream()
                         .map(RoutiePlaceResponse::from)
                         .toList()

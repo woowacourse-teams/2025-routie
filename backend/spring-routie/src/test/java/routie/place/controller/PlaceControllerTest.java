@@ -82,7 +82,7 @@ public class PlaceControllerTest {
                 .contentType(ContentType.JSON)
                 .body(updateRequest)
                 .when()
-                .patch("/places/" + placeId)
+                .patch("/routie-spaces/" + testRoutieSpace.getIdentifier() + "/places/" + placeId)
                 .then()
                 .log().all()
                 .extract().response();
@@ -112,7 +112,7 @@ public class PlaceControllerTest {
                 .contentType(ContentType.JSON)
                 .body(updateRequest)
                 .when()
-                .patch("/places/" + placeId)
+                .patch("/routie-spaces/" + testRoutieSpace.getIdentifier() + "/places/" + placeId)
                 .then()
                 .log().all()
                 .extract().response();
@@ -142,7 +142,7 @@ public class PlaceControllerTest {
                 .contentType(ContentType.JSON)
                 .body(updateRequest)
                 .when()
-                .patch("/places/" + placeId)
+                .patch("/routie-spaces/" + testRoutieSpace.getIdentifier() + "/places/" + placeId)
                 .then()
                 .log().all()
                 .extract().response();
@@ -174,7 +174,7 @@ public class PlaceControllerTest {
                 .contentType(ContentType.JSON)
                 .body(updateRequest)
                 .when()
-                .patch("/places/" + placeId)
+                .patch("/routie-spaces/" + testRoutieSpace.getIdentifier() + "/places/" + placeId)
                 .then()
                 .log().all()
                 .extract().response();
@@ -195,7 +195,7 @@ public class PlaceControllerTest {
         // when
         Response response = RestAssured
                 .when()
-                .delete("/places/" + placeId)
+                .delete("/routie-spaces/" + testRoutieSpace.getIdentifier() + "/places/" + placeId)
                 .then()
                 .log().all()
                 .extract().response();
@@ -216,7 +216,7 @@ public class PlaceControllerTest {
         // when
         Response response = RestAssured
                 .when()
-                .get("/places/" + placeId)
+                .get("/routie-spaces/" + testRoutieSpace.getIdentifier() + "/places/" + placeId)
                 .then()
                 .log().all()
                 .extract().response();
@@ -243,7 +243,7 @@ public class PlaceControllerTest {
         // when
         Response response = RestAssured
                 .when()
-                .get("/places/" + placeId)
+                .get("/routie-spaces/" + testRoutieSpace.getIdentifier() + "/places/" + placeId)
                 .then()
                 .log().all()
                 .extract().response();

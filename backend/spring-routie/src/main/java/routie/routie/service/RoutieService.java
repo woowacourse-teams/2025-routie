@@ -28,21 +28,22 @@ import routie.routie.domain.route.RouteCalculator;
 import routie.routie.domain.timeperiod.TimePeriod;
 import routie.routie.domain.timeperiod.TimePeriodCalculator;
 import routie.routie.repository.RoutiePlaceRepository;
-import routie.routie.repository.RoutieRepository;
+import routie.routiespace.domain.RoutieSpace;
+import routie.routiespace.repository.RoutieSpaceRepository;
 
 @Service
 @RequiredArgsConstructor
 public class RoutieService {
 
-    private final RoutieRepository routieRepository;
+    private final RoutieSpaceRepository routieSpaceRepository;
     private final PlaceRepository placeRepository;
     private final TimePeriodCalculator timePeriodCalculator;
     private final RouteCalculator routeCalculator;
     private final ValidityCalculator validityCalculator;
     private final RoutiePlaceRepository routiePlaceRepository;
 
-    public RoutieReadResponse getRoutie(final Long routieId) {
-        Routie routie = getRoutieById(routieId);
+    public RoutieReadResponse getRoutie(final String routieSpaceIdentifier) {
+        Routie routie = getRoutieSpaceByIdentifier(routieSpaceIdentifier).getRoutie();
         Map<RoutiePlace, Route> routeByFromRoutiePlace = routeCalculator.calculateRoutes(routie.getRoutiePlaces());
         List<Route> routes = new ArrayList<>(routeByFromRoutiePlace.values());
 
@@ -50,8 +51,9 @@ public class RoutieService {
     }
 
     @Transactional
-    public void modifyRoutie(final Long routieId, final RoutieUpdateRequest routieUpdateRequest) {
-        Routie routie = getRoutieById(routieId);
+    public void modifyRoutie(final String routieSpaceIdentifier, final RoutieUpdateRequest routieUpdateRequest) {
+        RoutieSpace routieSpace = getRoutieSpaceByIdentifier(routieSpaceIdentifier);
+        Routie routie = routieSpace.getRoutie();
 
         List<Long> placeIds = routieUpdateRequest.routiePlaces().stream()
                 .map(RoutiePlaceRequest::placeId)
@@ -74,22 +76,22 @@ public class RoutieService {
                                         () -> new IllegalArgumentException("해당하는 id의 장소를 찾을 수 없습니다: " + r.placeId()))
                 )).toList();
 
-        routie.modify(routiePlaces);
+        routieSpace.updateRoutie(Routie.create(routiePlaces));
 
         RoutieUpdateResponse.from(routie);
     }
 
-    private Routie getRoutieById(final Long id) {
-        return routieRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("해당하는 id의 루티를 찾을 수 없습니다."));
+    private RoutieSpace getRoutieSpaceByIdentifier(final String routieSpaceIdentifier) {
+        return routieSpaceRepository.findByIdentifier(routieSpaceIdentifier)
+                .orElseThrow(() -> new IllegalArgumentException("해당하는 식별자의 루티 스페이스를 찾을 수 없습니다."));
     }
 
     public RoutieTimeValidationResponse validateRoutie(
-            final Long routieId,
+            final String routieSpaceIdentifier,
             final LocalDateTime startDateTime,
             final LocalDateTime endDateTime
     ) {
-        Routie routie = getRoutieById(routieId);
+        Routie routie = getRoutieSpaceByIdentifier(routieSpaceIdentifier).getRoutie();
 
         Map<RoutiePlace, Route> routeByFromRoutiePlace = routeCalculator.calculateRoutes(routie.getRoutiePlaces());
         Map<RoutiePlace, TimePeriod> timePeriodByRoutiePlace = timePeriodCalculator.calculateTimePeriods(
