@@ -1,4 +1,4 @@
-package routie.routie.infrastructure.routievaliditycalculator;
+package routie.routie.infrastructure.routievalidator;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;

@@ -1,4 +1,4 @@
-package routie.routie.infrastructure.routievaliditycalculator;
+package routie.routie.infrastructure.routievalidator;
 
 import java.time.DayOfWeek;
 import java.util.List;

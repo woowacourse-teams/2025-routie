@@ -1,4 +1,4 @@
-package routie.routie.infrastructure.routievaliditycalculator;
+package routie.routie.infrastructure.routievalidator;
 
 import java.util.ArrayList;
 import java.util.List;
