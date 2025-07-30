@@ -118,7 +118,7 @@ const Sidebar = ({
             </Button>
           </Flex>
           <Flex justifyContent="flex-end" width="100%" gap={1}>
-            <Text variant="caption">일정 검증 토글</Text>
+            <Text variant="subTitle">일정 검증</Text>
             <ToggleSwitch
               active={isValidateActive}
               onToggle={handleValidateToggle}
