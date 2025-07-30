@@ -10,12 +10,15 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import routie.place.domain.Place;
 
 @Getter
 @Embeddable
 @AllArgsConstructor(access = AccessLevel.PACKAGE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Routie {
+
+    private static final int STARTING_SEQUENCE = 1;
 
     @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     @JoinColumn(name = "routie_id", nullable = false)
@@ -27,5 +30,30 @@ public class Routie {
 
     public static Routie create(final List<RoutiePlace> routiePlaces) {
         return new Routie(routiePlaces);
+    }
+
+    public RoutiePlace createLastRoutiePlace(final Place place) {
+        validatePlace(place);
+        RoutiePlace routiePlace = new RoutiePlace(getLastSequence() + 1, place);
+        routiePlaces.add(routiePlace);
+        return routiePlace;
+    }
+
+    private void validatePlace(final Place place) {
+        if (this.containsPlace(place)) {
+            throw new IllegalArgumentException("이미 등록된 장소입니다.");
+        }
+    }
+
+    private boolean containsPlace(final Place place) {
+        return routiePlaces.stream()
+                .anyMatch(routiePlace -> routiePlace.getPlace().equals(place));
+    }
+
+    private int getLastSequence() {
+        return routiePlaces.stream()
+                .mapToInt(RoutiePlace::getSequence)
+                .max()
+                .orElse(STARTING_SEQUENCE);
     }
 }

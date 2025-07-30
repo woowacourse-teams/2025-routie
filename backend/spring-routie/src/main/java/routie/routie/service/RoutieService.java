@@ -14,8 +14,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import routie.place.domain.Place;
 import routie.place.repository.PlaceRepository;
+import routie.routie.controller.dto.request.RoutiePlaceCreateRequest;
 import routie.routie.controller.dto.request.RoutieUpdateRequest;
 import routie.routie.controller.dto.request.RoutieUpdateRequest.RoutiePlaceRequest;
+import routie.routie.controller.dto.response.RoutiePlaceCreateResponse;
 import routie.routie.controller.dto.response.RoutieReadResponse;
 import routie.routie.controller.dto.response.RoutieTimeValidationResponse;
 import routie.routie.controller.dto.response.RoutieUpdateResponse;
@@ -41,6 +43,24 @@ public class RoutieService {
     private final RouteCalculator routeCalculator;
     private final ValidityCalculator validityCalculator;
     private final RoutiePlaceRepository routiePlaceRepository;
+
+    @Transactional
+    public RoutiePlaceCreateResponse addRoutiePlace(
+            final String routieSpaceIdentifier,
+            final RoutiePlaceCreateRequest routiePlaceCreateRequest
+    ) {
+        RoutieSpace routieSpace = getRoutieSpaceByIdentifier(routieSpaceIdentifier);
+        Routie routie = routieSpace.getRoutie();
+        Place place = getPlaceByRoutieSpaceAndPlaceId(routieSpace, routiePlaceCreateRequest.placeId());
+        RoutiePlace routiePlace = routie.createLastRoutiePlace(place);
+        routiePlaceRepository.save(routiePlace);
+        return RoutiePlaceCreateResponse.from(routiePlace);
+    }
+
+    private Place getPlaceByRoutieSpaceAndPlaceId(final RoutieSpace routieSpace, final Long placeId) {
+        return placeRepository.findByIdAndRoutieSpace(placeId, routieSpace)
+                .orElseThrow(() -> new IllegalArgumentException("루티 스페이스 내에서 해당하는 장소를 찾을 수 없습니다: " + placeId));
+    }
 
     public RoutieReadResponse getRoutie(final String routieSpaceIdentifier) {
         Routie routie = getRoutieSpaceByIdentifier(routieSpaceIdentifier).getRoutie();
