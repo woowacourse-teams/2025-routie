@@ -7,9 +7,12 @@ export const createRoutieSpace = async () => {
     throw new Error('루티 스페이스 생성 실패');
   }
 
-  const uuid = response.headers.get('Location')?.split('/').pop();
+  const data = await response.json();
+  const uuid = data.routieSpaceIdentifier;
 
-  if (!uuid) return;
+  if (!uuid) {
+    throw new Error('루티 스페이스 UUID가 응답에 없습니다.');
+  }
 
   localStorage.setItem('routieSpaceUuid', uuid);
 };
