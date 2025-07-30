@@ -32,7 +32,7 @@ public record RoutieReadResponse(
         );
     }
 
-    private record RoutiePlaceResponse(
+    public record RoutiePlaceResponse(
             Long id,
             int sequence,
             Long placeId,
@@ -50,7 +50,7 @@ public record RoutieReadResponse(
         }
     }
 
-    private record RouteResponse(
+    public record RouteResponse(
             int fromSequence,
             int toSequence,
             MovingStrategy movingStrategy,

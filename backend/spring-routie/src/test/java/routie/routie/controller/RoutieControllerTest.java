@@ -20,6 +20,9 @@ import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 import routie.place.domain.Place;
 import routie.place.repository.PlaceRepository;
+import routie.routie.controller.dto.response.RoutieReadResponse;
+import routie.routie.controller.dto.response.RoutieReadResponse.RouteResponse;
+import routie.routie.controller.dto.response.RoutieReadResponse.RoutiePlaceResponse;
 import routie.routie.domain.Routie;
 import routie.routie.domain.RoutiePlace;
 import routie.routiespace.domain.RoutieSpace;
@@ -176,28 +179,36 @@ class RoutieControllerTest {
         String startDateTime = "2025-07-29T10:00:00";
 
         // when
-        Response response = RestAssured
+        RoutieReadResponse routieReadResponse = RestAssured
                 .given().log().all()
                 .queryParam("startDateTime", startDateTime)
                 .when()
                 .get("/routie-spaces/" + routieSpace.getIdentifier() + "/routie")
                 .then().log().all()
-                .extract().response();
+                .statusCode(HttpStatus.OK.value())
+                .extract()
+                .as(RoutieReadResponse.class);
 
         // then
-        assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
-        assertThat(response.jsonPath().getList("routiePlaces")).hasSize(2);
-        assertThat(response.jsonPath().getList("routes")).hasSize(1);
+        RoutiePlaceResponse firstRoutiePlace = routieReadResponse.routiePlaces().get(0);
+        RoutiePlaceResponse secondRoutiePlace = routieReadResponse.routiePlaces().get(1);
+        RouteResponse route = routieReadResponse.routes().get(0);
 
-        assertThat(response.jsonPath().getString("routiePlaces[0].arriveDateTime"))
-                .isEqualTo("2025-07-29T10:00");
-        assertThat(response.jsonPath().getString("routiePlaces[0].departureDateTime"))
-                .isEqualTo("2025-07-29T11:00");
+        assertThat(routieReadResponse.routiePlaces()).hasSize(2);
+        assertThat(routieReadResponse.routes()).hasSize(1);
 
-        assertThat(response.jsonPath().getString("routiePlaces[1].arriveDateTime"))
-                .isEqualTo("2025-07-29T12:40");
-        assertThat(response.jsonPath().getString("routiePlaces[1].departureDateTime"))
-                .isEqualTo("2025-07-29T14:10");
+        assertThat(firstRoutiePlace.arriveDateTime()).isEqualTo(LocalDateTime.of(2025, 7, 29, 10, 0));
+        assertThat(firstRoutiePlace.departureDateTime()).isEqualTo(LocalDateTime.of(2025, 7, 29, 11, 0));
+        assertThat(firstRoutiePlace.sequence()).isEqualTo(1);
+
+        assertThat(secondRoutiePlace.arriveDateTime()).isEqualTo(LocalDateTime.of(2025, 7, 29, 12, 40));
+        assertThat(secondRoutiePlace.departureDateTime()).isEqualTo(LocalDateTime.of(2025, 7, 29, 14, 10));
+        assertThat(secondRoutiePlace.sequence()).isEqualTo(2);
+
+        assertThat(route.fromSequence()).isEqualTo(1);
+        assertThat(route.toSequence()).isEqualTo(2);
+        assertThat(route.duration()).isEqualTo(100);
+        assertThat(route.distance()).isEqualTo(1000);
     }
 
     @Test
@@ -206,29 +217,34 @@ class RoutieControllerTest {
         // given
 
         // when
-        Response response = RestAssured
+        RoutieReadResponse routieReadResponse = RestAssured
                 .given().log().all()
                 .when()
                 .get("/routie-spaces/" + routieSpace.getIdentifier() + "/routie")
                 .then().log().all()
-                .extract().response();
+                .statusCode(HttpStatus.OK.value())
+                .extract()
+                .as(RoutieReadResponse.class);
 
         // then
-        assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
-        assertThat(response.jsonPath().getList("routiePlaces")).hasSize(2);
-        assertThat(response.jsonPath().getList("routes")).hasSize(1);
+        RoutiePlaceResponse firstRoutiePlace = routieReadResponse.routiePlaces().get(0);
+        RoutiePlaceResponse secondRoutiePlace = routieReadResponse.routiePlaces().get(1);
+        RouteResponse route = routieReadResponse.routes().get(0);
 
-        assertThat(response.jsonPath().getString("routiePlaces[0].arriveDateTime")).isNull();
-        assertThat(response.jsonPath().getString("routiePlaces[0].departureDateTime")).isNull();
-        assertThat(response.jsonPath().getString("routiePlaces[1].arriveDateTime")).isNull();
-        assertThat(response.jsonPath().getString("routiePlaces[1].departureDateTime")).isNull();
+        assertThat(routieReadResponse.routiePlaces()).hasSize(2);
+        assertThat(routieReadResponse.routes()).hasSize(1);
 
-        assertThat(response.jsonPath().getInt("routiePlaces[0].sequence")).isEqualTo(1);
-        assertThat(response.jsonPath().getInt("routiePlaces[1].sequence")).isEqualTo(2);
+        assertThat(firstRoutiePlace.arriveDateTime()).isNull();
+        assertThat(firstRoutiePlace.departureDateTime()).isNull();
+        assertThat(firstRoutiePlace.sequence()).isEqualTo(1);
 
-        assertThat(response.jsonPath().getInt("routes[0].fromSequence")).isEqualTo(1);
-        assertThat(response.jsonPath().getInt("routes[0].toSequence")).isEqualTo(2);
-        assertThat(response.jsonPath().getInt("routes[0].duration")).isEqualTo(100);
-        assertThat(response.jsonPath().getInt("routes[0].distance")).isEqualTo(1000);
+        assertThat(secondRoutiePlace.arriveDateTime()).isNull();
+        assertThat(secondRoutiePlace.departureDateTime()).isNull();
+        assertThat(secondRoutiePlace.sequence()).isEqualTo(2);
+
+        assertThat(route.fromSequence()).isEqualTo(1);
+        assertThat(route.toSequence()).isEqualTo(2);
+        assertThat(route.duration()).isEqualTo(100);
+        assertThat(route.distance()).isEqualTo(1000);
     }
 }
