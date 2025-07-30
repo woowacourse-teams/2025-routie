@@ -61,6 +61,9 @@ const useRoutieValidate = (): UseRoutieValidateReturn => {
   }, [isValidateActive, routieTime]);
 
   useEffect(() => {
+    if (routieTime.startDateTime === '' || routieTime.endDateTime === '')
+      return;
+
     validateRoutie();
   }, [validateRoutie]);
 
