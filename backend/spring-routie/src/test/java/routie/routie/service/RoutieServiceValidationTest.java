@@ -83,7 +83,7 @@ class RoutieServiceValidationTest {
     @Test
     @DisplayName("유효한 경로일 경우 isValid true를 반환한다")
     void validateRoutie_WithValidCase_ShouldReturnTrue() {
-        // given: 2025-07-29는 화요일
+        // given: 화요일(7월 29일)
         LocalDateTime startTime = LocalDateTime.of(2025, 7, 29, 9, 0);
         LocalDateTime endTime = LocalDateTime.of(2025, 7, 29, 18, 0);
 
@@ -99,7 +99,7 @@ class RoutieServiceValidationTest {
     void validateRoutie_WithInsufficientTotalTime_ShouldReturnFalse() {
         // given: 총 필요 시간보다 짧은 가용 시간
         LocalDateTime startTime = LocalDateTime.of(2025, 7, 29, 10, 0);
-        LocalDateTime endTime = LocalDateTime.of(2025, 7, 29, 11, 0); // 매우 짧은 시간
+        LocalDateTime endTime = LocalDateTime.of(2025, 7, 29, 11, 0);
 
         // when
         RoutieTimeValidationResponse response = routieService.validateRoutie(routie.getId(), startTime, endTime);
