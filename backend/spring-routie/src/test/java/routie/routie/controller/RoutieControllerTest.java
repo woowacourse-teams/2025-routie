@@ -22,7 +22,7 @@ import routie.place.domain.Place;
 import routie.place.repository.PlaceRepository;
 import routie.routie.domain.Routie;
 import routie.routie.domain.RoutiePlace;
-import routie.routie.repository.RoutieRepository;
+import routie.routiespace.domain.RoutieSpace;
 import routie.routiespace.domain.RoutieSpaceFixture;
 import routie.routiespace.repository.RoutieSpaceRepository;
 
@@ -33,15 +33,14 @@ class RoutieControllerTest {
     private int port;
 
     @Autowired
-    private RoutieRepository routieRepository;
-
-    @Autowired
     private PlaceRepository placeRepository;
 
     @Autowired
     private RoutieSpaceRepository routieSpaceRepository;
 
     private Routie routie;
+
+    private RoutieSpace routieSpace;
 
     @BeforeEach
     void setUp() {
@@ -75,12 +74,10 @@ class RoutieControllerTest {
 
         RoutiePlace routiePlace1 = new RoutiePlace(1, placeA);
         RoutiePlace routiePlace2 = new RoutiePlace(2, placeB);
-        routie = Routie.withoutRoutiePlaces();
-        routie.modify(new ArrayList<>(List.of(routiePlace1, routiePlace2)));
+        routie = Routie.create(new ArrayList<>(List.of(routiePlace1, routiePlace2)));
 
-        routieSpaceRepository.save(RoutieSpaceFixture.createWithoutId(List.of(), List.of(routie)));
-
-        routieRepository.save(routie);
+        routieSpace = RoutieSpaceFixture.createWithoutId(List.of(), routie);
+        routieSpaceRepository.save(routieSpace);
     }
 
     @Test
@@ -96,7 +93,7 @@ class RoutieControllerTest {
                 .queryParam("startDateTime", startTime.format(DateTimeFormatter.ISO_DATE_TIME))
                 .queryParam("endDateTime", endTime.format(DateTimeFormatter.ISO_DATE_TIME))
                 .when()
-                .get("/routies/{routieId}/validity", routie.getId())
+                .get("/routie-spaces/" + routieSpace.getIdentifier() + "/routie/validity")
                 .then().log().all()
                 .extract().response();
 
@@ -118,7 +115,7 @@ class RoutieControllerTest {
                 .queryParam("startDateTime", startTime.format(DateTimeFormatter.ISO_DATE_TIME))
                 .queryParam("endDateTime", endTime.format(DateTimeFormatter.ISO_DATE_TIME))
                 .when()
-                .get("/routies/{routieId}/validity", routie.getId())
+                .get("/routie-spaces/" + routieSpace.getIdentifier() + "/routie/validity")
                 .then().log().all()
                 .extract().response();
 
@@ -141,7 +138,7 @@ class RoutieControllerTest {
                 .queryParam("startDateTime", startTime.format(DateTimeFormatter.ISO_DATE_TIME))
                 .queryParam("endDateTime", endTime.format(DateTimeFormatter.ISO_DATE_TIME))
                 .when()
-                .get("/routies/{routieId}/validity", routie.getId())
+                .get("/routie-spaces/" + routieSpace.getIdentifier() + "/routie/validity")
                 .then().log().all()
                 .extract().response();
 
@@ -164,7 +161,7 @@ class RoutieControllerTest {
                 .queryParam("startDateTime", invalidStartTime)
                 .queryParam("endDateTime", validEndTime)
                 .when()
-                .get("/routies/{routieId}/validity", routie.getId())
+                .get("/routie-spaces/" + routieSpace.getIdentifier() + "/routie/validity")
                 .then().log().all()
                 .extract().response();
 
