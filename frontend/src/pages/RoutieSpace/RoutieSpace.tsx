@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import Flex from '@/@common/components/Flex/Flex';
 import getPlaceList from '@/domains/places/apis/getplaceList';
 import { PlaceCardProps } from '@/domains/places/components/PlaceCard/PlaceCard';
-import { getDetailRoutie, getRoutieId } from '@/domains/routie/apis/routie';
+import { getRoutieId } from '@/domains/routie/apis/routie';
 import { RoutieValidateProvider } from '@/domains/routie/contexts/useRoutieValidateContext';
 import { Routes, Routie } from '@/domains/routie/types/routie.types';
 import PlaceList from '@/layouts/PlaceList/PlaceList';
@@ -25,7 +25,7 @@ const RoutieSpace = () => {
 
   const refetchRoutieData = async () => {
     try {
-      const routies = await getDetailRoutie();
+      const routies = await getRoutieId();
       setRoutiePlaces(routies.routiePlaces);
       setRoutes(routies.routes);
     } catch (error) {
@@ -40,9 +40,8 @@ const RoutieSpace = () => {
   useEffect(() => {
     const fetchRoutieId = async () => {
       try {
-        const routieId = await getRoutieId();
-        localStorage.setItem('routieId', routieId);
-        const routies = await getDetailRoutie();
+        const routies = await getRoutieId();
+
         setRoutiePlaces(routies.routiePlaces);
         setRoutes(routies.routes);
       } catch (error) {
