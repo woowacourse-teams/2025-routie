@@ -18,8 +18,6 @@ import routie.place.domain.Place;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Routie {
 
-    private static final int STARTING_SEQUENCE = 1;
-
     @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     @JoinColumn(name = "routie_id", nullable = false)
     private List<RoutiePlace> routiePlaces = new ArrayList<>();
@@ -54,6 +52,6 @@ public class Routie {
         return routiePlaces.stream()
                 .mapToInt(RoutiePlace::getSequence)
                 .max()
-                .orElse(STARTING_SEQUENCE);
+                .orElse(0);
     }
 }
