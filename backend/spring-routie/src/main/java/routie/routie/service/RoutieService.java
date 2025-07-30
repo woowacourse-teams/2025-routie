@@ -81,8 +81,8 @@ public class RoutieService {
         RoutieUpdateResponse.from(routie);
     }
 
-    private RoutieSpace getRoutieSpaceByIdentifier(final String identifier) {
-        return routieSpaceRepository.findByIdentifier(identifier)
+    private RoutieSpace getRoutieSpaceByIdentifier(final String routieSpaceIdentifier) {
+        return routieSpaceRepository.findByIdentifier(routieSpaceIdentifier)
                 .orElseThrow(() -> new IllegalArgumentException("해당하는 식별자의 루티 스페이스를 찾을 수 없습니다."));
     }
 
