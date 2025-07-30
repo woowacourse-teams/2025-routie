@@ -6,13 +6,13 @@ export type FormState = {
   closeAt: string;
   breakStartAt: string;
   breakEndAt: string;
-  closedDays: string[];
+  closedDayOfWeeks: string[];
 };
 
 export type FormAction =
   | {
       type: 'UPDATE';
-      field: keyof Omit<FormState, 'closedDays'>;
+      field: keyof Omit<FormState, 'closedDayOfWeeks'>;
       value: string;
     }
   | { type: 'TOGGLE_DAY'; index: number }

@@ -25,7 +25,7 @@ export interface PlaceCardProps {
   closeAt: string;
   breakStartAt: string;
   breakEndAt: string;
-  closedDays: string[];
+  closedDayOfWeeks: string[];
   onDelete: (id: number) => void;
   onPlaceChange: () => Promise<void>;
   selected: boolean;
@@ -98,7 +98,7 @@ export const PlaceCard = ({
           <Pill type="time">
             {props.openAt}-{props.closeAt}
           </Pill>
-          <DatePreviewList value={getCheckedListExcept(props.closedDays)} />
+          <DatePreviewList value={getCheckedListExcept(props.closedDayOfWeeks)} />
         </Flex>
       </Card>
       <EditPlaceModal

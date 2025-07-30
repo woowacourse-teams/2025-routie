@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 
 import Flex from '@/@common/components/Flex/Flex';
 import Modal, { ModalProps } from '@/@common/components/Modal/Modal';
+import { useRoutieValidateContext } from '@/domains/routie/contexts/useRoutieValidateContext';
 
 import editPlace from '../../apis/editPlace';
 import getPlace from '../../apis/getPlace';
@@ -31,6 +32,7 @@ const EditPlaceModal = ({
     handleToggleDay,
     resetForm,
   } = useAddPlaceForm();
+  const { validateRoutie } = useRoutieValidateContext();
 
   useEffect(() => {
     if (!isOpen) return;
@@ -55,8 +57,10 @@ const EditPlaceModal = ({
     e.preventDefault();
     try {
       const { name, address, ...rest } = form;
+
       await editPlace({ placeId: id, editableFields: rest });
       await onPlaceChange();
+      await validateRoutie();
     } catch (error) {
       console.log(error);
     }
