@@ -25,7 +25,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 //                @UniqueConstraint(
 //                        name = "uk_place_closed_day", columnNames = {"place_id", "closed_day"}
 //                )
-}
+        }
 )
 @EntityListeners(AuditingEntityListener.class)
 @AllArgsConstructor(access = AccessLevel.PACKAGE)

@@ -1,13 +1,12 @@
 package routie.routiespace.domain;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
@@ -46,9 +45,8 @@ public class RoutieSpace {
     @OneToMany(mappedBy = "routieSpace")
     private List<Place> places = new ArrayList<>();
 
-    @OneToMany(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "routie_space_id", nullable = false)
-    private List<Routie> routies = new ArrayList<>();
+    @Embedded
+    private Routie routie;
 
     @CreatedDate
     @Column(name = "created_at")
@@ -61,17 +59,12 @@ public class RoutieSpace {
     public static RoutieSpace from(
             final RoutieSpaceIdentifierProvider identifierProvider
     ) {
-        List<Routie> routies = new ArrayList<>() {
-            {
-                add(Routie.withoutRoutiePlaces());
-            }
-        };
         return new RoutieSpace(
                 null,
                 DEFAULT_NAME,
                 identifierProvider.provide(),
                 new ArrayList<>(),
-                routies,
+                Routie.empty(),
                 null,
                 null
         );
@@ -82,12 +75,16 @@ public class RoutieSpace {
         this.name = name;
     }
 
-    public void validateName(final String name) {
+    private void validateName(final String name) {
         if (name == null || name.isBlank()) {
             throw new IllegalArgumentException("루티 스페이스 이름은 비어있을 수 없습니다.");
         }
         if (name.length() > 50) {
             throw new IllegalArgumentException("루티 스페이스 이름은 50자 이하여야 합니다.");
         }
+    }
+
+    public void updateRoutie(final Routie routie) {
+        this.routie = routie;
     }
 }

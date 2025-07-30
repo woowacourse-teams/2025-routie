@@ -1,64 +1,31 @@
 package routie.routie.domain;
 
 import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EntityListeners;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.Embeddable;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-@Entity
 @Getter
-@Table(name = "routies")
-@EntityListeners(AuditingEntityListener.class)
+@Embeddable
 @AllArgsConstructor(access = AccessLevel.PACKAGE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Routie {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
 
     @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     @JoinColumn(name = "routie_id", nullable = false)
     private List<RoutiePlace> routiePlaces = new ArrayList<>();
 
-    @CreatedDate
-    @Column(name = "created_at")
-    private LocalDateTime createdAt;
-
-    public Routie(final List<RoutiePlace> routiePlaces) {
-        this(
-                null,
-                routiePlaces,
-                null
-        );
+    public static Routie empty() {
+        return new Routie(new ArrayList<>());
     }
 
-    public static Routie withoutRoutiePlaces() {
-        return new Routie(
-                new ArrayList<>()
-        );
-    }
-
-    public void modify(
-            final List<RoutiePlace> routiePlaces
-    ) {
-        if (routiePlaces != null) {
-            this.routiePlaces = routiePlaces;
-        }
+    public static Routie create(final List<RoutiePlace> routiePlaces) {
+        return new Routie(routiePlaces);
     }
 }
