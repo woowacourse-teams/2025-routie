@@ -18,6 +18,7 @@ const Input = ({
   onChange,
   variant = 'primary',
   icon,
+  ...props
 }: InputProps) => {
   const iconSrc =
     icon === 'search' ? searchIcon : icon === 'clock' ? clockIcon : null;
@@ -39,6 +40,7 @@ const Input = ({
           value={value}
           onChange={(e) => onChange(e.target.value)}
           disabled={variant === 'disabled'}
+          {...props}
         />
       </div>
     </>
