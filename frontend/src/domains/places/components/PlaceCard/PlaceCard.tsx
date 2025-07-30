@@ -1,5 +1,3 @@
-import { useState } from 'react';
-
 import Card from '@/@common/components/Card/Card';
 import Flex from '@/@common/components/Flex/Flex';
 import IconButton from '@/@common/components/IconButton/IconButton';
@@ -11,7 +9,7 @@ import plusIcon from '@/assets/icons/plus.svg';
 import trashIcon from '@/assets/icons/trash.svg';
 import theme from '@/styles/theme';
 
-import deletePlace from '../../apis/deletePlace';
+import { usePlaceCard } from '../../hooks/usePlaceCard';
 import { PlaceBase } from '../../types/place.types';
 import { getCheckedListExcept } from '../../utils/getCheckedListExcept';
 import DatePreviewList from '../DatePreviewList/DatePreviewList';
@@ -31,28 +29,13 @@ export const PlaceCard = ({
   onSelect,
   ...props
 }: PlaceCardProps) => {
-  const [editModalOpen, setEditModalOpen] = useState(false);
-
-  const openEditModal = () => {
-    setEditModalOpen((prev) => !prev);
-  };
-
-  const closeEditModal = () => {
-    setEditModalOpen((prev) => !prev);
-  };
-
-  const handleToggle = async () => {
-    await onSelect();
-  };
-
-  const handleDelete = async () => {
-    try {
-      await deletePlace(props.id);
-      onDelete(props.id);
-    } catch (error) {
-      console.error('장소 삭제를 실패했습니다.', error);
-    }
-  };
+  const {
+    editModalOpen,
+    openEditModal,
+    closeEditModal,
+    handleToggle,
+    handleDelete,
+  } = usePlaceCard({ id: props.id, onSelect, onDelete });
 
   return (
     <>
