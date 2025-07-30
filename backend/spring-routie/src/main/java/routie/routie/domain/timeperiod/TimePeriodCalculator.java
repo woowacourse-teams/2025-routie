@@ -1,7 +1,7 @@
 package routie.routie.domain.timeperiod;
 
 import java.time.LocalDateTime;
-import java.util.LinkedHashMap;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.springframework.stereotype.Component;
@@ -16,7 +16,7 @@ public class TimePeriodCalculator {
             final LocalDateTime initialStartTime,
             final Map<RoutiePlace, Route> routeByFromRoutiePlace
     ) {
-        Map<RoutiePlace, TimePeriod> timePeriodByPlace = new LinkedHashMap<>();
+        Map<RoutiePlace, TimePeriod> timePeriodByPlace = new HashMap<>();
         LocalDateTime currentTime = initialStartTime;
 
         for (int i = 0; i < routiePlaces.size(); i++) {

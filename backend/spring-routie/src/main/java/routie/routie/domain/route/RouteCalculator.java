@@ -1,6 +1,6 @@
 package routie.routie.domain.route;
 
-import java.util.LinkedHashMap;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +19,7 @@ public class RouteCalculator {
     private final TravelTimeCalculator travelTimeCalculator;
 
     public Map<RoutiePlace, Route> calculateRoutes(final List<RoutiePlace> routiePlaces) {
-        LinkedHashMap<RoutiePlace, Route> routeByFromRoutiePlace = new LinkedHashMap<>();
+        HashMap<RoutiePlace, Route> routeByFromRoutiePlace = new HashMap<>();
 
         for (int sequence = 0; sequence < routiePlaces.size() - 1; sequence++) {
             RoutiePlace fromRoutiePlace = routiePlaces.get(sequence);

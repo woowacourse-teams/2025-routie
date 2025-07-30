@@ -3,9 +3,10 @@ package routie.routie.service;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.LinkedHashMap;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -116,17 +117,24 @@ public class RoutieService {
         if (timePeriodByRoutiePlace.isEmpty()) {
             return true;
         }
-        return calculateTotalTimeValidity(startDateTime, endDateTime,
-                (LinkedHashMap<RoutiePlace, TimePeriod>) timePeriodByRoutiePlace);
+        return calculateTotalTimeValidity(startDateTime, endDateTime, timePeriodByRoutiePlace);
     }
 
     private boolean calculateTotalTimeValidity(
             final LocalDateTime startDateTime,
             final LocalDateTime endDateTime,
-            final LinkedHashMap<RoutiePlace, TimePeriod> timePeriodByRoutiePlace
+            final Map<RoutiePlace, TimePeriod> timePeriodByRoutiePlace
     ) {
-        LocalDateTime firstPeriodStartTime = timePeriodByRoutiePlace.firstEntry().getValue().startTime();
-        LocalDateTime lastPeriodEndTime = timePeriodByRoutiePlace.lastEntry().getValue().endTime();
+        List<Entry<RoutiePlace, TimePeriod>> sortedEntries = timePeriodByRoutiePlace.entrySet().stream()
+                .sorted(Comparator.comparing(entry -> entry.getKey().getSequence()))
+                .toList();
+
+        if (sortedEntries.isEmpty()) {
+            return true;
+        }
+
+        LocalDateTime firstPeriodStartTime = sortedEntries.getFirst().getValue().startTime();
+        LocalDateTime lastPeriodEndTime = sortedEntries.getLast().getValue().endTime();
 
         return !firstPeriodStartTime.isBefore(startDateTime) && !lastPeriodEndTime.isAfter(endDateTime);
     }
