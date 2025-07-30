@@ -58,12 +58,17 @@ const Sidebar = ({
     const isSequenceChanged = routiePlaces.some(
       (item, index) => item.sequence !== index + 1,
     );
+
+    const updateRoutiePlaces = async (sortedPlaces: Routie[]) => {
+      setRoutiePlaces(sortedPlaces);
+      await editRoutieSequence(sortedPlaces);
+      await validateRoutie();
+    };
+
     if (isSequenceChanged) {
       const sortedPlaces = updated.sort((a, b) => a.sequence - b.sequence);
 
-      setRoutiePlaces(sortedPlaces);
-      editRoutieSequence(sortedPlaces);
-      validateRoutie();
+      updateRoutiePlaces(sortedPlaces);
     }
   }, [routiePlaces]);
 
