@@ -4,6 +4,7 @@ import Flex from '@/@common/components/Flex/Flex';
 import getPlaceList from '@/domains/places/apis/getplaceList';
 import { PlaceCardProps } from '@/domains/places/components/PlaceCard/PlaceCard';
 import { getDetailRoutie, getRoutieId } from '@/domains/routie/apis/routie';
+import { RoutieValidateProvider } from '@/domains/routie/contexts/useRoutieValidateContext';
 import { Routes, Routie } from '@/domains/routie/types/routie.types';
 import PlaceList from '@/layouts/PlaceList/PlaceList';
 import Sidebar from '@/layouts/Sidebar/Sidebar';
@@ -57,7 +58,7 @@ const RoutieSpace = () => {
   }, []);
 
   return (
-    <>
+    <RoutieValidateProvider>
       <Flex justifyContent="flex-start" height="100vh">
         <Flex direction="column" justifyContent="flex-start" height="100%">
           {
@@ -80,7 +81,7 @@ const RoutieSpace = () => {
           />
         </Flex>
       </Flex>
-    </>
+    </RoutieValidateProvider>
   );
 };
 
