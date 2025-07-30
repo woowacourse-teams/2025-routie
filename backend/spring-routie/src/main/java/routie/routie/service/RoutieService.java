@@ -3,10 +3,8 @@ package routie.routie.service;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -22,6 +20,7 @@ import routie.routie.controller.dto.response.RoutieTimeValidationResponse;
 import routie.routie.controller.dto.response.RoutieUpdateResponse;
 import routie.routie.domain.Routie;
 import routie.routie.domain.RoutiePlace;
+import routie.routie.domain.ValidationContext;
 import routie.routie.domain.ValidationStrategy;
 import routie.routie.domain.ValidityCalculator;
 import routie.routie.domain.route.Route;
@@ -101,41 +100,12 @@ public class RoutieService {
                 routeByFromRoutiePlace
         );
 
-        boolean isDefaultValid = calculateDefaultValidity(startDateTime, endDateTime, timePeriodByRoutiePlace);
+        ValidationContext validationContext = new ValidationContext(startDateTime, endDateTime, timePeriodByRoutiePlace);
+
         boolean isStrategyValid = Arrays.stream(ValidationStrategy.values())
                 .allMatch(validationStrategy ->
-                        validityCalculator.calculateValidity(timePeriodByRoutiePlace, validationStrategy));
+                        validityCalculator.calculateValidity(validationContext, validationStrategy));
 
-        return new RoutieTimeValidationResponse(isDefaultValid && isStrategyValid);
-    }
-
-    private boolean calculateDefaultValidity(
-            final LocalDateTime startDateTime,
-            final LocalDateTime endDateTime,
-            final Map<RoutiePlace, TimePeriod> timePeriodByRoutiePlace
-    ) {
-        if (timePeriodByRoutiePlace.isEmpty()) {
-            return true;
-        }
-        return calculateTotalTimeValidity(startDateTime, endDateTime, timePeriodByRoutiePlace);
-    }
-
-    private boolean calculateTotalTimeValidity(
-            final LocalDateTime startDateTime,
-            final LocalDateTime endDateTime,
-            final Map<RoutiePlace, TimePeriod> timePeriodByRoutiePlace
-    ) {
-        List<Entry<RoutiePlace, TimePeriod>> sortedEntries = timePeriodByRoutiePlace.entrySet().stream()
-                .sorted(Comparator.comparing(entry -> entry.getKey().getSequence()))
-                .toList();
-
-        if (sortedEntries.isEmpty()) {
-            return true;
-        }
-
-        LocalDateTime firstPeriodStartTime = sortedEntries.getFirst().getValue().startTime();
-        LocalDateTime lastPeriodEndTime = sortedEntries.getLast().getValue().endTime();
-
-        return !firstPeriodStartTime.isBefore(startDateTime) && !lastPeriodEndTime.isAfter(endDateTime);
+        return new RoutieTimeValidationResponse(isStrategyValid);
     }
 }
