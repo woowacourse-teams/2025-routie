@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Test;
 import routie.place.domain.Place;
 import routie.place.domain.PlaceClosedDayOfWeek;
 import routie.routie.domain.RoutiePlace;
+import routie.routie.domain.ValidationContext;
 import routie.routie.domain.ValidationStrategy;
 import routie.routie.domain.timeperiod.TimePeriod;
 
@@ -45,9 +46,10 @@ class ClosedDayValidityCalculatorTest {
         );
 
         Map<RoutiePlace, TimePeriod> map = Map.of(routiePlace, period);
+        ValidationContext validationContext = new ValidationContext(null, null, map);
 
         // when
-        boolean result = calculator.calculateValidity(map, ValidationStrategy.IS_NOT_CLOSED_DAY);
+        boolean result = calculator.calculateValidity(validationContext, ValidationStrategy.IS_NOT_CLOSED_DAY);
 
         // then
         assertTrue(result);
@@ -69,9 +71,10 @@ class ClosedDayValidityCalculatorTest {
         );
 
         Map<RoutiePlace, TimePeriod> map = Map.of(routiePlace, period);
+        ValidationContext validationContext = new ValidationContext(null, null, map);
 
         // when
-        boolean result = calculator.calculateValidity(map, ValidationStrategy.IS_NOT_CLOSED_DAY);
+        boolean result = calculator.calculateValidity(validationContext, ValidationStrategy.IS_NOT_CLOSED_DAY);
 
         // then
         assertFalse(result);
@@ -93,9 +96,10 @@ class ClosedDayValidityCalculatorTest {
         );
 
         Map<RoutiePlace, TimePeriod> map = Map.of(routiePlace, period);
+        ValidationContext validationContext = new ValidationContext(null, null, map);
 
         // when
-        boolean result = calculator.calculateValidity(map, ValidationStrategy.IS_NOT_CLOSED_DAY);
+        boolean result = calculator.calculateValidity(validationContext, ValidationStrategy.IS_NOT_CLOSED_DAY);
 
         // then
         assertFalse(result);
@@ -117,9 +121,10 @@ class ClosedDayValidityCalculatorTest {
         );
 
         Map<RoutiePlace, TimePeriod> map = Map.of(routiePlace, period);
+        ValidationContext validationContext = new ValidationContext(null, null, map);
 
         // when
-        boolean result = calculator.calculateValidity(map, ValidationStrategy.IS_NOT_CLOSED_DAY);
+        boolean result = calculator.calculateValidity(validationContext, ValidationStrategy.IS_NOT_CLOSED_DAY);
 
         // then
         assertTrue(result);
