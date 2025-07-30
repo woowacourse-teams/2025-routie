@@ -23,7 +23,7 @@ public record RoutieReadResponse(
                 routie.getRoutiePlaces().stream()
                         .map(routiePlace -> RoutiePlaceResponse.from(
                                 routiePlace,
-                                timePeriodByRoutiePlace != null ? timePeriodByRoutiePlace.get(routiePlace) : null
+                                timePeriodByRoutiePlace == null ? null : timePeriodByRoutiePlace.get(routiePlace)
                         ))
                         .toList(),
                 routes.stream()
@@ -44,8 +44,8 @@ public record RoutieReadResponse(
                     routiePlace.getId(),
                     routiePlace.getSequence(),
                     routiePlace.getPlace().getId(),
-                    timePeriod != null ? timePeriod.startTime() : null,
-                    timePeriod != null ? timePeriod.endTime() : null
+                    timePeriod == null ? null : timePeriod.startTime(),
+                    timePeriod == null ? null : timePeriod.endTime()
             );
         }
     }
