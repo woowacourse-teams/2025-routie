@@ -168,4 +168,67 @@ class RoutieControllerTest {
         // then
         assertThat(response.statusCode()).isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR.value());
     }
+
+    @Test
+    @DisplayName("startDateTime이 쿼리 파라미터로 온 요청에 대해서는 루티 플레이스의 도착, 출발 정보 정상 반환")
+    void readRoutieWithStartDateTime() {
+        // given
+        String startDateTime = "2025-07-29T10:00:00";
+
+        // when
+        Response response = RestAssured
+                .given().log().all()
+                .queryParam("startDateTime", startDateTime)
+                .when()
+                .get("/routie-spaces/" + routieSpace.getIdentifier() + "/routie")
+                .then().log().all()
+                .extract().response();
+
+        // then
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
+        assertThat(response.jsonPath().getList("routiePlaces")).hasSize(2);
+        assertThat(response.jsonPath().getList("routes")).hasSize(1);
+
+        assertThat(response.jsonPath().getString("routiePlaces[0].arriveDateTime"))
+                .isEqualTo("2025-07-29T10:00");
+        assertThat(response.jsonPath().getString("routiePlaces[0].departureDateTime"))
+                .isEqualTo("2025-07-29T11:00");
+
+        assertThat(response.jsonPath().getString("routiePlaces[1].arriveDateTime"))
+                .isEqualTo("2025-07-29T12:40");
+        assertThat(response.jsonPath().getString("routiePlaces[1].departureDateTime"))
+                .isEqualTo("2025-07-29T14:10");
+    }
+
+    @Test
+    @DisplayName("startDateTime이 쿼리 파라미터로 오지 않은 요청에 대해서는 루티 플레이스의 도착, 출발 정보 null 명시적 반환")
+    void readRoutieWithoutStartDateTime() {
+        // given
+
+        // when
+        Response response = RestAssured
+                .given().log().all()
+                .when()
+                .get("/routie-spaces/" + routieSpace.getIdentifier() + "/routie")
+                .then().log().all()
+                .extract().response();
+
+        // then
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
+        assertThat(response.jsonPath().getList("routiePlaces")).hasSize(2);
+        assertThat(response.jsonPath().getList("routes")).hasSize(1);
+
+        assertThat(response.jsonPath().getString("routiePlaces[0].arriveDateTime")).isNull();
+        assertThat(response.jsonPath().getString("routiePlaces[0].departureDateTime")).isNull();
+        assertThat(response.jsonPath().getString("routiePlaces[1].arriveDateTime")).isNull();
+        assertThat(response.jsonPath().getString("routiePlaces[1].departureDateTime")).isNull();
+
+        assertThat(response.jsonPath().getInt("routiePlaces[0].sequence")).isEqualTo(1);
+        assertThat(response.jsonPath().getInt("routiePlaces[1].sequence")).isEqualTo(2);
+
+        assertThat(response.jsonPath().getInt("routes[0].fromSequence")).isEqualTo(1);
+        assertThat(response.jsonPath().getInt("routes[0].toSequence")).isEqualTo(2);
+        assertThat(response.jsonPath().getInt("routes[0].duration")).isEqualTo(100);
+        assertThat(response.jsonPath().getInt("routes[0].distance")).isEqualTo(1000);
+    }
 }
