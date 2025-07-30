@@ -8,6 +8,8 @@ import { editRoutieSequence } from '@/domains/routie/apis/routie';
 import { useRoutieValidateContext } from '@/domains/routie/contexts/useRoutieValidateContext';
 import { Routie } from '@/domains/routie/types/routie.types';
 
+import { usePlaceListContext } from './contexts/placeListContext';
+
 const deleteRoutiePlace = (placeId: number, routiePlaces: Routie[]) => {
   const filteredRoutiePlaces = routiePlaces.filter(
     (routiePlace) => routiePlace.placeId !== placeId,
@@ -27,7 +29,6 @@ const addRoutiePlace = (placeId: number, routiePlaces: Routie[]) => {
 };
 
 interface PlaceListProps {
-  places: PlaceCardProps[];
   onDelete: (id: number) => void;
   onPlaceChange: () => Promise<void>;
   routiePlaces: Routie[];
@@ -36,13 +37,13 @@ interface PlaceListProps {
 }
 
 const PlaceList = ({
-  places,
   onDelete,
   onPlaceChange,
   routiePlaces,
   setRoutiePlaces,
   onRoutieDataChange,
-}: PlaceListProps) => {
+}: Omit<PlaceListProps, 'places'>) => {
+  const places = usePlaceListContext();
   const { validateRoutie } = useRoutieValidateContext();
   return (
     <>
@@ -81,12 +82,10 @@ const PlaceList = ({
                 await editRoutieSequence(updatedRoutiePlaces);
                 setRoutiePlaces(updatedRoutiePlaces);
 
-                // 루티 데이터 전체 리페치 (routes 정보 포함)
                 if (onRoutieDataChange) {
                   await onRoutieDataChange();
                 }
 
-                // 루티 검증 API 호출
                 await validateRoutie();
               } catch (error) {
                 console.error('루티 업데이트 실패:', error);

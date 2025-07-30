@@ -7,6 +7,7 @@ import { getRoutieId } from '@/domains/routie/apis/routie';
 import { RoutieValidateProvider } from '@/domains/routie/contexts/useRoutieValidateContext';
 import { Routes, Routie } from '@/domains/routie/types/routie.types';
 import PlaceList from '@/layouts/PlaceList/PlaceList';
+import { PlaceListContext } from '@/layouts/PlaceList/contexts/placeListContext';
 import Sidebar from '@/layouts/Sidebar/Sidebar';
 
 const RoutieSpace = () => {
@@ -70,14 +71,15 @@ const RoutieSpace = () => {
           }
         </Flex>
         <Flex direction="column" justifyContent="flex-start" height="100%">
-          <PlaceList
-            places={placeList}
-            onDelete={handleDelete}
-            onPlaceChange={refetchPlaceList}
-            routiePlaces={routiePlaces ?? []}
-            setRoutiePlaces={setRoutiePlaces}
-            onRoutieDataChange={refetchRoutieData}
-          />
+          <PlaceListContext.Provider value={placeList}>
+            <PlaceList
+              onDelete={handleDelete}
+              onPlaceChange={refetchPlaceList}
+              routiePlaces={routiePlaces ?? []}
+              setRoutiePlaces={setRoutiePlaces}
+              onRoutieDataChange={refetchRoutieData}
+            />
+          </PlaceListContext.Provider>
         </Flex>
       </Flex>
     </RoutieValidateProvider>
