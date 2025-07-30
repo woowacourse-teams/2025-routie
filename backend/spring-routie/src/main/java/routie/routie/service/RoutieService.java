@@ -62,12 +62,20 @@ public class RoutieService {
                 .orElseThrow(() -> new IllegalArgumentException("루티 스페이스 내에서 해당하는 장소를 찾을 수 없습니다: " + placeId));
     }
 
-    public RoutieReadResponse getRoutie(final String routieSpaceIdentifier) {
+    public RoutieReadResponse getRoutie(final String routieSpaceIdentifier, final LocalDateTime startDateTime) {
         Routie routie = getRoutieSpaceByIdentifier(routieSpaceIdentifier).getRoutie();
         Map<RoutiePlace, Route> routeByFromRoutiePlace = routeCalculator.calculateRoutes(routie.getRoutiePlaces());
         List<Route> routes = new ArrayList<>(routeByFromRoutiePlace.values());
 
-        return RoutieReadResponse.from(routie, routes);
+        Map<RoutiePlace, TimePeriod> timePeriodByRoutiePlace = null;
+        if (startDateTime != null) {
+            timePeriodByRoutiePlace = timePeriodCalculator.calculateTimePeriods(
+                    routie.getRoutiePlaces(),
+                    startDateTime,
+                    routeByFromRoutiePlace
+            );
+        }
+        return RoutieReadResponse.from(routie, routes, timePeriodByRoutiePlace);
     }
 
     @Transactional
@@ -122,8 +130,10 @@ public class RoutieService {
 
         boolean isDefaultValid = calculateDefaultValidity(startDateTime, endDateTime, timePeriodByRoutiePlace);
         boolean isStrategyValid = Arrays.stream(ValidationStrategy.values())
-                .allMatch(validationStrategy ->
-                        validityCalculator.calculateValidity(timePeriodByRoutiePlace, validationStrategy));
+                .allMatch(validationStrategy -> validityCalculator.calculateValidity(
+                        timePeriodByRoutiePlace,
+                        validationStrategy
+                ));
 
         return new RoutieTimeValidationResponse(isDefaultValid && isStrategyValid);
     }

@@ -41,8 +41,11 @@ public class RoutieController {
     }
 
     @GetMapping
-    public ResponseEntity<RoutieReadResponse> readRoutie(@PathVariable final String routieSpaceIdentifier) {
-        return ResponseEntity.ok(routieService.getRoutie(routieSpaceIdentifier));
+    public ResponseEntity<RoutieReadResponse> readRoutie(
+            @PathVariable final String routieSpaceIdentifier,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) final LocalDateTime startDateTime
+    ) {
+        return ResponseEntity.ok(routieService.getRoutie(routieSpaceIdentifier, startDateTime));
     }
 
     @PatchMapping
