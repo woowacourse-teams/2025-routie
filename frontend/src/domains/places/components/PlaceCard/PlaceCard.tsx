@@ -12,20 +12,12 @@ import trashIcon from '@/assets/icons/trash.svg';
 import theme from '@/styles/theme';
 
 import deletePlace from '../../apis/deletePlace';
+import { PlaceBase } from '../../types/place.types';
 import { getCheckedListExcept } from '../../utils/getCheckedListExcept';
 import DatePreviewList from '../DatePreviewList/DatePreviewList';
 import EditPlaceModal from '../EditPlaceModal/EditPlaceModal';
 
-export interface PlaceCardProps {
-  id: number;
-  name: string;
-  address: string;
-  stayDurationMinutes: number;
-  openAt: string;
-  closeAt: string;
-  breakStartAt: string;
-  breakEndAt: string;
-  closedDayOfWeeks: string[];
+export interface PlaceCardProps extends PlaceBase {
   onDelete: (id: number) => void;
   onPlaceChange: () => Promise<void>;
   selected: boolean;
@@ -98,7 +90,9 @@ export const PlaceCard = ({
           <Pill type="time">
             {props.openAt}-{props.closeAt}
           </Pill>
-          <DatePreviewList value={getCheckedListExcept(props.closedDayOfWeeks)} />
+          <DatePreviewList
+            value={getCheckedListExcept(props.closedDayOfWeeks)}
+          />
         </Flex>
       </Card>
       <EditPlaceModal
