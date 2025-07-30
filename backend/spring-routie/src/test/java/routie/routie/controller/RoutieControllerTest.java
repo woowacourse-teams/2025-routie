@@ -41,9 +41,6 @@ class RoutieControllerTest {
     @Autowired
     private RoutieSpaceRepository routieSpaceRepository;
 
-    @Autowired
-    private RoutieSpaceIdentifierProvider routieSpaceIdentifierProvider;
-
     private Routie routie;
 
     @BeforeEach
