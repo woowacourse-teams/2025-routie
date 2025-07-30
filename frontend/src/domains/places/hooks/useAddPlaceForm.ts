@@ -16,7 +16,7 @@ const initialFormState: FormState = {
   closeAt: '22:00',
   breakStartAt: '00:00',
   breakEndAt: '00:00',
-  closedDays: ['MONDAY'],
+  closedDayOfWeeks: [],
 };
 
 const formReducer = (state: FormState, action: FormAction): FormState => {
@@ -24,10 +24,10 @@ const formReducer = (state: FormState, action: FormAction): FormState => {
     case 'UPDATE':
       return { ...state, [action.field]: action.value };
     case 'TOGGLE_DAY': {
-      const stringDays = [...state.closedDays];
+      const stringDays = [...state.closedDayOfWeeks];
       const updated = getCheckedListFromClosedDays(stringDays);
       updated[action.index] = !updated[action.index];
-      return { ...state, closedDays: getCheckedDaysInEnglish(updated) };
+      return { ...state, closedDayOfWeeks: getCheckedDaysInEnglish(updated) };
     }
     case 'RESET':
       return initialFormState;
@@ -46,7 +46,7 @@ export const useAddPlaceForm = () => {
   };
 
   const handleInputChange = (
-    field: keyof Omit<FormState, 'closedDays'>,
+    field: keyof Omit<FormState, 'closedDayOfWeeks'>,
     value: string,
   ) => {
     dispatch({ type: 'UPDATE', field, value });
