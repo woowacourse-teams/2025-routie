@@ -24,7 +24,6 @@ import routie.routie.domain.Routie;
 import routie.routie.domain.RoutiePlace;
 import routie.routie.repository.RoutieRepository;
 import routie.routiespace.domain.RoutieSpaceFixture;
-import routie.routiespace.domain.RoutieSpaceIdentifierProvider;
 import routie.routiespace.repository.RoutieSpaceRepository;
 
 @SpringBootTest(webEnvironment = WebEnvironment.DEFINED_PORT)
@@ -90,8 +89,8 @@ class RoutieControllerTest {
     @Test
     @DisplayName("유효한 경로 검증 시 200 OK와 함께 isValid true를 반환한다")
     void validateRoutie_WithValidCase_ReturnsOkWithTrue() {
-        // given
-        LocalDateTime startTime = LocalDateTime.of(2025, 7, 29, 9, 0); // 화요일
+        // given: 검증 조건에 어긋나지 않는 출발, 도착 시각
+        LocalDateTime startTime = LocalDateTime.of(2025, 7, 29, 9, 0);
         LocalDateTime endTime = LocalDateTime.of(2025, 7, 29, 18, 0);
 
         // when
@@ -112,8 +111,8 @@ class RoutieControllerTest {
     @Test
     @DisplayName("장소 휴무일에 방문하는 경로 검증 시 200 OK와 함께 isValid false를 반환한다")
     void validateRoutie_OnClosedDay_ReturnsOkWithFalse() {
-        // given
-        LocalDateTime startTime = LocalDateTime.of(2025, 7, 28, 10, 0); // 월요일 (장소 B 휴무)
+        // given: 월요일(장소 B의 휴무일)에 방문
+        LocalDateTime startTime = LocalDateTime.of(2025, 7, 28, 10, 0);
         LocalDateTime endTime = LocalDateTime.of(2025, 7, 28, 18, 0);
 
         // when
@@ -135,7 +134,7 @@ class RoutieControllerTest {
     @DisplayName("브레이크 타임에 겹치는 경로 검증 시 200 OK와 함께 isValid false를 반환한다")
     void validateRoutie_DuringBreakTime_ReturnsOkWithFalse() {
         // given
-        // 예상 경로: A(12:10-13:10) -> 이동(100분) -> B(14:50-16:20) -> 장소 B 브레이크 타임(14:00-15:00)과 겹침
+        // 예상 TimePeriod: A(12:10-13:10), B(14:50-16:20)는 장소 B 브레이크 타임(14:00-15:00)과 겹치므로 isValid = false
         LocalDateTime startTime = LocalDateTime.of(2025, 7, 29, 12, 10);
         LocalDateTime endTime = LocalDateTime.of(2025, 7, 29, 20, 0);
 
@@ -158,7 +157,8 @@ class RoutieControllerTest {
     @DisplayName("잘못된 형식의 시간 파라미터로 요청 시 500 Internal Server Error를 반환한다")
     void validateRoutie_WithInvalidTimeFormat_ReturnsBadRequest() {
         // given
-        String invalidStartTime = "2025-07-29 10:00:00"; // ISO_DATE_TIME 형식이 아님
+        // invalidStartTime이 ISO_DATE_TIME 형식이 아님
+        String invalidStartTime = "2025-07-29 10:00:00";
         String validEndTime = LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME);
 
         // when

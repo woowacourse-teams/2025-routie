@@ -100,9 +100,11 @@ class BreaktimeValidityCalculatorTest {
         // given
         Place place = createMockPlace(LocalTime.of(12, 0), LocalTime.of(13, 0));
         RoutiePlace routiePlace = createMockRoutiePlace(place);
+
+        // TimePeriod가 브레이크 타임과 1분 겹친다.
         TimePeriod visitPeriod = new TimePeriod(
                 LocalDateTime.of(2024, 1, 1, 11, 30),
-                LocalDateTime.of(2024, 1, 1, 12, 1) // 브레이크 타임과 1분 겹침
+                LocalDateTime.of(2024, 1, 1, 12, 1)
         );
         Map<RoutiePlace, TimePeriod> timePeriodMap = Map.of(routiePlace, visitPeriod);
 
