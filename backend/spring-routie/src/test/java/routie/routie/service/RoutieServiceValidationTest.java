@@ -18,7 +18,7 @@ import routie.place.repository.PlaceRepository;
 import routie.routie.controller.dto.response.RoutieTimeValidationResponse;
 import routie.routie.domain.Routie;
 import routie.routie.domain.RoutiePlace;
-import routie.routie.repository.RoutieRepository;
+import routie.routiespace.domain.RoutieSpace;
 import routie.routiespace.domain.RoutieSpaceFixture;
 import routie.routiespace.repository.RoutieSpaceRepository;
 
@@ -30,9 +30,6 @@ class RoutieServiceValidationTest {
     private RoutieService routieService;
 
     @Autowired
-    private RoutieRepository routieRepository;
-
-    @Autowired
     private PlaceRepository placeRepository;
 
     @Autowired
@@ -41,6 +38,7 @@ class RoutieServiceValidationTest {
     private Routie routie;
     private Place placeA;
     private Place placeB;
+    private RoutieSpace routieSpace;
 
     @BeforeEach
     void setUp() {
@@ -72,12 +70,11 @@ class RoutieServiceValidationTest {
 
         RoutiePlace routiePlace1 = new RoutiePlace(1, placeA);
         RoutiePlace routiePlace2 = new RoutiePlace(2, placeB);
-        routie = Routie.withoutRoutiePlaces();
-        routie.modify(new ArrayList<>(List.of(routiePlace1, routiePlace2)));
+        routie = Routie.create(new ArrayList<>(List.of(routiePlace1, routiePlace2)));
 
-        routieSpaceRepository.save(RoutieSpaceFixture.createWithoutId(List.of(), List.of(routie)));
+        routieSpace = RoutieSpaceFixture.createWithoutId(List.of(), routie);
+        routieSpaceRepository.save(routieSpace);
 
-        routieRepository.save(routie);
     }
 
     @Test
@@ -88,7 +85,8 @@ class RoutieServiceValidationTest {
         LocalDateTime endTime = LocalDateTime.of(2025, 7, 29, 18, 0);
 
         // when
-        RoutieTimeValidationResponse response = routieService.validateRoutie(routie.getId(), startTime, endTime);
+        RoutieTimeValidationResponse response = routieService.validateRoutie(routieSpace.getIdentifier(), startTime,
+                endTime);
 
         // then
         assertThat(response.isValid()).isTrue();
@@ -102,7 +100,8 @@ class RoutieServiceValidationTest {
         LocalDateTime endTime = LocalDateTime.of(2025, 7, 29, 11, 0);
 
         // when
-        RoutieTimeValidationResponse response = routieService.validateRoutie(routie.getId(), startTime, endTime);
+        RoutieTimeValidationResponse response = routieService.validateRoutie(routieSpace.getIdentifier(), startTime,
+                endTime);
 
         // then
         assertThat(response.isValid()).isFalse();
@@ -116,7 +115,8 @@ class RoutieServiceValidationTest {
         LocalDateTime endTime = LocalDateTime.of(2025, 7, 29, 18, 0);
 
         // when
-        RoutieTimeValidationResponse response = routieService.validateRoutie(routie.getId(), startTime, endTime);
+        RoutieTimeValidationResponse response = routieService.validateRoutie(routieSpace.getIdentifier(), startTime,
+                endTime);
 
         // then
         assertThat(response.isValid()).isFalse();
@@ -130,7 +130,8 @@ class RoutieServiceValidationTest {
         LocalDateTime endTime = LocalDateTime.of(2025, 7, 28, 18, 0);
 
         // when
-        RoutieTimeValidationResponse response = routieService.validateRoutie(routie.getId(), startTime, endTime);
+        RoutieTimeValidationResponse response = routieService.validateRoutie(routieSpace.getIdentifier(), startTime,
+                endTime);
 
         // then
         assertThat(response.isValid()).isFalse();
@@ -145,7 +146,8 @@ class RoutieServiceValidationTest {
         LocalDateTime endTime = LocalDateTime.of(2025, 7, 29, 20, 0);
 
         // when
-        RoutieTimeValidationResponse response = routieService.validateRoutie(routie.getId(), startTime, endTime);
+        RoutieTimeValidationResponse response = routieService.validateRoutie(routieSpace.getIdentifier(), startTime,
+                endTime);
 
         // then
         assertThat(response.isValid()).isFalse();
