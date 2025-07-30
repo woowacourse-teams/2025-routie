@@ -1,13 +1,11 @@
 import Flex from '@/@common/components/Flex/Flex';
 import Text from '@/@common/components/Text/Text';
-import {
-  PlaceCard,
-  PlaceCardProps,
-} from '@/domains/places/components/PlaceCard/PlaceCard';
+import { PlaceCard } from '@/domains/places/components/PlaceCard/PlaceCard';
 import { editRoutieSequence } from '@/domains/routie/apis/routie';
 import { useRoutieValidateContext } from '@/domains/routie/contexts/useRoutieValidateContext';
 import { Routie } from '@/domains/routie/types/routie.types';
 
+import gridContainerStyle from './PlaceList.styles';
 import { usePlaceListContext } from './contexts/placeListContext';
 
 const deleteRoutiePlace = (placeId: number, routiePlaces: Routie[]) => {
@@ -57,13 +55,7 @@ const PlaceList = ({
         gap={2}
       >
         <Text variant="title">장소 목록</Text>
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(5,1fr)',
-            gap: '2rem',
-          }}
-        >
+        <div css={gridContainerStyle}>
           {places.map((place) => {
             const selected = routiePlaces.some(
               (routiePlace) => routiePlace.placeId === place.id,
