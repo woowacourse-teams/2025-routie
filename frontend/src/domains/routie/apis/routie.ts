@@ -10,34 +10,11 @@ export const getRoutieId = async () => {
   }
 
   const response = await apiClient.get(
-    `/routie-spaces/${routieSpaceUuid}/routies`,
+    `/routie-spaces/${routieSpaceUuid}/routie`,
   );
 
   if (!response.ok) {
     throw new Error('전체 루티 조회 실패');
-  }
-
-  const data = await response.json();
-
-  return data.routies[0].id;
-};
-
-export const getDetailRoutie = async () => {
-  const routieSpaceUuid = localStorage.getItem('routieSpaceUuid');
-  const routieId = localStorage.getItem('routieId');
-
-  if (!routieSpaceUuid) {
-    throw new Error('루티 스페이스 uuid가 없습니다.');
-  }
-
-  if (!routieId) {
-    throw new Error('루티 id가 없습니다.');
-  }
-
-  const response = await apiClient.get(`/routies/${routieId}`);
-
-  if (!response.ok) {
-    throw new Error('루티 상세 조회 실패');
   }
 
   const data = await response.json();
@@ -47,13 +24,12 @@ export const getDetailRoutie = async () => {
 
 export const editRoutieSequence = async (routiePlaces: Routie[]) => {
   const routieSpaceUuid = localStorage.getItem('routieSpaceUuid');
-  const routieId = localStorage.getItem('routieId');
 
   if (!routieSpaceUuid) {
     throw new Error('루티 스페이스 uuid가 없습니다.');
   }
 
-  await apiClient.patch(`/routies/${routieId}`, {
+  await apiClient.patch(`/routie-spaces/${routieSpaceUuid}/routie`, {
     routiePlaces,
   });
 };
@@ -65,7 +41,9 @@ export const getDetailPlace = async (id: number) => {
     throw new Error('루티 스페이스 uuid가 없습니다.');
   }
 
-  const response = await apiClient.get(`/places/${id}`);
+  const response = await apiClient.get(
+    `/routie-spaces/${routieSpaceUuid}/places/${id}`,
+  );
 
   if (!response.ok) {
     throw new Error('루티 상세 조회 실패');
@@ -80,14 +58,14 @@ export const getRoutieValidation = async (time: {
   startDateTime: string;
   endDateTime: string;
 }) => {
-  const routieId = localStorage.getItem('routieId');
+  const routieSpaceUuid = localStorage.getItem('routieSpaceUuid');
 
-  if (!routieId) {
-    throw new Error('루티 id가 없습니다.');
+  if (!routieSpaceUuid) {
+    throw new Error('루티 스페이스 uuid가 없습니다.');
   }
 
   const response = await apiClient.get(
-    `/routies/${routieId}/validity?startDateTime=${time.startDateTime}&endDateTime=${time.endDateTime}`,
+    `/routie-spaces/${routieSpaceUuid}/routie/validity?startDateTime=${time.startDateTime}&endDateTime=${time.endDateTime}`,
   );
 
   if (!response.ok) {
