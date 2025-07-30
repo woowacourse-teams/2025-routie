@@ -1,10 +1,9 @@
 package routie.routie.infrastructure.routievaliditycalculator;
 
 import java.time.LocalTime;
-import java.util.Map;
 import org.springframework.stereotype.Component;
 import routie.place.domain.Place;
-import routie.routie.domain.RoutiePlace;
+import routie.routie.domain.ValidationContext;
 import routie.routie.domain.ValidationStrategy;
 import routie.routie.domain.ValidityCalculator;
 import routie.routie.domain.timeperiod.TimePeriod;
@@ -18,10 +17,10 @@ public class BreaktimeValidityCalculator implements ValidityCalculator {
 
     @Override
     public boolean calculateValidity(
-            final Map<RoutiePlace, TimePeriod> timePeriodByRoutiePlace,
+            final ValidationContext validationContext,
             final ValidationStrategy validationStrategy
     ) {
-        return timePeriodByRoutiePlace.entrySet().stream()
+        return validationContext.timePeriodByRoutiePlace().entrySet().stream()
                 .allMatch(entry -> isWithoutBreaktime(
                         entry.getKey().getPlace(),
                         entry.getValue()

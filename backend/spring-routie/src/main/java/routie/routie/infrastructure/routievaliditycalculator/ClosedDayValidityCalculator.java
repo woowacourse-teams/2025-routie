@@ -11,6 +11,8 @@ import routie.routie.domain.ValidationStrategy;
 import routie.routie.domain.ValidityCalculator;
 import routie.routie.domain.timeperiod.TimePeriod;
 
+import routie.routie.domain.ValidationContext;
+
 @Component
 public class ClosedDayValidityCalculator implements ValidityCalculator {
     @Override
@@ -20,10 +22,10 @@ public class ClosedDayValidityCalculator implements ValidityCalculator {
 
     @Override
     public boolean calculateValidity(
-            final Map<RoutiePlace, TimePeriod> timePeriodByRoutiePlace,
+            final ValidationContext validationContext,
             final ValidationStrategy validationStrategy
     ) {
-        return timePeriodByRoutiePlace.entrySet().stream()
+        return validationContext.timePeriodByRoutiePlace().entrySet().stream()
                 .allMatch(this::isTimePeriodNotClosedDays);
     }
 

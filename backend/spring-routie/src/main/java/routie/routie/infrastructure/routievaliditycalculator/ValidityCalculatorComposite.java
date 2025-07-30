@@ -2,11 +2,9 @@ package routie.routie.infrastructure.routievaliditycalculator;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import routie.routie.domain.RoutiePlace;
+import routie.routie.domain.ValidationContext;
 import routie.routie.domain.ValidationStrategy;
 import routie.routie.domain.ValidityCalculator;
-import routie.routie.domain.timeperiod.TimePeriod;
 
 public class ValidityCalculatorComposite implements ValidityCalculator {
 
@@ -23,11 +21,11 @@ public class ValidityCalculatorComposite implements ValidityCalculator {
 
     @Override
     public boolean calculateValidity(
-            final Map<RoutiePlace, TimePeriod> timePeriodByRoutiePlace,
+            final ValidationContext validationContext,
             final ValidationStrategy validationStrategy
     ) {
         return selectValidityCalculator(validationStrategy).calculateValidity(
-                timePeriodByRoutiePlace,
+                validationContext,
                 validationStrategy
         );
     }

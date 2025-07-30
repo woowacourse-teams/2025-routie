@@ -9,6 +9,8 @@ import routie.routie.domain.ValidationStrategy;
 import routie.routie.domain.ValidityCalculator;
 import routie.routie.domain.timeperiod.TimePeriod;
 
+import routie.routie.domain.ValidationContext;
+
 @Component
 public class OperationHoursValidityCalculator implements ValidityCalculator {
     @Override
@@ -18,10 +20,10 @@ public class OperationHoursValidityCalculator implements ValidityCalculator {
 
     @Override
     public boolean calculateValidity(
-            final Map<RoutiePlace, TimePeriod> timePeriodByRoutiePlace,
+            final ValidationContext validationContext,
             final ValidationStrategy validationStrategy
     ) {
-        return timePeriodByRoutiePlace.entrySet().stream()
+        return validationContext.timePeriodByRoutiePlace().entrySet().stream()
                 .allMatch(entry -> isWithinBusinessHours(
                         entry.getKey().getPlace(),
                         entry.getValue()
