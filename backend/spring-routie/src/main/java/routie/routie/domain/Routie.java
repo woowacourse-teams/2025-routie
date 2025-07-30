@@ -18,7 +18,7 @@ import lombok.NoArgsConstructor;
 public class Routie {
 
     @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
-    @JoinColumn(name = "routie_id", nullable = false)
+    @JoinColumn(name = "routie_space_id", nullable = false)
     private List<RoutiePlace> routiePlaces = new ArrayList<>();
 
     public static Routie empty() {
