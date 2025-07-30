@@ -6,7 +6,7 @@ import successIcon from '@/assets/icons/success.svg';
 
 interface RoutieValidationResultCardProps {
   valid: boolean;
-  total_time: string;
+  total_time: number;
 }
 
 const RoutieValidationResultCard = ({
@@ -27,7 +27,7 @@ const RoutieValidationResultCard = ({
           <Text variant="caption">
             {valid ? '일정 소화 가능' : '일정 소화 불가'}
           </Text>
-          <Text variant="description">예상 소요 시간: {total_time}</Text>
+          <Text variant="description">예상 소요 시간: {total_time}분</Text>
         </Flex>
       </Flex>
     </Card>

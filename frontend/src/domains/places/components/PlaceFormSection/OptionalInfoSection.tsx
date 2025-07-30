@@ -15,9 +15,9 @@ interface OptionalInfoSectionProps {
     | 'closeAt'
     | 'breakStartAt'
     | 'breakEndAt'
-    | 'closedDays'
+    | 'closedDayOfWeeks'
   >;
-  onChange: (field: keyof Omit<FormState, 'closedDays'>, value: string) => void;
+  onChange: (field: keyof Omit<FormState, 'closedDayOfWeeks'>, value: string) => void;
   onToggleDay: (index: number) => void;
 }
 
@@ -85,7 +85,7 @@ const OptionalInfoSection = ({
       <Flex direction="column" alignItems="flex-start" gap={1}>
         <Text variant="label">영업일</Text>
         <DateCheckboxList
-          value={getCheckedListFromClosedDays(form.closedDays)}
+          value={getCheckedListFromClosedDays(form.closedDayOfWeeks)}
           onChange={onToggleDay}
         />
       </Flex>

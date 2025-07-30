@@ -36,5 +36,5 @@ export type RoutiePlace = {
   closeAt: string;
   breakStartAt: string;
   breakEndAt: string;
-  closedDays: string[];
+  closedDayOfWeeks: string[];
 };

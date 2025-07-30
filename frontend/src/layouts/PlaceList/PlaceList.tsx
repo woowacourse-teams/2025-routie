@@ -5,6 +5,7 @@ import {
   PlaceCardProps,
 } from '@/domains/places/components/PlaceCard/PlaceCard';
 import { editRoutieSequence } from '@/domains/routie/apis/routie';
+import { useRoutieValidateContext } from '@/domains/routie/contexts/useRoutieValidateContext';
 import { Routie } from '@/domains/routie/types/routie.types';
 
 const deleteRoutiePlace = (placeId: number, routiePlaces: Routie[]) => {
@@ -42,6 +43,7 @@ const PlaceList = ({
   setRoutiePlaces,
   onRoutieDataChange,
 }: PlaceListProps) => {
+  const { validateRoutie } = useRoutieValidateContext();
   return (
     <>
       <Flex
@@ -83,6 +85,9 @@ const PlaceList = ({
                 if (onRoutieDataChange) {
                   await onRoutieDataChange();
                 }
+
+                // 루티 검증 API 호출
+                await validateRoutie();
               } catch (error) {
                 console.error('루티 업데이트 실패:', error);
               }

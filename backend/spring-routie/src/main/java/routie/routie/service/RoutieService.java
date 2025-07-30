@@ -102,8 +102,8 @@ public class RoutieService {
 
         boolean isDefaultValid = calculateDefaultValidity(startDateTime, endDateTime, timePeriodByRoutiePlace);
         boolean isStrategyValid = Arrays.stream(ValidationStrategy.values())
-                .allMatch(validationStrategy -> validityCalculator.calculateValidity(timePeriodByRoutiePlace,
-                        validationStrategy));
+                .allMatch(validationStrategy ->
+                        validityCalculator.calculateValidity(timePeriodByRoutiePlace, validationStrategy));
 
         return new RoutieTimeValidationResponse(isDefaultValid && isStrategyValid);
     }
