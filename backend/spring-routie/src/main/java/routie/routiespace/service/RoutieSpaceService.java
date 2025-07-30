@@ -3,9 +3,10 @@ package routie.routiespace.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import routie.routiespace.controller.dto.request.RoutieSpaceNameUpdateRequest;
-import routie.routiespace.controller.dto.response.RoutieSpaceNameResponse;
-import routie.routiespace.controller.dto.response.UpdateRoutieSpaceNameResponse;
+import routie.routiespace.controller.dto.request.RoutieSpaceUpdateRequest;
+import routie.routiespace.controller.dto.response.RoutieSpaceCreateResponse;
+import routie.routiespace.controller.dto.response.RoutieSpaceReadResponse;
+import routie.routiespace.controller.dto.response.RoutieSpaceUpdateResponse;
 import routie.routiespace.domain.RoutieSpace;
 import routie.routiespace.domain.RoutieSpaceIdentifierProvider;
 import routie.routiespace.repository.RoutieSpaceRepository;
@@ -18,33 +19,33 @@ public class RoutieSpaceService {
     private final RoutieSpaceIdentifierProvider routieSpaceIdentifierProvider;
 
     @Transactional(readOnly = true)
-    public RoutieSpaceNameResponse getRoutieSpaceName(final String identifier) {
-        RoutieSpace routieSpace = getRoutieSpaceByIdentifier(identifier);
+    public RoutieSpaceReadResponse getRoutieSpace(final String routieSpaceIdentifier) {
+        RoutieSpace routieSpace = getRoutieSpaceByRoutieSpaceIdentifier(routieSpaceIdentifier);
 
-        return RoutieSpaceNameResponse.from(routieSpace);
+        return RoutieSpaceReadResponse.from(routieSpace);
     }
 
     @Transactional
-    public RoutieSpace addRoutieSpace() {
+    public RoutieSpaceCreateResponse addRoutieSpace() {
         RoutieSpace routieSpace = RoutieSpace.from(routieSpaceIdentifierProvider);
-        return routieSpaceRepository.save(routieSpace);
+        routieSpaceRepository.save(routieSpace);
+        return RoutieSpaceCreateResponse.from(routieSpace);
     }
 
     @Transactional
-    public UpdateRoutieSpaceNameResponse modifyRoutieSpaceName(
+    public RoutieSpaceUpdateResponse modifyRoutieSpace(
             final String routieSpaceIdentifier,
-            final RoutieSpaceNameUpdateRequest routieSpaceNameUpdateRequest
+            final RoutieSpaceUpdateRequest routieSpaceUpdateRequest
     ) {
         // TODO: 예외처리 구조 개선 예정
-        RoutieSpace routieSpace = getRoutieSpaceByIdentifier(routieSpaceIdentifier);
+        RoutieSpace routieSpace = getRoutieSpaceByRoutieSpaceIdentifier(routieSpaceIdentifier);
+        routieSpace.updateName(routieSpaceUpdateRequest.name());
 
-        routieSpace.updateName(routieSpaceNameUpdateRequest.name());
-
-        return new UpdateRoutieSpaceNameResponse(routieSpace.getName());
+        return new RoutieSpaceUpdateResponse(routieSpace.getName());
     }
 
-    private RoutieSpace getRoutieSpaceByIdentifier(final String identifier) {
-        return routieSpaceRepository.findByIdentifier(identifier)
+    private RoutieSpace getRoutieSpaceByRoutieSpaceIdentifier(final String routieSpaceIdentifier) {
+        return routieSpaceRepository.findByIdentifier(routieSpaceIdentifier)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 루티 스페이스입니다."));
     }
 }
