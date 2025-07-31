@@ -1,105 +1,59 @@
 import Flex from '@/@common/components/Flex/Flex';
 import Text from '@/@common/components/Text/Text';
 import { PlaceCard } from '@/domains/places/components/PlaceCard/PlaceCard';
-import { editRoutieSequence } from '@/domains/routie/apis/routie';
-import { useRoutieValidateContext } from '@/domains/routie/contexts/useRoutieValidateContext';
 import { Routie } from '@/domains/routie/types/routie.types';
 
 import gridContainerStyle from './PlaceList.styles';
-import { usePlaceListContext } from './contexts/placeListContext';
-
-const deleteRoutiePlace = (placeId: number, routiePlaces: Routie[]) => {
-  const filteredRoutiePlaces = routiePlaces.filter(
-    (routiePlace) => routiePlace.placeId !== placeId,
-  );
-
-  return filteredRoutiePlaces.map((routiePlace, index) => ({
-    ...routiePlace,
-    sequence: index + 1,
-  }));
-};
-
-const addRoutiePlace = (placeId: number, routiePlaces: Routie[]) => {
-  return [
-    ...routiePlaces,
-    { id: placeId, placeId, sequence: routiePlaces.length + 1 },
-  ];
-};
 import { usePlaceListContext } from './contexts/PlaceListContext';
+import { usePlaceList } from './hooks/usePlaceList';
 
 interface PlaceListProps {
-  onDelete: (id: number) => void;
-  onPlaceChange: () => Promise<void>;
   routiePlaces: Routie[];
   setRoutiePlaces: React.Dispatch<React.SetStateAction<Routie[] | undefined>>;
   onRoutieDataChange?: () => Promise<void>;
 }
 
 const PlaceList = ({
-  onDelete,
-  onPlaceChange,
   routiePlaces,
   setRoutiePlaces,
   onRoutieDataChange,
 }: Omit<PlaceListProps, 'places'>) => {
-  const places = usePlaceListContext();
-  const { validateRoutie } = useRoutieValidateContext();
-  return (
-    <>
-      <Flex
-        direction="column"
-        justifyContent="flex-start"
-        alignItems="flex-start"
-        width="100%"
-        height="100%"
-        padding={3}
-        gap={2}
-      >
-        <Text variant="title">장소 목록</Text>
-        <div css={gridContainerStyle}>
-          {places.map((place) => {
-            const selected = routiePlaces.some(
-              (routiePlace) => routiePlace.placeId === place.id,
-            );
-
-            const handleSelect = async () => {
-              let updatedRoutiePlaces: Routie[];
-
-              if (selected) {
-                updatedRoutiePlaces = deleteRoutiePlace(place.id, routiePlaces);
-              } else {
-                updatedRoutiePlaces = addRoutiePlace(place.id, routiePlaces);
-              }
   const { placeList, refetchPlaceList, handleDelete } = usePlaceListContext();
 
-              try {
-                await editRoutieSequence(updatedRoutiePlaces);
-                setRoutiePlaces(updatedRoutiePlaces);
+  const placeCardList = usePlaceList({
+    places: placeList,
+    onDelete: handleDelete,
+    onPlaceChange: refetchPlaceList,
+    routiePlaces,
+    setRoutiePlaces,
+    onRoutieDataChange,
+  });
 
-                if (onRoutieDataChange) {
-                  await onRoutieDataChange();
-                }
-
-                await validateRoutie();
-              } catch (error) {
-                console.error('루티 업데이트 실패:', error);
-              }
-            };
-
-            return (
-              <PlaceCard
-                key={place.id}
-                {...place}
-                onDelete={onDelete}
-                onPlaceChange={onPlaceChange}
-                onSelect={handleSelect}
-                selected={selected}
-              />
-            );
-          })}
-        </div>
-      </Flex>
-    </>
+  return (
+    <Flex
+      direction="column"
+      justifyContent="flex-start"
+      alignItems="flex-start"
+      width="100%"
+      height="100%"
+      padding={3}
+      gap={2}
+    >
+      <Text variant="title">장소 목록</Text>
+      <div css={gridContainerStyle}>
+        {placeCardList.map(({ id, onSelect, selected, ...rest }) => (
+          <PlaceCard
+            id={id}
+            key={id}
+            {...rest}
+            onDelete={handleDelete}
+            onPlaceChange={refetchPlaceList}
+            onSelect={onSelect}
+            selected={selected}
+          />
+        ))}
+      </div>
+    </Flex>
   );
 };
 
