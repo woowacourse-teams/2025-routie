@@ -1,12 +1,14 @@
 import Flex from '@/@common/components/Flex/Flex';
 import Text from '@/@common/components/Text/Text';
 import { PlaceCard } from '@/domains/places/components/PlaceCard/PlaceCard';
+import { useRoutieContext } from '@/domains/routie/contexts/useRoutieContext';
 
 import gridContainerStyle from './PlaceList.styles';
 import { usePlaceListContext } from './contexts/PlaceListContext';
 
 const PlaceList = () => {
-  const { placeList, refetchPlaceList, handleDelete } = usePlaceListContext();
+  const { placeList } = usePlaceListContext();
+  const { routieIdList } = useRoutieContext();
 
   return (
     <Flex
@@ -20,17 +22,12 @@ const PlaceList = () => {
     >
       <Text variant="title">장소 목록</Text>
       <div css={gridContainerStyle}>
-        {placeList.map(({ id, onSelect, selected, ...rest }) => (
-          <PlaceCard
-            id={id}
-            key={id}
-            {...rest}
-            onDelete={handleDelete}
-            onPlaceChange={refetchPlaceList}
-            onSelect={onSelect}
-            selected={selected}
-          />
-        ))}
+        {placeList.map((place) => {
+          const selected = routieIdList.some(
+            (routiePlaceId) => routiePlaceId === place.id,
+          );
+          return <PlaceCard {...place} key={place.id} selected={selected} />;
+        })}
       </div>
     </Flex>
   );

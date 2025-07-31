@@ -12,7 +12,6 @@ import RoutieValidationUnavailableCard from '@/domains/routie/components/RoutieV
 import { useRoutieContext } from '@/domains/routie/contexts/useRoutieContext';
 import { useRoutieValidateContext } from '@/domains/routie/contexts/useRoutieValidateContext';
 import RoutieSpaceName from '@/domains/routieSpace/components/RoutieSpaceName/RoutieSpaceName';
-import theme from '@/styles/theme';
 
 import { usePlaceListContext } from '../PlaceList/contexts/PlaceListContext';
 
@@ -111,7 +110,7 @@ const Sidebar = () => {
               boxSizing: 'border-box',
             }}
           >
-            <RoutieSection onPlaceChange={refetchPlaceList} />
+            <RoutieSection />
           </Flex>
         </Flex>
       </Flex>

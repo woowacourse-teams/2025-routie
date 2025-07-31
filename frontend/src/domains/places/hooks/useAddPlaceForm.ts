@@ -21,8 +21,14 @@ const initialFormState: FormState = {
 
 const formReducer = (state: FormState, action: FormAction): FormState => {
   switch (action.type) {
-    case 'UPDATE':
-      return { ...state, [action.field]: action.value };
+    case 'UPDATE': {
+      const isNumericField = action.field === 'stayDurationMinutes';
+
+      return {
+        ...state,
+        [action.field]: isNumericField ? Number(action.value) : action.value,
+      };
+    }
     case 'TOGGLE_DAY': {
       const stringDays = [...state.closedDayOfWeeks];
       const updated = getCheckedListFromClosedDays(stringDays);

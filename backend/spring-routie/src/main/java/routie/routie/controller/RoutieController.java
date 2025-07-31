@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -47,15 +48,6 @@ public class RoutieController {
         return ResponseEntity.ok(routieService.getRoutie(routieSpaceIdentifier, startDateTime));
     }
 
-    @PatchMapping
-    public ResponseEntity<Void> updateRoutie(
-            @PathVariable final String routieSpaceIdentifier,
-            @RequestBody final RoutieUpdateRequest routieUpdateRequest
-    ) {
-        routieService.modifyRoutie(routieSpaceIdentifier, routieUpdateRequest);
-        return ResponseEntity.noContent().build();
-    }
-
     @GetMapping("/validity")
     public ResponseEntity<RoutieTimeValidationResponse> validateRoutieTime(
             @PathVariable final String routieSpaceIdentifier,
@@ -68,5 +60,23 @@ public class RoutieController {
                 endDateTime
         );
         return ResponseEntity.ok(routieTimeValidationResponse);
+    }
+
+    @PatchMapping
+    public ResponseEntity<Void> updateRoutie(
+            @PathVariable final String routieSpaceIdentifier,
+            @RequestBody final RoutieUpdateRequest routieUpdateRequest
+    ) {
+        routieService.modifyRoutie(routieSpaceIdentifier, routieUpdateRequest);
+        return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping("/places/{placeId}")
+    public ResponseEntity<Void> deleteRoutiePlace(
+            @PathVariable final String routieSpaceIdentifier,
+            @PathVariable final Long placeId
+    ) {
+        routieService.removeRoutiePlace(routieSpaceIdentifier, placeId);
+        return ResponseEntity.noContent().build();
     }
 }
