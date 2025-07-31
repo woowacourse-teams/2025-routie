@@ -1,5 +1,6 @@
 package routie.routiespace.domain;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
@@ -42,7 +43,7 @@ public class RoutieSpace {
     @Column(name = "identifier", nullable = false)
     private String identifier;
 
-    @OneToMany(mappedBy = "routieSpace")
+    @OneToMany(mappedBy = "routieSpace", cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true)
     private List<Place> places = new ArrayList<>();
 
     @Embedded

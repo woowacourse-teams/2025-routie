@@ -50,4 +50,11 @@ public class RoutiePlace {
                 null
         );
     }
+
+    public void updateSequence(final int sequence) {
+        if (sequence < 1) {
+            throw new IllegalArgumentException("루티 장소 순서는 1 이상의 값이어야 합니다.");
+        }
+        this.sequence = sequence;
+    }
 }

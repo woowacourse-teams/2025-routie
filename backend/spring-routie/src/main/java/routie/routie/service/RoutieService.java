@@ -160,4 +160,12 @@ public class RoutieService {
 
         return !firstPeriodStartTime.isBefore(startDateTime) && !lastPeriodEndTime.isAfter(endDateTime);
     }
+
+    @Transactional
+    public void removeRoutiePlace(final String routieSpaceIdentifier, final Long placeId) {
+        RoutieSpace routieSpace = getRoutieSpaceByIdentifier(routieSpaceIdentifier);
+        Place place = getPlaceByRoutieSpaceAndPlaceId(routieSpace, placeId);
+        Routie routie = routieSpace.getRoutie();
+        routie.removePlace(place);
+    }
 }
