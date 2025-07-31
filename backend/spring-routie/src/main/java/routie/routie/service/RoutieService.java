@@ -128,8 +128,11 @@ public class RoutieService {
                 routeByFromRoutiePlace
         );
 
-        ValidationContext validationContext = new ValidationContext(startDateTime, endDateTime,
-                timePeriodByRoutiePlace);
+        ValidationContext validationContext = new ValidationContext(
+                startDateTime,
+                endDateTime,
+                timePeriodByRoutiePlace
+        );
 
         boolean isStrategyValid = Arrays.stream(ValidationStrategy.values())
                 .allMatch(validationStrategy ->
