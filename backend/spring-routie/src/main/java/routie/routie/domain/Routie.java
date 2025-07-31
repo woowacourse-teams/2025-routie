@@ -58,16 +58,15 @@ public class Routie {
     }
 
     public void removePlace(final Place place) {
-        validatePlaceNotExists(place);
-        if (routiePlaces.removeIf(routiePlace -> routiePlace.getPlace().equals(place))) {
-            reorderPlaces();
-        }
+        routiePlaces.remove(getRoutiePlaceByPlace(place));
+        reorderPlaces();
     }
 
-    private void validatePlaceNotExists(final Place place) {
-        if (!containsPlace(place)) {
-            throw new IllegalArgumentException("루티에 등록되지 않은 장소입니다.");
-        }
+    private RoutiePlace getRoutiePlaceByPlace(final Place place) {
+        return routiePlaces.stream()
+                .filter(routiePlace -> routiePlace.getPlace().equals(place))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("루티에 등록되지 않은 장소입니다."));
     }
 
     // TODO: 추후 성능 이슈가 발생하면 하나의 SQL로 정렬하는 방식으로 변경 필요
