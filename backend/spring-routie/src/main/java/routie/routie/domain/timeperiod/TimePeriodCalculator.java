@@ -1,7 +1,7 @@
 package routie.routie.domain.timeperiod;
 
 import java.time.LocalDateTime;
-import java.util.Set;
+import java.util.List;
 import org.springframework.stereotype.Component;
 import routie.routie.domain.RoutiePlace;
 import routie.routie.domain.route.Route;
@@ -15,7 +15,7 @@ public class TimePeriodCalculator {
             final Routes routes
     ) {
         TimePeriods timePeriods = TimePeriods.empty();
-        Set<RoutiePlace> orderedRoutiePlaces = routes.orderedRoutiePlaces();
+        List<RoutiePlace> orderedRoutiePlaces = routes.orderedRoutiePlaces();
         LocalDateTime currentTime = initialStartTime;
 
         for (final RoutiePlace routiePlace : orderedRoutiePlaces) {

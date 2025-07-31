@@ -17,13 +17,13 @@ public record RoutieReadResponse(
     public static RoutieReadResponse from(
             final Routie routie,
             final List<Route> routes,
-            final TimePeriods timePeriodByRoutiePlace
+            final TimePeriods timePeriods
     ) {
         return new RoutieReadResponse(
                 routie.getRoutiePlaces().stream()
                         .map(routiePlace -> RoutiePlaceResponse.from(
                                 routiePlace,
-                                timePeriodByRoutiePlace == null ? null : timePeriodByRoutiePlace.getBy(routiePlace)
+                                timePeriods == null ? null : timePeriods.getBy(routiePlace)
                         ))
                         .toList(),
                 routes.stream()

@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.TreeMap;
 import routie.routie.domain.RoutiePlace;
 
@@ -36,7 +35,17 @@ public class Routes {
         return new ArrayList<>(routes.values());
     }
 
-    public Set<RoutiePlace> orderedRoutiePlaces() {
-        return routes.keySet();
+    public List<RoutiePlace> orderedRoutiePlaces() {
+        if (routes.isEmpty()) {
+            return List.of();
+        }
+        List<RoutiePlace> orderedRoutiePlaces = new ArrayList<>();
+
+        RoutiePlace first = routes.firstKey();
+        orderedRoutiePlaces.add(first);
+
+        routes.values().forEach(route -> orderedRoutiePlaces.add(route.to()));
+
+        return orderedRoutiePlaces;
     }
 }

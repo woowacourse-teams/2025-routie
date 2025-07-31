@@ -1,5 +1,7 @@
 package routie.routie.service;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
