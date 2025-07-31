@@ -7,11 +7,11 @@ import org.springframework.context.annotation.Primary;
 import routie.routie.domain.routievalidator.RoutieValidator;
 
 @Configuration
-public class ValidatorConfig {
+public class RoutieValidatorConfig {
 
     @Bean
     @Primary
     public RoutieValidator validator(final List<RoutieValidator> validators) {
-        return new ValidatorComposite(validators);
+        return new RoutieValidatorComposite(validators);
     }
 }

@@ -6,11 +6,11 @@ import routie.routie.domain.routievalidator.RoutieValidator;
 import routie.routie.domain.routievalidator.ValidationContext;
 import routie.routie.domain.routievalidator.ValidationStrategy;
 
-public class ValidatorComposite implements RoutieValidator {
+public class RoutieValidatorComposite implements RoutieValidator {
 
     private final List<RoutieValidator> routeValidators;
 
-    public ValidatorComposite(final List<RoutieValidator> routeValidator) {
+    public RoutieValidatorComposite(final List<RoutieValidator> routeValidator) {
         this.routeValidators = new ArrayList<>(routeValidator);
     }
 
