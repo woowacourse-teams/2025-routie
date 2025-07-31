@@ -123,12 +123,7 @@ public class Place {
             final RoutieSpace routieSpace,
             final List<DayOfWeek> closedDayOfWeeks
     ) {
-        List<PlaceClosedDayOfWeek> placeClosedDayOfWeeks = new ArrayList<>();
-        if (closedDayOfWeeks != null) {
-            placeClosedDayOfWeeks = closedDayOfWeeks.stream()
-                    .map(PlaceClosedDayOfWeek::new)
-                    .toList();
-        }
+        List<PlaceClosedDayOfWeek> placeClosedDayOfWeeks = createClosedDayOfWeeks(closedDayOfWeeks);
         return new Place(
                 name,
                 address,
@@ -158,11 +153,16 @@ public class Place {
         this.breakStartAt = breakStartAt;
         this.breakEndAt = breakEndAt;
         this.placeClosedDayOfWeeks.clear();
-        if (closedDayOfWeeks != null) {
-            closedDayOfWeeks.forEach(
-                    day -> this.placeClosedDayOfWeeks.add(new PlaceClosedDayOfWeek(day))
-            );
+        this.placeClosedDayOfWeeks.addAll(createClosedDayOfWeeks(closedDayOfWeeks));
+    }
+
+    private static List<PlaceClosedDayOfWeek> createClosedDayOfWeeks(final List<DayOfWeek> closedDayOfWeeks) {
+        if (closedDayOfWeeks == null || closedDayOfWeeks.isEmpty()) {
+            return new ArrayList<>();
         }
+        return closedDayOfWeeks.stream()
+                .map(PlaceClosedDayOfWeek::new)
+                .toList();
     }
 
     private void validateForModify(
