@@ -3,8 +3,12 @@ import Modal, { ModalProps } from '@/@common/components/Modal/Modal';
 import { useAddPlaceForm } from '@/domains/places/hooks/useAddPlaceForm';
 
 import addPlace from '../../apis/addPlace';
-import OptionalInfoSection from '../PlaceFormSection/OptionalInfoSection';
-import RequiredInfoSection from '../PlaceFormSection/RequiredInfoSection';
+import AddressInput from '../PlaceFormSection/AddressInput';
+import BreakTimeInputs from '../PlaceFormSection/BreakTimeInputs';
+import BusinessHourInputs from '../PlaceFormSection/BusinessHourInputs';
+import ClosedDaySelector from '../PlaceFormSection/ClosedDaySelector';
+import PlaceNameInput from '../PlaceFormSection/PlaceNameInput';
+import StayDurationInput from '../PlaceFormSection/StayDurationInput';
 
 import { ModalInputContainerStyle } from './AddPlaceModal.styles';
 import AddPlaceModalButtons from './AddPlaceModalButtons';
@@ -46,18 +50,44 @@ const AddPlaceModal = ({
         <Flex direction="column" width="44rem" gap={2}>
           <AddPlaceModalHeader onClose={handleClose} />
           <div css={ModalInputContainerStyle}>
-            <RequiredInfoSection
-              name={form.name}
-              address={form.address}
-              onChange={handleInputChange}
-            />
-          </div>
-          <div css={ModalInputContainerStyle}>
-            <OptionalInfoSection
-              form={form}
-              onChange={handleInputChange}
-              onToggleDay={handleToggleDay}
-            />
+            <Flex
+              direction="column"
+              alignItems="flex-start"
+              width="100%"
+              gap={2}
+            >
+              <PlaceNameInput
+                value={form.name}
+                onChange={handleInputChange}
+                required={true}
+              />
+              <AddressInput
+                value={form.address}
+                onChange={handleInputChange}
+                required={true}
+              />
+              <StayDurationInput
+                value={form.stayDurationMinutes}
+                onChange={handleInputChange}
+                required={true}
+              />
+              <BusinessHourInputs
+                openAt={form.openAt}
+                closeAt={form.closeAt}
+                onChange={handleInputChange}
+                required={true}
+              />
+              <BreakTimeInputs
+                breakStartAt={form.breakStartAt}
+                breakEndAt={form.breakEndAt}
+                onChange={handleInputChange}
+                required={false}
+              />
+              <ClosedDaySelector
+                closedDayOfWeeks={form.closedDayOfWeeks}
+                onToggleDay={handleToggleDay}
+              />
+            </Flex>
           </div>
           <AddPlaceModalButtons />
         </Flex>
