@@ -2,17 +2,6 @@ import { useCallback, useEffect, useState } from 'react';
 
 import { getRoutieValidation } from '../apis/routie';
 
-const getTomorrowDate = () => {
-  const tomorrow = new Date();
-  tomorrow.setDate(tomorrow.getDate() + 1);
-  return tomorrow.toISOString().split('T')[0];
-};
-
-export const initialTime = {
-  startDateTime: `${getTomorrowDate()}T10:00`,
-  endDateTime: `${getTomorrowDate()}T11:00`,
-};
-
 export interface UseRoutieValidateReturn {
   isValidateActive: boolean;
   routieTime: {
@@ -37,7 +26,10 @@ const useRoutieValidate = (): UseRoutieValidateReturn => {
   const [isValidateActive, setIsValidateActive] = useState(
     getInitialValidateActive,
   );
-  const [routieTime, setRoutieTime] = useState(initialTime);
+  const [routieTime, setRoutieTime] = useState({
+    startDateTime: '',
+    endDateTime: '',
+  });
   const [isValidateRoutie, setIsValidateRoutie] = useState(false);
 
   const handleValidateToggle = useCallback(() => {
@@ -69,6 +61,9 @@ const useRoutieValidate = (): UseRoutieValidateReturn => {
   }, [isValidateActive, routieTime]);
 
   useEffect(() => {
+    if (routieTime.startDateTime === '' || routieTime.endDateTime === '')
+      return;
+
     validateRoutie();
   }, [validateRoutie]);
 

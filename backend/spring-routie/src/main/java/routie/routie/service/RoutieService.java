@@ -136,4 +136,12 @@ public class RoutieService {
 
         return new RoutieValidationResponse(isStrategyValid);
     }
+
+    @Transactional
+    public void removeRoutiePlace(final String routieSpaceIdentifier, final Long placeId) {
+        RoutieSpace routieSpace = getRoutieSpaceByIdentifier(routieSpaceIdentifier);
+        Place place = getPlaceByRoutieSpaceAndPlaceId(routieSpace, placeId);
+        Routie routie = routieSpace.getRoutie();
+        routie.removePlace(place);
+    }
 }
