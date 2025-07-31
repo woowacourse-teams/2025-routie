@@ -18,8 +18,8 @@ public class RouteCalculator {
     private final DistanceCalculator distanceCalculator;
     private final TravelTimeCalculator travelTimeCalculator;
 
-    public Map<RoutiePlace, Route> calculateRoutes(final List<RoutiePlace> routiePlaces) {
-        HashMap<RoutiePlace, Route> routeByFromRoutiePlace = new HashMap<>();
+    public Routes calculateRoutes(final List<RoutiePlace> routiePlaces) {
+        Map<RoutiePlace, Route> routeByFromRoutiePlace = new HashMap<>();
 
         for (int sequence = 0; sequence < routiePlaces.size() - 1; sequence++) {
             RoutiePlace fromRoutiePlace = routiePlaces.get(sequence);
@@ -43,6 +43,6 @@ public class RouteCalculator {
             routeByFromRoutiePlace.put(fromRoutiePlace, route);
         }
 
-        return routeByFromRoutiePlace;
+        return new Routes(routeByFromRoutiePlace);
     }
 }

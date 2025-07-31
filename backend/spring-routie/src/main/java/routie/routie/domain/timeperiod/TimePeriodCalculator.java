@@ -7,6 +7,7 @@ import java.util.Map;
 import org.springframework.stereotype.Component;
 import routie.routie.domain.RoutiePlace;
 import routie.routie.domain.route.Route;
+import routie.routie.domain.route.Routes;
 
 @Component
 public class TimePeriodCalculator {
@@ -14,7 +15,7 @@ public class TimePeriodCalculator {
     public Map<RoutiePlace, TimePeriod> calculateTimePeriods(
             final List<RoutiePlace> routiePlaces,
             final LocalDateTime initialStartTime,
-            final Map<RoutiePlace, Route> routeByFromRoutiePlace
+            final Routes routes
     ) {
         Map<RoutiePlace, TimePeriod> timePeriodByPlace = new HashMap<>();
         LocalDateTime currentTime = initialStartTime;
@@ -28,7 +29,7 @@ public class TimePeriodCalculator {
             timePeriodByPlace.put(currentPlace, new TimePeriod(start, end));
 
             if (i < routiePlaces.size() - 1) {
-                Route route = routeByFromRoutiePlace.get(currentPlace);
+                Route route = routes.getBy(currentPlace);
                 currentTime = end.plusMinutes(route.duration());
             }
         }

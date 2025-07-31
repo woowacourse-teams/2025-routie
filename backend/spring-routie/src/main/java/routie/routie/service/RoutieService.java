@@ -1,7 +1,6 @@
 package routie.routie.service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -22,8 +21,8 @@ import routie.routie.controller.dto.response.RoutieTimeValidationResponse;
 import routie.routie.controller.dto.response.RoutieUpdateResponse;
 import routie.routie.domain.Routie;
 import routie.routie.domain.RoutiePlace;
-import routie.routie.domain.route.Route;
 import routie.routie.domain.route.RouteCalculator;
+import routie.routie.domain.route.Routes;
 import routie.routie.domain.routievalidator.RoutieValidator;
 import routie.routie.domain.routievalidator.ValidationContext;
 import routie.routie.domain.routievalidator.ValidationStrategy;
@@ -64,18 +63,17 @@ public class RoutieService {
 
     public RoutieReadResponse getRoutie(final String routieSpaceIdentifier, final LocalDateTime startDateTime) {
         Routie routie = getRoutieSpaceByIdentifier(routieSpaceIdentifier).getRoutie();
-        Map<RoutiePlace, Route> routeByFromRoutiePlace = routeCalculator.calculateRoutes(routie.getRoutiePlaces());
-        List<Route> routes = new ArrayList<>(routeByFromRoutiePlace.values());
+        Routes routes = routeCalculator.calculateRoutes(routie.getRoutiePlaces());
 
         Map<RoutiePlace, TimePeriod> timePeriodByRoutiePlace = null;
         if (startDateTime != null) {
             timePeriodByRoutiePlace = timePeriodCalculator.calculateTimePeriods(
                     routie.getRoutiePlaces(),
                     startDateTime,
-                    routeByFromRoutiePlace
+                    routes
             );
         }
-        return RoutieReadResponse.from(routie, routes, timePeriodByRoutiePlace);
+        return RoutieReadResponse.from(routie, routes.toList(), timePeriodByRoutiePlace);
     }
 
     @Transactional
@@ -121,11 +119,11 @@ public class RoutieService {
     ) {
         Routie routie = getRoutieSpaceByIdentifier(routieSpaceIdentifier).getRoutie();
 
-        Map<RoutiePlace, Route> routeByFromRoutiePlace = routeCalculator.calculateRoutes(routie.getRoutiePlaces());
+        Routes routes = routeCalculator.calculateRoutes(routie.getRoutiePlaces());
         Map<RoutiePlace, TimePeriod> timePeriodByRoutiePlace = timePeriodCalculator.calculateTimePeriods(
                 routie.getRoutiePlaces(),
                 startDateTime,
-                routeByFromRoutiePlace
+                routes
         );
 
         ValidationContext validationContext = new ValidationContext(
