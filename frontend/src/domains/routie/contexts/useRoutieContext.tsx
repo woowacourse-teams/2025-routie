@@ -29,8 +29,8 @@ const RoutieContext = createContext<RoutieContextType>({
 });
 
 export const RoutieProvider = ({ children }: { children: React.ReactNode }) => {
-  const [routiePlaces, setRoutiePlaces] = useState<Routie[] | []>([]);
-  const [routes, setRoutes] = useState<Routes[] | []>([]);
+  const [routiePlaces, setRoutiePlaces] = useState<Routie[]>([]);
+  const [routes, setRoutes] = useState<Routes[]>([]);
   const routieIdList = useMemo(
     () => routiePlaces.map((routie) => routie.placeId),
     [routiePlaces],
