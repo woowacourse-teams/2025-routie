@@ -25,6 +25,7 @@ const addRoutiePlace = (placeId: number, routiePlaces: Routie[]) => {
     { id: placeId, placeId, sequence: routiePlaces.length + 1 },
   ];
 };
+import { usePlaceListContext } from './contexts/PlaceListContext';
 
 interface PlaceListProps {
   onDelete: (id: number) => void;
@@ -69,6 +70,7 @@ const PlaceList = ({
               } else {
                 updatedRoutiePlaces = addRoutiePlace(place.id, routiePlaces);
               }
+  const { placeList, refetchPlaceList, handleDelete } = usePlaceListContext();
 
               try {
                 await editRoutieSequence(updatedRoutiePlaces);

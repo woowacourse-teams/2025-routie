@@ -7,7 +7,7 @@ import { getRoutieId } from '@/domains/routie/apis/routie';
 import { RoutieValidateProvider } from '@/domains/routie/contexts/useRoutieValidateContext';
 import { Routes, Routie } from '@/domains/routie/types/routie.types';
 import PlaceList from '@/layouts/PlaceList/PlaceList';
-import { PlaceListContext } from '@/layouts/PlaceList/contexts/placeListContext';
+import { PlaceListProvider } from '@/layouts/PlaceList/contexts/PlaceListProvider';
 import Sidebar from '@/layouts/Sidebar/Sidebar';
 
 const RoutieSpace = () => {
@@ -59,19 +59,18 @@ const RoutieSpace = () => {
 
   return (
     <RoutieValidateProvider>
-      <Flex justifyContent="flex-start" height="100vh">
-        <Flex direction="column" justifyContent="flex-start" height="100%">
-          {
-            <Sidebar
-              onPlaceChange={refetchPlaceList}
-              routiePlaces={routiePlaces ?? []}
-              setRoutiePlaces={setRoutiePlaces}
-              routes={routes}
-            />
-          }
-        </Flex>
-        <Flex direction="column" justifyContent="flex-start" height="100%">
-          <PlaceListContext.Provider value={placeList}>
+      <PlaceListProvider>
+        <Flex justifyContent="flex-start" height="100vh">
+          <Flex direction="column" justifyContent="flex-start" height="100%">
+            {
+              <Sidebar
+                routiePlaces={routiePlaces ?? []}
+                setRoutiePlaces={setRoutiePlaces}
+                routes={routes}
+              />
+            }
+          </Flex>
+          <Flex direction="column" justifyContent="flex-start" height="100%">
             <PlaceList
               onDelete={handleDelete}
               onPlaceChange={refetchPlaceList}
@@ -79,9 +78,9 @@ const RoutieSpace = () => {
               setRoutiePlaces={setRoutiePlaces}
               onRoutieDataChange={refetchRoutieData}
             />
-          </PlaceListContext.Provider>
         </Flex>
       </Flex>
+      </PlaceListProvider>
     </RoutieValidateProvider>
   );
 };
