@@ -4,37 +4,40 @@ import {
   useState,
   useEffect,
   useCallback,
-  useMemo,
 } from 'react';
 
-import { editRoutieSequence, getRoutieId } from '../apis/routie';
+import {
+  addRoutiePlace,
+  deleteRoutiePlace,
+  editRoutieSequence,
+  getRoutieId,
+} from '../apis/routie';
 import { Routes, Routie } from '../types/routie.types';
 
 type RoutieContextType = {
   routiePlaces: Routie[];
-  handleRoutieChange: (RoutieList: Routie[]) => void;
   routes: Routes[];
   refetchRoutieData: () => void;
-  handleRoutieDelete: (id: number) => void;
+  handleAddRoutie: (id: number) => void;
+  handleDeleteRoutie: (id: number) => void;
+  handleChangeRoutie: (sortedPlaces: Routie[]) => void;
   routieIdList: number[];
 };
 
 const RoutieContext = createContext<RoutieContextType>({
   routiePlaces: [],
-  handleRoutieChange: () => {},
-  handleRoutieDelete: () => {},
+  handleAddRoutie: async () => {},
+  handleDeleteRoutie: () => {},
   routes: [],
+  handleChangeRoutie: () => {},
   refetchRoutieData: async () => {},
   routieIdList: [],
 });
 
 export const RoutieProvider = ({ children }: { children: React.ReactNode }) => {
-  const [routiePlaces, setRoutiePlaces] = useState<Routie[] | []>([]);
-  const [routes, setRoutes] = useState<Routes[] | []>([]);
-  const routieIdList = useMemo(
-    () => routiePlaces.map((routie) => routie.placeId),
-    [routiePlaces],
-  );
+  const [routiePlaces, setRoutiePlaces] = useState<Routie[]>([]);
+  const [routes, setRoutes] = useState<Routes[]>([]);
+  const routieIdList = routiePlaces.map((routie) => routie.placeId);
 
   const refetchRoutieData = useCallback(async () => {
     try {
@@ -46,15 +49,34 @@ export const RoutieProvider = ({ children }: { children: React.ReactNode }) => {
     }
   }, []);
 
-  const handleRoutieChange = useCallback((RoutieList: Routie[]) => {
-    setRoutiePlaces(RoutieList);
-  }, []);
+  const handleAddRoutie = useCallback(
+    async (id: number) => {
+      try {
+        await addRoutiePlace(id);
+        await refetchRoutieData();
+      } catch (error) {
+        console.error(error);
+      }
+    },
+    [refetchRoutieData],
+  );
 
-  const handleRoutieDelete = useCallback(
-    (id: number) => {
-      const next = routiePlaces.filter((item) => item.placeId !== id);
-      editRoutieSequence(next);
-      handleRoutieChange(next);
+  const handleDeleteRoutie = useCallback(
+    async (id: number) => {
+      try {
+        await deleteRoutiePlace(id);
+        await refetchRoutieData();
+      } catch (error) {
+        console.error(error);
+      }
+    },
+    [refetchRoutieData],
+  );
+
+  const handleChangeRoutie = useCallback(
+    async (sortedPlaces: Routie[]) => {
+      await editRoutieSequence(sortedPlaces);
+      setRoutiePlaces(sortedPlaces);
     },
     [routiePlaces],
   );
@@ -69,9 +91,10 @@ export const RoutieProvider = ({ children }: { children: React.ReactNode }) => {
         routiePlaces,
         routieIdList,
         routes,
-        handleRoutieChange,
         refetchRoutieData,
-        handleRoutieDelete,
+        handleAddRoutie,
+        handleDeleteRoutie,
+        handleChangeRoutie,
       }}
     >
       {children}
