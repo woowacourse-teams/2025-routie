@@ -1,14 +1,17 @@
 import { FormState } from '../components/PlaceFormSection/PlaceForm.types';
 
 export const usePlaceFormValidation = (form: FormState) => {
+  const isBreakTimeInvalid =
+    (form.breakStartAt === '' && form.breakEndAt !== '') ||
+    (form.breakStartAt !== '' && form.breakEndAt === '');
+
   const isEmpty = {
     name: form.name.trim() === '',
     address: form.address.trim() === '',
     stayDurationMinutes: form.stayDurationMinutes < 0,
     openAt: form.openAt === '',
     closeAt: form.closeAt === '',
-    breakStartAt: form.breakStartAt === '',
-    breakEndAt: form.breakEndAt === '',
+    breakTime: isBreakTimeInvalid,
   };
 
   const isValid = Object.values(isEmpty).every((field) => !field);
