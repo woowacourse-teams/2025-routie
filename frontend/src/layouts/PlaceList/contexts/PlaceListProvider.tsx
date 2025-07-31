@@ -30,11 +30,13 @@ export const PlaceListProvider = ({ children }: Props) => {
   }, []);
 
   const contextValue = useMemo(() => {
-    return { placeList, setPlaceList, refetchPlaceList, handleDelete };
-  }, [placeList, setPlaceList, refetchPlaceList, handleDelete]);
+    return { placeList, setPlaceList };
+  }, [placeList, setPlaceList]);
 
   return (
-    <PlaceListContext.Provider value={contextValue}>
+    <PlaceListContext.Provider
+      value={{ ...contextValue, refetchPlaceList, handleDelete }}
+    >
       {children}
     </PlaceListContext.Provider>
   );
