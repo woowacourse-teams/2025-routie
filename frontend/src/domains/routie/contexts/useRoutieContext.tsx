@@ -1,32 +1,40 @@
 import {
   createContext,
-  useMemo,
   useContext,
   useState,
   useEffect,
   useCallback,
+  useMemo,
 } from 'react';
 
-import { getRoutieId } from '../apis/routie';
+import { editRoutieSequence, getRoutieId } from '../apis/routie';
 import { Routes, Routie } from '../types/routie.types';
 
 type RoutieContextType = {
   routiePlaces: Routie[];
-  setRoutiePlaces: React.Dispatch<React.SetStateAction<Routie[]>>;
+  handleRoutieChange: (RoutieList: Routie[]) => void;
   routes: Routes[];
-  refetchRoutieData: () => Promise<void>;
+  refetchRoutieData: () => void;
+  handleRoutieDelete: (id: number) => void;
+  routieIdList: number[];
 };
 
 const RoutieContext = createContext<RoutieContextType>({
   routiePlaces: [],
-  setRoutiePlaces: () => {},
+  handleRoutieChange: () => {},
+  handleRoutieDelete: () => {},
   routes: [],
   refetchRoutieData: async () => {},
+  routieIdList: [],
 });
 
 export const RoutieProvider = ({ children }: { children: React.ReactNode }) => {
   const [routiePlaces, setRoutiePlaces] = useState<Routie[] | []>([]);
   const [routes, setRoutes] = useState<Routes[] | []>([]);
+  const routieIdList = useMemo(
+    () => routiePlaces.map((routie) => routie.placeId),
+    [routiePlaces],
+  );
 
   const refetchRoutieData = useCallback(async () => {
     try {
@@ -38,21 +46,34 @@ export const RoutieProvider = ({ children }: { children: React.ReactNode }) => {
     }
   }, []);
 
+  const handleRoutieChange = useCallback((RoutieList: Routie[]) => {
+    setRoutiePlaces(RoutieList);
+  }, []);
+
+  const handleRoutieDelete = useCallback(
+    (id: number) => {
+      const next = routiePlaces.filter((item) => item.placeId !== id);
+      editRoutieSequence(next);
+      handleRoutieChange(next);
+    },
+    [routiePlaces],
+  );
+
   useEffect(() => {
     refetchRoutieData();
   }, []);
 
-  const contextValue = useMemo(() => {
-    return {
-      routiePlaces,
-      setRoutiePlaces,
-      routes,
-      refetchRoutieData,
-    };
-  }, [routiePlaces, setRoutiePlaces, routes, refetchRoutieData]);
-
   return (
-    <RoutieContext.Provider value={contextValue}>
+    <RoutieContext.Provider
+      value={{
+        routiePlaces,
+        routieIdList,
+        routes,
+        handleRoutieChange,
+        refetchRoutieData,
+        handleRoutieDelete,
+      }}
+    >
       {children}
     </RoutieContext.Provider>
   );
