@@ -132,7 +132,7 @@ public class Place {
     }
 
     private static List<PlaceClosedDayOfWeek> createClosedDayOfWeeks(final List<DayOfWeek> closedDayOfWeeks) {
-        if (closedDayOfWeeks == null || closedDayOfWeeks.isEmpty()) {
+        if (closedDayOfWeeks == null) {
             return new ArrayList<>();
         }
         return closedDayOfWeeks.stream()
