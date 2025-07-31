@@ -286,4 +286,34 @@ class RoutieControllerTest {
         assertThat(route.duration()).isEqualTo(100);
         assertThat(route.distance()).isEqualTo(1000);
     }
+
+    @Test
+    @DisplayName("루티의 장소를 삭제할 수 있다")
+    void deleteRoutiePlace() {
+        // given
+        long placeId = routie.getRoutiePlaces().getFirst().getPlace().getId();
+
+        // when
+        Response response = RestAssured
+                .given().log().all()
+                .when()
+                .delete("/routie-spaces/" + routieSpace.getIdentifier() + "/routie/places/" + placeId)
+                .then().log().all()
+                .extract().response();
+
+        // then
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.NO_CONTENT.value());
+
+        // 추가 검증: 루티에서 해당 장소가 삭제되었는지 확인
+        RoutieReadResponse routieReadResponse = RestAssured
+                .given().log().all()
+                .when()
+                .get("/routie-spaces/" + routieSpace.getIdentifier() + "/routie")
+                .then().log().all()
+                .statusCode(HttpStatus.OK.value())
+                .extract()
+                .as(RoutieReadResponse.class);
+
+        assertThat(routieReadResponse.routiePlaces()).hasSize(1);
+    }
 }
