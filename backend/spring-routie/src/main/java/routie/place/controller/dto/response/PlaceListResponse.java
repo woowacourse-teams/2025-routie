@@ -32,8 +32,8 @@ public record PlaceListResponse(
                     place.getId(),
                     place.getName(),
                     place.getAddress(),
-                    place.getOpenAt(),
-                    place.getCloseAt(),
+                    place.getBusinessHour().getOpenAt(),
+                    place.getBusinessHour().getCloseAt(),
                     place.getPlaceClosedDayOfWeeks().stream()
                             .map(PlaceClosedDayOfWeek::getClosedDayOfWeek)
                             .toList()

@@ -2,6 +2,7 @@ package routie.place.domain;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.GeneratedValue;
@@ -46,17 +47,8 @@ public class Place {
     @Column(name = "stay_duration_minutes", nullable = false)
     private int stayDurationMinutes;
 
-    @Column(name = "open_at", nullable = false)
-    private LocalTime openAt;
-
-    @Column(name = "close_at", nullable = false)
-    private LocalTime closeAt;
-
-    @Column(name = "break_start_at")
-    private LocalTime breakStartAt;
-
-    @Column(name = "break_end_at")
-    private LocalTime breakEndAt;
+    @Embedded
+    private BusinessHour businessHour;
 
     @ManyToOne
     @JoinColumn(name = "routie_space_id")
@@ -78,21 +70,15 @@ public class Place {
             final String name,
             final String address,
             final int stayDurationMinutes,
-            final LocalTime openAt,
-            final LocalTime closeAt,
-            final LocalTime breakStartAt,
-            final LocalTime breakEndAt,
+            final BusinessHour businessHour,
             final RoutieSpace routieSpace,
             final List<PlaceClosedDayOfWeek> placeClosedDayOfWeeks
     ) {
-        validateForCreation(name, address, stayDurationMinutes, openAt, closeAt, breakStartAt, breakEndAt);
+        validateForCreation(name, address, stayDurationMinutes);
         this.name = name;
         this.address = address;
         this.stayDurationMinutes = stayDurationMinutes;
-        this.openAt = openAt;
-        this.closeAt = closeAt;
-        this.breakStartAt = breakStartAt;
-        this.breakEndAt = breakEndAt;
+        this.businessHour = businessHour;
         this.routieSpace = routieSpace;
         this.placeClosedDayOfWeeks = placeClosedDayOfWeeks;
     }
@@ -100,16 +86,11 @@ public class Place {
     private void validateForCreation(
             final String name,
             final String address,
-            final int stayDurationMinutes,
-            final LocalTime openAt,
-            final LocalTime closeAt,
-            final LocalTime breakStartAt,
-            final LocalTime breakEndAt
+            final int stayDurationMinutes
     ) {
         validateName(name);
         validateAddress(address);
         validateStayDurationMinutes(stayDurationMinutes);
-        validateTime(openAt, closeAt, breakStartAt, breakEndAt);
     }
 
     public static Place create(
@@ -128,10 +109,7 @@ public class Place {
                 name,
                 address,
                 stayDurationMinutes,
-                openAt,
-                closeAt,
-                breakStartAt,
-                breakEndAt,
+                new BusinessHour(openAt, closeAt, breakStartAt, breakEndAt),
                 routieSpace,
                 placeClosedDayOfWeeks
         );
@@ -145,13 +123,10 @@ public class Place {
             final LocalTime breakEndAt,
             final List<DayOfWeek> closedDayOfWeeks
     ) {
-        validateForModify(stayDurationMinutes, openAt, closeAt, breakStartAt, breakEndAt);
+        validateStayDurationMinutes(stayDurationMinutes);
 
         this.stayDurationMinutes = stayDurationMinutes;
-        this.openAt = openAt;
-        this.closeAt = closeAt;
-        this.breakStartAt = breakStartAt;
-        this.breakEndAt = breakEndAt;
+        this.businessHour = new BusinessHour(openAt, closeAt, breakStartAt, breakEndAt);
         this.placeClosedDayOfWeeks.clear();
         this.placeClosedDayOfWeeks.addAll(createClosedDayOfWeeks(closedDayOfWeeks));
     }
@@ -163,17 +138,6 @@ public class Place {
         return closedDayOfWeeks.stream()
                 .map(PlaceClosedDayOfWeek::new)
                 .toList();
-    }
-
-    private void validateForModify(
-            final int stayDurationMinutes,
-            final LocalTime openAt,
-            final LocalTime closeAt,
-            final LocalTime breakStartAt,
-            final LocalTime breakEndAt
-    ) {
-        validateStayDurationMinutes(stayDurationMinutes);
-        validateTime(openAt, closeAt, breakStartAt, breakEndAt);
     }
 
     private void validateStayDurationMinutes(final int stayDurationMinutes) {
@@ -197,49 +161,6 @@ public class Place {
         }
         if (address.length() > 50) {
             throw new IllegalArgumentException("주소는 1자 이상 50자 이하여야 합니다.");
-        }
-    }
-
-    private void validateTime(
-            final LocalTime openAt,
-            final LocalTime closeAt,
-            final LocalTime breakStartAt,
-            final LocalTime breakEndAt
-    ) {
-        validateOperatingTime(openAt, closeAt);
-        validateBreakTime(breakStartAt, breakEndAt);
-        validateBreakTimeWithOperatingTime(openAt, closeAt, breakStartAt, breakEndAt);
-    }
-
-    private void validateOperatingTime(final LocalTime openAt, final LocalTime closeAt) {
-        if (openAt == null || closeAt == null) {
-            throw new IllegalArgumentException("영업 시간은 필수 입력 사항입니다.");
-        }
-    }
-
-    private void validateBreakTime(final LocalTime breakStartAt, final LocalTime breakEndAt) {
-        boolean hasBreakStart = breakStartAt != null;
-        boolean hasBreakEnd = breakEndAt != null;
-
-        if (hasBreakStart != hasBreakEnd) {
-            throw new IllegalArgumentException("브레이크 타임 시작 시간과 종료 시간은 함께 존재해야 합니다.");
-        }
-    }
-
-    private void validateBreakTimeWithOperatingTime(
-            final LocalTime openAt,
-            final LocalTime closeAt,
-            final LocalTime breakStartAt,
-            final LocalTime breakEndAt
-    ) {
-        if (breakStartAt == null || breakEndAt == null) {
-            return;
-        }
-        if (openAt.equals(closeAt)) {
-            return;
-        }
-        if (breakStartAt.isBefore(openAt) || breakEndAt.isAfter(closeAt)) {
-            throw new IllegalArgumentException("브레이크 타임은 영업 시간 내에 있어야 합니다.");
         }
     }
 }

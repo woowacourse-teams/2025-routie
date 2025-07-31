@@ -29,8 +29,8 @@ public class BreaktimeValidityCalculator implements ValidityCalculator {
     }
 
     private boolean isWithoutBreaktime(final Place place, final TimePeriod timePeriod) {
-        final LocalTime breakStartAt = place.getBreakStartAt();
-        final LocalTime breakEndAt = place.getBreakEndAt();
+        final LocalTime breakStartAt = place.getBusinessHour().getBreakStartAt();
+        final LocalTime breakEndAt = place.getBusinessHour().getBreakEndAt();
 
         if (breakStartAt == null || breakEndAt == null) {
             return true;

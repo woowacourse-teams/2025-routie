@@ -30,8 +30,8 @@ public class OperationHoursValidityCalculator implements ValidityCalculator {
 
     private boolean isWithinBusinessHours(final Place place, final TimePeriod timePeriod) {
 
-        final LocalTime openAt = place.getOpenAt();
-        final LocalTime closeAt = place.getCloseAt();
+        final LocalTime openAt = place.getBusinessHour().getOpenAt();
+        final LocalTime closeAt = place.getBusinessHour().getCloseAt();
 
         if (openAt == null || closeAt == null) {
             return true;
