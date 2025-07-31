@@ -60,7 +60,7 @@ public class Routie {
     public void removePlace(final Place place) {
         validatePlaceNotExists(place);
         if (routiePlaces.removeIf(routiePlace -> routiePlace.getPlace().equals(place))) {
-            reOrderPlaces();
+            reorderPlaces();
         }
     }
 
@@ -74,7 +74,7 @@ public class Routie {
     // 현재 방식은 UPDATE 쿼리를 N번 발생시켜 성능에 영향을 줄 수 있음
     // 객체지향 설계 vs 성능 사이의 트레이드오프 존재
     // 현재는 객체지향 설계를 우선시하여 구현
-    private void reOrderPlaces() {
+    private void reorderPlaces() {
         routiePlaces.sort(Comparator.comparingInt(RoutiePlace::getSequence));
         IntStream.range(0, routiePlaces.size())
                 .forEach(index -> routiePlaces.get(index).updateSequence(index + 1));
