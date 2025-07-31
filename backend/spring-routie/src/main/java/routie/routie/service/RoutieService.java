@@ -14,8 +14,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import routie.place.domain.Place;
 import routie.place.repository.PlaceRepository;
+import routie.routie.controller.dto.request.RoutiePlaceCreateRequest;
 import routie.routie.controller.dto.request.RoutieUpdateRequest;
 import routie.routie.controller.dto.request.RoutieUpdateRequest.RoutiePlaceRequest;
+import routie.routie.controller.dto.response.RoutiePlaceCreateResponse;
 import routie.routie.controller.dto.response.RoutieReadResponse;
 import routie.routie.controller.dto.response.RoutieTimeValidationResponse;
 import routie.routie.controller.dto.response.RoutieUpdateResponse;
@@ -42,12 +44,38 @@ public class RoutieService {
     private final ValidityCalculator validityCalculator;
     private final RoutiePlaceRepository routiePlaceRepository;
 
-    public RoutieReadResponse getRoutie(final String routieSpaceIdentifier) {
+    @Transactional
+    public RoutiePlaceCreateResponse addRoutiePlace(
+            final String routieSpaceIdentifier,
+            final RoutiePlaceCreateRequest routiePlaceCreateRequest
+    ) {
+        RoutieSpace routieSpace = getRoutieSpaceByIdentifier(routieSpaceIdentifier);
+        Routie routie = routieSpace.getRoutie();
+        Place place = getPlaceByRoutieSpaceAndPlaceId(routieSpace, routiePlaceCreateRequest.placeId());
+        RoutiePlace routiePlace = routie.createLastRoutiePlace(place);
+        routiePlaceRepository.save(routiePlace);
+        return RoutiePlaceCreateResponse.from(routiePlace);
+    }
+
+    private Place getPlaceByRoutieSpaceAndPlaceId(final RoutieSpace routieSpace, final Long placeId) {
+        return placeRepository.findByIdAndRoutieSpace(placeId, routieSpace)
+                .orElseThrow(() -> new IllegalArgumentException("루티 스페이스 내에서 해당하는 장소를 찾을 수 없습니다: " + placeId));
+    }
+
+    public RoutieReadResponse getRoutie(final String routieSpaceIdentifier, final LocalDateTime startDateTime) {
         Routie routie = getRoutieSpaceByIdentifier(routieSpaceIdentifier).getRoutie();
         Map<RoutiePlace, Route> routeByFromRoutiePlace = routeCalculator.calculateRoutes(routie.getRoutiePlaces());
         List<Route> routes = new ArrayList<>(routeByFromRoutiePlace.values());
 
-        return RoutieReadResponse.from(routie, routes);
+        Map<RoutiePlace, TimePeriod> timePeriodByRoutiePlace = null;
+        if (startDateTime != null) {
+            timePeriodByRoutiePlace = timePeriodCalculator.calculateTimePeriods(
+                    routie.getRoutiePlaces(),
+                    startDateTime,
+                    routeByFromRoutiePlace
+            );
+        }
+        return RoutieReadResponse.from(routie, routes, timePeriodByRoutiePlace);
     }
 
     @Transactional
@@ -102,8 +130,10 @@ public class RoutieService {
 
         boolean isDefaultValid = calculateDefaultValidity(startDateTime, endDateTime, timePeriodByRoutiePlace);
         boolean isStrategyValid = Arrays.stream(ValidationStrategy.values())
-                .allMatch(validationStrategy ->
-                        validityCalculator.calculateValidity(timePeriodByRoutiePlace, validationStrategy));
+                .allMatch(validationStrategy -> validityCalculator.calculateValidity(
+                        timePeriodByRoutiePlace,
+                        validationStrategy
+                ));
 
         return new RoutieTimeValidationResponse(isDefaultValid && isStrategyValid);
     }

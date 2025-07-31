@@ -1,11 +1,21 @@
 package routie.routie.controller;
 
+import jakarta.validation.Valid;
 import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+import routie.routie.controller.dto.request.RoutiePlaceCreateRequest;
 import routie.routie.controller.dto.request.RoutieUpdateRequest;
+import routie.routie.controller.dto.response.RoutiePlaceCreateResponse;
 import routie.routie.controller.dto.response.RoutieReadResponse;
 import routie.routie.controller.dto.response.RoutieTimeValidationResponse;
 import routie.routie.service.RoutieService;
@@ -17,9 +27,24 @@ public class RoutieController {
 
     private final RoutieService routieService;
 
+    @PostMapping("/places")
+    public ResponseEntity<RoutiePlaceCreateResponse> createRoutiePlace(
+            @PathVariable final String routieSpaceIdentifier,
+            @RequestBody @Valid final RoutiePlaceCreateRequest routiePlaceCreateRequest
+    ) {
+        RoutiePlaceCreateResponse routiePlaceCreateResponse = routieService.addRoutiePlace(
+                routieSpaceIdentifier,
+                routiePlaceCreateRequest
+        );
+        return ResponseEntity.ok(routiePlaceCreateResponse);
+    }
+
     @GetMapping
-    public ResponseEntity<RoutieReadResponse> readRoutie(@PathVariable final String routieSpaceIdentifier) {
-        return ResponseEntity.ok(routieService.getRoutie(routieSpaceIdentifier));
+    public ResponseEntity<RoutieReadResponse> readRoutie(
+            @PathVariable final String routieSpaceIdentifier,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) final LocalDateTime startDateTime
+    ) {
+        return ResponseEntity.ok(routieService.getRoutie(routieSpaceIdentifier, startDateTime));
     }
 
     @PatchMapping

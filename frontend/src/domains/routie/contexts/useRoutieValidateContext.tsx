@@ -2,12 +2,14 @@ import { createContext, useMemo, useContext } from 'react';
 
 import useRoutieValidate, {
   UseRoutieValidateReturn,
-  initialTime,
 } from '../hooks/useRoutieValidate';
 
 const RoutieValidateContext = createContext<UseRoutieValidateReturn>({
   isValidateActive: false,
-  routieTime: initialTime,
+  routieTime: {
+    startDateTime: '',
+    endDateTime: '',
+  },
   isValidateRoutie: false,
   handleValidateToggle: () => {},
   handleTimeChange: () => {},
