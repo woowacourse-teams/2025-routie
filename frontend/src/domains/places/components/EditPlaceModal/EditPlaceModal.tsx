@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef } from 'react';
 
 import Flex from '@/@common/components/Flex/Flex';
 import Modal, { ModalProps } from '@/@common/components/Modal/Modal';
@@ -34,7 +34,7 @@ const EditPlaceModal = ({
   } = useAddPlaceForm();
   const { validateRoutie } = useRoutieValidateContext();
 
-  const [initialForm, setInitialForm] = useState<typeof form | null>(null);
+  const initialFormRef = useRef<typeof form | null>(null);
 
   useEffect(() => {
     if (!isOpen) return;
@@ -42,7 +42,7 @@ const EditPlaceModal = ({
       try {
         const initialData = await getPlace(id);
         initializeForm(initialData);
-        setInitialForm(initialData);
+        initialFormRef.current = { ...initialData };
       } catch (error) {
         console.error('장소 데이터 조회 실패:', error);
       }
@@ -56,7 +56,8 @@ const EditPlaceModal = ({
     onClose();
   };
 
-  const isFormChanged = JSON.stringify(form) !== JSON.stringify(initialForm);
+  const isFormChanged =
+    JSON.stringify(form) !== JSON.stringify(initialFormRef.current);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
