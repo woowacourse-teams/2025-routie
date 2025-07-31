@@ -9,6 +9,7 @@ import java.time.LocalTime;
 import java.util.Map;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import routie.place.domain.BusinessHour;
 import routie.place.domain.Place;
 import routie.routie.domain.RoutiePlace;
 import routie.routie.domain.ValidationStrategy;
@@ -155,8 +156,13 @@ class BreaktimeValidityCalculatorTest {
 
     private Place createMockPlace(final LocalTime breakStartAt, final LocalTime breakEndAt) {
         Place place = mock(Place.class);
-        when(place.getBreakStartAt()).thenReturn(breakStartAt);
-        when(place.getBreakEndAt()).thenReturn(breakEndAt);
+        BusinessHour businessHour = new BusinessHour(
+                breakStartAt == null ? LocalTime.of(10, 0) : breakStartAt.minusMinutes(1),
+                breakStartAt == null ? LocalTime.of(22, 0) : breakEndAt.plusMinutes(1),
+                breakStartAt,
+                breakEndAt
+        );
+        when(place.getBusinessHour()).thenReturn(businessHour);
         return place;
     }
 
