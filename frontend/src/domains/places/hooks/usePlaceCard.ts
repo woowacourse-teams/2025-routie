@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback } from 'react';
 
 import deletePlace from '../apis/deletePlace';
 import { PlaceCardProps } from '../components/PlaceCard/PlaceCard';
@@ -6,16 +6,6 @@ import { PlaceCardProps } from '../components/PlaceCard/PlaceCard';
 type usePlaceCardProps = Pick<PlaceCardProps, 'id' | 'onSelect' | 'onDelete'>;
 
 export const usePlaceCard = ({ id, onSelect, onDelete }: usePlaceCardProps) => {
-  const [editModalOpen, setEditModalOpen] = useState(false);
-
-  const openEditModal = useCallback(() => {
-    setEditModalOpen(true);
-  }, []);
-
-  const closeEditModal = useCallback(() => {
-    setEditModalOpen(false);
-  }, []);
-
   const handleToggle = useCallback(async () => {
     await onSelect();
   }, [onSelect]);
@@ -30,9 +20,6 @@ export const usePlaceCard = ({ id, onSelect, onDelete }: usePlaceCardProps) => {
   }, [id, onDelete]);
 
   return {
-    editModalOpen,
-    openEditModal,
-    closeEditModal,
     handleToggle,
     handleDelete,
   };

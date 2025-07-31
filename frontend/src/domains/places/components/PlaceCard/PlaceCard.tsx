@@ -10,6 +10,7 @@ import trashIcon from '@/assets/icons/trash.svg';
 import theme from '@/styles/theme';
 
 import { usePlaceCard } from '../../hooks/usePlaceCard';
+import { usePlaceCardEditModal } from '../../hooks/usePlaceCardEditModal';
 import { PlaceBase } from '../../types/place.types';
 import { getCheckedListExcept } from '../../utils/getCheckedListExcept';
 import DatePreviewList from '../DatePreviewList/DatePreviewList';
@@ -33,13 +34,13 @@ export const PlaceCard = ({
   onSelect,
   ...props
 }: PlaceCardProps) => {
-  const {
-    editModalOpen,
-    openEditModal,
-    closeEditModal,
-    handleToggle,
-    handleDelete,
-  } = usePlaceCard({ id: props.id, onSelect, onDelete });
+  const { handleToggle, handleDelete } = usePlaceCard({
+    id: props.id,
+    onSelect,
+    onDelete,
+  });
+  const { editModalOpen, openEditModal, closeEditModal } =
+    usePlaceCardEditModal();
 
   return (
     <>
