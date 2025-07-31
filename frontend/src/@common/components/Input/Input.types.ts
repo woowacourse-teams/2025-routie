@@ -10,6 +10,7 @@ export interface InputProps
   onChange: (value: string) => void;
   variant?: InputVariantProps;
   icon?: 'search' | 'clock';
+  error?: boolean;
 }
 
 export type InputVariantProps = 'primary' | 'disabled' | 'error';
