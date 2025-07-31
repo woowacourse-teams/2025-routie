@@ -1,16 +1,13 @@
 package routie.routie.infrastructure.routievalidator;
 
 import java.time.LocalDateTime;
-import java.util.Comparator;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 import org.springframework.stereotype.Component;
-import routie.routie.domain.RoutiePlace;
 import routie.routie.domain.routievalidator.RoutieValidator;
 import routie.routie.domain.routievalidator.ValidationContext;
 import routie.routie.domain.routievalidator.ValidationStrategy;
 import routie.routie.domain.timeperiod.TimePeriod;
+import routie.routie.domain.timeperiod.TimePeriods;
 
 @Component
 public class TotalTimeValidator implements RoutieValidator {
@@ -23,34 +20,28 @@ public class TotalTimeValidator implements RoutieValidator {
     @Override
     public boolean isValid(final ValidationContext validationContext,
                            final ValidationStrategy validationStrategy) {
-        Map<RoutiePlace, TimePeriod> timePeriodByRoutiePlace = validationContext.timePeriodByRoutiePlace();
-
-        if (timePeriodByRoutiePlace.isEmpty()) {
-            return true;
-        }
+        TimePeriods timePeriods = validationContext.timePeriods();
 
         return calculateTotalTimeValidity(
                 validationContext.startDateTime(),
                 validationContext.endDateTime(),
-                timePeriodByRoutiePlace
+                timePeriods
         );
     }
 
     private boolean calculateTotalTimeValidity(
             final LocalDateTime startDateTime,
             final LocalDateTime endDateTime,
-            final Map<RoutiePlace, TimePeriod> timePeriodByRoutiePlace
+            final TimePeriods timePeriods
     ) {
-        List<Entry<RoutiePlace, TimePeriod>> sortedEntries = timePeriodByRoutiePlace.entrySet().stream()
-                .sorted(Comparator.comparing(entry -> entry.getKey().getSequence()))
-                .toList();
+        List<TimePeriod> orderedTimePeriods = timePeriods.orderedList();
 
-        if (sortedEntries.isEmpty()) {
+        if (orderedTimePeriods.isEmpty()) {
             return true;
         }
 
-        LocalDateTime firstPeriodStartTime = sortedEntries.getFirst().getValue().startTime();
-        LocalDateTime lastPeriodEndTime = sortedEntries.getLast().getValue().endTime();
+        LocalDateTime firstPeriodStartTime = orderedTimePeriods.getFirst().startTime();
+        LocalDateTime lastPeriodEndTime = orderedTimePeriods.getLast().endTime();
 
         return !firstPeriodStartTime.isBefore(startDateTime) && !lastPeriodEndTime.isAfter(endDateTime);
     }

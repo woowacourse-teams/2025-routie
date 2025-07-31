@@ -16,6 +16,7 @@ import routie.routie.domain.RoutiePlace;
 import routie.routie.domain.routievalidator.ValidationContext;
 import routie.routie.domain.routievalidator.ValidationStrategy;
 import routie.routie.domain.timeperiod.TimePeriod;
+import routie.routie.domain.timeperiod.TimePeriods;
 
 class ClosedDayValidatorTest {
 
@@ -41,12 +42,13 @@ class ClosedDayValidatorTest {
         when(routiePlace.getPlace()).thenReturn(place);
 
         TimePeriod period = new TimePeriod(
+                routiePlace,
                 LocalDateTime.of(2025, 7, 22, 10, 0), // 화요일
                 LocalDateTime.of(2025, 7, 22, 12, 0)  // 화요일
         );
 
-        Map<RoutiePlace, TimePeriod> map = Map.of(routiePlace, period);
-        ValidationContext validationContext = new ValidationContext(null, null, map);
+        TimePeriods timePeriods = new TimePeriods(Map.of(routiePlace, period));
+        ValidationContext validationContext = new ValidationContext(null, null, timePeriods);
 
         // when
         boolean result = calculator.isValid(validationContext, ValidationStrategy.IS_NOT_CLOSED_DAY);
@@ -66,12 +68,13 @@ class ClosedDayValidatorTest {
         when(routiePlace.getPlace()).thenReturn(place);
 
         TimePeriod period = new TimePeriod(
+                routiePlace,
                 LocalDateTime.of(2025, 7, 22, 10, 0), // 화요일 (휴무일)
                 LocalDateTime.of(2025, 7, 22, 12, 0)
         );
 
-        Map<RoutiePlace, TimePeriod> map = Map.of(routiePlace, period);
-        ValidationContext validationContext = new ValidationContext(null, null, map);
+        TimePeriods timePeriods = new TimePeriods(Map.of(routiePlace, period));
+        ValidationContext validationContext = new ValidationContext(null, null, timePeriods);
 
         // when
         boolean result = calculator.isValid(validationContext, ValidationStrategy.IS_NOT_CLOSED_DAY);
@@ -91,12 +94,13 @@ class ClosedDayValidatorTest {
         when(routiePlace.getPlace()).thenReturn(place);
 
         TimePeriod period = new TimePeriod(
+                routiePlace,
                 LocalDateTime.of(2025, 7, 22, 23, 0), // 화요일
                 LocalDateTime.of(2025, 7, 23, 1, 0)   // 수요일 (휴무일)
         );
 
-        Map<RoutiePlace, TimePeriod> map = Map.of(routiePlace, period);
-        ValidationContext validationContext = new ValidationContext(null, null, map);
+        TimePeriods timePeriods = new TimePeriods(Map.of(routiePlace, period));
+        ValidationContext validationContext = new ValidationContext(null, null, timePeriods);
 
         // when
         boolean result = calculator.isValid(validationContext, ValidationStrategy.IS_NOT_CLOSED_DAY);
@@ -116,12 +120,13 @@ class ClosedDayValidatorTest {
         when(routiePlace.getPlace()).thenReturn(place);
 
         TimePeriod period = new TimePeriod(
+                routiePlace,
                 LocalDateTime.of(2025, 7, 22, 10, 0), // 화요일
                 LocalDateTime.of(2025, 7, 23, 10, 0)  // 수요일
         );
 
-        Map<RoutiePlace, TimePeriod> map = Map.of(routiePlace, period);
-        ValidationContext validationContext = new ValidationContext(null, null, map);
+        TimePeriods timePeriods = new TimePeriods(Map.of(routiePlace, period));
+        ValidationContext validationContext = new ValidationContext(null, null, timePeriods);
 
         // when
         boolean result = calculator.isValid(validationContext, ValidationStrategy.IS_NOT_CLOSED_DAY);

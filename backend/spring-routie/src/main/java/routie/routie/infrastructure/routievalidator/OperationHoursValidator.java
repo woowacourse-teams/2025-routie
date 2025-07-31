@@ -20,14 +20,12 @@ public class OperationHoursValidator implements RoutieValidator {
             final ValidationContext validationContext,
             final ValidationStrategy validationStrategy
     ) {
-        return validationContext.timePeriodByRoutiePlace().entrySet().stream()
-                .allMatch(entry -> isWithinBusinessHours(
-                        entry.getKey().getPlace(),
-                        entry.getValue()
-                ));
+        return validationContext.timePeriods().orderedList().stream()
+                .allMatch(this::isWithinBusinessHours);
     }
 
-    private boolean isWithinBusinessHours(final Place place, final TimePeriod timePeriod) {
+    private boolean isWithinBusinessHours(final TimePeriod timePeriod) {
+        Place place = timePeriod.routiePlace().getPlace();
 
         final LocalTime openAt = place.getOpenAt();
         final LocalTime closeAt = place.getCloseAt();

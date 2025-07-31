@@ -20,14 +20,12 @@ public class BreaktimeValidator implements RoutieValidator {
             final ValidationContext validationContext,
             final ValidationStrategy validationStrategy
     ) {
-        return validationContext.timePeriodByRoutiePlace().entrySet().stream()
-                .allMatch(entry -> isWithoutBreaktime(
-                        entry.getKey().getPlace(),
-                        entry.getValue()
-                ));
+        return validationContext.timePeriods().orderedList().stream()
+                .allMatch(this::isWithoutBreaktime);
     }
 
-    private boolean isWithoutBreaktime(final Place place, final TimePeriod timePeriod) {
+    private boolean isWithoutBreaktime(final TimePeriod timePeriod) {
+        final Place place = timePeriod.routiePlace().getPlace();
         final LocalTime breakStartAt = place.getBreakStartAt();
         final LocalTime breakEndAt = place.getBreakEndAt();
 

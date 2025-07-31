@@ -4,7 +4,6 @@ import java.time.DayOfWeek;
 import java.util.List;
 import org.springframework.stereotype.Component;
 import routie.place.domain.PlaceClosedDayOfWeek;
-import routie.routie.domain.RoutiePlace;
 import routie.routie.domain.routievalidator.RoutieValidator;
 import routie.routie.domain.routievalidator.ValidationContext;
 import routie.routie.domain.routievalidator.ValidationStrategy;
@@ -23,16 +22,14 @@ public class ClosedDayValidator implements RoutieValidator {
             final ValidationContext validationContext,
             final ValidationStrategy validationStrategy
     ) {
-        final TimePeriods timePeriods = validationContext.timePeriods();
-        return timePeriods.routiePlaces().stream()
-                .allMatch(routiePlace -> isTimePeriodNotClosedDays(
-                        routiePlace,
-                        timePeriods.getBy(routiePlace)
-                ));
+        TimePeriods timePeriods = validationContext.timePeriods();
+
+        return timePeriods.orderedList().stream()
+                .allMatch(this::isTimePeriodNotClosedDays);
     }
 
-    private boolean isTimePeriodNotClosedDays(final RoutiePlace routiePlace, final TimePeriod timePeriod) {
-        List<DayOfWeek> closedDayOfWeeks = routiePlace.getPlace().getPlaceClosedDayOfWeeks().stream()
+    private boolean isTimePeriodNotClosedDays(final TimePeriod timePeriod) {
+        List<DayOfWeek> closedDayOfWeeks = timePeriod.routiePlace().getPlace().getPlaceClosedDayOfWeeks().stream()
                 .map(PlaceClosedDayOfWeek::getClosedDayOfWeek)
                 .toList();
 

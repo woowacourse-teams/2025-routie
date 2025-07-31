@@ -24,7 +24,7 @@ public class Routes {
         return routes.get(routiePlace);
     }
 
-    public void addRoute(final RoutiePlace routiePlace, final Route route) {
+    public void add(final RoutiePlace routiePlace, final Route route) {
         routes.put(routiePlace, route);
     }
 
@@ -32,11 +32,11 @@ public class Routes {
         return routes.containsKey(routiePlace);
     }
 
-    public List<Route> toList() {
+    public List<Route> orderedList() {
         return new ArrayList<>(routes.values());
     }
 
-    public Set<RoutiePlace> routiePlaces() {
+    public Set<RoutiePlace> orderedRoutiePlaces() {
         return routes.keySet();
     }
 }

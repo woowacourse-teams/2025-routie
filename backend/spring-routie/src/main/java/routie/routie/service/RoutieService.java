@@ -17,8 +17,8 @@ import routie.routie.controller.dto.request.RoutieUpdateRequest;
 import routie.routie.controller.dto.request.RoutieUpdateRequest.RoutiePlaceRequest;
 import routie.routie.controller.dto.response.RoutiePlaceCreateResponse;
 import routie.routie.controller.dto.response.RoutieReadResponse;
-import routie.routie.controller.dto.response.RoutieTimeValidationResponse;
 import routie.routie.controller.dto.response.RoutieUpdateResponse;
+import routie.routie.controller.dto.response.RoutieValidationResponse;
 import routie.routie.domain.Routie;
 import routie.routie.domain.RoutiePlace;
 import routie.routie.domain.route.RouteCalculator;
@@ -68,12 +68,11 @@ public class RoutieService {
         TimePeriods timePeriods = null;
         if (startDateTime != null) {
             timePeriods = timePeriodCalculator.calculateTimePeriods(
-                    routie.getRoutiePlaces(),
                     startDateTime,
                     routes
             );
         }
-        return RoutieReadResponse.from(routie, routes.toList(), timePeriods);
+        return RoutieReadResponse.from(routie, routes.orderedList(), timePeriods);
     }
 
     @Transactional
@@ -112,7 +111,7 @@ public class RoutieService {
                 .orElseThrow(() -> new IllegalArgumentException("해당하는 식별자의 루티 스페이스를 찾을 수 없습니다."));
     }
 
-    public RoutieTimeValidationResponse validateRoutie(
+    public RoutieValidationResponse validateRoutie(
             final String routieSpaceIdentifier,
             final LocalDateTime startDateTime,
             final LocalDateTime endDateTime
@@ -121,7 +120,6 @@ public class RoutieService {
 
         Routes routes = routeCalculator.calculateRoutes(routie.getRoutiePlaces());
         TimePeriods timePeriods = timePeriodCalculator.calculateTimePeriods(
-                routie.getRoutiePlaces(),
                 startDateTime,
                 routes
         );
@@ -136,6 +134,6 @@ public class RoutieService {
                 .allMatch(validationStrategy ->
                         routieValidator.isValid(validationContext, validationStrategy));
 
-        return new RoutieTimeValidationResponse(isStrategyValid);
+        return new RoutieValidationResponse(isStrategyValid);
     }
 }
