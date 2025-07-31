@@ -90,11 +90,12 @@ public class RoutieService {
         Map<Long, Place> placeMap = placeRepository.findAllById(placeIds).stream()
                 .collect(Collectors.toMap(Place::getId, Function.identity()));
 
-        List<Long> routiePlaceIds = routie.getRoutiePlaces().stream()
-                .map(RoutiePlace::getId)
-                .toList();
+//        List<Long> routiePlaceIds = routie.getRoutiePlaces().stream()
+//                .map(RoutiePlace::getId)
+//                .toList();
+//        routiePlaceRepository.deleteAllById(routiePlaceIds);
 
-        routiePlaceRepository.deleteAllById(routiePlaceIds);
+        routie.getRoutiePlaces().clear(); // 급한 예외로 인해 새로 작성된 줄
 
         List<RoutiePlace> routiePlaces = routieUpdateRequest.routiePlaces().stream()
                 .map(r -> new RoutiePlace(
@@ -104,7 +105,8 @@ public class RoutieService {
                                         () -> new IllegalArgumentException("해당하는 id의 장소를 찾을 수 없습니다: " + r.placeId()))
                 )).toList();
 
-        routieSpace.updateRoutie(Routie.create(routiePlaces));
+        routieSpace.getRoutie().getRoutiePlaces().addAll(routiePlaces); // 급한 예외로 인해 새로 작성한 줄
+//        routieSpace.updateRoutie(Routie.create(routiePlaces));
 
         RoutieUpdateResponse.from(routie);
     }
