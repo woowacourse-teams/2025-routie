@@ -43,13 +43,13 @@ public class Place {
     @Column(name = "address", nullable = false)
     private String address;
 
-    @Column(name = "stay_duration_minutes")
+    @Column(name = "stay_duration_minutes", nullable = false)
     private int stayDurationMinutes;
 
-    @Column(name = "open_at")
+    @Column(name = "open_at", nullable = false)
     private LocalTime openAt;
 
-    @Column(name = "close_at")
+    @Column(name = "close_at", nullable = false)
     private LocalTime closeAt;
 
     @Column(name = "break_start_at")
@@ -85,20 +85,31 @@ public class Place {
             final RoutieSpace routieSpace,
             final List<PlaceClosedDayOfWeek> placeClosedDayOfWeeks
     ) {
-        this(
-                null,
-                name,
-                address,
-                stayDurationMinutes,
-                openAt,
-                closeAt,
-                breakStartAt,
-                breakEndAt,
-                routieSpace,
-                placeClosedDayOfWeeks,
-                null,
-                null
-        );
+        validateForCreation(name, address, stayDurationMinutes, openAt, closeAt, breakStartAt, breakEndAt);
+        this.name = name;
+        this.address = address;
+        this.stayDurationMinutes = stayDurationMinutes;
+        this.openAt = openAt;
+        this.closeAt = closeAt;
+        this.breakStartAt = breakStartAt;
+        this.breakEndAt = breakEndAt;
+        this.routieSpace = routieSpace;
+        this.placeClosedDayOfWeeks = placeClosedDayOfWeeks;
+    }
+
+    private void validateForCreation(
+            final String name,
+            final String address,
+            final int stayDurationMinutes,
+            final LocalTime openAt,
+            final LocalTime closeAt,
+            final LocalTime breakStartAt,
+            final LocalTime breakEndAt
+    ) {
+        validateName(name);
+        validateAddress(address);
+        validateStayDurationMinutes(stayDurationMinutes);
+        validateTime(openAt, closeAt, breakStartAt, breakEndAt);
     }
 
     public static Place create(
@@ -112,18 +123,12 @@ public class Place {
             final RoutieSpace routieSpace,
             final List<DayOfWeek> closedDayOfWeeks
     ) {
-        validateName(name);
-        validateAddress(address);
-        validateStayDurationMinutes(stayDurationMinutes);
-        validateBreakTime(breakStartAt, breakEndAt);
-
         List<PlaceClosedDayOfWeek> placeClosedDayOfWeeks = new ArrayList<>();
         if (closedDayOfWeeks != null) {
             placeClosedDayOfWeeks = closedDayOfWeeks.stream()
                     .map(PlaceClosedDayOfWeek::new)
                     .toList();
         }
-
         return new Place(
                 name,
                 address,
@@ -137,39 +142,6 @@ public class Place {
         );
     }
 
-    private static void validateStayDurationMinutes(final int stayDurationMinutes) {
-        if (stayDurationMinutes < 0 || stayDurationMinutes > 1440) {
-            throw new IllegalArgumentException("체류 시간은 0분 이상 1440분 이하여야 합니다.");
-        }
-    }
-
-    private static void validateName(final String name) {
-        if (name == null || name.isBlank()) {
-            throw new IllegalArgumentException("장소명은 필수입니다.");
-        }
-        if (name.length() > 30) {
-            throw new IllegalArgumentException("장소명은 1자 이상 30자 이하여야 합니다.");
-        }
-    }
-
-    private static void validateAddress(final String address) {
-        if (address == null || address.isBlank()) {
-            throw new IllegalArgumentException("주소는 필수입니다.");
-        }
-        if (address.length() > 50) {
-            throw new IllegalArgumentException("주소는 1자 이상 50자 이하여야 합니다.");
-        }
-    }
-
-    private static void validateBreakTime(final LocalTime breakStartAt, final LocalTime breakEndAt) {
-        boolean hasBreakStart = breakStartAt != null;
-        boolean hasBreakEnd = breakEndAt != null;
-
-        if (hasBreakStart != hasBreakEnd) {
-            throw new IllegalArgumentException("브레이크 타임 시작 시간과 종료 시간은 함께 존재해야 합니다.");
-        }
-    }
-
     public void modify(
             final int stayDurationMinutes,
             final LocalTime openAt,
@@ -178,8 +150,7 @@ public class Place {
             final LocalTime breakEndAt,
             final List<DayOfWeek> closedDayOfWeeks
     ) {
-        validateStayDurationMinutes(stayDurationMinutes);
-        validateBreakTime(breakStartAt, breakEndAt);
+        validateForModify(stayDurationMinutes, openAt, closeAt, breakStartAt, breakEndAt);
 
         this.stayDurationMinutes = stayDurationMinutes;
         this.openAt = openAt;
@@ -191,6 +162,84 @@ public class Place {
             closedDayOfWeeks.forEach(
                     day -> this.placeClosedDayOfWeeks.add(new PlaceClosedDayOfWeek(day))
             );
+        }
+    }
+
+    private void validateForModify(
+            final int stayDurationMinutes,
+            final LocalTime openAt,
+            final LocalTime closeAt,
+            final LocalTime breakStartAt,
+            final LocalTime breakEndAt
+    ) {
+        validateStayDurationMinutes(stayDurationMinutes);
+        validateTime(openAt, closeAt, breakStartAt, breakEndAt);
+    }
+
+    private void validateStayDurationMinutes(final int stayDurationMinutes) {
+        if (stayDurationMinutes < 0 || stayDurationMinutes > 1440) {
+            throw new IllegalArgumentException("체류 시간은 0분 이상 1440분 이하여야 합니다.");
+        }
+    }
+
+    private void validateName(final String name) {
+        if (name == null || name.isBlank()) {
+            throw new IllegalArgumentException("장소명은 필수입니다.");
+        }
+        if (name.length() > 30) {
+            throw new IllegalArgumentException("장소명은 1자 이상 30자 이하여야 합니다.");
+        }
+    }
+
+    private void validateAddress(final String address) {
+        if (address == null || address.isBlank()) {
+            throw new IllegalArgumentException("주소는 필수입니다.");
+        }
+        if (address.length() > 50) {
+            throw new IllegalArgumentException("주소는 1자 이상 50자 이하여야 합니다.");
+        }
+    }
+
+    private void validateTime(
+            final LocalTime openAt,
+            final LocalTime closeAt,
+            final LocalTime breakStartAt,
+            final LocalTime breakEndAt
+    ) {
+        validateOperatingTime(openAt, closeAt);
+        validateBreakTime(breakStartAt, breakEndAt);
+        validateBreakTimeWithOperatingTime(openAt, closeAt, breakStartAt, breakEndAt);
+    }
+
+    private void validateOperatingTime(final LocalTime openAt, final LocalTime closeAt) {
+        if (openAt == null || closeAt == null) {
+            throw new IllegalArgumentException("영업 시간은 필수 입력 사항입니다.");
+        }
+    }
+
+    private void validateBreakTime(final LocalTime breakStartAt, final LocalTime breakEndAt) {
+        boolean hasBreakStart = breakStartAt != null;
+        boolean hasBreakEnd = breakEndAt != null;
+
+        if (hasBreakStart != hasBreakEnd) {
+            throw new IllegalArgumentException("브레이크 타임 시작 시간과 종료 시간은 함께 존재해야 합니다.");
+        }
+    }
+
+    private void validateBreakTimeWithOperatingTime(
+            final LocalTime openAt,
+            final LocalTime closeAt,
+            final LocalTime breakStartAt,
+            final LocalTime breakEndAt
+    ) {
+        if (breakStartAt == null || breakEndAt == null) {
+            return;
+        }
+        if (openAt.equals(closeAt)) {
+            return;
+        }
+        if (breakStartAt.isBefore(openAt) || breakEndAt.isAfter(closeAt)) {
+            throw new IllegalArgumentException("브레이크 타임은 영업 시간 내에 있어야 합니다.");
         }
     }
 }
