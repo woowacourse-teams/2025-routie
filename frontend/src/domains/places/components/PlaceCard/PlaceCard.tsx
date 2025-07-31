@@ -15,7 +15,11 @@ import { getCheckedListExcept } from '../../utils/getCheckedListExcept';
 import DatePreviewList from '../DatePreviewList/DatePreviewList';
 import EditPlaceModal from '../EditPlaceModal/EditPlaceModal';
 
-export interface PlaceCardProps extends PlaceBase {
+export interface PlaceCardProps
+  extends Omit<
+    PlaceBase,
+    'stayDurationMinutes' | 'breakStartAt' | 'breakEndAt'
+  > {
   onDelete: (id: number) => void;
   onPlaceChange: () => Promise<void>;
   selected: boolean;
