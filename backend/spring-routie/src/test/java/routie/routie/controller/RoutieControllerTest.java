@@ -10,6 +10,7 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -20,6 +21,9 @@ import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 import routie.place.domain.Place;
 import routie.place.repository.PlaceRepository;
+import routie.routie.controller.dto.response.RoutieReadResponse;
+import routie.routie.controller.dto.response.RoutieReadResponse.RouteResponse;
+import routie.routie.controller.dto.response.RoutieReadResponse.RoutiePlaceResponse;
 import routie.routie.domain.Routie;
 import routie.routie.domain.RoutiePlace;
 import routie.routiespace.domain.RoutieSpace;
@@ -78,6 +82,44 @@ class RoutieControllerTest {
 
         routieSpace = RoutieSpaceFixture.createWithoutId(List.of(), routie);
         routieSpaceRepository.save(routieSpace);
+    }
+
+    @Test
+    @DisplayName("루티에 장소를 추가할 수 있다")
+    void addRoutiePlace() {
+        // given
+        Place place = Place.create(
+                "장소 A",
+                "주소 A",
+                60,
+                LocalTime.of(9, 0),
+                LocalTime.of(18, 0),
+                null,
+                null,
+                routieSpace,
+                List.of()
+        );
+        placeRepository.save(place);
+
+        Map<String, Object> requestBody = Map.of(
+                "placeId", place.getId()
+        );
+
+        // when
+        Response response = RestAssured
+                .given().log().all()
+                .when()
+                .contentType("application/json")
+                .body(requestBody)
+                .when()
+                .post("/routie-spaces/" + routieSpace.getIdentifier() + "/routie/places")
+                .then().log().all()
+                .extract().response();
+
+        // then
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
+        assertThat(response.jsonPath().getInt("sequence")).isEqualTo(3);
+        assertThat(response.jsonPath().getLong("placeId")).isEqualTo(place.getId());
     }
 
     @Test
@@ -167,5 +209,81 @@ class RoutieControllerTest {
 
         // then
         assertThat(response.statusCode()).isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR.value());
+    }
+
+    @Test
+    @DisplayName("startDateTime이 쿼리 파라미터로 온 요청에 대해서는 루티 플레이스의 도착, 출발 정보 정상 반환")
+    void readRoutieWithStartDateTime() {
+        // given
+        String startDateTime = "2025-07-29T10:00:00";
+
+        // when
+        RoutieReadResponse routieReadResponse = RestAssured
+                .given().log().all()
+                .queryParam("startDateTime", startDateTime)
+                .when()
+                .get("/routie-spaces/" + routieSpace.getIdentifier() + "/routie")
+                .then().log().all()
+                .statusCode(HttpStatus.OK.value())
+                .extract()
+                .as(RoutieReadResponse.class);
+
+        // then
+        RoutiePlaceResponse firstRoutiePlace = routieReadResponse.routiePlaces().get(0);
+        RoutiePlaceResponse secondRoutiePlace = routieReadResponse.routiePlaces().get(1);
+        RouteResponse route = routieReadResponse.routes().get(0);
+
+        assertThat(routieReadResponse.routiePlaces()).hasSize(2);
+        assertThat(routieReadResponse.routes()).hasSize(1);
+
+        assertThat(firstRoutiePlace.arriveDateTime()).isEqualTo(LocalDateTime.of(2025, 7, 29, 10, 0));
+        assertThat(firstRoutiePlace.departureDateTime()).isEqualTo(LocalDateTime.of(2025, 7, 29, 11, 0));
+        assertThat(firstRoutiePlace.sequence()).isEqualTo(1);
+
+        assertThat(secondRoutiePlace.arriveDateTime()).isEqualTo(LocalDateTime.of(2025, 7, 29, 12, 40));
+        assertThat(secondRoutiePlace.departureDateTime()).isEqualTo(LocalDateTime.of(2025, 7, 29, 14, 10));
+        assertThat(secondRoutiePlace.sequence()).isEqualTo(2);
+
+        assertThat(route.fromSequence()).isEqualTo(1);
+        assertThat(route.toSequence()).isEqualTo(2);
+        assertThat(route.duration()).isEqualTo(100);
+        assertThat(route.distance()).isEqualTo(1000);
+    }
+
+    @Test
+    @DisplayName("startDateTime이 쿼리 파라미터로 오지 않은 요청에 대해서는 루티 플레이스의 도착, 출발 정보 null 명시적 반환")
+    void readRoutieWithoutStartDateTime() {
+        // given
+
+        // when
+        RoutieReadResponse routieReadResponse = RestAssured
+                .given().log().all()
+                .when()
+                .get("/routie-spaces/" + routieSpace.getIdentifier() + "/routie")
+                .then().log().all()
+                .statusCode(HttpStatus.OK.value())
+                .extract()
+                .as(RoutieReadResponse.class);
+
+        // then
+        RoutiePlaceResponse firstRoutiePlace = routieReadResponse.routiePlaces().get(0);
+        RoutiePlaceResponse secondRoutiePlace = routieReadResponse.routiePlaces().get(1);
+        RouteResponse route = routieReadResponse.routes().get(0);
+
+        assertThat(routieReadResponse.routiePlaces()).hasSize(2);
+        assertThat(routieReadResponse.routes()).hasSize(1);
+
+        assertThat(firstRoutiePlace.arriveDateTime()).isNull();
+        assertThat(firstRoutiePlace.departureDateTime()).isNull();
+        assertThat(firstRoutiePlace.sequence()).isEqualTo(1);
+
+        assertThat(secondRoutiePlace.arriveDateTime()).isNull();
+        assertThat(secondRoutiePlace.departureDateTime()).isNull();
+        assertThat(secondRoutiePlace.sequence()).isEqualTo(2);
+
+        assertThat(route.fromSequence()).isEqualTo(1);
+        assertThat(route.toSequence()).isEqualTo(2);
+        assertThat(route.duration()).isEqualTo(100);
+        assertThat(route.distance()).isEqualTo(1000);
     }
 }

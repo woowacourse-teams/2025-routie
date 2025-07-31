@@ -1,6 +1,6 @@
 package routie.routiespace.controller.dto.response;
 
-public record UpdateRoutieSpaceNameResponse(
+public record RoutieSpaceUpdateResponse(
         String name
 ) {
 }
