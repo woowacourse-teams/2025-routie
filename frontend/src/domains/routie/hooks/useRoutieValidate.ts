@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { getRoutieValidation } from '../apis/routie';
 
@@ -32,6 +32,14 @@ const useRoutieValidate = (): UseRoutieValidateReturn => {
   });
   const [isValidateRoutie, setIsValidateRoutie] = useState(false);
 
+  const canValidateRoutie = useMemo(() => {
+    return (
+      isValidateActive &&
+      routieTime.startDateTime !== '' &&
+      routieTime.endDateTime !== ''
+    );
+  }, [isValidateActive, routieTime]);
+
   const handleValidateToggle = useCallback(() => {
     const newIsValidateActive = !isValidateActive;
     localStorage.setItem(
@@ -49,9 +57,11 @@ const useRoutieValidate = (): UseRoutieValidateReturn => {
   }, []);
 
   const validateRoutie = useCallback(async () => {
-    try {
-      if (!isValidateActive) return;
+    if (!canValidateRoutie) {
+      return;
+    }
 
+    try {
       const response = await getRoutieValidation(routieTime);
 
       setIsValidateRoutie(response.isValid);
@@ -61,9 +71,6 @@ const useRoutieValidate = (): UseRoutieValidateReturn => {
   }, [isValidateActive, routieTime]);
 
   useEffect(() => {
-    if (routieTime.startDateTime === '' || routieTime.endDateTime === '')
-      return;
-
     validateRoutie();
   }, [validateRoutie]);
 

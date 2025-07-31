@@ -59,7 +59,10 @@ const Sidebar = ({ routiePlaces, setRoutiePlaces, routes }: SidebarProps) => {
     const updateRoutiePlaces = async (sortedPlaces: Routie[]) => {
       setRoutiePlaces(sortedPlaces);
       await editRoutieSequence(sortedPlaces);
-      await validateRoutie();
+
+      if (routiePlaces.length > 0) {
+        await validateRoutie();
+      }
     };
 
     if (isSequenceChanged) {
