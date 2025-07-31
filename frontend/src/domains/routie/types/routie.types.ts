@@ -25,6 +25,8 @@ export type Routie = {
   id: number;
   sequence: number;
   placeId: number;
+  arriveDateTime?: string;
+  departureDateTime?: string;
 };
 
 export type RoutiePlace = {
