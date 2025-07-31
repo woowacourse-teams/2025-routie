@@ -1,8 +1,11 @@
+import { useState } from 'react';
+
 import Flex from '@/@common/components/Flex/Flex';
 import Modal, { ModalProps } from '@/@common/components/Modal/Modal';
 import { useAddPlaceForm } from '@/domains/places/hooks/useAddPlaceForm';
 
 import addPlace from '../../apis/addPlace';
+import { usePlaceFormValidation } from '../../hooks/usePlaceFormValidation';
 import AddressInput from '../PlaceFormSection/AddressInput';
 import BreakTimeInputs from '../PlaceFormSection/BreakTimeInputs';
 import BusinessHourInputs from '../PlaceFormSection/BusinessHourInputs';
@@ -25,14 +28,21 @@ const AddPlaceModal = ({
 }: AddPlaceModalProps) => {
   const { form, handleInputChange, handleToggleDay, resetForm } =
     useAddPlaceForm();
+  const { isEmpty, isValid } = usePlaceFormValidation(form);
+  const [showErrors, setShowErrors] = useState(false);
 
   const handleClose = () => {
     resetForm();
+    setShowErrors(false);
     onClose();
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (!isValid) {
+      setShowErrors(true);
+      return;
+    }
     try {
       await addPlace(form);
       if (onPlaceAdded) {
@@ -59,29 +69,31 @@ const AddPlaceModal = ({
               <PlaceNameInput
                 value={form.name}
                 onChange={handleInputChange}
-                required={true}
+                error={showErrors && isEmpty.name}
               />
               <AddressInput
                 value={form.address}
                 onChange={handleInputChange}
-                required={true}
+                error={showErrors && isEmpty.address}
               />
               <StayDurationInput
                 value={form.stayDurationMinutes}
                 onChange={handleInputChange}
-                required={true}
+                error={showErrors && isEmpty.stayDurationMinutes}
               />
               <BusinessHourInputs
                 openAt={form.openAt}
                 closeAt={form.closeAt}
                 onChange={handleInputChange}
-                required={true}
+                error={{
+                  openAt: showErrors && isEmpty.openAt,
+                  closeAt: showErrors && isEmpty.closeAt,
+                }}
               />
               <BreakTimeInputs
                 breakStartAt={form.breakStartAt}
                 breakEndAt={form.breakEndAt}
                 onChange={handleInputChange}
-                required={false}
               />
               <ClosedDaySelector
                 closedDayOfWeeks={form.closedDayOfWeeks}
