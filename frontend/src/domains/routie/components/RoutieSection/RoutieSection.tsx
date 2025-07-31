@@ -19,10 +19,9 @@ interface RoutieSectionProps {
 }
 
 const RoutieSection = ({ onPlaceChange }: RoutieSectionProps) => {
-  const { routiePlaces, routes, setRoutiePlaces } = useRoutieContext();
-  const getDragProps = useCardDrag(routiePlaces, setRoutiePlaces);
+  const { routiePlaces, routes, handleRoutieChange } = useRoutieContext();
+  const getDragProps = useCardDrag(routiePlaces, handleRoutieChange);
   const { validateRoutie } = useRoutieValidateContext();
-
   useEffect(() => {
     if (!routiePlaces) return;
 
@@ -36,7 +35,7 @@ const RoutieSection = ({ onPlaceChange }: RoutieSectionProps) => {
     );
 
     const updateRoutiePlaces = async (sortedPlaces: Routie[]) => {
-      setRoutiePlaces(sortedPlaces);
+      handleRoutieChange(sortedPlaces);
       await editRoutieSequence(sortedPlaces);
       if (routiePlaces.length > 0) {
         await validateRoutie();
@@ -50,18 +49,11 @@ const RoutieSection = ({ onPlaceChange }: RoutieSectionProps) => {
     }
   }, [routiePlaces]);
 
-  const handleDelete = (id: number) => {
-    const next = routiePlaces.filter((item) => item.placeId !== id);
-    editRoutieSequence(next);
-    setRoutiePlaces(next);
-  };
-
   return routiePlaces.map((place, index) => (
     <>
       <div key={place.placeId} {...getDragProps(index)}>
         <RoutiePlaceCard
           placeId={place.placeId}
-          handleDelete={() => handleDelete(place.placeId)}
           onPlaceChange={onPlaceChange}
         />
       </div>
