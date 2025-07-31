@@ -65,17 +65,19 @@ jobs:
             
             const labels = [];
             
-            // 1. branch prefix 기반 라벨 추가
-            const branch = pr.head.ref;
-            const branchLabelMap = {
-              'feature/': 'feature',
-              'fix/': 'fix',
-              'refactor/': 'refactor',
-              'chore/': 'chore',
-              'hotfix/': 'hotfix',
+            // 1. PR 제목 prefix 기반 라벨 추가
+            const title = pr.title.toLowerCase();
+            const titleLabelMap = {
+                'feat': 'feat',
+                'fix': 'fix',
+                'docs': 'docs',
+                'style': 'style',
+                'refactor': 'refactor',
+                'test': 'test',
+                'chore': 'chore',
             };
-            const branchPrefix = Object.keys(branchLabelMap).find(p => branch.startsWith(p));
-            if (branchPrefix) labels.push(branchLabelMap[branchPrefix]);
+            const titlePrefix = Object.keys(titleLabelMap).find(prefix => title.startsWith(prefix + ':'));
+            if (titlePrefix) labels.push(titleLabelMap[titlePrefix]);
             
             // 2. author 기반 라벨 추가
             const feTeam = ['ohgus', 'AHHYUNJU', 'aydenote', 'jeongyou'];

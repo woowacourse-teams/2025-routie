@@ -17,22 +17,19 @@ import { Routes, Routie } from '@/domains/routie/types/routie.types';
 import RoutieSpaceName from '@/domains/routieSpace/components/RoutieSpaceName/RoutieSpaceName';
 import theme from '@/styles/theme';
 
+import { usePlaceListContext } from '../PlaceList/contexts/PlaceListContext';
+
 import TimeInput from './TimeInput';
 
 interface SidebarProps {
-  onPlaceChange: () => Promise<void>;
   setRoutiePlaces: React.Dispatch<React.SetStateAction<Routie[] | undefined>>;
   routiePlaces: Routie[];
   routes: Routes[] | undefined;
 }
 
-const Sidebar = ({
-  onPlaceChange,
-  routiePlaces,
-  setRoutiePlaces,
-  routes,
-}: SidebarProps) => {
+const Sidebar = ({ routiePlaces, setRoutiePlaces, routes }: SidebarProps) => {
   const getDragProps = useCardDrag(routiePlaces, setRoutiePlaces);
+  const { refetchPlaceList } = usePlaceListContext();
   const [addModalOpen, setAddModalOpen] = useState(false);
   const {
     isValidateActive,
@@ -118,7 +115,7 @@ const Sidebar = ({
             </Button>
           </Flex>
           <Flex justifyContent="flex-end" width="100%" gap={1}>
-            <Text variant="caption">일정 검증 토글</Text>
+            <Text variant="subTitle">일정 검증</Text>
             <ToggleSwitch
               active={isValidateActive}
               onToggle={handleValidateToggle}
@@ -165,7 +162,7 @@ const Sidebar = ({
                     <RoutiePlaceCard
                       placeId={place.placeId}
                       handleDelete={() => handleDelete(place.placeId)}
-                      onPlaceChange={onPlaceChange}
+                      onPlaceChange={refetchPlaceList}
                     />
                   </div>
 
@@ -196,7 +193,7 @@ const Sidebar = ({
       <AddPlaceModal
         isOpen={addModalOpen}
         onClose={closeAddModal}
-        onPlaceAdded={onPlaceChange}
+        onPlaceAdded={refetchPlaceList}
       />
     </>
   );

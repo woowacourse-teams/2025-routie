@@ -8,8 +8,8 @@ import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -24,7 +24,6 @@ import routie.routie.controller.dto.response.RoutieReadResponse;
 import routie.routie.controller.dto.response.RoutieReadResponse.RouteResponse;
 import routie.routie.controller.dto.response.RoutieReadResponse.RoutiePlaceResponse;
 import routie.routie.domain.Routie;
-import routie.routie.domain.RoutiePlace;
 import routie.routiespace.domain.RoutieSpace;
 import routie.routiespace.domain.RoutieSpaceFixture;
 import routie.routiespace.repository.RoutieSpaceRepository;
@@ -49,6 +48,8 @@ class RoutieControllerTest {
     void setUp() {
         RestAssured.port = port;
 
+        routieSpace = RoutieSpaceFixture.createEmpty();
+
         Place placeA = Place.create(
                 "장소 A",
                 "주소 A",
@@ -57,7 +58,7 @@ class RoutieControllerTest {
                 LocalTime.of(18, 0),
                 null,
                 null,
-                null,
+                routieSpace,
                 List.of()
         );
 
@@ -69,18 +70,56 @@ class RoutieControllerTest {
                 LocalTime.of(20, 0),
                 LocalTime.of(14, 0),
                 LocalTime.of(15, 0),
-                null,
+                routieSpace,
                 List.of(DayOfWeek.MONDAY)
         );
 
-        placeRepository.saveAll(List.of(placeA, placeB));
+        routieSpace.getPlaces().add(placeA);
+        routieSpace.getPlaces().add(placeB);
+        routieSpace.getRoutie().createLastRoutiePlace(placeA);
+        routieSpace.getRoutie().createLastRoutiePlace(placeB);
 
-        RoutiePlace routiePlace1 = new RoutiePlace(1, placeA);
-        RoutiePlace routiePlace2 = new RoutiePlace(2, placeB);
-        routie = Routie.create(new ArrayList<>(List.of(routiePlace1, routiePlace2)));
-
-        routieSpace = RoutieSpaceFixture.createWithoutId(List.of(), routie);
         routieSpaceRepository.save(routieSpace);
+
+        routie = routieSpace.getRoutie();
+    }
+
+    @Test
+    @DisplayName("루티에 장소를 추가할 수 있다")
+    void addRoutiePlace() {
+        // given
+        Place place = Place.create(
+                "장소 A",
+                "주소 A",
+                60,
+                LocalTime.of(9, 0),
+                LocalTime.of(18, 0),
+                null,
+                null,
+                routieSpace,
+                List.of()
+        );
+        placeRepository.save(place);
+
+        Map<String, Object> requestBody = Map.of(
+                "placeId", place.getId()
+        );
+
+        // when
+        Response response = RestAssured
+                .given().log().all()
+                .when()
+                .contentType("application/json")
+                .body(requestBody)
+                .when()
+                .post("/routie-spaces/" + routieSpace.getIdentifier() + "/routie/places")
+                .then().log().all()
+                .extract().response();
+
+        // then
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
+        assertThat(response.jsonPath().getInt("sequence")).isEqualTo(3);
+        assertThat(response.jsonPath().getLong("placeId")).isEqualTo(place.getId());
     }
 
     @Test
@@ -246,5 +285,35 @@ class RoutieControllerTest {
         assertThat(route.toSequence()).isEqualTo(2);
         assertThat(route.duration()).isEqualTo(100);
         assertThat(route.distance()).isEqualTo(1000);
+    }
+
+    @Test
+    @DisplayName("루티의 장소를 삭제할 수 있다")
+    void deleteRoutiePlace() {
+        // given
+        long placeId = routie.getRoutiePlaces().getFirst().getPlace().getId();
+
+        // when
+        Response response = RestAssured
+                .given().log().all()
+                .when()
+                .delete("/routie-spaces/" + routieSpace.getIdentifier() + "/routie/places/" + placeId)
+                .then().log().all()
+                .extract().response();
+
+        // then
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.NO_CONTENT.value());
+
+        // 추가 검증: 루티에서 해당 장소가 삭제되었는지 확인
+        RoutieReadResponse routieReadResponse = RestAssured
+                .given().log().all()
+                .when()
+                .get("/routie-spaces/" + routieSpace.getIdentifier() + "/routie")
+                .then().log().all()
+                .statusCode(HttpStatus.OK.value())
+                .extract()
+                .as(RoutieReadResponse.class);
+
+        assertThat(routieReadResponse.routiePlaces()).hasSize(1);
     }
 }
