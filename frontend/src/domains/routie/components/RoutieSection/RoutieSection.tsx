@@ -5,57 +5,40 @@ import Pill from '@/@common/components/Pill/Pill';
 import Text from '@/@common/components/Text/Text';
 import theme from '@/styles/theme';
 
-import { editRoutieSequence } from '../../apis/routie';
 import { MOVING_EN_TO_KR } from '../../constants/translate';
 import { useRoutieContext } from '../../contexts/useRoutieContext';
 import { useRoutieValidateContext } from '../../contexts/useRoutieValidateContext';
 import { useCardDrag } from '../../hooks/useCardDrag';
-import { Routie } from '../../types/routie.types';
 import { convertMetersToKilometers } from '../../utils/format';
 import RoutiePlaceCard from '../RoutiePlaceCard/RoutiePlaceCard';
 
-interface RoutieSectionProps {
-  onPlaceChange: () => Promise<void>;
-}
-
-const RoutieSection = ({ onPlaceChange }: RoutieSectionProps) => {
-  const { routiePlaces, routes, handleRoutieChange } = useRoutieContext();
-  const getDragProps = useCardDrag(routiePlaces, handleRoutieChange);
+const RoutieSection = () => {
+  const { routiePlaces, routes, handleChangeRoutie } = useRoutieContext();
+  const getDragProps = useCardDrag(routiePlaces, handleChangeRoutie);
   const { validateRoutie } = useRoutieValidateContext();
+
   useEffect(() => {
     if (!routiePlaces) return;
-
-    const updated = routiePlaces.map((item, index) => ({
-      ...item,
-      sequence: index + 1,
-    }));
 
     const isSequenceChanged = routiePlaces.some(
       (item, index) => item.sequence !== index + 1,
     );
 
-    const updateRoutiePlaces = async (sortedPlaces: Routie[]) => {
-      handleRoutieChange(sortedPlaces);
-      await editRoutieSequence(sortedPlaces);
+    const updateRoutiePlaces = async () => {
       if (routiePlaces.length > 0) {
         await validateRoutie();
       }
     };
 
     if (isSequenceChanged) {
-      const sortedPlaces = updated.sort((a, b) => a.sequence - b.sequence);
-
-      updateRoutiePlaces(sortedPlaces);
+      updateRoutiePlaces();
     }
   }, [routiePlaces]);
 
   return routiePlaces.map((place, index) => (
-    <>
-      <div key={place.placeId} {...getDragProps(index)}>
-        <RoutiePlaceCard
-          placeId={place.placeId}
-          onPlaceChange={onPlaceChange}
-        />
+    <div key={place.placeId}>
+      <div {...getDragProps(index)}>
+        <RoutiePlaceCard placeId={place.placeId} />
       </div>
 
       {routiePlaces.length - 1 !== index && routes[index] && routes && (
@@ -71,7 +54,7 @@ const RoutieSection = ({ onPlaceChange }: RoutieSectionProps) => {
           </Pill>
         </Flex>
       )}
-    </>
+    </div>
   ));
 };
 
