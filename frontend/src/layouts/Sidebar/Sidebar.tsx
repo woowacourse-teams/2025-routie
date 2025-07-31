@@ -110,7 +110,7 @@ const Sidebar = () => {
               boxSizing: 'border-box',
             }}
           >
-            <RoutieSection />
+            <RoutieSection onPlaceChange={refetchPlaceList} />
           </Flex>
         </Flex>
       </Flex>
