@@ -13,15 +13,9 @@ import { getDetailPlace } from '../../apis/routie';
 import { useRoutieContext } from '../../contexts/useRoutieContext';
 import { RoutiePlace } from '../../types/routie.types';
 
-const RoutiePlaceCard = ({
-  placeId,
-  onPlaceChange,
-}: {
-  placeId: number;
-  onPlaceChange?: () => Promise<void>;
-}) => {
+const RoutiePlaceCard = ({ placeId }: { placeId: number }) => {
   const [place, setPlace] = useState<RoutiePlace>();
-  const { handleRoutieDelete } = useRoutieContext();
+  const { handleDeleteRoutie } = useRoutieContext();
 
   useEffect(() => {
     const fetchDetailPlace = async () => {
@@ -29,7 +23,7 @@ const RoutiePlaceCard = ({
       setPlace(detailPlace);
     };
     fetchDetailPlace();
-  }, [placeId, onPlaceChange]);
+  }, [placeId]);
 
   return (
     place && (
@@ -51,7 +45,7 @@ const RoutiePlaceCard = ({
                 <IconButton
                   icon={trashIcon}
                   variant="delete"
-                  onClick={() => handleRoutieDelete(placeId)}
+                  onClick={() => handleDeleteRoutie(placeId)}
                 />
               </Flex>
             </Flex>

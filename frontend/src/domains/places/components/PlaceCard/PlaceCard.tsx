@@ -8,38 +8,37 @@ import checkIcon from '@/assets/icons/check.svg';
 import editIcon from '@/assets/icons/edit.svg';
 import plusIcon from '@/assets/icons/plus.svg';
 import trashIcon from '@/assets/icons/trash.svg';
+import { useRoutieContext } from '@/domains/routie/contexts/useRoutieContext';
+import { usePlaceListContext } from '@/layouts/PlaceList/contexts/PlaceListContext';
 import theme from '@/styles/theme';
 
-import { usePlaceCard } from '../../hooks/usePlaceCard';
+import deletePlace from '../../apis/deletePlace';
 import { PlaceBase } from '../../types/place.types';
 import { getCheckedListExcept } from '../../utils/getCheckedListExcept';
 import DatePreviewList from '../DatePreviewList/DatePreviewList';
 import EditPlaceModal from '../EditPlaceModal/EditPlaceModal';
 
-export interface PlaceCardProps
-  extends Omit<
-    PlaceBase,
-    'stayDurationMinutes' | 'breakStartAt' | 'breakEndAt'
-  > {
-  onDelete: (id: number) => void;
-  onPlaceChange: () => Promise<void>;
+export interface PlaceCardProps extends PlaceBase {
   selected: boolean;
-  onSelect: () => Promise<void>;
 }
 
-export const PlaceCard = ({
-  onDelete,
-  onPlaceChange,
-  selected,
-  onSelect,
-  ...props
-}: PlaceCardProps) => {
-  const { handleToggle, handleDelete } = usePlaceCard({
-    id: props.id,
-    onSelect,
-    onDelete,
-  });
-  const { modalOpen, openModal, closeModal } = useModal();
+export const PlaceCard = ({ selected, ...props }: PlaceCardProps) => {
+  const { refetchPlaceList } = usePlaceListContext();
+  const { handleAddRoutie } = useRoutieContext();
+  const { openModal, closeModal, modalOpen } = useModal();
+
+  const handlePlaceSelect = () => {
+    handleAddRoutie(props.id);
+  };
+
+  const handleDelete = async () => {
+    try {
+      await deletePlace(props.id);
+      refetchPlaceList();
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   return (
     <>
@@ -58,7 +57,7 @@ export const PlaceCard = ({
             <IconButton
               icon={selected ? checkIcon : plusIcon}
               variant={selected ? 'selected' : 'select'}
-              onClick={handleToggle}
+              onClick={handlePlaceSelect}
             />
             <Flex gap={1}>
               <IconButton icon={editIcon} onClick={openModal} />
@@ -86,7 +85,7 @@ export const PlaceCard = ({
         id={props.id}
         isOpen={modalOpen}
         onClose={closeModal}
-        onPlaceChange={onPlaceChange}
+        onPlaceChange={refetchPlaceList}
       />
     </>
   );
