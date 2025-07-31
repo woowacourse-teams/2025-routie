@@ -1,13 +1,11 @@
 package routie.routie.domain.routievalidator;
 
 import java.time.LocalDateTime;
-import java.util.Map;
-import routie.routie.domain.RoutiePlace;
-import routie.routie.domain.timeperiod.TimePeriod;
+import routie.routie.domain.timeperiod.TimePeriods;
 
 public record ValidationContext(
         LocalDateTime startDateTime,
         LocalDateTime endDateTime,
-        Map<RoutiePlace, TimePeriod> timePeriodByRoutiePlace
+        TimePeriods timePeriods
 ) {
 }

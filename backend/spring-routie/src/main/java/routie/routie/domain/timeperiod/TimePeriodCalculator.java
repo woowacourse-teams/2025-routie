@@ -12,28 +12,28 @@ import routie.routie.domain.route.Routes;
 @Component
 public class TimePeriodCalculator {
 
-    public Map<RoutiePlace, TimePeriod> calculateTimePeriods(
+    public TimePeriods calculateTimePeriods(
             final List<RoutiePlace> routiePlaces,
             final LocalDateTime initialStartTime,
             final Routes routes
     ) {
-        Map<RoutiePlace, TimePeriod> timePeriodByPlace = new HashMap<>();
+        Map<RoutiePlace, TimePeriod> timePeriodByRoutiePlace = new HashMap<>();
         LocalDateTime currentTime = initialStartTime;
 
         for (int i = 0; i < routiePlaces.size(); i++) {
-            RoutiePlace currentPlace = routiePlaces.get(i);
+            RoutiePlace currentRoutiePlace = routiePlaces.get(i);
 
             LocalDateTime start = currentTime;
-            LocalDateTime end = start.plusMinutes(currentPlace.getPlace().getStayDurationMinutes());
+            LocalDateTime end = start.plusMinutes(currentRoutiePlace.getPlace().getStayDurationMinutes());
 
-            timePeriodByPlace.put(currentPlace, new TimePeriod(start, end));
+            timePeriodByRoutiePlace.put(currentRoutiePlace, new TimePeriod(start, end));
 
             if (i < routiePlaces.size() - 1) {
-                Route route = routes.getBy(currentPlace);
+                Route route = routes.getBy(currentRoutiePlace);
                 currentTime = end.plusMinutes(route.duration());
             }
         }
 
-        return timePeriodByPlace;
+        return new TimePeriods(timePeriodByRoutiePlace);
     }
 }

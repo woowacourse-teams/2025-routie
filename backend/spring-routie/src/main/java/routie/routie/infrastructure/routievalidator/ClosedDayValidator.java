@@ -2,7 +2,6 @@ package routie.routie.infrastructure.routievalidator;
 
 import java.time.DayOfWeek;
 import java.util.List;
-import java.util.Map.Entry;
 import org.springframework.stereotype.Component;
 import routie.place.domain.PlaceClosedDayOfWeek;
 import routie.routie.domain.RoutiePlace;
@@ -10,6 +9,7 @@ import routie.routie.domain.routievalidator.RoutieValidator;
 import routie.routie.domain.routievalidator.ValidationContext;
 import routie.routie.domain.routievalidator.ValidationStrategy;
 import routie.routie.domain.timeperiod.TimePeriod;
+import routie.routie.domain.timeperiod.TimePeriods;
 
 @Component
 public class ClosedDayValidator implements RoutieValidator {
@@ -23,20 +23,21 @@ public class ClosedDayValidator implements RoutieValidator {
             final ValidationContext validationContext,
             final ValidationStrategy validationStrategy
     ) {
-        return validationContext.timePeriodByRoutiePlace().entrySet().stream()
-                .allMatch(this::isTimePeriodNotClosedDays);
+        final TimePeriods timePeriods = validationContext.timePeriods();
+        return timePeriods.routiePlaces().stream()
+                .allMatch(routiePlace -> isTimePeriodNotClosedDays(
+                        routiePlace,
+                        timePeriods.getBy(routiePlace)
+                ));
     }
 
-    private boolean isTimePeriodNotClosedDays(final Entry<RoutiePlace, TimePeriod> entry) {
-        RoutiePlace routiePlace = entry.getKey();
-        TimePeriod period = entry.getValue();
-
+    private boolean isTimePeriodNotClosedDays(final RoutiePlace routiePlace, final TimePeriod timePeriod) {
         List<DayOfWeek> closedDayOfWeeks = routiePlace.getPlace().getPlaceClosedDayOfWeeks().stream()
                 .map(PlaceClosedDayOfWeek::getClosedDayOfWeek)
                 .toList();
 
-        DayOfWeek startDay = period.startTime().getDayOfWeek();
-        DayOfWeek endDay = period.endTime().getDayOfWeek();
+        DayOfWeek startDay = timePeriod.startTime().getDayOfWeek();
+        DayOfWeek endDay = timePeriod.endTime().getDayOfWeek();
 
         return !closedDayOfWeeks.contains(startDay) && !closedDayOfWeeks.contains(endDay);
     }

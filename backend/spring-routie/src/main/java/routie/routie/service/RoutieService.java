@@ -26,8 +26,8 @@ import routie.routie.domain.route.Routes;
 import routie.routie.domain.routievalidator.RoutieValidator;
 import routie.routie.domain.routievalidator.ValidationContext;
 import routie.routie.domain.routievalidator.ValidationStrategy;
-import routie.routie.domain.timeperiod.TimePeriod;
 import routie.routie.domain.timeperiod.TimePeriodCalculator;
+import routie.routie.domain.timeperiod.TimePeriods;
 import routie.routie.repository.RoutiePlaceRepository;
 import routie.routiespace.domain.RoutieSpace;
 import routie.routiespace.repository.RoutieSpaceRepository;
@@ -65,15 +65,15 @@ public class RoutieService {
         Routie routie = getRoutieSpaceByIdentifier(routieSpaceIdentifier).getRoutie();
         Routes routes = routeCalculator.calculateRoutes(routie.getRoutiePlaces());
 
-        Map<RoutiePlace, TimePeriod> timePeriodByRoutiePlace = null;
+        TimePeriods timePeriods = null;
         if (startDateTime != null) {
-            timePeriodByRoutiePlace = timePeriodCalculator.calculateTimePeriods(
+            timePeriods = timePeriodCalculator.calculateTimePeriods(
                     routie.getRoutiePlaces(),
                     startDateTime,
                     routes
             );
         }
-        return RoutieReadResponse.from(routie, routes.toList(), timePeriodByRoutiePlace);
+        return RoutieReadResponse.from(routie, routes.toList(), timePeriods);
     }
 
     @Transactional
@@ -120,7 +120,7 @@ public class RoutieService {
         Routie routie = getRoutieSpaceByIdentifier(routieSpaceIdentifier).getRoutie();
 
         Routes routes = routeCalculator.calculateRoutes(routie.getRoutiePlaces());
-        Map<RoutiePlace, TimePeriod> timePeriodByRoutiePlace = timePeriodCalculator.calculateTimePeriods(
+        TimePeriods timePeriods = timePeriodCalculator.calculateTimePeriods(
                 routie.getRoutiePlaces(),
                 startDateTime,
                 routes
@@ -129,7 +129,7 @@ public class RoutieService {
         ValidationContext validationContext = new ValidationContext(
                 startDateTime,
                 endDateTime,
-                timePeriodByRoutiePlace
+                timePeriods
         );
 
         boolean isStrategyValid = Arrays.stream(ValidationStrategy.values())

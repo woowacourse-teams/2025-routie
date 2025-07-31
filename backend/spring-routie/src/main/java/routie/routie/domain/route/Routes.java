@@ -16,8 +16,16 @@ public class Routes {
         this.routes.putAll(routes);
     }
 
+    public static Routes empty() {
+        return new Routes(new TreeMap<>(Comparator.comparing(RoutiePlace::getSequence)));
+    }
+
     public Route getBy(final RoutiePlace routiePlace) {
         return routes.get(routiePlace);
+    }
+
+    public void addRoute(final RoutiePlace routiePlace, final Route route) {
+        routes.put(routiePlace, route);
     }
 
     public boolean contains(final RoutiePlace routiePlace) {
