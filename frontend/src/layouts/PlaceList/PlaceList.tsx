@@ -87,7 +87,9 @@ const PlaceList = ({
                 }
 
                 // 루티 검증 API 호출
-                await validateRoutie();
+                if (updatedRoutiePlaces.length > 0) {
+                  await validateRoutie();
+                }
               } catch (error) {
                 console.error('루티 업데이트 실패:', error);
               }
