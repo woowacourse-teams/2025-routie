@@ -76,3 +76,45 @@ export const getRoutieValidation = async (time: {
 
   return data;
 };
+
+export const addRoutiePlace = async (placeId: number) => {
+  const routieSpaceUuid = localStorage.getItem('routieSpaceUuid');
+
+  if (!routieSpaceUuid) {
+    throw new Error('루티 스페이스 uuid가 없습니다.');
+  }
+
+  const response = await apiClient.post(
+    `/routie-spaces/${routieSpaceUuid}/routie/places`,
+    {
+      placeId,
+    },
+  );
+
+  if (!response.ok) {
+    throw new Error('루티에 장소 추가 실패');
+  }
+
+  const data = await response.json();
+
+  return data;
+};
+
+export const deleteRoutiePlace = async (placeId: number) => {
+  const routieSpaceUuid = localStorage.getItem('routieSpaceUuid');
+
+  if (!routieSpaceUuid) {
+    throw new Error('루티 스페이스 uuid가 없습니다.');
+  }
+
+  const response = await apiClient.delete(
+    `/routie-spaces/${routieSpaceUuid}/routie/places/${placeId}`,
+  );
+  if (!response.ok) {
+    throw new Error('루티에 장소 제거 실패');
+  }
+
+  const data = response;
+
+  return data;
+};
