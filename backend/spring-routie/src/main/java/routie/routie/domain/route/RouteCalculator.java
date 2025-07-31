@@ -6,9 +6,9 @@ import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import routie.place.domain.DistanceCalculator;
+import routie.place.domain.DurationCalculator;
 import routie.place.domain.MovingStrategy;
 import routie.place.domain.Place;
-import routie.place.domain.TravelTimeCalculator;
 import routie.routie.domain.RoutiePlace;
 
 @Component
@@ -16,7 +16,7 @@ import routie.routie.domain.RoutiePlace;
 public class RouteCalculator {
 
     private final DistanceCalculator distanceCalculator;
-    private final TravelTimeCalculator travelTimeCalculator;
+    private final DurationCalculator durationCalculator;
 
     public Routes calculateRoutes(final List<RoutiePlace> routiePlaces) {
         Map<RoutiePlace, Route> routeByFromRoutiePlace = new HashMap<>();
@@ -30,7 +30,7 @@ public class RouteCalculator {
             MovingStrategy movingStrategy = MovingStrategy.DRIVING;
 
             int distance = distanceCalculator.calculateDistance(fromPlace, toPlace, movingStrategy);
-            int duration = travelTimeCalculator.calculateTravelTime(fromPlace, toPlace, movingStrategy);
+            int duration = durationCalculator.calculateDuration(fromPlace, toPlace, movingStrategy);
 
             Route route = new Route(
                     fromRoutiePlace.getSequence(),
