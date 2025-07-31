@@ -7,7 +7,6 @@ import DateCheckboxList from '../DateCheckboxList/DateCheckboxList';
 interface BusinessHourInputsProps {
   closedDayOfWeeks: string[];
   onToggleDay: (index: number) => void;
-  required?: boolean;
 }
 
 const ClosedDaySelector = ({

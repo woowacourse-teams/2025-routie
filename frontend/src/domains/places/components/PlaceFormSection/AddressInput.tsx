@@ -5,15 +5,17 @@ interface AddressInputProps {
   value: string;
   onChange: (field: 'address', value: string) => void;
   disabled?: boolean;
-  required?: boolean;
+  error?: boolean;
 }
 
 const AddressInput = ({
   value,
   onChange,
   disabled,
-  required = true,
+  error = false,
 }: AddressInputProps) => {
+  const inputVariant = disabled ? 'disabled' : error ? 'error' : 'primary';
+
   return (
     <Flex direction="column" alignItems="flex-start" gap={1} width="100%">
       <Input
@@ -22,8 +24,7 @@ const AddressInput = ({
         onChange={(value) => onChange('address', value)}
         label="주소"
         placeholder="장소의 주소를 입력해주세요"
-        required={required}
-        variant={disabled ? 'disabled' : 'primary'}
+        variant={inputVariant}
       />
     </Flex>
   );

@@ -6,14 +6,17 @@ interface BusinessHourInputsProps {
   openAt: string;
   closeAt: string;
   onChange: (field: 'openAt' | 'closeAt', value: string) => void;
-  required?: boolean;
+  error?: {
+    openAt?: boolean;
+    closeAt?: boolean;
+  };
 }
 
 const BusinessHourInputs = ({
   openAt,
   closeAt,
   onChange,
-  required = true,
+  error = { openAt: false, closeAt: false },
 }: BusinessHourInputsProps) => {
   return (
     <>
@@ -25,8 +28,8 @@ const BusinessHourInputs = ({
             type="time"
             value={openAt}
             onChange={(value) => onChange('openAt', value)}
+            variant={error?.openAt ? 'error' : 'primary'}
             label="오픈 시간"
-            required={required}
           />
         </Flex>
         <Flex direction="column" alignItems="flex-start" gap={1} width="100%">
@@ -35,8 +38,8 @@ const BusinessHourInputs = ({
             type="time"
             value={closeAt}
             onChange={(value) => onChange('closeAt', value)}
+            variant={error?.closeAt ? 'error' : 'primary'}
             label="마감 시간"
-            required={required}
           />
         </Flex>
       </Flex>

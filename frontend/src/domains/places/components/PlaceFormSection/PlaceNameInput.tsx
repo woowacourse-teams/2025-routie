@@ -5,15 +5,17 @@ interface PlaceNameInputProps {
   value: string;
   onChange: (field: 'name', value: string) => void;
   disabled?: boolean;
-  required?: boolean;
+  error?: boolean;
 }
 
 const PlaceNameInput = ({
   value,
   onChange,
   disabled,
-  required = true,
+  error = false,
 }: PlaceNameInputProps) => {
+  const inputVariant = disabled ? 'disabled' : error ? 'error' : 'primary';
+
   return (
     <Flex direction="column" alignItems="flex-start" gap={1} width="100%">
       <Input
@@ -22,8 +24,8 @@ const PlaceNameInput = ({
         onChange={(value) => onChange('name', value)}
         label="이름"
         placeholder="장소의 이름을 입력해주세요"
-        required={required}
-        variant={disabled ? 'disabled' : 'primary'}
+        // required={required}
+        variant={inputVariant}
       />
     </Flex>
   );

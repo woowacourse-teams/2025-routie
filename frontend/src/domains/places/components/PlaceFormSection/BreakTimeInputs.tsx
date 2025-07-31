@@ -5,7 +5,6 @@ interface BreakTimeInputsProps {
   breakStartAt: string;
   breakEndAt: string;
   onChange: (field: 'breakStartAt' | 'breakEndAt', value: string) => void;
-  required?: boolean;
 }
 
 const BreakTimeInputs = ({
@@ -13,9 +12,12 @@ const BreakTimeInputs = ({
   breakEndAt,
   onChange,
 }: BreakTimeInputsProps) => {
-  const shouldRequireBreakStart = breakEndAt !== '';
-  const shouldRequireBreakEnd = breakStartAt !== '';
+  const isPartial =
+    (breakStartAt !== '' && breakEndAt === '') ||
+    (breakStartAt === '' && breakEndAt !== '');
 
+  const breakStartAtError = isPartial && breakStartAt === '';
+  const breakEndAtError = isPartial && breakEndAt === '';
   return (
     <Flex justifyContent="space-between" width="100%" gap={1}>
       <Flex direction="column" alignItems="flex-start" gap={1} width="100%">
@@ -24,8 +26,8 @@ const BreakTimeInputs = ({
           type="time"
           value={breakStartAt}
           onChange={(value) => onChange('breakStartAt', value)}
+          variant={breakStartAtError ? 'error' : 'primary'}
           label="브레이크 타임 시작 시간"
-          required={shouldRequireBreakStart}
         />
       </Flex>
       <Flex direction="column" alignItems="flex-start" gap={1} width="100%">
@@ -34,8 +36,8 @@ const BreakTimeInputs = ({
           type="time"
           value={breakEndAt}
           onChange={(value) => onChange('breakEndAt', value)}
+          variant={breakEndAtError ? 'error' : 'primary'}
           label="브레이크 타임 종료 시간"
-          required={shouldRequireBreakEnd}
         />
       </Flex>
     </Flex>
