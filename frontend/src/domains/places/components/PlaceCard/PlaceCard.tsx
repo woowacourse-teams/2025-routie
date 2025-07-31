@@ -3,6 +3,7 @@ import Flex from '@/@common/components/Flex/Flex';
 import IconButton from '@/@common/components/IconButton/IconButton';
 import Pill from '@/@common/components/Pill/Pill';
 import Text from '@/@common/components/Text/Text';
+import useModal from '@/@common/hooks/useModal';
 import checkIcon from '@/assets/icons/check.svg';
 import editIcon from '@/assets/icons/edit.svg';
 import plusIcon from '@/assets/icons/plus.svg';
@@ -10,7 +11,6 @@ import trashIcon from '@/assets/icons/trash.svg';
 import theme from '@/styles/theme';
 
 import { usePlaceCard } from '../../hooks/usePlaceCard';
-import { usePlaceCardEditModal } from '../../hooks/usePlaceCardEditModal';
 import { PlaceBase } from '../../types/place.types';
 import { getCheckedListExcept } from '../../utils/getCheckedListExcept';
 import DatePreviewList from '../DatePreviewList/DatePreviewList';
@@ -39,8 +39,7 @@ export const PlaceCard = ({
     onSelect,
     onDelete,
   });
-  const { editModalOpen, openEditModal, closeEditModal } =
-    usePlaceCardEditModal();
+  const { modalOpen, openModal, closeModal } = useModal();
 
   return (
     <>
@@ -62,7 +61,7 @@ export const PlaceCard = ({
               onClick={handleToggle}
             />
             <Flex gap={1}>
-              <IconButton icon={editIcon} onClick={openEditModal} />
+              <IconButton icon={editIcon} onClick={openModal} />
               <IconButton
                 icon={trashIcon}
                 variant="delete"
@@ -85,8 +84,8 @@ export const PlaceCard = ({
       </Card>
       <EditPlaceModal
         id={props.id}
-        isOpen={editModalOpen}
-        onClose={closeEditModal}
+        isOpen={modalOpen}
+        onClose={closeModal}
         onPlaceChange={onPlaceChange}
       />
     </>
