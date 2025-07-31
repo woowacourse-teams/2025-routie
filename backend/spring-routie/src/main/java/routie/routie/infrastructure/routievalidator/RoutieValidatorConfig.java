@@ -11,7 +11,7 @@ public class RoutieValidatorConfig {
 
     @Bean
     @Primary
-    public RoutieValidator validator(final List<RoutieValidator> validators) {
-        return new RoutieValidatorComposite(validators);
+    public RoutieValidator routieValidator(final List<RoutieValidator> routieValidators) {
+        return new RoutieValidatorComposite(routieValidators);
     }
 }
