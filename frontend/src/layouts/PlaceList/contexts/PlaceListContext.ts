@@ -4,7 +4,6 @@ import { PlaceCardProps } from '@/domains/places/components/PlaceCard/PlaceCard'
 
 export interface PlaceListContextType {
   placeList: PlaceCardProps[];
-  setPlaceList: React.Dispatch<React.SetStateAction<PlaceCardProps[]>>;
   refetchPlaceList: () => Promise<void>;
   handleDelete: (id: number) => void;
 }

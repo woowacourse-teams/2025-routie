@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 import getPlaceList from '@/domains/places/apis/getplaceList';
 import { PlaceCardProps } from '@/domains/places/components/PlaceCard/PlaceCard';
@@ -29,13 +29,9 @@ export const PlaceListProvider = ({ children }: Props) => {
     refetchPlaceList();
   }, []);
 
-  const contextValue = useMemo(() => {
-    return { placeList, setPlaceList };
-  }, [placeList, setPlaceList]);
-
   return (
     <PlaceListContext.Provider
-      value={{ ...contextValue, refetchPlaceList, handleDelete }}
+      value={{ placeList, refetchPlaceList, handleDelete }}
     >
       {children}
     </PlaceListContext.Provider>
