@@ -4,6 +4,21 @@ import theme from '@/styles/theme';
 
 import { InputStyleProps, InputVariantProps } from './Input.types';
 
+const blinkBackground = css`
+  @keyframes blink-background {
+    0%,
+    100% {
+      background-color: ${theme.colors.red[50]};
+    }
+
+    50% {
+      background-color: ${theme.colors.white};
+    }
+  }
+
+  animation: blink-background 0.3s ease-in-out 1;
+`;
+
 const inputVariant: Record<InputVariantProps, SerializedStyles> = {
   primary: css`
     border-color: ${theme.colors.purple[400]};
@@ -25,6 +40,8 @@ const inputVariant: Record<InputVariantProps, SerializedStyles> = {
     &:focus {
       border-color: ${theme.colors.red[100]};
     }
+
+    ${blinkBackground}
   `,
 };
 
