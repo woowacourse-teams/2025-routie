@@ -8,7 +8,6 @@ import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
@@ -25,7 +24,6 @@ import routie.routie.controller.dto.response.RoutieReadResponse;
 import routie.routie.controller.dto.response.RoutieReadResponse.RouteResponse;
 import routie.routie.controller.dto.response.RoutieReadResponse.RoutiePlaceResponse;
 import routie.routie.domain.Routie;
-import routie.routie.domain.RoutiePlace;
 import routie.routiespace.domain.RoutieSpace;
 import routie.routiespace.domain.RoutieSpaceFixture;
 import routie.routiespace.repository.RoutieSpaceRepository;
@@ -50,6 +48,8 @@ class RoutieControllerTest {
     void setUp() {
         RestAssured.port = port;
 
+        routieSpace = RoutieSpaceFixture.createEmpty();
+
         Place placeA = Place.create(
                 "장소 A",
                 "주소 A",
@@ -58,7 +58,7 @@ class RoutieControllerTest {
                 LocalTime.of(18, 0),
                 null,
                 null,
-                null,
+                routieSpace,
                 List.of()
         );
 
@@ -70,18 +70,18 @@ class RoutieControllerTest {
                 LocalTime.of(20, 0),
                 LocalTime.of(14, 0),
                 LocalTime.of(15, 0),
-                null,
+                routieSpace,
                 List.of(DayOfWeek.MONDAY)
         );
 
-        placeRepository.saveAll(List.of(placeA, placeB));
+        routieSpace.getPlaces().add(placeA);
+        routieSpace.getPlaces().add(placeB);
+        routieSpace.getRoutie().createLastRoutiePlace(placeA);
+        routieSpace.getRoutie().createLastRoutiePlace(placeB);
 
-        RoutiePlace routiePlace1 = new RoutiePlace(1, placeA);
-        RoutiePlace routiePlace2 = new RoutiePlace(2, placeB);
-        routie = Routie.create(new ArrayList<>(List.of(routiePlace1, routiePlace2)));
-
-        routieSpace = RoutieSpaceFixture.createWithoutId(List.of(), routie);
         routieSpaceRepository.save(routieSpace);
+
+        routie = routieSpace.getRoutie();
     }
 
     @Test
