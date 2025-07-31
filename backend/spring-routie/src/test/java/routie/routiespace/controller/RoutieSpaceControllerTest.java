@@ -28,16 +28,15 @@ public class RoutieSpaceControllerTest {
                 .then()
                 .extract().response();
 
-        String locationUrl = createSpaceResponse.getHeader("Location");
-        routieSpaceIdentifier = locationUrl.substring("/routie-spaces/".length());
+        routieSpaceIdentifier = createSpaceResponse.jsonPath().getString("routieSpaceIdentifier");
     }
 
     @Test
     @DisplayName("루티 스페이스를 생성한다")
     public void createRoutieSpace() {
         // given
-        Pattern locationUrlPattern = Pattern.compile(
-                "/routie-spaces/[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}");
+        Pattern routieSpaceIdentifierPattern = Pattern.compile(
+                "[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}");
 
         // when
         Response response = RestAssured
@@ -48,13 +47,13 @@ public class RoutieSpaceControllerTest {
                 .extract().response();
 
         HttpStatus actualHttpStatus = HttpStatus.valueOf(response.getStatusCode());
-        HttpStatus expectedHttpStatus = HttpStatus.CREATED;
+        HttpStatus expectedHttpStatus = HttpStatus.OK;
 
-        String locationUrl = response.getHeader("Location");
+        String routieSpaceIdentifier = response.jsonPath().getString("routieSpaceIdentifier");
 
         // then
         assertThat(expectedHttpStatus).isEqualTo(actualHttpStatus);
-        assertThat(locationUrlPattern.matcher(locationUrl).matches()).isTrue();
+        assertThat(routieSpaceIdentifierPattern.matcher(routieSpaceIdentifier).matches()).isTrue();
     }
 
     @Test
