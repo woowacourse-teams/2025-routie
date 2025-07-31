@@ -17,8 +17,8 @@ export const toggleStyle = (checked: boolean) => css`
 
   display: inline-block;
 
-  width: 44px;
-  height: 24px;
+  width: 4.4rem;
+  height: 2.4rem;
   border-radius: 34px;
 
   background-color: ${checked
@@ -31,11 +31,11 @@ export const toggleStyle = (checked: boolean) => css`
     content: '';
 
     position: absolute;
-    top: 3.4px;
-    left: ${checked ? 'calc(100% - 22px)' : '3px'};
+    top: 0.3rem;
+    left: ${checked ? 'calc(100% - 2.2rem)' : '0.3rem'};
 
-    width: 18px;
-    height: 18px;
+    width: 1.8rem;
+    height: 1.8rem;
     border-radius: 50%;
 
     background-color: ${theme.colors.white};
