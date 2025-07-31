@@ -10,6 +10,7 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -81,6 +82,44 @@ class RoutieControllerTest {
 
         routieSpace = RoutieSpaceFixture.createWithoutId(List.of(), routie);
         routieSpaceRepository.save(routieSpace);
+    }
+
+    @Test
+    @DisplayName("루티에 장소를 추가할 수 있다")
+    void addRoutiePlace() {
+        // given
+        Place place = Place.create(
+                "장소 A",
+                "주소 A",
+                60,
+                LocalTime.of(9, 0),
+                LocalTime.of(18, 0),
+                null,
+                null,
+                routieSpace,
+                List.of()
+        );
+        placeRepository.save(place);
+
+        Map<String, Object> requestBody = Map.of(
+                "placeId", place.getId()
+        );
+
+        // when
+        Response response = RestAssured
+                .given().log().all()
+                .when()
+                .contentType("application/json")
+                .body(requestBody)
+                .when()
+                .post("/routie-spaces/" + routieSpace.getIdentifier() + "/routie/places")
+                .then().log().all()
+                .extract().response();
+
+        // then
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
+        assertThat(response.jsonPath().getInt("sequence")).isEqualTo(3);
+        assertThat(response.jsonPath().getLong("placeId")).isEqualTo(place.getId());
     }
 
     @Test
