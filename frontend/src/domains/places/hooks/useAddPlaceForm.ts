@@ -11,7 +11,7 @@ import { getCheckedDaysInEnglish } from './../utils/getCheckedDaysInEnglish';
 const initialFormState: FormState = {
   name: '',
   address: '',
-  stayDurationMinutes: 0,
+  stayDurationMinutes: -1,
   openAt: '',
   closeAt: '',
   breakStartAt: '',

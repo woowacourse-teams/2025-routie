@@ -19,7 +19,7 @@ const StayDurationInput = ({
       <Input
         id="stayDurationMinutes"
         type="number"
-        value={value === 0 ? '' : value.toString()}
+        value={value === -1 ? '' : value.toString()}
         onChange={(value) => onChange('stayDurationMinutes', value)}
         variant={inputVariant}
         label="체류 시간 (분)"
