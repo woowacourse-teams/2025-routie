@@ -1,10 +1,15 @@
+import { useNavigate } from 'react-router';
+
 import Flex from '@/@common/components/Flex/Flex';
-import Text from '@/@common/components/Text/Text';
-import theme from '@/styles/theme';
+import logoIcon from '@/assets/icons/logo.svg';
 
 import headerStyle from './Header.style';
+import HomeButton from './HomeButton/HomeButton';
+import { buttonStyle } from './HomeButton/HomeButton.styles';
 
 const Header = () => {
+  const navigate = useNavigate();
+
   return (
     <div css={headerStyle}>
       <Flex
@@ -14,9 +19,11 @@ const Header = () => {
         justifyContent="flex-start"
         padding={1}
       >
-        <Text variant="title" color={theme.colors.purple[400]}>
-          Routie
-        </Text>
+        <HomeButton
+          icon={logoIcon}
+          onClick={() => navigate('/')}
+          css={buttonStyle}
+        ></HomeButton>
       </Flex>
     </div>
   );
