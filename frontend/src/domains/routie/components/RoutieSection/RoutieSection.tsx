@@ -14,8 +14,8 @@ import RoutiePlaceCard from '../RoutiePlaceCard/RoutiePlaceCard';
 
 const RoutieSection = () => {
   const { routiePlaces, routes, handleChangeRoutie } = useRoutieContext();
-  const getDragProps = useCardDrag(routiePlaces, handleChangeRoutie);
   const { validateRoutie } = useRoutieValidateContext();
+  const getDragProps = useCardDrag(routiePlaces, handleChangeRoutie);
 
   useEffect(() => {
     if (!routiePlaces) return;
