@@ -24,7 +24,7 @@ public class TimePeriodCalculator {
 
             timePeriods.add(routiePlace, new TimePeriod(routiePlace, start, end));
 
-            Route route = routes.getBy(routiePlace);
+            Route route = routes.getByRoutiePlace(routiePlace);
             if (route != null) {
                 currentTime = end.plusMinutes(route.duration());
             }

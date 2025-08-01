@@ -19,7 +19,7 @@ public class TimePeriods {
         return new TimePeriods(new TreeMap<>(Comparator.comparing(RoutiePlace::getSequence)));
     }
 
-    public TimePeriod getBy(final RoutiePlace place) {
+    public TimePeriod getByRoutiePlace(final RoutiePlace place) {
         return timePeriods.get(place);
     }
 

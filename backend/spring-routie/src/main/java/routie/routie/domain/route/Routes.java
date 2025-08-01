@@ -19,7 +19,7 @@ public class Routes {
         return new Routes(new TreeMap<>(Comparator.comparing(RoutiePlace::getSequence)));
     }
 
-    public Route getBy(final RoutiePlace routiePlace) {
+    public Route getByRoutiePlace(final RoutiePlace routiePlace) {
         return routes.get(routiePlace);
     }
 
