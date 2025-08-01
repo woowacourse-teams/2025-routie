@@ -22,14 +22,14 @@ public class TotalTimeValidator implements RoutieValidator {
                            final ValidationStrategy validationStrategy) {
         TimePeriods timePeriods = validationContext.timePeriods();
 
-        return calculateTotalTimeValidity(
+        return isWithinTotalTime(
                 validationContext.startDateTime(),
                 validationContext.endDateTime(),
                 timePeriods
         );
     }
 
-    private boolean calculateTotalTimeValidity(
+    private boolean isWithinTotalTime(
             final LocalDateTime startDateTime,
             final LocalDateTime endDateTime,
             final TimePeriods timePeriods
