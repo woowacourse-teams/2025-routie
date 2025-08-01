@@ -25,13 +25,13 @@ class BreaktimeValidatorTest {
         // given
         Place placeWithNoBreaktime = createMockPlace(null, null);
         RoutiePlace routiePlace = createMockRoutiePlace(placeWithNoBreaktime);
-        TimePeriod visitPeriod = new TimePeriod(
+        TimePeriod timePeriod = new TimePeriod(
                 routiePlace,
                 LocalDateTime.of(2024, 1, 1, 12, 0),
                 LocalDateTime.of(2024, 1, 1, 13, 0)
         );
         TimePeriods timePeriods = TimePeriods.empty();
-        timePeriods.add(routiePlace, visitPeriod);
+        timePeriods = timePeriods.withAdded(routiePlace, timePeriod);
         ValidationContext validationContext = new ValidationContext(null, null, timePeriods);
 
         // when
@@ -47,13 +47,13 @@ class BreaktimeValidatorTest {
         // given
         Place place = createMockPlace(LocalTime.of(12, 0), LocalTime.of(13, 0));
         RoutiePlace routiePlace = createMockRoutiePlace(place);
-        TimePeriod visitPeriod = new TimePeriod(
+        TimePeriod timePeriod = new TimePeriod(
                 routiePlace,
                 LocalDateTime.of(2024, 1, 1, 11, 0),
                 LocalDateTime.of(2024, 1, 1, 11, 59)
         );
         TimePeriods timePeriods = TimePeriods.empty();
-        timePeriods.add(routiePlace, visitPeriod);
+        timePeriods = timePeriods.withAdded(routiePlace, timePeriod);
         ValidationContext validationContext = new ValidationContext(null, null, timePeriods);
 
         // when
@@ -69,13 +69,13 @@ class BreaktimeValidatorTest {
         // given
         Place place = createMockPlace(LocalTime.of(12, 0), LocalTime.of(13, 0));
         RoutiePlace routiePlace = createMockRoutiePlace(place);
-        TimePeriod visitPeriod = new TimePeriod(
+        TimePeriod timePeriod = new TimePeriod(
                 routiePlace,
                 LocalDateTime.of(2024, 1, 1, 11, 0),
                 LocalDateTime.of(2024, 1, 1, 12, 0)
         );
         TimePeriods timePeriods = TimePeriods.empty();
-        timePeriods.add(routiePlace, visitPeriod);
+        timePeriods = timePeriods.withAdded(routiePlace, timePeriod);
         ValidationContext validationContext = new ValidationContext(null, null, timePeriods);
 
         // when
@@ -91,13 +91,13 @@ class BreaktimeValidatorTest {
         // given
         Place place = createMockPlace(LocalTime.of(12, 0), LocalTime.of(13, 0));
         RoutiePlace routiePlace = createMockRoutiePlace(place);
-        TimePeriod visitPeriod = new TimePeriod(
+        TimePeriod timePeriod = new TimePeriod(
                 routiePlace,
                 LocalDateTime.of(2024, 1, 1, 13, 0),
                 LocalDateTime.of(2024, 1, 1, 14, 0)
         );
         TimePeriods timePeriods = TimePeriods.empty();
-        timePeriods.add(routiePlace, visitPeriod);
+        timePeriods = timePeriods.withAdded(routiePlace, timePeriod);
         ValidationContext validationContext = new ValidationContext(null, null, timePeriods);
 
         // when
@@ -115,13 +115,13 @@ class BreaktimeValidatorTest {
         RoutiePlace routiePlace = createMockRoutiePlace(place);
 
         // TimePeriod가 브레이크 타임과 1분 겹친다.
-        TimePeriod visitPeriod = new TimePeriod(
+        TimePeriod timePeriod = new TimePeriod(
                 routiePlace,
                 LocalDateTime.of(2024, 1, 1, 11, 30),
                 LocalDateTime.of(2024, 1, 1, 12, 1)
         );
         TimePeriods timePeriods = TimePeriods.empty();
-        timePeriods.add(routiePlace, visitPeriod);
+        timePeriods = timePeriods.withAdded(routiePlace, timePeriod);
         ValidationContext validationContext = new ValidationContext(null, null, timePeriods);
 
         // when
@@ -137,13 +137,13 @@ class BreaktimeValidatorTest {
         // given
         Place place = createMockPlace(LocalTime.of(12, 0), LocalTime.of(13, 0));
         RoutiePlace routiePlace = createMockRoutiePlace(place);
-        TimePeriod visitPeriod = new TimePeriod(
+        TimePeriod timePeriod = new TimePeriod(
                 routiePlace,
                 LocalDateTime.of(2024, 1, 1, 12, 30),
                 LocalDateTime.of(2024, 1, 1, 13, 30)
         );
         TimePeriods timePeriods = TimePeriods.empty();
-        timePeriods.add(routiePlace, visitPeriod);
+        timePeriods = timePeriods.withAdded(routiePlace, timePeriod);
         ValidationContext validationContext = new ValidationContext(null, null, timePeriods);
 
         // when
@@ -159,13 +159,13 @@ class BreaktimeValidatorTest {
         // given
         Place place = createMockPlace(LocalTime.of(12, 0), LocalTime.of(13, 0));
         RoutiePlace routiePlace = createMockRoutiePlace(place);
-        TimePeriod visitPeriod = new TimePeriod(
+        TimePeriod timePeriod = new TimePeriod(
                 routiePlace,
                 LocalDateTime.of(2024, 1, 1, 11, 0),
                 LocalDateTime.of(2024, 1, 1, 14, 0)
         );
         TimePeriods timePeriods = TimePeriods.empty();
-        timePeriods.add(routiePlace, visitPeriod);
+        timePeriods = timePeriods.withAdded(routiePlace, timePeriod);
         ValidationContext validationContext = new ValidationContext(null, null, timePeriods);
 
         // when

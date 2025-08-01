@@ -8,6 +8,9 @@ import java.util.TreeMap;
 import routie.routie.domain.RoutiePlace;
 
 public class Routes {
+    private static final Comparator<RoutiePlace> ROUTE_COMPARATOR =
+            Comparator.comparing(RoutiePlace::getSequence);
+
     private final TreeMap<RoutiePlace, Route> routes;
 
     public Routes(final Map<RoutiePlace, Route> routes) {
@@ -19,12 +22,16 @@ public class Routes {
         return new Routes(new TreeMap<>(Comparator.comparing(RoutiePlace::getSequence)));
     }
 
-    public Route getByRoutiePlace(final RoutiePlace routiePlace) {
-        return routes.get(routiePlace);
+    public Routes withAdded(final RoutiePlace routiePlace, final Route route) {
+        Map<RoutiePlace, Route> newRoutes = new TreeMap<>(ROUTE_COMPARATOR);
+        newRoutes.putAll(this.routes);
+        newRoutes.put(routiePlace, route);
+
+        return new Routes(newRoutes);
     }
 
-    public void add(final RoutiePlace routiePlace, final Route route) {
-        routes.put(routiePlace, route);
+    public Route getByRoutiePlace(final RoutiePlace routiePlace) {
+        return routes.get(routiePlace);
     }
 
     public boolean contains(final RoutiePlace routiePlace) {

@@ -7,15 +7,26 @@ import java.util.TreeMap;
 import routie.routie.domain.RoutiePlace;
 
 public class TimePeriods {
+    private static final Comparator<RoutiePlace> ROUTIE_PLACE_COMPARATOR =
+            Comparator.comparing(RoutiePlace::getSequence);
+
     private final TreeMap<RoutiePlace, TimePeriod> timePeriods;
 
     public TimePeriods(final Map<RoutiePlace, TimePeriod> timePeriods) {
-        this.timePeriods = new TreeMap<>(Comparator.comparing(RoutiePlace::getSequence));
+        this.timePeriods = new TreeMap<>(ROUTIE_PLACE_COMPARATOR);
         this.timePeriods.putAll(timePeriods);
     }
 
     public static TimePeriods empty() {
         return new TimePeriods(new TreeMap<>(Comparator.comparing(RoutiePlace::getSequence)));
+    }
+
+    public TimePeriods withAdded(final RoutiePlace routiePlace, final TimePeriod timePeriod) {
+        Map<RoutiePlace, TimePeriod> newTimePeriods = new TreeMap<>(ROUTIE_PLACE_COMPARATOR);
+        newTimePeriods.putAll(this.timePeriods);
+        newTimePeriods.put(routiePlace, timePeriod);
+
+        return new TimePeriods(newTimePeriods);
     }
 
     public TimePeriod getByRoutiePlace(final RoutiePlace place) {

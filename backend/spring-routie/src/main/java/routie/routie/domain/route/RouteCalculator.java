@@ -40,7 +40,7 @@ public class RouteCalculator {
                     distance
             );
 
-            routes.add(from, route);
+            routes = routes.withAdded(from, route);
         }
         return routes;
     }
