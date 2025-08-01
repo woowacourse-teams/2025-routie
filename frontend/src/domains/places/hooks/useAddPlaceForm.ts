@@ -11,11 +11,11 @@ import { getCheckedDaysInEnglish } from './../utils/getCheckedDaysInEnglish';
 const initialFormState: FormState = {
   name: '',
   address: '',
-  stayDurationMinutes: 0,
-  openAt: '10:00',
-  closeAt: '22:00',
-  breakStartAt: '00:00',
-  breakEndAt: '00:00',
+  stayDurationMinutes: -1,
+  openAt: '',
+  closeAt: '',
+  breakStartAt: '',
+  breakEndAt: '',
   closedDayOfWeeks: [],
 };
 

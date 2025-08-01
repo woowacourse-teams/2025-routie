@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import Flex from '@/@common/components/Flex/Flex';
 import Modal, { ModalProps } from '@/@common/components/Modal/Modal';
@@ -7,9 +7,14 @@ import { useRoutieValidateContext } from '@/domains/routie/contexts/useRoutieVal
 import editPlace from '../../apis/editPlace';
 import getPlace from '../../apis/getPlace';
 import { useAddPlaceForm } from '../../hooks/useAddPlaceForm';
+import { usePlaceFormValidation } from '../../hooks/usePlaceFormValidation';
 import { ModalInputContainerStyle } from '../AddPlaceModal/AddPlaceModal.styles';
-import OptionalInfoSection from '../PlaceFormSection/OptionalInfoSection';
-import RequiredInfoSection from '../PlaceFormSection/RequiredInfoSection';
+import AddressInput from '../PlaceFormSection/AddressInput';
+import BreakTimeInputs from '../PlaceFormSection/BreakTimeInputs';
+import BusinessHourInputs from '../PlaceFormSection/BusinessHourInputs';
+import ClosedDaySelector from '../PlaceFormSection/ClosedDaySelector';
+import PlaceNameInput from '../PlaceFormSection/PlaceNameInput';
+import StayDurationInput from '../PlaceFormSection/StayDurationInput';
 
 import EditPlaceModalButtons from './EditPlaceModalButtons';
 import EditPlaceModalHeader from './EditPlaceModalHeader';
@@ -33,6 +38,8 @@ const EditPlaceModal = ({
     resetForm,
   } = useAddPlaceForm();
   const { validateRoutie } = useRoutieValidateContext();
+  const { isEmpty, isValid } = usePlaceFormValidation(form);
+  const [showErrors, setShowErrors] = useState(false);
 
   const initialFormRef = useRef<typeof form | null>(null);
 
@@ -53,6 +60,7 @@ const EditPlaceModal = ({
 
   const handleClose = () => {
     resetForm();
+    setShowErrors(false);
     onClose();
   };
 
@@ -61,6 +69,11 @@ const EditPlaceModal = ({
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (!isValid) {
+      setShowErrors(true);
+
+      return;
+    }
     try {
       const { name, address, ...rest } = form;
 
@@ -79,19 +92,46 @@ const EditPlaceModal = ({
         <Flex direction="column" width="44rem" gap={2}>
           <EditPlaceModalHeader onClose={handleClose} />
           <div css={ModalInputContainerStyle}>
-            <RequiredInfoSection
-              name={form.name}
-              address={form.address}
-              onChange={handleInputChange}
-              disabled={true}
-            />
-          </div>
-          <div css={ModalInputContainerStyle}>
-            <OptionalInfoSection
-              form={form}
-              onChange={handleInputChange}
-              onToggleDay={handleToggleDay}
-            />
+            <Flex
+              direction="column"
+              alignItems="flex-start"
+              width="100%"
+              gap={2}
+            >
+              <PlaceNameInput
+                value={form.name}
+                onChange={handleInputChange}
+                disabled={true}
+              />
+              <AddressInput
+                value={form.address}
+                onChange={handleInputChange}
+                disabled={true}
+              />
+              <StayDurationInput
+                value={form.stayDurationMinutes}
+                onChange={handleInputChange}
+                error={showErrors && isEmpty.stayDurationMinutes}
+              />
+              <BusinessHourInputs
+                openAt={form.openAt}
+                closeAt={form.closeAt}
+                onChange={handleInputChange}
+                error={{
+                  openAt: showErrors && isEmpty.openAt,
+                  closeAt: showErrors && isEmpty.closeAt,
+                }}
+              />
+              <BreakTimeInputs
+                breakStartAt={form.breakStartAt}
+                breakEndAt={form.breakEndAt}
+                onChange={handleInputChange}
+              />
+              <ClosedDaySelector
+                closedDayOfWeeks={form.closedDayOfWeeks}
+                onToggleDay={handleToggleDay}
+              />
+            </Flex>
           </div>
           <EditPlaceModalButtons disabled={!isFormChanged} />
         </Flex>
