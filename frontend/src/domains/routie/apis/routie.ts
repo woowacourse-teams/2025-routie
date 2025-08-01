@@ -113,8 +113,4 @@ export const deleteRoutiePlace = async (placeId: number) => {
   if (!response.ok) {
     throw new Error('루티에 장소 제거 실패');
   }
-
-  const data = response;
-
-  return data;
 };
