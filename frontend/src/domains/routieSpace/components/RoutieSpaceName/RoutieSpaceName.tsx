@@ -43,7 +43,13 @@ const RoutieSpaceName = () => {
   };
 
   return (
-    <Flex alignItems="center" justifyContent="space-between" width="100%">
+    <Flex
+      alignItems="center"
+      justifyContent="space-between"
+      width="100%"
+      margin={0.4}
+      gap={3}
+    >
       {isEditing ? (
         <input
           id="routie-space-name"
@@ -54,7 +60,14 @@ const RoutieSpaceName = () => {
           onChange={handleChange}
         />
       ) : (
-        <Text variant="title">{name}</Text>
+        <Flex
+          alignItems="center"
+          justifyContent="flex-start"
+          padding={0.4}
+          width="100%"
+        >
+          <Text variant="title">{name}</Text>
+        </Flex>
       )}
       <IconButton icon={editIcon} onClick={handleClick} />
     </Flex>
