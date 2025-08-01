@@ -13,20 +13,18 @@ const RoutieSection = () => {
 
   useEffect(() => {
     if (!routiePlaces) return;
+    if (routiePlaces.length <= 0) return;
 
     const isSequenceChanged = routiePlaces.some(
       (item, index) => item.sequence !== index + 1,
     );
 
-    const updateRoutiePlaces = async () => {
-      if (routiePlaces.length > 0) {
-        await validateRoutie();
-      }
-    };
+    if (!isSequenceChanged) return;
 
-    if (isSequenceChanged) {
-      updateRoutiePlaces();
-    }
+    const updateRoutiePlaces = async () => {
+      await validateRoutie();
+    };
+    updateRoutiePlaces();
   }, [routiePlaces]);
 
   return routiePlaces.map((place, index) => (
