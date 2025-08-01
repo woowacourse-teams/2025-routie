@@ -30,7 +30,7 @@ const RoutieSection = () => {
   return routiePlaces.map((place, index) => (
     <div key={place.placeId}>
       <div {...getDragProps(index)}>
-        <RoutiePlaceCard placeId={place.placeId} />
+        <RoutiePlaceCard routie={place} />
       </div>
 
       {routiePlaces.length - 1 !== index && routes[index] && (
