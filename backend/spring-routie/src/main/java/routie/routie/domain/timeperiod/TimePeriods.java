@@ -40,6 +40,6 @@ public class TimePeriods {
     }
 
     public Set<RoutiePlace> routiePlaces() {
-        return timePeriods.keySet();
+        return Set.copyOf(timePeriods.keySet());
     }
 }

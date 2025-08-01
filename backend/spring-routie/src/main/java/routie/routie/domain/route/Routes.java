@@ -46,6 +46,6 @@ public class Routes {
 
         routes.values().forEach(route -> orderedRoutiePlaces.add(route.to()));
 
-        return orderedRoutiePlaces;
+        return List.copyOf(orderedRoutiePlaces);
     }
 }
