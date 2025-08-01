@@ -27,9 +27,9 @@ type RoutieContextType = {
 const RoutieContext = createContext<RoutieContextType>({
   routiePlaces: [],
   handleAddRoutie: async () => {},
-  handleDeleteRoutie: () => {},
+  handleDeleteRoutie: async () => {},
   routes: [],
-  handleChangeRoutie: () => {},
+  handleChangeRoutie: async () => {},
   refetchRoutieData: async () => {},
   routieIdList: [],
 });
