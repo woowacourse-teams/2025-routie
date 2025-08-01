@@ -24,7 +24,6 @@ const PlaceNameInput = ({
         onChange={(value) => onChange('name', value)}
         label="이름"
         placeholder="장소의 이름을 입력해주세요"
-        // required={required}
         variant={inputVariant}
       />
     </Flex>
