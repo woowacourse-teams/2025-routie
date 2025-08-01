@@ -1,15 +1,9 @@
 import { useEffect } from 'react';
 
-import Flex from '@/@common/components/Flex/Flex';
-import Pill from '@/@common/components/Pill/Pill';
-import Text from '@/@common/components/Text/Text';
-import theme from '@/styles/theme';
-
-import { MOVING_EN_TO_KR } from '../../constants/translate';
 import { useRoutieContext } from '../../contexts/useRoutieContext';
 import { useRoutieValidateContext } from '../../contexts/useRoutieValidateContext';
 import { useCardDrag } from '../../hooks/useCardDrag';
-import { convertMetersToKilometers } from '../../utils/format';
+import RoutieRoutes from '../Route/RoutieRoutes';
 import RoutiePlaceCard from '../RoutiePlaceCard/RoutiePlaceCard';
 
 const RoutieSection = () => {
@@ -42,17 +36,7 @@ const RoutieSection = () => {
       </div>
 
       {routiePlaces.length - 1 !== index && routes[index] && (
-        <Flex key={place.id + index} gap={1}>
-          <Text variant="description">
-            {MOVING_EN_TO_KR[routes[index].movingStrategy]}{' '}
-            {routes[index].duration}분
-          </Text>
-          <Pill type="distance">
-            <Text variant="description" color={theme.colors.purple[400]}>
-              {convertMetersToKilometers(routes[index].distance)}km
-            </Text>
-          </Pill>
-        </Flex>
+        <RoutieRoutes place={place} routes={routes[index]} />
       )}
     </div>
   ));

@@ -101,7 +101,6 @@ const Sidebar = () => {
           <Text variant="subTitle">내 동선</Text>
           <Flex
             direction="column"
-            gap={1}
             justifyContent="flex-start"
             height="calc(100dvh - 36rem)"
             style={{
