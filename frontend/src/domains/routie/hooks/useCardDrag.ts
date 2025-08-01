@@ -2,7 +2,7 @@ import { useRef } from 'react';
 
 export const useCardDrag = <T>(
   items: T[],
-  setItems: (updated: T[]) => void
+  setItems: (updated: T[]) => void,
 ) => {
   const dragItem = useRef<number | null>(null);
   const dragOverItem = useRef<number | null>(null);
@@ -37,5 +37,5 @@ export const useCardDrag = <T>(
     onDrop: handleDrop,
   });
 
-  return getDragProps
+  return getDragProps;
 };

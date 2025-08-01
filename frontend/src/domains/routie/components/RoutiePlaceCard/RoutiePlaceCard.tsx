@@ -10,18 +10,12 @@ import trashIcon from '@/assets/icons/trash.svg';
 import theme from '@/styles/theme';
 
 import { getDetailPlace } from '../../apis/routie';
+import { useRoutieContext } from '../../contexts/useRoutieContext';
 import { RoutiePlace } from '../../types/routie.types';
 
-const RoutiePlaceCard = ({
-  placeId,
-  handleDelete,
-  onPlaceChange,
-}: {
-  placeId: number;
-  handleDelete: () => void;
-  onPlaceChange?: () => Promise<void>;
-}) => {
+const RoutiePlaceCard = ({ placeId }: { placeId: number }) => {
   const [place, setPlace] = useState<RoutiePlace>();
+  const { handleDeleteRoutie } = useRoutieContext();
 
   useEffect(() => {
     const fetchDetailPlace = async () => {
@@ -29,7 +23,7 @@ const RoutiePlaceCard = ({
       setPlace(detailPlace);
     };
     fetchDetailPlace();
-  }, [placeId, onPlaceChange]);
+  }, [placeId]);
 
   return (
     place && (
@@ -51,7 +45,7 @@ const RoutiePlaceCard = ({
                 <IconButton
                   icon={trashIcon}
                   variant="delete"
-                  onClick={handleDelete}
+                  onClick={() => handleDeleteRoutie(placeId)}
                 />
               </Flex>
             </Flex>
