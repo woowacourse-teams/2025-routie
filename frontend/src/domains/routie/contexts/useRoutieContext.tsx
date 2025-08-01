@@ -75,8 +75,12 @@ export const RoutieProvider = ({ children }: { children: React.ReactNode }) => {
 
   const handleChangeRoutie = useCallback(
     async (sortedPlaces: Routie[]) => {
-      await editRoutieSequence(sortedPlaces);
-      setRoutiePlaces(sortedPlaces);
+      try {
+        await editRoutieSequence(sortedPlaces);
+        setRoutiePlaces(sortedPlaces);
+      } catch (error) {
+        console.error(error);
+      }
     },
     [routiePlaces],
   );
