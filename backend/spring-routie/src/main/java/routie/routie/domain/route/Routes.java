@@ -32,7 +32,7 @@ public class Routes {
     }
 
     public List<Route> orderedList() {
-        return new ArrayList<>(routes.values());
+        return List.copyOf(routes.values());
     }
 
     public List<RoutiePlace> orderedRoutiePlaces() {
