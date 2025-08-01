@@ -10,16 +10,14 @@ type HomeButtonProps = {
 
 const HomeButton = ({ icon, onClick, ...props }: HomeButtonProps) => {
   return (
-    <>
-      <button onClick={onClick} {...props}>
-        <Flex gap={1}>
-          <img src={icon} />
-          <Text variant="title" color={theme.colors.purple[400]}>
-            Routie
-          </Text>
-        </Flex>
-      </button>
-    </>
+    <button onClick={onClick} {...props}>
+      <Flex gap={1}>
+        <img src={icon} />
+        <Text variant="title" color={theme.colors.purple[400]}>
+          Routie
+        </Text>
+      </Flex>
+    </button>
   );
 };
 
