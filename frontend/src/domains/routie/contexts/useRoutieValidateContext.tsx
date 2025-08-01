@@ -5,7 +5,7 @@ import useRoutieValidate, {
 } from '../hooks/useRoutieValidate';
 
 const RoutieValidateContext = createContext<UseRoutieValidateReturn>({
-  isValidateActive: false,
+  isValidateActive: true,
   routieTime: {
     startDateTime: '',
     endDateTime: '',
