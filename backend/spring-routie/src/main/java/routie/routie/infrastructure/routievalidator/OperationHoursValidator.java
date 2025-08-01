@@ -1,34 +1,31 @@
-package routie.routie.infrastructure.routievaliditycalculator;
+package routie.routie.infrastructure.routievalidator;
 
 import java.time.LocalTime;
-import java.util.Map;
 import org.springframework.stereotype.Component;
 import routie.place.domain.Place;
-import routie.routie.domain.RoutiePlace;
-import routie.routie.domain.ValidationStrategy;
-import routie.routie.domain.ValidityCalculator;
+import routie.routie.domain.routievalidator.RoutieValidator;
+import routie.routie.domain.routievalidator.ValidationContext;
+import routie.routie.domain.routievalidator.ValidationStrategy;
 import routie.routie.domain.timeperiod.TimePeriod;
 
 @Component
-public class OperationHoursValidityCalculator implements ValidityCalculator {
+public class OperationHoursValidator implements RoutieValidator {
     @Override
     public boolean supportsStrategy(final ValidationStrategy validationStrategy) {
         return validationStrategy == ValidationStrategy.IS_WITHIN_OPERATION_HOURS;
     }
 
     @Override
-    public boolean calculateValidity(
-            final Map<RoutiePlace, TimePeriod> timePeriodByRoutiePlace,
+    public boolean isValid(
+            final ValidationContext validationContext,
             final ValidationStrategy validationStrategy
     ) {
-        return timePeriodByRoutiePlace.entrySet().stream()
-                .allMatch(entry -> isWithinBusinessHours(
-                        entry.getKey().getPlace(),
-                        entry.getValue()
-                ));
+        return validationContext.timePeriods().orderedList().stream()
+                .allMatch(this::isWithinBusinessHours);
     }
 
-    private boolean isWithinBusinessHours(final Place place, final TimePeriod timePeriod) {
+    private boolean isWithinBusinessHours(final TimePeriod timePeriod) {
+        Place place = timePeriod.routiePlace().getPlace();
 
         final LocalTime openAt = place.getBusinessHour().getOpenAt();
         final LocalTime closeAt = place.getBusinessHour().getCloseAt();

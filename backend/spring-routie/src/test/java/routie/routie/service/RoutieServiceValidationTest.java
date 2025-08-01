@@ -15,7 +15,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 import routie.place.domain.Place;
 import routie.place.repository.PlaceRepository;
-import routie.routie.controller.dto.response.RoutieTimeValidationResponse;
+import routie.routie.controller.dto.response.RoutieValidationResponse;
 import routie.routie.domain.Routie;
 import routie.routie.domain.RoutiePlace;
 import routie.routiespace.domain.RoutieSpace;
@@ -85,7 +85,7 @@ class RoutieServiceValidationTest {
         LocalDateTime endTime = LocalDateTime.of(2025, 7, 29, 18, 0);
 
         // when
-        RoutieTimeValidationResponse response = routieService.validateRoutie(routieSpace.getIdentifier(), startTime,
+        RoutieValidationResponse response = routieService.validateRoutie(routieSpace.getIdentifier(), startTime,
                 endTime);
 
         // then
@@ -100,7 +100,7 @@ class RoutieServiceValidationTest {
         LocalDateTime endTime = LocalDateTime.of(2025, 7, 29, 11, 0);
 
         // when
-        RoutieTimeValidationResponse response = routieService.validateRoutie(routieSpace.getIdentifier(), startTime,
+        RoutieValidationResponse response = routieService.validateRoutie(routieSpace.getIdentifier(), startTime,
                 endTime);
 
         // then
@@ -115,7 +115,7 @@ class RoutieServiceValidationTest {
         LocalDateTime endTime = LocalDateTime.of(2025, 7, 29, 18, 0);
 
         // when
-        RoutieTimeValidationResponse response = routieService.validateRoutie(routieSpace.getIdentifier(), startTime,
+        RoutieValidationResponse response = routieService.validateRoutie(routieSpace.getIdentifier(), startTime,
                 endTime);
 
         // then
@@ -130,7 +130,7 @@ class RoutieServiceValidationTest {
         LocalDateTime endTime = LocalDateTime.of(2025, 7, 28, 18, 0);
 
         // when
-        RoutieTimeValidationResponse response = routieService.validateRoutie(routieSpace.getIdentifier(), startTime,
+        RoutieValidationResponse response = routieService.validateRoutie(routieSpace.getIdentifier(), startTime,
                 endTime);
 
         // then
@@ -146,7 +146,7 @@ class RoutieServiceValidationTest {
         LocalDateTime endTime = LocalDateTime.of(2025, 7, 29, 20, 0);
 
         // when
-        RoutieTimeValidationResponse response = routieService.validateRoutie(routieSpace.getIdentifier(), startTime,
+        RoutieValidationResponse response = routieService.validateRoutie(routieSpace.getIdentifier(), startTime,
                 endTime);
 
         // then
