@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef } from 'react';
 
 import Flex from '@/@common/components/Flex/Flex';
 import Modal, { ModalProps } from '@/@common/components/Modal/Modal';
@@ -41,12 +41,15 @@ const EditPlaceModal = ({
   const { isEmpty, isValid } = usePlaceFormValidation(form);
   const [showErrors, setShowErrors] = useState(false);
 
+  const initialFormRef = useRef<typeof form | null>(null);
+
   useEffect(() => {
     if (!isOpen) return;
     const fetchData = async () => {
       try {
         const initialData = await getPlace(id);
         initializeForm(initialData);
+        initialFormRef.current = { ...initialData };
       } catch (error) {
         console.error('장소 데이터 조회 실패:', error);
       }
@@ -60,6 +63,9 @@ const EditPlaceModal = ({
     setShowErrors(false);
     onClose();
   };
+
+  const isFormChanged =
+    JSON.stringify(form) !== JSON.stringify(initialFormRef.current);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -127,7 +133,7 @@ const EditPlaceModal = ({
               />
             </Flex>
           </div>
-          <EditPlaceModalButtons />
+          <EditPlaceModalButtons disabled={!isFormChanged} />
         </Flex>
       </form>
     </Modal>

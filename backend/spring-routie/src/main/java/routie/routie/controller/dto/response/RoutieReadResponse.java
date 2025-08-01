@@ -3,12 +3,12 @@ package routie.routie.controller.dto.response;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Map;
 import routie.place.domain.MovingStrategy;
 import routie.routie.domain.Routie;
 import routie.routie.domain.RoutiePlace;
 import routie.routie.domain.route.Route;
 import routie.routie.domain.timeperiod.TimePeriod;
+import routie.routie.domain.timeperiod.TimePeriods;
 
 public record RoutieReadResponse(
         List<RoutiePlaceResponse> routiePlaces,
@@ -17,13 +17,13 @@ public record RoutieReadResponse(
     public static RoutieReadResponse from(
             final Routie routie,
             final List<Route> routes,
-            final Map<RoutiePlace, TimePeriod> timePeriodByRoutiePlace
+            final TimePeriods timePeriods
     ) {
         return new RoutieReadResponse(
                 routie.getRoutiePlaces().stream()
                         .map(routiePlace -> RoutiePlaceResponse.from(
                                 routiePlace,
-                                timePeriodByRoutiePlace == null ? null : timePeriodByRoutiePlace.get(routiePlace)
+                                timePeriods == null ? null : timePeriods.getBy(routiePlace)
                         ))
                         .toList(),
                 routes.stream()
@@ -60,8 +60,8 @@ public record RoutieReadResponse(
 
         private static RouteResponse from(final Route route) {
             return new RouteResponse(
-                    route.fromSequence(),
-                    route.toSequence(),
+                    route.from().getSequence(),
+                    route.to().getSequence(),
                     route.movingStrategy(),
                     route.duration(),
                     route.distance()

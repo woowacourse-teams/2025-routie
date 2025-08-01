@@ -1,4 +1,4 @@
-package routie.routie.infrastructure.routievaliditycalculator;
+package routie.routie.infrastructure.routievalidator;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
@@ -11,12 +11,14 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import routie.place.domain.Place;
 import routie.routie.domain.RoutiePlace;
-import routie.routie.domain.ValidationStrategy;
+import routie.routie.domain.routievalidator.ValidationContext;
+import routie.routie.domain.routievalidator.ValidationStrategy;
 import routie.routie.domain.timeperiod.TimePeriod;
+import routie.routie.domain.timeperiod.TimePeriods;
 
-class OperationHoursValidityCalculatorTest {
+class OperationHoursValidatorTest {
 
-    private final OperationHoursValidityCalculator calculator = new OperationHoursValidityCalculator();
+    private final OperationHoursValidator calculator = new OperationHoursValidator();
 
     @Test
     @DisplayName("영업시간이 설정되지 않은 경우 항상 유효하다")
@@ -25,13 +27,15 @@ class OperationHoursValidityCalculatorTest {
         Place place = createMockPlace(null, null);
         RoutiePlace routiePlace = createMockRoutiePlace(place);
         TimePeriod timePeriod = new TimePeriod(
+                routiePlace,
                 LocalDateTime.of(2024, 1, 1, 10, 0),
                 LocalDateTime.of(2024, 1, 1, 11, 0)
         );
-        Map<RoutiePlace, TimePeriod> timePeriodMap = Map.of(routiePlace, timePeriod);
+        TimePeriods timePeriods = new TimePeriods(Map.of(routiePlace, timePeriod));
+        ValidationContext validationContext = new ValidationContext(null, null, timePeriods);
 
         // when
-        boolean result = calculator.calculateValidity(timePeriodMap, ValidationStrategy.IS_WITHIN_OPERATION_HOURS);
+        boolean result = calculator.isValid(validationContext, ValidationStrategy.IS_WITHIN_OPERATION_HOURS);
 
         // then
         assertThat(result).isTrue();
@@ -44,13 +48,15 @@ class OperationHoursValidityCalculatorTest {
         Place place = createMockPlace(LocalTime.of(9, 0), LocalTime.of(18, 0));
         RoutiePlace routiePlace = createMockRoutiePlace(place);
         TimePeriod timePeriod = new TimePeriod(
+                routiePlace,
                 LocalDateTime.of(2024, 1, 1, 9, 0),
                 LocalDateTime.of(2024, 1, 1, 10, 0)
         );
-        Map<RoutiePlace, TimePeriod> timePeriodMap = Map.of(routiePlace, timePeriod);
+        TimePeriods timePeriods = new TimePeriods(Map.of(routiePlace, timePeriod));
+        ValidationContext validationContext = new ValidationContext(null, null, timePeriods);
 
         // when
-        boolean result = calculator.calculateValidity(timePeriodMap, ValidationStrategy.IS_WITHIN_OPERATION_HOURS);
+        boolean result = calculator.isValid(validationContext, ValidationStrategy.IS_WITHIN_OPERATION_HOURS);
 
         // then
         assertThat(result).isTrue();
@@ -63,13 +69,15 @@ class OperationHoursValidityCalculatorTest {
         Place place = createMockPlace(LocalTime.of(9, 0), LocalTime.of(18, 0));
         RoutiePlace routiePlace = createMockRoutiePlace(place);
         TimePeriod timePeriod = new TimePeriod(
+                routiePlace,
                 LocalDateTime.of(2024, 1, 1, 17, 0),
                 LocalDateTime.of(2024, 1, 1, 18, 0)
         );
-        Map<RoutiePlace, TimePeriod> timePeriodMap = Map.of(routiePlace, timePeriod);
+        TimePeriods timePeriods = new TimePeriods(Map.of(routiePlace, timePeriod));
+        ValidationContext validationContext = new ValidationContext(null, null, timePeriods);
 
         // when
-        boolean result = calculator.calculateValidity(timePeriodMap, ValidationStrategy.IS_WITHIN_OPERATION_HOURS);
+        boolean result = calculator.isValid(validationContext, ValidationStrategy.IS_WITHIN_OPERATION_HOURS);
 
         // then
         assertThat(result).isTrue();
@@ -82,13 +90,15 @@ class OperationHoursValidityCalculatorTest {
         Place place = createMockPlace(LocalTime.of(9, 0), LocalTime.of(18, 0));
         RoutiePlace routiePlace = createMockRoutiePlace(place);
         TimePeriod timePeriod = new TimePeriod(
+                routiePlace,
                 LocalDateTime.of(2024, 1, 1, 10, 0),
                 LocalDateTime.of(2024, 1, 1, 17, 0)
         );
-        Map<RoutiePlace, TimePeriod> timePeriodMap = Map.of(routiePlace, timePeriod);
+        TimePeriods timePeriods = new TimePeriods(Map.of(routiePlace, timePeriod));
+        ValidationContext validationContext = new ValidationContext(null, null, timePeriods);
 
         // when
-        boolean result = calculator.calculateValidity(timePeriodMap, ValidationStrategy.IS_WITHIN_OPERATION_HOURS);
+        boolean result = calculator.isValid(validationContext, ValidationStrategy.IS_WITHIN_OPERATION_HOURS);
 
         // then
         assertThat(result).isTrue();
@@ -101,13 +111,15 @@ class OperationHoursValidityCalculatorTest {
         Place place = createMockPlace(LocalTime.of(9, 0), LocalTime.of(18, 0));
         RoutiePlace routiePlace = createMockRoutiePlace(place);
         TimePeriod timePeriod = new TimePeriod(
+                routiePlace,
                 LocalDateTime.of(2024, 1, 1, 8, 59),
                 LocalDateTime.of(2024, 1, 1, 10, 0)
         );
-        Map<RoutiePlace, TimePeriod> timePeriodMap = Map.of(routiePlace, timePeriod);
+        TimePeriods timePeriods = new TimePeriods(Map.of(routiePlace, timePeriod));
+        ValidationContext validationContext = new ValidationContext(null, null, timePeriods);
 
         // when
-        boolean result = calculator.calculateValidity(timePeriodMap, ValidationStrategy.IS_WITHIN_OPERATION_HOURS);
+        boolean result = calculator.isValid(validationContext, ValidationStrategy.IS_WITHIN_OPERATION_HOURS);
 
         // then
         assertThat(result).isFalse();
@@ -120,13 +132,15 @@ class OperationHoursValidityCalculatorTest {
         Place place = createMockPlace(LocalTime.of(9, 0), LocalTime.of(18, 0));
         RoutiePlace routiePlace = createMockRoutiePlace(place);
         TimePeriod timePeriod = new TimePeriod(
+                routiePlace,
                 LocalDateTime.of(2024, 1, 1, 17, 0),
                 LocalDateTime.of(2024, 1, 1, 18, 1)
         );
-        Map<RoutiePlace, TimePeriod> timePeriodMap = Map.of(routiePlace, timePeriod);
+        TimePeriods timePeriods = new TimePeriods(Map.of(routiePlace, timePeriod));
+        ValidationContext validationContext = new ValidationContext(null, null, timePeriods);
 
         // when
-        boolean result = calculator.calculateValidity(timePeriodMap, ValidationStrategy.IS_WITHIN_OPERATION_HOURS);
+        boolean result = calculator.isValid(validationContext, ValidationStrategy.IS_WITHIN_OPERATION_HOURS);
 
         // then
         assertThat(result).isFalse();
@@ -139,13 +153,15 @@ class OperationHoursValidityCalculatorTest {
         Place place = createMockPlace(LocalTime.of(9, 0), LocalTime.of(18, 0));
         RoutiePlace routiePlace = createMockRoutiePlace(place);
         TimePeriod timePeriod = new TimePeriod(
+                routiePlace,
                 LocalDateTime.of(2024, 1, 1, 8, 30),
                 LocalDateTime.of(2024, 1, 1, 10, 0)
         );
-        Map<RoutiePlace, TimePeriod> timePeriodMap = Map.of(routiePlace, timePeriod);
+        TimePeriods timePeriods = new TimePeriods(Map.of(routiePlace, timePeriod));
+        ValidationContext validationContext = new ValidationContext(null, null, timePeriods);
 
         // when
-        boolean result = calculator.calculateValidity(timePeriodMap, ValidationStrategy.IS_WITHIN_OPERATION_HOURS);
+        boolean result = calculator.isValid(validationContext, ValidationStrategy.IS_WITHIN_OPERATION_HOURS);
 
         // then
         assertThat(result).isFalse();
@@ -158,13 +174,15 @@ class OperationHoursValidityCalculatorTest {
         Place place = createMockPlace(LocalTime.of(9, 0), LocalTime.of(18, 0));
         RoutiePlace routiePlace = createMockRoutiePlace(place);
         TimePeriod timePeriod = new TimePeriod(
+                routiePlace,
                 LocalDateTime.of(2024, 1, 1, 17, 30),
                 LocalDateTime.of(2024, 1, 1, 19, 0)
         );
-        Map<RoutiePlace, TimePeriod> timePeriodMap = Map.of(routiePlace, timePeriod);
+        TimePeriods timePeriods = new TimePeriods(Map.of(routiePlace, timePeriod));
+        ValidationContext validationContext = new ValidationContext(null, null, timePeriods);
 
         // when
-        boolean result = calculator.calculateValidity(timePeriodMap, ValidationStrategy.IS_WITHIN_OPERATION_HOURS);
+        boolean result = calculator.isValid(validationContext, ValidationStrategy.IS_WITHIN_OPERATION_HOURS);
 
         // then
         assertThat(result).isFalse();
@@ -177,13 +195,15 @@ class OperationHoursValidityCalculatorTest {
         Place place = createMockPlace(LocalTime.of(9, 0), LocalTime.of(18, 0));
         RoutiePlace routiePlace = createMockRoutiePlace(place);
         TimePeriod timePeriod = new TimePeriod(
+                routiePlace,
                 LocalDateTime.of(2024, 1, 1, 9, 0),
                 LocalDateTime.of(2024, 1, 1, 18, 0)
         );
-        Map<RoutiePlace, TimePeriod> timePeriodMap = Map.of(routiePlace, timePeriod);
+        TimePeriods timePeriods = new TimePeriods(Map.of(routiePlace, timePeriod));
+        ValidationContext validationContext = new ValidationContext(null, null, timePeriods);
 
         // when
-        boolean result = calculator.calculateValidity(timePeriodMap, ValidationStrategy.IS_WITHIN_OPERATION_HOURS);
+        boolean result = calculator.isValid(validationContext, ValidationStrategy.IS_WITHIN_OPERATION_HOURS);
 
         // then
         assertThat(result).isTrue();
@@ -196,13 +216,15 @@ class OperationHoursValidityCalculatorTest {
         Place place = createMockPlace(LocalTime.of(9, 0), LocalTime.of(18, 0));
         RoutiePlace routiePlace = createMockRoutiePlace(place);
         TimePeriod timePeriod = new TimePeriod(
+                routiePlace,
                 LocalDateTime.of(2024, 1, 1, 6, 0),
                 LocalDateTime.of(2024, 1, 1, 7, 0)
         );
-        Map<RoutiePlace, TimePeriod> timePeriodMap = Map.of(routiePlace, timePeriod);
+        TimePeriods timePeriods = new TimePeriods(Map.of(routiePlace, timePeriod));
+        ValidationContext validationContext = new ValidationContext(null, null, timePeriods);
 
         // when
-        boolean result = calculator.calculateValidity(timePeriodMap, ValidationStrategy.IS_WITHIN_OPERATION_HOURS);
+        boolean result = calculator.isValid(validationContext, ValidationStrategy.IS_WITHIN_OPERATION_HOURS);
 
         // then
         assertThat(result).isFalse();
