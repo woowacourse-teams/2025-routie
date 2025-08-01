@@ -3,7 +3,6 @@ package routie.routie.domain.timeperiod;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.TreeMap;
 import routie.routie.domain.RoutiePlace;
 
@@ -39,7 +38,7 @@ public class TimePeriods {
         return List.copyOf(timePeriods.values());
     }
 
-    public Set<RoutiePlace> routiePlaces() {
-        return Set.copyOf(timePeriods.keySet());
+    public List<RoutiePlace> routiePlaces() {
+        return List.copyOf(timePeriods.keySet());
     }
 }
