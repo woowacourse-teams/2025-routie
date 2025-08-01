@@ -27,8 +27,12 @@ export const PlaceCard = ({ selected, ...props }: PlaceCardProps) => {
   const { handleAddRoutie } = useRoutieContext();
   const { openModal, closeModal, modalOpen } = useModal();
 
-  const handlePlaceSelect = () => {
-    handleAddRoutie(props.id);
+  const handlePlaceSelect = async () => {
+    try {
+      await handleAddRoutie(props.id);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const handleDelete = async () => {
