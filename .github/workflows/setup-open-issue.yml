@@ -219,7 +219,8 @@ jobs:
             const titleMap = {
               '[EPIC]': 'epic',
               '[STORY]': 'story',
-              '[TASK]': 'task'
+              '[TASK]': 'task',
+              '[BUG]': 'bug'
             };
             const prefix = Object.keys(titleMap).find(p => title.startsWith(p));
             if(prefix) {
