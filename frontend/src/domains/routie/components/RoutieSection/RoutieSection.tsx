@@ -41,7 +41,7 @@ const RoutieSection = () => {
         <RoutiePlaceCard placeId={place.placeId} />
       </div>
 
-      {routiePlaces.length - 1 !== index && routes[index] && routes && (
+      {routiePlaces.length - 1 !== index && routes[index] && (
         <Flex key={place.id + index} gap={1}>
           <Text variant="description">
             {MOVING_EN_TO_KR[routes[index].movingStrategy]}{' '}
