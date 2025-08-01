@@ -17,10 +17,10 @@ import { Routes, Routie } from '../types/routie.types';
 type RoutieContextType = {
   routiePlaces: Routie[];
   routes: Routes[];
-  refetchRoutieData: () => void;
-  handleAddRoutie: (id: number) => void;
-  handleDeleteRoutie: (id: number) => void;
-  handleChangeRoutie: (sortedPlaces: Routie[]) => void;
+  refetchRoutieData: () => Promise<void>;
+  handleAddRoutie: (id: number) => Promise<void>;
+  handleDeleteRoutie: (id: number) => Promise<void>;
+  handleChangeRoutie: (sortedPlaces: Routie[]) => Promise<void>;
   routieIdList: number[];
 };
 
