@@ -1,6 +1,6 @@
 package routie.routie.controller.dto.response;
 
-public record RoutieTimeValidationResponse(
+public record RoutieValidationResponse(
         boolean isValid
 ) {
 }

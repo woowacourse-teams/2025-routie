@@ -18,7 +18,7 @@ import routie.routie.controller.dto.request.RoutiePlaceCreateRequest;
 import routie.routie.controller.dto.request.RoutieUpdateRequest;
 import routie.routie.controller.dto.response.RoutiePlaceCreateResponse;
 import routie.routie.controller.dto.response.RoutieReadResponse;
-import routie.routie.controller.dto.response.RoutieTimeValidationResponse;
+import routie.routie.controller.dto.response.RoutieValidationResponse;
 import routie.routie.service.RoutieService;
 
 @RestController
@@ -49,17 +49,17 @@ public class RoutieController {
     }
 
     @GetMapping("/validity")
-    public ResponseEntity<RoutieTimeValidationResponse> validateRoutieTime(
+    public ResponseEntity<RoutieValidationResponse> validateRoutieTime(
             @PathVariable final String routieSpaceIdentifier,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) final LocalDateTime startDateTime,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) final LocalDateTime endDateTime
     ) {
-        RoutieTimeValidationResponse routieTimeValidationResponse = routieService.validateRoutie(
+        RoutieValidationResponse routieValidationResponse = routieService.validateRoutie(
                 routieSpaceIdentifier,
                 startDateTime,
                 endDateTime
         );
-        return ResponseEntity.ok(routieTimeValidationResponse);
+        return ResponseEntity.ok(routieValidationResponse);
     }
 
     @PatchMapping

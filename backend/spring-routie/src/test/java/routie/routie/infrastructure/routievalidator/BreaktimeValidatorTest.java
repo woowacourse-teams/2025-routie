@@ -1,4 +1,4 @@
-package routie.routie.infrastructure.routievaliditycalculator;
+package routie.routie.infrastructure.routievalidator;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
@@ -6,17 +6,18 @@ import static org.mockito.Mockito.when;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.Map;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import routie.place.domain.Place;
 import routie.routie.domain.RoutiePlace;
-import routie.routie.domain.ValidationStrategy;
+import routie.routie.domain.routievalidator.ValidationContext;
+import routie.routie.domain.routievalidator.ValidationStrategy;
 import routie.routie.domain.timeperiod.TimePeriod;
+import routie.routie.domain.timeperiod.TimePeriods;
 
-class BreaktimeValidityCalculatorTest {
+class BreaktimeValidatorTest {
 
-    private final BreaktimeValidityCalculator calculator = new BreaktimeValidityCalculator();
+    private final BreaktimeValidator calculator = new BreaktimeValidator();
 
     @Test
     @DisplayName("브레이크 타임이 없는 경우 항상 true를 반환한다")
@@ -25,13 +26,16 @@ class BreaktimeValidityCalculatorTest {
         Place placeWithNoBreaktime = createMockPlace(null, null);
         RoutiePlace routiePlace = createMockRoutiePlace(placeWithNoBreaktime);
         TimePeriod visitPeriod = new TimePeriod(
+                routiePlace,
                 LocalDateTime.of(2024, 1, 1, 12, 0),
                 LocalDateTime.of(2024, 1, 1, 13, 0)
         );
-        Map<RoutiePlace, TimePeriod> timePeriodMap = Map.of(routiePlace, visitPeriod);
+        TimePeriods timePeriods = TimePeriods.empty();
+        timePeriods.add(routiePlace, visitPeriod);
+        ValidationContext validationContext = new ValidationContext(null, null, timePeriods);
 
         // when
-        boolean result = calculator.calculateValidity(timePeriodMap, ValidationStrategy.IS_NOT_DURING_BREAKTIME);
+        boolean result = calculator.isValid(validationContext, ValidationStrategy.IS_NOT_DURING_BREAKTIME);
 
         // then
         assertThat(result).isTrue();
@@ -44,13 +48,16 @@ class BreaktimeValidityCalculatorTest {
         Place place = createMockPlace(LocalTime.of(12, 0), LocalTime.of(13, 0));
         RoutiePlace routiePlace = createMockRoutiePlace(place);
         TimePeriod visitPeriod = new TimePeriod(
+                routiePlace,
                 LocalDateTime.of(2024, 1, 1, 11, 0),
                 LocalDateTime.of(2024, 1, 1, 11, 59)
         );
-        Map<RoutiePlace, TimePeriod> timePeriodMap = Map.of(routiePlace, visitPeriod);
+        TimePeriods timePeriods = TimePeriods.empty();
+        timePeriods.add(routiePlace, visitPeriod);
+        ValidationContext validationContext = new ValidationContext(null, null, timePeriods);
 
         // when
-        boolean result = calculator.calculateValidity(timePeriodMap, ValidationStrategy.IS_NOT_DURING_BREAKTIME);
+        boolean result = calculator.isValid(validationContext, ValidationStrategy.IS_NOT_DURING_BREAKTIME);
 
         // then
         assertThat(result).isTrue();
@@ -63,13 +70,16 @@ class BreaktimeValidityCalculatorTest {
         Place place = createMockPlace(LocalTime.of(12, 0), LocalTime.of(13, 0));
         RoutiePlace routiePlace = createMockRoutiePlace(place);
         TimePeriod visitPeriod = new TimePeriod(
+                routiePlace,
                 LocalDateTime.of(2024, 1, 1, 11, 0),
                 LocalDateTime.of(2024, 1, 1, 12, 0)
         );
-        Map<RoutiePlace, TimePeriod> timePeriodMap = Map.of(routiePlace, visitPeriod);
+        TimePeriods timePeriods = TimePeriods.empty();
+        timePeriods.add(routiePlace, visitPeriod);
+        ValidationContext validationContext = new ValidationContext(null, null, timePeriods);
 
         // when
-        boolean result = calculator.calculateValidity(timePeriodMap, ValidationStrategy.IS_NOT_DURING_BREAKTIME);
+        boolean result = calculator.isValid(validationContext, ValidationStrategy.IS_NOT_DURING_BREAKTIME);
 
         // then
         assertThat(result).isTrue();
@@ -82,13 +92,16 @@ class BreaktimeValidityCalculatorTest {
         Place place = createMockPlace(LocalTime.of(12, 0), LocalTime.of(13, 0));
         RoutiePlace routiePlace = createMockRoutiePlace(place);
         TimePeriod visitPeriod = new TimePeriod(
+                routiePlace,
                 LocalDateTime.of(2024, 1, 1, 13, 0),
                 LocalDateTime.of(2024, 1, 1, 14, 0)
         );
-        Map<RoutiePlace, TimePeriod> timePeriodMap = Map.of(routiePlace, visitPeriod);
+        TimePeriods timePeriods = TimePeriods.empty();
+        timePeriods.add(routiePlace, visitPeriod);
+        ValidationContext validationContext = new ValidationContext(null, null, timePeriods);
 
         // when
-        boolean result = calculator.calculateValidity(timePeriodMap, ValidationStrategy.IS_NOT_DURING_BREAKTIME);
+        boolean result = calculator.isValid(validationContext, ValidationStrategy.IS_NOT_DURING_BREAKTIME);
 
         // then
         assertThat(result).isTrue();
@@ -103,13 +116,16 @@ class BreaktimeValidityCalculatorTest {
 
         // TimePeriod가 브레이크 타임과 1분 겹친다.
         TimePeriod visitPeriod = new TimePeriod(
+                routiePlace,
                 LocalDateTime.of(2024, 1, 1, 11, 30),
                 LocalDateTime.of(2024, 1, 1, 12, 1)
         );
-        Map<RoutiePlace, TimePeriod> timePeriodMap = Map.of(routiePlace, visitPeriod);
+        TimePeriods timePeriods = TimePeriods.empty();
+        timePeriods.add(routiePlace, visitPeriod);
+        ValidationContext validationContext = new ValidationContext(null, null, timePeriods);
 
         // when
-        boolean result = calculator.calculateValidity(timePeriodMap, ValidationStrategy.IS_NOT_DURING_BREAKTIME);
+        boolean result = calculator.isValid(validationContext, ValidationStrategy.IS_NOT_DURING_BREAKTIME);
 
         // then
         assertThat(result).isFalse();
@@ -122,13 +138,16 @@ class BreaktimeValidityCalculatorTest {
         Place place = createMockPlace(LocalTime.of(12, 0), LocalTime.of(13, 0));
         RoutiePlace routiePlace = createMockRoutiePlace(place);
         TimePeriod visitPeriod = new TimePeriod(
+                routiePlace,
                 LocalDateTime.of(2024, 1, 1, 12, 30),
                 LocalDateTime.of(2024, 1, 1, 13, 30)
         );
-        Map<RoutiePlace, TimePeriod> timePeriodMap = Map.of(routiePlace, visitPeriod);
+        TimePeriods timePeriods = TimePeriods.empty();
+        timePeriods.add(routiePlace, visitPeriod);
+        ValidationContext validationContext = new ValidationContext(null, null, timePeriods);
 
         // when
-        boolean result = calculator.calculateValidity(timePeriodMap, ValidationStrategy.IS_NOT_DURING_BREAKTIME);
+        boolean result = calculator.isValid(validationContext, ValidationStrategy.IS_NOT_DURING_BREAKTIME);
 
         // then
         assertThat(result).isFalse();
@@ -141,13 +160,16 @@ class BreaktimeValidityCalculatorTest {
         Place place = createMockPlace(LocalTime.of(12, 0), LocalTime.of(13, 0));
         RoutiePlace routiePlace = createMockRoutiePlace(place);
         TimePeriod visitPeriod = new TimePeriod(
+                routiePlace,
                 LocalDateTime.of(2024, 1, 1, 11, 0),
                 LocalDateTime.of(2024, 1, 1, 14, 0)
         );
-        Map<RoutiePlace, TimePeriod> timePeriodMap = Map.of(routiePlace, visitPeriod);
+        TimePeriods timePeriods = TimePeriods.empty();
+        timePeriods.add(routiePlace, visitPeriod);
+        ValidationContext validationContext = new ValidationContext(null, null, timePeriods);
 
         // when
-        boolean result = calculator.calculateValidity(timePeriodMap, ValidationStrategy.IS_NOT_DURING_BREAKTIME);
+        boolean result = calculator.isValid(validationContext, ValidationStrategy.IS_NOT_DURING_BREAKTIME);
 
         // then
         assertThat(result).isFalse();

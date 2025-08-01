@@ -1,12 +1,12 @@
-package routie.place.infrastructure.traveltimecalculator;
+package routie.place.infrastructure.durationcalculator;
 
 import org.springframework.stereotype.Component;
+import routie.place.domain.DurationCalculator;
 import routie.place.domain.MovingStrategy;
 import routie.place.domain.Place;
-import routie.place.domain.TravelTimeCalculator;
 
 @Component
-public class FakeDrivingTravelTimeCalculator implements TravelTimeCalculator {
+public class FakeDrivingDurationCalculator implements DurationCalculator {
 
     @Override
     public boolean supportsStrategy(final MovingStrategy movingStrategy) {
@@ -14,7 +14,7 @@ public class FakeDrivingTravelTimeCalculator implements TravelTimeCalculator {
     }
 
     @Override
-    public int calculateTravelTime(final Place from, final Place to, final MovingStrategy movingStrategy) {
+    public int calculateDuration(final Place from, final Place to, final MovingStrategy movingStrategy) {
         return 100;
     }
 }

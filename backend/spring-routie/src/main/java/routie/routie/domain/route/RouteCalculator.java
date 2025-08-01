@@ -1,14 +1,13 @@
 package routie.routie.domain.route;
 
-import java.util.LinkedHashMap;
+import java.util.Comparator;
 import java.util.List;
-import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import routie.place.domain.DistanceCalculator;
+import routie.place.domain.DurationCalculator;
 import routie.place.domain.MovingStrategy;
 import routie.place.domain.Place;
-import routie.place.domain.TravelTimeCalculator;
 import routie.routie.domain.RoutiePlace;
 
 @Component
@@ -16,33 +15,33 @@ import routie.routie.domain.RoutiePlace;
 public class RouteCalculator {
 
     private final DistanceCalculator distanceCalculator;
-    private final TravelTimeCalculator travelTimeCalculator;
+    private final DurationCalculator durationCalculator;
 
-    public Map<RoutiePlace, Route> calculateRoutes(final List<RoutiePlace> routiePlaces) {
-        LinkedHashMap<RoutiePlace, Route> routeByFromRoutiePlace = new LinkedHashMap<>();
+    public Routes calculateRoutes(final List<RoutiePlace> routiePlaces) {
+        routiePlaces.sort(Comparator.comparing(RoutiePlace::getSequence));
+        Routes routes = Routes.empty();
 
         for (int sequence = 0; sequence < routiePlaces.size() - 1; sequence++) {
-            RoutiePlace fromRoutiePlace = routiePlaces.get(sequence);
-            RoutiePlace toRoutiePlace = routiePlaces.get(sequence + 1);
+            RoutiePlace from = routiePlaces.get(sequence);
+            RoutiePlace to = routiePlaces.get(sequence + 1);
 
-            Place fromPlace = fromRoutiePlace.getPlace();
-            Place toPlace = toRoutiePlace.getPlace();
+            Place fromPlace = from.getPlace();
+            Place toPlace = to.getPlace();
             MovingStrategy movingStrategy = MovingStrategy.DRIVING;
 
             int distance = distanceCalculator.calculateDistance(fromPlace, toPlace, movingStrategy);
-            int duration = travelTimeCalculator.calculateTravelTime(fromPlace, toPlace, movingStrategy);
+            int duration = durationCalculator.calculateDuration(fromPlace, toPlace, movingStrategy);
 
             Route route = new Route(
-                    fromRoutiePlace.getSequence(),
-                    toRoutiePlace.getSequence(),
+                    from,
+                    to,
                     movingStrategy,
                     duration,
                     distance
             );
 
-            routeByFromRoutiePlace.put(fromRoutiePlace, route);
+            routes.add(from, route);
         }
-
-        return routeByFromRoutiePlace;
+        return routes;
     }
 }
