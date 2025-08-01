@@ -1,6 +1,5 @@
 package routie.routie.domain.timeperiod;
 
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
@@ -37,7 +36,7 @@ public class TimePeriods {
     }
 
     public List<TimePeriod> orderedList() {
-        return new ArrayList<>(timePeriods.values());
+        return List.copyOf(timePeriods.values());
     }
 
     public Set<RoutiePlace> routiePlaces() {
