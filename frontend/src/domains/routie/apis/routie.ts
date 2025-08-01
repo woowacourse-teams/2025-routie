@@ -2,7 +2,7 @@ import { apiClient } from '@/apis';
 
 import { Routie } from '../types/routie.types';
 
-export const getRoutieId = async () => {
+export const getRoutie = async () => {
   const routieSpaceUuid = localStorage.getItem('routieSpaceUuid');
 
   if (!routieSpaceUuid) {

@@ -10,7 +10,7 @@ import {
   addRoutiePlace,
   deleteRoutiePlace,
   editRoutieSequence,
-  getRoutieId,
+  getRoutie,
 } from '../apis/routie';
 import { Routes, Routie } from '../types/routie.types';
 
@@ -41,7 +41,7 @@ export const RoutieProvider = ({ children }: { children: React.ReactNode }) => {
 
   const refetchRoutieData = useCallback(async () => {
     try {
-      const routies = await getRoutieId();
+      const routies = await getRoutie();
       setRoutiePlaces(routies.routiePlaces);
       setRoutes(routies.routes);
     } catch (error) {
