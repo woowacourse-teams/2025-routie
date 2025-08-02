@@ -1,10 +1,12 @@
 package routie.routie.infrastructure.routievalidator;
 
 import java.time.LocalTime;
+import java.util.List;
 import org.springframework.stereotype.Component;
 import routie.place.domain.Place;
 import routie.routie.domain.routievalidator.RoutieValidator;
 import routie.routie.domain.routievalidator.ValidationContext;
+import routie.routie.domain.routievalidator.ValidationResult;
 import routie.routie.domain.routievalidator.ValidationStrategy;
 import routie.routie.domain.timeperiod.TimePeriod;
 
@@ -16,12 +18,18 @@ public class OperationHoursValidator implements RoutieValidator {
     }
 
     @Override
-    public boolean isValid(
+    public ValidationResult validate(
             final ValidationContext validationContext,
             final ValidationStrategy validationStrategy
     ) {
-        return validationContext.timePeriods().orderedList().stream()
-                .allMatch(this::isWithinBusinessHours);
+        List<TimePeriod> timePeriods = validationContext.timePeriods().orderedList();
+
+        return new ValidationResult(
+                timePeriods.stream()
+                        .allMatch(this::isWithinBusinessHours),
+                validationStrategy.getName(),
+                validationStrategy.getFailMessage()
+        );
     }
 
     private boolean isWithinBusinessHours(final TimePeriod timePeriod) {

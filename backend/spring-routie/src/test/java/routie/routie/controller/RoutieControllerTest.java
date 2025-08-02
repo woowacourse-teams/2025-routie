@@ -135,7 +135,7 @@ class RoutieControllerTest {
                 .queryParam("startDateTime", startTime.format(DateTimeFormatter.ISO_DATE_TIME))
                 .queryParam("endDateTime", endTime.format(DateTimeFormatter.ISO_DATE_TIME))
                 .when()
-                .get("/routie-spaces/" + routieSpace.getIdentifier() + "/routie/validity")
+                .post("/routie-spaces/" + routieSpace.getIdentifier() + "/routie/validate")
                 .then().log().all()
                 .extract().response();
 
@@ -157,7 +157,7 @@ class RoutieControllerTest {
                 .queryParam("startDateTime", startTime.format(DateTimeFormatter.ISO_DATE_TIME))
                 .queryParam("endDateTime", endTime.format(DateTimeFormatter.ISO_DATE_TIME))
                 .when()
-                .get("/routie-spaces/" + routieSpace.getIdentifier() + "/routie/validity")
+                .post("/routie-spaces/" + routieSpace.getIdentifier() + "/routie/validate")
                 .then().log().all()
                 .extract().response();
 
@@ -180,13 +180,13 @@ class RoutieControllerTest {
                 .queryParam("startDateTime", startTime.format(DateTimeFormatter.ISO_DATE_TIME))
                 .queryParam("endDateTime", endTime.format(DateTimeFormatter.ISO_DATE_TIME))
                 .when()
-                .get("/routie-spaces/" + routieSpace.getIdentifier() + "/routie/validity")
+                .post("/routie-spaces/" + routieSpace.getIdentifier() + "/routie/validate")
                 .then().log().all()
                 .extract().response();
 
         // then
         assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
-        assertThat(response.jsonPath().getBoolean("isValid")).isFalse();
+        assertThat(response.jsonPath().getObject("")).isFalse();
     }
 
     @Test
