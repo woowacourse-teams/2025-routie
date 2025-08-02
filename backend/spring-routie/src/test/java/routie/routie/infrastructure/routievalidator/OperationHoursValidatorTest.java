@@ -7,10 +7,8 @@ import static org.mockito.Mockito.when;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Map;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import routie.place.domain.BusinessHour;
 import routie.place.domain.Place;
 import routie.routie.domain.RoutiePlace;
 import routie.routie.domain.routievalidator.ValidationContext;
@@ -24,7 +22,6 @@ class OperationHoursValidatorTest {
 
     @Test
     @DisplayName("영업시간이 설정되지 않은 경우 항상 유효하다")
-    @Disabled(value = "영업 시간 필수 입력으로 바뀜에 따라 유효하지 않은 테스트로 변함")
     void shouldReturnTrueWhenNoBusinessHoursSet() {
         // given
         Place place = createMockPlace(null, null);
@@ -235,13 +232,8 @@ class OperationHoursValidatorTest {
 
     private Place createMockPlace(final LocalTime openAt, final LocalTime closeAt) {
         Place place = mock(Place.class);
-        final BusinessHour businessHour = new BusinessHour(
-                openAt,
-                closeAt,
-                null,
-                null
-        );
-        when(place.getBusinessHour()).thenReturn(businessHour);
+        when(place.getOpenAt()).thenReturn(openAt);
+        when(place.getCloseAt()).thenReturn(closeAt);
         return place;
     }
 

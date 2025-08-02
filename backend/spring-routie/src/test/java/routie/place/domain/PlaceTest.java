@@ -35,8 +35,8 @@ class PlaceTest {
 
         // then
         assertThat(place.getName()).isEqualTo("스타벅스");
-        assertThat(place.getBusinessHour().getBreakStartAt()).isEqualTo(LocalTime.of(14, 0));
-        assertThat(place.getBusinessHour().getBreakEndAt()).isEqualTo(LocalTime.of(15, 0));
+        assertThat(place.getBreakStartAt()).isEqualTo(LocalTime.of(14, 0));
+        assertThat(place.getBreakEndAt()).isEqualTo(LocalTime.of(15, 0));
     }
 
     @Test
@@ -61,8 +61,8 @@ class PlaceTest {
 
         // then
         assertThat(place.getName()).isEqualTo("편의점");
-        assertThat(place.getBusinessHour().getBreakStartAt()).isNull();
-        assertThat(place.getBusinessHour().getBreakEndAt()).isNull();
+        assertThat(place.getBreakStartAt()).isNull();
+        assertThat(place.getBreakEndAt()).isNull();
     }
 
     @Test
