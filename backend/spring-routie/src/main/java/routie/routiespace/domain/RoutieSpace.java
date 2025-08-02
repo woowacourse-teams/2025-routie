@@ -84,8 +84,4 @@ public class RoutieSpace {
             throw new IllegalArgumentException("루티 스페이스 이름은 50자 이하여야 합니다.");
         }
     }
-
-    public void updateRoutie(final Routie routie) {
-        this.routie = routie;
-    }
 }
