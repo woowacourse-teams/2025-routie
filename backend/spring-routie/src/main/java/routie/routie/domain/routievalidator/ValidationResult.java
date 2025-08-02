@@ -8,4 +8,7 @@ public record ValidationResult(
         ValidationStrategy strategy,
         List<RoutiePlace> invalidRoutiePlaces
 ) {
+    public static ValidationResult withoutRoutiePlaces(final boolean isValid, final ValidationStrategy strategy) {
+        return new ValidationResult(isValid, strategy, List.of());
+    }
 }

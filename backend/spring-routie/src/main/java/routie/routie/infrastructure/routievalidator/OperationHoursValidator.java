@@ -24,11 +24,10 @@ public class OperationHoursValidator implements RoutieValidator {
     ) {
         List<TimePeriod> timePeriods = validationContext.timePeriods().orderedList();
 
-        return new ValidationResult(
+        return ValidationResult.withoutRoutiePlaces(
                 timePeriods.stream()
                         .allMatch(this::isWithinBusinessHours),
-                validationStrategy.getName(),
-                validationStrategy.getFailMessage()
+                validationStrategy
         );
     }
 

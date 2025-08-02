@@ -24,11 +24,10 @@ public class BreaktimeValidator implements RoutieValidator {
     ) {
         List<TimePeriod> timePeriods = validationContext.timePeriods().orderedList();
 
-        return new ValidationResult(
+        return ValidationResult.withoutRoutiePlaces(
                 timePeriods.stream()
                         .allMatch(this::isWithoutBreaktime),
-                validationStrategy.getName(),
-                validationStrategy.getFailMessage()
+                validationStrategy
         );
     }
 

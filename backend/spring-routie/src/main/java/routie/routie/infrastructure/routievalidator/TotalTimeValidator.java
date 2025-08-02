@@ -25,11 +25,9 @@ public class TotalTimeValidator implements RoutieValidator {
     ) {
         TimePeriods timePeriods = validationContext.timePeriods();
 
-        return new ValidationResult(
+        return ValidationResult.withoutRoutiePlaces(
                 isWithinTotalTime(validationContext.startDateTime(), validationContext.endDateTime(), timePeriods),
-                validationStrategy.getName(),
-                validationStrategy.getFailMessage()
-        );
+                validationStrategy);
     }
 
     private boolean isWithinTotalTime(
