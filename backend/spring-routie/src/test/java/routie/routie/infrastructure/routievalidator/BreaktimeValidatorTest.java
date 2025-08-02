@@ -35,7 +35,7 @@ class BreaktimeValidatorTest {
         ValidationContext validationContext = new ValidationContext(null, null, timePeriods);
 
         // when
-        boolean result = calculator.isValid(validationContext, ValidationStrategy.IS_NOT_DURING_BREAKTIME);
+        boolean result = calculator.validate(validationContext, ValidationStrategy.IS_NOT_DURING_BREAKTIME).isValid();
 
         // then
         assertThat(result).isTrue();
@@ -57,7 +57,7 @@ class BreaktimeValidatorTest {
         ValidationContext validationContext = new ValidationContext(null, null, timePeriods);
 
         // when
-        boolean result = calculator.isValid(validationContext, ValidationStrategy.IS_NOT_DURING_BREAKTIME);
+        boolean result = calculator.validate(validationContext, ValidationStrategy.IS_NOT_DURING_BREAKTIME).isValid();
 
         // then
         assertThat(result).isTrue();
@@ -79,7 +79,7 @@ class BreaktimeValidatorTest {
         ValidationContext validationContext = new ValidationContext(null, null, timePeriods);
 
         // when
-        boolean result = calculator.isValid(validationContext, ValidationStrategy.IS_NOT_DURING_BREAKTIME);
+        boolean result = calculator.validate(validationContext, ValidationStrategy.IS_NOT_DURING_BREAKTIME).isValid();
 
         // then
         assertThat(result).isTrue();
@@ -101,7 +101,7 @@ class BreaktimeValidatorTest {
         ValidationContext validationContext = new ValidationContext(null, null, timePeriods);
 
         // when
-        boolean result = calculator.isValid(validationContext, ValidationStrategy.IS_NOT_DURING_BREAKTIME);
+        boolean result = calculator.validate(validationContext, ValidationStrategy.IS_NOT_DURING_BREAKTIME).isValid();
 
         // then
         assertThat(result).isTrue();
@@ -125,7 +125,7 @@ class BreaktimeValidatorTest {
         ValidationContext validationContext = new ValidationContext(null, null, timePeriods);
 
         // when
-        boolean result = calculator.isValid(validationContext, ValidationStrategy.IS_NOT_DURING_BREAKTIME);
+        boolean result = calculator.validate(validationContext, ValidationStrategy.IS_NOT_DURING_BREAKTIME).isValid();
 
         // then
         assertThat(result).isFalse();
@@ -147,7 +147,7 @@ class BreaktimeValidatorTest {
         ValidationContext validationContext = new ValidationContext(null, null, timePeriods);
 
         // when
-        boolean result = calculator.isValid(validationContext, ValidationStrategy.IS_NOT_DURING_BREAKTIME);
+        boolean result = calculator.validate(validationContext, ValidationStrategy.IS_NOT_DURING_BREAKTIME).isValid();
 
         // then
         assertThat(result).isFalse();
@@ -169,7 +169,7 @@ class BreaktimeValidatorTest {
         ValidationContext validationContext = new ValidationContext(null, null, timePeriods);
 
         // when
-        boolean result = calculator.isValid(validationContext, ValidationStrategy.IS_NOT_DURING_BREAKTIME);
+        boolean result = calculator.validate(validationContext, ValidationStrategy.IS_NOT_DURING_BREAKTIME).isValid();
 
         // then
         assertThat(result).isFalse();

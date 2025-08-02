@@ -35,7 +35,7 @@ class OperationHoursValidatorTest {
         ValidationContext validationContext = new ValidationContext(null, null, timePeriods);
 
         // when
-        boolean result = calculator.isValid(validationContext, ValidationStrategy.IS_WITHIN_OPERATION_HOURS);
+        boolean result = calculator.validate(validationContext, ValidationStrategy.IS_WITHIN_OPERATION_HOURS).isValid();
 
         // then
         assertThat(result).isTrue();
@@ -56,7 +56,7 @@ class OperationHoursValidatorTest {
         ValidationContext validationContext = new ValidationContext(null, null, timePeriods);
 
         // when
-        boolean result = calculator.isValid(validationContext, ValidationStrategy.IS_WITHIN_OPERATION_HOURS);
+        boolean result = calculator.validate(validationContext, ValidationStrategy.IS_WITHIN_OPERATION_HOURS).isValid();
 
         // then
         assertThat(result).isTrue();
@@ -77,7 +77,7 @@ class OperationHoursValidatorTest {
         ValidationContext validationContext = new ValidationContext(null, null, timePeriods);
 
         // when
-        boolean result = calculator.isValid(validationContext, ValidationStrategy.IS_WITHIN_OPERATION_HOURS);
+        boolean result = calculator.validate(validationContext, ValidationStrategy.IS_WITHIN_OPERATION_HOURS).isValid();
 
         // then
         assertThat(result).isTrue();
@@ -98,7 +98,7 @@ class OperationHoursValidatorTest {
         ValidationContext validationContext = new ValidationContext(null, null, timePeriods);
 
         // when
-        boolean result = calculator.isValid(validationContext, ValidationStrategy.IS_WITHIN_OPERATION_HOURS);
+        boolean result = calculator.validate(validationContext, ValidationStrategy.IS_WITHIN_OPERATION_HOURS).isValid();
 
         // then
         assertThat(result).isTrue();
@@ -119,7 +119,7 @@ class OperationHoursValidatorTest {
         ValidationContext validationContext = new ValidationContext(null, null, timePeriods);
 
         // when
-        boolean result = calculator.isValid(validationContext, ValidationStrategy.IS_WITHIN_OPERATION_HOURS);
+        boolean result = calculator.validate(validationContext, ValidationStrategy.IS_WITHIN_OPERATION_HOURS).isValid();
 
         // then
         assertThat(result).isFalse();
@@ -140,7 +140,7 @@ class OperationHoursValidatorTest {
         ValidationContext validationContext = new ValidationContext(null, null, timePeriods);
 
         // when
-        boolean result = calculator.isValid(validationContext, ValidationStrategy.IS_WITHIN_OPERATION_HOURS);
+        boolean result = calculator.validate(validationContext, ValidationStrategy.IS_WITHIN_OPERATION_HOURS).isValid();
 
         // then
         assertThat(result).isFalse();
@@ -161,7 +161,7 @@ class OperationHoursValidatorTest {
         ValidationContext validationContext = new ValidationContext(null, null, timePeriods);
 
         // when
-        boolean result = calculator.isValid(validationContext, ValidationStrategy.IS_WITHIN_OPERATION_HOURS);
+        boolean result = calculator.validate(validationContext, ValidationStrategy.IS_WITHIN_OPERATION_HOURS).isValid();
 
         // then
         assertThat(result).isFalse();
@@ -182,7 +182,7 @@ class OperationHoursValidatorTest {
         ValidationContext validationContext = new ValidationContext(null, null, timePeriods);
 
         // when
-        boolean result = calculator.isValid(validationContext, ValidationStrategy.IS_WITHIN_OPERATION_HOURS);
+        boolean result = calculator.validate(validationContext, ValidationStrategy.IS_WITHIN_OPERATION_HOURS).isValid();
 
         // then
         assertThat(result).isFalse();
@@ -203,7 +203,7 @@ class OperationHoursValidatorTest {
         ValidationContext validationContext = new ValidationContext(null, null, timePeriods);
 
         // when
-        boolean result = calculator.isValid(validationContext, ValidationStrategy.IS_WITHIN_OPERATION_HOURS);
+        boolean result = calculator.validate(validationContext, ValidationStrategy.IS_WITHIN_OPERATION_HOURS).isValid();
 
         // then
         assertThat(result).isTrue();
@@ -224,7 +224,7 @@ class OperationHoursValidatorTest {
         ValidationContext validationContext = new ValidationContext(null, null, timePeriods);
 
         // when
-        boolean result = calculator.isValid(validationContext, ValidationStrategy.IS_WITHIN_OPERATION_HOURS);
+        boolean result = calculator.validate(validationContext, ValidationStrategy.IS_WITHIN_OPERATION_HOURS).isValid();
 
         // then
         assertThat(result).isFalse();

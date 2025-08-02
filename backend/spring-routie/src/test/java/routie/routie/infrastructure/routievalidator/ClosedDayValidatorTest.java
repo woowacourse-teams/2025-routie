@@ -51,7 +51,7 @@ class ClosedDayValidatorTest {
         ValidationContext validationContext = new ValidationContext(null, null, timePeriods);
 
         // when
-        boolean result = calculator.isValid(validationContext, ValidationStrategy.IS_NOT_CLOSED_DAY);
+        boolean result = calculator.validate(validationContext, ValidationStrategy.IS_NOT_CLOSED_DAY).isValid();
 
         // then
         assertTrue(result);
@@ -77,7 +77,7 @@ class ClosedDayValidatorTest {
         ValidationContext validationContext = new ValidationContext(null, null, timePeriods);
 
         // when
-        boolean result = calculator.isValid(validationContext, ValidationStrategy.IS_NOT_CLOSED_DAY);
+        boolean result = calculator.validate(validationContext, ValidationStrategy.IS_NOT_CLOSED_DAY).isValid();
 
         // then
         assertFalse(result);
@@ -103,7 +103,7 @@ class ClosedDayValidatorTest {
         ValidationContext validationContext = new ValidationContext(null, null, timePeriods);
 
         // when
-        boolean result = calculator.isValid(validationContext, ValidationStrategy.IS_NOT_CLOSED_DAY);
+        boolean result = calculator.validate(validationContext, ValidationStrategy.IS_NOT_CLOSED_DAY).isValid();
 
         // then
         assertFalse(result);
@@ -129,7 +129,7 @@ class ClosedDayValidatorTest {
         ValidationContext validationContext = new ValidationContext(null, null, timePeriods);
 
         // when
-        boolean result = calculator.isValid(validationContext, ValidationStrategy.IS_NOT_CLOSED_DAY);
+        boolean result = calculator.validate(validationContext, ValidationStrategy.IS_NOT_CLOSED_DAY).isValid();
 
         // then
         assertTrue(result);
