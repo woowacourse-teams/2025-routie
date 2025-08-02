@@ -1,7 +1,6 @@
 package routie.routie.infrastructure.routievalidator;
 
 import java.time.LocalTime;
-import java.util.Map;
 import org.springframework.stereotype.Component;
 import routie.place.domain.Place;
 import routie.routie.domain.routievalidator.RoutieValidator;
@@ -27,8 +26,8 @@ public class BreaktimeValidator implements RoutieValidator {
 
     private boolean isWithoutBreaktime(final TimePeriod timePeriod) {
         final Place place = timePeriod.routiePlace().getPlace();
-        final LocalTime breakStartAt = place.getBusinessHour().getBreakStartAt();
-        final LocalTime breakEndAt = place.getBusinessHour().getBreakEndAt();
+        final LocalTime breakStartAt = place.getBreakStartAt();
+        final LocalTime breakEndAt = place.getBreakEndAt();
 
         if (breakStartAt == null || breakEndAt == null) {
             return true;

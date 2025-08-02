@@ -23,10 +23,10 @@ public record PlaceReadResponse(
                 place.getName(),
                 place.getAddress(),
                 place.getStayDurationMinutes(),
-                place.getBusinessHour().getOpenAt(),
-                place.getBusinessHour().getCloseAt(),
-                place.getBusinessHour().getBreakStartAt(),
-                place.getBusinessHour().getBreakEndAt(),
+                place.getOpenAt(),
+                place.getCloseAt(),
+                place.getBreakStartAt(),
+                place.getBreakEndAt(),
                 place.getPlaceClosedDayOfWeeks().stream()
                         .map(PlaceClosedDayOfWeek::getClosedDayOfWeek)
                         .toList()
