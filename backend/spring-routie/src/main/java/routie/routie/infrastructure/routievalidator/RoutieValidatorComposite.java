@@ -6,7 +6,6 @@ import routie.routie.domain.routievalidator.RoutieValidator;
 import routie.routie.domain.routievalidator.ValidationContext;
 import routie.routie.domain.routievalidator.ValidationResult;
 import routie.routie.domain.routievalidator.ValidationStrategy;
-import routie.routie.domain.timeperiod.TimePeriod;
 
 public class RoutieValidatorComposite implements RoutieValidator {
 
@@ -26,8 +25,6 @@ public class RoutieValidatorComposite implements RoutieValidator {
             final ValidationContext validationContext,
             final ValidationStrategy validationStrategy
     ) {
-        List<TimePeriod> timePeriods = validationContext.timePeriods().orderedList();
-
         return selectValidityCalculator(validationStrategy).validate(
                 validationContext,
                 validationStrategy
