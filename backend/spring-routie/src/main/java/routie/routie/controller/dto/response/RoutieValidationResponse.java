@@ -1,6 +1,7 @@
 package routie.routie.controller.dto.response;
 
 import java.util.List;
+import routie.routie.domain.RoutiePlace;
 import routie.routie.domain.routievalidator.ValidationResult;
 
 public record RoutieValidationResponse(
@@ -15,16 +16,28 @@ public record RoutieValidationResponse(
     }
 
     public record ValidationResultResponse(
-            boolean isValid,
             String strategy,
-            String message
+            String code,
+            boolean isValid,
+            List<RoutiePlaceResponse> invalidRoutiePlaces
     ) {
         public static ValidationResultResponse from(final ValidationResult validationResult) {
             return new ValidationResultResponse(
+                    validationResult.strategy().getName(),
+                    validationResult.strategy().name(),
                     validationResult.isValid(),
-                    validationResult.strategy(),
-                    validationResult.message()
+                    validationResult.invalidRoutiePlaces().stream()
+                            .map(RoutiePlaceResponse::from)
+                            .toList()
             );
+        }
+    }
+
+    public record RoutiePlaceResponse(
+            long routiePlaceId
+    ) {
+        public static RoutiePlaceResponse from(final RoutiePlace routiePlace) {
+            return new RoutiePlaceResponse(routiePlace.getId());
         }
     }
 }
