@@ -140,8 +140,13 @@ class RoutieControllerTest {
                 .extract().response();
 
         // then
+        List<Map<String, Object>> validationResults = response.jsonPath().getList("validationResultResponses");
+
+        boolean isAllValid = validationResults.stream()
+                .anyMatch(result -> Boolean.TRUE.equals(result.get("isValid")));
+
         assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
-        assertThat(response.jsonPath().getBoolean("isValid")).isTrue();
+        assertThat(isAllValid).isTrue();
     }
 
     @Test
@@ -162,8 +167,16 @@ class RoutieControllerTest {
                 .extract().response();
 
         // then
+        List<Map<String, Object>> validationResults = response.jsonPath().getList("validationResultResponses");
+
+        boolean closedDayIsInvalid = validationResults.stream()
+                .anyMatch(result ->
+                        "IS_NOT_CLOSED_DAY".equals(result.get("code")) &&
+                                Boolean.FALSE.equals(result.get("isValid"))
+                );
+
         assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
-        assertThat(response.jsonPath().getBoolean("isValid")).isFalse();
+        assertThat(closedDayIsInvalid).isTrue();
     }
 
     @Test
@@ -185,8 +198,16 @@ class RoutieControllerTest {
                 .extract().response();
 
         // then
+        List<Map<String, Object>> validationResults = response.jsonPath().getList("validationResultResponses");
+
+        boolean breakTimeIsInvalid = validationResults.stream()
+                .anyMatch(result ->
+                        "IS_NOT_DURING_BREAKTIME".equals(result.get("code")) &&
+                                Boolean.FALSE.equals(result.get("isValid"))
+                );
+
         assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
-        assertThat(response.jsonPath().getObject("")).isFalse();
+        assertThat(breakTimeIsInvalid).isTrue();
     }
 
     @Test
