@@ -8,7 +8,7 @@ export interface UseRoutieValidateReturn {
     startDateTime: string;
     endDateTime: string;
   };
-  isValidRoutie: boolean;
+  validationErrors: validationErrorCodeType | null;
   handleValidateToggle: () => void;
   handleTimeChange: (
     field: 'startDateTime' | 'endDateTime',
@@ -30,7 +30,8 @@ const useRoutieValidate = (): UseRoutieValidateReturn => {
     startDateTime: '',
     endDateTime: '',
   });
-  const [isValidateRoutie, setIsValidateRoutie] = useState(false);
+  const [validationErrors, setValidationErrors] =
+    useState<validationErrorCodeType | null>(null);
 
   const canValidateRoutie = useMemo(() => {
     return (
