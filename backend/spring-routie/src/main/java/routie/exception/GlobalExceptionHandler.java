@@ -18,8 +18,8 @@ public class GlobalExceptionHandler {
         return problemDetail;
     }
 
-    @ExceptionHandler(RoutieException.class)
-    public ProblemDetail handleRoutieException(final RoutieException ex) {
+    @ExceptionHandler(BusinessException.class)
+    public ProblemDetail handleRoutieException(final BusinessException ex) {
         log.warn("[EXPECTED] ", ex);
         ProblemDetail problemDetail = ProblemDetail.forStatus(ex.getStatus());
         problemDetail.setDetail(ex.getMessage());
