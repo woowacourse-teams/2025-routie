@@ -77,8 +77,4 @@
         <appender-ref ref="ROUTIE_ERROR_FILE"/>
     </logger>
 
-    <root level="INFO">
-        <appender-ref ref="CONSOLE"/>
-    </root>
-
 </included>
