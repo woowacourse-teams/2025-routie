@@ -21,6 +21,6 @@ public class RoutieException extends RuntimeException {
     }
 
     public HttpStatus getStatus() {
-        return errorCode.status;
+        return errorCode.httpStatus;
     }
 }
