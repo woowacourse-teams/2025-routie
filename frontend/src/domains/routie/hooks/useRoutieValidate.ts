@@ -8,7 +8,7 @@ export interface UseRoutieValidateReturn {
     startDateTime: string;
     endDateTime: string;
   };
-  isValidateRoutie: boolean;
+  isValidRoutie: boolean;
   handleValidateToggle: () => void;
   handleTimeChange: (
     field: 'startDateTime' | 'endDateTime',
@@ -77,7 +77,7 @@ const useRoutieValidate = (): UseRoutieValidateReturn => {
   return {
     isValidateActive,
     routieTime,
-    isValidateRoutie,
+    isValidRoutie,
     handleValidateToggle,
     handleTimeChange,
     validateRoutie,

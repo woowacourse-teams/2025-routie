@@ -24,7 +24,7 @@ const Sidebar = () => {
   const {
     isValidateActive,
     routieTime,
-    isValidateRoutie,
+    isValidRoutie,
     handleValidateToggle,
     handleTimeChange,
   } = useRoutieValidateContext();
@@ -81,7 +81,7 @@ const Sidebar = () => {
             <>
               <RoutieValidationResultCard
                 total_time={totalMovingTime}
-                valid={isValidateRoutie}
+                valid={isValidRoutie}
               />
               <TimeInput time={routieTime} onChange={handleTimeChange} />
             </>
