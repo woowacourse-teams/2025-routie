@@ -54,9 +54,9 @@
                 <message>
                     <fieldName>message</fieldName>
                 </message>
-                <exceptionClassName>
+                <throwableClassName>
                     <fieldName>exception</fieldName>
-                </exceptionClassName>
+                </throwableClassName>
                 <stackTrace>
                     <fieldName>stacktrace</fieldName>
                 </stackTrace>
