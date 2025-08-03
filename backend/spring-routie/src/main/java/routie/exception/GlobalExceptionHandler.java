@@ -12,15 +12,15 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public ProblemDetail handleUnExpectedException(final Exception ex) {
-        log.error("[Unexpected] ", ex);
+        log.error("[UNEXPECTED] ", ex);
         ProblemDetail problemDetail = ProblemDetail.forStatus(HttpStatus.INTERNAL_SERVER_ERROR);
-        problemDetail.setDetail("Internal Server Error");
+        problemDetail.setDetail(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase());
         return problemDetail;
     }
 
     @ExceptionHandler(RoutieException.class)
     public ProblemDetail handleRoutieException(final RoutieException ex) {
-        log.warn("[Routie] ", ex);
+        log.warn("[EXPECTED] ", ex);
         ProblemDetail problemDetail = ProblemDetail.forStatus(ex.getStatus());
         problemDetail.setDetail(ex.getMessage());
         problemDetail.setProperty("code", ex.getCode());
