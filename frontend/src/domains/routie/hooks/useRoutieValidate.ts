@@ -1,6 +1,18 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { getRoutieValidation } from '../apis/routie';
+import { VALIDATION_RESULT_CODE } from '../constants/routieValidation';
+
+type validationErrorCodeType = keyof typeof VALIDATION_RESULT_CODE;
+
+type validationResultResponse = {
+  strategy: string;
+  code: validationErrorCodeType;
+  isValid: boolean;
+  invalidRoutiePlaces: {
+    routiePlaceId: number;
+  }[];
+};
 
 export interface UseRoutieValidateReturn {
   isValidateActive: boolean;
@@ -64,12 +76,26 @@ const useRoutieValidate = (): UseRoutieValidateReturn => {
 
     try {
       const response = await getRoutieValidation(routieTime);
+      const validRoutie = response.validationResultResponses.every(
+        (result: validationResultResponse) => result.isValid === true,
+      );
 
-      setIsValidateRoutie(response.isValid);
+      if (!validRoutie) {
+        const invalidResult = response.validationResultResponses.find(
+          (result: validationResultResponse) => result.isValid === false,
+        );
+
+        if (invalidResult) {
+          setValidationErrors(invalidResult.code);
+          return;
+        }
+      }
+
+      setValidationErrors(null);
     } catch (error) {
       console.error(error);
     }
-  }, [isValidateActive, routieTime]);
+  }, [canValidateRoutie, routieTime]);
 
   useEffect(() => {
     validateRoutie();
@@ -78,7 +104,7 @@ const useRoutieValidate = (): UseRoutieValidateReturn => {
   return {
     isValidateActive,
     routieTime,
-    isValidRoutie,
+    validationErrors,
     handleValidateToggle,
     handleTimeChange,
     validateRoutie,
