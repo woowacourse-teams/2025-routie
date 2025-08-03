@@ -1,9 +1,7 @@
 package routie.exception;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 
-@RequiredArgsConstructor
 public enum ErrorCode {
 
     BAD_REQUEST("5000", "잘못된 요청입니다.", HttpStatus.BAD_REQUEST),
@@ -13,13 +11,13 @@ public enum ErrorCode {
     public final String message;
     public final HttpStatus httpStatus;
 
-//    ErrorCode(
-//            final String code,
-//            final String message,
-//            final HttpStatus httpStatus
-//    ) {
-//        this.code = code;
-//        this.message = message;
-//        this.httpStatus = httpStatus;
-//    }
+    ErrorCode(
+            final String code,
+            final String message,
+            final HttpStatus httpStatus
+    ) {
+        this.code = code;
+        this.message = message;
+        this.httpStatus = httpStatus;
+    }
 }
