@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true">
+
+    <property name="LOG_DIR" value="logs"/>
+
+    <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+    <include resource="org/springframework/boot/logging/logback/base.xml"/>
+
+    <springProfile name="dev,local">
+        <include resource="logback-dev.xml"/>
+    </springProfile>
+
+</configuration>
