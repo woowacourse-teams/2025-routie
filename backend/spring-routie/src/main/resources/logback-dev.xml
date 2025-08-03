@@ -1,10 +1,8 @@
 <included>
-    <!-- Routie 일반 로그(INFO, WARN) -->
     <appender name="ROUTIE_INFO_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>${LOG_DIR}/routie-info.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <fileNamePattern>${LOG_DIR}/routie-info.%d{yyyy-MM-dd}.log</fileNamePattern>
-            <!-- 보관 주기: 7일-->
             <maxHistory>7</maxHistory>
         </rollingPolicy>
 
@@ -26,7 +24,6 @@
         </encoder>
     </appender>
 
-    <!-- Routie 에러 로그 to 파일 -->
     <appender name="ROUTIE_ERROR_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>${LOG_DIR}/routie-error.json</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
@@ -78,7 +75,6 @@
         </encoder>
     </appender>
 
-    <!-- routie 하위 패키지 전용 로거. INFO 이상 레벨만 출력 -->
     <logger name="routie" level="INFO" additivity="false">
         <appender-ref ref="ROUTIE_INFO_FILE"/>
         <appender-ref ref="ROUTIE_ERROR_FILE"/>
