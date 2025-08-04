@@ -78,16 +78,15 @@ const Sidebar = () => {
           </Flex>
 
           {isValidateActive ? (
-            <>
-              <RoutieValidationResultCard
-                total_time={totalMovingTime}
-                valid={isValidateRoutie}
-              />
-              <TimeInput time={routieTime} onChange={handleTimeChange} />
-            </>
+            <RoutieValidationResultCard
+              total_time={totalMovingTime}
+              valid={isValidateRoutie}
+            />
           ) : (
             <RoutieValidationUnavailableCard />
           )}
+
+          <TimeInput time={routieTime} onChange={handleTimeChange} />
         </Flex>
         <Flex
           direction="column"
