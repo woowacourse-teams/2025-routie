@@ -84,4 +84,8 @@
         <appender-ref ref="CONSOLE"/>
     </logger>
 
+    <root>
+        <appender-ref ref="CONSOLE"/>
+    </root>
+
 </included>
