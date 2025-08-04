@@ -135,7 +135,7 @@ class RoutieControllerTest {
                 .queryParam("startDateTime", startTime.format(DateTimeFormatter.ISO_DATE_TIME))
                 .queryParam("endDateTime", endTime.format(DateTimeFormatter.ISO_DATE_TIME))
                 .when()
-                .post("/routie-spaces/" + routieSpace.getIdentifier() + "/routie/validate")
+                .get("/routie-spaces/" + routieSpace.getIdentifier() + "/routie/validation")
                 .then().log().all()
                 .extract().response();
 
@@ -162,7 +162,7 @@ class RoutieControllerTest {
                 .queryParam("startDateTime", startTime.format(DateTimeFormatter.ISO_DATE_TIME))
                 .queryParam("endDateTime", endTime.format(DateTimeFormatter.ISO_DATE_TIME))
                 .when()
-                .post("/routie-spaces/" + routieSpace.getIdentifier() + "/routie/validate")
+                .get("/routie-spaces/" + routieSpace.getIdentifier() + "/routie/validation")
                 .then().log().all()
                 .extract().response();
 
@@ -193,7 +193,7 @@ class RoutieControllerTest {
                 .queryParam("startDateTime", startTime.format(DateTimeFormatter.ISO_DATE_TIME))
                 .queryParam("endDateTime", endTime.format(DateTimeFormatter.ISO_DATE_TIME))
                 .when()
-                .post("/routie-spaces/" + routieSpace.getIdentifier() + "/routie/validate")
+                .get("/routie-spaces/" + routieSpace.getIdentifier() + "/routie/validation")
                 .then().log().all()
                 .extract().response();
 
