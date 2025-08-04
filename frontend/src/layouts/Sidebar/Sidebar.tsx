@@ -13,6 +13,7 @@ import RoutieValidationUnavailableCard from '@/domains/routie/components/RoutieV
 import { useRoutieContext } from '@/domains/routie/contexts/useRoutieContext';
 import { useRoutieValidateContext } from '@/domains/routie/contexts/useRoutieValidateContext';
 import RoutieSpaceName from '@/domains/routieSpace/components/RoutieSpaceName/RoutieSpaceName';
+import { useGoogleEventTrigger } from '@/libs/googleAnalytics/hooks/useGoogleEventTrigger';
 
 import { usePlaceListContext } from '../PlaceList/contexts/PlaceListContext';
 
@@ -29,12 +30,18 @@ const Sidebar = () => {
     handleValidateToggle,
     handleTimeChange,
   } = useRoutieValidateContext();
+  const { triggerEvent } = useGoogleEventTrigger();
 
   const totalMovingTime = useMemo(() => {
     return routes?.reduce((acc, cur) => acc + cur.duration, 0) ?? 0;
   }, [routes]);
 
   const openAddModal = () => {
+    triggerEvent({
+      action: 'click',
+      category: 'place',
+      label: '장소 추가하기 모달 열기 버튼',
+    });
     setAddModalOpen((prev) => !prev);
   };
 
