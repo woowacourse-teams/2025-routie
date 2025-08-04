@@ -27,14 +27,14 @@ const RoutieSection = () => {
     updateRoutiePlaces();
   }, [routiePlaces]);
 
-  return routiePlaces.map((place, index) => (
-    <div key={place.placeId}>
+  return routiePlaces.map((routie, index) => (
+    <div key={routie.placeId}>
       <div {...getDragProps(index)}>
-        <RoutiePlaceCard placeId={place.placeId} />
+        <RoutiePlaceCard routie={routie} />
       </div>
 
       {routiePlaces.length - 1 !== index && routes[index] && (
-        <RoutieRoutes place={place} routes={routes[index]} />
+        <RoutieRoutes routie={routie} routes={routes[index]} />
       )}
     </div>
   ));
