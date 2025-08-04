@@ -21,9 +21,13 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(BusinessException.class)
     public ProblemDetail handleRoutieException(final BusinessException ex) {
         log.warn("[EXPECTED] ", ex);
-        ProblemDetail problemDetail = ProblemDetail.forStatus(ex.getStatus());
-        problemDetail.setDetail(ex.getMessage());
-        problemDetail.setProperty("code", ex.getCode());
+        return buildProblemDetail(ex.getErrorCode());
+    }
+
+    private ProblemDetail buildProblemDetail(final ErrorCode errorCode) {
+        ProblemDetail problemDetail = ProblemDetail.forStatus(errorCode.getHttpStatus());
+        problemDetail.setDetail(errorCode.getMessage());
+        problemDetail.setProperty("code", errorCode.getCode());
         return problemDetail;
     }
 }
