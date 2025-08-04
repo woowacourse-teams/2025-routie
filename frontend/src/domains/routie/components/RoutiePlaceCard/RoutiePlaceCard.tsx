@@ -6,7 +6,7 @@ import IconButton from '@/@common/components/IconButton/IconButton';
 import Pill from '@/@common/components/Pill/Pill';
 import Text from '@/@common/components/Text/Text';
 import dragIcon from '@/assets/icons/drag.svg';
-import trashIcon from '@/assets/icons/trash.svg';
+import minusIcon from '@/assets/icons/minus.svg';
 
 import { getDetailPlace } from '../../apis/routie';
 import { useRoutieContext } from '../../contexts/useRoutieContext';
@@ -43,7 +43,7 @@ const RoutiePlaceCard = ({ routie }: { routie: Routie }) => {
               <Text variant="caption">{place.name}</Text>
               <Flex gap={0.4}>
                 <IconButton
-                  icon={trashIcon}
+                  icon={minusIcon}
                   variant="delete"
                   onClick={() => handleDeleteRoutie(routie.placeId)}
                 />
