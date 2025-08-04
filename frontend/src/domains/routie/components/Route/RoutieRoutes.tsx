@@ -8,13 +8,13 @@ import { Routes, Routie } from '../../types/routie.types';
 import { convertMetersToKilometers } from '../../utils/format';
 
 interface RoutieRoutesProps {
-  place: Routie;
+  routie: Routie;
   routes: Routes;
 }
 
-const RoutieRoutes = ({ place, routes }: RoutieRoutesProps) => {
+const RoutieRoutes = ({ routie, routes }: RoutieRoutesProps) => {
   return (
-    <Flex key={place.id} margin={1} gap={1}>
+    <Flex key={routie.id} margin={1} gap={1}>
       <Text variant="description">
         {MOVING_EN_TO_KR[routes.movingStrategy]} {routes.duration}분
       </Text>
