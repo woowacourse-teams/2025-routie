@@ -89,7 +89,6 @@ export const RoutieProvider = ({ children }: { children: React.ReactNode }) => {
       try {
         await editRoutieSequence(sortedList);
         setRoutiePlaces(sortedList);
-        refetchRoutieData();
       } catch (error) {
         console.error(error);
       }
