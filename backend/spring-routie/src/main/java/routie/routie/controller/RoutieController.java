@@ -48,8 +48,8 @@ public class RoutieController {
         return ResponseEntity.ok(routieService.getRoutie(routieSpaceIdentifier, startDateTime));
     }
 
-    @GetMapping("/validity")
-    public ResponseEntity<RoutieValidationResponse> validateRoutieTime(
+    @GetMapping("/validation")
+    public ResponseEntity<RoutieValidationResponse> validateRoutie(
             @PathVariable final String routieSpaceIdentifier,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) final LocalDateTime startDateTime,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) final LocalDateTime endDateTime

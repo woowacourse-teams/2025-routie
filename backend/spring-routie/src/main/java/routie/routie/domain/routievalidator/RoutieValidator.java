@@ -4,7 +4,7 @@ public interface RoutieValidator {
 
     boolean supportsStrategy(ValidationStrategy validationStrategy);
 
-    boolean isValid(
+    ValidationResult validate(
             ValidationContext validationContext,
             ValidationStrategy validationStrategy
     );

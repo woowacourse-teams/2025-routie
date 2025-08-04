@@ -1,18 +1,19 @@
 package routie.routie.domain.timeperiod;
 
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.TreeMap;
 import routie.routie.domain.RoutiePlace;
 
 public class TimePeriods {
+    private static final Comparator<RoutiePlace> ROUTIE_PLACE_COMPARATOR =
+            Comparator.comparing(RoutiePlace::getSequence);
+
     private final TreeMap<RoutiePlace, TimePeriod> timePeriods;
 
     public TimePeriods(final Map<RoutiePlace, TimePeriod> timePeriods) {
-        this.timePeriods = new TreeMap<>(Comparator.comparing(RoutiePlace::getSequence));
+        this.timePeriods = new TreeMap<>(ROUTIE_PLACE_COMPARATOR);
         this.timePeriods.putAll(timePeriods);
     }
 
@@ -20,7 +21,15 @@ public class TimePeriods {
         return new TimePeriods(new TreeMap<>(Comparator.comparing(RoutiePlace::getSequence)));
     }
 
-    public TimePeriod getBy(final RoutiePlace place) {
+    public TimePeriods withAdded(final RoutiePlace routiePlace, final TimePeriod timePeriod) {
+        Map<RoutiePlace, TimePeriod> newTimePeriods = new TreeMap<>(ROUTIE_PLACE_COMPARATOR);
+        newTimePeriods.putAll(this.timePeriods);
+        newTimePeriods.put(routiePlace, timePeriod);
+
+        return new TimePeriods(newTimePeriods);
+    }
+
+    public TimePeriod getByRoutiePlace(final RoutiePlace place) {
         return timePeriods.get(place);
     }
 
@@ -37,10 +46,10 @@ public class TimePeriods {
     }
 
     public List<TimePeriod> orderedList() {
-        return new ArrayList<>(timePeriods.values());
+        return List.copyOf(timePeriods.values());
     }
 
-    public Set<RoutiePlace> routiePlaces() {
-        return timePeriods.keySet();
+    public List<RoutiePlace> routiePlaces() {
+        return List.copyOf(timePeriods.keySet());
     }
 }

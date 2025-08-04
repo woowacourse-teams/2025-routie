@@ -7,6 +7,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -16,8 +17,10 @@ import org.springframework.transaction.annotation.Transactional;
 import routie.place.domain.Place;
 import routie.place.repository.PlaceRepository;
 import routie.routie.controller.dto.response.RoutieValidationResponse;
+import routie.routie.controller.dto.response.RoutieValidationResponse.ValidationResultResponse;
 import routie.routie.domain.Routie;
 import routie.routie.domain.RoutiePlace;
+import routie.routie.domain.routievalidator.ValidationStrategy;
 import routie.routiespace.domain.RoutieSpace;
 import routie.routiespace.domain.RoutieSpaceFixture;
 import routie.routiespace.repository.RoutieSpaceRepository;
@@ -74,7 +77,6 @@ class RoutieServiceValidationTest {
 
         routieSpace = RoutieSpaceFixture.createWithoutId(List.of(), routie);
         routieSpaceRepository.save(routieSpace);
-
     }
 
     @Test
@@ -85,71 +87,76 @@ class RoutieServiceValidationTest {
         LocalDateTime endTime = LocalDateTime.of(2025, 7, 29, 18, 0);
 
         // when
-        RoutieValidationResponse response = routieService.validateRoutie(routieSpace.getIdentifier(), startTime,
-                endTime);
+        RoutieValidationResponse response = routieService.validateRoutie(
+                routieSpace.getIdentifier(), startTime, endTime
+        );
 
         // then
-        assertThat(response.isValid()).isTrue();
+        assertThat(response.validationResultResponses().stream()
+                .allMatch(ValidationResultResponse::isValid))
+                .isTrue();
     }
 
     @Test
     @DisplayName("사용자 가용 시간이 부족할 경우 isValid false를 반환한다")
     void validateRoutie_WithInsufficientTotalTime_ShouldReturnFalse() {
-        // given: 총 필요 시간보다 짧은 가용 시간
         LocalDateTime startTime = LocalDateTime.of(2025, 7, 29, 10, 0);
         LocalDateTime endTime = LocalDateTime.of(2025, 7, 29, 11, 0);
 
-        // when
-        RoutieValidationResponse response = routieService.validateRoutie(routieSpace.getIdentifier(), startTime,
-                endTime);
+        RoutieValidationResponse response = routieService.validateRoutie(
+                routieSpace.getIdentifier(), startTime, endTime
+        );
 
-        // then
-        assertThat(response.isValid()).isFalse();
+        assertValidationResultIsFalse(response, ValidationStrategy.IS_WITHIN_TOTAL_TIME);
     }
 
     @Test
     @DisplayName("장소 영업 시간과 맞지 않을 경우 isValid false를 반환한다")
     void validateRoutie_WhenNotWithinOperationHours_ShouldReturnFalse() {
-        // given: 장소 A의 영업 시작 시간(09:00)보다 이른 시작
         LocalDateTime startTime = LocalDateTime.of(2025, 7, 29, 8, 0);
         LocalDateTime endTime = LocalDateTime.of(2025, 7, 29, 18, 0);
 
-        // when
-        RoutieValidationResponse response = routieService.validateRoutie(routieSpace.getIdentifier(), startTime,
-                endTime);
+        RoutieValidationResponse response = routieService.validateRoutie(
+                routieSpace.getIdentifier(), startTime, endTime
+        );
 
-        // then
-        assertThat(response.isValid()).isFalse();
+        assertValidationResultIsFalse(response, ValidationStrategy.IS_WITHIN_OPERATION_HOURS);
     }
 
     @Test
     @DisplayName("장소 휴무일에 방문할 경우 isValid false를 반환한다")
     void validateRoutie_WhenVisitOnClosedDay_ShouldReturnFalse() {
-        // given: 장소 B의 휴무일인 월요일(2025-07-28)에 방문
         LocalDateTime startTime = LocalDateTime.of(2025, 7, 28, 10, 0);
         LocalDateTime endTime = LocalDateTime.of(2025, 7, 28, 18, 0);
 
-        // when
-        RoutieValidationResponse response = routieService.validateRoutie(routieSpace.getIdentifier(), startTime,
-                endTime);
+        RoutieValidationResponse response = routieService.validateRoutie(
+                routieSpace.getIdentifier(), startTime, endTime
+        );
 
-        // then
-        assertThat(response.isValid()).isFalse();
+        assertValidationResultIsFalse(response, ValidationStrategy.IS_NOT_CLOSED_DAY);
     }
 
     @Test
     @DisplayName("장소 브레이크 타임과 겹칠 경우 isValid false를 반환한다")
     void validateRoutie_WhenDuringBreaktime_ShouldReturnFalse() {
-        // given: 장소 B의 브레이크 타임(14:00-15:00)에 방문하도록 시작 시간 설정
-        // 예상 경로: A(12:10-13:10) -> 이동(100분) -> B(14:50-16:20) -> 브레이크 타임과 겹침
         LocalDateTime startTime = LocalDateTime.of(2025, 7, 29, 12, 10);
         LocalDateTime endTime = LocalDateTime.of(2025, 7, 29, 20, 0);
 
-        // when
-        RoutieValidationResponse response = routieService.validateRoutie(routieSpace.getIdentifier(), startTime,
-                endTime);
+        RoutieValidationResponse response = routieService.validateRoutie(
+                routieSpace.getIdentifier(), startTime, endTime
+        );
 
-        // then
-        assertThat(response.isValid()).isFalse();
+        assertValidationResultIsFalse(response, ValidationStrategy.IS_NOT_DURING_BREAKTIME);
+    }
+
+    private void assertValidationResultIsFalse(final RoutieValidationResponse response,
+                                               final ValidationStrategy strategy) {
+        boolean isValid = response.validationResultResponses().stream()
+                .filter(r -> Objects.equals(r.validationCode(), strategy.getValidationCode()))
+                .map(ValidationResultResponse::isValid)
+                .findFirst()
+                .orElseThrow(() -> new AssertionError("해당 strategy가 응답에 없습니다: " + strategy));
+
+        assertThat(isValid).isFalse();
     }
 }

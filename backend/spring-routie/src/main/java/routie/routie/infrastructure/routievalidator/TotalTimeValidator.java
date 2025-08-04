@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Component;
 import routie.routie.domain.routievalidator.RoutieValidator;
 import routie.routie.domain.routievalidator.ValidationContext;
+import routie.routie.domain.routievalidator.ValidationResult;
 import routie.routie.domain.routievalidator.ValidationStrategy;
 import routie.routie.domain.timeperiod.TimePeriod;
 import routie.routie.domain.timeperiod.TimePeriods;
@@ -18,18 +19,18 @@ public class TotalTimeValidator implements RoutieValidator {
     }
 
     @Override
-    public boolean isValid(final ValidationContext validationContext,
-                           final ValidationStrategy validationStrategy) {
+    public ValidationResult validate(
+            final ValidationContext validationContext,
+            final ValidationStrategy validationStrategy
+    ) {
         TimePeriods timePeriods = validationContext.timePeriods();
 
-        return calculateTotalTimeValidity(
-                validationContext.startDateTime(),
-                validationContext.endDateTime(),
-                timePeriods
-        );
+        return ValidationResult.withoutRoutiePlaces(
+                isWithinTotalTime(validationContext.startDateTime(), validationContext.endDateTime(), timePeriods),
+                validationStrategy);
     }
 
-    private boolean calculateTotalTimeValidity(
+    private boolean isWithinTotalTime(
             final LocalDateTime startDateTime,
             final LocalDateTime endDateTime,
             final TimePeriods timePeriods
