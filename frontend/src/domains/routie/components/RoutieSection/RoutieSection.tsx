@@ -15,12 +15,6 @@ const RoutieSection = () => {
     if (!routiePlaces) return;
     if (routiePlaces.length <= 0) return;
 
-    const isSequenceChanged = routiePlaces.some(
-      (item, index) => item.sequence !== index + 1,
-    );
-
-    if (!isSequenceChanged) return;
-
     const updateRoutiePlaces = async () => {
       await validateRoutie();
     };
