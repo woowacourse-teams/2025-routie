@@ -62,9 +62,10 @@
                 <stackTrace>
                     <fieldName>stacktrace</fieldName>
                 </stackTrace>
-                <mdc>
-                    <includeMdcKeyName>traceId</includeMdcKeyName>
-                </mdc>
+                <uuid>
+                    <fieldName>traceId</fieldName>
+                    <strategy>random</strategy>
+                </uuid>
 
             </providers>
         </encoder>
