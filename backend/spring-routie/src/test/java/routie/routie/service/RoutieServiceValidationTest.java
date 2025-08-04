@@ -152,7 +152,7 @@ class RoutieServiceValidationTest {
     private void assertValidationResultIsFalse(final RoutieValidationResponse response,
                                                final ValidationStrategy strategy) {
         boolean isValid = response.validationResultResponses().stream()
-                .filter(r -> Objects.equals(r.strategy(), strategy.getName()))
+                .filter(r -> Objects.equals(r.validationCode(), strategy.getValidationCode()))
                 .map(ValidationResultResponse::isValid)
                 .findFirst()
                 .orElseThrow(() -> new AssertionError("해당 strategy가 응답에 없습니다: " + strategy));

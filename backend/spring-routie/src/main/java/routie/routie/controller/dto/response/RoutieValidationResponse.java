@@ -16,15 +16,13 @@ public record RoutieValidationResponse(
     }
 
     public record ValidationResultResponse(
-            String strategy,
-            String code,
+            String validationCode,
             boolean isValid,
             List<RoutiePlaceResponse> invalidRoutiePlaces
     ) {
         public static ValidationResultResponse from(final ValidationResult validationResult) {
             return new ValidationResultResponse(
-                    validationResult.strategy().getName(),
-                    validationResult.strategy().name(),
+                    validationResult.strategy().getValidationCode(),
                     validationResult.isValid(),
                     validationResult.invalidRoutiePlaces().stream()
                             .map(RoutiePlaceResponse::from)

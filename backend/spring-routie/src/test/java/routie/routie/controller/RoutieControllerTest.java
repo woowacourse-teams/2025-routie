@@ -171,7 +171,7 @@ class RoutieControllerTest {
 
         boolean closedDayIsInvalid = validationResults.stream()
                 .anyMatch(result ->
-                        "IS_NOT_CLOSED_DAY".equals(result.get("code")) &&
+                        "IS_NOT_CLOSED_DAY".equals(result.get("validationCode")) &&
                                 Boolean.FALSE.equals(result.get("isValid"))
                 );
 
@@ -202,7 +202,7 @@ class RoutieControllerTest {
 
         boolean breakTimeIsInvalid = validationResults.stream()
                 .anyMatch(result ->
-                        "IS_NOT_DURING_BREAKTIME".equals(result.get("code")) &&
+                        "IS_NOT_DURING_BREAKTIME".equals(result.get("validationCode")) &&
                                 Boolean.FALSE.equals(result.get("isValid"))
                 );
 
