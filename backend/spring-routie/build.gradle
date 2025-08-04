@@ -36,8 +36,14 @@ dependencies {
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
 
+    testCompileOnly 'org.projectlombok:lombok'
+    testAnnotationProcessor 'org.projectlombok:lombok'
+
+    implementation 'net.logstash.logback:logstash-logback-encoder:8.1'
+
     // Validation
     implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'com.fasterxml.uuid:java-uuid-generator:5.1.0'
 
     // MySQL
     runtimeOnly 'com.mysql:mysql-connector-j'
