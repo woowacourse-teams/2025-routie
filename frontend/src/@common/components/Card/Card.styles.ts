@@ -10,11 +10,6 @@ const cardVariant: Record<CardVariantProps, SerializedStyles> = {
     border-left: 4px solid ${theme.colors.purple[100]};
     background-color: ${theme.colors.white};
     box-shadow: 2px 4px 4px 0 rgb(0 0 0 / 25%);
-
-    &:hover {
-      border-left: 4px solid ${theme.colors.purple[300]};
-      background-color: ${theme.colors.purple[100]};
-    }
   `,
 
   defaultStatic: css`
@@ -28,7 +23,8 @@ const cardVariant: Record<CardVariantProps, SerializedStyles> = {
 
   available: css`
     border-left: 4px solid ${theme.colors.green[100]};
-    background-color: ${theme.colors.green[50]};
+    background-color: ${theme.colors.white};
+    box-shadow: 2px 4px 4px 0 rgb(0 0 0 / 25%);
   `,
   unavailable: css`
     border-left: 4px solid ${theme.colors.red[100]};
