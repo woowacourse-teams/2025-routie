@@ -23,7 +23,7 @@ class PlaceSearcherTest {
                             + searchedPlace.placeName() + ", "
                             + searchedPlace.roadAddressName() + ", "
                             + searchedPlace.latitude() + ", "
-                            + searchedPlace.longitude() + ", "
+                            + searchedPlace.longitude()
             );
         }
     }
