@@ -57,7 +57,7 @@ export const getDetailPlace = async (id: number) => {
 export const getRoutieValidation = async (time: {
   startDateTime: string;
   endDateTime: string;
-}) => {
+}): Promise<validationResultResponseType> => {
   const routieSpaceUuid = localStorage.getItem('routieSpaceUuid');
 
   if (!routieSpaceUuid) {
