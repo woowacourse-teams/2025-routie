@@ -4,6 +4,11 @@
     <property name="LOG_DIR" value="${LOG_PATH:-logs}"/>
 
     <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+    <include resource="org/springframework/boot/logging/logback/console-appender.xml"/>
+
+    <root level="INFO">
+        <appender-ref ref="CONSOLE"/>
+    </root>
 
     <springProfile name="dev">
         <include resource="logback-dev.xml"/>
