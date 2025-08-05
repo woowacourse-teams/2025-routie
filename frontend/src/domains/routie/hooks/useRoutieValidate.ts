@@ -78,7 +78,7 @@ const useRoutieValidate = (): UseRoutieValidateReturn => {
         );
 
         if (invalidResult) {
-          setValidationErrors(invalidResult.code);
+          setValidationErrors(invalidResult.validationCode);
           return;
         }
       }
