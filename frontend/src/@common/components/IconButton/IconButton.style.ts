@@ -17,9 +17,9 @@ const iconButtonVariant: Record<IconButtonVariantProps, SerializedStyles> = {
   drag: css`
     cursor: grab;
 
-   &:hover {
-    background-color: transparent;
-  }
+    &:hover {
+      background-color: transparent;
+    }
   `,
 
   select: css`
@@ -30,16 +30,14 @@ const iconButtonVariant: Record<IconButtonVariantProps, SerializedStyles> = {
   `,
 
   selected: css`
+    pointer-events: none;
+
     width: 3rem;
     height: 3rem;
     padding: 0.4rem;
     border: 1px solid ${theme.colors.green[100]};
 
     background-color: ${theme.colors.green[50]};
-
-    &:hover {
-      background-color: ${theme.colors.green[75]};
-    }
   `,
 };
 

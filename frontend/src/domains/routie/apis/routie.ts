@@ -1,6 +1,6 @@
 import { apiClient } from '@/apis';
 
-import { Routie } from '../types/routie.types';
+import { Routie, validationResultResponseType } from '../types/routie.types';
 
 export const getRoutie = async (
   isValidateActive: boolean,
@@ -63,7 +63,7 @@ export const getDetailPlace = async (id: number) => {
 export const getRoutieValidation = async (time: {
   startDateTime: string;
   endDateTime: string;
-}) => {
+}): Promise<validationResultResponseType> => {
   const routieSpaceUuid = localStorage.getItem('routieSpaceUuid');
 
   if (!routieSpaceUuid) {
@@ -71,7 +71,7 @@ export const getRoutieValidation = async (time: {
   }
 
   const response = await apiClient.get(
-    `/routie-spaces/${routieSpaceUuid}/routie/validity?startDateTime=${time.startDateTime}&endDateTime=${time.endDateTime}`,
+    `/routie-spaces/${routieSpaceUuid}/routie/validation?startDateTime=${time.startDateTime}&endDateTime=${time.endDateTime}`,
   );
 
   if (!response.ok) {
