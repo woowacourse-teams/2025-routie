@@ -1,3 +1,5 @@
+import { VALIDATION_RESULT_CODE } from '../constants/routieValidation';
+
 export type RoutiePlaces = {
   routiePlaces: {
     id: number;
@@ -39,4 +41,20 @@ export type RoutiePlace = {
   breakStartAt: string;
   breakEndAt: string;
   closedDayOfWeeks: string[];
+};
+
+export type validationErrorCodeType = keyof typeof VALIDATION_RESULT_CODE;
+
+type InvalidRoutiePlace = {
+  routiePlaceId: number;
+};
+
+type ValidationResultResponse = {
+  validationCode: validationErrorCodeType;
+  isValid: boolean;
+  invalidRoutiePlaces: InvalidRoutiePlace[];
+};
+
+export type validationResultResponseType = {
+  validationResultResponses: ValidationResultResponse[];
 };
