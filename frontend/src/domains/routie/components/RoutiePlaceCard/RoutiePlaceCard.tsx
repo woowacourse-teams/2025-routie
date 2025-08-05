@@ -7,6 +7,7 @@ import Pill from '@/@common/components/Pill/Pill';
 import Text from '@/@common/components/Text/Text';
 import dragIcon from '@/assets/icons/drag.svg';
 import trashIcon from '@/assets/icons/trash.svg';
+import { useGoogleEventTrigger } from '@/libs/googleAnalytics/hooks/useGoogleEventTrigger';
 
 import { getDetailPlace } from '../../apis/routie';
 import { useRoutieContext } from '../../contexts/useRoutieContext';
@@ -15,6 +16,7 @@ import { Routie, RoutiePlace } from '../../types/routie.types';
 const RoutiePlaceCard = ({ routie }: { routie: Routie }) => {
   const [place, setPlace] = useState<RoutiePlace>();
   const { handleDeleteRoutie } = useRoutieContext();
+  const { triggerEvent } = useGoogleEventTrigger();
 
   useEffect(() => {
     const fetchDetailPlace = async () => {
@@ -23,6 +25,15 @@ const RoutiePlaceCard = ({ routie }: { routie: Routie }) => {
     };
     fetchDetailPlace();
   }, [routie.placeId]);
+
+  const handleDelete = () => {
+    handleDeleteRoutie(routie.placeId);
+    triggerEvent({
+      action: 'click',
+      category: 'routie',
+      label: '루티에서 장소 삭제하기 버튼',
+    });
+  };
 
   return (
     place && (
@@ -45,7 +56,7 @@ const RoutiePlaceCard = ({ routie }: { routie: Routie }) => {
                 <IconButton
                   icon={trashIcon}
                   variant="delete"
-                  onClick={() => handleDeleteRoutie(routie.placeId)}
+                  onClick={handleDelete}
                 />
               </Flex>
             </Flex>
