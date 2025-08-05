@@ -13,5 +13,5 @@
     <springProfile name="dev">
         <include resource="logback-dev.xml"/>
     </springProfile>
-    
+
 </configuration>
