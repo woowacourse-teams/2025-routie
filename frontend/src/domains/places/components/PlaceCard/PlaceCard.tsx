@@ -10,6 +10,7 @@ import plusIcon from '@/assets/icons/plus.svg';
 import trashIcon from '@/assets/icons/trash.svg';
 import { useRoutieContext } from '@/domains/routie/contexts/useRoutieContext';
 import { usePlaceListContext } from '@/layouts/PlaceList/contexts/PlaceListContext';
+import { useGoogleEventTrigger } from '@/libs/googleAnalytics/hooks/useGoogleEventTrigger';
 import theme from '@/styles/theme';
 
 import deletePlace from '../../apis/deletePlace';
@@ -26,10 +27,16 @@ export const PlaceCard = ({ selected, ...props }: PlaceCardProps) => {
   const { refetchPlaceList } = usePlaceListContext();
   const { handleAddRoutie } = useRoutieContext();
   const { openModal, closeModal, modalOpen } = useModal();
+  const { triggerEvent } = useGoogleEventTrigger();
 
   const handlePlaceSelect = async () => {
     try {
       await handleAddRoutie(props.id);
+      triggerEvent({
+        action: 'click',
+        category: 'routie',
+        label: '루티에 장소 추가하기 버튼',
+      });
     } catch (error) {
       console.error(error);
     }
@@ -39,11 +46,24 @@ export const PlaceCard = ({ selected, ...props }: PlaceCardProps) => {
     try {
       await deletePlace(props.id);
       refetchPlaceList();
+      triggerEvent({
+        action: 'click',
+        category: 'place',
+        label: '장소 삭제하기 버튼',
+      });
     } catch (error) {
       console.error(error);
     }
   };
 
+  const handleOpenEditModal = () => {
+    openModal();
+    triggerEvent({
+      action: 'click',
+      category: 'place',
+      label: '장소 수정하기 버튼',
+    });
+  };
   return (
     <>
       <Card
@@ -64,7 +84,7 @@ export const PlaceCard = ({ selected, ...props }: PlaceCardProps) => {
               onClick={handlePlaceSelect}
             />
             <Flex gap={1}>
-              <IconButton icon={editIcon} onClick={openModal} />
+              <IconButton icon={editIcon} onClick={handleOpenEditModal} />
               <IconButton
                 icon={trashIcon}
                 variant="delete"
