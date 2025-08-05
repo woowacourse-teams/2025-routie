@@ -5,7 +5,7 @@
 
     <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
 
-    <springProfile name="dev,local">
+    <springProfile name="dev">
         <include resource="logback-dev.xml"/>
     </springProfile>
 
