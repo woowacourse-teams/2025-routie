@@ -30,6 +30,8 @@ export const PlaceCard = ({ selected, ...props }: PlaceCardProps) => {
   const { triggerEvent } = useGoogleEventTrigger();
 
   const handlePlaceSelect = async () => {
+    if (selected) return;
+
     try {
       await handleAddRoutie(props.id);
       triggerEvent({
