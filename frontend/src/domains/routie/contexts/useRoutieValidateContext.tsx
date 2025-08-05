@@ -10,7 +10,7 @@ const RoutieValidateContext = createContext<UseRoutieValidateReturn>({
     startDateTime: '',
     endDateTime: '',
   },
-  isValidateRoutie: false,
+  validationErrors: null,
   handleValidateToggle: () => {},
   handleTimeChange: () => {},
   validateRoutie: async () => {},
@@ -24,7 +24,7 @@ export const RoutieValidateProvider = ({
   const {
     isValidateActive,
     routieTime,
-    isValidateRoutie,
+    validationErrors,
     handleValidateToggle,
     handleTimeChange,
     validateRoutie,
@@ -34,7 +34,7 @@ export const RoutieValidateProvider = ({
     return {
       isValidateActive,
       routieTime,
-      isValidateRoutie,
+      validationErrors,
       handleValidateToggle,
       handleTimeChange,
       validateRoutie,
@@ -42,7 +42,7 @@ export const RoutieValidateProvider = ({
   }, [
     isValidateActive,
     routieTime,
-    isValidateRoutie,
+    validationErrors,
     handleValidateToggle,
     handleTimeChange,
     validateRoutie,
