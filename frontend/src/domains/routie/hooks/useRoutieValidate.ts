@@ -65,19 +65,13 @@ const useRoutieValidate = (): UseRoutieValidateReturn => {
 
     try {
       const response = await getRoutieValidation(routieTime);
-      const validRoutie = response.validationResultResponses.every(
-        (result) => result.isValid === true,
+      const invalidResult = response.validationResultResponses.find(
+        (result) => result.isValid === false,
       );
 
-      if (!validRoutie) {
-        const invalidResult = response.validationResultResponses.find(
-          (result) => result.isValid === false,
-        );
-
-        if (invalidResult) {
-          setValidationErrors(invalidResult.validationCode);
-          return;
-        }
+      if (invalidResult) {
+        setValidationErrors(invalidResult.validationCode);
+        return;
       }
 
       setValidationErrors(null);
