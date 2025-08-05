@@ -1,10 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { getRoutieValidation } from '../apis/routie';
-import {
-  validationErrorCodeType,
-  validationResultResponseType,
-} from '../types/routie.types';
+import { validationErrorCodeType } from '../types/routie.types';
 
 export interface UseRoutieValidateReturn {
   isValidateActive: boolean;
