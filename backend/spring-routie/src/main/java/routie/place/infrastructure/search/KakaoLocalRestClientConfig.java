@@ -25,8 +25,8 @@ public class KakaoLocalRestClientConfig {
     @Bean
     public RestClient kakaoRestClient() {
         SimpleClientHttpRequestFactory requestFactory = new SimpleClientHttpRequestFactory();
-        requestFactory.setConnectTimeout(Duration.ofSeconds(30));
-        requestFactory.setReadTimeout(Duration.ofSeconds(30));
+        requestFactory.setConnectTimeout(Duration.ofSeconds(2));
+        requestFactory.setReadTimeout(Duration.ofSeconds(4));
 
         return RestClient.builder()
                 .baseUrl("https://dapi.kakao.com")
