@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import routie.place.domain.MovingStrategy;
 import routie.place.domain.Place;
 import routie.place.repository.PlaceRepository;
 import routie.routie.controller.dto.request.RoutiePlaceCreateRequest;
@@ -64,7 +65,7 @@ public class RoutieService {
 
     public RoutieReadResponse getRoutie(final String routieSpaceIdentifier, final LocalDateTime startDateTime) {
         Routie routie = getRoutieSpaceByIdentifier(routieSpaceIdentifier).getRoutie();
-        Routes routes = routeCalculator.calculateRoutes(routie.getRoutiePlaces());
+        Routes routes = routeCalculator.calculateRoutes(routie.getRoutiePlaces(), MovingStrategy.DRIVING);
 
         TimePeriods timePeriods = null;
         if (startDateTime != null) {
@@ -120,7 +121,7 @@ public class RoutieService {
             final LocalDateTime endDateTime
     ) {
         Routie routie = getRoutieSpaceByIdentifier(routieSpaceIdentifier).getRoutie();
-        Routes routes = routeCalculator.calculateRoutes(routie.getRoutiePlaces());
+        Routes routes = routeCalculator.calculateRoutes(routie.getRoutiePlaces(), MovingStrategy.DRIVING);
         TimePeriods timePeriods = timePeriodCalculator.calculateTimePeriods(startDateTime, routes);
         ValidationContext validationContext = new ValidationContext(startDateTime, endDateTime, timePeriods);
         List<ValidationResult> validationResults = new ArrayList<>();
