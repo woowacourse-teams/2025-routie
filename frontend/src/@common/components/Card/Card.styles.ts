@@ -8,7 +8,6 @@ const cardVariant: Record<CardVariantProps, SerializedStyles> = {
   default: css`
     border: 1px solid ${theme.colors.purple[50]};
     border-left: 4px solid ${theme.colors.purple[100]};
-    background-color: ${theme.colors.white};
     box-shadow: 2px 4px 4px 0 rgb(0 0 0 / 25%);
   `,
 
@@ -16,14 +15,11 @@ const cardVariant: Record<CardVariantProps, SerializedStyles> = {
     padding: 0.8rem;
     border: 1px solid ${theme.colors.purple[50]};
     border-left: 4px solid ${theme.colors.purple[100]};
-
-    background-color: ${theme.colors.white};
     box-shadow: 2px 4px 4px 0 rgb(0 0 0 / 25%);
   `,
 
   available: css`
     border-left: 4px solid ${theme.colors.green[100]};
-    background-color: ${theme.colors.white};
     box-shadow: 2px 4px 4px 0 rgb(0 0 0 / 25%);
   `,
   unavailable: css`
@@ -46,6 +42,8 @@ const CardStyle = (
   height: ${height ? height : 'auto'};
   padding: 1.6rem;
   border-radius: 8px;
+
+  background-color: ${theme.colors.white};
   ${cardVariant[variant]}
 `;
 

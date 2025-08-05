@@ -30,8 +30,6 @@ const iconButtonVariant: Record<IconButtonVariantProps, SerializedStyles> = {
   `,
 
   selected: css`
-    pointer-events: none;
-
     width: 3rem;
     height: 3rem;
     padding: 0.4rem;
