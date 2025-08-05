@@ -20,8 +20,8 @@ export interface UseRoutieValidateReturn {
 
 const useRoutieValidate = (): UseRoutieValidateReturn => {
   const getInitialValidateActive = () => {
-    const saved = localStorage.getItem('isValidateActive');
-    return saved ? JSON.parse(saved) : false;
+    const saved = sessionStorage.getItem('isValidateActive');
+    return saved ? JSON.parse(saved) : true;
   };
 
   const [isValidateActive, setIsValidateActive] = useState(
@@ -44,7 +44,7 @@ const useRoutieValidate = (): UseRoutieValidateReturn => {
 
   const handleValidateToggle = useCallback(() => {
     const newIsValidateActive = !isValidateActive;
-    localStorage.setItem(
+    sessionStorage.setItem(
       'isValidateActive',
       JSON.stringify(newIsValidateActive),
     );

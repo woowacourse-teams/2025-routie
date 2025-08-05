@@ -1,7 +1,7 @@
 package routie.routie.service;
 
 import java.time.LocalDateTime;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -25,6 +25,7 @@ import routie.routie.domain.route.RouteCalculator;
 import routie.routie.domain.route.Routes;
 import routie.routie.domain.routievalidator.RoutieValidator;
 import routie.routie.domain.routievalidator.ValidationContext;
+import routie.routie.domain.routievalidator.ValidationResult;
 import routie.routie.domain.routievalidator.ValidationStrategy;
 import routie.routie.domain.timeperiod.TimePeriodCalculator;
 import routie.routie.domain.timeperiod.TimePeriods;
@@ -119,24 +120,17 @@ public class RoutieService {
             final LocalDateTime endDateTime
     ) {
         Routie routie = getRoutieSpaceByIdentifier(routieSpaceIdentifier).getRoutie();
-
         Routes routes = routeCalculator.calculateRoutes(routie.getRoutiePlaces());
-        TimePeriods timePeriods = timePeriodCalculator.calculateTimePeriods(
-                startDateTime,
-                routes
-        );
+        TimePeriods timePeriods = timePeriodCalculator.calculateTimePeriods(startDateTime, routes);
+        ValidationContext validationContext = new ValidationContext(startDateTime, endDateTime, timePeriods);
+        List<ValidationResult> validationResults = new ArrayList<>();
 
-        ValidationContext validationContext = new ValidationContext(
-                startDateTime,
-                endDateTime,
-                timePeriods
-        );
+        for (final ValidationStrategy validationStrategy : ValidationStrategy.values()) {
+            ValidationResult validationResult = routieValidator.validate(validationContext, validationStrategy);
+            validationResults.add(validationResult);
+        }
 
-        boolean isStrategyValid = Arrays.stream(ValidationStrategy.values())
-                .allMatch(validationStrategy ->
-                        routieValidator.isValid(validationContext, validationStrategy));
-
-        return new RoutieValidationResponse(isStrategyValid);
+        return RoutieValidationResponse.from(validationResults);
     }
 
     @Transactional

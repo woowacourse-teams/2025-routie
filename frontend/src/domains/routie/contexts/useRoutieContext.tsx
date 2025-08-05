@@ -14,6 +14,8 @@ import {
 } from '../apis/routie';
 import { Routes, Routie } from '../types/routie.types';
 
+import { useRoutieValidateContext } from './useRoutieValidateContext';
+
 type RoutieContextType = {
   routiePlaces: Routie[];
   routes: Routes[];
@@ -38,16 +40,20 @@ export const RoutieProvider = ({ children }: { children: React.ReactNode }) => {
   const [routiePlaces, setRoutiePlaces] = useState<Routie[]>([]);
   const [routes, setRoutes] = useState<Routes[]>([]);
   const routieIdList = routiePlaces.map((routie) => routie.placeId);
+  const { isValidateActive, routieTime } = useRoutieValidateContext();
 
   const refetchRoutieData = useCallback(async () => {
     try {
-      const routies = await getRoutie();
+      const routies = await getRoutie(
+        isValidateActive,
+        routieTime.startDateTime,
+      );
       setRoutiePlaces(routies.routiePlaces);
       setRoutes(routies.routes);
     } catch (error) {
       console.error('루티 정보를 불러오는데 실패했습니다.', error);
     }
-  }, []);
+  }, [isValidateActive, routieTime.startDateTime]);
 
   const handleAddRoutie = useCallback(
     async (id: number) => {
@@ -92,7 +98,7 @@ export const RoutieProvider = ({ children }: { children: React.ReactNode }) => {
 
   useEffect(() => {
     refetchRoutieData();
-  }, []);
+  }, [isValidateActive, routieTime.startDateTime, refetchRoutieData]);
 
   return (
     <RoutieContext.Provider

@@ -6,19 +6,21 @@ import Header from '@/@common/components/Header/Header';
 import Text from '@/@common/components/Text/Text';
 import ToggleSwitch from '@/@common/components/ToggleSwitch/ToggleSwitch';
 import AddPlaceModal from '@/domains/places/components/AddPlaceModal/AddPlaceModal';
+import EmptyRoutieMessage from '@/domains/routie/components/EmptyRoutieMessage/EmptyRoutieMessage';
 import RoutieSection from '@/domains/routie/components/RoutieSection/RoutieSection';
 import RoutieValidationResultCard from '@/domains/routie/components/RoutieValidationResultCard/RoutieValidationResultCard';
 import RoutieValidationUnavailableCard from '@/domains/routie/components/RoutieValidationUnavailableCard/RoutieValidationUnavailableCard';
 import { useRoutieContext } from '@/domains/routie/contexts/useRoutieContext';
 import { useRoutieValidateContext } from '@/domains/routie/contexts/useRoutieValidateContext';
 import RoutieSpaceName from '@/domains/routieSpace/components/RoutieSpaceName/RoutieSpaceName';
+import { useGoogleEventTrigger } from '@/libs/googleAnalytics/hooks/useGoogleEventTrigger';
 
 import { usePlaceListContext } from '../PlaceList/contexts/PlaceListContext';
 
 import TimeInput from './TimeInput';
 
 const Sidebar = () => {
-  const { routes } = useRoutieContext();
+  const { routes, routiePlaces } = useRoutieContext();
   const { refetchPlaceList } = usePlaceListContext();
   const [addModalOpen, setAddModalOpen] = useState(false);
   const {
@@ -27,12 +29,18 @@ const Sidebar = () => {
     handleValidateToggle,
     handleTimeChange,
   } = useRoutieValidateContext();
+  const { triggerEvent } = useGoogleEventTrigger();
 
   const totalMovingTime = useMemo(() => {
     return routes?.reduce((acc, cur) => acc + cur.duration, 0) ?? 0;
   }, [routes]);
 
   const openAddModal = () => {
+    triggerEvent({
+      action: 'click',
+      category: 'place',
+      label: '장소 추가하기 모달 열기 버튼',
+    });
     setAddModalOpen((prev) => !prev);
   };
 
@@ -84,6 +92,8 @@ const Sidebar = () => {
           ) : (
             <RoutieValidationUnavailableCard />
           )}
+
+          <TimeInput time={routieTime} onChange={handleTimeChange} />
         </Flex>
         <Flex
           direction="column"
@@ -95,6 +105,7 @@ const Sidebar = () => {
           }}
         >
           <Text variant="subTitle">내 동선</Text>
+          {routiePlaces.length === 0 && <EmptyRoutieMessage />}
           <Flex
             direction="column"
             justifyContent="flex-start"

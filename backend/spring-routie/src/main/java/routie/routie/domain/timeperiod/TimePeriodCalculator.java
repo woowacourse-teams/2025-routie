@@ -22,9 +22,9 @@ public class TimePeriodCalculator {
             LocalDateTime start = currentTime;
             LocalDateTime end = start.plusMinutes(routiePlace.getPlace().getStayDurationMinutes());
 
-            timePeriods.add(routiePlace, new TimePeriod(routiePlace, start, end));
+            timePeriods = timePeriods.withAdded(routiePlace, new TimePeriod(routiePlace, start, end));
 
-            Route route = routes.getBy(routiePlace);
+            Route route = routes.getByRoutiePlace(routiePlace);
             if (route != null) {
                 currentTime = end.plusMinutes(route.duration());
             }

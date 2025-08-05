@@ -1,10 +1,12 @@
 package routie.routie.infrastructure.routievalidator;
 
 import java.time.LocalTime;
+import java.util.List;
 import org.springframework.stereotype.Component;
 import routie.place.domain.Place;
 import routie.routie.domain.routievalidator.RoutieValidator;
 import routie.routie.domain.routievalidator.ValidationContext;
+import routie.routie.domain.routievalidator.ValidationResult;
 import routie.routie.domain.routievalidator.ValidationStrategy;
 import routie.routie.domain.timeperiod.TimePeriod;
 
@@ -16,12 +18,17 @@ public class BreaktimeValidator implements RoutieValidator {
     }
 
     @Override
-    public boolean isValid(
+    public ValidationResult validate(
             final ValidationContext validationContext,
             final ValidationStrategy validationStrategy
     ) {
-        return validationContext.timePeriods().orderedList().stream()
-                .allMatch(this::isWithoutBreaktime);
+        List<TimePeriod> timePeriods = validationContext.timePeriods().orderedList();
+
+        return ValidationResult.withoutRoutiePlaces(
+                timePeriods.stream()
+                        .allMatch(this::isWithoutBreaktime),
+                validationStrategy
+        );
     }
 
     private boolean isWithoutBreaktime(final TimePeriod timePeriod) {

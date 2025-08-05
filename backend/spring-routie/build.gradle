@@ -36,6 +36,15 @@ dependencies {
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
 
+    testCompileOnly 'org.projectlombok:lombok'
+    testAnnotationProcessor 'org.projectlombok:lombok'
+
+    // Logback encoder
+    implementation 'net.logstash.logback:logstash-logback-encoder:8.1'
+
+    // LoggingEventCompositeJsonEncoder uuid
+    implementation 'com.fasterxml.uuid:java-uuid-generator:5.1.0'
+
     // Validation
     implementation 'org.springframework.boot:spring-boot-starter-validation'
 
@@ -53,7 +62,7 @@ dependencies {
     testRuntimeOnly 'com.h2database:h2'
 
     // springdoc(Swagger)
-    implementation group: 'org.springdoc', name: 'springdoc-openapi-starter-webmvc-ui', version: '2.8.8'
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.8'
 
     // full sql query logging
     implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.9.1'

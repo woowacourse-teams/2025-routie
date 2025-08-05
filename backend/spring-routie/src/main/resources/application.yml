@@ -17,3 +17,7 @@ spring:
         format_sql: true
         dialect: org.hibernate.dialect.MySQLDialect
     show-sql: true
+    
+logging:
+  file:
+    path: logs

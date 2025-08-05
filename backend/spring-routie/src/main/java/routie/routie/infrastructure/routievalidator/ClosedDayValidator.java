@@ -6,9 +6,9 @@ import org.springframework.stereotype.Component;
 import routie.place.domain.PlaceClosedDayOfWeek;
 import routie.routie.domain.routievalidator.RoutieValidator;
 import routie.routie.domain.routievalidator.ValidationContext;
+import routie.routie.domain.routievalidator.ValidationResult;
 import routie.routie.domain.routievalidator.ValidationStrategy;
 import routie.routie.domain.timeperiod.TimePeriod;
-import routie.routie.domain.timeperiod.TimePeriods;
 
 @Component
 public class ClosedDayValidator implements RoutieValidator {
@@ -18,14 +18,17 @@ public class ClosedDayValidator implements RoutieValidator {
     }
 
     @Override
-    public boolean isValid(
+    public ValidationResult validate(
             final ValidationContext validationContext,
             final ValidationStrategy validationStrategy
     ) {
-        TimePeriods timePeriods = validationContext.timePeriods();
+        List<TimePeriod> timePeriods = validationContext.timePeriods().orderedList();
 
-        return timePeriods.orderedList().stream()
-                .allMatch(this::isTimePeriodNotClosedDays);
+        return ValidationResult.withoutRoutiePlaces(
+                timePeriods.stream()
+                        .allMatch(this::isTimePeriodNotClosedDays),
+                validationStrategy
+        );
     }
 
     private boolean isTimePeriodNotClosedDays(final TimePeriod timePeriod) {

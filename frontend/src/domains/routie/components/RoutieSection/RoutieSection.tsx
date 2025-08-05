@@ -15,26 +15,20 @@ const RoutieSection = () => {
     if (!routiePlaces) return;
     if (routiePlaces.length <= 0) return;
 
-    const isSequenceChanged = routiePlaces.some(
-      (item, index) => item.sequence !== index + 1,
-    );
-
-    if (!isSequenceChanged) return;
-
     const updateRoutiePlaces = async () => {
       await validateRoutie();
     };
     updateRoutiePlaces();
   }, [routiePlaces]);
 
-  return routiePlaces.map((place, index) => (
-    <div key={place.placeId}>
+  return routiePlaces.map((routie, index) => (
+    <div key={routie.placeId}>
       <div {...getDragProps(index)}>
-        <RoutiePlaceCard placeId={place.placeId} />
+        <RoutiePlaceCard routie={routie} />
       </div>
 
       {routiePlaces.length - 1 !== index && routes[index] && (
-        <RoutieRoutes place={place} routes={routes[index]} />
+        <RoutieRoutes routie={routie} routes={routes[index]} />
       )}
     </div>
   ));

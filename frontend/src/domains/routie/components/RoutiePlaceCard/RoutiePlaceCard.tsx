@@ -6,28 +6,42 @@ import IconButton from '@/@common/components/IconButton/IconButton';
 import Pill from '@/@common/components/Pill/Pill';
 import Text from '@/@common/components/Text/Text';
 import dragIcon from '@/assets/icons/drag.svg';
-import trashIcon from '@/assets/icons/trash.svg';
-import theme from '@/styles/theme';
+import minusIcon from '@/assets/icons/minus.svg';
+import { useGoogleEventTrigger } from '@/libs/googleAnalytics/hooks/useGoogleEventTrigger';
 
 import { getDetailPlace } from '../../apis/routie';
 import { useRoutieContext } from '../../contexts/useRoutieContext';
-import { RoutiePlace } from '../../types/routie.types';
+import { Routie, RoutiePlace } from '../../types/routie.types';
 
-const RoutiePlaceCard = ({ placeId }: { placeId: number }) => {
+const RoutiePlaceCard = ({ routie }: { routie: Routie }) => {
   const [place, setPlace] = useState<RoutiePlace>();
   const { handleDeleteRoutie } = useRoutieContext();
+  const { triggerEvent } = useGoogleEventTrigger();
 
   useEffect(() => {
     const fetchDetailPlace = async () => {
-      const detailPlace = await getDetailPlace(placeId);
+      const detailPlace = await getDetailPlace(routie.placeId);
       setPlace(detailPlace);
     };
     fetchDetailPlace();
-  }, [placeId]);
+  }, [routie.placeId]);
+
+  const handleDelete = () => {
+    handleDeleteRoutie(routie.placeId);
+    triggerEvent({
+      action: 'click',
+      category: 'routie',
+      label: '루티에서 장소 삭제하기 버튼',
+    });
+  };
 
   return (
     place && (
-      <Card id={placeId.toString()} width="45rem" variant="defaultStatic">
+      <Card
+        id={routie.placeId.toString()}
+        width="45rem"
+        variant="defaultStatic"
+      >
         <Flex justifyContent="flex-start" gap={1.5}>
           <IconButton variant="drag" icon={dragIcon} onClick={() => {}} />
           <Flex
@@ -39,21 +53,17 @@ const RoutiePlaceCard = ({ placeId }: { placeId: number }) => {
             <Flex width="100%" justifyContent="space-between">
               <Text variant="caption">{place.name}</Text>
               <Flex gap={0.4}>
-                <Pill variant="filled" type="time">
-                  {place.stayDurationMinutes}분
-                </Pill>
                 <IconButton
-                  icon={trashIcon}
+                  icon={minusIcon}
                   variant="delete"
-                  onClick={() => handleDeleteRoutie(placeId)}
+                  onClick={handleDelete}
                 />
               </Flex>
             </Flex>
-            <Text variant="label" color={theme.colors.gray[200]}>
-              {place.address}
-            </Text>
             <Pill type="time">
-              {place.openAt}-{place.closeAt}
+              {routie.arriveDateTime?.slice(-5)}-
+              {routie.departureDateTime?.slice(-5)}{' '}
+              <Pill type="distance">{place.stayDurationMinutes}분</Pill>
             </Pill>
           </Flex>
         </Flex>

@@ -2,15 +2,21 @@ import { apiClient } from '@/apis';
 
 import { Routie, validationResultResponseType } from '../types/routie.types';
 
-export const getRoutie = async () => {
+export const getRoutie = async (
+  isValidateActive: boolean,
+  routieTime: string,
+) => {
   const routieSpaceUuid = localStorage.getItem('routieSpaceUuid');
 
   if (!routieSpaceUuid) {
     throw new Error('루티 스페이스 uuid가 없습니다.');
   }
 
+  const query =
+    isValidateActive && routieTime ? `?startDateTime=${routieTime}` : '';
+
   const response = await apiClient.get(
-    `/routie-spaces/${routieSpaceUuid}/routie`,
+    `/routie-spaces/${routieSpaceUuid}/routie${query}`,
   );
 
   if (!response.ok) {

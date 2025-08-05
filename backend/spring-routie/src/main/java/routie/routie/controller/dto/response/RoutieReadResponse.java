@@ -23,7 +23,7 @@ public record RoutieReadResponse(
                 routie.getRoutiePlaces().stream()
                         .map(routiePlace -> RoutiePlaceResponse.from(
                                 routiePlace,
-                                timePeriods == null ? null : timePeriods.getBy(routiePlace)
+                                timePeriods == null ? null : timePeriods.getByRoutiePlace(routiePlace)
                         ))
                         .toList(),
                 routes.stream()
