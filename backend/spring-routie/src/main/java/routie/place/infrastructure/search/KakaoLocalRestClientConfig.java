@@ -29,6 +29,7 @@ public class KakaoLocalRestClientConfig {
         requestFactory.setReadTimeout(Duration.ofSeconds(4));
 
         return RestClient.builder()
+                .requestFactory(requestFactory)
                 .baseUrl("https://dapi.kakao.com")
                 .defaultHeader("Authorization", "KakaoAK " + kakaoApiKey)
                 .defaultStatusHandler(new KakaoLocalResponseErrorHandler(objectMapper))
