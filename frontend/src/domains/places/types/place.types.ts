@@ -9,3 +9,11 @@ export type PlaceBase = {
   breakEndAt: string;
   closedDayOfWeeks: string[];
 };
+
+export type PlaceSearchType = {
+  id: string;
+  placeName: string;
+  roadAddressName: string;
+  longitude: number;
+  latitude: number;
+};
