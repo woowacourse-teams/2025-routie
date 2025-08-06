@@ -10,10 +10,13 @@ export type PlaceBase = {
   closedDayOfWeeks: string[];
 };
 
-export type PlaceSearchType = {
-  id: string;
+export type PlaceSearchType = PlaceLocationType & {
   placeName: string;
   roadAddressName: string;
+};
+
+export type PlaceLocationType = {
+  id: string;
   longitude: number;
   latitude: number;
 };

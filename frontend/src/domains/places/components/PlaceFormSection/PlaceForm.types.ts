@@ -7,9 +7,6 @@ export type FormState = {
   breakStartAt: string;
   breakEndAt: string;
   closedDayOfWeeks: string[];
-  longitude: 0;
-  latitude: 0;
-  id: '';
 };
 
 export type FormAction =
