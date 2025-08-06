@@ -5,8 +5,7 @@ import java.lang.reflect.Parameter;
 import java.util.List;
 import java.util.stream.IntStream;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestBody;
 import routie.logging.extractor.dto.HandlerParameter;
 
 @Component
@@ -30,17 +29,6 @@ public class HandlerMethodAnalyzer {
 
     private boolean isLoggableParameter(final Parameter parameter, final Object value) {
         return value != null
-                && !isSystemParameter(value.getClass())
-                && !isPathVariableOrRequestParam(parameter);
-    }
-
-    private boolean isPathVariableOrRequestParam(final Parameter parameter) {
-        return parameter.isAnnotationPresent(PathVariable.class) ||
-                parameter.isAnnotationPresent(RequestParam.class);
-    }
-
-    private boolean isSystemParameter(final Class<?> parameterType) {
-        return parameterType.getName().startsWith("jakarta.servlet") ||
-                parameterType.getName().startsWith("org.springframework");
+                && parameter.isAnnotationPresent(RequestBody.class);
     }
 }
