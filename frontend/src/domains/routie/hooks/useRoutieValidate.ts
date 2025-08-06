@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useState } from 'react';
 
 import { getRoutieValidation } from '../apis/routie';
 import { validationErrorCodeType } from '../types/routie.types';
@@ -15,7 +15,7 @@ export interface UseRoutieValidateReturn {
     field: 'startDateTime' | 'endDateTime',
     value: string,
   ) => void;
-  validateRoutie: () => Promise<void>;
+  validateRoutie: (placeCount?: number) => Promise<void>;
 }
 
 const useRoutieValidate = (): UseRoutieValidateReturn => {
@@ -34,13 +34,17 @@ const useRoutieValidate = (): UseRoutieValidateReturn => {
   const [validationErrors, setValidationErrors] =
     useState<validationErrorCodeType | null>(null);
 
-  const canValidateRoutie = useMemo(() => {
-    return (
-      isValidateActive &&
-      routieTime.startDateTime !== '' &&
-      routieTime.endDateTime !== ''
-    );
-  }, [isValidateActive, routieTime]);
+  const canValidateRoutie = useCallback(
+    (placeCount?: number) => {
+      return (
+        isValidateActive &&
+        routieTime.startDateTime !== '' &&
+        routieTime.endDateTime !== '' &&
+        (placeCount !== undefined ? placeCount > 1 : false)
+      );
+    },
+    [isValidateActive, routieTime],
+  );
 
   const handleValidateToggle = useCallback(() => {
     const newIsValidateActive = !isValidateActive;
@@ -58,31 +62,30 @@ const useRoutieValidate = (): UseRoutieValidateReturn => {
     }));
   }, []);
 
-  const validateRoutie = useCallback(async () => {
-    if (!canValidateRoutie) {
-      return;
-    }
-
-    try {
-      const response = await getRoutieValidation(routieTime);
-      const invalidResult = response.validationResultResponses.find(
-        (result) => result.isValid === false,
-      );
-
-      if (invalidResult) {
-        setValidationErrors(invalidResult.validationCode);
+  const validateRoutie = useCallback(
+    async (placeCount?: number) => {
+      if (!canValidateRoutie(placeCount)) {
         return;
       }
 
-      setValidationErrors(null);
-    } catch (error) {
-      console.error(error);
-    }
-  }, [canValidateRoutie, routieTime]);
+      try {
+        const response = await getRoutieValidation(routieTime);
+        const invalidResult = response.validationResultResponses.find(
+          (result) => result.isValid === false,
+        );
 
-  useEffect(() => {
-    validateRoutie();
-  }, [validateRoutie]);
+        if (invalidResult) {
+          setValidationErrors(invalidResult.validationCode);
+          return;
+        }
+
+        setValidationErrors(null);
+      } catch (error) {
+        console.error(error);
+      }
+    },
+    [canValidateRoutie, routieTime],
+  );
 
   return {
     isValidateActive,

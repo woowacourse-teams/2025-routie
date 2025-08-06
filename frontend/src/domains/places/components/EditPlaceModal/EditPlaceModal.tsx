@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 
 import Flex from '@/@common/components/Flex/Flex';
 import Modal, { ModalProps } from '@/@common/components/Modal/Modal';
-import { useRoutieValidateContext } from '@/domains/routie/contexts/useRoutieValidateContext';
+import { useRoutieContext } from '@/domains/routie/contexts/useRoutieContext';
 
 import editPlace from '../../apis/editPlace';
 import getPlace from '../../apis/getPlace';
@@ -37,7 +37,7 @@ const EditPlaceModal = ({
     handleToggleDay,
     resetForm,
   } = useAddPlaceForm();
-  const { validateRoutie } = useRoutieValidateContext();
+  const { routieIdList, refetchRoutieData } = useRoutieContext();
   const { isEmpty, isValid } = usePlaceFormValidation(form);
   const [showErrors, setShowErrors] = useState(false);
 
@@ -67,6 +67,8 @@ const EditPlaceModal = ({
   const isFormChanged =
     JSON.stringify(form) !== JSON.stringify(initialFormRef.current);
 
+  const placeInRoutie = routieIdList.includes(id);
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!isValid) {
@@ -79,7 +81,10 @@ const EditPlaceModal = ({
 
       await editPlace({ placeId: id, editableFields: rest });
       await onPlaceChange();
-      await validateRoutie();
+
+      if (placeInRoutie) {
+        await refetchRoutieData();
+      }
     } catch (error) {
       console.log(error);
     }

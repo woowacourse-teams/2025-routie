@@ -22,4 +22,4 @@ spring:
 
 kakao:
   api:
-    key: sdfkO_lhs5mmMggg3=$hsd
+    key: test-api-key
