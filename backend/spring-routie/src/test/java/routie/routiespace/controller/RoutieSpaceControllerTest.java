@@ -5,6 +5,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
+import java.time.DayOfWeek;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.regex.Pattern;
 import org.junit.jupiter.api.BeforeEach;
@@ -13,6 +15,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.http.HttpStatus;
+import routie.place.controller.dto.request.PlaceCreateRequest;
+import routie.place.controller.dto.response.PlaceCreateResponse;
 
 @SpringBootTest(webEnvironment = WebEnvironment.DEFINED_PORT)
 public class RoutieSpaceControllerTest {
@@ -60,37 +64,35 @@ public class RoutieSpaceControllerTest {
     @DisplayName("장소 생성에 성공한다")
     public void createPlace() {
         // given
-        String requestBody = """
-                {
-                    "name": "스타벅스 강남점",
-                    "address": "서울시 강남구 테헤란로 123",
-                    "stayDurationMinutes": 60,
-                    "openAt": "09:00",
-                    "closeAt": "22:00",
-                    "breakStartAt": "15:00",
-                    "breakEndAt": "16:00",
-                    "closedDayOfWeeks": ["SUNDAY"]
-                }
-                """;
+        PlaceCreateRequest placeCreateRequest = new PlaceCreateRequest(
+                "12345678",
+                "스타벅스 강남점",
+                "서울시 강남구 테헤란로 123",
+                37.504497373023206,
+                127.04896282498558,
+                60,
+                LocalTime.of(9, 0),
+                LocalTime.of(22, 0),
+                LocalTime.of(15, 0),
+                LocalTime.of(16, 0),
+                List.of(DayOfWeek.SUNDAY)
+        );
 
         // when
-        Response response = RestAssured
+        PlaceCreateResponse placeCreateResponse = RestAssured
                 .given()
                 .contentType(ContentType.JSON)
-                .body(requestBody)
+                .body(placeCreateRequest)
                 .when()
                 .post("/routie-spaces/{routieSpaceIdentifier}/places", routieSpaceIdentifier)
                 .then()
                 .log().all()
-                .extract().response();
-
-        HttpStatus actualHttpStatus = HttpStatus.valueOf(response.getStatusCode());
-        HttpStatus expectedHttpStatus = HttpStatus.OK;
-
-        Long placeId = response.jsonPath().getLong("id");
+                .statusCode(HttpStatus.OK.value())
+                .extract()
+                .as(PlaceCreateResponse.class);
 
         // then
-        assertThat(expectedHttpStatus).isEqualTo(actualHttpStatus);
+        Long placeId = placeCreateResponse.id();
         assertThat(placeId).isNotNull();
         assertThat(placeId).isPositive();
     }
@@ -99,31 +101,33 @@ public class RoutieSpaceControllerTest {
     @DisplayName("장소 목록 조회에 성공한다")
     public void readPlaces() {
         // given
-        String place1RequestBody = """
-                {
-                    "name": "스타벅스 강남점",
-                    "address": "서울시 강남구 테헤란로 123",
-                    "stayDurationMinutes": 60,
-                    "openAt": "09:00",
-                    "closeAt": "22:00",
-                    "breakStartAt": "15:00",
-                    "breakEndAt": "16:00",
-                    "closedDayOfWeeks": ["SUNDAY"]
-                }
-                """;
+        PlaceCreateRequest place1RequestBody = new PlaceCreateRequest(
+                "12345678",
+                "스타벅스 강남점",
+                "서울시 강남구 테헤란로 123",
+                37.504497373023206,
+                127.04896282498558,
+                60,
+                LocalTime.of(9, 0),
+                LocalTime.of(22, 0),
+                LocalTime.of(15, 0),
+                LocalTime.of(16, 0),
+                List.of(DayOfWeek.SUNDAY)
+        );
 
-        String place2RequestBody = """
-                {
-                    "name": "투썸플레이스 역삼점",
-                    "address": "서울시 강남구 역삼동 789",
-                    "stayDurationMinutes": 90,
-                    "openAt": "08:00",
-                    "closeAt": "23:00",
-                    "breakStartAt": null,
-                    "breakEndAt": null,
-                    "closedDayOfWeeks": ["MONDAY", "TUESDAY"]
-                }
-                """;
+        PlaceCreateRequest place2RequestBody = new PlaceCreateRequest(
+                "12345679",
+                "투썸플레이스 역삼점",
+                "서울시 강남구 역삼동 789",
+                37.504497373023206,
+                127.04896282498558,
+                90,
+                LocalTime.of(8, 0),
+                LocalTime.of(23, 0),
+                null,
+                null,
+                List.of(DayOfWeek.MONDAY, DayOfWeek.TUESDAY)
+        );
 
         RestAssured
                 .given()
@@ -151,7 +155,7 @@ public class RoutieSpaceControllerTest {
 
         List<Object> places = response.jsonPath().getList("places");
         String firstPlaceName = response.jsonPath().getString("places[0].name");
-        String firstPlaceAddress = response.jsonPath().getString("places[0].address");
+        String firstPlaceAddress = response.jsonPath().getString("places[0].roadAddress");
         String firstPlaceOpenAt = response.jsonPath().getString("places[0].openAt");
         String firstPlaceCloseAt = response.jsonPath().getString("places[0].closeAt");
         List<String> firstPlaceClosedDays = response.jsonPath().getList("places[0].closedDayOfWeeks");

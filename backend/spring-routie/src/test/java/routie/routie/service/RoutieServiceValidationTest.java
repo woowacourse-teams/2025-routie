@@ -48,6 +48,8 @@ class RoutieServiceValidationTest {
         placeA = Place.create(
                 "장소 A",
                 "주소 A",
+                10.123,
+                10.123,
                 60,
                 LocalTime.of(9, 0),
                 LocalTime.of(18, 0),
@@ -60,6 +62,8 @@ class RoutieServiceValidationTest {
         placeB = Place.create(
                 "장소 B",
                 "주소 B",
+                10.123,
+                10.123,
                 90,
                 LocalTime.of(10, 0),
                 LocalTime.of(20, 0),
