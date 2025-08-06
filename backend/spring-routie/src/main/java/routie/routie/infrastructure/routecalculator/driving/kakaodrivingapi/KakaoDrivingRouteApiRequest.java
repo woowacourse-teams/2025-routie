@@ -1,9 +1,10 @@
 package routie.routie.infrastructure.routecalculator.driving.kakaodrivingapi;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import routie.routie.domain.RoutiePlace;
+
 import java.util.ArrayList;
 import java.util.List;
-import routie.routie.domain.RoutiePlace;
 
 public record KakaoDrivingRouteApiRequest(
         @JsonProperty("origin") CoordinateRequest origin,
@@ -26,7 +27,7 @@ public record KakaoDrivingRouteApiRequest(
         }
         return new KakaoDrivingRouteApiRequest(
                 coordinateRequests.getFirst(),
-                coordinateRequests.get(size - 1),
+                coordinateRequests.getLast(),
                 coordinateRequests.subList(1, size - 1)
         );
     }
