@@ -14,7 +14,7 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import routie.logging.extractor.ClientIpExtractor;
 import routie.logging.extractor.HandlerMethodAnalyzer;
-import routie.logging.extractor.dto.HandlerParameterDto;
+import routie.logging.extractor.dto.HandlerParameter;
 import routie.logging.logger.ClientRequestLogger;
 
 @Slf4j
@@ -35,17 +35,14 @@ public class RequestLoggingAspect {
         ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
         HttpServletRequest httpServletRequest = servletRequestAttributes.getRequest();
 
+        boolean isSuccess = false;
         try {
             Object result = joinPoint.proceed();
-
-            long executionTime = System.currentTimeMillis() - startTime;
-            logClientRequest(joinPoint, httpServletRequest, executionTime, true);
+            isSuccess = true;
             return result;
-
-        } catch (final Exception e) {
+        } finally {
             long executionTime = System.currentTimeMillis() - startTime;
-            logClientRequest(joinPoint, httpServletRequest, executionTime, false);
-            throw e;
+            logClientRequest(joinPoint, httpServletRequest, executionTime, isSuccess);
         }
     }
 
@@ -61,7 +58,7 @@ public class RequestLoggingAspect {
             String clientIp = clientIpExtractor.extractClientIp(httpServletRequest);
 
             String handlerMethod = extractHandlerMethodName(joinPoint);
-            List<HandlerParameterDto> handlerParams = extractHandlerParameters(joinPoint);
+            List<HandlerParameter> handlerParams = extractHandlerParameters(joinPoint);
 
             clientRequestLogger.log(
                     httpMethod,
@@ -80,10 +77,10 @@ public class RequestLoggingAspect {
     private String extractHandlerMethodName(final JoinPoint joinPoint) {
         String controllerName = joinPoint.getTarget().getClass().getName();
         String methodName = joinPoint.getSignature().getName();
-        return controllerName + "." + methodName;
+        return controllerName + "#" + methodName;
     }
 
-    private List<HandlerParameterDto> extractHandlerParameters(final JoinPoint joinPoint) {
+    private List<HandlerParameter> extractHandlerParameters(final JoinPoint joinPoint) {
         MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();
         return handlerMethodAnalyzer.extractParameters(joinPoint.getArgs(), methodSignature.getMethod());
     }

@@ -4,23 +4,21 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.List;
 import java.util.stream.IntStream;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
-import routie.logging.extractor.dto.HandlerParameterDto;
+import routie.logging.extractor.dto.HandlerParameter;
 
 @Component
-@RequiredArgsConstructor
 public class HandlerMethodAnalyzer {
 
-    public List<HandlerParameterDto> extractParameters(final Object[] args, final Method method) {
+    public List<HandlerParameter> extractParameters(final Object[] args, final Method method) {
         try {
             Parameter[] parameters = method.getParameters();
 
             return IntStream.range(0, Math.min(parameters.length, args.length))
                     .filter(i -> isLoggableParameter(parameters[i], args[i]))
-                    .mapToObj(i -> new HandlerParameterDto(
+                    .mapToObj(i -> new HandlerParameter(
                             parameters[i].getType().getName(),
                             args[i]
                     ))

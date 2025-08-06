@@ -15,7 +15,7 @@ public class ClientIpExtractor {
         for (final String header : IP_HEADERS) {
             String ip = request.getHeader(header);
             if (isValidIp(ip)) {
-                return ip.contains(",") ? ip.split(",")[0].trim() : ip;
+                return ip.split(",")[0].trim();
             }
         }
 

@@ -7,7 +7,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.MDC;
 import org.springframework.stereotype.Component;
-import routie.logging.extractor.dto.HandlerParameterDto;
+import routie.logging.extractor.dto.HandlerParameter;
 
 @Slf4j
 @Component
@@ -21,7 +21,7 @@ public class ClientRequestLogger {
             final String url,
             final String clientIp,
             final String handlerMethod,
-            final List<HandlerParameterDto> handlerParams,
+            final List<HandlerParameter> handlerParams,
             final boolean isSuccess,
             final long executionTime
     ) {
@@ -38,7 +38,7 @@ public class ClientRequestLogger {
             final String url,
             final String clientIp,
             final String handlerMethod,
-            final List<HandlerParameterDto> handlerParams,
+            final List<HandlerParameter> handlerParams,
             final boolean isSuccess,
             final long executionTime
     ) {
