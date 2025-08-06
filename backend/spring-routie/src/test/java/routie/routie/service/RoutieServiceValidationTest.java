@@ -35,7 +35,7 @@ import routie.routiespace.repository.RoutieSpaceRepository;
 @Transactional
 @Import(TestRouteApiConfig.class)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
-@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
+@DirtiesContext(classMode = ClassMode.AFTER_CLASS)
 class RoutieServiceValidationTest {
 
     @LocalServerPort
