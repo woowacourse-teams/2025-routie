@@ -8,6 +8,7 @@ import routie.exception.BusinessException;
 import routie.exception.ErrorCode;
 import routie.place.domain.PlaceSearcher;
 import routie.place.domain.SearchedPlace;
+import routie.place.infrastructure.search.KakaoPlaceSearchResponse.Document;
 
 @Component
 @RequiredArgsConstructor
@@ -34,7 +35,7 @@ public class KakaoPlaceSearcher implements PlaceSearcher {
 
         return kakaoPlaceSearchResponse.documents()
                 .stream()
-                .map(SearchedPlace::from)
+                .map(Document::toSearchedPlace)
                 .toList();
     }
 }
