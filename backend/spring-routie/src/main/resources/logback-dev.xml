@@ -71,6 +71,46 @@
         </encoder>
     </appender>
 
+    <appender name="ROUTIE_REQUEST_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_DIR}/routie-request.json</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_DIR}/routie-request.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>7</maxHistory>
+        </rollingPolicy>
+
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>INFO</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+
+        <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+            <providers>
+                <timestamp>
+                    <fieldName>timestamp</fieldName>
+                    <timeZone>Asia/Seoul</timeZone>
+                    <pattern>yyyy-MM-dd'T'HH:mm:ss.SSSXXX</pattern>
+                </timestamp>
+                <logLevel>
+                    <fieldName>level</fieldName>
+                </logLevel>
+                <uuid>
+                    <fieldName>traceId</fieldName>
+                    <strategy>random</strategy>
+                </uuid>
+                <mdc>
+                    <includeMdcKeyName>httpMethod</includeMdcKeyName>
+                    <includeMdcKeyName>url</includeMdcKeyName>
+                    <includeMdcKeyName>clientIp</includeMdcKeyName>
+                    <includeMdcKeyName>requestResult</includeMdcKeyName>
+                    <includeMdcKeyName>responseTimeMs</includeMdcKeyName>
+                    <includeMdcKeyName>handlerMethod</includeMdcKeyName>
+                    <includeMdcKeyName>handlerParams</includeMdcKeyName>
+                </mdc>
+            </providers>
+        </encoder>
+    </appender>
+
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
             <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level [%thread] %logger{36} - %msg%n</pattern>
@@ -82,6 +122,10 @@
         <appender-ref ref="ROUTIE_INFO_FILE"/>
         <appender-ref ref="ROUTIE_ERROR_FILE"/>
         <appender-ref ref="CONSOLE"/>
+    </logger>
+
+    <logger name="routie.logging" level="INFO" additivity="false">
+        <appender-ref ref="ROUTIE_REQUEST_FILE"/>
     </logger>
 
     <root level="INFO">

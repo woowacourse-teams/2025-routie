@@ -104,7 +104,9 @@ jobs:
             exit 1
           fi
           echo "Starting $JAR_NAME"
-          sudo nohup java -jar "$JAR_NAME" \
+          sudo nohup java \
+            -Djava.net.preferIPv4Stack=true \
+            -jar "$JAR_NAME" \
             --spring.profiles.active=dev \
             --server.port=8080 \
             --spring.config.location=./config/application.yml > app.log 2>&1 &
