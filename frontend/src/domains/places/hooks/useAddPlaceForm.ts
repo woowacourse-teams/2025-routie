@@ -17,6 +17,9 @@ const initialFormState: FormState = {
   breakStartAt: '',
   breakEndAt: '',
   closedDayOfWeeks: [],
+  longitude: 0,
+  latitude: 0,
+  id: '',
 };
 
 const formReducer = (state: FormState, action: FormAction): FormState => {
@@ -53,7 +56,7 @@ export const useAddPlaceForm = () => {
 
   const handleInputChange = (
     field: keyof Omit<FormState, 'closedDayOfWeeks'>,
-    value: string,
+    value: string | number,
   ) => {
     dispatch({ type: 'UPDATE', field, value });
   };
