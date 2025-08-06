@@ -10,6 +10,7 @@ public class KakaoDrivingRouteApiClient {
 
     public KakaoDrivingRouteApiResponse getRoute(final KakaoDrivingRouteApiRequest request) {
         return restClient.post()
+                .uri("/v1/waypoints/directions")
                 .body(request)
                 .retrieve()
                 .body(KakaoDrivingRouteApiResponse.class);
