@@ -70,9 +70,7 @@ public class RoutieService {
     public RoutieReadResponse getRoutie(final String routieSpaceIdentifier, final LocalDateTime startDateTime) {
         Routie routie = getRoutieSpaceByIdentifier(routieSpaceIdentifier).getRoutie();
         List<RoutiePlace> routiePlaces = routie.getRoutiePlaces();
-
         Routes routes = getRoutes(routiePlaces);
-
         TimePeriods timePeriods = timePeriodCalculator.calculateTimePeriods(startDateTime, routes, routiePlaces);
         return RoutieReadResponse.from(routie, routes.orderedList(), timePeriods);
     }
@@ -131,7 +129,8 @@ public class RoutieService {
             final LocalDateTime endDateTime
     ) {
         Routie routie = getRoutieSpaceByIdentifier(routieSpaceIdentifier).getRoutie();
-        Routes routes = routeCalculator.calculateRoutes(routie.getRoutiePlaces(), MovingStrategy.DRIVING);
+        List<RoutiePlace> routiePlaces = routie.getRoutiePlaces();
+        Routes routes = getRoutes(routiePlaces);
         TimePeriods timePeriods = timePeriodCalculator.calculateTimePeriods(
                 startDateTime,
                 routes,
