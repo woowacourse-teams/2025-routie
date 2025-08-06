@@ -185,6 +185,8 @@ class RoutieServiceValidationTest {
         Place singlePlace = Place.create(
                 "단일 장소",
                 "단일 주소",
+                10.123,
+                10.123,
                 60,
                 LocalTime.of(9, 0),
                 LocalTime.of(18, 0),

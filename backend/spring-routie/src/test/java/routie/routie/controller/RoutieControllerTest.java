@@ -92,6 +92,8 @@ class RoutieControllerTest {
         Place placeC = Place.create(
                 "장소 C",
                 "주소 C",
+                10.123,
+                10.123,
                 60,
                 LocalTime.of(9, 0),
                 LocalTime.of(18, 0),
