@@ -10,7 +10,7 @@
         <appender-ref ref="CONSOLE"/>
     </root>
 
-    <springProfile name="dev">
+    <springProfile name="local,dev">
         <include resource="logback-dev.xml"/>
     </springProfile>
 
