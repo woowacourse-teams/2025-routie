@@ -236,6 +236,8 @@ public class PlaceControllerTest {
         assertThat(responseBody).isNotNull();
         assertThat(responseBody).contains("name");
         assertThat(responseBody).contains("roadAddress");
+        assertThat(responseBody).contains("longitude");
+        assertThat(responseBody).contains("latitude");
         assertThat(responseBody).contains("stayDurationMinutes");
     }
 
