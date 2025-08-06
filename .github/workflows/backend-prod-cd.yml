@@ -67,6 +67,9 @@ jobs:
         working-directory: backend/spring-routie
 
     steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
       - name: Restore docker-compose.yml and Run Containers
         run: |
           echo "${{ secrets.DOCKER_COMPOSE_PROD_YML }}" > docker-compose.yml
