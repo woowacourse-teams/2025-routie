@@ -30,7 +30,6 @@ public class DrivingRouteCalculator implements RouteCalculator {
 
     @Override
     public Routes calculateRoutes(final List<RoutiePlace> routiePlaces, final MovingStrategy movingStrategy) {
-        validateMinimumSize(routiePlaces);
         KakaoDrivingRouteApiResponse kakaoDrivingRouteApiResponse = kakaoDrivingRouteApiClient.getRoute(
                 KakaoDrivingRouteApiRequest.from(routiePlaces)
         );
@@ -61,11 +60,5 @@ public class DrivingRouteCalculator implements RouteCalculator {
             routeMap.put(from, route);
         }
         return new Routes(routeMap);
-    }
-
-    private void validateMinimumSize(final List<RoutiePlace> routiePlaces) {
-        if (routiePlaces.size() < 2) {
-            throw new BusinessException(ErrorCode.ROUTE_CALCULATION_SIZE_TOO_SMALL);
-        }
     }
 }

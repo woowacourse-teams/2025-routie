@@ -13,11 +13,6 @@ public enum ErrorCode {
             "잘못된 요청입니다.",
             HttpStatus.BAD_REQUEST
     ),
-    ROUTE_CALCULATION_SIZE_TOO_SMALL(
-            "5001",
-            "경로 계산을 위한 장소의 개수가 충분하지 않습니다. 최소 2개 이상의 장소가 필요합니다.",
-            HttpStatus.BAD_REQUEST
-    ),
     KAKAO_DRIVING_ROUTE_API_ERROR(
             "5002",
             "경로 계산을 위한 외부 API 호출 중 오류가 발생했습니다.",
