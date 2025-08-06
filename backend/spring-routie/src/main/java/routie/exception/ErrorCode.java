@@ -21,12 +21,12 @@ public enum ErrorCode {
     KAKAO_DRIVING_ROUTE_API_ERROR(
             "5002",
             "경로 계산을 위한 외부 API 호출 중 오류가 발생했습니다.",
-            HttpStatus.INTERNAL_SERVER_ERROR
+            HttpStatus.BAD_GATEWAY
     ),
     KAKAO_DRIVING_ROUTE_API_RESPONSE_EMPTY(
             "5003",
             "경로 계산을 위한 외부 API 응답이 비어 있습니다.",
-            HttpStatus.INTERNAL_SERVER_ERROR
+            HttpStatus.BAD_GATEWAY
     ),
     MOVING_STRATEGY_NOT_SUPPORTED(
             "5004",
