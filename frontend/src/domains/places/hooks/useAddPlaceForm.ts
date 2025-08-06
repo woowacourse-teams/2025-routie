@@ -17,9 +17,6 @@ const initialFormState: FormState = {
   breakStartAt: '',
   breakEndAt: '',
   closedDayOfWeeks: [],
-  longitude: 0,
-  latitude: 0,
-  id: '',
 };
 
 const formReducer = (state: FormState, action: FormAction): FormState => {

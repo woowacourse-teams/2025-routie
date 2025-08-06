@@ -6,6 +6,7 @@ import { useAddPlaceForm } from '@/domains/places/hooks/useAddPlaceForm';
 
 import addPlace from '../../apis/addPlace';
 import { usePlaceFormValidation } from '../../hooks/usePlaceFormValidation';
+import { PlaceLocationType } from '../../types/place.types';
 import AddressInput from '../PlaceFormSection/AddressInput';
 import BreakTimeInputs from '../PlaceFormSection/BreakTimeInputs';
 import BusinessHourInputs from '../PlaceFormSection/BusinessHourInputs';
@@ -31,6 +32,7 @@ const AddPlaceModal = ({
     useAddPlaceForm();
   const { isEmpty, isValid } = usePlaceFormValidation(form);
   const [showErrors, setShowErrors] = useState(false);
+  const [searchInfo, setSearchInfo] = useState<PlaceLocationType>();
 
   const handleClose = () => {
     resetForm();
@@ -38,8 +40,13 @@ const AddPlaceModal = ({
     onClose();
   };
 
+  const handleSearchPlaceMap = (placeLocation: PlaceLocationType) => {
+    setSearchInfo(placeLocation);
+  };
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    const mergedForm = { ...form, ...searchInfo };
 
     if (!isValid) {
       setShowErrors(true);
@@ -68,7 +75,10 @@ const AddPlaceModal = ({
               width="100%"
               gap={2}
             >
-              <SearchBox onChange={handleInputChange} />
+              <SearchBox
+                onChange={handleInputChange}
+                handleSearchPlaceMap={handleSearchPlaceMap}
+              />
               {form.name && (
                 <PlaceNameInput
                   value={form.name}

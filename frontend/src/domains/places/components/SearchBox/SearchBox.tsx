@@ -6,19 +6,17 @@ import Input from '@/@common/components/Input/Input';
 import Text from '@/@common/components/Text/Text';
 import theme from '@/styles/theme';
 
-import { PlaceSearchType } from '../../types/place.types';
+import { PlaceLocationType, PlaceSearchType } from '../../types/place.types';
 import SearchList from '../SearchList/SearchList';
 
 import searchPlacesMockData from './searchPlacesMockData';
 
 interface SearchBoxProps {
-  onChange: (
-    field: 'name' | 'address' | 'longitude' | 'latitude' | 'id',
-    value: string | number,
-  ) => void;
+  onChange: (field: 'name' | 'address', value: string | number) => void;
+  handleSearchPlaceMap: (searchInfo: PlaceLocationType) => void;
 }
 
-const SearchBox = ({ onChange }: SearchBoxProps) => {
+const SearchBox = ({ onChange, handleSearchPlaceMap }: SearchBoxProps) => {
   const [keyword, setKeyword] = useState('');
   const [searchResults, setSearchResults] = useState<PlaceSearchType[]>([]);
 
@@ -28,14 +26,21 @@ const SearchBox = ({ onChange }: SearchBoxProps) => {
     setSearchResults(searchPlacesMockData);
   };
 
-  const handleSelect = (item: PlaceSearchType) => {
+  const handleReset = () => {
     setKeyword('');
     setSearchResults([]);
-    onChange('name', item.placeName);
-    onChange('address', item.roadAddressName);
-    onChange('longitude', item.longitude);
-    onChange('latitude', item.latitude);
-    onChange('id', item.id);
+  };
+
+  const handleSelect = (searchPlace: PlaceSearchType) => {
+    handleReset();
+    onChange('name', searchPlace.placeName);
+    onChange('address', searchPlace.roadAddressName);
+
+    handleSearchPlaceMap({
+      id: searchPlace.id,
+      longitude: searchPlace.longitude,
+      latitude: searchPlace.latitude,
+    });
   };
 
   return (
