@@ -1,8 +1,8 @@
-name: Backend CD on develop branch
+name: Backend CD on main branch
 
 on:
   push:
-    branches: [ "develop" ]
+    branches: [ "main" ]
     paths:
       - 'backend/**'
   workflow_dispatch:
@@ -59,7 +59,7 @@ jobs:
 
   download-and-deploy:
     name: Deploy to EC2
-    runs-on: [ self-hosted, dev ]
+    runs-on: [ self-hosted, prod ]
     needs: build-and-upload
 
     defaults:
@@ -69,7 +69,7 @@ jobs:
     steps:
       - name: Restore docker-compose.yml and Run Containers
         run: |
-          echo "${{ secrets.DOCKER_COMPOSE_YML }}" > docker-compose.yml
+          echo "${{ secrets.DOCKER_COMPOSE_PROD_YML }}" > docker-compose.yml
           sudo docker compose up -d
 
       - name: Clean old JARs
@@ -84,7 +84,7 @@ jobs:
       - name: Restore application.yml
         run: |
           mkdir -p config
-          echo "${{ secrets.APPLICATION_YML_DEV }}" > config/application.yml
+          echo "${{ secrets.APPLICATION_YML_PROD }}" > config/application.yml
 
       - name: Kill existing Spring Process
         run: |
@@ -105,6 +105,6 @@ jobs:
           fi
           echo "Starting $JAR_NAME"
           sudo nohup java -jar "$JAR_NAME" \
-            --spring.profiles.active=dev \
+            --spring.profiles.active=prod \
             --server.port=8080 \
             --spring.config.location=./config/application.yml > app.log 2>&1 &

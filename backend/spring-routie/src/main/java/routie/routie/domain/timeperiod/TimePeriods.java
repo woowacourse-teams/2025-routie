@@ -18,7 +18,7 @@ public class TimePeriods {
     }
 
     public static TimePeriods empty() {
-        return new TimePeriods(new TreeMap<>(Comparator.comparing(RoutiePlace::getSequence)));
+        return new TimePeriods(new TreeMap<>(ROUTIE_PLACE_COMPARATOR));
     }
 
     public TimePeriods withAdded(final RoutiePlace routiePlace, final TimePeriod timePeriod) {
