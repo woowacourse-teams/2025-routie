@@ -27,7 +27,7 @@ public enum ErrorCode {
             "5004",
             "지원하지 않는 이동 전략입니다.",
             HttpStatus.BAD_REQUEST
-    );
+    ),
     KAKAO_LOCAL_API_ERROR(
             "6001", 
             "외부 장소 검색 서비스에 문제가 발생했습니다.", 
