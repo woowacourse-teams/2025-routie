@@ -9,7 +9,9 @@ import routie.place.domain.PlaceClosedDayOfWeek;
 
 public record PlaceReadResponse(
         String name,
-        String address,
+        String roadAddress,
+        Double longitude,
+        Double latitude,
         int stayDurationMinutes,
         @JsonFormat(pattern = "HH:mm") LocalTime openAt,
         @JsonFormat(pattern = "HH:mm") LocalTime closeAt,
@@ -21,7 +23,9 @@ public record PlaceReadResponse(
     public static PlaceReadResponse from(final Place place) {
         return new PlaceReadResponse(
                 place.getName(),
-                place.getAddress(),
+                place.getRoadAddress(),
+                place.getLongitude(),
+                place.getLatitude(),
                 place.getStayDurationMinutes(),
                 place.getOpenAt(),
                 place.getCloseAt(),
