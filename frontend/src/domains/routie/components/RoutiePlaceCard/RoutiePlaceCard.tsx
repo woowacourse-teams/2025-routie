@@ -37,11 +37,7 @@ const RoutiePlaceCard = ({ routie }: { routie: Routie }) => {
 
   return (
     place && (
-      <Card
-        id={routie.placeId.toString()}
-        width="45rem"
-        variant="defaultStatic"
-      >
+      <Card id={routie.placeId.toString()} width="100%" variant="defaultStatic">
         <Flex justifyContent="flex-start" gap={1.5}>
           <IconButton variant="drag" icon={dragIcon} onClick={() => {}} />
           <Flex
