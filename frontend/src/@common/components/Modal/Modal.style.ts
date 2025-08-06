@@ -4,6 +4,7 @@ import theme from '@/styles/theme';
 
 const ModalStyle = css`
   position: fixed;
+  z-index: 9999;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
@@ -16,6 +17,7 @@ const ModalStyle = css`
 
 const ModalOverlayStyle = css`
   position: fixed;
+  z-index: 9998;
   top: 0;
   left: 0;
 
