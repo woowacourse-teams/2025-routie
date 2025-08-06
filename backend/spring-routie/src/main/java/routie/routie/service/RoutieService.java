@@ -8,6 +8,8 @@ import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import routie.place.domain.MovingStrategy;
@@ -36,7 +38,9 @@ import routie.routiespace.repository.RoutieSpaceRepository;
 
 @Service
 @RequiredArgsConstructor
+@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 public class RoutieService {
+    private static final int MIN_ROUTIE_PLACES_FOR_ROUTE = 2;
 
     private final RoutieSpaceRepository routieSpaceRepository;
     private final PlaceRepository placeRepository;
@@ -65,16 +69,22 @@ public class RoutieService {
 
     public RoutieReadResponse getRoutie(final String routieSpaceIdentifier, final LocalDateTime startDateTime) {
         Routie routie = getRoutieSpaceByIdentifier(routieSpaceIdentifier).getRoutie();
-        Routes routes = routeCalculator.calculateRoutes(routie.getRoutiePlaces(), MovingStrategy.DRIVING);
+        List<RoutiePlace> routiePlaces = routie.getRoutiePlaces();
 
-        TimePeriods timePeriods = null;
-        if (startDateTime != null) {
-            timePeriods = timePeriodCalculator.calculateTimePeriods(
-                    startDateTime,
-                    routes
-            );
-        }
+        Routes routes = getRoutes(routiePlaces);
+
+        TimePeriods timePeriods = timePeriodCalculator.calculateTimePeriods(startDateTime, routes, routiePlaces);
         return RoutieReadResponse.from(routie, routes.orderedList(), timePeriods);
+    }
+
+    private Routes getRoutes(final List<RoutiePlace> routiePlaces) {
+        Routes routes = Routes.empty();
+
+        if (routiePlaces.size() >= MIN_ROUTIE_PLACES_FOR_ROUTE) {
+            routes = routeCalculator.calculateRoutes(routiePlaces, MovingStrategy.DRIVING);
+        }
+
+        return routes;
     }
 
     @Transactional
@@ -122,7 +132,11 @@ public class RoutieService {
     ) {
         Routie routie = getRoutieSpaceByIdentifier(routieSpaceIdentifier).getRoutie();
         Routes routes = routeCalculator.calculateRoutes(routie.getRoutiePlaces(), MovingStrategy.DRIVING);
-        TimePeriods timePeriods = timePeriodCalculator.calculateTimePeriods(startDateTime, routes);
+        TimePeriods timePeriods = timePeriodCalculator.calculateTimePeriods(
+                startDateTime,
+                routes,
+                routie.getRoutiePlaces()
+        );
         ValidationContext validationContext = new ValidationContext(startDateTime, endDateTime, timePeriods);
         List<ValidationResult> validationResults = new ArrayList<>();
 
