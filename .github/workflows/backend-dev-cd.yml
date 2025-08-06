@@ -59,7 +59,7 @@ jobs:
 
   download-and-deploy:
     name: Deploy to EC2
-    runs-on: [ self-hosted ]
+    runs-on: [ self-hosted, dev ]
     needs: build-and-upload
 
     defaults:
