@@ -56,4 +56,31 @@ public class ClientRequestLogger {
             MDC.put("handlerParams", "[]");
         }
     }
+
+    public void log(
+            final String httpMethod,
+            final String url,
+            final String clientIp,
+            final long executionTime
+
+    ) {
+        try {
+            putMdcFields(httpMethod, url, clientIp, executionTime);
+            log.info("");
+        } finally {
+            MDC.clear();
+        }
+    }
+
+    private void putMdcFields(
+            final String httpMethod,
+            final String url,
+            final String clientIp,
+            final long executionTime
+    ) {
+        MDC.put("httpMethod", httpMethod);
+        MDC.put("url", url);
+        MDC.put("clientIp", clientIp);
+        MDC.put("responseTimeMs", String.valueOf(executionTime));
+    }
 }
