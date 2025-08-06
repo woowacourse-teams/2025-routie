@@ -19,7 +19,7 @@ public class KakaoLocalResponseErrorHandler implements ResponseErrorHandler {
     private final ObjectMapper objectMapper;
 
     @Override
-    public boolean hasError(final ClientHttpResponse response) throws IOException {
+    public boolean hasError(final ClientHttpResponse response) {
         try {
             final HttpStatusCode statusCode = response.getStatusCode();
 
