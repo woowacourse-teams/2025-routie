@@ -17,18 +17,24 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpStatus;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import routie.place.domain.Place;
 import routie.place.repository.PlaceRepository;
 import routie.routie.controller.dto.response.RoutieReadResponse;
 import routie.routie.controller.dto.response.RoutieReadResponse.RouteResponse;
 import routie.routie.controller.dto.response.RoutieReadResponse.RoutiePlaceResponse;
 import routie.routie.domain.Routie;
+import routie.routie.infrastructure.routecalculator.driving.kakaodrivingapi.TestRouteApiConfig;
 import routie.routiespace.domain.RoutieSpace;
 import routie.routiespace.domain.RoutieSpaceFixture;
 import routie.routiespace.repository.RoutieSpaceRepository;
 
-@SpringBootTest(webEnvironment = WebEnvironment.DEFINED_PORT)
+@Import(TestRouteApiConfig.class)
+@DirtiesContext(classMode = ClassMode.AFTER_CLASS)
+@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 class RoutieControllerTest {
 
     @LocalServerPort

@@ -2,6 +2,7 @@ package routie.routie.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import io.restassured.RestAssured;
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -13,6 +14,11 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
+import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.context.annotation.Import;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.transaction.annotation.Transactional;
 import routie.place.domain.Place;
 import routie.place.repository.PlaceRepository;
@@ -21,13 +27,19 @@ import routie.routie.controller.dto.response.RoutieValidationResponse.Validation
 import routie.routie.domain.Routie;
 import routie.routie.domain.RoutiePlace;
 import routie.routie.domain.routievalidator.ValidationStrategy;
+import routie.routie.infrastructure.routecalculator.driving.kakaodrivingapi.TestRouteApiConfig;
 import routie.routiespace.domain.RoutieSpace;
 import routie.routiespace.domain.RoutieSpaceFixture;
 import routie.routiespace.repository.RoutieSpaceRepository;
 
-@SpringBootTest
 @Transactional
+@Import(TestRouteApiConfig.class)
+@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
+@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 class RoutieServiceValidationTest {
+
+    @LocalServerPort
+    private int port;
 
     @Autowired
     private RoutieService routieService;
@@ -45,6 +57,8 @@ class RoutieServiceValidationTest {
 
     @BeforeEach
     void setUp() {
+        RestAssured.port = port;
+
         placeA = Place.create(
                 "장소 A",
                 "주소 A",
