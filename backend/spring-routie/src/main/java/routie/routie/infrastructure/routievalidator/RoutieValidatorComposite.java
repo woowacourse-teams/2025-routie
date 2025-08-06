@@ -1,19 +1,18 @@
 package routie.routie.infrastructure.routievalidator;
 
-import java.util.ArrayList;
 import java.util.List;
+import lombok.RequiredArgsConstructor;
+import routie.exception.BusinessException;
+import routie.exception.ErrorCode;
 import routie.routie.domain.routievalidator.RoutieValidator;
 import routie.routie.domain.routievalidator.ValidationContext;
 import routie.routie.domain.routievalidator.ValidationResult;
 import routie.routie.domain.routievalidator.ValidationStrategy;
 
+@RequiredArgsConstructor
 public class RoutieValidatorComposite implements RoutieValidator {
 
     private final List<RoutieValidator> routeValidators;
-
-    public RoutieValidatorComposite(final List<RoutieValidator> routeValidator) {
-        this.routeValidators = new ArrayList<>(routeValidator);
-    }
 
     @Override
     public boolean supportsStrategy(final ValidationStrategy validationStrategy) {
@@ -35,6 +34,6 @@ public class RoutieValidatorComposite implements RoutieValidator {
         return routeValidators.stream()
                 .filter(calculator -> calculator.supportsStrategy(validationStrategy))
                 .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException("지원하지 않는 검증 방식입니다: " + validationStrategy));
+                .orElseThrow(() -> new BusinessException(ErrorCode.MOVING_STRATEGY_NOT_SUPPORTED));
     }
 }

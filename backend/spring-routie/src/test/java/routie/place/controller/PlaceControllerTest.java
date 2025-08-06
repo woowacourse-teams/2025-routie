@@ -17,14 +17,20 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import routie.place.domain.Place;
 import routie.place.repository.PlaceRepository;
 import routie.routiespace.domain.RoutieSpace;
 import routie.routiespace.domain.RoutieSpaceIdentifierProvider;
 import routie.routiespace.repository.RoutieSpaceRepository;
 
-@SpringBootTest(webEnvironment = WebEnvironment.DEFINED_PORT)
+@DirtiesContext(classMode = ClassMode.AFTER_CLASS)
+@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 public class PlaceControllerTest {
+
+    @LocalServerPort
+    private int port;
 
     @Autowired
     private PlaceRepository placeRepository;
@@ -34,9 +40,6 @@ public class PlaceControllerTest {
 
     @Autowired
     private RoutieSpaceIdentifierProvider routieSpaceIdentifierProvider;
-
-    @LocalServerPort
-    private int port;
 
     private Place testPlace;
     private RoutieSpace testRoutieSpace;
