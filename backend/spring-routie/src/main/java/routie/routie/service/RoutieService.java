@@ -8,8 +8,6 @@ import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import routie.place.domain.MovingStrategy;
@@ -38,7 +36,6 @@ import routie.routiespace.repository.RoutieSpaceRepository;
 
 @Service
 @RequiredArgsConstructor
-@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 public class RoutieService {
     private static final int MIN_ROUTIE_PLACES_FOR_ROUTE = 2;
 
