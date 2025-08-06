@@ -12,6 +12,7 @@ import BusinessHourInputs from '../PlaceFormSection/BusinessHourInputs';
 import ClosedDaySelector from '../PlaceFormSection/ClosedDaySelector';
 import PlaceNameInput from '../PlaceFormSection/PlaceNameInput';
 import StayDurationInput from '../PlaceFormSection/StayDurationInput';
+import SearchBox from '../SearchBox/SearchBox';
 
 import { ModalInputContainerStyle } from './AddPlaceModal.styles';
 import AddPlaceModalButtons from './AddPlaceModalButtons';
@@ -39,6 +40,7 @@ const AddPlaceModal = ({
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
     if (!isValid) {
       setShowErrors(true);
       return;
@@ -66,16 +68,23 @@ const AddPlaceModal = ({
               width="100%"
               gap={2}
             >
-              <PlaceNameInput
-                value={form.name}
-                onChange={handleInputChange}
-                error={showErrors && isEmpty.name}
-              />
-              <AddressInput
-                value={form.address}
-                onChange={handleInputChange}
-                error={showErrors && isEmpty.address}
-              />
+              <SearchBox onChange={handleInputChange} />
+              {form.name && (
+                <PlaceNameInput
+                  value={form.name}
+                  onChange={handleInputChange}
+                  error={showErrors && isEmpty.name}
+                  disabled
+                />
+              )}
+              {form.address && (
+                <AddressInput
+                  value={form.address}
+                  onChange={handleInputChange}
+                  error={showErrors && isEmpty.address}
+                  disabled
+                />
+              )}
               <StayDurationInput
                 value={form.stayDurationMinutes}
                 onChange={handleInputChange}
