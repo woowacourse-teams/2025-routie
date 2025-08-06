@@ -1,5 +1,3 @@
-import { useEffect } from 'react';
-
 import { useRoutieContext } from '../../contexts/useRoutieContext';
 import { useCardDrag } from '../../hooks/useCardDrag';
 import RoutieRoutes from '../Route/RoutieRoutes';
