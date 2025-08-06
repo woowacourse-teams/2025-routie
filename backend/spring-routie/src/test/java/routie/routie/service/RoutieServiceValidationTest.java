@@ -173,4 +173,45 @@ class RoutieServiceValidationTest {
 
         assertThat(isValid).isFalse();
     }
+
+    @Test
+    @DisplayName("장소가 1개일 때 사용자의 가용 시간이 부족하면 isValid false를 반환한다")
+    void validateSinglePlaceRoutie_WithInsufficientTime_ShouldReturnFalse() {
+        // given: 장소가 하나만 있는 Routie, 사용자의 가용 시간이 30분으로 부족한 상태
+        Place singlePlace = Place.create(
+                "단일 장소",
+                "단일 주소",
+                60,
+                LocalTime.of(9, 0),
+                LocalTime.of(18, 0),
+                null,
+                null,
+                null,
+                List.of()
+        );
+
+        placeRepository.save(singlePlace);
+
+        RoutiePlace singleRoutiePlace = new RoutiePlace(1, singlePlace);
+        Routie singleRoutie = Routie.create(List.of(singleRoutiePlace));
+        RoutieSpace singleRoutieSpace = RoutieSpaceFixture.createWithoutId(List.of(), singleRoutie);
+        routieSpaceRepository.save(singleRoutieSpace);
+
+        LocalDateTime startTime = LocalDateTime.of(2025, 7, 29, 10, 0);
+        LocalDateTime endTime = LocalDateTime.of(2025, 7, 29, 10, 30);
+
+        // when
+        RoutieValidationResponse response = routieService.validateRoutie(
+                singleRoutieSpace.getIdentifier(), startTime, endTime
+        );
+
+        // then: 총 시간 부족으로 인해 해당 조건만 false여야 함
+        assertValidationResultIsFalse(response, ValidationStrategy.IS_WITHIN_TOTAL_TIME);
+
+        boolean othersAreValid = response.validationResultResponses().stream()
+                .filter(r -> !r.validationCode().equals(ValidationStrategy.IS_WITHIN_TOTAL_TIME.getValidationCode()))
+                .allMatch(ValidationResultResponse::isValid);
+
+        assertThat(othersAreValid).isTrue();
+    }
 }

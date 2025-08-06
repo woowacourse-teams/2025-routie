@@ -48,13 +48,18 @@ class RoutieControllerTest {
 
     private Routie routie;
 
+    private Routie routieWithOneRoutiePlace;
+
     private RoutieSpace routieSpace;
+
+    private RoutieSpace routieSpaceWithOneRoutiePlace;
 
     @BeforeEach
     void setUp() {
         RestAssured.port = port;
 
         routieSpace = RoutieSpaceFixture.createEmpty();
+        routieSpaceWithOneRoutiePlace = RoutieSpaceFixture.createEmpty();
 
         Place placeA = Place.create(
                 "장소 A",
@@ -80,14 +85,31 @@ class RoutieControllerTest {
                 List.of(DayOfWeek.MONDAY)
         );
 
+        Place placeC = Place.create(
+                "장소 C",
+                "주소 C",
+                60,
+                LocalTime.of(9, 0),
+                LocalTime.of(18, 0),
+                null,
+                null,
+                routieSpaceWithOneRoutiePlace,
+                List.of()
+        );
+
         routieSpace.getPlaces().add(placeA);
         routieSpace.getPlaces().add(placeB);
         routieSpace.getRoutie().createLastRoutiePlace(placeA);
         routieSpace.getRoutie().createLastRoutiePlace(placeB);
 
+        routieSpaceWithOneRoutiePlace.getPlaces().add(placeC);
+        routieSpaceWithOneRoutiePlace.getRoutie().createLastRoutiePlace(placeC);
+
         routieSpaceRepository.save(routieSpace);
+        routieSpaceRepository.save(routieSpaceWithOneRoutiePlace);
 
         routie = routieSpace.getRoutie();
+        routieWithOneRoutiePlace = routieSpaceWithOneRoutiePlace.getRoutie();
     }
 
     @Test
@@ -275,6 +297,34 @@ class RoutieControllerTest {
         assertThat(route.toSequence()).isEqualTo(2);
         assertThat(route.duration()).isEqualTo(100);
         assertThat(route.distance()).isEqualTo(1000);
+    }
+
+    @Test
+    @DisplayName("RoutiePlace가 하나만 있을 때도 정상적으로 도착/출발 정보 반환")
+    void readRoutieWithSingleRoutiePlace() {
+        // given
+        String startDateTime = "2025-07-29T10:00:00";
+
+        // when
+        RoutieReadResponse routieReadResponse = RestAssured
+                .given().log().all()
+                .queryParam("startDateTime", startDateTime)
+                .when()
+                .get("/routie-spaces/" + routieSpaceWithOneRoutiePlace.getIdentifier() + "/routie")
+                .then().log().all()
+                .statusCode(HttpStatus.OK.value())
+                .extract()
+                .as(RoutieReadResponse.class);
+
+        // then
+        assertThat(routieReadResponse.routiePlaces()).hasSize(1);
+        assertThat(routieReadResponse.routes()).isEmpty();
+
+        RoutiePlaceResponse routiePlace = routieReadResponse.routiePlaces().get(0);
+
+        assertThat(routiePlace.sequence()).isEqualTo(1);
+        assertThat(routiePlace.arriveDateTime()).isEqualTo(LocalDateTime.of(2025, 7, 29, 10, 0));
+        assertThat(routiePlace.departureDateTime()).isEqualTo(LocalDateTime.of(2025, 7, 29, 11, 0));
     }
 
     @Test
