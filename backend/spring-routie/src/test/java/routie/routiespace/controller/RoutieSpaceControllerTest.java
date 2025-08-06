@@ -164,7 +164,7 @@ public class RoutieSpaceControllerTest {
 
         List<Object> places = response.jsonPath().getList("places");
         String firstPlaceName = response.jsonPath().getString("places[0].name");
-        String firstPlaceAddress = response.jsonPath().getString("places[0].roadAddress");
+        String firstPlaceAddress = response.jsonPath().getString("places[0].roadAddressName");
         String firstPlaceOpenAt = response.jsonPath().getString("places[0].openAt");
         String firstPlaceCloseAt = response.jsonPath().getString("places[0].closeAt");
         List<String> firstPlaceClosedDays = response.jsonPath().getList("places[0].closedDayOfWeeks");

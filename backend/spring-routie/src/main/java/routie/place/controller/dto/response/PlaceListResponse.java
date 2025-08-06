@@ -22,7 +22,7 @@ public record PlaceListResponse(
     public record PlaceCardResponse(
             Long id,
             String name,
-            String roadAddress,
+            String roadAddressName,
             Double longitude,
             Double latitude,
             @JsonFormat(pattern = "HH:mm") LocalTime openAt,
@@ -33,7 +33,7 @@ public record PlaceListResponse(
             return new PlaceCardResponse(
                     place.getId(),
                     place.getName(),
-                    place.getRoadAddress(),
+                    place.getRoadAddressName(),
                     place.getLongitude(),
                     place.getLatitude(),
                     place.getOpenAt(),

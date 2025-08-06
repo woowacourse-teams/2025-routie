@@ -9,7 +9,7 @@ import routie.place.domain.PlaceClosedDayOfWeek;
 
 public record PlaceReadResponse(
         String name,
-        String roadAddress,
+        String roadAddressName,
         Double longitude,
         Double latitude,
         int stayDurationMinutes,
@@ -23,7 +23,7 @@ public record PlaceReadResponse(
     public static PlaceReadResponse from(final Place place) {
         return new PlaceReadResponse(
                 place.getName(),
-                place.getRoadAddress(),
+                place.getRoadAddressName(),
                 place.getLongitude(),
                 place.getLatitude(),
                 place.getStayDurationMinutes(),

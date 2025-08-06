@@ -40,8 +40,8 @@ public class Place {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "roadAddress", nullable = false)
-    private String roadAddress;
+    @Column(name = "roadAddressName", nullable = false)
+    private String roadAddressName;
 
     @Column(name = "longitude", nullable = false)
     private Double longitude;
@@ -83,7 +83,7 @@ public class Place {
 
     public Place(
             final String name,
-            final String roadAddress,
+            final String roadAddressName,
             final Double longitude,
             final Double latitude,
             final int stayDurationMinutes,
@@ -94,9 +94,9 @@ public class Place {
             final RoutieSpace routieSpace,
             final List<PlaceClosedDayOfWeek> placeClosedDayOfWeeks
     ) {
-        validateForCreation(name, roadAddress, stayDurationMinutes, openAt, closeAt, breakStartAt, breakEndAt);
+        validateForCreation(name, roadAddressName, stayDurationMinutes, openAt, closeAt, breakStartAt, breakEndAt);
         this.name = name;
-        this.roadAddress = roadAddress;
+        this.roadAddressName = roadAddressName;
         this.longitude = longitude;
         this.latitude = latitude;
         this.stayDurationMinutes = stayDurationMinutes;
@@ -110,7 +110,7 @@ public class Place {
 
     private void validateForCreation(
             final String name,
-            final String roadAddress,
+            final String roadAddressName,
             final int stayDurationMinutes,
             final LocalTime openAt,
             final LocalTime closeAt,
@@ -118,14 +118,14 @@ public class Place {
             final LocalTime breakEndAt
     ) {
         validateName(name);
-        validateAddress(roadAddress);
+        validateRoadAddressName(roadAddressName);
         validateStayDurationMinutes(stayDurationMinutes);
         validateTime(openAt, closeAt, breakStartAt, breakEndAt);
     }
 
     public static Place create(
             final String name,
-            final String roadAddress,
+            final String roadAddressName,
             final Double longitude,
             final Double latitude,
             final int stayDurationMinutes,
@@ -139,7 +139,7 @@ public class Place {
         List<PlaceClosedDayOfWeek> placeClosedDayOfWeeks = createClosedDayOfWeeks(closedDayOfWeeks);
         return new Place(
                 name,
-                roadAddress,
+                roadAddressName,
                 longitude,
                 latitude,
                 stayDurationMinutes,
@@ -206,11 +206,11 @@ public class Place {
         }
     }
 
-    private void validateAddress(final String roadAddress) {
-        if (roadAddress == null || roadAddress.isBlank()) {
+    private void validateRoadAddressName(final String roadAddressName) {
+        if (roadAddressName == null || roadAddressName.isBlank()) {
             throw new IllegalArgumentException("주소는 필수입니다.");
         }
-        if (roadAddress.length() > 50) {
+        if (roadAddressName.length() > 50) {
             throw new IllegalArgumentException("주소는 1자 이상 50자 이하여야 합니다.");
         }
     }
