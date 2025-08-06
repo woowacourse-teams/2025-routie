@@ -54,7 +54,7 @@ class PlaceSearchControllerTest {
     @DisplayName("장소를 검색한다.")
     void searchPlacesSuccessfully() {
         // given
-        String query = "강남";
+        String query = "선릉역";
 
         // when
         SearchedPlacesResponse searchedPlacesResponse = RestAssured.given()
