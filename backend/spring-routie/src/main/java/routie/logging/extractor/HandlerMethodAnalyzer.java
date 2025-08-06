@@ -19,7 +19,7 @@ public class HandlerMethodAnalyzer {
             Parameter[] parameters = method.getParameters();
 
             return IntStream.range(0, Math.min(parameters.length, args.length))
-                    .filter(i -> isValidParameter(parameters[i], args[i]))
+                    .filter(i -> isLoggableParameter(parameters[i], args[i]))
                     .mapToObj(i -> new HandlerParameterDto(
                             parameters[i].getType().getName(),
                             args[i]
@@ -30,7 +30,7 @@ public class HandlerMethodAnalyzer {
         }
     }
 
-    private boolean isValidParameter(final Parameter parameter, final Object value) {
+    private boolean isLoggableParameter(final Parameter parameter, final Object value) {
         return value != null
                 && !isSystemParameter(value.getClass())
                 && !isPathVariableOrRequestParam(parameter);
