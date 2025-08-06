@@ -128,11 +128,13 @@ public class RoutieService {
         Routie routie = getRoutieSpaceByIdentifier(routieSpaceIdentifier).getRoutie();
         List<RoutiePlace> routiePlaces = routie.getRoutiePlaces();
         Routes routes = getRoutes(routiePlaces);
+
         TimePeriods timePeriods = timePeriodCalculator.calculateTimePeriods(
                 startDateTime,
                 routes,
-                routie.getRoutiePlaces()
+                routiePlaces
         );
+
         ValidationContext validationContext = new ValidationContext(startDateTime, endDateTime, timePeriods);
         List<ValidationResult> validationResults = new ArrayList<>();
 
