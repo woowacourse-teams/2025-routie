@@ -13,8 +13,8 @@ public record KakaoPlaceSearchResponse(
             @JsonProperty("id") String id,
             @JsonProperty("place_name") String placeName,
             @JsonProperty("road_address_name") String roadAddressName,
-            @JsonProperty("x") String longitude,
-            @JsonProperty("y") String latitude
+            @JsonProperty("x") Double longitude,
+            @JsonProperty("y") Double latitude
     ) {
 
         public SearchedPlace toSearchedPlace() {

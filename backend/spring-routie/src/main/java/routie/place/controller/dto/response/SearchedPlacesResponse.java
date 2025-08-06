@@ -19,8 +19,8 @@ public record SearchedPlacesResponse(
             String id,
             String placeName,
             String roadAddressName,
-            String longitude,
-            String latitude
+            Double longitude,
+            Double latitude
     ) {
 
         public static SearchedPlaceResponse from(final SearchedPlace searchedPlace) {

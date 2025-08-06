@@ -4,7 +4,7 @@ public record SearchedPlace(
         String id,
         String placeName,
         String roadAddressName,
-        String longitude,
-        String latitude
+        Double longitude,
+        Double latitude
 ) {
 }
