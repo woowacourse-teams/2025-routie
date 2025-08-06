@@ -23,7 +23,6 @@ import routie.logging.logger.ClientRequestLogger;
 @RequiredArgsConstructor
 public class RequestLoggingAspect {
 
-    private final ClientIpExtractor clientIpExtractor;
     private final HandlerMethodAnalyzer handlerMethodAnalyzer;
     private final ClientRequestLogger clientRequestLogger;
 
@@ -55,7 +54,7 @@ public class RequestLoggingAspect {
         try {
             String httpMethod = httpServletRequest.getMethod();
             String url = httpServletRequest.getRequestURI();
-            String clientIp = clientIpExtractor.extractClientIp(httpServletRequest);
+            String clientIp = ClientIpExtractor.extractClientIp(httpServletRequest);
 
             String handlerMethod = extractHandlerMethodName(joinPoint);
             List<HandlerParameter> handlerParams = extractHandlerParameters(joinPoint);

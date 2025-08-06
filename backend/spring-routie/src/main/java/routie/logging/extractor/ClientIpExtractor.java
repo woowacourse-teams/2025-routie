@@ -3,15 +3,14 @@ package routie.logging.extractor;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Component;
 
-@Component
-public class ClientIpExtractor {
+public final class ClientIpExtractor {
 
     private static final String UNKNOWN_IP = "unknown";
     private static final String[] IP_HEADERS = {
             "X-Forwarded-For", "X-Real-IP", "Proxy-Client-IP", "WL-Proxy-Client-IP"
     };
 
-    public String extractClientIp(final HttpServletRequest request) {
+    public static String extractClientIp(final HttpServletRequest request) {
         for (final String header : IP_HEADERS) {
             String ip = request.getHeader(header);
             if (isValidIp(ip)) {
@@ -23,7 +22,7 @@ public class ClientIpExtractor {
         return remoteAddr == null ? UNKNOWN_IP : remoteAddr;
     }
 
-    private boolean isValidIp(final String ip) {
+    private static boolean isValidIp(final String ip) {
         return ip != null && !ip.isEmpty() && !UNKNOWN_IP.equalsIgnoreCase(ip);
     }
 }
