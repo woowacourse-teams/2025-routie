@@ -12,15 +12,24 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
+import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.DirtiesContext.ClassMode;
 
-@SpringBootTest(webEnvironment = WebEnvironment.DEFINED_PORT)
+@DirtiesContext(classMode = ClassMode.AFTER_CLASS)
+@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 public class RoutieSpaceControllerTest {
+
+    @LocalServerPort
+    private int port;
 
     private String routieSpaceIdentifier;
 
     @BeforeEach
     void setUp() {
+        RestAssured.port = port;
+
         // 테스트용 루티 스페이스 생성
         Response createSpaceResponse = RestAssured
                 .when()

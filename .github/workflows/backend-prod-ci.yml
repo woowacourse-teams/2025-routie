@@ -1,4 +1,4 @@
-name: Backend CI on develop branch
+name: Backend CI on main branch
 
 on:
   pull_request:
