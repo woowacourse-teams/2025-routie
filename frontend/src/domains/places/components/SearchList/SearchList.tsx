@@ -4,7 +4,8 @@ import Text from '@/@common/components/Text/Text';
 import pinIcon from '@/assets/icons/pin.svg';
 
 import { PlaceSearchType } from '../../types/place.types';
-import { listStyle, itemButtonStyle } from '../SearchBox/SearchBox.styles';
+
+import { listStyle, itemButtonStyle } from './SearchList.styles';
 
 interface SearchListProps {
   searchResults: PlaceSearchType[];
