@@ -1,36 +1,37 @@
 package routie.place.infrastructure.search;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import routie.place.domain.SearchedPlace;
 
 public record KakaoPlaceSearchResponse(
-        List<Document> documents,
-        Meta meta
+        @JsonProperty("documents") List<Document> documents,
+        @JsonProperty("meta") Meta meta
 ) {
 
     public record Document(
-            String id,
-            String place_name,
-            String road_address_name,
-            double x, // longitude
-            double y  // latitude
+            @JsonProperty("id") String id,
+            @JsonProperty("place_name") String placeName,
+            @JsonProperty("road_address_name") String roadAddressName,
+            @JsonProperty("x") String longitude,
+            @JsonProperty("y") String latitude
     ) {
 
         public SearchedPlace toSearchedPlace() {
             return new SearchedPlace(
                     this.id,
-                    this.place_name,
-                    this.road_address_name,
-                    this.x,
-                    this.y
+                    this.placeName,
+                    this.roadAddressName,
+                    this.longitude,
+                    this.latitude
             );
         }
     }
 
     public record Meta(
-            int total_count,
-            int pageable_count,
-            boolean is_end
+            @JsonProperty("totalCount") int totalCount,
+            @JsonProperty("pageable_count") int pageableCount,
+            @JsonProperty("is_end") boolean isEnd
     ) {
     }
 }
