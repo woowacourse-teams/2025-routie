@@ -6,6 +6,7 @@ import Text from '@/@common/components/Text/Text';
 import { useKakaoMapInit } from '../hooks/useKakaoMapInit';
 import { useKakaoMapSDK } from '../hooks/useKakaoMapSDK';
 import useMapMarker from '../hooks/useMapMarker';
+import usePolyline from '../hooks/usePolyline';
 
 import {
   KakaoMapContainerStyle,
@@ -120,6 +121,59 @@ const mockPlaces = [
   },
 ];
 
+const mockRoutiePath = [
+  {
+    id: 1,
+    name: '스타벅스 강남점',
+    roadAddress: '서울특별시 강남구 강남대로 456',
+    longitude: '127.0276',
+    latitude: '37.4979',
+    openAt: '07:00',
+    closeAt: '23:00',
+    closedDayOfWeeks: [],
+  },
+  {
+    id: 2,
+    name: '올리브영 강남본점',
+    roadAddress: '서울특별시 강남구 강남대로 458',
+    longitude: '127.0281',
+    latitude: '37.4982',
+    openAt: '10:00',
+    closeAt: '22:00',
+    closedDayOfWeeks: [],
+  },
+  {
+    id: 3,
+    name: '맥도날드 강남점',
+    roadAddress: '서울특별시 강남구 강남대로 460',
+    longitude: '127.0286',
+    latitude: '37.4985',
+    openAt: '06:00',
+    closeAt: '24:00',
+    closedDayOfWeeks: [],
+  },
+  {
+    id: 4,
+    name: '롯데리아 강남점',
+    roadAddress: '서울특별시 강남구 강남대로 462',
+    longitude: '127.0291',
+    latitude: '37.4988',
+    openAt: '06:30',
+    closeAt: '23:30',
+    closedDayOfWeeks: [],
+  },
+  {
+    id: 5,
+    name: 'GS25 강남점',
+    roadAddress: '서울특별시 강남구 강남대로 464',
+    longitude: '127.0296',
+    latitude: '37.4991',
+    openAt: '24:00',
+    closeAt: '24:00',
+    closedDayOfWeeks: [],
+  },
+];
+
 interface KakaoMapProps {
   lat?: number;
   lng?: number;
@@ -144,6 +198,9 @@ const KakaoMap = ({
   const { fitMapToMarkers, drawMarkers } = useMapMarker({
     map: mapRef,
   });
+  const { loadPolyline } = usePolyline({
+    map: mapRef,
+  });
 
   const finalError = sdkError || errorMessage;
   const finalMapState = sdkError ? 'error' : mapState;
@@ -156,9 +213,14 @@ const KakaoMap = ({
     mockPlaces.forEach((place) => {
       drawMarkers(Number(place.latitude), Number(place.longitude));
     });
+  }, [mapRef.current, drawMarkers]);
 
+  useEffect(() => {
     fitMapToMarkers(mockPlaces);
-  }, [mapRef.current, drawMarkers, fitMapToMarkers]);
+    mockRoutiePath.forEach((place) => {
+      loadPolyline(Number(place.latitude), Number(place.longitude));
+    });
+  }, [loadPolyline, fitMapToMarkers]);
 
   return (
     <div css={KakaoMapWrapperStyle}>

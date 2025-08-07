@@ -1,0 +1,33 @@
+import { RefObject, useRef } from 'react';
+
+import KakaoMap from '../components/KakaoMap';
+
+const usePolyline = ({ map }: { map: RefObject<KakaoMap> }) => {
+  const pathPoints = useRef<any[]>([]);
+  const polylineRef = useRef<any>(null);
+
+  const loadPolyline = (lat: number, lng: number) => {
+    if (!map.current) return;
+
+    pathPoints.current.push(new window.kakao.maps.LatLng(lat, lng));
+
+    if (polylineRef.current) {
+      polylineRef.current.setMap(null);
+    }
+
+    polylineRef.current = new window.kakao.maps.Polyline({
+      map: map.current,
+      path: pathPoints.current,
+      strokeWeight: 10,
+      strokeColor: 'purple',
+      strokeOpacity: 0.7,
+      strokeStyle: 'solid',
+    });
+
+    return polylineRef.current;
+  };
+
+  return { loadPolyline };
+};
+
+export default usePolyline;
