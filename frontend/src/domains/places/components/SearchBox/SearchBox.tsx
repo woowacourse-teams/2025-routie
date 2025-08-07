@@ -1,12 +1,10 @@
-import { useState } from 'react';
-
 import Button from '@/@common/components/Button/Button';
 import Flex from '@/@common/components/Flex/Flex';
 import Input from '@/@common/components/Input/Input';
 import Text from '@/@common/components/Text/Text';
 import theme from '@/styles/theme';
 
-import searchPlace from '../../apis/searchPlace';
+import useSearchPlace from '../../hooks/useSearchPlace';
 import { PlaceLocationType, PlaceSearchType } from '../../types/place.types';
 import SearchList from '../SearchList/SearchList';
 
@@ -16,24 +14,13 @@ interface SearchBoxProps {
 }
 
 const SearchBox = ({ onChange, handleSearchPlaceMap }: SearchBoxProps) => {
-  const [keyword, setKeyword] = useState('');
-  const [searchResults, setSearchResults] = useState<PlaceSearchType[]>([]);
-
-  const handleSearch = async () => {
-    if (!keyword) return setSearchResults([]);
-
-    try {
-      const searchPlaces = await searchPlace(keyword);
-      setSearchResults(searchPlaces);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const handleReset = () => {
-    setKeyword('');
-    setSearchResults([]);
-  };
+  const {
+    keyword,
+    searchResults,
+    handleChangeKeyword,
+    handleSearch,
+    handleReset,
+  } = useSearchPlace();
 
   const handleSelect = (searchPlace: PlaceSearchType) => {
     handleReset();
@@ -55,7 +42,7 @@ const SearchBox = ({ onChange, handleSearchPlaceMap }: SearchBoxProps) => {
           value={keyword}
           icon="search"
           placeholder="장소를 검색하세요"
-          onChange={setKeyword}
+          onChange={handleChangeKeyword}
           onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => {
             if (e.key === 'Enter') {
               e.preventDefault();
