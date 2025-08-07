@@ -124,20 +124,16 @@ interface KakaoMapProps {
   lat?: number;
   lng?: number;
   level?: number;
-  onMapReady?: (map: KakaoMap) => void;
 }
 
 const KakaoMap = ({
   lat = 37.5665,
   lng = 126.978,
   level = 3,
-  onMapReady,
 }: KakaoMapProps) => {
   const mapContainerRef = useRef<HTMLDivElement>(null);
 
-  // 분리된 훅들 사용
   const { sdkReady, sdkError } = useKakaoMapSDK();
-
   const { mapRef, mapState, errorMessage } = useKakaoMapInit({
     containerRef: mapContainerRef,
     sdkReady,
