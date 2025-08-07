@@ -11,7 +11,6 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.reflect.MethodSignature;
-import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import routie.logging.extractor.ClientIpExtractor;
@@ -21,7 +20,6 @@ import routie.logging.logger.ClientRequestLogger;
 
 @Slf4j
 @Aspect
-@Component
 @RequiredArgsConstructor
 public class RequestLoggingAspect {
 
