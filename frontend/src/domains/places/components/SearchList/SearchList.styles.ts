@@ -19,7 +19,6 @@ export const itemButtonStyle = css`
   cursor: pointer;
 
   display: flex;
-  gap: 12px;
 
   width: 100%;
   padding: 12px 16px;
