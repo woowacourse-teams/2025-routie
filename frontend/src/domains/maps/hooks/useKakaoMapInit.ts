@@ -16,7 +16,6 @@ export interface UseKakaoMapInitProps {
   lat: number;
   lng: number;
   level: number;
-  onMapReady?: (map: KakaoMap) => void;
 }
 
 export const useKakaoMapInit = ({
@@ -25,7 +24,6 @@ export const useKakaoMapInit = ({
   lat,
   lng,
   level,
-  onMapReady,
 }: UseKakaoMapInitProps): UseKakaoMapInitReturn => {
   const mapRef = useRef<KakaoMap | null>(null);
   const isInitializedRef = useRef(false);
@@ -51,10 +49,6 @@ export const useKakaoMapInit = ({
       setMapState('ready');
       setErrorMessage(null);
 
-      if (onMapReady && mapRef.current) {
-        onMapReady({ map: mapRef.current });
-      }
-
       setTimeout(() => {
         if (mapRef.current) {
           mapRef.current.relayout();
@@ -66,7 +60,7 @@ export const useKakaoMapInit = ({
       setErrorMessage('지도를 생성하는데 실패했습니다.');
       throw new Error('지도를 생성하는데 실패했습니다.');
     }
-  }, [containerRef, lat, lng, level, onMapReady]);
+  }, [containerRef, lat, lng, level]);
 
   useEffect(() => {
     if (sdkReady && !isInitializedRef.current) {
