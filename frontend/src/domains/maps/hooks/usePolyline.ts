@@ -27,7 +27,15 @@ const usePolyline = ({ map }: { map: RefObject<KakaoMap> }) => {
     return polylineRef.current;
   };
 
-  return { loadPolyline };
+  const clearPolyline = () => {
+    if (polylineRef.current) {
+      polylineRef.current.setMap(null);
+      polylineRef.current = null;
+    }
+    pathPoints.current = [];
+  };
+
+  return { loadPolyline, clearPolyline };
 };
 
 export default usePolyline;
