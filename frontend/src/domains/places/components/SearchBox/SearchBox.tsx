@@ -6,10 +6,9 @@ import Input from '@/@common/components/Input/Input';
 import Text from '@/@common/components/Text/Text';
 import theme from '@/styles/theme';
 
+import searchPlace from '../../apis/searchPlace';
 import { PlaceLocationType, PlaceSearchType } from '../../types/place.types';
 import SearchList from '../SearchList/SearchList';
-
-import searchPlacesMockData from './searchPlacesMockData';
 
 interface SearchBoxProps {
   onChange: (field: 'name' | 'roadAddressName', value: string | number) => void;
@@ -20,11 +19,15 @@ const SearchBox = ({ onChange, handleSearchPlaceMap }: SearchBoxProps) => {
   const [keyword, setKeyword] = useState('');
   const [searchResults, setSearchResults] = useState<PlaceSearchType[]>([]);
 
-  const handleSearch = () => {
+  const handleSearch = async () => {
     if (!keyword) return setSearchResults([]);
-    // api 호출
 
-    setSearchResults(searchPlacesMockData);
+    try {
+      const searchPlaces = await searchPlace(keyword);
+      setSearchResults(searchPlaces);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const handleReset = () => {
