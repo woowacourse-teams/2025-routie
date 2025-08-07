@@ -6,7 +6,10 @@
     "start": "webpack serve --mode development",
     "build": "webpack --mode production",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "test": "vitest",
+    "test:run": "vitest run",
+    "lint": "eslint . --ext .ts,.tsx --fix"
   },
   "keywords": [],
   "author": "",
@@ -15,8 +18,12 @@
   "dependencies": {
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.1",
+    "@sentry/react": "^10.1.0",
     "react": "^19.1.0",
-    "react-dom": "^19.1.0"
+    "react-dom": "^19.1.0",
+    "react-ga4": "^2.1.0",
+    "react-router": "^7.7.0",
+    "react-router-dom": "^7.7.0"
   },
   "devDependencies": {
     "@emotion/eslint-plugin": "^11.12.0",
@@ -31,6 +38,8 @@
     "@typescript-eslint/eslint-plugin": "^8.36.0",
     "@typescript-eslint/parser": "^8.36.0",
     "@vitejs/plugin-react": "^4.6.0",
+    "css-loader": "^7.1.2",
+    "dotenv-webpack": "^8.1.1",
     "eslint": "^8.57.1",
     "eslint-config-prettier": "^10.1.5",
     "eslint-import-resolver-typescript": "^4.4.4",
@@ -41,6 +50,7 @@
     "html-webpack-plugin": "^5.6.3",
     "jsdom": "^26.1.0",
     "storybook": "^9.0.17",
+    "style-loader": "^4.0.0",
     "stylelint": "^16.21.1",
     "stylelint-config-clean-order": "^7.0.0",
     "stylelint-config-standard": "^38.0.0",

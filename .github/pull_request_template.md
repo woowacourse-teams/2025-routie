@@ -19,6 +19,6 @@
 ## (Optional) Additional Description
 
 
-<!-- merge 시 이슈를 자동으롷 닫고자 할 때 사용
+<!-- merge 시 이슈를 자동으로 닫고자 할 때 사용
 Closes #{이슈번호}
 -->

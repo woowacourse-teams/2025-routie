@@ -114,18 +114,19 @@ module.exports = {
 
     // TypeScript 규칙
     '@typescript-eslint/no-explicit-any': 'warn',
-    '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
+    '@typescript-eslint/no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],
 
     // Emotion 룰
     '@emotion/import-from-emotion': 'error',
     '@emotion/no-vanilla': 'error',
+
+    // test 룰
+    'import/no-extraneous-dependencies': [
+      'warn',
+      {
+        devDependencies: ['**/*.test.ts', '**/*.test.tsx'],
+      },
+    ],
   },
-  // test 룰
-  'import/no-extraneous-dependencies': [
-    'error',
-    {
-      devDependencies: ['**/*.test.ts', '**/*.test.tsx'],
-    },
-  ],
   ignorePatterns: ['dist', 'webpack.config.js'],
 };

@@ -1,5 +1,6 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const Dotenv = require('dotenv-webpack');
 
 module.exports = () => {
   return {
@@ -21,6 +22,7 @@ module.exports = () => {
       },
       port: 3000,
       hot: true,
+      historyApiFallback: true,
     },
     module: {
       rules: [
@@ -33,12 +35,17 @@ module.exports = () => {
           test: /\.(png|jpg|jpeg|gif|svg)$/i,
           type: 'asset',
         },
+        {
+          test: /\.css$/,
+          use: ['style-loader', 'css-loader'],
+        },
       ],
     },
     plugins: [
       new HtmlWebpackPlugin({
         template: 'public/index.html',
       }),
+      new Dotenv(),
     ],
   };
 };
