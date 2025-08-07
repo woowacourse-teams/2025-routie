@@ -20,6 +20,7 @@ const SearchBox = ({ onChange, handleSearchPlaceMap }: SearchBoxProps) => {
     handleChangeKeyword,
     handleSearch,
     handleReset,
+    handleEnterSearch,
   } = useSearchPlace();
 
   const handleSelect = (searchPlace: PlaceSearchType) => {
@@ -43,12 +44,7 @@ const SearchBox = ({ onChange, handleSearchPlaceMap }: SearchBoxProps) => {
           icon="search"
           placeholder="장소를 검색하세요"
           onChange={handleChangeKeyword}
-          onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => {
-            if (e.key === 'Enter') {
-              e.preventDefault();
-              handleSearch();
-            }
-          }}
+          onKeyDown={handleEnterSearch}
         />
         <Button
           variant="primary"

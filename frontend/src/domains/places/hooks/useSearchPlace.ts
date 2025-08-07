@@ -32,9 +32,17 @@ const useSearchPlace = () => {
     setSearchResults([]);
   };
 
+  const handleEnterSearch = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      handleSearch();
+    }
+  };
+
   return {
     keyword,
     handleChangeKeyword,
+    handleEnterSearch,
     searchResults,
     setSearchResults,
     handleSearch,
