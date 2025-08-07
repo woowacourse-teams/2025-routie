@@ -17,16 +17,16 @@ public record SearchedPlacesResponse(
 
     public record SearchedPlaceResponse(
             String id,
-            String placeName,
+            String name,
             String roadAddressName,
-            String longitude,
-            String latitude
+            Double longitude,
+            Double latitude
     ) {
 
         public static SearchedPlaceResponse from(final SearchedPlace searchedPlace) {
             return new SearchedPlaceResponse(
                     searchedPlace.id(),
-                    searchedPlace.placeName(),
+                    searchedPlace.name(),
                     searchedPlace.roadAddressName(),
                     searchedPlace.longitude(),
                     searchedPlace.latitude()

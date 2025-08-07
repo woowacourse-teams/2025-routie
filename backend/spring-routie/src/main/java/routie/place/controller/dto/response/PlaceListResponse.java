@@ -12,17 +12,19 @@ public record PlaceListResponse(
 ) {
 
     public static PlaceListResponse from(final List<Place> places) {
-        List<PlaceCardResponse> PlaceCardsResponse = places.stream()
+        List<PlaceCardResponse> placeCardResponses = places.stream()
                 .map(PlaceCardResponse::from)
                 .toList();
 
-        return new PlaceListResponse(PlaceCardsResponse);
+        return new PlaceListResponse(placeCardResponses);
     }
 
     public record PlaceCardResponse(
             Long id,
             String name,
-            String address,
+            String roadAddressName,
+            Double longitude,
+            Double latitude,
             @JsonFormat(pattern = "HH:mm") LocalTime openAt,
             @JsonFormat(pattern = "HH:mm") LocalTime closeAt,
             List<DayOfWeek> closedDayOfWeeks
@@ -31,7 +33,9 @@ public record PlaceListResponse(
             return new PlaceCardResponse(
                     place.getId(),
                     place.getName(),
-                    place.getAddress(),
+                    place.getRoadAddressName(),
+                    place.getLongitude(),
+                    place.getLatitude(),
                     place.getOpenAt(),
                     place.getCloseAt(),
                     place.getPlaceClosedDayOfWeeks().stream()

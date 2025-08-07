@@ -54,6 +54,8 @@ public class PlaceControllerTest {
                 Place.create(
                         "테스트 카페",
                         "서울시 강남구 테스트로 123",
+                        10.123,
+                        10.123,
                         60,
                         LocalTime.of(9, 0),
                         LocalTime.of(22, 0),
@@ -233,7 +235,9 @@ public class PlaceControllerTest {
         assertThat(expectedHttpStatus).isEqualTo(actualHttpStatus);
         assertThat(responseBody).isNotNull();
         assertThat(responseBody).contains("name");
-        assertThat(responseBody).contains("address");
+        assertThat(responseBody).contains("roadAddressName");
+        assertThat(responseBody).contains("longitude");
+        assertThat(responseBody).contains("latitude");
         assertThat(responseBody).contains("stayDurationMinutes");
     }
 
@@ -260,7 +264,9 @@ public class PlaceControllerTest {
         assertThat(expectedHttpStatus).isEqualTo(actualHttpStatus);
         assertThat(responseBody).containsKeys(
                 "name",
-                "address",
+                "roadAddressName",
+                "longitude",
+                "latitude",
                 "stayDurationMinutes",
                 "openAt",
                 "closeAt",

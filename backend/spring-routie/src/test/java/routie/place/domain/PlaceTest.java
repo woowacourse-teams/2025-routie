@@ -23,6 +23,8 @@ class PlaceTest {
         Place place = Place.create(
                 "스타벅스",
                 "서울시 강남구",
+                10.123,
+                10.123,
                 60,
                 LocalTime.of(10, 0),
                 LocalTime.of(22, 0),
@@ -49,6 +51,8 @@ class PlaceTest {
         Place place = Place.create(
                 "편의점",
                 "서울시 강남구",
+                10.123,
+                10.123,
                 30,
                 LocalTime.of(10, 0),
                 LocalTime.of(22, 0),
@@ -74,6 +78,8 @@ class PlaceTest {
         assertThatThrownBy(() -> Place.create(
                 "카페",
                 "서울시 강남구",
+                10.123,
+                10.123,
                 lowStayDuration,
                 LocalTime.of(10, 0),
                 LocalTime.of(22, 0),
@@ -94,6 +100,8 @@ class PlaceTest {
         assertThatThrownBy(() -> Place.create(
                 "카페",
                 "서울시 강남구",
+                10.123,
+                10.123,
                 hugeStayDuration,
                 LocalTime.of(10, 0),
                 LocalTime.of(22, 0),
@@ -114,6 +122,8 @@ class PlaceTest {
         assertThatThrownBy(() -> Place.create(
                 nullName,
                 "서울시 강남구",
+                10.123,
+                10.123,
                 60,
                 LocalTime.of(10, 0),
                 LocalTime.of(22, 0),
@@ -134,6 +144,8 @@ class PlaceTest {
         assertThatThrownBy(() -> Place.create(
                 blankName,
                 "서울시 강남구",
+                10.123,
+                10.123,
                 60,
                 LocalTime.of(10, 0),
                 LocalTime.of(22, 0),
@@ -154,6 +166,8 @@ class PlaceTest {
         assertThatThrownBy(() -> Place.create(
                 longName,
                 "서울시 강남구",
+                10.123,
+                10.123,
                 60,
                 LocalTime.of(10, 0),
                 LocalTime.of(22, 0),
@@ -174,6 +188,8 @@ class PlaceTest {
         assertThatThrownBy(() -> Place.create(
                 "카페",
                 "서울시 강남구",
+                10.123,
+                10.123,
                 60,
                 openAt,
                 LocalTime.of(22, 0),
@@ -194,6 +210,8 @@ class PlaceTest {
         assertThatThrownBy(() -> Place.create(
                 "카페",
                 "서울시 강남구",
+                10.123,
+                10.123,
                 60,
                 LocalTime.of(10, 0),
                 closeAt,
@@ -214,6 +232,8 @@ class PlaceTest {
         assertThatThrownBy(() -> Place.create(
                 "카페",
                 "서울시 강남구",
+                10.123,
+                10.123,
                 60,
                 openAt,
                 closeAt,
@@ -234,6 +254,8 @@ class PlaceTest {
         assertThatThrownBy(() -> Place.create(
                 "카페",
                 "서울시 강남구",
+                10.123,
+                10.123,
                 60,
                 LocalTime.of(10, 0),
                 LocalTime.of(22, 0),
@@ -253,6 +275,8 @@ class PlaceTest {
         assertThatThrownBy(() -> Place.create(
                 "카페",
                 "서울시 강남구",
+                10.123,
+                10.123,
                 60,
                 LocalTime.of(10, 0),
                 LocalTime.of(22, 0),
@@ -274,6 +298,8 @@ class PlaceTest {
         assertThatThrownBy(() -> Place.create(
                 "카페",
                 "서울시 강남구",
+                10.123,
+                10.123,
                 60,
                 LocalTime.of(10, 0),
                 LocalTime.of(22, 0),
@@ -295,6 +321,8 @@ class PlaceTest {
         assertThatThrownBy(() -> Place.create(
                 "카페",
                 "서울시 강남구",
+                10.123,
+                10.123,
                 60,
                 LocalTime.of(10, 0),
                 LocalTime.of(22, 0),
@@ -316,6 +344,8 @@ class PlaceTest {
         assertThatThrownBy(() -> Place.create(
                 "카페",
                 "서울시 강남구",
+                10.123,
+                10.123,
                 60,
                 LocalTime.of(10, 0),
                 LocalTime.of(22, 0),
@@ -337,6 +367,8 @@ class PlaceTest {
         assertThatThrownBy(() -> Place.create(
                 "카페",
                 "서울시 강남구",
+                10.123,
+                10.123,
                 60,
                 LocalTime.of(10, 0),
                 LocalTime.of(22, 0),

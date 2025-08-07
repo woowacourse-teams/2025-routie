@@ -11,16 +11,16 @@ public record KakaoPlaceSearchResponse(
 
     public record Document(
             @JsonProperty("id") String id,
-            @JsonProperty("place_name") String placeName,
+            @JsonProperty("place_name") String name,
             @JsonProperty("road_address_name") String roadAddressName,
-            @JsonProperty("x") String longitude,
-            @JsonProperty("y") String latitude
+            @JsonProperty("x") Double longitude,
+            @JsonProperty("y") Double latitude
     ) {
 
         public SearchedPlace toSearchedPlace() {
             return new SearchedPlace(
                     this.id,
-                    this.placeName,
+                    this.name,
                     this.roadAddressName,
                     this.longitude,
                     this.latitude

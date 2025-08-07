@@ -40,11 +40,17 @@ public class Place {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "address", nullable = false)
-    private String address;
+    @Column(name = "roadAddressName", nullable = false)
+    private String roadAddressName;
+
+    @Column(name = "longitude", nullable = false)
+    private Double longitude;
+
+    @Column(name = "latitude", nullable = false)
+    private Double latitude;
 
     @Column(name = "stay_duration_minutes", nullable = false)
-    private int stayDurationMinutes;
+    private Integer stayDurationMinutes;
 
     @Column(name = "open_at", nullable = false)
     private LocalTime openAt;
@@ -74,9 +80,12 @@ public class Place {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    Place(
+
+    public Place(
             final String name,
-            final String address,
+            final String roadAddressName,
+            final Double longitude,
+            final Double latitude,
             final int stayDurationMinutes,
             final LocalTime openAt,
             final LocalTime closeAt,
@@ -85,9 +94,11 @@ public class Place {
             final RoutieSpace routieSpace,
             final List<PlaceClosedDayOfWeek> placeClosedDayOfWeeks
     ) {
-        validateForCreation(name, address, stayDurationMinutes, openAt, closeAt, breakStartAt, breakEndAt);
+        validateForCreation(name, roadAddressName, stayDurationMinutes, openAt, closeAt, breakStartAt, breakEndAt);
         this.name = name;
-        this.address = address;
+        this.roadAddressName = roadAddressName;
+        this.longitude = longitude;
+        this.latitude = latitude;
         this.stayDurationMinutes = stayDurationMinutes;
         this.openAt = openAt;
         this.closeAt = closeAt;
@@ -99,7 +110,7 @@ public class Place {
 
     private void validateForCreation(
             final String name,
-            final String address,
+            final String roadAddressName,
             final int stayDurationMinutes,
             final LocalTime openAt,
             final LocalTime closeAt,
@@ -107,14 +118,16 @@ public class Place {
             final LocalTime breakEndAt
     ) {
         validateName(name);
-        validateAddress(address);
+        validateRoadAddressName(roadAddressName);
         validateStayDurationMinutes(stayDurationMinutes);
         validateTime(openAt, closeAt, breakStartAt, breakEndAt);
     }
 
     public static Place create(
             final String name,
-            final String address,
+            final String roadAddressName,
+            final Double longitude,
+            final Double latitude,
             final int stayDurationMinutes,
             final LocalTime openAt,
             final LocalTime closeAt,
@@ -126,7 +139,9 @@ public class Place {
         List<PlaceClosedDayOfWeek> placeClosedDayOfWeeks = createClosedDayOfWeeks(closedDayOfWeeks);
         return new Place(
                 name,
-                address,
+                roadAddressName,
+                longitude,
+                latitude,
                 stayDurationMinutes,
                 openAt,
                 closeAt,
@@ -191,11 +206,11 @@ public class Place {
         }
     }
 
-    private void validateAddress(final String address) {
-        if (address == null || address.isBlank()) {
+    private void validateRoadAddressName(final String roadAddressName) {
+        if (roadAddressName == null || roadAddressName.isBlank()) {
             throw new IllegalArgumentException("주소는 필수입니다.");
         }
-        if (address.length() > 50) {
+        if (roadAddressName.length() > 50) {
             throw new IllegalArgumentException("주소는 1자 이상 50자 이하여야 합니다.");
         }
     }

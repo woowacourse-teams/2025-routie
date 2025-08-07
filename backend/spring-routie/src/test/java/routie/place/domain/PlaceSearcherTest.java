@@ -20,7 +20,7 @@ class PlaceSearcherTest {
         for (final SearchedPlace searchedPlace : searchedPlaces) {
             System.out.println(
                     searchedPlace.id() + ", "
-                            + searchedPlace.placeName() + ", "
+                            + searchedPlace.name() + ", "
                             + searchedPlace.roadAddressName() + ", "
                             + searchedPlace.latitude() + ", "
                             + searchedPlace.longitude()
