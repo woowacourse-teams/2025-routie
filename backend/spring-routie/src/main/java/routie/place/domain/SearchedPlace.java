@@ -1,7 +1,7 @@
 package routie.place.domain;
 
 public record SearchedPlace(
-        String id,
+        String searchedPlaceId,
         String name,
         String roadAddressName,
         Double longitude,
