@@ -24,7 +24,7 @@ const SearchList = ({ searchResults, onClick }: SearchListProps) => {
             css={itemButtonStyle}
             onClick={() => onClick(searchResult)}
           >
-            <Flex alignItems="center" gap={1}>
+            <Flex gap={1}>
               <img src={pinIcon} alt="pin" />
               <Flex
                 direction="column"
