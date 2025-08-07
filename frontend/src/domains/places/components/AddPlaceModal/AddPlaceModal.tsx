@@ -87,11 +87,11 @@ const AddPlaceModal = ({
                   disabled
                 />
               )}
-              {form.address && (
+              {form.roadAddressName && (
                 <AddressInput
-                  value={form.address}
+                  value={form.roadAddressName}
                   onChange={handleInputChange}
-                  error={showErrors && isEmpty.address}
+                  error={showErrors && isEmpty.roadAddressName}
                   disabled
                 />
               )}

@@ -12,7 +12,7 @@ import SearchList from '../SearchList/SearchList';
 import searchPlacesMockData from './searchPlacesMockData';
 
 interface SearchBoxProps {
-  onChange: (field: 'name' | 'address', value: string | number) => void;
+  onChange: (field: 'name' | 'roadAddressName', value: string | number) => void;
   handleSearchPlaceMap: (searchInfo: PlaceLocationType) => void;
 }
 
@@ -23,6 +23,7 @@ const SearchBox = ({ onChange, handleSearchPlaceMap }: SearchBoxProps) => {
   const handleSearch = () => {
     if (!keyword) return setSearchResults([]);
     // api 호출
+
     setSearchResults(searchPlacesMockData);
   };
 
@@ -33,11 +34,11 @@ const SearchBox = ({ onChange, handleSearchPlaceMap }: SearchBoxProps) => {
 
   const handleSelect = (searchPlace: PlaceSearchType) => {
     handleReset();
-    onChange('name', searchPlace.placeName);
-    onChange('address', searchPlace.roadAddressName);
+    onChange('name', searchPlace.name);
+    onChange('roadAddressName', searchPlace.roadAddressName);
 
     handleSearchPlaceMap({
-      id: searchPlace.id,
+      searchedPlaceId: searchPlace.searchedPlaceId,
       longitude: searchPlace.longitude,
       latitude: searchPlace.latitude,
     });

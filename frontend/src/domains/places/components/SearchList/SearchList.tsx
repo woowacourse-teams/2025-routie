@@ -16,7 +16,7 @@ const SearchList = ({ searchResults, onClick }: SearchListProps) => {
   return (
     <ul css={listStyle}>
       {searchResults.map((searchResult) => (
-        <li key={searchResult.placeName}>
+        <li key={searchResult.name}>
           <Button
             type="button"
             variant="secondary"
@@ -32,7 +32,7 @@ const SearchList = ({ searchResults, onClick }: SearchListProps) => {
                 gap={0.5}
                 width="100%"
               >
-                <Text variant="caption">{searchResult.placeName}</Text>
+                <Text variant="caption">{searchResult.name}</Text>
                 <Text variant="label">{searchResult.roadAddressName}</Text>
               </Flex>
             </Flex>

@@ -14,12 +14,13 @@ import { useGoogleEventTrigger } from '@/libs/googleAnalytics/hooks/useGoogleEve
 import theme from '@/styles/theme';
 
 import deletePlace from '../../apis/deletePlace';
-import { PlaceBase } from '../../types/place.types';
+import { PlaceBaseType } from '../../types/place.types';
 import { getCheckedListExcept } from '../../utils/getCheckedListExcept';
 import DatePreviewList from '../DatePreviewList/DatePreviewList';
 import EditPlaceModal from '../EditPlaceModal/EditPlaceModal';
 
-export interface PlaceCardProps extends PlaceBase {
+export interface PlaceCardProps extends PlaceBaseType {
+  id: number;
   selected: boolean;
 }
 
@@ -97,7 +98,7 @@ export const PlaceCard = ({ selected, ...props }: PlaceCardProps) => {
 
           <Text variant="subTitle">{props.name}</Text>
           <Text variant="caption" color={theme.colors.gray[200]}>
-            {props.address}
+            {props.roadAddressName}
           </Text>
           <Pill type="time">
             {props.openAt}-{props.closeAt}

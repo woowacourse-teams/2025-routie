@@ -1,6 +1,6 @@
 export type FormState = {
   name: string;
-  address: string;
+  roadAddressName: string;
   stayDurationMinutes: number;
   openAt: string;
   closeAt: string;
