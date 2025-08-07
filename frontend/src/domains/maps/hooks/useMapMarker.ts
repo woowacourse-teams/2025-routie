@@ -11,13 +11,11 @@ const useMapMarker = ({ map }: { map: RefObject<KakaoMap> }) => {
     const marker = new window.kakao.maps.Marker({
       position,
     });
-
     marker.setMap(map.current);
-    map.current.panTo(position);
   }, []);
 
   const fitMapToMarkers = useCallback(
-    (places: Array<{ latitude: string; longitude: string }>) => {
+    (places: Array<{ latitude: number; longitude: number }>) => {
       if (!map.current || places.length === 0) return;
 
       const bounds = new window.kakao.maps.LatLngBounds();
