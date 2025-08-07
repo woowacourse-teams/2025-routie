@@ -1,7 +1,9 @@
 package routie.logging.aspect;
 
 import jakarta.servlet.http.HttpServletRequest;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
@@ -9,7 +11,6 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.reflect.MethodSignature;
-import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import routie.logging.extractor.ClientIpExtractor;
@@ -19,7 +20,6 @@ import routie.logging.logger.ClientRequestLogger;
 
 @Slf4j
 @Aspect
-@Component
 @RequiredArgsConstructor
 public class RequestLoggingAspect {
 
@@ -52,22 +52,17 @@ public class RequestLoggingAspect {
             final boolean isSuccess
     ) {
         try {
-            String httpMethod = httpServletRequest.getMethod();
-            String url = httpServletRequest.getRequestURI();
-            String clientIp = ClientIpExtractor.extractClientIp(httpServletRequest);
+            Map<String, Object> logData = new HashMap<>();
 
-            String handlerMethod = extractHandlerMethodName(joinPoint);
-            List<HandlerParameter> handlerParams = extractHandlerParameters(joinPoint);
+            logData.put("httpMethod", httpServletRequest.getMethod());
+            logData.put("url", httpServletRequest.getRequestURI());
+            logData.put("clientIp", ClientIpExtractor.extractClientIp(httpServletRequest));
+            logData.put("handlerMethod", extractHandlerMethodName(joinPoint));
+            logData.put("handlerParams", extractHandlerParameters(joinPoint));
+            logData.put("requestResult", isSuccess ? "SUCCESS" : "FAILED");
+            logData.put("responseTimeMs", executionTime);
 
-            clientRequestLogger.log(
-                    httpMethod,
-                    url,
-                    clientIp,
-                    handlerMethod,
-                    handlerParams,
-                    isSuccess,
-                    executionTime
-            );
+            clientRequestLogger.log(logData);
         } catch (final Exception e) {
             log.warn("failed to log client request");
         }
