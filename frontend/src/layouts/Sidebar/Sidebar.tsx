@@ -19,7 +19,11 @@ import { usePlaceListContext } from '../PlaceList/contexts/PlaceListContext';
 
 import TimeInput from './TimeInput';
 
-const Sidebar = () => {
+interface SidebarProps {
+  handleViewModeChange: () => void;
+}
+
+const Sidebar = ({ handleViewModeChange }: SidebarProps) => {
   const { routes, routiePlaces } = useRoutieContext();
   const { refetchPlaceList } = usePlaceListContext();
   const [addModalOpen, setAddModalOpen] = useState(false);
@@ -61,7 +65,7 @@ const Sidebar = () => {
           overflow: 'hidden',
         }}
       >
-        <Header />
+        <Header handleViewModeChange={handleViewModeChange} />
         <Flex
           direction="column"
           width="100%"

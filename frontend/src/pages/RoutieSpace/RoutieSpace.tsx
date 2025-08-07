@@ -2,6 +2,7 @@ import { useState } from 'react';
 
 import Button from '@/@common/components/Button/Button';
 import Flex from '@/@common/components/Flex/Flex';
+import useMapView from '@/@common/hooks/useMapView';
 import KakaoMap from '@/domains/maps/components/KakaoMap';
 import { RoutieProvider } from '@/domains/routie/contexts/useRoutieContext';
 import { RoutieValidateProvider } from '@/domains/routie/contexts/useRoutieValidateContext';
@@ -10,15 +11,7 @@ import { PlaceListProvider } from '@/layouts/PlaceList/contexts/PlaceListProvide
 import Sidebar from '@/layouts/Sidebar/Sidebar';
 
 const RoutieSpace = () => {
-  const [viewMode, setViewMode] = useState<'map' | 'list'>('map');
-
-  const handleViewModeChange = () => {
-    if (viewMode === 'map') {
-      setViewMode('list');
-    } else {
-      setViewMode('map');
-    }
-  };
+  const { viewMode, handleViewModeChange } = useMapView();
 
   return (
     <RoutieValidateProvider>
@@ -26,10 +19,7 @@ const RoutieSpace = () => {
         <PlaceListProvider>
           <Flex justifyContent="flex-start" height="100vh">
             <Flex direction="column" justifyContent="flex-start" height="100%">
-              <Button variant="primary" onClick={handleViewModeChange}>
-                View Mode
-              </Button>
-              <Sidebar />
+              <Sidebar handleViewModeChange={handleViewModeChange} />
             </Flex>
             <Flex direction="column" justifyContent="flex-start" height="100%">
               {viewMode === 'list' && <PlaceList />}
