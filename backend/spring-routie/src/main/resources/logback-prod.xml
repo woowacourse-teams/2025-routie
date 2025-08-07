@@ -71,7 +71,7 @@
     </appender>
 
     <appender name="ROUTIE_REQUEST_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>${LOG_DIR}/routie-request.log</file>
+        <file>${LOG_DIR}/routie-request.json</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <fileNamePattern>${LOG_DIR}/routie-request.%d{yyyy-MM-dd}.log</fileNamePattern>
             <maxHistory>7</maxHistory>
