@@ -7,6 +7,7 @@ import { useAddPlaceForm } from '@/domains/places/hooks/useAddPlaceForm';
 import addPlace from '../../apis/addPlace';
 import { usePlaceFormValidation } from '../../hooks/usePlaceFormValidation';
 import useSearchPlace from '../../hooks/useSearchPlace';
+import { PlaceLocationType } from '../../types/place.types';
 import AddressInput from '../PlaceFormSection/AddressInput';
 import BreakTimeInputs from '../PlaceFormSection/BreakTimeInputs';
 import BusinessHourInputs from '../PlaceFormSection/BusinessHourInputs';
@@ -32,7 +33,8 @@ const AddPlaceModal = ({
     useAddPlaceForm();
   const { isEmpty, isValid } = usePlaceFormValidation(form);
   const [showErrors, setShowErrors] = useState(false);
-  const { placeLocation, handleSearchPlaceMap } = useSearchPlace();
+  const [placeLocationInfo, setPlaceLocationInfo] =
+    useState<PlaceLocationType>();
 
   const handleClose = () => {
     resetForm();
@@ -40,9 +42,13 @@ const AddPlaceModal = ({
     onClose();
   };
 
+  const handleSearchPlaceMap = (placeLocation: PlaceLocationType) => {
+    setPlaceLocationInfo(placeLocation);
+  };
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const addPlaceForm = { ...form, ...placeLocation };
+    const addPlaceForm = { ...form, ...placeLocationInfo };
 
     if (!isValid) {
       setShowErrors(true);
