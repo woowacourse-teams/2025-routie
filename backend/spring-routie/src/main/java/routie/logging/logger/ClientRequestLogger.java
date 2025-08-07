@@ -1,13 +1,11 @@
 package routie.logging.logger;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.util.List;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.MDC;
 import org.springframework.stereotype.Component;
-import routie.logging.extractor.dto.HandlerParameter;
 
 @Slf4j
 @Component
@@ -16,71 +14,27 @@ public class ClientRequestLogger {
 
     private final ObjectMapper objectMapper;
 
-    public void log(
-            final String httpMethod,
-            final String url,
-            final String clientIp,
-            final String handlerMethod,
-            final List<HandlerParameter> handlerParams,
-            final boolean isSuccess,
-            final long executionTime
-    ) {
+    public void log(final Map<String, Object> logData) {
         try {
-            putMdcFields(httpMethod, url, clientIp, handlerMethod, handlerParams, isSuccess, executionTime);
+            logData.forEach((key, value) -> {
+                if (value != null) {
+                    MDC.put(key, convertToString(key, value));
+                }
+            });
             log.info("");
         } finally {
             MDC.clear();
         }
     }
 
-    private void putMdcFields(
-            final String httpMethod,
-            final String url,
-            final String clientIp,
-            final String handlerMethod,
-            final List<HandlerParameter> handlerParams,
-            final boolean isSuccess,
-            final long executionTime
-    ) {
-        MDC.put("httpMethod", httpMethod);
-        MDC.put("url", url);
-        MDC.put("clientIp", clientIp);
-        MDC.put("handlerMethod", handlerMethod);
-        MDC.put("requestResult", isSuccess ? "SUCCESS" : "FAILED");
-        MDC.put("responseTimeMs", String.valueOf(executionTime));
-
-        try {
-            String handlerParamsJson = objectMapper.writeValueAsString(handlerParams);
-            MDC.put("handlerParams", handlerParamsJson);
-        } catch (final JsonProcessingException e) {
-            MDC.put("handlerParams", "[]");
+    private String convertToString(final String key, final Object value) {
+        if (key.equals("handlerParams")) {
+            try {
+                return objectMapper.writeValueAsString(value);
+            } catch (final Exception e) {
+                return "[]";
+            }
         }
-    }
-
-    public void log(
-            final String httpMethod,
-            final String url,
-            final String clientIp,
-            final long executionTime
-
-    ) {
-        try {
-            putMdcFields(httpMethod, url, clientIp, executionTime);
-            log.info("");
-        } finally {
-            MDC.clear();
-        }
-    }
-
-    private void putMdcFields(
-            final String httpMethod,
-            final String url,
-            final String clientIp,
-            final long executionTime
-    ) {
-        MDC.put("httpMethod", httpMethod);
-        MDC.put("url", url);
-        MDC.put("clientIp", clientIp);
-        MDC.put("responseTimeMs", String.valueOf(executionTime));
+        return String.valueOf(value);
     }
 }

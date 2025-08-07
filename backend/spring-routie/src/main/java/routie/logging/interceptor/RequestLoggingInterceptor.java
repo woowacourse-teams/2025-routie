@@ -2,6 +2,8 @@ package routie.logging.interceptor;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.HashMap;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.servlet.HandlerInterceptor;
 import routie.logging.extractor.ClientIpExtractor;
@@ -33,11 +35,12 @@ public class RequestLoggingInterceptor implements HandlerInterceptor {
     ) {
         Long startTime = (Long) request.getAttribute(START_TIME_ATTRIBUTE);
 
-        long executionTime = startTime == null ? -1 : System.currentTimeMillis() - startTime;
-        final String clientIp = ClientIpExtractor.extractClientIp(request);
-        final String url = request.getRequestURI();
-        final String httpMethod = request.getMethod();
+        Map<String, Object> logData = new HashMap<>();
+        logData.put("httpMethod", request.getMethod());
+        logData.put("url", request.getRequestURI());
+        logData.put("clientIp", ClientIpExtractor.extractClientIp(request));
+        logData.put("responseTimeMs", startTime == null ? -1 : System.currentTimeMillis() - startTime);
 
-        clientRequestLogger.log(httpMethod, url, clientIp, executionTime);
+        clientRequestLogger.log(logData);
     }
 }
