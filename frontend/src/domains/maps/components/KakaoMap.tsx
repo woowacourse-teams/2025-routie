@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react';
 
+import Button from '@/@common/components/Button/Button';
 import Flex from '@/@common/components/Flex/Flex';
 import Text from '@/@common/components/Text/Text';
 import { useRoutieContext } from '@/domains/routie/contexts/useRoutieContext';
@@ -120,6 +121,19 @@ const KakaoMap = ({
           <Text variant="caption">{finalError}</Text>
         </Flex>
       )}
+
+      <Button
+        variant="primary"
+        width="10%"
+        onClick={() => fitMapToMarkers(routiePlaces)}
+        css={{ position: 'absolute', top: '10px', right: '10px', zIndex: 1 }}
+      >
+        <Flex alignItems="center" justifyContent="center" width="100%">
+          <Text variant="subTitle" color="white">
+            동선만 보기
+          </Text>
+        </Flex>
+      </Button>
     </div>
   );
 };
