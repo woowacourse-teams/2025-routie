@@ -77,7 +77,7 @@ const EditPlaceModal = ({
       return;
     }
     try {
-      const { name, address, ...rest } = form;
+      const { name, roadAddressName, ...rest } = form;
 
       await editPlace({ placeId: id, editableFields: rest });
       await onPlaceChange();
@@ -109,7 +109,7 @@ const EditPlaceModal = ({
                 disabled={true}
               />
               <AddressInput
-                value={form.address}
+                value={form.roadAddressName}
                 onChange={handleInputChange}
                 disabled={true}
               />

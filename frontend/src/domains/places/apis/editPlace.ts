@@ -4,7 +4,7 @@ import { FormState } from '../components/PlaceFormSection/PlaceForm.types';
 
 type editPlaceParam = {
   placeId: number;
-  editableFields: Omit<FormState, 'name' | 'address'>;
+  editableFields: Omit<FormState, 'name' | 'roadAddressName'>;
 };
 
 const editPlace = async ({ placeId, editableFields }: editPlaceParam) => {

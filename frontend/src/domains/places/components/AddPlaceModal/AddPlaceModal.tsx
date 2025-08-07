@@ -6,12 +6,15 @@ import { useAddPlaceForm } from '@/domains/places/hooks/useAddPlaceForm';
 
 import addPlace from '../../apis/addPlace';
 import { usePlaceFormValidation } from '../../hooks/usePlaceFormValidation';
+import useSearchPlace from '../../hooks/useSearchPlace';
+import { PlaceLocationType } from '../../types/place.types';
 import AddressInput from '../PlaceFormSection/AddressInput';
 import BreakTimeInputs from '../PlaceFormSection/BreakTimeInputs';
 import BusinessHourInputs from '../PlaceFormSection/BusinessHourInputs';
 import ClosedDaySelector from '../PlaceFormSection/ClosedDaySelector';
 import PlaceNameInput from '../PlaceFormSection/PlaceNameInput';
 import StayDurationInput from '../PlaceFormSection/StayDurationInput';
+import SearchBox from '../SearchBox/SearchBox';
 
 import { ModalInputContainerStyle } from './AddPlaceModal.styles';
 import AddPlaceModalButtons from './AddPlaceModalButtons';
@@ -30,6 +33,8 @@ const AddPlaceModal = ({
     useAddPlaceForm();
   const { isEmpty, isValid } = usePlaceFormValidation(form);
   const [showErrors, setShowErrors] = useState(false);
+  const [placeLocationInfo, setPlaceLocationInfo] =
+    useState<PlaceLocationType>();
 
   const handleClose = () => {
     resetForm();
@@ -37,14 +42,20 @@ const AddPlaceModal = ({
     onClose();
   };
 
+  const handleSearchPlaceMap = (placeLocation: PlaceLocationType) => {
+    setPlaceLocationInfo(placeLocation);
+  };
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    const addPlaceForm = { ...form, ...placeLocationInfo };
+
     if (!isValid) {
       setShowErrors(true);
       return;
     }
     try {
-      await addPlace(form);
+      await addPlace(addPlaceForm);
       if (onPlaceAdded) {
         await onPlaceAdded();
       }
@@ -66,16 +77,26 @@ const AddPlaceModal = ({
               width="100%"
               gap={2}
             >
-              <PlaceNameInput
-                value={form.name}
+              <SearchBox
                 onChange={handleInputChange}
-                error={showErrors && isEmpty.name}
+                handleSearchPlaceMap={handleSearchPlaceMap}
               />
-              <AddressInput
-                value={form.address}
-                onChange={handleInputChange}
-                error={showErrors && isEmpty.address}
-              />
+              {form.name && (
+                <PlaceNameInput
+                  value={form.name}
+                  onChange={handleInputChange}
+                  error={showErrors && isEmpty.name}
+                  disabled
+                />
+              )}
+              {form.roadAddressName && (
+                <AddressInput
+                  value={form.roadAddressName}
+                  onChange={handleInputChange}
+                  error={showErrors && isEmpty.roadAddressName}
+                  disabled
+                />
+              )}
               <StayDurationInput
                 value={form.stayDurationMinutes}
                 onChange={handleInputChange}
