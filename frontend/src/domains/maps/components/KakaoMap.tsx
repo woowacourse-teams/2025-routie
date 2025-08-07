@@ -50,7 +50,7 @@ const KakaoMap = ({
   const { fitMapToMarkers, drawMarkers } = useMapMarker({
     map: mapRef,
   });
-  const { loadPolyline } = usePolyline({
+  const { loadPolyline, clearPolyline } = usePolyline({
     map: mapRef,
   });
 
@@ -71,6 +71,7 @@ const KakaoMap = ({
 
   useEffect(() => {
     fitMapToMarkers(placeList);
+    clearPolyline();
 
     routiePlaces.forEach((place) => {
       loadPolyline(Number(place.latitude), Number(place.longitude));
