@@ -52,7 +52,7 @@ const SearchBox = ({ onChange, handleSearchPlaceMap }: SearchBoxProps) => {
           type="button"
           onClick={() => handleSearch()}
         >
-          <Flex justifyContent="center" width="100%">
+          <Flex width="100%">
             <Text color={theme.colors.white} variant="label">
               검색
             </Text>
