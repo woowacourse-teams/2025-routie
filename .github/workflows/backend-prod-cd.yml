@@ -69,7 +69,7 @@ jobs:
     steps:
       - name: Restore docker-compose.yml and Run Containers
         run: |
-          echo "${{ secrets.DOCKER_COMPOSE_YML_PROD }}" > docker-compose.yml
+          echo '${{ secrets.DOCKER_COMPOSE_YML_PROD }}' > docker-compose.yml
           sudo docker compose up -d
 
       - name: Clean old JARs
@@ -84,7 +84,7 @@ jobs:
       - name: Restore application.yml
         run: |
           mkdir -p config
-          echo "${{ secrets.APPLICATION_YML_PROD }}" > config/application.yml
+          echo '${{ secrets.APPLICATION_YML_PROD }}' > config/application.yml
 
       - name: Kill existing Spring Process
         run: |
