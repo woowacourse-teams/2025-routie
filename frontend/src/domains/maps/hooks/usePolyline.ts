@@ -18,7 +18,7 @@ const usePolyline = ({ map }: { map: RefObject<KakaoMap> }) => {
     polylineRef.current = new window.kakao.maps.Polyline({
       map: map.current,
       path: pathPoints.current,
-      strokeWeight: 10,
+      strokeWeight: 3,
       strokeColor: 'purple',
       strokeOpacity: 0.7,
       strokeStyle: 'solid',
