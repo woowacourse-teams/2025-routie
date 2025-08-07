@@ -12,8 +12,8 @@ const useSearchPlace = () => {
     if (!keyword) return setSearchResults([]);
 
     try {
-      const searchPlaces = await searchPlace(keyword);
-      setSearchResults(searchPlaces);
+      const searchedPlaces = await searchPlace(keyword);
+      setSearchResults(searchedPlaces);
     } catch (error) {
       console.error(error);
     }
