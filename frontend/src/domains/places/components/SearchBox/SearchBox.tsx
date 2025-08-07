@@ -9,7 +9,7 @@ import { PlaceLocationType, PlaceSearchType } from '../../types/place.types';
 import SearchList from '../SearchList/SearchList';
 
 interface SearchBoxProps {
-  onChange: (field: 'name' | 'roadAddressName', value: string | number) => void;
+  onChange: (field: 'name' | 'roadAddressName', value: string) => void;
   handleSearchPlaceMap: (searchInfo: PlaceLocationType) => void;
 }
 
