@@ -2,6 +2,8 @@ import { useEffect, useRef } from 'react';
 
 import Flex from '@/@common/components/Flex/Flex';
 import Text from '@/@common/components/Text/Text';
+import { useRoutieContext } from '@/domains/routie/contexts/useRoutieContext';
+import { usePlaceListContext } from '@/layouts/PlaceList/contexts/PlaceListContext';
 
 import { useKakaoMapInit } from '../hooks/useKakaoMapInit';
 import { useKakaoMapSDK } from '../hooks/useKakaoMapSDK';
@@ -30,6 +32,12 @@ const KakaoMap = ({
   level = 3,
 }: KakaoMapProps) => {
   const mapContainerRef = useRef<HTMLDivElement>(null);
+  const { placeList } = usePlaceListContext();
+  const { routieIdList } = useRoutieContext();
+
+  const routiePlaces = placeList
+    .filter((place) => routieIdList.includes(place.id))
+    .sort((a, b) => routieIdList.indexOf(a.id) - routieIdList.indexOf(b.id));
 
   const { sdkReady, sdkError } = useKakaoMapSDK();
   const { mapRef, mapState, errorMessage } = useKakaoMapInit({
@@ -54,17 +62,20 @@ const KakaoMap = ({
       return;
     }
 
-    mockPlaces.forEach((place) => {
+    placeList.forEach((place) => {
       drawMarkers(Number(place.latitude), Number(place.longitude));
     });
-  }, [mapRef.current, drawMarkers]);
+
+    fitMapToMarkers(placeList);
+  }, [mapRef.current, drawMarkers, placeList]);
 
   useEffect(() => {
-    fitMapToMarkers(mockPlaces);
-    mockRoutiePath.forEach((place) => {
+    fitMapToMarkers(placeList);
+
+    routiePlaces.forEach((place) => {
       loadPolyline(Number(place.latitude), Number(place.longitude));
     });
-  }, [loadPolyline, fitMapToMarkers]);
+  }, [loadPolyline, fitMapToMarkers, routiePlaces]);
 
   return (
     <div css={KakaoMapWrapperStyle}>
