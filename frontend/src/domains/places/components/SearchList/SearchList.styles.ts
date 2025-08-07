@@ -19,8 +19,6 @@ export const listStyle = css`
 export const itemButtonStyle = css`
   cursor: pointer;
 
-  display: flex;
-
   width: 100%;
   padding: 12px 16px;
   border: 0;
