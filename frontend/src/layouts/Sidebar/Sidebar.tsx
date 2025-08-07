@@ -8,8 +8,10 @@ import ToggleSwitch from '@/@common/components/ToggleSwitch/ToggleSwitch';
 import AddPlaceModal from '@/domains/places/components/AddPlaceModal/AddPlaceModal';
 import EmptyRoutieMessage from '@/domains/routie/components/EmptyRoutieMessage/EmptyRoutieMessage';
 import RoutieSection from '@/domains/routie/components/RoutieSection/RoutieSection';
+import RoutieValidationLoadingCard from '@/domains/routie/components/RoutieValidationLoadingCard/RoutieValidationLoadingCard';
 import RoutieValidationResultCard from '@/domains/routie/components/RoutieValidationResultCard/RoutieValidationResultCard';
 import RoutieValidationUnavailableCard from '@/domains/routie/components/RoutieValidationUnavailableCard/RoutieValidationUnavailableCard';
+import RoutieValidationWaitingCard from '@/domains/routie/components/RoutieValidationWaitingCard/RoutieValidationWaitingCard';
 import { useRoutieContext } from '@/domains/routie/contexts/useRoutieContext';
 import { useRoutieValidateContext } from '@/domains/routie/contexts/useRoutieValidateContext';
 import RoutieSpaceName from '@/domains/routieSpace/components/RoutieSpaceName/RoutieSpaceName';
@@ -26,6 +28,8 @@ const Sidebar = () => {
   const {
     isValidateActive,
     routieTime,
+    validationStatus,
+    waitingReason,
     handleValidateToggle,
     handleTimeChange,
   } = useRoutieValidateContext();
@@ -46,6 +50,25 @@ const Sidebar = () => {
 
   const closeAddModal = () => {
     setAddModalOpen((prev) => !prev);
+  };
+
+  const renderValidationCard = () => {
+    if (!isValidateActive) {
+      return <RoutieValidationUnavailableCard />;
+    }
+
+    switch (validationStatus) {
+      case 'waiting':
+        return <RoutieValidationWaitingCard reason={waitingReason} />;
+      case 'validating':
+        return <RoutieValidationLoadingCard />;
+      case 'success':
+      case 'error':
+        return <RoutieValidationResultCard total_time={totalMovingTime} />;
+      case 'inactive':
+      default:
+        return <RoutieValidationUnavailableCard />;
+    }
   };
 
   return (
@@ -84,11 +107,7 @@ const Sidebar = () => {
             />
           </Flex>
 
-          {isValidateActive ? (
-            <RoutieValidationResultCard total_time={totalMovingTime} />
-          ) : (
-            <RoutieValidationUnavailableCard />
-          )}
+          {renderValidationCard()}
           <TimeInput time={routieTime} onChange={handleTimeChange} />
         </Flex>
         <Flex
