@@ -9,10 +9,10 @@ import { listStyle, itemButtonStyle } from './SearchList.styles';
 
 interface SearchListProps {
   searchResults: PlaceSearchType[];
-  onClick: (item: PlaceSearchType) => void;
+  handleSelect: (item: PlaceSearchType) => void;
 }
 
-const SearchList = ({ searchResults, onClick }: SearchListProps) => {
+const SearchList = ({ searchResults, handleSelect }: SearchListProps) => {
   return (
     <ul css={listStyle}>
       {searchResults.map((searchResult) => (
@@ -22,7 +22,7 @@ const SearchList = ({ searchResults, onClick }: SearchListProps) => {
             variant="secondary"
             width="100%"
             css={itemButtonStyle}
-            onClick={() => onClick(searchResult)}
+            onClick={() => handleSelect(searchResult)}
           >
             <Flex gap={1}>
               <img src={pinIcon} alt="pin" />

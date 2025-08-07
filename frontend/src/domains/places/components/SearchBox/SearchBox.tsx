@@ -61,7 +61,10 @@ const SearchBox = ({ onChange, handleSearchPlaceMap }: SearchBoxProps) => {
       </Flex>
       <Flex width="100%" css={{ position: 'relative' }}>
         {searchResults.length > 0 && (
-          <SearchList searchResults={searchResults} onClick={handleSelect} />
+          <SearchList
+            searchResults={searchResults}
+            handleSelect={handleSelect}
+          />
         )}
       </Flex>
     </>
