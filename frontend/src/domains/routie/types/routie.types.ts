@@ -45,6 +45,15 @@ export type RoutiePlace = {
 
 export type validationErrorCodeType = keyof typeof VALIDATION_RESULT_CODE;
 
+export type ValidationStatus =
+  | 'inactive'
+  | 'waiting'
+  | 'validating'
+  | 'success'
+  | 'error';
+
+export type WaitingReason = 'no_time' | 'insufficient_places' | null;
+
 type InvalidRoutiePlace = {
   routiePlaceId: number;
 };
