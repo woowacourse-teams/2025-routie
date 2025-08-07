@@ -53,7 +53,7 @@ const AddPlaceModal = ({
       return;
     }
     try {
-      await addPlace(form);
+      await addPlace(mergedForm);
       if (onPlaceAdded) {
         await onPlaceAdded();
       }
