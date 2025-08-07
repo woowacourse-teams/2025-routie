@@ -1,12 +1,12 @@
-export type PlaceSearchType = PlaceLocationType & {
-  name: string;
-  roadAddressName: string;
-};
-
 export type PlaceLocationType = {
   searchedPlaceId: string;
   longitude: number;
   latitude: number;
+};
+
+export type PlaceSearchType = PlaceLocationType & {
+  name: string;
+  roadAddressName: string;
 };
 
 export type PlaceBaseType = {
