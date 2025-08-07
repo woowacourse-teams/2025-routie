@@ -1,3 +1,6 @@
+import { useState } from 'react';
+
+import Button from '@/@common/components/Button/Button';
 import Flex from '@/@common/components/Flex/Flex';
 import KakaoMap from '@/domains/maps/components/KakaoMap';
 import { RoutieProvider } from '@/domains/routie/contexts/useRoutieContext';
@@ -7,11 +10,14 @@ import { PlaceListProvider } from '@/layouts/PlaceList/contexts/PlaceListProvide
 import Sidebar from '@/layouts/Sidebar/Sidebar';
 
 const RoutieSpace = () => {
-  const handleMapReady = ({ map }: { map: KakaoMap }) => {
-    navigator.geolocation.getCurrentPosition((position) => {
-      const { latitude, longitude } = position.coords;
-      map.setCenter(new window.kakao.maps.LatLng(latitude, longitude));
-    });
+  const [viewMode, setViewMode] = useState<'map' | 'list'>('map');
+
+  const handleViewModeChange = () => {
+    if (viewMode === 'map') {
+      setViewMode('list');
+    } else {
+      setViewMode('map');
+    }
   };
 
   return (
@@ -20,11 +26,14 @@ const RoutieSpace = () => {
         <PlaceListProvider>
           <Flex justifyContent="flex-start" height="100vh">
             <Flex direction="column" justifyContent="flex-start" height="100%">
+              <Button variant="primary" onClick={handleViewModeChange}>
+                View Mode
+              </Button>
               <Sidebar />
             </Flex>
             <Flex direction="column" justifyContent="flex-start" height="100%">
-              {/* <PlaceList /> */}
-              <KakaoMap onMapReady={handleMapReady} />
+              {viewMode === 'list' && <PlaceList />}
+              {viewMode === 'map' && <KakaoMap />}
             </Flex>
           </Flex>
         </PlaceListProvider>
