@@ -11,6 +11,7 @@ export const listStyle = css`
 
   width: 100%;
   max-height: 20rem;
+  border: 1px solid ${theme.colors.gray[50]};
 
   background-color: ${theme.colors.white};
 `;
