@@ -1,22 +1,34 @@
-export type PlaceBase = {
-  id: number;
+export type PlaceSearchType = PlaceLocationType & {
   name: string;
-  address: string;
+  roadAddressName: string;
+};
+
+export type PlaceLocationType = {
+  searchedPlaceId: string;
+  longitude: number;
+  latitude: number;
+};
+
+export type PlaceBaseType = {
+  name: string;
+  roadAddressName: string;
   stayDurationMinutes: number;
   openAt: string;
   closeAt: string;
   breakStartAt: string;
   breakEndAt: string;
   closedDayOfWeeks: string[];
-};
-
-export type PlaceSearchType = PlaceLocationType & {
-  placeName: string;
-  roadAddressName: string;
-};
-
-export type PlaceLocationType = {
-  id: string;
   longitude: number;
   latitude: number;
+};
+
+export type PlaceCreateType = PlaceBaseType & {
+  searchedPlaceId: string;
+};
+
+export type PlaceListType = Omit<
+  PlaceBaseType,
+  'breakStartAt' | 'breakEndAt' | 'stayDurationMinutes'
+> & {
+  id: number;
 };
