@@ -6,7 +6,7 @@ import { PlaceLocationType, PlaceSearchType } from '../types/place.types';
 const useSearchPlace = () => {
   const [keyword, setKeyword] = useState('');
   const [searchResults, setSearchResults] = useState<PlaceSearchType[]>([]);
-  const [searchInfo, setSearchInfo] = useState<PlaceLocationType>();
+  const [placeLocation, setPlaceLocation] = useState<PlaceLocationType>();
 
   const handleSearch = async () => {
     if (!keyword) return setSearchResults([]);
@@ -20,7 +20,7 @@ const useSearchPlace = () => {
   };
 
   const handleSearchPlaceMap = (placeLocation: PlaceLocationType) => {
-    setSearchInfo(placeLocation);
+    setPlaceLocation(placeLocation);
   };
 
   const handleChangeKeyword = (keyword: string) => {
@@ -39,7 +39,7 @@ const useSearchPlace = () => {
     setSearchResults,
     handleSearch,
     handleReset,
-    searchInfo,
+    placeLocation,
     handleSearchPlaceMap,
   };
 };

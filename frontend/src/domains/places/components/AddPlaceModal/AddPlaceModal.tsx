@@ -32,7 +32,7 @@ const AddPlaceModal = ({
     useAddPlaceForm();
   const { isEmpty, isValid } = usePlaceFormValidation(form);
   const [showErrors, setShowErrors] = useState(false);
-  const { searchInfo, handleSearchPlaceMap } = useSearchPlace();
+  const { placeLocation, handleSearchPlaceMap } = useSearchPlace();
 
   const handleClose = () => {
     resetForm();
@@ -42,14 +42,14 @@ const AddPlaceModal = ({
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const mergedForm = { ...form, ...searchInfo };
+    const addPlaceForm = { ...form, ...placeLocation };
 
     if (!isValid) {
       setShowErrors(true);
       return;
     }
     try {
-      await addPlace(mergedForm);
+      await addPlace(addPlaceForm);
       if (onPlaceAdded) {
         await onPlaceAdded();
       }
