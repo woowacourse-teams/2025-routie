@@ -16,7 +16,7 @@ public record SearchedPlacesResponse(
     }
 
     public record SearchedPlaceResponse(
-            String id,
+            String searchedPlaceId,
             String name,
             String roadAddressName,
             Double longitude,
@@ -25,7 +25,7 @@ public record SearchedPlacesResponse(
 
         public static SearchedPlaceResponse from(final SearchedPlace searchedPlace) {
             return new SearchedPlaceResponse(
-                    searchedPlace.id(),
+                    searchedPlace.searchedPlaceId(),
                     searchedPlace.name(),
                     searchedPlace.roadAddressName(),
                     searchedPlace.longitude(),

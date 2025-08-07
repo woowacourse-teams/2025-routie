@@ -19,7 +19,7 @@ class PlaceSearcherTest {
         List<SearchedPlace> searchedPlaces = placeSearcher.search(query);
         for (final SearchedPlace searchedPlace : searchedPlaces) {
             System.out.println(
-                    searchedPlace.id() + ", "
+                    searchedPlace.searchedPlaceId() + ", "
                             + searchedPlace.name() + ", "
                             + searchedPlace.roadAddressName() + ", "
                             + searchedPlace.latitude() + ", "
