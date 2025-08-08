@@ -1,9 +1,6 @@
 import { useEffect, useState } from 'react';
 
-export interface UseKakaoMapSDKReturn {
-  sdkReady: boolean;
-  sdkError: string | null;
-}
+import type { UseKakaoMapSDKReturn } from '../types/KaKaoMap.types';
 
 export const useKakaoMapSDK = (): UseKakaoMapSDKReturn => {
   const [sdkReady, setSdkReady] = useState(false);

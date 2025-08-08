@@ -18,14 +18,7 @@ import {
   KakaoMapWrapperStyle,
 } from './KakaoMap.styles';
 
-// 카카오맵 타입 정의
-type KakaoMap = InstanceType<typeof window.kakao.maps.Map>;
-
-interface KakaoMapProps {
-  lat?: number;
-  lng?: number;
-  level?: number;
-}
+import type { KakaoMapProps } from '../types/KaKaoMap.types';
 
 const KakaoMap = ({
   lat = 37.5665,

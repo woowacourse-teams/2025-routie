@@ -1,8 +1,8 @@
 import { RefObject, useRef } from 'react';
 
-import KakaoMap from '../components/KakaoMap';
+import type { KakaoMapType } from '../types/KaKaoMap.types';
 
-const usePolyline = ({ map }: { map: RefObject<KakaoMap> }) => {
+const usePolyline = ({ map }: { map: RefObject<KakaoMapType> }) => {
   const pathPoints = useRef<any[]>([]);
   const polylineRef = useRef<any>(null);
 

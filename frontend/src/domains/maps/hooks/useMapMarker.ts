@@ -1,8 +1,8 @@
 import { RefObject, useCallback } from 'react';
 
-import KakaoMap from '../components/KakaoMap';
+import type { KakaoMapType } from '../types/KaKaoMap.types';
 
-const useMapMarker = ({ map }: { map: RefObject<KakaoMap> }) => {
+const useMapMarker = ({ map }: { map: RefObject<KakaoMapType> }) => {
   const drawMarkers = useCallback((lat: number, lng: number) => {
     if (!map.current) return;
 

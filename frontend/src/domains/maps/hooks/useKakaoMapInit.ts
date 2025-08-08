@@ -1,22 +1,11 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
-type KakaoMap = InstanceType<typeof window.kakao.maps.Map>;
-type MapState = 'loading' | 'ready' | 'error';
-
-export interface UseKakaoMapInitReturn {
-  mapRef: React.RefObject<KakaoMap | null>;
-  mapState: MapState;
-  errorMessage: string | null;
-  initializeMap: () => void;
-}
-
-export interface UseKakaoMapInitProps {
-  containerRef: React.RefObject<HTMLDivElement | null>;
-  sdkReady: boolean;
-  lat: number;
-  lng: number;
-  level: number;
-}
+import type {
+  KakaoMapType,
+  MapStateType,
+  UseKakaoMapInitProps,
+  UseKakaoMapInitReturn,
+} from '../types/KaKaoMap.types';
 
 export const useKakaoMapInit = ({
   containerRef,
@@ -25,10 +14,10 @@ export const useKakaoMapInit = ({
   lng,
   level,
 }: UseKakaoMapInitProps): UseKakaoMapInitReturn => {
-  const mapRef = useRef<KakaoMap | null>(null);
+  const mapRef = useRef<KakaoMapType | null>(null);
   const isInitializedRef = useRef(false);
 
-  const [mapState, setMapState] = useState<MapState>('loading');
+  const [mapState, setMapState] = useState<MapStateType>('loading');
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const initializeMap = useCallback(() => {
