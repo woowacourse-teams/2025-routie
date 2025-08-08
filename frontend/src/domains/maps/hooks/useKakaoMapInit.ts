@@ -47,7 +47,6 @@ export const useKakaoMapInit = ({
       // 센트리 에러 던지기 추가 예정
       setMapState('error');
       setErrorMessage('지도를 생성하는데 실패했습니다.');
-      throw new Error('지도를 생성하는데 실패했습니다.');
     }
   }, [containerRef, lat, lng, level]);
 
