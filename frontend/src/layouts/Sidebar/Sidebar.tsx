@@ -21,7 +21,11 @@ import { usePlaceListContext } from '../PlaceList/contexts/PlaceListContext';
 
 import TimeInput from './TimeInput';
 
-const Sidebar = () => {
+interface SidebarProps {
+  handleViewModeChange: () => void;
+}
+
+const Sidebar = ({ handleViewModeChange }: SidebarProps) => {
   const { routes, routiePlaces } = useRoutieContext();
   const { refetchPlaceList } = usePlaceListContext();
   const [addModalOpen, setAddModalOpen] = useState(false);
@@ -78,16 +82,19 @@ const Sidebar = () => {
         justifyContent="flex-start"
         alignItems="flex-start"
         width="50rem"
+        height="100vh"
         gap={1}
+        style={{
+          overflow: 'hidden',
+        }}
       >
-        <Header />
+        <Header handleViewModeChange={handleViewModeChange} />
         <Flex
           direction="column"
           width="100%"
           gap={1.2}
           padding={1.6}
           justifyContent="flex-start"
-          height="28rem"
         >
           <Flex direction="column" width="100%" gap={1.2}>
             <RoutieSpaceName />
@@ -115,8 +122,9 @@ const Sidebar = () => {
           alignItems="flex-start"
           width="100%"
           gap={1.2}
+          padding={1.6}
           style={{
-            padding: '0 1.6rem',
+            overflow: 'hidden',
           }}
         >
           <Text variant="subTitle">내 동선</Text>
@@ -124,10 +132,10 @@ const Sidebar = () => {
           <Flex
             direction="column"
             justifyContent="flex-start"
-            height="calc(100dvh - 36rem)"
+            width="100%"
+            padding={1.6}
             style={{
               overflowY: 'auto',
-              padding: '1.6rem 0 ',
               boxSizing: 'border-box',
             }}
           >

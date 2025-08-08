@@ -8,8 +8,8 @@ const RoutieSection = () => {
   const getDragProps = useCardDrag(routiePlaces, handleChangeRoutie);
 
   return routiePlaces.map((routie, index) => (
-    <div key={routie.placeId}>
-      <div {...getDragProps(index)}>
+    <div key={routie.placeId} style={{ width: '100%' }}>
+      <div {...getDragProps(index)} style={{ width: '100%' }}>
         <RoutiePlaceCard routie={routie} />
       </div>
 
