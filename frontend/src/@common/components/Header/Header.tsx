@@ -33,7 +33,7 @@ const Header = ({ handleViewModeChange }: HeaderProps) => {
         ></HomeButton>
         {handleViewModeChange && (
           <Button variant="primary" width="20%" onClick={handleViewModeChange}>
-            <Flex alignItems="center" justifyContent="center" width="100%">
+            <Flex justifyContent="center" width="100%">
               <Text variant="subTitle" color="white">
                 뷰모드 변경
               </Text>

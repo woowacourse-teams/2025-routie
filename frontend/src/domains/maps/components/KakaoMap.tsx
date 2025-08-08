@@ -121,7 +121,7 @@ const KakaoMap = ({
         onClick={() => fitMapToMarkers(routiePlaces)}
         css={{ position: 'absolute', top: '10px', right: '10px', zIndex: 1 }}
       >
-        <Flex alignItems="center" justifyContent="center" width="100%">
+        <Flex justifyContent="center" width="100%">
           <Text variant="subTitle" color="white">
             동선만 보기
           </Text>
