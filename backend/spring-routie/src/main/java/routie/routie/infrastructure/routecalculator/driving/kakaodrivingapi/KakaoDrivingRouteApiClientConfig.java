@@ -2,6 +2,7 @@ package routie.routie.infrastructure.routecalculator.driving.kakaodrivingapi;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.net.URI;
@@ -61,14 +62,15 @@ public class KakaoDrivingRouteApiClientConfig {
         ) throws IOException {
             log.warn(
                     "Kakao 길찾기 API 오류 발생: {}",
-                    objectMapper.readValue(response.getBody(), KakaoDrivingApiErrorResponse.class).code()
+                    objectMapper.readValue(response.getBody(), KakaoDrivingApiErrorResponse.class)
             );
 
             throw new BusinessException(ErrorCode.KAKAO_DRIVING_ROUTE_API_ERROR);
         }
 
         private record KakaoDrivingApiErrorResponse(
-                String code
+                @JsonProperty("code") String code,
+                @JsonProperty("msg") String message
         ) {
         }
     }
