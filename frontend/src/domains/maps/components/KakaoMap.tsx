@@ -57,7 +57,7 @@ const KakaoMap = ({
     }
 
     placeList.forEach((place) => {
-      drawMarkers(Number(place.latitude), Number(place.longitude));
+      drawMarkers(place.latitude, place.longitude);
     });
 
     fitMapToMarkers(placeList);
@@ -68,7 +68,7 @@ const KakaoMap = ({
     clearPolyline();
 
     routiePlaces.forEach((place) => {
-      loadPolyline(Number(place.latitude), Number(place.longitude));
+      loadPolyline(place.latitude, place.longitude);
     });
   }, [loadPolyline, fitMapToMarkers, routiePlaces]);
 
