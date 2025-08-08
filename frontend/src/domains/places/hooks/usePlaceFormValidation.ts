@@ -7,7 +7,7 @@ export const usePlaceFormValidation = (form: FormState) => {
 
   const isEmpty = {
     name: form.name.trim() === '',
-    address: form.address.trim() === '',
+    roadAddressName: form.roadAddressName.trim() === '',
     stayDurationMinutes: form.stayDurationMinutes < 0,
     openAt: form.openAt === '',
     closeAt: form.closeAt === '',

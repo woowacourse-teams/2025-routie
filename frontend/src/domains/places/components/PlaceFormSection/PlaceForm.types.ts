@@ -1,6 +1,6 @@
 export type FormState = {
   name: string;
-  address: string;
+  roadAddressName: string;
   stayDurationMinutes: number;
   openAt: string;
   closeAt: string;
@@ -13,7 +13,7 @@ export type FormAction =
   | {
       type: 'UPDATE';
       field: keyof Omit<FormState, 'closedDayOfWeeks'>;
-      value: string;
+      value: string | number;
     }
   | { type: 'TOGGLE_DAY'; index: number }
   | { type: 'RESET' }
