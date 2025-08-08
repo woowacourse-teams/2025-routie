@@ -74,7 +74,6 @@ const KakaoMap = ({
 
   return (
     <div css={KakaoMapWrapperStyle}>
-      {/* 실제 지도 컨테이너 */}
       <div
         ref={mapContainerRef}
         css={KakaoMapContainerStyle}
@@ -83,7 +82,6 @@ const KakaoMap = ({
         tabIndex={0}
       />
 
-      {/* 로딩 오버레이 */}
       {finalMapState === 'loading' && (
         <Flex
           css={KakaoMapLoadingStyle}
@@ -101,7 +99,6 @@ const KakaoMap = ({
         </Flex>
       )}
 
-      {/* 에러 오버레이 */}
       {finalMapState === 'error' && (
         <Flex
           css={KakaoMapErrorStyle}
@@ -132,4 +129,3 @@ const KakaoMap = ({
 };
 
 export default KakaoMap;
-export type { KakaoMapProps };

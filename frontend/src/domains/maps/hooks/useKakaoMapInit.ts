@@ -44,7 +44,7 @@ export const useKakaoMapInit = ({
         }
       }, 100);
     } catch (error) {
-      // 센트리 에러 던지기 추가 예정
+      // TODO: 센트리 에러 던지기 추가 예정
       setMapState('error');
       setErrorMessage('지도를 생성하는데 실패했습니다.');
     }
