@@ -97,12 +97,7 @@
                     <fieldName>traceId</fieldName>
                     <strategy>random</strategy>
                 </uuid>
-                <mdc>
-                    <includeMdcKeyName>httpMethod</includeMdcKeyName>
-                    <includeMdcKeyName>url</includeMdcKeyName>
-                    <includeMdcKeyName>clientIp</includeMdcKeyName>
-                    <includeMdcKeyName>responseTimeMs</includeMdcKeyName>
-                </mdc>
+                <mdc/>
             </providers>
         </encoder>
     </appender>

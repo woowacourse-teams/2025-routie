@@ -98,15 +98,7 @@
                     <fieldName>traceId</fieldName>
                     <strategy>random</strategy>
                 </uuid>
-                <mdc>
-                    <includeMdcKeyName>httpMethod</includeMdcKeyName>
-                    <includeMdcKeyName>url</includeMdcKeyName>
-                    <includeMdcKeyName>clientIp</includeMdcKeyName>
-                    <includeMdcKeyName>requestResult</includeMdcKeyName>
-                    <includeMdcKeyName>responseTimeMs</includeMdcKeyName>
-                    <includeMdcKeyName>handlerMethod</includeMdcKeyName>
-                    <includeMdcKeyName>handlerParams</includeMdcKeyName>
-                </mdc>
+                <mdc/>
             </providers>
         </encoder>
     </appender>

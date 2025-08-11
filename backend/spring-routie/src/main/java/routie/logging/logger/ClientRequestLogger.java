@@ -1,5 +1,7 @@
 package routie.logging.logger;
 
+import static routie.logging.LoggingField.HANDLER_PARAMS;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
@@ -28,7 +30,7 @@ public class ClientRequestLogger {
     }
 
     private String convertToString(final String key, final Object value) {
-        if (key.equals("handlerParams")) {
+        if (key.equals(HANDLER_PARAMS.getFieldName())) {
             try {
                 return objectMapper.writeValueAsString(value);
             } catch (final Exception e) {
