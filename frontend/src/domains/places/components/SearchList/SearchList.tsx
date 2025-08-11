@@ -20,7 +20,6 @@ const SearchList = ({ searchResults, handleSelect }: SearchListProps) => {
           <Button
             type="button"
             variant="secondary"
-            width="100%"
             css={itemButtonStyle}
             onClick={() => handleSelect(searchResult)}
           >
