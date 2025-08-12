@@ -54,7 +54,20 @@ const useMapMarker = ({ map }: { map: RefObject<KakaoMapType> }) => {
     [],
   );
 
-  return { drawMarkers, fitMapToMarkers, clearMarkers };
+  const fitMapToMarker = useCallback((lat: number, lng: number) => {
+    if (!map.current) return;
+
+    const bounds = new window.kakao.maps.LatLngBounds();
+
+    const position = new window.kakao.maps.LatLng(lat, lng);
+
+    console.log(position);
+
+    bounds.extend(position);
+    map.current.panTo(bounds);
+  }, []);
+
+  return { drawMarkers, fitMapToMarkers, clearMarkers, fitMapToMarker };
 };
 
 export default useMapMarker;
