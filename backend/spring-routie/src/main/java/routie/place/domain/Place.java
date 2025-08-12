@@ -117,8 +117,8 @@ public class Place {
     public static Place create(
             final String name,
             final String roadAddressName,
-            final Double longitude,
-            final Double latitude,
+            final double longitude,
+            final double latitude,
             final int stayDurationMinutes,
             final LocalTime openAt,
             final LocalTime closeAt,
