@@ -1,4 +1,5 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 
 import Button from '@/@common/components/Button/Button';
 import Flex from '@/@common/components/Flex/Flex';
@@ -19,6 +20,10 @@ import {
 } from './KakaoMap.styles';
 
 import type { KakaoMapProps } from '../types/KaKaoMap.types';
+
+import PlaceOverlayCard from './PlaceOverlayCard';
+import useCustomOverlay from '../hooks/useCustomOverlay';
+import { PlaceCardProps } from '@/domains/places/components/PlaceCard/PlaceCard';
 
 const KakaoMap = ({
   lat = 37.5665,
@@ -47,22 +52,58 @@ const KakaoMap = ({
   const { loadPolyline, clearPolyline } = usePolyline({
     map: mapRef,
   });
+  const { containerEl, openAt, close } = useCustomOverlay({ map: mapRef });
+  const [selectedPlace, setSelectedPlace] = useState<PlaceCardProps | null>(
+    null,
+  );
 
   const finalError = sdkError || errorMessage;
   const finalMapState = sdkError ? 'error' : mapState;
 
+  const handleMapClick = () => {
+    setSelectedPlace(null);
+    close();
+  };
+
   useEffect(() => {
-    if (!mapRef.current) {
-      return;
-    }
+    if (!mapRef.current) return;
+
     clearMarkers();
 
     placeList.forEach((place) => {
-      drawMarkers(place.latitude, place.longitude);
+      drawMarkers(place.latitude, place.longitude, () => {
+        setSelectedPlace(place);
+        openAt(place.latitude, place.longitude);
+      });
     });
 
     fitMapToMarkers(placeList);
-  }, [mapRef.current, drawMarkers, placeList]);
+  }, [
+    mapRef.current,
+    drawMarkers,
+    placeList,
+    fitMapToMarkers,
+    clearMarkers,
+    openAt,
+  ]);
+
+  useEffect(() => {
+    if (!mapRef.current) return;
+
+    window.kakao.maps.event.addListener(
+      mapRef.current,
+      'click',
+      handleMapClick,
+    );
+
+    return () => {
+      window.kakao.maps.event.removeListener(
+        mapRef.current,
+        'click',
+        handleMapClick,
+      );
+    };
+  }, [mapRef.current, close]);
 
   useEffect(() => {
     fitMapToMarkers(placeList);
@@ -125,6 +166,13 @@ const KakaoMap = ({
           </Text>
         </Flex>
       </Button>
+
+      {containerEl &&
+        selectedPlace &&
+        createPortal(
+          <PlaceOverlayCard place={selectedPlace} onClose={handleMapClick} />,
+          containerEl,
+        )}
     </div>
   );
 };
