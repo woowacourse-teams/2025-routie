@@ -8,10 +8,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestBody;
 import routie.logging.extractor.dto.HandlerParameter;
 
-@Component
-public class HandlerMethodAnalyzer {
+public class HandlerParametersExtractor {
 
-    public List<HandlerParameter> extractParameters(final Object[] args, final Method method) {
+    public static List<HandlerParameter> extractParameters(final Object[] args, final Method method) {
         try {
             Parameter[] parameters = method.getParameters();
 
@@ -27,7 +26,7 @@ public class HandlerMethodAnalyzer {
         }
     }
 
-    private boolean isLoggableParameter(final Parameter parameter, final Object value) {
+    private static boolean isLoggableParameter(final Parameter parameter, final Object value) {
         return value != null
                 && parameter.isAnnotationPresent(RequestBody.class);
     }

@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import routie.logging.domain.LogDataBuilder;
 import routie.logging.interceptor.RequestLoggingInterceptor;
 import routie.logging.logger.ClientRequestLogger;
 
@@ -20,7 +21,10 @@ public class ProdLoggingConfig implements WebMvcConfigurer {
     public RequestLoggingInterceptor requestLoggingInterceptor(
             final ClientRequestLogger clientRequestLogger
     ) {
-        return new RequestLoggingInterceptor(clientRequestLogger);
+        return new RequestLoggingInterceptor(
+                clientRequestLogger,
+                new LogDataBuilder(new ProdLoggingStrategy())
+        );
     }
 
     @Override
