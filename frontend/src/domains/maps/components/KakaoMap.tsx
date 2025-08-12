@@ -41,9 +41,10 @@ const KakaoMap = ({ lat = 36.5, lng = 127.8, level = 13 }: KakaoMapProps) => {
     lng,
     level,
   });
-  const { fitMapToMarkers, drawMarkers, clearMarkers } = useMapMarker({
-    map: mapRef,
-  });
+  const { fitMapToMarker, fitMapToMarkers, drawMarkers, clearMarkers } =
+    useMapMarker({
+      map: mapRef,
+    });
   const { loadPolyline, clearPolyline } = usePolyline({
     map: mapRef,
   });
@@ -69,6 +70,7 @@ const KakaoMap = ({ lat = 36.5, lng = 127.8, level = 13 }: KakaoMapProps) => {
       drawMarkers(place.latitude, place.longitude, () => {
         setSelectedPlace(place);
         openAt(place.latitude, place.longitude);
+        fitMapToMarker(place.latitude, place.longitude);
       });
     });
 
