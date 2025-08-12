@@ -4,7 +4,7 @@ import java.util.List;
 import routie.place.domain.SearchedPlace;
 
 public record SearchedPlacesResponse(
-        List<SearchedPlaceResponse> searchPlaces
+        List<SearchedPlaceResponse> searchedPlaces
 ) {
 
     public static SearchedPlacesResponse from(final List<SearchedPlace> searchedPlaces) {
@@ -19,6 +19,7 @@ public record SearchedPlacesResponse(
             String searchedPlaceId,
             String name,
             String roadAddressName,
+            String addressName,
             Double longitude,
             Double latitude
     ) {
@@ -28,6 +29,7 @@ public record SearchedPlacesResponse(
                     searchedPlace.searchedPlaceId(),
                     searchedPlace.name(),
                     searchedPlace.roadAddressName(),
+                    searchedPlace.addressName(),
                     searchedPlace.longitude(),
                     searchedPlace.latitude()
             );

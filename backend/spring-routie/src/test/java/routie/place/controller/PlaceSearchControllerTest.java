@@ -36,13 +36,13 @@ class PlaceSearchControllerTest {
 
         stubbedSearchedPlaces = List.of(
                 new SearchedPlace(
-                        "21160804", "선릉역 2호선", "서울 강남구 테헤란로 지하 340", 37.504497373023206, 127.04896282498558
+                        "21160804", "선릉역 2호선", "서울 강남구 테헤란로 지하 340", "", 37.504497373023206, 127.04896282498558
                 ),
                 new SearchedPlace(
-                        "21161056", "선릉역 수인분당선", "서울 강남구 테헤란로 지하 340", 37.505167825521674, 127.04870992465413
+                        "21161056", "선릉역 수인분당선", "서울 강남구 테헤란로 지하 340", "", 37.505167825521674, 127.04870992465413
                 ),
                 new SearchedPlace(
-                        "574850200", "선릉역풍림아이원레몬아파트", "서울 강남구 테헤란로64길 13", 37.504179169604114, 127.05143263193
+                        "574850200", "선릉역풍림아이원레몬아파트", "서울 강남구 테헤란로64길 13", "", 37.504179169604114, 127.05143263193
                 )
         );
 
@@ -70,8 +70,8 @@ class PlaceSearchControllerTest {
         // then
         SoftAssertions.assertSoftly(softAssertions -> {
             softAssertions.assertThat(searchedPlacesResponse).isNotNull();
-            softAssertions.assertThat(searchedPlacesResponse.searchPlaces()).isNotEmpty();
-            softAssertions.assertThat(searchedPlacesResponse.searchPlaces()).hasSize(stubbedSearchedPlaces.size());
+            softAssertions.assertThat(searchedPlacesResponse.searchedPlaces()).isNotEmpty();
+            softAssertions.assertThat(searchedPlacesResponse.searchedPlaces()).hasSize(stubbedSearchedPlaces.size());
         });
     }
 }
