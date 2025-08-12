@@ -22,6 +22,7 @@ const PlaceOverlayCard = ({ place, onClose }: Props) => {
   const handleSelect = async () => {
     if (selected) return;
     await handleAddRoutie(place.id);
+    onClose();
   };
 
   return (
