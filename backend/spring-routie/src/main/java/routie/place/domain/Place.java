@@ -80,12 +80,11 @@ public class Place {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-
     public Place(
             final String name,
             final String roadAddressName,
-            final Double longitude,
-            final Double latitude,
+            final double longitude,
+            final double latitude,
             final int stayDurationMinutes,
             final LocalTime openAt,
             final LocalTime closeAt,
@@ -94,7 +93,14 @@ public class Place {
             final RoutieSpace routieSpace,
             final List<PlaceClosedDayOfWeek> placeClosedDayOfWeeks
     ) {
-        validateForCreation(name, roadAddressName, stayDurationMinutes, openAt, closeAt, breakStartAt, breakEndAt);
+        validateName(name);
+        validateRoadAddressName(roadAddressName);
+        validateLongitude(longitude);
+        validateLatitude(latitude);
+        validateStayDurationMinutes(stayDurationMinutes);
+        validateOperatingTime(openAt, closeAt);
+        validateBreakTime(breakStartAt, breakEndAt);
+        validateBreakTimeWithOperatingTime(openAt, closeAt, breakStartAt, breakEndAt);
         this.name = name;
         this.roadAddressName = roadAddressName;
         this.longitude = longitude;
@@ -108,26 +114,11 @@ public class Place {
         this.placeClosedDayOfWeeks = placeClosedDayOfWeeks;
     }
 
-    private void validateForCreation(
-            final String name,
-            final String roadAddressName,
-            final int stayDurationMinutes,
-            final LocalTime openAt,
-            final LocalTime closeAt,
-            final LocalTime breakStartAt,
-            final LocalTime breakEndAt
-    ) {
-        validateName(name);
-        validateRoadAddressName(roadAddressName);
-        validateStayDurationMinutes(stayDurationMinutes);
-        validateTime(openAt, closeAt, breakStartAt, breakEndAt);
-    }
-
     public static Place create(
             final String name,
             final String roadAddressName,
-            final Double longitude,
-            final Double latitude,
+            final double longitude,
+            final double latitude,
             final int stayDurationMinutes,
             final LocalTime openAt,
             final LocalTime closeAt,
@@ -152,6 +143,27 @@ public class Place {
         );
     }
 
+    private static List<PlaceClosedDayOfWeek> createClosedDayOfWeeks(final List<DayOfWeek> closedDayOfWeeks) {
+        if (closedDayOfWeeks == null) {
+            throw new IllegalArgumentException("휴무일은 필수 입력 사항입니다.");
+        }
+        return closedDayOfWeeks.stream()
+                .map(PlaceClosedDayOfWeek::new)
+                .toList();
+    }
+
+    private void validateLongitude(final double longitude) {
+        if (longitude < -180.0 || longitude > 180.0) {
+            throw new IllegalArgumentException("경도는 -180.0 이상 180.0 이하이어야 합니다.");
+        }
+    }
+
+    private void validateLatitude(final double latitude) {
+        if (latitude < -90.0 || latitude > 90.0) {
+            throw new IllegalArgumentException("위도는 -90.0 이상 90.0 이하이어야 합니다.");
+        }
+    }
+
     public void modify(
             final int stayDurationMinutes,
             final LocalTime openAt,
@@ -160,7 +172,10 @@ public class Place {
             final LocalTime breakEndAt,
             final List<DayOfWeek> closedDayOfWeeks
     ) {
-        validateForModify(stayDurationMinutes, openAt, closeAt, breakStartAt, breakEndAt);
+        validateStayDurationMinutes(stayDurationMinutes);
+        validateOperatingTime(openAt, closeAt);
+        validateBreakTime(breakStartAt, breakEndAt);
+        validateBreakTimeWithOperatingTime(openAt, closeAt, breakStartAt, breakEndAt);
 
         this.stayDurationMinutes = stayDurationMinutes;
         this.openAt = openAt;
@@ -169,26 +184,6 @@ public class Place {
         this.breakEndAt = breakEndAt;
         this.placeClosedDayOfWeeks.clear();
         this.placeClosedDayOfWeeks.addAll(createClosedDayOfWeeks(closedDayOfWeeks));
-    }
-
-    private static List<PlaceClosedDayOfWeek> createClosedDayOfWeeks(final List<DayOfWeek> closedDayOfWeeks) {
-        if (closedDayOfWeeks == null) {
-            return new ArrayList<>();
-        }
-        return closedDayOfWeeks.stream()
-                .map(PlaceClosedDayOfWeek::new)
-                .toList();
-    }
-
-    private void validateForModify(
-            final int stayDurationMinutes,
-            final LocalTime openAt,
-            final LocalTime closeAt,
-            final LocalTime breakStartAt,
-            final LocalTime breakEndAt
-    ) {
-        validateStayDurationMinutes(stayDurationMinutes);
-        validateTime(openAt, closeAt, breakStartAt, breakEndAt);
     }
 
     private void validateStayDurationMinutes(final int stayDurationMinutes) {
@@ -213,17 +208,6 @@ public class Place {
         if (roadAddressName.length() > 50) {
             throw new IllegalArgumentException("주소는 1자 이상 50자 이하여야 합니다.");
         }
-    }
-
-    private void validateTime(
-            final LocalTime openAt,
-            final LocalTime closeAt,
-            final LocalTime breakStartAt,
-            final LocalTime breakEndAt
-    ) {
-        validateOperatingTime(openAt, closeAt);
-        validateBreakTime(breakStartAt, breakEndAt);
-        validateBreakTimeWithOperatingTime(openAt, closeAt, breakStartAt, breakEndAt);
     }
 
     private void validateOperatingTime(final LocalTime openAt, final LocalTime closeAt) {

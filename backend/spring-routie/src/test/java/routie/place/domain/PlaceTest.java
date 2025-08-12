@@ -59,7 +59,7 @@ class PlaceTest {
                 breakStartAt,
                 breakEndAt,
                 routieSpace,
-                null
+                List.of()
         );
 
         // then

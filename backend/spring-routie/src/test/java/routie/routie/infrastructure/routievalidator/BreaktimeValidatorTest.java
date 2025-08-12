@@ -32,7 +32,11 @@ class BreaktimeValidatorTest {
         );
         TimePeriods timePeriods = TimePeriods.empty();
         timePeriods = timePeriods.withAdded(routiePlace, timePeriod);
-        ValidationContext validationContext = new ValidationContext(null, null, timePeriods);
+        ValidationContext validationContext = new ValidationContext(
+                LocalDateTime.now(),
+                LocalDateTime.now().plusDays(1),
+                timePeriods
+        );
 
         // when
         boolean result = calculator.validate(validationContext, ValidationStrategy.IS_NOT_DURING_BREAKTIME).isValid();
@@ -54,7 +58,11 @@ class BreaktimeValidatorTest {
         );
         TimePeriods timePeriods = TimePeriods.empty();
         timePeriods = timePeriods.withAdded(routiePlace, timePeriod);
-        ValidationContext validationContext = new ValidationContext(null, null, timePeriods);
+        ValidationContext validationContext = new ValidationContext(
+                LocalDateTime.now(),
+                LocalDateTime.now().plusDays(1),
+                timePeriods
+        );
 
         // when
         boolean result = calculator.validate(validationContext, ValidationStrategy.IS_NOT_DURING_BREAKTIME).isValid();
@@ -76,7 +84,11 @@ class BreaktimeValidatorTest {
         );
         TimePeriods timePeriods = TimePeriods.empty();
         timePeriods = timePeriods.withAdded(routiePlace, timePeriod);
-        ValidationContext validationContext = new ValidationContext(null, null, timePeriods);
+        ValidationContext validationContext = new ValidationContext(
+                LocalDateTime.now(),
+                LocalDateTime.now().plusDays(1),
+                timePeriods
+        );
 
         // when
         boolean result = calculator.validate(validationContext, ValidationStrategy.IS_NOT_DURING_BREAKTIME).isValid();
@@ -98,7 +110,11 @@ class BreaktimeValidatorTest {
         );
         TimePeriods timePeriods = TimePeriods.empty();
         timePeriods = timePeriods.withAdded(routiePlace, timePeriod);
-        ValidationContext validationContext = new ValidationContext(null, null, timePeriods);
+        ValidationContext validationContext = new ValidationContext(
+                LocalDateTime.now(),
+                LocalDateTime.now().plusDays(1),
+                timePeriods
+        );
 
         // when
         boolean result = calculator.validate(validationContext, ValidationStrategy.IS_NOT_DURING_BREAKTIME).isValid();
@@ -122,7 +138,11 @@ class BreaktimeValidatorTest {
         );
         TimePeriods timePeriods = TimePeriods.empty();
         timePeriods = timePeriods.withAdded(routiePlace, timePeriod);
-        ValidationContext validationContext = new ValidationContext(null, null, timePeriods);
+        ValidationContext validationContext = new ValidationContext(
+                LocalDateTime.now(),
+                LocalDateTime.now().plusDays(1),
+                timePeriods
+        );
 
         // when
         boolean result = calculator.validate(validationContext, ValidationStrategy.IS_NOT_DURING_BREAKTIME).isValid();
@@ -144,7 +164,11 @@ class BreaktimeValidatorTest {
         );
         TimePeriods timePeriods = TimePeriods.empty();
         timePeriods = timePeriods.withAdded(routiePlace, timePeriod);
-        ValidationContext validationContext = new ValidationContext(null, null, timePeriods);
+        ValidationContext validationContext = new ValidationContext(
+                LocalDateTime.now(),
+                LocalDateTime.now().plusDays(1),
+                timePeriods
+        );
 
         // when
         boolean result = calculator.validate(validationContext, ValidationStrategy.IS_NOT_DURING_BREAKTIME).isValid();
@@ -166,7 +190,11 @@ class BreaktimeValidatorTest {
         );
         TimePeriods timePeriods = TimePeriods.empty();
         timePeriods = timePeriods.withAdded(routiePlace, timePeriod);
-        ValidationContext validationContext = new ValidationContext(null, null, timePeriods);
+        ValidationContext validationContext = new ValidationContext(
+                LocalDateTime.now(),
+                LocalDateTime.now().plusDays(1),
+                timePeriods
+        );
 
         // when
         boolean result = calculator.validate(validationContext, ValidationStrategy.IS_NOT_DURING_BREAKTIME).isValid();

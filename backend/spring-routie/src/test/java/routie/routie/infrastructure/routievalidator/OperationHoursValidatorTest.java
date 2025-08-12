@@ -32,7 +32,11 @@ class OperationHoursValidatorTest {
                 LocalDateTime.of(2024, 1, 1, 11, 0)
         );
         TimePeriods timePeriods = new TimePeriods(Map.of(routiePlace, timePeriod));
-        ValidationContext validationContext = new ValidationContext(null, null, timePeriods);
+        ValidationContext validationContext = new ValidationContext(
+                LocalDateTime.now(),
+                LocalDateTime.now().plusDays(1),
+                timePeriods
+        );
 
         // when
         boolean result = calculator.validate(validationContext, ValidationStrategy.IS_WITHIN_OPERATION_HOURS).isValid();
@@ -53,7 +57,11 @@ class OperationHoursValidatorTest {
                 LocalDateTime.of(2024, 1, 1, 10, 0)
         );
         TimePeriods timePeriods = new TimePeriods(Map.of(routiePlace, timePeriod));
-        ValidationContext validationContext = new ValidationContext(null, null, timePeriods);
+        ValidationContext validationContext = new ValidationContext(
+                LocalDateTime.now(),
+                LocalDateTime.now().plusDays(1),
+                timePeriods
+        );
 
         // when
         boolean result = calculator.validate(validationContext, ValidationStrategy.IS_WITHIN_OPERATION_HOURS).isValid();
@@ -74,7 +82,11 @@ class OperationHoursValidatorTest {
                 LocalDateTime.of(2024, 1, 1, 18, 0)
         );
         TimePeriods timePeriods = new TimePeriods(Map.of(routiePlace, timePeriod));
-        ValidationContext validationContext = new ValidationContext(null, null, timePeriods);
+        ValidationContext validationContext = new ValidationContext(
+                LocalDateTime.now(),
+                LocalDateTime.now().plusDays(1),
+                timePeriods
+        );
 
         // when
         boolean result = calculator.validate(validationContext, ValidationStrategy.IS_WITHIN_OPERATION_HOURS).isValid();
@@ -95,7 +107,11 @@ class OperationHoursValidatorTest {
                 LocalDateTime.of(2024, 1, 1, 17, 0)
         );
         TimePeriods timePeriods = new TimePeriods(Map.of(routiePlace, timePeriod));
-        ValidationContext validationContext = new ValidationContext(null, null, timePeriods);
+        ValidationContext validationContext = new ValidationContext(
+                LocalDateTime.now(),
+                LocalDateTime.now().plusDays(1),
+                timePeriods
+        );
 
         // when
         boolean result = calculator.validate(validationContext, ValidationStrategy.IS_WITHIN_OPERATION_HOURS).isValid();
@@ -116,7 +132,11 @@ class OperationHoursValidatorTest {
                 LocalDateTime.of(2024, 1, 1, 10, 0)
         );
         TimePeriods timePeriods = new TimePeriods(Map.of(routiePlace, timePeriod));
-        ValidationContext validationContext = new ValidationContext(null, null, timePeriods);
+        ValidationContext validationContext = new ValidationContext(
+                LocalDateTime.now(),
+                LocalDateTime.now().plusDays(1),
+                timePeriods
+        );
 
         // when
         boolean result = calculator.validate(validationContext, ValidationStrategy.IS_WITHIN_OPERATION_HOURS).isValid();
@@ -137,7 +157,11 @@ class OperationHoursValidatorTest {
                 LocalDateTime.of(2024, 1, 1, 18, 1)
         );
         TimePeriods timePeriods = new TimePeriods(Map.of(routiePlace, timePeriod));
-        ValidationContext validationContext = new ValidationContext(null, null, timePeriods);
+        ValidationContext validationContext = new ValidationContext(
+                LocalDateTime.now(),
+                LocalDateTime.now().plusDays(1),
+                timePeriods
+        );
 
         // when
         boolean result = calculator.validate(validationContext, ValidationStrategy.IS_WITHIN_OPERATION_HOURS).isValid();
@@ -158,7 +182,11 @@ class OperationHoursValidatorTest {
                 LocalDateTime.of(2024, 1, 1, 10, 0)
         );
         TimePeriods timePeriods = new TimePeriods(Map.of(routiePlace, timePeriod));
-        ValidationContext validationContext = new ValidationContext(null, null, timePeriods);
+        ValidationContext validationContext = new ValidationContext(
+                LocalDateTime.now(),
+                LocalDateTime.now().plusDays(1),
+                timePeriods
+        );
 
         // when
         boolean result = calculator.validate(validationContext, ValidationStrategy.IS_WITHIN_OPERATION_HOURS).isValid();
@@ -179,7 +207,11 @@ class OperationHoursValidatorTest {
                 LocalDateTime.of(2024, 1, 1, 19, 0)
         );
         TimePeriods timePeriods = new TimePeriods(Map.of(routiePlace, timePeriod));
-        ValidationContext validationContext = new ValidationContext(null, null, timePeriods);
+        ValidationContext validationContext = new ValidationContext(
+                LocalDateTime.now(),
+                LocalDateTime.now().plusDays(1),
+                timePeriods
+        );
 
         // when
         boolean result = calculator.validate(validationContext, ValidationStrategy.IS_WITHIN_OPERATION_HOURS).isValid();
@@ -200,7 +232,11 @@ class OperationHoursValidatorTest {
                 LocalDateTime.of(2024, 1, 1, 18, 0)
         );
         TimePeriods timePeriods = new TimePeriods(Map.of(routiePlace, timePeriod));
-        ValidationContext validationContext = new ValidationContext(null, null, timePeriods);
+        ValidationContext validationContext = new ValidationContext(
+                LocalDateTime.now(),
+                LocalDateTime.now().plusDays(1),
+                timePeriods
+        );
 
         // when
         boolean result = calculator.validate(validationContext, ValidationStrategy.IS_WITHIN_OPERATION_HOURS).isValid();
@@ -221,7 +257,11 @@ class OperationHoursValidatorTest {
                 LocalDateTime.of(2024, 1, 1, 7, 0)
         );
         TimePeriods timePeriods = new TimePeriods(Map.of(routiePlace, timePeriod));
-        ValidationContext validationContext = new ValidationContext(null, null, timePeriods);
+        ValidationContext validationContext = new ValidationContext(
+                LocalDateTime.now(),
+                LocalDateTime.now().plusDays(1),
+                timePeriods
+        );
 
         // when
         boolean result = calculator.validate(validationContext, ValidationStrategy.IS_WITHIN_OPERATION_HOURS).isValid();
