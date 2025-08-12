@@ -5,6 +5,7 @@ on:
     branches: [ develop ]
     paths:
       - 'frontend/**'
+      - '.github/workflows/**'
   push:
     branches: [ develop ]
     paths:
