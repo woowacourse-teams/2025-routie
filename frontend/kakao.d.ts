@@ -11,6 +11,11 @@ declare global {
         InfoWindow: new (options: any) => any;
         event: {
           addListener: (target: any, type: string, handler: () => void) => void;
+          removeListener: (
+            target: any,
+            type: string,
+            handler: () => void,
+          ) => void;
         };
         RoutePriority: {
           WALKING: any;
@@ -21,6 +26,7 @@ declare global {
             OK: any;
           };
         };
+        CustomOverlay: new (options: any) => any;
       };
     };
   }
