@@ -1,8 +1,20 @@
-import { RefObject, useCallback } from 'react';
+import { RefObject, useCallback, useRef } from 'react';
 
 import type { KakaoMapType } from '../types/KaKaoMap.types';
+import { clear } from 'console';
+
+type Marker = InstanceType<typeof window.kakao.maps.Marker>;
 
 const useMapMarker = ({ map }: { map: RefObject<KakaoMapType> }) => {
+  const markersRef = useRef<Marker[]>([]);
+
+  const clearMarkers = useCallback(() => {
+    markersRef.current.forEach((marker) => {
+      marker.setMap(null);
+    });
+    markersRef.current = [];
+  }, []);
+
   const drawMarkers = useCallback((lat: number, lng: number) => {
     if (!map.current) return;
 
@@ -33,7 +45,7 @@ const useMapMarker = ({ map }: { map: RefObject<KakaoMapType> }) => {
     [],
   );
 
-  return { drawMarkers, fitMapToMarkers };
+  return { drawMarkers, fitMapToMarkers, clearMarkers };
 };
 
 export default useMapMarker;
