@@ -1,4 +1,4 @@
-package routie.logging.logger;
+package routie.logging.service;
 
 import static routie.logging.domain.LoggingField.HANDLER_PARAMS;
 

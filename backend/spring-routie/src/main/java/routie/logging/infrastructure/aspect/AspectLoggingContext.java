@@ -1,4 +1,4 @@
-package routie.logging.aspect;
+package routie.logging.infrastructure.aspect;
 
 import jakarta.servlet.http.HttpServletRequest;
 import java.util.List;

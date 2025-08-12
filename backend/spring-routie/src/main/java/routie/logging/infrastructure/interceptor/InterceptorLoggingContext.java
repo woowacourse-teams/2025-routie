@@ -1,4 +1,4 @@
-package routie.logging.interceptor;
+package routie.logging.infrastructure.interceptor;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

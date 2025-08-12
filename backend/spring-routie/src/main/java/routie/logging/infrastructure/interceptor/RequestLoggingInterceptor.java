@@ -1,4 +1,4 @@
-package routie.logging.interceptor;
+package routie.logging.infrastructure.interceptor;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -7,7 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.servlet.HandlerInterceptor;
 import routie.logging.domain.LogDataBuilder;
 import routie.logging.domain.LoggingField;
-import routie.logging.logger.ClientRequestLogger;
+import routie.logging.service.ClientRequestLogger;
 
 @RequiredArgsConstructor
 public class RequestLoggingInterceptor implements HandlerInterceptor {

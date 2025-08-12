@@ -7,8 +7,8 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import routie.logging.domain.LogDataBuilder;
-import routie.logging.interceptor.RequestLoggingInterceptor;
-import routie.logging.logger.ClientRequestLogger;
+import routie.logging.infrastructure.interceptor.RequestLoggingInterceptor;
+import routie.logging.service.ClientRequestLogger;
 
 @Configuration
 @Profile("prod")

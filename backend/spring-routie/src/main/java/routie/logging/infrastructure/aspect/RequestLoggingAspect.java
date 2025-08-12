@@ -1,4 +1,4 @@
-package routie.logging.aspect;
+package routie.logging.infrastructure.aspect;
 
 import jakarta.servlet.http.HttpServletRequest;
 import java.util.Map;
@@ -12,7 +12,7 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import routie.logging.domain.LogDataBuilder;
 import routie.logging.domain.LoggingField;
-import routie.logging.logger.ClientRequestLogger;
+import routie.logging.service.ClientRequestLogger;
 
 @Slf4j
 @Aspect
