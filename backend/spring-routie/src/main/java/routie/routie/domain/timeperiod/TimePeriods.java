@@ -7,12 +7,14 @@ import java.util.TreeMap;
 import routie.routie.domain.RoutiePlace;
 
 public class TimePeriods {
+
     private static final Comparator<RoutiePlace> ROUTIE_PLACE_COMPARATOR =
             Comparator.comparing(RoutiePlace::getSequence);
 
     private final TreeMap<RoutiePlace, TimePeriod> timePeriods;
 
     public TimePeriods(final Map<RoutiePlace, TimePeriod> timePeriods) {
+        validateTimePeriods(timePeriods);
         this.timePeriods = new TreeMap<>(ROUTIE_PLACE_COMPARATOR);
         this.timePeriods.putAll(timePeriods);
     }
@@ -21,7 +23,15 @@ public class TimePeriods {
         return new TimePeriods(new TreeMap<>(ROUTIE_PLACE_COMPARATOR));
     }
 
+    private void validateTimePeriods(final Map<RoutiePlace, TimePeriod> timePeriods) {
+        if (timePeriods == null) {
+            throw new IllegalArgumentException("TimePeriods는 null일 수 없습니다.");
+        }
+    }
+
     public TimePeriods withAdded(final RoutiePlace routiePlace, final TimePeriod timePeriod) {
+        validateRoutiePlace(routiePlace);
+        validateTimePeriod(timePeriod);
         Map<RoutiePlace, TimePeriod> newTimePeriods = new TreeMap<>(ROUTIE_PLACE_COMPARATOR);
         newTimePeriods.putAll(this.timePeriods);
         newTimePeriods.put(routiePlace, timePeriod);
@@ -30,15 +40,30 @@ public class TimePeriods {
     }
 
     public TimePeriod getByRoutiePlace(final RoutiePlace place) {
+        validateRoutiePlace(place);
         return timePeriods.get(place);
     }
 
     public void add(final RoutiePlace routiePlace, final TimePeriod timePeriod) {
+        validateRoutiePlace(routiePlace);
+        validateTimePeriod(timePeriod);
         timePeriods.put(routiePlace, timePeriod);
     }
 
-    public boolean contains(final RoutiePlace place) {
-        return timePeriods.containsKey(place);
+    public boolean contains(final RoutiePlace routiePlace) {
+        return timePeriods.containsKey(routiePlace);
+    }
+
+    private void validateRoutiePlace(final RoutiePlace routiePlace) {
+        if (routiePlace == null) {
+            throw new IllegalArgumentException("RoutiePlace는 null일 수 없습니다.");
+        }
+    }
+
+    private void validateTimePeriod(final TimePeriod timePeriod) {
+        if (timePeriod == null) {
+            throw new IllegalArgumentException("TimePeriod는 null일 수 없습니다.");
+        }
     }
 
     public int size() {

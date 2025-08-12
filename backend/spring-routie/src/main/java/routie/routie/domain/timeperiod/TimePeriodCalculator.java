@@ -15,6 +15,8 @@ public class TimePeriodCalculator {
             final Routes routes,
             final List<RoutiePlace> routiePlaces
     ) {
+        validateRoutes(routes);
+        validateRoutiePlaces(routiePlaces);
 
         TimePeriods timePeriods = TimePeriods.empty();
 
@@ -52,5 +54,17 @@ public class TimePeriodCalculator {
         }
 
         return timePeriods;
+    }
+
+    private void validateRoutes(final Routes routes) {
+        if (routes == null) {
+            throw new IllegalArgumentException("루트들은 null일 수 없습니다.");
+        }
+    }
+
+    private void validateRoutiePlaces(final List<RoutiePlace> routiePlaces) {
+        if (routiePlaces == null) {
+            throw new IllegalArgumentException("RoutiePlace 목록은 null일 수 없습니다.");
+        }
     }
 }
