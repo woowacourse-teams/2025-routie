@@ -5,6 +5,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.servlet.HandlerInterceptor;
+import routie.logging.infrastructure.TraceIdHolder;
 import routie.logging.domain.LogDataBuilder;
 import routie.logging.domain.LoggingField;
 import routie.logging.service.ClientRequestLogger;
@@ -23,6 +24,7 @@ public class RequestLoggingInterceptor implements HandlerInterceptor {
             final HttpServletResponse response,
             final Object handler
     ) {
+        TraceIdHolder.setTraceId();
         request.setAttribute(START_TIME_ATTRIBUTE, System.currentTimeMillis());
         return true;
     }
@@ -34,15 +36,19 @@ public class RequestLoggingInterceptor implements HandlerInterceptor {
             final Object handler,
             final Exception ex
     ) {
-        Long startTime = (Long) request.getAttribute(START_TIME_ATTRIBUTE);
-        long executionTime = startTime == null ? -1 : System.currentTimeMillis() - startTime;
+        try {
+            Long startTime = (Long) request.getAttribute(START_TIME_ATTRIBUTE);
+            long executionTime = startTime == null ? -1 : System.currentTimeMillis() - startTime;
 
-        Map<LoggingField, Object> logData = logDataBuilder.buildLogData(new InterceptorLoggingContext(
-                request,
-                response,
-                executionTime
-        ));
+            Map<LoggingField, Object> logData = logDataBuilder.buildLogData(new InterceptorLoggingContext(
+                    request,
+                    response,
+                    executionTime
+            ));
 
-        clientRequestLogger.log(logData);
+            clientRequestLogger.log(logData);
+        } finally {
+            TraceIdHolder.clearTraceId();
+        }
     }
 }

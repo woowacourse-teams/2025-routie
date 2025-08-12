@@ -22,7 +22,7 @@ public class ClientRequestLogger {
             addLogDataToContext(logData);
             log.info("");
         } finally {
-            MDC.clear();
+            clearLogDataFromContext(logData);
         }
     }
 
@@ -54,5 +54,9 @@ public class ClientRequestLogger {
         } catch (final Exception e) {
             return "[]";
         }
+    }
+
+    private void clearLogDataFromContext(final Map<LoggingField, Object> logData) {
+        logData.keySet().forEach(field -> MDC.remove(field.getFieldName()));
     }
 }

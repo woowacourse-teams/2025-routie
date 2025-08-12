@@ -61,10 +61,7 @@
                 <stackTrace>
                     <fieldName>stacktrace</fieldName>
                 </stackTrace>
-                <uuid>
-                    <fieldName>traceId</fieldName>
-                    <strategy>random</strategy>
-                </uuid>
+                <mdc/>
 
             </providers>
         </encoder>
@@ -93,10 +90,6 @@
                 <logLevel>
                     <fieldName>level</fieldName>
                 </logLevel>
-                <uuid>
-                    <fieldName>traceId</fieldName>
-                    <strategy>random</strategy>
-                </uuid>
                 <mdc/>
             </providers>
         </encoder>

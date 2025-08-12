@@ -10,6 +10,7 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
+import routie.logging.infrastructure.TraceIdHolder;
 import routie.logging.domain.LogDataBuilder;
 import routie.logging.domain.LoggingField;
 import routie.logging.service.ClientRequestLogger;
@@ -26,6 +27,7 @@ public class RequestLoggingAspect {
     public Object handleAroundRequest(final ProceedingJoinPoint joinPoint) throws Throwable {
 
         long startTime = System.currentTimeMillis();
+        TraceIdHolder.setTraceId();
 
         ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
         HttpServletRequest httpServletRequest = servletRequestAttributes.getRequest();
@@ -38,6 +40,7 @@ public class RequestLoggingAspect {
         } finally {
             long executionTime = System.currentTimeMillis() - startTime;
             logClientRequest(joinPoint, httpServletRequest, executionTime, isSuccess);
+            TraceIdHolder.clearTraceId();
         }
     }
 
