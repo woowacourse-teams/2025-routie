@@ -19,7 +19,6 @@ public class RoutieSpaceService {
     private final RoutieSpaceRepository routieSpaceRepository;
     private final RoutieSpaceIdentifierProvider routieSpaceIdentifierProvider;
 
-    @Transactional(readOnly = true)
     public RoutieSpaceReadResponse getRoutieSpace(final String routieSpaceIdentifier) {
         RoutieSpace routieSpace = getRoutieSpaceByRoutieSpaceIdentifier(routieSpaceIdentifier);
 
