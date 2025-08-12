@@ -43,18 +43,28 @@ public class RoutiePlace {
     private LocalDateTime createdAt;
 
     public RoutiePlace(final int sequence, final Place place) {
-        this(
-                null,
-                sequence,
-                place,
-                null
-        );
+        validateSequence(sequence);
+        validatePlace(place);
+        this.id = null;
+        this.sequence = sequence;
+        this.place = place;
+        this.createdAt = null;
+    }
+
+    private void validatePlace(final Place place) {
+        if (place == null) {
+            throw new IllegalArgumentException("장소는 null일 수 없습니다.");
+        }
     }
 
     public void updateSequence(final int sequence) {
+        validateSequence(sequence);
+        this.sequence = sequence;
+    }
+
+    private void validateSequence(final int sequence) {
         if (sequence < 1) {
             throw new IllegalArgumentException("루티 장소 순서는 1 이상의 값이어야 합니다.");
         }
-        this.sequence = sequence;
     }
 }

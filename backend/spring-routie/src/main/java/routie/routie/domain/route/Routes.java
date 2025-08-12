@@ -14,15 +14,24 @@ public class Routes {
     private final TreeMap<RoutiePlace, Route> routes;
 
     public Routes(final Map<RoutiePlace, Route> routes) {
-        this.routes = new TreeMap<>(Comparator.comparing(RoutiePlace::getSequence));
+        validateRoutes(routes);
+        this.routes = new TreeMap<>(ROUTE_COMPARATOR);
         this.routes.putAll(routes);
     }
 
     public static Routes empty() {
-        return new Routes(new TreeMap<>(Comparator.comparing(RoutiePlace::getSequence)));
+        return new Routes(new TreeMap<>(ROUTE_COMPARATOR));
+    }
+
+    private void validateRoutes(final Map<RoutiePlace, Route> routes) {
+        if (routes == null) {
+            throw new IllegalArgumentException("Routes 는 null일 수 없습니다.");
+        }
     }
 
     public Routes withAdded(final RoutiePlace routiePlace, final Route route) {
+        validateRoutiePlace(routiePlace);
+        validateRoute(route);
         Map<RoutiePlace, Route> newRoutes = new TreeMap<>(ROUTE_COMPARATOR);
         newRoutes.putAll(this.routes);
         newRoutes.put(routiePlace, route);
@@ -31,11 +40,25 @@ public class Routes {
     }
 
     public Route getByRoutiePlace(final RoutiePlace routiePlace) {
+        validateRoutiePlace(routiePlace);
         return routes.get(routiePlace);
     }
 
     public boolean contains(final RoutiePlace routiePlace) {
+        validateRoutiePlace(routiePlace);
         return routes.containsKey(routiePlace);
+    }
+
+    private void validateRoutiePlace(final RoutiePlace routiePlace) {
+        if (routiePlace == null) {
+            throw new IllegalArgumentException("RoutiePlace 는 null일 수 없습니다.");
+        }
+    }
+
+    private void validateRoute(final Route route) {
+        if (route == null) {
+            throw new IllegalArgumentException("Route 는 null일 수 없습니다.");
+        }
     }
 
     public List<Route> orderedList() {

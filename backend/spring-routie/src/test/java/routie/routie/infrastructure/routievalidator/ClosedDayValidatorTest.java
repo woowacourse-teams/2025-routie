@@ -48,7 +48,11 @@ class ClosedDayValidatorTest {
         );
 
         TimePeriods timePeriods = new TimePeriods(Map.of(routiePlace, period));
-        ValidationContext validationContext = new ValidationContext(null, null, timePeriods);
+        ValidationContext validationContext = new ValidationContext(
+                LocalDateTime.now(),
+                LocalDateTime.now().plusDays(1),
+                timePeriods
+        );
 
         // when
         boolean result = calculator.validate(validationContext, ValidationStrategy.IS_NOT_CLOSED_DAY).isValid();
@@ -74,7 +78,11 @@ class ClosedDayValidatorTest {
         );
 
         TimePeriods timePeriods = new TimePeriods(Map.of(routiePlace, period));
-        ValidationContext validationContext = new ValidationContext(null, null, timePeriods);
+        ValidationContext validationContext = new ValidationContext(
+                LocalDateTime.now(),
+                LocalDateTime.now().plusDays(1),
+                timePeriods
+        );
 
         // when
         boolean result = calculator.validate(validationContext, ValidationStrategy.IS_NOT_CLOSED_DAY).isValid();
@@ -100,7 +108,11 @@ class ClosedDayValidatorTest {
         );
 
         TimePeriods timePeriods = new TimePeriods(Map.of(routiePlace, period));
-        ValidationContext validationContext = new ValidationContext(null, null, timePeriods);
+        ValidationContext validationContext = new ValidationContext(
+                LocalDateTime.now(),
+                LocalDateTime.now().plusDays(1),
+                timePeriods
+        );
 
         // when
         boolean result = calculator.validate(validationContext, ValidationStrategy.IS_NOT_CLOSED_DAY).isValid();
@@ -126,7 +138,11 @@ class ClosedDayValidatorTest {
         );
 
         TimePeriods timePeriods = new TimePeriods(Map.of(routiePlace, period));
-        ValidationContext validationContext = new ValidationContext(null, null, timePeriods);
+        ValidationContext validationContext = new ValidationContext(
+                LocalDateTime.now(),
+                LocalDateTime.now().plusDays(1),
+                timePeriods
+        );
 
         // when
         boolean result = calculator.validate(validationContext, ValidationStrategy.IS_NOT_CLOSED_DAY).isValid();

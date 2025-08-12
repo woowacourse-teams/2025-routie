@@ -33,6 +33,7 @@ public class Routie {
     }
 
     public RoutiePlace createLastRoutiePlace(final Place place) {
+        validatePlace(place);
         validatePlaceAlreadyExists(place);
         RoutiePlace routiePlace = new RoutiePlace(getLastSequence() + 1, place);
         routiePlaces.add(routiePlace);
@@ -58,8 +59,15 @@ public class Routie {
     }
 
     public void removePlace(final Place place) {
+        validatePlace(place);
         routiePlaces.remove(getRoutiePlaceByPlace(place));
         reorderPlaces();
+    }
+
+    private void validatePlace(final Place place) {
+        if (place == null) {
+            throw new IllegalArgumentException("장소는 null일 수 없습니다.");
+        }
     }
 
     private RoutiePlace getRoutiePlaceByPlace(final Place place) {
@@ -68,10 +76,10 @@ public class Routie {
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException("루티에 등록되지 않은 장소입니다."));
     }
-
     // TODO: 추후 성능 이슈가 발생하면 하나의 SQL로 정렬하는 방식으로 변경 필요
     // 현재 방식은 UPDATE 쿼리를 N번 발생시켜 성능에 영향을 줄 수 있음
     // 객체지향 설계 vs 성능 사이의 트레이드오프 존재
+
     // 현재는 객체지향 설계를 우선시하여 구현
     private void reorderPlaces() {
         routiePlaces.sort(Comparator.comparingInt(RoutiePlace::getSequence));
