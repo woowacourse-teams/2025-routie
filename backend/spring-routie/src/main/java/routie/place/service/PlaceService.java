@@ -17,6 +17,7 @@ import routie.routiespace.repository.RoutieSpaceRepository;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class PlaceService {
 
     private final PlaceRepository placeRepository;

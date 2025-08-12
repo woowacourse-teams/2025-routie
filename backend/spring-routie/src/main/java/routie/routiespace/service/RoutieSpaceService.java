@@ -13,6 +13,7 @@ import routie.routiespace.repository.RoutieSpaceRepository;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class RoutieSpaceService {
 
     private final RoutieSpaceRepository routieSpaceRepository;

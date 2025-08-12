@@ -36,7 +36,9 @@ import routie.routiespace.repository.RoutieSpaceRepository;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class RoutieService {
+
     private static final int MIN_ROUTIE_PLACES_FOR_ROUTE = 2;
 
     private final RoutieSpaceRepository routieSpaceRepository;
