@@ -68,7 +68,7 @@ public class Place {
     @JoinColumn(name = "routie_space_id")
     private RoutieSpace routieSpace;
 
-    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true)
     @JoinColumn(name = "place_id", nullable = false)
     private List<PlaceClosedDayOfWeek> placeClosedDayOfWeeks = new ArrayList<>();
 
@@ -108,21 +108,6 @@ public class Place {
         this.placeClosedDayOfWeeks = placeClosedDayOfWeeks;
     }
 
-    private void validateForCreation(
-            final String name,
-            final String roadAddressName,
-            final int stayDurationMinutes,
-            final LocalTime openAt,
-            final LocalTime closeAt,
-            final LocalTime breakStartAt,
-            final LocalTime breakEndAt
-    ) {
-        validateName(name);
-        validateRoadAddressName(roadAddressName);
-        validateStayDurationMinutes(stayDurationMinutes);
-        validateTime(openAt, closeAt, breakStartAt, breakEndAt);
-    }
-
     public static Place create(
             final String name,
             final String roadAddressName,
@@ -152,6 +137,30 @@ public class Place {
         );
     }
 
+    private static List<PlaceClosedDayOfWeek> createClosedDayOfWeeks(final List<DayOfWeek> closedDayOfWeeks) {
+        if (closedDayOfWeeks == null) {
+            return new ArrayList<>();
+        }
+        return closedDayOfWeeks.stream()
+                .map(PlaceClosedDayOfWeek::new)
+                .toList();
+    }
+
+    private void validateForCreation(
+            final String name,
+            final String roadAddressName,
+            final int stayDurationMinutes,
+            final LocalTime openAt,
+            final LocalTime closeAt,
+            final LocalTime breakStartAt,
+            final LocalTime breakEndAt
+    ) {
+        validateName(name);
+        validateRoadAddressName(roadAddressName);
+        validateStayDurationMinutes(stayDurationMinutes);
+        validateTime(openAt, closeAt, breakStartAt, breakEndAt);
+    }
+
     public void modify(
             final int stayDurationMinutes,
             final LocalTime openAt,
@@ -169,15 +178,6 @@ public class Place {
         this.breakEndAt = breakEndAt;
         this.placeClosedDayOfWeeks.clear();
         this.placeClosedDayOfWeeks.addAll(createClosedDayOfWeeks(closedDayOfWeeks));
-    }
-
-    private static List<PlaceClosedDayOfWeek> createClosedDayOfWeeks(final List<DayOfWeek> closedDayOfWeeks) {
-        if (closedDayOfWeeks == null) {
-            return new ArrayList<>();
-        }
-        return closedDayOfWeeks.stream()
-                .map(PlaceClosedDayOfWeek::new)
-                .toList();
     }
 
     private void validateForModify(

@@ -70,9 +70,6 @@ public class PlaceService {
         final RoutieSpace routieSpace = getRoutieSpaceByIdentifier(routieSpaceIdentifier);
         final Place place = getPlaceByIdAndRoutieSpace(placeId, routieSpace);
 
-        place.getPlaceClosedDayOfWeeks()
-                .forEach(closedDayOfWeek -> placeClosedDayOfWeekRepository.deleteById(closedDayOfWeek.getId()));
-
         place.modify(
                 placeUpdateRequest.stayDurationMinutes(),
                 placeUpdateRequest.openAt(),
