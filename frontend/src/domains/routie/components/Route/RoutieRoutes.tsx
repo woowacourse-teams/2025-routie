@@ -6,6 +6,7 @@ import theme from '@/styles/theme';
 import { MOVING_EN_TO_KR } from '../../constants/translate';
 import { Routes, Routie } from '../../types/routie.types';
 import { convertMetersToKilometers } from '../../utils/format';
+import formatMinutesToHours from '../../utils/formatMinutesToHours';
 
 interface RoutieRoutesProps {
   routie: Routie;
@@ -16,7 +17,7 @@ const RoutieRoutes = ({ routie, routes }: RoutieRoutesProps) => {
   return (
     <Flex key={routie.id} margin={1} gap={1}>
       <Text variant="description">
-        {MOVING_EN_TO_KR[routes.movingStrategy]} {routes.duration}분
+        {MOVING_EN_TO_KR[routes.movingStrategy]} {formatMinutesToHours(routes.duration)}
       </Text>
       <Pill type="distance">
         <Text variant="description" color={theme.colors.purple[400]}>
