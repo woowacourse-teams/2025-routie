@@ -39,10 +39,15 @@ public class PlaceClosedDayOfWeek {
     private LocalDateTime createdAt;
 
     public PlaceClosedDayOfWeek(final DayOfWeek closedDayOfWeek) {
-        this(
-                null,
-                closedDayOfWeek,
-                null
-        );
+        validateClosedDayOfWeek(closedDayOfWeek);
+        this.id = null;
+        this.closedDayOfWeek = closedDayOfWeek;
+        this.createdAt = null;
+    }
+
+    private void validateClosedDayOfWeek(final DayOfWeek closedDayOfWeek) {
+        if (closedDayOfWeek == null) {
+            throw new IllegalArgumentException("휴무일은 null일 수 없습니다.");
+        }
     }
 }

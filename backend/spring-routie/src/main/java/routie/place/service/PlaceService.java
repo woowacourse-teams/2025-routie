@@ -41,6 +41,7 @@ public class PlaceService {
         Place place = Place.create(
                 placeCreateRequest.name(),
                 placeCreateRequest.roadAddressName(),
+                placeCreateRequest.addressName(),
                 placeCreateRequest.longitude(),
                 placeCreateRequest.latitude(),
                 placeCreateRequest.stayDurationMinutes(),

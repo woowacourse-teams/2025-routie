@@ -1,28 +1,21 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const Dotenv = require('dotenv-webpack');
 
 module.exports = () => {
   return {
     entry: './src/index.tsx',
     output: {
-      filename: 'bundle.js',
+      filename: '[name].[contenthash].js',
+      chunkFilename: '[name].[contenthash].js',
       path: path.resolve(__dirname, 'dist'),
       clean: true,
+      assetModuleFilename: 'assets/[name].[contenthash][ext][query]'
     },
     resolve: {
       extensions: ['.ts', '.tsx', '.js'],
       alias: {
         '@': path.resolve(__dirname, 'src'),
       },
-    },
-    devServer: {
-      static: {
-        directory: path.resolve(__dirname, 'dist'),
-      },
-      port: 3000,
-      hot: true,
-      historyApiFallback: true,
     },
     module: {
       rules: [
@@ -45,7 +38,6 @@ module.exports = () => {
       new HtmlWebpackPlugin({
         template: 'public/index.html',
       }),
-      new Dotenv(),
     ],
   };
 };

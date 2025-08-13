@@ -20,11 +20,7 @@ import {
 
 import type { KakaoMapProps } from '../types/KaKaoMap.types';
 
-const KakaoMap = ({
-  lat = 37.5665,
-  lng = 126.978,
-  level = 3,
-}: KakaoMapProps) => {
+const KakaoMap = ({ lat = 36.5, lng = 127.8, level = 13 }: KakaoMapProps) => {
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const { placeList } = usePlaceListContext();
   const { routieIdList } = useRoutieContext();
