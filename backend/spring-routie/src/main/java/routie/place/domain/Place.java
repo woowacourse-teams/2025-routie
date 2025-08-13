@@ -173,6 +173,7 @@ public class Place {
     ) {
         validateStayDurationMinutes(stayDurationMinutes);
         validateBreakTime(breakStartAt, breakEndAt);
+        validateOperatingTime(openAt, closeAt);
         validateBreakTimeWithOperatingTime(openAt, closeAt, breakStartAt, breakEndAt);
 
         this.stayDurationMinutes = stayDurationMinutes;
@@ -205,6 +206,15 @@ public class Place {
         }
         if (roadAddressName.length() > 50) {
             throw new IllegalArgumentException("주소는 1자 이상 50자 이하여야 합니다.");
+        }
+    }
+
+    private void validateOperatingTime(final LocalTime openAt, final LocalTime closeAt) {
+        boolean hasOpenAt = openAt != null;
+        boolean hasCloseAt = closeAt != null;
+
+        if (hasOpenAt != hasCloseAt) {
+            throw new IllegalArgumentException("영업 시작 시간과 종료 시간은 함께 존재해야 합니다.");
         }
     }
 
