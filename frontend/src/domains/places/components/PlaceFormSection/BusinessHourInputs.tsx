@@ -30,6 +30,7 @@ const BusinessHourInputs = ({
             onChange={(value) => onChange('openAt', value)}
             variant={error?.openAt ? 'error' : 'primary'}
             label="오픈 시간"
+            autoFocus
           />
         </Flex>
         <Flex direction="column" alignItems="flex-start" gap={1} width="100%">
