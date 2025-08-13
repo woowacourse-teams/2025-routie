@@ -337,7 +337,6 @@ class RoutieControllerTest {
         assertThat(routiePlace.departureDateTime()).isEqualTo(LocalDateTime.of(2025, 7, 29, 11, 0));
     }
 
-    @Disabled
     @Test
     @DisplayName("startDateTime이 쿼리 파라미터로 오지 않은 요청에 대해서는 루티 플레이스의 도착, 출발 정보 null 명시적 반환")
     void readRoutieWithoutStartDateTime() {
@@ -371,7 +370,7 @@ class RoutieControllerTest {
 
         assertThat(route.fromSequence()).isEqualTo(1);
         assertThat(route.toSequence()).isEqualTo(2);
-        assertThat(route.duration()).isEqualTo(100);
+        assertThat(route.duration()).isEqualTo(1);
         assertThat(route.distance()).isEqualTo(1000);
     }
 
