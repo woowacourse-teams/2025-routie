@@ -14,14 +14,6 @@ const iconButtonVariant: Record<IconButtonVariantProps, SerializedStyles> = {
     }
   `,
 
-  drag: css`
-    cursor: grab;
-
-    &:hover {
-      background-color: transparent;
-    }
-  `,
-
   select: css`
     width: 3rem;
     height: 3rem;
