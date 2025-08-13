@@ -83,29 +83,30 @@ const AddPlaceModal = ({
   };
 
   const renderContent = () => {
-    if (step === 1) {
-      return (
-        <AddPlaceBasicInfo
-          form={form}
-          isEmpty={isEmpty}
-          showErrors={showErrors}
-          handleInputChange={handleInputChange}
-          handleSearchPlaceMap={handleSearchPlaceMap}
-        />
-      );
+    switch (step) {
+      case 1:
+        return (
+          <AddPlaceBasicInfo
+            form={form}
+            isEmpty={isEmpty}
+            showErrors={showErrors}
+            handleInputChange={handleInputChange}
+            handleSearchPlaceMap={handleSearchPlaceMap}
+          />
+        );
+      case 2:
+        return (
+          <AddPlaceVerification
+            form={form}
+            isEmpty={isEmpty}
+            showErrors={showErrors}
+            handleInputChange={handleInputChange}
+            handleToggleDay={handleToggleDay}
+          />
+        );
+      default:
+        return <></>;
     }
-    if (step === 2) {
-      return (
-        <AddPlaceVerification
-          form={form}
-          isEmpty={isEmpty}
-          showErrors={showErrors}
-          handleInputChange={handleInputChange}
-          handleToggleDay={handleToggleDay}
-        />
-      );
-    }
-    return null;
   };
 
   return (
