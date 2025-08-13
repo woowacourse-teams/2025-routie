@@ -71,7 +71,7 @@ public class Place {
     @JoinColumn(name = "routie_space_id")
     private RoutieSpace routieSpace;
 
-    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true)
     @JoinColumn(name = "place_id", nullable = false)
     private List<PlaceClosedDayOfWeek> placeClosedDayOfWeeks = new ArrayList<>();
 
