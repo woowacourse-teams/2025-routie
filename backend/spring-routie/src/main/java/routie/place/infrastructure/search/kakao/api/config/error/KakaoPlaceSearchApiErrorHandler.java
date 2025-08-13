@@ -45,15 +45,20 @@ public class KakaoPlaceSearchApiErrorHandler implements ResponseErrorHandler {
                 response.getBody(),
                 KakaoPlaceSearchApiErrorResponse.class
         );
-        System.out.println("errorResponse = " + kakaoPlaceSearchApiErrorResponse);
 
         kakaoPlaceSearchApiErrorResponseHandlers.stream()
-                .filter(kakaoPlaceSearchApiErrorResponseHandler -> kakaoPlaceSearchApiErrorResponseHandler.canHandle(
-                        kakaoPlaceSearchApiErrorResponse))
-                .forEach(kakaoPlaceSearchApiErrorResponseHandler -> kakaoPlaceSearchApiErrorResponseHandler.handle(
-                        kakaoPlaceSearchApiErrorResponse));
+                .filter(
+                        kakaoPlaceSearchApiErrorResponseHandler -> kakaoPlaceSearchApiErrorResponseHandler.canHandle(
+                                kakaoPlaceSearchApiErrorResponse
+                        )
+                )
+                .forEach(
+                        kakaoPlaceSearchApiErrorResponseHandler -> kakaoPlaceSearchApiErrorResponseHandler.handle(
+                                kakaoPlaceSearchApiErrorResponse
+                        )
+                );
 
-        log.warn("카카오 로컬 API 오류 발생: {} ", "errorResponse.code()");
+        log.warn("카카오 검색 API 오류 발생: {} ", "errorResponse.code()");
         throw new BusinessException(ErrorCode.KAKAO_LOCAL_API_ERROR);
     }
 }
