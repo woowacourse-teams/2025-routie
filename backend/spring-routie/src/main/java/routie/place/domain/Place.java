@@ -97,8 +97,16 @@ public class Place {
             final RoutieSpace routieSpace,
             final List<PlaceClosedDayOfWeek> placeClosedDayOfWeeks
     ) {
-        validateForCreation(name, roadAddressName, addressName, stayDurationMinutes, openAt, closeAt, breakStartAt,
-                breakEndAt);
+        validateName(name);
+        validateRoadAddressName(roadAddressName);
+        validateAddressName(addressName);
+        validateLongitude(longitude);
+        validateLatitude(latitude);
+        validateStayDurationMinutes(stayDurationMinutes);
+        validateOperatingTime(openAt, closeAt);
+        validateBreakTime(breakStartAt, breakEndAt);
+        validateBreakTimeWithOperatingTime(openAt, closeAt, breakStartAt, breakEndAt);
+
         this.name = name;
         this.roadAddressName = roadAddressName;
         this.addressName = addressName;
@@ -111,23 +119,6 @@ public class Place {
         this.breakEndAt = breakEndAt;
         this.routieSpace = routieSpace;
         this.placeClosedDayOfWeeks = placeClosedDayOfWeeks;
-    }
-
-    private void validateForCreation(
-            final String name,
-            final String roadAddressName,
-            final String addressName,
-            final int stayDurationMinutes,
-            final LocalTime openAt,
-            final LocalTime closeAt,
-            final LocalTime breakStartAt,
-            final LocalTime breakEndAt
-    ) {
-        validateName(name);
-        validateRoadAddressName(roadAddressName);
-        validateAddressName(addressName);
-        validateStayDurationMinutes(stayDurationMinutes);
-        validateTime(openAt, closeAt, breakStartAt, breakEndAt);
     }
 
     public static Place create(
@@ -169,7 +160,10 @@ public class Place {
             final LocalTime breakEndAt,
             final List<DayOfWeek> closedDayOfWeeks
     ) {
-        validateForModify(stayDurationMinutes, openAt, closeAt, breakStartAt, breakEndAt);
+        validateStayDurationMinutes(stayDurationMinutes);
+        validateOperatingTime(openAt, closeAt);
+        validateBreakTime(breakStartAt, breakEndAt);
+        validateBreakTimeWithOperatingTime(openAt, closeAt, breakStartAt, breakEndAt);
 
         this.stayDurationMinutes = stayDurationMinutes;
         this.openAt = openAt;
@@ -187,17 +181,6 @@ public class Place {
         return closedDayOfWeeks.stream()
                 .map(PlaceClosedDayOfWeek::new)
                 .toList();
-    }
-
-    private void validateForModify(
-            final int stayDurationMinutes,
-            final LocalTime openAt,
-            final LocalTime closeAt,
-            final LocalTime breakStartAt,
-            final LocalTime breakEndAt
-    ) {
-        validateStayDurationMinutes(stayDurationMinutes);
-        validateTime(openAt, closeAt, breakStartAt, breakEndAt);
     }
 
     private void validateStayDurationMinutes(final int stayDurationMinutes) {
@@ -227,6 +210,18 @@ public class Place {
         }
         if (addressName.length() > 50) {
             throw new IllegalArgumentException("지번 주소는 1자 이상 50자 이하여야 합니다.");
+        }
+    }
+
+    private void validateLongitude(final double longitude) {
+        if (longitude < -180.0 || longitude > 180.0) {
+            throw new IllegalArgumentException("경도는 -180.0 이상 180.0 이하이어야 합니다.");
+        }
+    }
+
+    private void validateLatitude(final double latitude) {
+        if (latitude < -90.0 || latitude > 90.0) {
+            throw new IllegalArgumentException("위도는 -90.0 이상 90.0 이하이어야 합니다.");
         }
     }
 
