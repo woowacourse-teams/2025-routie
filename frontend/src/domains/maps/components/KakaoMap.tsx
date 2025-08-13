@@ -4,9 +4,11 @@ import { createPortal } from 'react-dom';
 import Button from '@/@common/components/Button/Button';
 import Flex from '@/@common/components/Flex/Flex';
 import Text from '@/@common/components/Text/Text';
+import { PlaceCardProps } from '@/domains/places/components/PlaceCard/PlaceCard';
 import { useRoutieContext } from '@/domains/routie/contexts/useRoutieContext';
 import { usePlaceListContext } from '@/layouts/PlaceList/contexts/PlaceListContext';
 
+import useCustomOverlay from '../hooks/useCustomOverlay';
 import { useKakaoMapInit } from '../hooks/useKakaoMapInit';
 import { useKakaoMapSDK } from '../hooks/useKakaoMapSDK';
 import useMapMarker from '../hooks/useMapMarker';
@@ -18,12 +20,9 @@ import {
   KakaoMapLoadingStyle,
   KakaoMapWrapperStyle,
 } from './KakaoMap.styles';
+import PlaceOverlayCard from './PlaceOverlayCard';
 
 import type { KakaoMapProps } from '../types/KaKaoMap.types';
-
-import PlaceOverlayCard from './PlaceOverlayCard';
-import useCustomOverlay from '../hooks/useCustomOverlay';
-import { PlaceCardProps } from '@/domains/places/components/PlaceCard/PlaceCard';
 
 const KakaoMap = ({
   lat = 37.5665,

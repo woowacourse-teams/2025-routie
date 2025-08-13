@@ -1,14 +1,14 @@
 import Card from '@/@common/components/Card/Card';
 import Flex from '@/@common/components/Flex/Flex';
-import Text from '@/@common/components/Text/Text';
 import IconButton from '@/@common/components/IconButton/IconButton';
 import Pill from '@/@common/components/Pill/Pill';
-import plusIcon from '@/assets/icons/plus.svg';
+import Text from '@/@common/components/Text/Text';
 import checkIcon from '@/assets/icons/check.svg';
 import closeIcon from '@/assets/icons/close.svg';
-import theme from '@/styles/theme';
-import { useRoutieContext } from '@/domains/routie/contexts/useRoutieContext';
+import plusIcon from '@/assets/icons/plus.svg';
 import type { PlaceCardProps } from '@/domains/places/components/PlaceCard/PlaceCard';
+import { useRoutieContext } from '@/domains/routie/contexts/useRoutieContext';
+import theme from '@/styles/theme';
 
 type Props = {
   place: PlaceCardProps;
