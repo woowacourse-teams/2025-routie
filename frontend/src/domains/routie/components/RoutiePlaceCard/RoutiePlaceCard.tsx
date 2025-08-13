@@ -3,20 +3,30 @@ import { useEffect, useState } from 'react';
 import Card from '@/@common/components/Card/Card';
 import Flex from '@/@common/components/Flex/Flex';
 import IconButton from '@/@common/components/IconButton/IconButton';
+import Icon from '@/@common/components/IconSvg/Icon';
 import Pill from '@/@common/components/Pill/Pill';
 import Text from '@/@common/components/Text/Text';
-import dragIcon from '@/assets/icons/drag.svg';
-import minusIcon from '@/assets/icons/minus.svg';
+import Tooltip from '@/@common/components/Tooltip/Tooltip';
+import closeRed from '@/assets/icons/close-red.svg';
+import { PlaceBaseType } from '@/domains/places/types/place.types';
+import { getCheckedDaysInEnglish } from '@/domains/places/utils/getCheckedDaysInEnglish';
+import { getCheckedListExcept } from '@/domains/places/utils/getCheckedListExcept';
 import { useGoogleEventTrigger } from '@/libs/googleAnalytics/hooks/useGoogleEventTrigger';
+import theme from '@/styles/theme';
 
 import { getDetailPlace } from '../../apis/routie';
 import { useRoutieContext } from '../../contexts/useRoutieContext';
-import { Routie, RoutiePlace } from '../../types/routie.types';
+import { Routie } from '../../types/routie.types';
 import formatMinutesToHours from '../../utils/formatMinutesToHours';
 import DraggableCardWrapper from '../DraggableWrapper/DraggableWrapper';
 
+import {
+  dragIconStyle,
+  PlaceInfoViewPillStyle,
+} from './RoutiePlaceCard.styles';
+
 const RoutiePlaceCard = ({ routie }: { routie: Routie }) => {
-  const [place, setPlace] = useState<RoutiePlace>();
+  const [place, setPlace] = useState<PlaceBaseType>();
   const { handleDeleteRoutie } = useRoutieContext();
   const { triggerEvent } = useGoogleEventTrigger();
 
@@ -42,30 +52,83 @@ const RoutiePlaceCard = ({ routie }: { routie: Routie }) => {
       <DraggableCardWrapper>
         <Card id={routie.placeId.toString()} variant="defaultStatic">
           <Flex justifyContent="flex-start" gap={1.5}>
-            <IconButton variant="drag" icon={dragIcon} onClick={() => {}} />
-            <Flex
-              direction="column"
-              alignItems="flex-start"
-              gap={1.1}
-              width="100%"
-            >
-              <Flex width="100%" justifyContent="space-between">
-                <Text variant="caption">{place.name}</Text>
-                <Flex gap={0.4}>
-                  <IconButton
-                    icon={minusIcon}
-                    variant="delete"
-                    onClick={handleDelete}
-                  />
+            <Flex width="100%" justifyContent="space-between" gap={1.5}>
+              <Flex padding={1}>
+                <Text variant="title" color={theme.colors.purple[300]}>
+                  {routie.sequence}
+                </Text>
+              </Flex>
+              <Flex
+                direction="column"
+                alignItems="flex-start"
+                gap={1.1}
+                width="100%"
+                padding={0.5}
+              >
+                <Flex style={{ width: '100%' }} justifyContent="space-between">
+                  <Text variant="caption">{place.name}</Text>
+                  <Pill type="default" css={PlaceInfoViewPillStyle}>
+                    <Tooltip
+                      content={
+                        <div>
+                          <Text variant="label">
+                            오픈: {place.openAt} / 마감: {place.closeAt}
+                          </Text>
+
+                          <Text variant="label">
+                            브레이크:{' '}
+                            {place.breakStartAt && place.breakEndAt
+                              ? `${place.breakStartAt} ~ ${place.breakEndAt}`
+                              : '없음'}
+                          </Text>
+
+                          <Text variant="label">
+                            휴무일:{' '}
+                            {place.closedDayOfWeeks.length > 0
+                              ? getCheckedDaysInEnglish(
+                                  getCheckedListExcept(place.closedDayOfWeeks),
+                                ).join(', ')
+                              : '없음'}
+                          </Text>
+                        </div>
+                      }
+                    >
+                      <Text variant="label">정보보기</Text>
+                    </Tooltip>
+                  </Pill>
+                </Flex>
+
+                <Flex gap={0.4} alignItems="center">
+                  <Icon name="pin" size={12} />
+                  <Text variant="label" color={theme.colors.gray[300]}>
+                    {place.roadAddressName}
+                  </Text>
+                </Flex>
+
+                <Flex gap={0.4} alignItems="center">
+                  <Pill type="default">
+                    <Icon name="timepass" size={12} />
+                    <Text variant="label">
+                      {routie.arriveDateTime?.slice(-5)}-
+                      {routie.departureDateTime?.slice(-5)}{' '}
+                    </Text>
+                  </Pill>
+                  <Pill type="default" variant="filled">
+                    <Icon name="durationTime" size={12} />
+                    <Text variant="label">
+                      {formatMinutesToHours(place.stayDurationMinutes)}
+                    </Text>
+                  </Pill>
                 </Flex>
               </Flex>
-              <Pill type="time">
-                {routie.arriveDateTime?.slice(-5)}-
-                {routie.departureDateTime?.slice(-5)}{' '}
-                <Pill type="distance">
-                  {formatMinutesToHours(place.stayDurationMinutes)}
-                </Pill>
-              </Pill>
+              <Flex direction="column" gap={3}>
+                <IconButton
+                  icon={closeRed}
+                  variant="delete"
+                  onClick={handleDelete}
+                />
+                <Icon name="drag" size={24} css={dragIconStyle} />
+              </Flex>
             </Flex>
           </Flex>
         </Card>
