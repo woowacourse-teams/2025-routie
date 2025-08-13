@@ -8,6 +8,7 @@ module.exports = merge(common(), {
   plugins: [
     new Dotenv({
       path: './.env.prod',
+      systemvars: true,
     }),
   ],
   optimization: {
