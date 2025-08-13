@@ -38,6 +38,10 @@ const AddPlaceValidation = ({
         breakStartAt={form.breakStartAt}
         breakEndAt={form.breakEndAt}
         onChange={handleInputChange}
+        error={{
+          breakStartAt: showErrors && isEmpty.breakStartAt,
+          breakEndAt: showErrors && isEmpty.breakEndAt,
+        }}
       />
       <ClosedDaySelector
         closedDayOfWeeks={form.closedDayOfWeeks}
