@@ -47,17 +47,14 @@ const useToast = () => {
       setToast((prev) => {
         if (prev.length >= MAX_TOASTS) {
           const oldest = prev[0];
+          const existingTimer = timersRef.current.get(oldest.id);
 
-          if (oldest) {
-            const existingTimer = timersRef.current.get(oldest.id);
-
-            if (existingTimer) {
-              window.clearTimeout(existingTimer);
-              timersRef.current.delete(oldest.id);
-            }
-
-            return [...prev.slice(1), next];
+          if (existingTimer) {
+            window.clearTimeout(existingTimer);
+            timersRef.current.delete(oldest.id);
           }
+
+          return [...prev.slice(1), next];
         }
 
         return [...prev, next];
