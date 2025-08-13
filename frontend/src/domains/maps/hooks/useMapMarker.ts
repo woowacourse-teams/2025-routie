@@ -1,7 +1,6 @@
 import { RefObject, useCallback, useRef } from 'react';
 
 import type { KakaoMapType } from '../types/KaKaoMap.types';
-import { clear } from 'console';
 
 type Marker = InstanceType<typeof window.kakao.maps.Marker>;
 
