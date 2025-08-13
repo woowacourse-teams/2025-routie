@@ -9,6 +9,7 @@ import { usePlaceFormValidation } from '@/domains/places/hooks/usePlaceFormValid
 import addPlace from '../../apis/addPlace';
 import { useFunnel } from '../../hooks/useFunnel';
 import { PlaceLocationType } from '../../types/place.types';
+import { getValidatedStep } from '../../utils/getValidatedStep';
 
 import AddPlaceBasicInfo from './AddPlaceBasicInfo';
 import { ModalInputContainerStyle } from './AddPlaceModal.styles';
@@ -33,9 +34,7 @@ const AddPlaceModal = ({
   const [showErrors, setShowErrors] = useState(false);
   const [placeLocationInfo, setPlaceLocationInfo] =
     useState<PlaceLocationType>();
-
-  const isStep1Valid =
-    !isEmpty.name && !isEmpty.roadAddressName && !isEmpty.stayDurationMinutes;
+  const isStep1Valid = getValidatedStep(1, isEmpty);
 
   const handleClose = () => {
     resetForm();
