@@ -21,9 +21,10 @@ class PlaceSearcherTest {
             System.out.println(
                     searchedPlace.searchedPlaceId() + ", "
                             + searchedPlace.name() + ", "
+                            + searchedPlace.addressName() + ", "
                             + searchedPlace.roadAddressName() + ", "
-                            + searchedPlace.latitude() + ", "
-                            + searchedPlace.longitude()
+                            + searchedPlace.longitude() + ", "
+                            + searchedPlace.latitude()
             );
         }
     }

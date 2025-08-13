@@ -10,7 +10,8 @@ import java.util.List;
 public record PlaceCreateRequest(
         @NotBlank String searchedPlaceId,
         @NotBlank String name,
-        @NotBlank String roadAddressName,
+        String roadAddressName,
+        @NotBlank String addressName,
         @NotNull Double longitude,
         @NotNull Double latitude,
         @NotNull Integer stayDurationMinutes,

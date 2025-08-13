@@ -25,7 +25,7 @@ const RoutiePlaceCard = ({ routie }: { routie: Routie }) => {
       setPlace(detailPlace);
     };
     fetchDetailPlace();
-  }, [routie.placeId]);
+  }, [routie]);
 
   const handleDelete = () => {
     handleDeleteRoutie(routie.placeId);

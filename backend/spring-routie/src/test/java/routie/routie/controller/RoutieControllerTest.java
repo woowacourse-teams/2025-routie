@@ -23,6 +23,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import routie.place.domain.Place;
+import routie.place.domain.PlaceBuilder;
 import routie.place.repository.PlaceRepository;
 import routie.routie.controller.dto.response.RoutieReadResponse;
 import routie.routie.controller.dto.response.RoutieReadResponse.RouteResponse;
@@ -42,14 +43,12 @@ class RoutieControllerTest {
     private int port;
 
     @Autowired
-    private PlaceRepository placeRepository;
-
-    @Autowired
     private RoutieSpaceRepository routieSpaceRepository;
 
-    private Routie routie;
+    @Autowired
+    private PlaceRepository placeRepository;
 
-    private Routie routieWithOneRoutiePlace;
+    private Routie routie;
 
     private RoutieSpace routieSpace;
 
@@ -62,47 +61,50 @@ class RoutieControllerTest {
         routieSpace = RoutieSpaceFixture.createEmpty();
         routieSpaceWithOneRoutiePlace = RoutieSpaceFixture.createEmpty();
 
-        Place placeA = Place.create(
-                "장소 A",
-                "주소 A",
-                10.123,
-                10.123,
-                60,
-                LocalTime.of(9, 0),
-                LocalTime.of(18, 0),
-                null,
-                null,
-                routieSpace,
-                List.of()
-        );
+        Place placeA = new PlaceBuilder()
+                .name("장소 A")
+                .roadAddressName("도로명 주소")
+                .addressName("지번 주소")
+                .longitude(127.0)
+                .latitude(37.5)
+                .stayDurationMinutes(60)
+                .openAt(LocalTime.of(9, 0))
+                .closeAt(LocalTime.of(18, 0))
+                .breakStartAt(null)
+                .breakEndAt(null)
+                .routieSpace(routieSpace)
+                .placeClosedDayOfWeeks(List.of())
+                .build();
 
-        Place placeB = Place.create(
-                "장소 B",
-                "주소 B",
-                10.123,
-                10.123,
-                90,
-                LocalTime.of(10, 0),
-                LocalTime.of(20, 0),
-                LocalTime.of(14, 0),
-                LocalTime.of(15, 0),
-                routieSpace,
-                List.of(DayOfWeek.MONDAY)
-        );
+        Place placeB = new PlaceBuilder()
+                .name("장소 B")
+                .roadAddressName("도로명 주소")
+                .addressName("지번 주소")
+                .longitude(127.0)
+                .latitude(37.5)
+                .stayDurationMinutes(90)
+                .openAt(LocalTime.of(10, 0))
+                .closeAt(LocalTime.of(20, 0))
+                .breakStartAt(LocalTime.of(14, 0))
+                .breakEndAt(LocalTime.of(15, 0))
+                .routieSpace(routieSpace)
+                .placeClosedDayOfWeeksByDayOfWeeks(List.of(DayOfWeek.MONDAY))
+                .build();
 
-        Place placeC = Place.create(
-                "장소 C",
-                "주소 C",
-                10.123,
-                10.123,
-                60,
-                LocalTime.of(9, 0),
-                LocalTime.of(18, 0),
-                null,
-                null,
-                routieSpaceWithOneRoutiePlace,
-                List.of()
-        );
+        Place placeC = new PlaceBuilder()
+                .name("장소 C")
+                .roadAddressName("도로명 주소")
+                .addressName("지번 주소")
+                .longitude(127.0)
+                .latitude(37.5)
+                .stayDurationMinutes(60)
+                .openAt(LocalTime.of(9, 0))
+                .closeAt(LocalTime.of(18, 0))
+                .breakStartAt(null)
+                .breakEndAt(null)
+                .routieSpace(routieSpaceWithOneRoutiePlace)
+                .placeClosedDayOfWeeks(List.of())
+                .build();
 
         routieSpace.getPlaces().add(placeA);
         routieSpace.getPlaces().add(placeB);
@@ -116,26 +118,26 @@ class RoutieControllerTest {
         routieSpaceRepository.save(routieSpaceWithOneRoutiePlace);
 
         routie = routieSpace.getRoutie();
-        routieWithOneRoutiePlace = routieSpaceWithOneRoutiePlace.getRoutie();
     }
 
     @Test
     @DisplayName("루티에 장소를 추가할 수 있다")
     void addRoutiePlace() {
         // given
-        Place place = Place.create(
-                "장소 A",
-                "주소 A",
-                10.123,
-                10.123,
-                60,
-                LocalTime.of(9, 0),
-                LocalTime.of(18, 0),
-                null,
-                null,
-                routieSpace,
-                List.of()
-        );
+        Place place = new PlaceBuilder()
+                .name("장소 A")
+                .roadAddressName("도로명 주소")
+                .addressName("지번 주소")
+                .longitude(127.0)
+                .latitude(37.5)
+                .stayDurationMinutes(60)
+                .openAt(LocalTime.of(9, 0))
+                .closeAt(LocalTime.of(18, 0))
+                .breakStartAt(null)
+                .breakEndAt(null)
+                .routieSpace(routieSpace)
+                .placeClosedDayOfWeeks(List.of())
+                .build();
         placeRepository.save(place);
 
         Map<String, Object> requestBody = Map.of(
@@ -235,6 +237,7 @@ class RoutieControllerTest {
                 .extract().response();
 
         // then
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
         List<Map<String, Object>> validationResults = response.jsonPath().getList("validationResultResponses");
 
         boolean breakTimeIsInvalid = validationResults.stream()
@@ -243,7 +246,6 @@ class RoutieControllerTest {
                                 Boolean.FALSE.equals(result.get("isValid"))
                 );
 
-        assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
         assertThat(breakTimeIsInvalid).isTrue();
     }
 
