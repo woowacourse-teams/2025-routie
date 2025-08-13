@@ -1,9 +1,9 @@
-import { createContext } from 'react';
+import { createContext, useContext } from 'react';
 
 import useToast from '../hooks/useToast';
 import { ToastContextType } from '../types/toast.type';
 
-export const useToastContext = createContext<ToastContextType>({
+const ToastContext = createContext<ToastContextType>({
   toast: [],
   showToast: () => {},
 });
@@ -12,8 +12,18 @@ export const ToastProvider = ({ children }: { children: React.ReactNode }) => {
   const { toast, showToast } = useToast();
 
   return (
-    <useToastContext.Provider value={{ toast, showToast }}>
+    <ToastContext.Provider value={{ toast, showToast }}>
       {children}
-    </useToastContext.Provider>
+    </ToastContext.Provider>
   );
+};
+
+export const useToastContext = () => {
+  const context = useContext(ToastContext);
+
+  if (!context) {
+    throw new Error('useToastContext must be used within a ToastProvider');
+  }
+
+  return context;
 };

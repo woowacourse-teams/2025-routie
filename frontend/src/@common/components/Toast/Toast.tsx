@@ -1,5 +1,3 @@
-import { useContext } from 'react';
-
 import { useToastContext } from '../../contexts/useToastContext';
 import { ToastInfoType } from '../../types/toast.type';
 import Text from '../Text/Text';
@@ -12,7 +10,7 @@ import {
 } from './Toast.styles';
 
 const Toast = () => {
-  const { toast } = useContext(useToastContext);
+  const { toast } = useToastContext();
 
   return (
     <div css={containerStyle}>
