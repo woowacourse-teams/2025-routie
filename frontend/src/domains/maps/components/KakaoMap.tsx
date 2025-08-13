@@ -82,6 +82,7 @@ const KakaoMap = ({ lat = 36.5, lng = 127.8, level = 13 }: KakaoMapProps) => {
     fitMapToMarkers,
     clearMarkers,
     openAt,
+    fitMapToMarker,
   ]);
 
   useEffect(() => {
@@ -100,7 +101,7 @@ const KakaoMap = ({ lat = 36.5, lng = 127.8, level = 13 }: KakaoMapProps) => {
         handleMapClick,
       );
     };
-  }, [mapRef.current, close]);
+  }, [mapRef.current, close, handleMapClick]);
 
   useEffect(() => {
     fitMapToMarkers(placeList);
@@ -109,7 +110,7 @@ const KakaoMap = ({ lat = 36.5, lng = 127.8, level = 13 }: KakaoMapProps) => {
     routiePlaces.forEach((place) => {
       loadPolyline(place.latitude, place.longitude);
     });
-  }, [loadPolyline, fitMapToMarkers, routiePlaces]);
+  }, [loadPolyline, fitMapToMarkers, routiePlaces, placeList, clearPolyline]);
 
   return (
     <div css={KakaoMapWrapperStyle}>
