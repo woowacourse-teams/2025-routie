@@ -52,7 +52,7 @@ export const typeColor: Record<ToastInfoType['type'], string> = {
   success: theme.colors.green[100],
   error: theme.colors.red[100],
   warning: theme.colors.green[100],
-  info: theme.colors.gray[300],
+  info: theme.colors.white,
 };
 
 export const badgeStyle = (type: ToastInfoType['type']) => css`
