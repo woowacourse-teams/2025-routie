@@ -40,10 +40,10 @@ public class Place {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "roadAddressName", nullable = true)
+    @Column(name = "road_address_name", nullable = true)
     private String roadAddressName;
 
-    @Column(name = "addressName", nullable = false)
+    @Column(name = "address_name", nullable = false)
     private String addressName;
 
     @Column(name = "longitude", nullable = false)
