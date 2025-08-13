@@ -67,35 +67,35 @@ const RoutiePlaceCard = ({ routie }: { routie: Routie }) => {
               >
                 <Flex style={{ width: '100%' }} justifyContent="space-between">
                   <Text variant="caption">{place.name}</Text>
-                  <Pill type="default" css={PlaceInfoViewPillStyle}>
-                    <Tooltip
-                      content={
-                        <div>
-                          <Text variant="label">
-                            오픈: {place.openAt} / 마감: {place.closeAt}
-                          </Text>
+                  <Tooltip
+                    content={
+                      <div>
+                        <Text variant="label">
+                          오픈: {place.openAt} / 마감: {place.closeAt}
+                        </Text>
 
-                          <Text variant="label">
-                            브레이크:{' '}
-                            {place.breakStartAt && place.breakEndAt
-                              ? `${place.breakStartAt} ~ ${place.breakEndAt}`
-                              : '없음'}
-                          </Text>
+                        <Text variant="label">
+                          브레이크:{' '}
+                          {place.breakStartAt && place.breakEndAt
+                            ? `${place.breakStartAt} ~ ${place.breakEndAt}`
+                            : '없음'}
+                        </Text>
 
-                          <Text variant="label">
-                            휴무일:{' '}
-                            {place.closedDayOfWeeks.length > 0
-                              ? getCheckedDaysInEnglish(
-                                  getCheckedListExcept(place.closedDayOfWeeks),
-                                ).join(', ')
-                              : '없음'}
-                          </Text>
-                        </div>
-                      }
-                    >
+                        <Text variant="label">
+                          휴무일:{' '}
+                          {place.closedDayOfWeeks.length > 0
+                            ? getCheckedDaysInEnglish(
+                                getCheckedListExcept(place.closedDayOfWeeks),
+                              ).join(', ')
+                            : '없음'}
+                        </Text>
+                      </div>
+                    }
+                  >
+                    <Pill type="default" css={PlaceInfoViewPillStyle}>
                       <Text variant="label">정보보기</Text>
-                    </Tooltip>
-                  </Pill>
+                    </Pill>
+                  </Tooltip>
                 </Flex>
 
                 <Flex gap={0.4} alignItems="center">
