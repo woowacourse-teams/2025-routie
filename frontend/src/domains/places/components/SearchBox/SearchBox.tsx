@@ -9,7 +9,10 @@ import { PlaceLocationType, PlaceSearchType } from '../../types/place.types';
 import SearchList from '../SearchList/SearchList';
 
 interface SearchBoxProps {
-  onChange: (field: 'name' | 'roadAddressName', value: string) => void;
+  onChange: (
+    field: 'name' | 'roadAddressName' | 'addressName',
+    value: string,
+  ) => void;
   handleSearchPlaceMap: (searchInfo: PlaceLocationType) => void;
 }
 
@@ -27,6 +30,7 @@ const SearchBox = ({ onChange, handleSearchPlaceMap }: SearchBoxProps) => {
     handleReset();
     onChange('name', searchPlace.name);
     onChange('roadAddressName', searchPlace.roadAddressName);
+    onChange('addressName', searchPlace.addressName);
 
     handleSearchPlaceMap({
       searchedPlaceId: searchPlace.searchedPlaceId,
@@ -37,7 +41,7 @@ const SearchBox = ({ onChange, handleSearchPlaceMap }: SearchBoxProps) => {
 
   return (
     <>
-      <Flex direction="row" gap={1} width="100%">
+      <Flex direction="row" gap={1} width="100%" css={{ position: 'relative' }}>
         <Input
           id="search"
           value={keyword}
@@ -45,6 +49,7 @@ const SearchBox = ({ onChange, handleSearchPlaceMap }: SearchBoxProps) => {
           placeholder="장소를 검색하세요"
           onChange={handleChangeKeyword}
           onKeyDown={handleEnterSearch}
+          autoFocus
         />
         <Button
           variant="primary"
@@ -58,14 +63,17 @@ const SearchBox = ({ onChange, handleSearchPlaceMap }: SearchBoxProps) => {
             </Text>
           </Flex>
         </Button>
-      </Flex>
-      <Flex width="100%" css={{ position: 'relative' }}>
-        {searchResults.length > 0 && (
-          <SearchList
-            searchResults={searchResults}
-            handleSelect={handleSelect}
-          />
-        )}
+        <Flex
+          width="100%"
+          css={{ position: 'absolute', top: '100%', marginTop: '1rem' }}
+        >
+          {searchResults.length > 0 && (
+            <SearchList
+              searchResults={searchResults}
+              handleSelect={handleSelect}
+            />
+          )}
+        </Flex>
       </Flex>
     </>
   );
