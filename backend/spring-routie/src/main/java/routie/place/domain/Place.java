@@ -225,17 +225,6 @@ public class Place {
         }
     }
 
-    private void validateTime(
-            final LocalTime openAt,
-            final LocalTime closeAt,
-            final LocalTime breakStartAt,
-            final LocalTime breakEndAt
-    ) {
-        validateOperatingTime(openAt, closeAt);
-        validateBreakTime(breakStartAt, breakEndAt);
-        validateBreakTimeWithOperatingTime(openAt, closeAt, breakStartAt, breakEndAt);
-    }
-
     private void validateOperatingTime(final LocalTime openAt, final LocalTime closeAt) {
         if (openAt == null || closeAt == null) {
             throw new IllegalArgumentException("영업 시간은 필수 입력 사항입니다.");
