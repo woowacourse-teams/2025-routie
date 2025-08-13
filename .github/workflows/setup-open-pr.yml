@@ -68,7 +68,7 @@ jobs:
             // 1. PR 제목 prefix 기반 라벨 추가
             const title = pr.title.toLowerCase();
             const titleLabelMap = {
-                'feat': 'feat',
+                'feat': 'feature',
                 'fix': 'fix',
                 'docs': 'docs',
                 'style': 'style',
