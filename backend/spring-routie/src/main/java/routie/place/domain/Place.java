@@ -176,7 +176,7 @@ public class Place {
 
     private static List<PlaceClosedDayOfWeek> createClosedDayOfWeeks(final List<DayOfWeek> closedDayOfWeeks) {
         if (closedDayOfWeeks == null) {
-            return new ArrayList<>();
+            throw new IllegalArgumentException("휴무일은 필수 입력 사항입니다.");
         }
         return closedDayOfWeeks.stream()
                 .map(PlaceClosedDayOfWeek::new)
