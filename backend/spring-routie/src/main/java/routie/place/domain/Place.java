@@ -199,10 +199,12 @@ public class Place {
     }
 
     private void validateRoadAddressName(final String roadAddressName) {
-        if (roadAddressName != null) {
-            if (roadAddressName.isBlank() || roadAddressName.length() > 50) {
-                throw new IllegalArgumentException("도로명 주소는 1자 이상 50자 이하여야 합니다.");
-            }
+        if (roadAddressName == null) {
+            return;
+        }
+
+        if (roadAddressName.isBlank() || roadAddressName.length() > 50) {
+            throw new IllegalArgumentException("도로명 주소는 1자 이상 50자 이하여야 합니다.");
         }
     }
 
