@@ -12,7 +12,7 @@ import {
 } from './Toast.styles';
 
 const Toast = () => {
-  const { toast } = useContext(ToastContext) as ToastContextType;
+  const { toast } = useContext(useToastContext);
 
   return (
     <div css={containerStyle}>
