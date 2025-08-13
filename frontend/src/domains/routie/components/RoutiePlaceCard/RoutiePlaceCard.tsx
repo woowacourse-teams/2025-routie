@@ -13,6 +13,7 @@ import { getDetailPlace } from '../../apis/routie';
 import { useRoutieContext } from '../../contexts/useRoutieContext';
 import { Routie, RoutiePlace } from '../../types/routie.types';
 import formatMinutesToHours from '../../utils/formatMinutesToHours';
+import DraggableCardWrapper from '../DraggableWrapper/DraggableWrapper';
 
 const RoutiePlaceCard = ({ routie }: { routie: Routie }) => {
   const [place, setPlace] = useState<RoutiePlace>();
@@ -38,35 +39,37 @@ const RoutiePlaceCard = ({ routie }: { routie: Routie }) => {
 
   return (
     place && (
-      <Card id={routie.placeId.toString()} variant="defaultStatic">
-        <Flex justifyContent="flex-start" gap={1.5}>
-          <IconButton variant="drag" icon={dragIcon} onClick={() => {}} />
-          <Flex
-            direction="column"
-            alignItems="flex-start"
-            gap={1.1}
-            width="100%"
-          >
-            <Flex width="100%" justifyContent="space-between">
-              <Text variant="caption">{place.name}</Text>
-              <Flex gap={0.4}>
-                <IconButton
-                  icon={minusIcon}
-                  variant="delete"
-                  onClick={handleDelete}
-                />
+      <DraggableCardWrapper>
+        <Card id={routie.placeId.toString()} variant="defaultStatic">
+          <Flex justifyContent="flex-start" gap={1.5}>
+            <IconButton variant="drag" icon={dragIcon} onClick={() => {}} />
+            <Flex
+              direction="column"
+              alignItems="flex-start"
+              gap={1.1}
+              width="100%"
+            >
+              <Flex width="100%" justifyContent="space-between">
+                <Text variant="caption">{place.name}</Text>
+                <Flex gap={0.4}>
+                  <IconButton
+                    icon={minusIcon}
+                    variant="delete"
+                    onClick={handleDelete}
+                  />
+                </Flex>
               </Flex>
-            </Flex>
-            <Pill type="time">
-              {routie.arriveDateTime?.slice(-5)}-
-              {routie.departureDateTime?.slice(-5)}{' '}
-              <Pill type="distance">
-                {formatMinutesToHours(place.stayDurationMinutes)}
+              <Pill type="time">
+                {routie.arriveDateTime?.slice(-5)}-
+                {routie.departureDateTime?.slice(-5)}{' '}
+                <Pill type="distance">
+                  {formatMinutesToHours(place.stayDurationMinutes)}
+                </Pill>
               </Pill>
-            </Pill>
+            </Flex>
           </Flex>
-        </Flex>
-      </Card>
+        </Card>
+      </DraggableCardWrapper>
     )
   );
 };
