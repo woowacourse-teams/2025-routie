@@ -69,7 +69,7 @@ public class Place {
     private RoutieSpace routieSpace;
 
     @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
-    @JoinColumn(name = "place_id")
+    @JoinColumn(name = "place_id", nullable = false)
     private List<PlaceClosedDayOfWeek> placeClosedDayOfWeeks = new ArrayList<>();
 
     @CreatedDate
