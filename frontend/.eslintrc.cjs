@@ -128,5 +128,5 @@ module.exports = {
       },
     ],
   },
-  ignorePatterns: ['dist', 'webpack.config.js'],
+  ignorePatterns: ['dist', 'webpack.common.js', 'webpack.dev.js', 'webpack.prod.js'],
 };

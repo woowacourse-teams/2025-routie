@@ -12,6 +12,7 @@ import { useGoogleEventTrigger } from '@/libs/googleAnalytics/hooks/useGoogleEve
 import { getDetailPlace } from '../../apis/routie';
 import { useRoutieContext } from '../../contexts/useRoutieContext';
 import { Routie, RoutiePlace } from '../../types/routie.types';
+import formatMinutesToHours from '../../utils/formatMinutesToHours';
 
 const RoutiePlaceCard = ({ routie }: { routie: Routie }) => {
   const [place, setPlace] = useState<RoutiePlace>();
@@ -24,7 +25,7 @@ const RoutiePlaceCard = ({ routie }: { routie: Routie }) => {
       setPlace(detailPlace);
     };
     fetchDetailPlace();
-  }, [routie.placeId]);
+  }, [routie]);
 
   const handleDelete = () => {
     handleDeleteRoutie(routie.placeId);
@@ -37,11 +38,7 @@ const RoutiePlaceCard = ({ routie }: { routie: Routie }) => {
 
   return (
     place && (
-      <Card
-        id={routie.placeId.toString()}
-        width="45rem"
-        variant="defaultStatic"
-      >
+      <Card id={routie.placeId.toString()} variant="defaultStatic">
         <Flex justifyContent="flex-start" gap={1.5}>
           <IconButton variant="drag" icon={dragIcon} onClick={() => {}} />
           <Flex
@@ -63,7 +60,9 @@ const RoutiePlaceCard = ({ routie }: { routie: Routie }) => {
             <Pill type="time">
               {routie.arriveDateTime?.slice(-5)}-
               {routie.departureDateTime?.slice(-5)}{' '}
-              <Pill type="distance">{place.stayDurationMinutes}분</Pill>
+              <Pill type="distance">
+                {formatMinutesToHours(place.stayDurationMinutes)}
+              </Pill>
             </Pill>
           </Flex>
         </Flex>

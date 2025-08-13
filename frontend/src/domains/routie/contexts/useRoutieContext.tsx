@@ -90,8 +90,7 @@ export const RoutieProvider = ({ children }: { children: React.ReactNode }) => {
         .sort((a, b) => a.sequence - b.sequence);
       try {
         await editRoutieSequence(sortedList);
-        setRoutiePlaces(sortedList);
-        validateRoutie(sortedList.length);
+        refetchRoutieData();
       } catch (error) {
         console.error(error);
       }

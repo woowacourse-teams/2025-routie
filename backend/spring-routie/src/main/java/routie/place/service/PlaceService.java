@@ -17,6 +17,7 @@ import routie.routiespace.repository.RoutieSpaceRepository;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class PlaceService {
 
     private final PlaceRepository placeRepository;
@@ -40,6 +41,7 @@ public class PlaceService {
         Place place = Place.create(
                 placeCreateRequest.name(),
                 placeCreateRequest.roadAddressName(),
+                placeCreateRequest.addressName(),
                 placeCreateRequest.longitude(),
                 placeCreateRequest.latitude(),
                 placeCreateRequest.stayDurationMinutes(),

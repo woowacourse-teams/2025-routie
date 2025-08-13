@@ -22,7 +22,8 @@ class PlaceTest {
         // when
         Place place = Place.create(
                 "스타벅스",
-                "서울시 강남구",
+                "테스트 도로명 주소",
+                "테스트 지번 주소",
                 10.123,
                 10.123,
                 60,
@@ -50,7 +51,8 @@ class PlaceTest {
         // when
         Place place = Place.create(
                 "편의점",
-                "서울시 강남구",
+                "테스트 도로명 주소",
+                "테스트 지번 주소",
                 10.123,
                 10.123,
                 30,
@@ -59,7 +61,7 @@ class PlaceTest {
                 breakStartAt,
                 breakEndAt,
                 routieSpace,
-                null
+                List.of()
         );
 
         // then
@@ -77,7 +79,8 @@ class PlaceTest {
         // when & then
         assertThatThrownBy(() -> Place.create(
                 "카페",
-                "서울시 강남구",
+                "테스트 도로명 주소",
+                "테스트 지번 주소",
                 10.123,
                 10.123,
                 lowStayDuration,
@@ -99,7 +102,8 @@ class PlaceTest {
         // when & then
         assertThatThrownBy(() -> Place.create(
                 "카페",
-                "서울시 강남구",
+                "테스트 도로명 주소",
+                "테스트 지번 주소",
                 10.123,
                 10.123,
                 hugeStayDuration,
@@ -121,7 +125,8 @@ class PlaceTest {
         // when & then
         assertThatThrownBy(() -> Place.create(
                 nullName,
-                "서울시 강남구",
+                "테스트 도로명 주소",
+                "테스트 지번 주소",
                 10.123,
                 10.123,
                 60,
@@ -143,7 +148,8 @@ class PlaceTest {
         // when & then
         assertThatThrownBy(() -> Place.create(
                 blankName,
-                "서울시 강남구",
+                "테스트 도로명 주소",
+                "테스트 지번 주소",
                 10.123,
                 10.123,
                 60,
@@ -165,7 +171,8 @@ class PlaceTest {
         // when & then
         assertThatThrownBy(() -> Place.create(
                 longName,
-                "서울시 강남구",
+                "테스트 도로명 주소",
+                "테스트 지번 주소",
                 10.123,
                 10.123,
                 60,
@@ -187,7 +194,8 @@ class PlaceTest {
         // when & then
         assertThatThrownBy(() -> Place.create(
                 "카페",
-                "서울시 강남구",
+                "테스트 도로명 주소",
+                "테스트 지번 주소",
                 10.123,
                 10.123,
                 60,
@@ -209,7 +217,8 @@ class PlaceTest {
         // when & then
         assertThatThrownBy(() -> Place.create(
                 "카페",
-                "서울시 강남구",
+                "테스트 도로명 주소",
+                "테스트 지번 주소",
                 10.123,
                 10.123,
                 60,
@@ -231,7 +240,8 @@ class PlaceTest {
 
         assertThatThrownBy(() -> Place.create(
                 "카페",
-                "서울시 강남구",
+                "테스트 도로명 주소",
+                "테스트 지번 주소",
                 10.123,
                 10.123,
                 60,
@@ -253,7 +263,8 @@ class PlaceTest {
         // when & then
         assertThatThrownBy(() -> Place.create(
                 "카페",
-                "서울시 강남구",
+                "테스트 도로명 주소",
+                "테스트 지번 주소",
                 10.123,
                 10.123,
                 60,
@@ -274,7 +285,8 @@ class PlaceTest {
 
         assertThatThrownBy(() -> Place.create(
                 "카페",
-                "서울시 강남구",
+                "테스트 도로명 주소",
+                "테스트 지번 주소",
                 10.123,
                 10.123,
                 60,
@@ -297,7 +309,8 @@ class PlaceTest {
         // when & then
         assertThatThrownBy(() -> Place.create(
                 "카페",
-                "서울시 강남구",
+                "테스트 도로명 주소",
+                "테스트 지번 주소",
                 10.123,
                 10.123,
                 60,
@@ -320,7 +333,8 @@ class PlaceTest {
         // when & then
         assertThatThrownBy(() -> Place.create(
                 "카페",
-                "서울시 강남구",
+                "테스트 도로명 주소",
+                "테스트 지번 주소",
                 10.123,
                 10.123,
                 60,
@@ -343,7 +357,8 @@ class PlaceTest {
         // when & then
         assertThatThrownBy(() -> Place.create(
                 "카페",
-                "서울시 강남구",
+                "테스트 도로명 주소",
+                "테스트 지번 주소",
                 10.123,
                 10.123,
                 60,
@@ -366,7 +381,8 @@ class PlaceTest {
         // when & then
         assertThatThrownBy(() -> Place.create(
                 "카페",
-                "서울시 강남구",
+                "테스트 도로명 주소",
+                "테스트 지번 주소",
                 10.123,
                 10.123,
                 60,

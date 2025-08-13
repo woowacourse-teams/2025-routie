@@ -20,6 +20,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import routie.place.domain.Place;
+import routie.place.domain.PlaceBuilder;
 import routie.place.repository.PlaceRepository;
 import routie.routiespace.domain.RoutieSpace;
 import routie.routiespace.domain.RoutieSpaceIdentifierProvider;
@@ -49,22 +50,20 @@ public class PlaceControllerTest {
         RestAssured.port = port;
 
         testRoutieSpace = routieSpaceRepository.save(RoutieSpace.from(routieSpaceIdentifierProvider));
-
-        testPlace = placeRepository.save(
-                Place.create(
-                        "테스트 카페",
-                        "서울시 강남구 테스트로 123",
-                        10.123,
-                        10.123,
-                        60,
-                        LocalTime.of(9, 0),
-                        LocalTime.of(22, 0),
-                        LocalTime.of(14, 0),
-                        LocalTime.of(15, 0),
-                        testRoutieSpace,
-                        new ArrayList<>()
-                )
-        );
+        testPlace = new PlaceBuilder()
+                .name("테스트 카페")
+                .roadAddressName("서울시 강남구 테스트로 123")
+                .longitude(10.123)
+                .latitude(10.123)
+                .stayDurationMinutes(60)
+                .openAt(LocalTime.of(9, 0))
+                .closeAt(LocalTime.of(22, 0))
+                .breakStartAt(LocalTime.of(14, 0))
+                .breakEndAt(LocalTime.of(15, 0))
+                .routieSpace(testRoutieSpace)
+                .placeClosedDayOfWeeks(new ArrayList<>())
+                .build();
+        placeRepository.save(testPlace);
     }
 
     @Test

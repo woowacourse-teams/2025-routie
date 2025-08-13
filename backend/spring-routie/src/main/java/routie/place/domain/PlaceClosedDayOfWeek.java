@@ -25,7 +25,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 //                @UniqueConstraint(
 //                        name = "uk_place_closed_day", columnNames = {"place_id", "closed_day"}
 //                )
-        }
+}
 )
 @EntityListeners(AuditingEntityListener.class)
 @AllArgsConstructor(access = AccessLevel.PACKAGE)
@@ -45,10 +45,15 @@ public class PlaceClosedDayOfWeek {
     private LocalDateTime createdAt;
 
     public PlaceClosedDayOfWeek(final DayOfWeek closedDayOfWeek) {
-        this(
-                null,
-                closedDayOfWeek,
-                null
-        );
+        validateClosedDayOfWeek(closedDayOfWeek);
+        this.id = null;
+        this.closedDayOfWeek = closedDayOfWeek;
+        this.createdAt = null;
+    }
+
+    private void validateClosedDayOfWeek(final DayOfWeek closedDayOfWeek) {
+        if (closedDayOfWeek == null) {
+            throw new IllegalArgumentException("휴무일은 null일 수 없습니다.");
+        }
     }
 }

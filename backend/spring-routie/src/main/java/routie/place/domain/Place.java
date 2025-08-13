@@ -40,8 +40,11 @@ public class Place {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "roadAddressName", nullable = false)
+    @Column(name = "road_address_name")
     private String roadAddressName;
+
+    @Column(name = "address_name", nullable = false)
+    private String addressName;
 
     @Column(name = "longitude", nullable = false)
     private Double longitude;
@@ -80,10 +83,10 @@ public class Place {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-
     public Place(
             final String name,
             final String roadAddressName,
+            final String addressName,
             final Double longitude,
             final Double latitude,
             final int stayDurationMinutes,
@@ -94,9 +97,19 @@ public class Place {
             final RoutieSpace routieSpace,
             final List<PlaceClosedDayOfWeek> placeClosedDayOfWeeks
     ) {
-        validateForCreation(name, roadAddressName, stayDurationMinutes, openAt, closeAt, breakStartAt, breakEndAt);
+        validateName(name);
+        validateRoadAddressName(roadAddressName);
+        validateAddressName(addressName);
+        validateLongitude(longitude);
+        validateLatitude(latitude);
+        validateStayDurationMinutes(stayDurationMinutes);
+        validateOperatingTime(openAt, closeAt);
+        validateBreakTime(breakStartAt, breakEndAt);
+        validateBreakTimeWithOperatingTime(openAt, closeAt, breakStartAt, breakEndAt);
+
         this.name = name;
         this.roadAddressName = roadAddressName;
+        this.addressName = addressName;
         this.longitude = longitude;
         this.latitude = latitude;
         this.stayDurationMinutes = stayDurationMinutes;
@@ -108,24 +121,10 @@ public class Place {
         this.placeClosedDayOfWeeks = placeClosedDayOfWeeks;
     }
 
-    private void validateForCreation(
-            final String name,
-            final String roadAddressName,
-            final int stayDurationMinutes,
-            final LocalTime openAt,
-            final LocalTime closeAt,
-            final LocalTime breakStartAt,
-            final LocalTime breakEndAt
-    ) {
-        validateName(name);
-        validateRoadAddressName(roadAddressName);
-        validateStayDurationMinutes(stayDurationMinutes);
-        validateTime(openAt, closeAt, breakStartAt, breakEndAt);
-    }
-
     public static Place create(
             final String name,
             final String roadAddressName,
+            final String addressName,
             final Double longitude,
             final Double latitude,
             final int stayDurationMinutes,
@@ -140,6 +139,7 @@ public class Place {
         return new Place(
                 name,
                 roadAddressName,
+                addressName,
                 longitude,
                 latitude,
                 stayDurationMinutes,
@@ -160,7 +160,10 @@ public class Place {
             final LocalTime breakEndAt,
             final List<DayOfWeek> closedDayOfWeeks
     ) {
-        validateForModify(stayDurationMinutes, openAt, closeAt, breakStartAt, breakEndAt);
+        validateStayDurationMinutes(stayDurationMinutes);
+        validateOperatingTime(openAt, closeAt);
+        validateBreakTime(breakStartAt, breakEndAt);
+        validateBreakTimeWithOperatingTime(openAt, closeAt, breakStartAt, breakEndAt);
 
         this.stayDurationMinutes = stayDurationMinutes;
         this.openAt = openAt;
@@ -173,22 +176,11 @@ public class Place {
 
     private static List<PlaceClosedDayOfWeek> createClosedDayOfWeeks(final List<DayOfWeek> closedDayOfWeeks) {
         if (closedDayOfWeeks == null) {
-            return new ArrayList<>();
+            throw new IllegalArgumentException("휴무일은 필수 입력 사항입니다.");
         }
         return closedDayOfWeeks.stream()
                 .map(PlaceClosedDayOfWeek::new)
                 .toList();
-    }
-
-    private void validateForModify(
-            final int stayDurationMinutes,
-            final LocalTime openAt,
-            final LocalTime closeAt,
-            final LocalTime breakStartAt,
-            final LocalTime breakEndAt
-    ) {
-        validateStayDurationMinutes(stayDurationMinutes);
-        validateTime(openAt, closeAt, breakStartAt, breakEndAt);
     }
 
     private void validateStayDurationMinutes(final int stayDurationMinutes) {
@@ -207,23 +199,34 @@ public class Place {
     }
 
     private void validateRoadAddressName(final String roadAddressName) {
-        if (roadAddressName == null || roadAddressName.isBlank()) {
-            throw new IllegalArgumentException("주소는 필수입니다.");
+        if (roadAddressName == null) {
+            return;
         }
-        if (roadAddressName.length() > 50) {
-            throw new IllegalArgumentException("주소는 1자 이상 50자 이하여야 합니다.");
+
+        if (roadAddressName.isBlank() || roadAddressName.length() > 50) {
+            throw new IllegalArgumentException("도로명 주소는 1자 이상 50자 이하여야 합니다.");
         }
     }
 
-    private void validateTime(
-            final LocalTime openAt,
-            final LocalTime closeAt,
-            final LocalTime breakStartAt,
-            final LocalTime breakEndAt
-    ) {
-        validateOperatingTime(openAt, closeAt);
-        validateBreakTime(breakStartAt, breakEndAt);
-        validateBreakTimeWithOperatingTime(openAt, closeAt, breakStartAt, breakEndAt);
+    private void validateAddressName(final String addressName) {
+        if (addressName == null || addressName.isBlank()) {
+            throw new IllegalArgumentException("지번 주소는 필수입니다.");
+        }
+        if (addressName.length() > 50) {
+            throw new IllegalArgumentException("지번 주소는 1자 이상 50자 이하여야 합니다.");
+        }
+    }
+
+    private void validateLongitude(final double longitude) {
+        if (longitude < -180.0 || longitude > 180.0) {
+            throw new IllegalArgumentException("경도는 -180.0 이상 180.0 이하이어야 합니다.");
+        }
+    }
+
+    private void validateLatitude(final double latitude) {
+        if (latitude < -90.0 || latitude > 90.0) {
+            throw new IllegalArgumentException("위도는 -90.0 이상 90.0 이하이어야 합니다.");
+        }
     }
 
     private void validateOperatingTime(final LocalTime openAt, final LocalTime closeAt) {

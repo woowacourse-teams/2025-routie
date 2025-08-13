@@ -3,12 +3,12 @@ import Text from '@/@common/components/Text/Text';
 import theme from '@/styles/theme';
 
 const EmptyRoutieMessage = () => (
-  <Flex width="100%" direction="column" padding={8} gap={1}>
+  <Flex width="100%" direction="column" gap={1} css={{ padding: '8rem 0' }}>
     <Text variant="subTitle" color={theme.colors.gray[200]}>
-      동선이 생성되지 않았어요.
+      아직 동선이 없습니다.
     </Text>
     <Text variant="subTitle" color={theme.colors.gray[200]}>
-      장소를 2개 이상 추가하면 동선이 생성됩니다!
+      장소 목록에서 2곳 이상을 선택하면 동선이 생성됩니다!
     </Text>
   </Flex>
 );

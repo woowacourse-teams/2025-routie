@@ -58,17 +58,26 @@ public class RoutieSpace {
     private LocalDateTime updatedAt;
 
     public static RoutieSpace from(
-            final RoutieSpaceIdentifierProvider identifierProvider
+            final RoutieSpaceIdentifierProvider routieSpaceIdentifierProvider
     ) {
+        validateRoutieSpaceIdentifierProvider(routieSpaceIdentifierProvider);
         return new RoutieSpace(
                 null,
                 DEFAULT_NAME,
-                identifierProvider.provide(),
+                routieSpaceIdentifierProvider.provide(),
                 new ArrayList<>(),
                 Routie.empty(),
                 null,
                 null
         );
+    }
+
+    public static void validateRoutieSpaceIdentifierProvider(
+            final RoutieSpaceIdentifierProvider routieSpaceIdentifierProvider
+    ) {
+        if (routieSpaceIdentifierProvider == null) {
+            throw new IllegalArgumentException("루티 스페이스 식별자 제공자는 null일 수 없습니다.");
+        }
     }
 
     public void updateName(final String name) {

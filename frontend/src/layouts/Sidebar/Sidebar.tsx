@@ -8,8 +8,10 @@ import ToggleSwitch from '@/@common/components/ToggleSwitch/ToggleSwitch';
 import AddPlaceModal from '@/domains/places/components/AddPlaceModal/AddPlaceModal';
 import EmptyRoutieMessage from '@/domains/routie/components/EmptyRoutieMessage/EmptyRoutieMessage';
 import RoutieSection from '@/domains/routie/components/RoutieSection/RoutieSection';
+import RoutieValidationLoadingCard from '@/domains/routie/components/RoutieValidationLoadingCard/RoutieValidationLoadingCard';
 import RoutieValidationResultCard from '@/domains/routie/components/RoutieValidationResultCard/RoutieValidationResultCard';
 import RoutieValidationUnavailableCard from '@/domains/routie/components/RoutieValidationUnavailableCard/RoutieValidationUnavailableCard';
+import RoutieValidationWaitingCard from '@/domains/routie/components/RoutieValidationWaitingCard/RoutieValidationWaitingCard';
 import { useRoutieContext } from '@/domains/routie/contexts/useRoutieContext';
 import { useRoutieValidateContext } from '@/domains/routie/contexts/useRoutieValidateContext';
 import RoutieSpaceName from '@/domains/routieSpace/components/RoutieSpaceName/RoutieSpaceName';
@@ -19,13 +21,19 @@ import { usePlaceListContext } from '../PlaceList/contexts/PlaceListContext';
 
 import TimeInput from './TimeInput';
 
-const Sidebar = () => {
+interface SidebarProps {
+  handleViewModeChange: () => void;
+}
+
+const Sidebar = ({ handleViewModeChange }: SidebarProps) => {
   const { routes, routiePlaces } = useRoutieContext();
   const { refetchPlaceList } = usePlaceListContext();
   const [addModalOpen, setAddModalOpen] = useState(false);
   const {
     isValidateActive,
     routieTime,
+    validationStatus,
+    waitingReason,
     handleValidateToggle,
     handleTimeChange,
   } = useRoutieValidateContext();
@@ -48,6 +56,25 @@ const Sidebar = () => {
     setAddModalOpen((prev) => !prev);
   };
 
+  const renderValidationCard = () => {
+    if (!isValidateActive) {
+      return <RoutieValidationUnavailableCard />;
+    }
+
+    switch (validationStatus) {
+      case 'waiting':
+        return <RoutieValidationWaitingCard reason={waitingReason} />;
+      case 'validating':
+        return <RoutieValidationLoadingCard />;
+      case 'success':
+      case 'error':
+        return <RoutieValidationResultCard total_time={totalMovingTime} />;
+      case 'inactive':
+      default:
+        return <RoutieValidationUnavailableCard />;
+    }
+  };
+
   return (
     <>
       <Flex
@@ -55,16 +82,19 @@ const Sidebar = () => {
         justifyContent="flex-start"
         alignItems="flex-start"
         width="50rem"
+        height="100vh"
         gap={1}
+        style={{
+          overflow: 'hidden',
+        }}
       >
-        <Header />
+        <Header handleViewModeChange={handleViewModeChange} />
         <Flex
           direction="column"
           width="100%"
           gap={1.2}
           padding={1.6}
           justifyContent="flex-start"
-          height="28rem"
         >
           <Flex direction="column" width="100%" gap={1.2}>
             <RoutieSpaceName />
@@ -84,11 +114,7 @@ const Sidebar = () => {
             />
           </Flex>
 
-          {isValidateActive ? (
-            <RoutieValidationResultCard total_time={totalMovingTime} />
-          ) : (
-            <RoutieValidationUnavailableCard />
-          )}
+          {renderValidationCard()}
           <TimeInput time={routieTime} onChange={handleTimeChange} />
         </Flex>
         <Flex
@@ -96,8 +122,9 @@ const Sidebar = () => {
           alignItems="flex-start"
           width="100%"
           gap={1.2}
+          padding={1.6}
           style={{
-            padding: '0 1.6rem',
+            overflow: 'hidden',
           }}
         >
           <Text variant="subTitle">내 동선</Text>
@@ -105,10 +132,10 @@ const Sidebar = () => {
           <Flex
             direction="column"
             justifyContent="flex-start"
-            height="calc(100dvh - 36rem)"
+            width="100%"
+            padding={1.6}
             style={{
               overflowY: 'auto',
-              padding: '1.6rem 0 ',
               boxSizing: 'border-box',
             }}
           >
