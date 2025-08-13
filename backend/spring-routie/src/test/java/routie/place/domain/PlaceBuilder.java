@@ -8,7 +8,6 @@ import routie.routiespace.domain.RoutieSpace;
 
 public class PlaceBuilder {
 
-    private final Long id = null;
     private String name = "Default Place Name";
     private String roadAddressName = "Default Road Address";
     private String addressName = "Default Address";
