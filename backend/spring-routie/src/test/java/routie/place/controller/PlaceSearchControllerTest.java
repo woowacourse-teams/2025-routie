@@ -61,7 +61,7 @@ class PlaceSearchControllerTest {
                 )
         );
 
-        when(placeSearcher.search(anyString()))
+        when(placeSearcher.searchPlaces(anyString(), 5))
                 .thenReturn(stubbedSearchedPlaces);
     }
 

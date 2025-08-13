@@ -4,5 +4,7 @@ import java.util.List;
 
 public interface PlaceSearcher {
 
-    List<SearchedPlace> search(String query);
+    boolean isAvailable();
+
+    List<SearchedPlace> searchPlaces(String query, Integer size);
 }
