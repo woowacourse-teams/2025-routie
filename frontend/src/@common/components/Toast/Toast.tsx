@@ -1,7 +1,7 @@
 import { useContext } from 'react';
 
-import ToastContext from '../../contexts/useToastContext';
-import { ToastContextType, ToastInfoType } from '../../types/toast.type';
+import { useToastContext } from '../../contexts/useToastContext';
+import { ToastInfoType } from '../../types/toast.type';
 import Text from '../Text/Text';
 
 import {
