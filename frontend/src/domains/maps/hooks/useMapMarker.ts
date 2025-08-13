@@ -61,8 +61,6 @@ const useMapMarker = ({ map }: { map: RefObject<KakaoMapType> }) => {
 
     const position = new window.kakao.maps.LatLng(lat, lng);
 
-    console.log(position);
-
     bounds.extend(position);
     map.current.panTo(bounds);
   }, []);
