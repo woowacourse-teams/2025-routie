@@ -4,7 +4,7 @@ import { ShowToastPayload, ToastInfoType } from '../types/toast.type';
 
 const DEFAULT_DURATION_MS = 3000;
 const MAX_TOASTS = 5;
-const REMOVE_AFTER = 350;
+const EXIT_ANIMATION_DURATION = 350;
 
 const useToast = () => {
   const [toast, setToast] = useState<ToastInfoType[]>([]);
@@ -26,7 +26,7 @@ const useToast = () => {
         setToast((prev) => prev.filter((t) => t.id !== id));
         timersRef.current.delete(id);
         window.clearTimeout(cleanupId);
-      }, REMOVE_AFTER);
+      }, EXIT_ANIMATION_DURATION);
     }, duration);
 
     timersRef.current.set(id, timerId);
