@@ -12,12 +12,11 @@ public class LogDataBuilder {
     public Map<LoggingField, Object> buildLogData(final LoggingContext loggingContext) {
         return loggingStrategy.getLoggingFields()
                 .stream()
-                .map(loggingField -> Map.entry(loggingField, loggingField.extract(loggingContext)))
-                .filter(entry -> entry.getValue() != null)
+                .filter(loggingField -> loggingField.extract(loggingContext) != null)
                 .collect(
                         Collectors.toMap(
-                                Map.Entry::getKey,
-                                Map.Entry::getValue
+                                loggingField -> loggingField,
+                                loggingField -> loggingField.extract(loggingContext)
                         ));
     }
 }
