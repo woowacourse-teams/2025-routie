@@ -14,7 +14,7 @@ import AddPlaceBasicInfo from './AddPlaceBasicInfo';
 import { ModalInputContainerStyle } from './AddPlaceModal.styles';
 import AddPlaceModalButtons from './AddPlaceModalButtons';
 import AddPlaceModalHeader from './AddPlaceModalHeader';
-import AddPlaceVerification from './AddPlaceVerification';
+import AddPlaceValidation from './AddPlaceValidation';
 
 interface AddPlaceModalProps extends Omit<ModalProps, 'children'> {
   onPlaceAdded?: () => Promise<void>;
@@ -96,7 +96,7 @@ const AddPlaceModal = ({
         );
       case 2:
         return (
-          <AddPlaceVerification
+          <AddPlaceValidation
             form={form}
             isEmpty={isEmpty}
             showErrors={showErrors}

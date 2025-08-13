@@ -5,7 +5,7 @@ import BusinessHourInputs from '../PlaceFormSection/BusinessHourInputs';
 import ClosedDaySelector from '../PlaceFormSection/ClosedDaySelector';
 import { FormState } from '../PlaceFormSection/PlaceForm.types';
 
-interface AddPlaceVerificationProps {
+interface AddPlaceValidationProps {
   form: FormState;
   isEmpty: Record<string, boolean>;
   showErrors: boolean;
@@ -16,13 +16,13 @@ interface AddPlaceVerificationProps {
   handleToggleDay: (index: number) => void;
 }
 
-const AddPlaceVerification = ({
+const AddPlaceValidation = ({
   form,
   isEmpty,
   showErrors,
   handleInputChange,
   handleToggleDay,
-}: AddPlaceVerificationProps) => {
+}: AddPlaceValidationProps) => {
   return (
     <Flex direction="column" alignItems="flex-start" width="100%" gap={2}>
       <BusinessHourInputs
@@ -47,4 +47,4 @@ const AddPlaceVerification = ({
   );
 };
 
-export default AddPlaceVerification;
+export default AddPlaceValidation;
