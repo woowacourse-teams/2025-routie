@@ -17,6 +17,7 @@ const initialFormState: FormState = {
   breakStartAt: '',
   breakEndAt: '',
   closedDayOfWeeks: [],
+  addressName: '',
 };
 
 const formReducer = (state: FormState, action: FormAction): FormState => {

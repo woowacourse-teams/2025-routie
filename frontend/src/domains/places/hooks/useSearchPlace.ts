@@ -42,8 +42,6 @@ const useSearchPlace = () => {
     setSearchResults,
     handleSearch,
     handleReset,
-    // placeLocation,
-    // handleSearchPlaceMap,
   };
 };
 

@@ -14,7 +14,7 @@ const searchPlace = async (keyword: string) => {
 
   const data = await response.json();
 
-  return data.searchPlaces;
+  return data.searchedPlaces;
 };
 
 export default searchPlace;
