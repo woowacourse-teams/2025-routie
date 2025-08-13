@@ -1,6 +1,5 @@
 package routie.place.infrastructure.search.kakao.api;
 
-import java.util.concurrent.atomic.AtomicBoolean;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.event.EventListener;
@@ -9,6 +8,8 @@ import org.springframework.web.client.RestClient;
 import routie.place.infrastructure.search.kakao.api.config.error.QuotaExceededEvent;
 import routie.place.infrastructure.search.kakao.api.dto.request.KakaoPlaceSearchApiRequest;
 import routie.place.infrastructure.search.kakao.api.dto.response.KakaoPlaceSearchApiResponse;
+
+import java.util.concurrent.atomic.AtomicBoolean;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -40,7 +41,7 @@ public class KakaoPlaceSearchApiClient {
         this.isQuotaExceeded.set(true);
     }
 
-    @Scheduled(cron = "0 0 9 * * *")
+    @Scheduled(cron = "0 0 9 * * *", zone = "Asia/Seoul")
     public void resetQuotaExceededFlag() {
         if (isQuotaExceeded.get()) {
             log.atInfo().log("카카오 로컬 API 쿼터 초과 상태를 초기화합니다.");
