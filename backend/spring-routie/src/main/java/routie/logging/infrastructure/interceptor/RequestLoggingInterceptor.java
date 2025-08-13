@@ -5,9 +5,9 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.servlet.HandlerInterceptor;
-import routie.logging.infrastructure.TraceIdHolder;
 import routie.logging.domain.LogDataBuilder;
 import routie.logging.domain.LoggingField;
+import routie.logging.infrastructure.TraceIdHolder;
 import routie.logging.service.ClientRequestLogger;
 
 @RequiredArgsConstructor

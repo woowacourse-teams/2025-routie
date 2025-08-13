@@ -4,8 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
-import routie.logging.infrastructure.aspect.RequestLoggingAspect;
 import routie.logging.domain.LogDataBuilder;
+import routie.logging.infrastructure.aspect.RequestLoggingAspect;
 import routie.logging.service.ClientRequestLogger;
 
 @Configuration

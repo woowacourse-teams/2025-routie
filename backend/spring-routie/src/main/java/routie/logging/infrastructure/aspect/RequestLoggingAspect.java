@@ -10,9 +10,9 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
-import routie.logging.infrastructure.TraceIdHolder;
 import routie.logging.domain.LogDataBuilder;
 import routie.logging.domain.LoggingField;
+import routie.logging.infrastructure.TraceIdHolder;
 import routie.logging.service.ClientRequestLogger;
 
 @Slf4j
