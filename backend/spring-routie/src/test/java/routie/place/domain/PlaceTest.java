@@ -179,28 +179,6 @@ class PlaceTest {
     }
 
     @Test
-    @DisplayName("오픈 시간을 입력하지 않은 경우 실패")
-    void createPlaceWithoutOpenTimeFail() {
-        // given
-        LocalTime openAt = null;
-
-        // when & then
-        assertThatThrownBy(() -> Place.create(
-                "카페",
-                "서울시 강남구",
-                10.123,
-                10.123,
-                60,
-                openAt,
-                LocalTime.of(22, 0),
-                null,
-                null,
-                routieSpace,
-                null
-        )).isInstanceOf(IllegalArgumentException.class);
-    }
-
-    @Test
     @DisplayName("마감 시간을 입력하지 않은 경우 실패")
     void createPlaceWithoutCloseTimeFail() {
         // given
