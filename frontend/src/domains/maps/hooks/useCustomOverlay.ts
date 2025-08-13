@@ -1,4 +1,5 @@
 import { RefObject, useCallback, useRef, useState } from 'react';
+
 import type { KakaoMapType } from '../types/KaKaoMap.types';
 
 type CustomOverlay = InstanceType<typeof window.kakao.maps.CustomOverlay>;
