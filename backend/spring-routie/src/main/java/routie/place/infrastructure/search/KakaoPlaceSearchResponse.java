@@ -12,6 +12,7 @@ public record KakaoPlaceSearchResponse(
     public record Document(
             @JsonProperty("id") String id,
             @JsonProperty("place_name") String name,
+            @JsonProperty("address_name") String addressName,
             @JsonProperty("road_address_name") String roadAddressName,
             @JsonProperty("x") Double longitude,
             @JsonProperty("y") Double latitude
@@ -21,6 +22,7 @@ public record KakaoPlaceSearchResponse(
             return new SearchedPlace(
                     this.id,
                     this.name,
+                    this.addressName,
                     this.roadAddressName,
                     this.longitude,
                     this.latitude
