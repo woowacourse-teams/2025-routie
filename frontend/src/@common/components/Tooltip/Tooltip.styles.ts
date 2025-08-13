@@ -8,7 +8,7 @@ export const TooltipContainerStyle = css`
 export const TooltipStyle = css`
   position: absolute;
   z-index: 10;
-  top: 100%;
+  top: calc(100% + 0.8rem);
   transform: translateX(-50%);
 
   padding: 6px 14px;
