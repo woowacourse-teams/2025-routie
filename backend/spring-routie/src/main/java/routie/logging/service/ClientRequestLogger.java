@@ -21,6 +21,8 @@ public class ClientRequestLogger {
         try {
             addLogDataToContext(logData);
             log.info("");
+        } catch (final Exception e) {
+            log.warn("failed to log client request");
         } finally {
             clearLogDataFromContext(logData);
         }

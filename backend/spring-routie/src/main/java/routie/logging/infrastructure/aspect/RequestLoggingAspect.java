@@ -50,17 +50,13 @@ public class RequestLoggingAspect {
             final long executionTime,
             final boolean isSuccess
     ) {
-        try {
-            Map<LoggingField, Object> logData = logDataBuilder.buildLogData(new AspectLoggingContext(
-                    httpServletRequest,
-                    executionTime,
-                    joinPoint,
-                    isSuccess
-            ));
+        Map<LoggingField, Object> logData = logDataBuilder.buildLogData(new AspectLoggingContext(
+                httpServletRequest,
+                executionTime,
+                joinPoint,
+                isSuccess
+        ));
 
-            clientRequestLogger.log(logData);
-        } catch (final Exception e) {
-            log.warn("failed to log client request");
-        }
+        clientRequestLogger.log(logData);
     }
 }
