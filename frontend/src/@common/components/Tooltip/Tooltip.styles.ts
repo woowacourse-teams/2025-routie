@@ -11,9 +11,9 @@ export const TooltipStyle = css`
   top: calc(100% + 0.8rem);
   transform: translateX(-50%);
 
-  padding: 6px 14px;
+  padding: 0.6rem 1.4rem;
   border: 0.1rem solid #bdbdbdff;
-  border-radius: 10px;
+  border-radius: 1rem;
 
   color: #282828ff;
   white-space: nowrap;

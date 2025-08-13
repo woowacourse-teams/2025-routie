@@ -26,6 +26,6 @@ export default Icon;
 export const iconStyle = (props: IconProps) => emotionCss`
   cursor: ${props.onClick ? 'pointer' : 'default'};
   flex-shrink: 0;
-  width: ${props.size || 24}px;
-  height: ${props.size || 24}px;
+  width: ${props.size && props.size / 10}rem;
+  height: ${props.size && props.size / 10}rem;
 `;
