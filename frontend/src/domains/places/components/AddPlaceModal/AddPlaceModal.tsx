@@ -29,7 +29,8 @@ const AddPlaceModal = ({
   const { form, handleInputChange, handleToggleDay, resetForm } =
     useAddPlaceForm();
   const { isEmpty, isValid } = usePlaceFormValidation(form);
-  const { step, nextStep, prevStep, resetFunnel } = useFunnel();
+  const { step, nextStep, prevStep, resetFunnel, isStep1, isStep2 } =
+    useFunnel();
 
   const [showErrors, setShowErrors] = useState(false);
   const [placeLocationInfo, setPlaceLocationInfo] =
@@ -114,10 +115,10 @@ const AddPlaceModal = ({
         <Flex direction="column" width="44rem" gap={2}>
           <AddPlaceModalHeader onClose={handleClose} />
           <Flex justifyContent="flex-start" gap={1.6} width="100%">
-            <Text variant="caption" css={step === 1 && { fontWeight: 700 }}>
+            <Text variant="caption" css={isStep1 && { fontWeight: 700 }}>
               1. 기본 정보
             </Text>
-            <Text variant="caption" css={step === 2 && { fontWeight: 700 }}>
+            <Text variant="caption" css={isStep2 && { fontWeight: 700 }}>
               2. 검증 정보
             </Text>
           </Flex>

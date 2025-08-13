@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 
 type StepType = 1 | 2;
 
@@ -17,10 +17,15 @@ export const useFunnel = () => {
     setStep(1);
   };
 
+  const isStep1 = useMemo(() => step === 1, [step]);
+  const isStep2 = useMemo(() => step === 2, [step]);
+
   return {
     step,
     nextStep,
     prevStep,
     resetFunnel,
+    isStep1,
+    isStep2,
   };
 };
