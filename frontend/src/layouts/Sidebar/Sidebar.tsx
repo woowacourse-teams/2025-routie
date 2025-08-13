@@ -127,7 +127,12 @@ const Sidebar = ({ handleViewModeChange }: SidebarProps) => {
             overflow: 'hidden',
           }}
         >
-          <Text variant="subTitle">내 동선</Text>
+          <Flex padding={0.5} justifyContent="space-between" width="100%">
+            <Text variant="subTitle">내 동선</Text>
+            <Text variant="caption" color="gray">
+              {routiePlaces.length}개의 장소가 동선에 추가되었어요
+            </Text>
+          </Flex>
           {routiePlaces.length === 0 && <EmptyRoutieMessage />}
           <Flex
             direction="column"
