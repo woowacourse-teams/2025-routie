@@ -52,10 +52,10 @@ public class Place {
     @Column(name = "stay_duration_minutes", nullable = false)
     private Integer stayDurationMinutes;
 
-    @Column(name = "open_at", nullable = false)
+    @Column(name = "open_at")
     private LocalTime openAt;
 
-    @Column(name = "close_at", nullable = false)
+    @Column(name = "close_at")
     private LocalTime closeAt;
 
     @Column(name = "break_start_at")
@@ -69,7 +69,7 @@ public class Place {
     private RoutieSpace routieSpace;
 
     @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
-    @JoinColumn(name = "place_id", nullable = false)
+    @JoinColumn(name = "place_id")
     private List<PlaceClosedDayOfWeek> placeClosedDayOfWeeks = new ArrayList<>();
 
     @CreatedDate
@@ -98,7 +98,6 @@ public class Place {
         validateLongitude(longitude);
         validateLatitude(latitude);
         validateStayDurationMinutes(stayDurationMinutes);
-        validateOperatingTime(openAt, closeAt);
         validateBreakTime(breakStartAt, breakEndAt);
         validateBreakTimeWithOperatingTime(openAt, closeAt, breakStartAt, breakEndAt);
         this.name = name;
@@ -145,7 +144,7 @@ public class Place {
 
     private static List<PlaceClosedDayOfWeek> createClosedDayOfWeeks(final List<DayOfWeek> closedDayOfWeeks) {
         if (closedDayOfWeeks == null) {
-            throw new IllegalArgumentException("휴무일은 필수 입력 사항입니다.");
+            return List.of();
         }
         return closedDayOfWeeks.stream()
                 .map(PlaceClosedDayOfWeek::new)
@@ -173,7 +172,6 @@ public class Place {
             final List<DayOfWeek> closedDayOfWeeks
     ) {
         validateStayDurationMinutes(stayDurationMinutes);
-        validateOperatingTime(openAt, closeAt);
         validateBreakTime(breakStartAt, breakEndAt);
         validateBreakTimeWithOperatingTime(openAt, closeAt, breakStartAt, breakEndAt);
 
@@ -207,12 +205,6 @@ public class Place {
         }
         if (roadAddressName.length() > 50) {
             throw new IllegalArgumentException("주소는 1자 이상 50자 이하여야 합니다.");
-        }
-    }
-
-    private void validateOperatingTime(final LocalTime openAt, final LocalTime closeAt) {
-        if (openAt == null || closeAt == null) {
-            throw new IllegalArgumentException("영업 시간은 필수 입력 사항입니다.");
         }
     }
 
