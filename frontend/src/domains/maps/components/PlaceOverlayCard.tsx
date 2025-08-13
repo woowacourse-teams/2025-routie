@@ -32,7 +32,7 @@ const PlaceOverlayCard = ({ place, onClose }: Props) => {
       variant={selected ? 'available' : 'default'}
     >
       <Flex direction="column" gap={1.2} alignItems="flex-start">
-        <Flex justifyContent="space-between" alignItems="center" width="100%">
+        <Flex justifyContent="space-between" width="100%">
           <IconButton
             icon={selected ? checkIcon : plusIcon}
             variant={selected ? 'selected' : 'select'}
