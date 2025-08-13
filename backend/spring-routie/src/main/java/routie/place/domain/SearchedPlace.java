@@ -3,6 +3,7 @@ package routie.place.domain;
 public record SearchedPlace(
         String searchedPlaceId,
         String name,
+        String addressName,
         String roadAddressName,
         double longitude,
         double latitude

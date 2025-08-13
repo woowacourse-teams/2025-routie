@@ -21,6 +21,7 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.transaction.annotation.Transactional;
 import routie.place.domain.Place;
+import routie.place.domain.PlaceBuilder;
 import routie.place.repository.PlaceRepository;
 import routie.routie.controller.dto.response.RoutieValidationResponse;
 import routie.routie.controller.dto.response.RoutieValidationResponse.ValidationResultResponse;
@@ -59,33 +60,37 @@ class RoutieServiceValidationTest {
     void setUp() {
         RestAssured.port = port;
 
-        placeA = Place.create(
-                "장소 A",
-                "주소 A",
-                10.123,
-                10.123,
-                60,
-                LocalTime.of(9, 0),
-                LocalTime.of(18, 0),
-                null,
-                null,
-                null,
-                List.of()
-        );
+        PlaceBuilder placeBuilder = new PlaceBuilder();
 
-        placeB = Place.create(
-                "장소 B",
-                "주소 B",
-                10.123,
-                10.123,
-                90,
-                LocalTime.of(10, 0),
-                LocalTime.of(20, 0),
-                LocalTime.of(14, 0),
-                LocalTime.of(15, 0),
-                null,
-                List.of(DayOfWeek.MONDAY)
-        );
+        placeA = placeBuilder
+                .name("장소 A")
+                .roadAddressName("주소 A")
+                .addressName("주소 A")
+                .longitude(127.0)
+                .latitude(37.5)
+                .stayDurationMinutes(60)
+                .openAt(LocalTime.of(9, 0))
+                .closeAt(LocalTime.of(18, 0))
+                .breakStartAt(null)
+                .breakEndAt(null)
+                .routieSpace(null)
+                .placeClosedDayOfWeeks(List.of())
+                .build();
+
+        placeB = placeBuilder
+                .name("장소 B")
+                .roadAddressName("주소 B")
+                .addressName("주소 B")
+                .longitude(127.0)
+                .latitude(37.5)
+                .stayDurationMinutes(90)
+                .openAt(LocalTime.of(10, 0))
+                .closeAt(LocalTime.of(20, 0))
+                .breakStartAt(LocalTime.of(14, 0))
+                .breakEndAt(LocalTime.of(15, 0))
+                .routieSpace(null)
+                .placeClosedDayOfWeeksByDayOfWeeks(List.of(DayOfWeek.MONDAY))
+                .build();
 
         placeRepository.saveAll(List.of(placeA, placeB));
 
@@ -182,19 +187,20 @@ class RoutieServiceValidationTest {
     @DisplayName("장소가 1개일 때 사용자의 가용 시간이 부족하면 isValid false를 반환한다")
     void validateSinglePlaceRoutie_WithInsufficientTime_ShouldReturnFalse() {
         // given: 장소가 하나만 있는 Routie, 사용자의 가용 시간이 30분으로 부족한 상태
-        Place singlePlace = Place.create(
-                "단일 장소",
-                "단일 주소",
-                10.123,
-                10.123,
-                60,
-                LocalTime.of(9, 0),
-                LocalTime.of(18, 0),
-                null,
-                null,
-                null,
-                List.of()
-        );
+        Place singlePlace = new PlaceBuilder()
+                .name("단일 장소")
+                .roadAddressName("단일 도로명 주소")
+                .addressName("단일 지번 주소")
+                .longitude(127.0)
+                .latitude(37.5)
+                .stayDurationMinutes(60)
+                .openAt(LocalTime.of(9, 0))
+                .closeAt(LocalTime.of(18, 0))
+                .breakStartAt(null)
+                .breakEndAt(null)
+                .routieSpace(null)
+                .placeClosedDayOfWeeks(List.of())
+                .build();
 
         placeRepository.save(singlePlace);
 

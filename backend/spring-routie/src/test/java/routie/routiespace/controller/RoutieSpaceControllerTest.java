@@ -76,7 +76,8 @@ public class RoutieSpaceControllerTest {
         PlaceCreateRequest placeCreateRequest = new PlaceCreateRequest(
                 "12345678",
                 "스타벅스 강남점",
-                "서울시 강남구 테헤란로 123",
+                "서울시 강남구 도로명 주소",
+                "서울시 강남구 지번 주소",
                 127.04896282498558,
                 37.504497373023206,
                 60,
@@ -113,7 +114,8 @@ public class RoutieSpaceControllerTest {
         PlaceCreateRequest place1RequestBody = new PlaceCreateRequest(
                 "12345678",
                 "스타벅스 강남점",
-                "서울시 강남구 테헤란로 123",
+                "서울시 강남구 도로명 주소",
+                "서울시 강남구 지번 주소",
                 127.04896282498558,
                 37.504497373023206,
                 60,
@@ -127,7 +129,8 @@ public class RoutieSpaceControllerTest {
         PlaceCreateRequest place2RequestBody = new PlaceCreateRequest(
                 "12345679",
                 "투썸플레이스 역삼점",
-                "서울시 강남구 역삼동 789",
+                "서울시 강남구 도로명 주소",
+                "서울시 강남구 지번 주소",
                 127.04896282498558,
                 37.504497373023206,
                 90,
