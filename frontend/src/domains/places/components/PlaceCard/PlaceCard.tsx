@@ -71,41 +71,79 @@ export const PlaceCard = ({ selected, ...props }: PlaceCardProps) => {
     <>
       <Card
         id={props.id.toString()}
-        width="20rem"
+        width="100%"
         variant={selected ? 'available' : 'default'}
       >
         <Flex
           direction="column"
-          gap={2}
+          gap={1.5}
           justifyContent="flex-start"
           alignItems="flex-start"
+          height="15rem"
         >
-          <Flex justifyContent="space-between" width="100%" alignItems="center">
+          <Flex
+            justifyContent="space-between"
+            width="100%"
+            height="100%"
+            alignItems="center"
+            gap={2}
+          >
             <IconButton
               icon={selected ? checkIcon : plusIcon}
               variant={selected ? 'selected' : 'select'}
               onClick={handlePlaceSelect}
+              css={{
+                width: '4rem',
+                height: '100%',
+
+                '& img': {
+                  width: '2rem',
+                  height: '2rem',
+                },
+              }}
             />
-            <Flex gap={1}>
-              <IconButton icon={editIcon} onClick={handleOpenEditModal} />
+            <Flex direction="column" alignItems="flex-start" gap={1}>
+              <Text variant="subTitle">{props.name}</Text>
+              <Text variant="caption" color={theme.colors.gray[200]}>
+                {props.roadAddressName}
+              </Text>
+
+              <Pill type="time">
+                {props.openAt}-{props.closeAt}
+              </Pill>
+              <DatePreviewList
+                value={getCheckedListExcept(props.closedDayOfWeeks)}
+              />
+            </Flex>
+            <Flex direction="column" height="100%">
+              <IconButton
+                icon={editIcon}
+                onClick={handleOpenEditModal}
+                css={{
+                  flex: 1,
+
+                  '& img': {
+                    width: '2rem',
+                    height: '2rem',
+                  },
+                }}
+              />
+
               <IconButton
                 icon={trashIcon}
                 variant="delete"
                 onClick={handleDelete}
+                css={{
+                  flex: 1,
+
+                  '& img': {
+                    width: '2rem',
+                    height: '2rem',
+                  },
+                }}
               />
             </Flex>
           </Flex>
-
-          <Text variant="subTitle">{props.name}</Text>
-          <Text variant="caption" color={theme.colors.gray[200]}>
-            {props.roadAddressName}
-          </Text>
-          <Pill type="time">
-            {props.openAt}-{props.closeAt}
-          </Pill>
-          <DatePreviewList
-            value={getCheckedListExcept(props.closedDayOfWeeks)}
-          />
         </Flex>
       </Card>
       <EditPlaceModal
