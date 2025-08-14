@@ -12,6 +12,10 @@ import routie.routie.domain.timeperiod.TimePeriod;
 
 @Component
 public class BreaktimeValidator implements RoutieValidator {
+
+    private static final LocalTime END_OF_DAY = LocalTime.of(23, 59, 59, 999_999_999);
+    private static final LocalTime START_OF_DAY = LocalTime.MIN;
+
     @Override
     public boolean supportsStrategy(final ValidationStrategy validationStrategy) {
         return validationStrategy == ValidationStrategy.IS_NOT_DURING_BREAKTIME;
@@ -36,36 +40,32 @@ public class BreaktimeValidator implements RoutieValidator {
         final LocalTime breakStartAt = place.getBreakStartAt();
         final LocalTime breakEndAt = place.getBreakEndAt();
 
-        if (breakStartAt == null || breakEndAt == null) {
+        if (breakStartAt == null || breakEndAt == null || breakStartAt.equals(breakEndAt)) {
             return true;
         }
 
         final LocalTime visitStartTime = timePeriod.startTime().toLocalTime();
         final LocalTime visitEndTime = timePeriod.endTime().toLocalTime();
 
-        return !isVisitOverlappingWithBreak(visitStartTime, visitEndTime, breakStartAt, breakEndAt);
+        return !doPeriodsOverlap(visitStartTime, visitEndTime, breakStartAt, breakEndAt);
     }
 
-    private boolean isVisitOverlappingWithBreak(
-            final LocalTime visitStartTime,
-            final LocalTime visitEndTime,
-            final LocalTime breakStartAt,
-            final LocalTime breakEndAt
+    private boolean doPeriodsOverlap(
+            final LocalTime visitStart,
+            final LocalTime visitEnd,
+            final LocalTime breakStart,
+            final LocalTime breakEnd
     ) {
-        return isTimeWithinPeriod(visitStartTime, breakStartAt, breakEndAt) ||
-                isTimeWithinPeriod(visitEndTime, breakStartAt, breakEndAt) ||
-                isTimeWithinPeriod(breakStartAt, visitStartTime, visitEndTime);
-    }
-
-    private boolean isTimeWithinPeriod(
-            final LocalTime time,
-            final LocalTime periodStart,
-            final LocalTime periodEnd
-    ) {
-        if (periodStart.isAfter(periodEnd)) {
-            return !time.isBefore(periodStart) || !time.isAfter(periodEnd);
+        if (visitStart.isAfter(visitEnd)) {
+            return doPeriodsOverlap(visitStart, END_OF_DAY, breakStart, breakEnd) ||
+                    doPeriodsOverlap(START_OF_DAY, visitEnd, breakStart, breakEnd);
         }
 
-        return !time.isBefore(periodStart) && !time.isAfter(periodEnd);
+        if (breakStart.isAfter(breakEnd)) {
+            return doPeriodsOverlap(visitStart, visitEnd, breakStart, END_OF_DAY) ||
+                    doPeriodsOverlap(visitStart, visitEnd, START_OF_DAY, breakEnd);
+        }
+
+        return visitStart.isBefore(breakEnd) && visitEnd.isAfter(breakStart);
     }
 }
