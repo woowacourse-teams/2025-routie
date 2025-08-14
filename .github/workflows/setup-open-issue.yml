@@ -199,7 +199,7 @@ jobs:
 
             if (iterationFieldId && matchingIteration) {
               await github.graphql(`
-                mutation($projectId: ID!, $itemId: ID!, $fieldId: ID!, $iterationId: ID!) {
+                mutation($projectId: ID!, $itemId: ID!, $fieldId: ID!, $iterationId: String!) {
                   updateProjectV2ItemFieldValue(input: {
                     projectId: $projectId,
                     itemId: $itemId,
