@@ -9,7 +9,7 @@ import Text from '@/@common/components/Text/Text';
 import Tooltip from '@/@common/components/Tooltip/Tooltip';
 import closeRed from '@/assets/icons/close-red.svg';
 import { PlaceBaseType } from '@/domains/places/types/place.types';
-import { getCheckedDaysInEnglish } from '@/domains/places/utils/getCheckedDaysInEnglish';
+import { getCheckedDaysInKorean } from '@/domains/places/utils/getCheckedDaysInKorean';
 import { getCheckedListExcept } from '@/domains/places/utils/getCheckedListExcept';
 import { useGoogleEventTrigger } from '@/libs/googleAnalytics/hooks/useGoogleEventTrigger';
 import theme from '@/styles/theme';
@@ -26,7 +26,18 @@ import {
 } from './RoutiePlaceCard.styles';
 
 const RoutiePlaceCard = ({ routie }: { routie: Routie }) => {
-  const [place, setPlace] = useState<PlaceBaseType>();
+  const [place, setPlace] = useState<PlaceBaseType>({
+    name: '',
+    roadAddressName: '',
+    stayDurationMinutes: 0,
+    openAt: '',
+    closeAt: '',
+    breakStartAt: '',
+    breakEndAt: '',
+    closedDayOfWeeks: [],
+    longitude: 0,
+    latitude: 0,
+  });
   const { handleDeleteRoutie } = useRoutieContext();
   const { triggerEvent } = useGoogleEventTrigger();
 
@@ -46,6 +57,9 @@ const RoutiePlaceCard = ({ routie }: { routie: Routie }) => {
       label: '루티에서 장소 삭제하기 버튼',
     });
   };
+
+  const checkedListExcept = getCheckedListExcept(place.closedDayOfWeeks);
+  const checkedDaysInKorean = getCheckedDaysInKorean(checkedListExcept);
 
   return (
     place && (
@@ -84,9 +98,7 @@ const RoutiePlaceCard = ({ routie }: { routie: Routie }) => {
                         <Text variant="label">
                           휴무일:{' '}
                           {place.closedDayOfWeeks.length > 0
-                            ? getCheckedDaysInEnglish(
-                                getCheckedListExcept(place.closedDayOfWeeks),
-                              ).join(', ')
+                            ? checkedDaysInKorean.join(', ')
                             : '없음'}
                         </Text>
                       </div>
