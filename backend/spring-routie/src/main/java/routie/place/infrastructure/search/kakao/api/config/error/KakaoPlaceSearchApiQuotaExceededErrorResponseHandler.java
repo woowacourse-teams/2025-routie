@@ -20,7 +20,7 @@ public class KakaoPlaceSearchApiQuotaExceededErrorResponseHandler implements Kak
 
     @Override
     public void handle(final KakaoPlaceSearchApiErrorResponse errorResponse) {
-        log.info("카카오 로컬 API 쿼터 초과");
+        log.warn("카카오 로컬 API 쿼터 초과");
         applicationEventPublisher.publishEvent(new QuotaExceededEvent(this));
     }
 }
