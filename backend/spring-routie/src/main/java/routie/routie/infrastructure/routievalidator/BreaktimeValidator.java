@@ -26,12 +26,12 @@ public class BreaktimeValidator implements RoutieValidator {
 
         return ValidationResult.withoutRoutiePlaces(
                 timePeriods.stream()
-                        .allMatch(this::isWithoutBreaktime),
+                        .allMatch(this::isNotDuringBreaktime),
                 validationStrategy
         );
     }
 
-    private boolean isWithoutBreaktime(final TimePeriod timePeriod) {
+    private boolean isNotDuringBreaktime(final TimePeriod timePeriod) {
         final Place place = timePeriod.routiePlace().getPlace();
         final LocalTime breakStartAt = place.getBreakStartAt();
         final LocalTime breakEndAt = place.getBreakEndAt();
@@ -43,9 +43,29 @@ public class BreaktimeValidator implements RoutieValidator {
         final LocalTime visitStartTime = timePeriod.startTime().toLocalTime();
         final LocalTime visitEndTime = timePeriod.endTime().toLocalTime();
 
-        boolean endsBeforeBreak = !visitEndTime.isAfter(breakStartAt);
-        boolean startsAfterBreak = !visitStartTime.isBefore(breakEndAt);
+        return !isVisitOverlappingWithBreak(visitStartTime, visitEndTime, breakStartAt, breakEndAt);
+    }
 
-        return endsBeforeBreak || startsAfterBreak;
+    private boolean isVisitOverlappingWithBreak(
+            final LocalTime visitStartTime,
+            final LocalTime visitEndTime,
+            final LocalTime breakStartAt,
+            final LocalTime breakEndAt
+    ) {
+        return isTimeWithinPeriod(visitStartTime, breakStartAt, breakEndAt) ||
+                isTimeWithinPeriod(visitEndTime, breakStartAt, breakEndAt) ||
+                isTimeWithinPeriod(breakStartAt, visitStartTime, visitEndTime);
+    }
+
+    private boolean isTimeWithinPeriod(
+            final LocalTime time,
+            final LocalTime periodStart,
+            final LocalTime periodEnd
+    ) {
+        if (periodStart.isAfter(periodEnd)) {
+            return !time.isBefore(periodStart) || !time.isAfter(periodEnd);
+        }
+
+        return !time.isBefore(periodStart) && !time.isAfter(periodEnd);
     }
 }
