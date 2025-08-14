@@ -1,5 +1,6 @@
 package routie.place.infrastructure.search.kakao;
 
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -11,8 +12,6 @@ import routie.place.infrastructure.search.kakao.api.KakaoPlaceSearchApiClient;
 import routie.place.infrastructure.search.kakao.api.dto.request.KakaoPlaceSearchApiRequest;
 import routie.place.infrastructure.search.kakao.api.dto.response.KakaoPlaceSearchApiResponse;
 import routie.place.infrastructure.search.kakao.api.dto.response.KakaoPlaceSearchApiResponse.Document;
-
-import java.util.List;
 
 @Slf4j
 @Component
@@ -41,5 +40,4 @@ public class KakaoPlaceSearcher implements PlaceSearcher {
                 .map(Document::toSearchedPlace)
                 .toList();
     }
-
 }
