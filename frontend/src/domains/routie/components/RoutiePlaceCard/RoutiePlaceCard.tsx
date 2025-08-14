@@ -29,6 +29,7 @@ const RoutiePlaceCard = ({ routie }: { routie: Routie }) => {
   const [place, setPlace] = useState<PlaceBaseType>({
     name: '',
     roadAddressName: '',
+    addressName: '',
     stayDurationMinutes: 0,
     openAt: '',
     closeAt: '',
@@ -80,7 +81,7 @@ const RoutiePlaceCard = ({ routie }: { routie: Routie }) => {
                 width="100%"
                 padding={0.5}
               >
-                <Flex width="100%" justifyContent="space-between">
+                <Flex style={{ width: '100%' }} justifyContent="space-between">
                   <Text variant="caption">{place.name}</Text>
                   <Tooltip
                     content={
