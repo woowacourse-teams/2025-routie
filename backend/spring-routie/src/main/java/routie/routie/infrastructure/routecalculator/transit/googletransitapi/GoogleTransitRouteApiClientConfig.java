@@ -49,8 +49,9 @@ public class GoogleTransitRouteApiClientConfig {
         @Override
         public boolean hasError(final ClientHttpResponse response) {
             try {
-                return response.getStatusCode().is4xxClientError() || response.getStatusCode().is5xxServerError();
+                return response.getStatusCode().isError();
             } catch (final IOException ioException) {
+                log.error("Google Routes API 응답 상태 코드 확인 중 I/O 오류 발생", ioException);
                 throw new BusinessException(ErrorCode.GOOGLE_TRANSIT_ROUTE_API_ERROR);
             }
         }
@@ -61,17 +62,32 @@ public class GoogleTransitRouteApiClientConfig {
                 final HttpMethod method,
                 final ClientHttpResponse response
         ) throws IOException {
+            final GoogleErrorResponse errorResponse = objectMapper.readValue(
+                    response.getBody(),
+                    GoogleErrorResponse.class
+            );
+            final GoogleErrorPayload errorPayload = errorResponse.error();
+
             log.warn(
-                    "Google 길찾기 API 오류 발생: {}",
-                    objectMapper.readValue(response.getBody(), GoogleTransitApiErrorResponse.class)
+                    "Google Routes API 오류 발생. HTTP Status: {}, Code: {}, Message: {}",
+                    response.getStatusCode().value(),
+                    errorPayload.status(),
+                    errorPayload.message()
             );
 
             throw new BusinessException(ErrorCode.GOOGLE_TRANSIT_ROUTE_API_ERROR);
         }
 
-        private record GoogleTransitApiErrorResponse(
-                @JsonProperty("code") String code,
-                @JsonProperty("msg") String message
+
+        public record GoogleErrorResponse(
+                @JsonProperty("error") GoogleErrorPayload error
+        ) {
+        }
+
+        public record GoogleErrorPayload(
+                @JsonProperty("code") int httpStatusCode,
+                @JsonProperty("message") String message,
+                @JsonProperty("status") String status
         ) {
         }
     }
