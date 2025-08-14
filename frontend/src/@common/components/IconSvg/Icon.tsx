@@ -1,5 +1,4 @@
-import { css as emotionCss } from '@emotion/react';
-
+import { IconStyle } from './Icon.styles';
 import { IconProps } from './Icon.types';
 import allIcons from './allIcons';
 
@@ -16,16 +15,9 @@ const Icon = ({ name, size = 14, onClick, className }: IconProps) => {
       alt={name}
       onClick={onClick}
       className={className}
-      css={iconStyle({ name, size, onClick })}
+      css={IconStyle({ name, size, onClick })}
     />
   );
 };
 
 export default Icon;
-
-export const iconStyle = (props: IconProps) => emotionCss`
-  cursor: ${props.onClick ? 'pointer' : 'default'};
-  flex-shrink: 0;
-  width: ${props.size && props.size / 10}rem;
-  height: ${props.size && props.size / 10}rem;
-`;
