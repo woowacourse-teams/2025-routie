@@ -62,9 +62,9 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const { pull_request: pr, repository } = context.payload;
-            
+
             const labels = [];
-            
+
             // 1. PR 제목 prefix 기반 라벨 추가
             const title = pr.title.toLowerCase();
             const titleLabelMap = {
@@ -78,15 +78,15 @@ jobs:
             };
             const titlePrefix = Object.keys(titleLabelMap).find(prefix => title.startsWith(prefix + ':'));
             if (titlePrefix) labels.push(titleLabelMap[titlePrefix]);
-            
+
             // 2. author 기반 라벨 추가
             const feTeam = ['ohgus', 'AHHYUNJU', 'aydenote', 'jeongyou'];
             const beTeam = ['threepebbles', 'goohong', 'cookie-meringue', 'DongchannN'];
-            
+
             const author = pr.user.login;
             const authorLabel = feTeam.includes(author) ? 'frontend' : beTeam.includes(author) ? 'backend' : null;
             if (authorLabel) labels.push(authorLabel);
-            
+
             if (labels.length) {
               await github.rest.issues.addLabels({
                 owner: repository.owner.login,
@@ -107,11 +107,11 @@ jobs:
         run: |
           OWNER=$(echo "$REPO" | cut -d'/' -f1)
           REPO_NAME=$(echo "$REPO" | cut -d'/' -f2)
-          
+
           LABELS=$(curl -s -H "Authorization: Bearer $GITHUB_TOKEN" \
             "https://api.github.com/repos/$OWNER/$REPO_NAME/issues/$PR_NUMBER" \
             | jq -r '.labels[].name')
-          
+
           for LABEL in $LABELS; do
             case "$LABEL" in
               "backend")
@@ -124,18 +124,18 @@ jobs:
                 continue
                 ;;
             esac
-          
+
             MESSAGE="$PR_URL"
             if [ -z "$WEBHOOK_URL" ]; then
               echo "Webhook URL not set for label $LABEL. Skipping."
               continue
             fi
-          
+
             if [ -z "$MESSAGE" ]; then
               echo "Message is empty. Skipping."
               continue
             fi
-          
+
             PAYLOAD=$(jq -n --arg content "$MESSAGE" '{content: $content}')
             curl --fail -H "Content-Type: application/json" \
               -X POST \
@@ -151,30 +151,30 @@ jobs:
           script: |
             // GitHub Actions에서 전달 받은 PR 정보
             const { pull_request: pr } = context.payload;
-            
+
             // Project v2 ID
             const projectNodeId = 'PVT_kwDOA_44FM4A9rer';
-            
+
             const fieldData = await github.graphql(`
-              query {
-                node(id: "${projectNodeId}") {
+              query($projectId: ID!) {
+                node(id: $projectId) {
                   ... on ProjectV2 {
                     fields(first: 50) {
                       nodes {
                         __typename
-            
+
                         ... on ProjectV2FieldCommon {
                           id
                           name
                         }
-            
+
                         ... on ProjectV2SingleSelectField {
                           options {
                             id
                             name
                           }
                         }
-            
+
                         ... on ProjectV2IterationField {
                           configuration {
                             __typename
@@ -192,10 +192,12 @@ jobs:
                   }
                 }
               }
-            `);
+            `, {
+              projectId: projectNodeId,
+            });
 
             const fields = fieldData.node.fields.nodes;
-            
+
             // 1. Issue를 Project 아이템으로 추가
             const addItemResponse = await github.graphql(`
               mutation($projectId: ID!, $contentId: ID!) {
@@ -216,7 +218,7 @@ jobs:
             );
             const statusFieldId = statusField?.id;
             const inProgressOptionId = statusField?.options?.find(o => o.name.toLowerCase() === 'in progress')?.id;
-            
+
             if (statusFieldId && inProgressOptionId) {
               await github.graphql(`
                 mutation($projectId: ID!, $itemId: ID!, $fieldId: ID!, $optionId: String!) {
@@ -239,29 +241,33 @@ jobs:
 
             // 3. Start Date을 today로 설정
             const startDateField = fields.find(f =>
-              f.__typename === 'ProjectV2Field' &&
               f.name?.toLowerCase() === 'start date'
             );
             const startDateFieldId = startDateField?.id;
-            
+
             const today = new Date();
             const todayISOString = today.toISOString().split('T')[0];
-            
+
             if (startDateFieldId) {
               await github.graphql(`
-                mutation {
+                mutation($projectId: ID!, $itemId: ID!, $fieldId: ID!, $date: String!) {
                   updateProjectV2ItemFieldValue(input: {
-                    projectId: "${projectNodeId}",
-                    itemId: "${itemId}",
-                    fieldId: "${startDateFieldId}",
-                    value: { date: "${todayISOString}" }
+                    projectId: $projectId,
+                    itemId: $itemId,
+                    fieldId: $fieldId,
+                    value: { date: $date }
                   }) {
                     projectV2Item { id }
                   }
                 }
-              `);
+              `, {
+                projectId: projectNodeId,
+                itemId,
+                fieldId: startDateFieldId,
+                date: todayISOString,
+              });
             }
-            
+
             // 4. iteration 설정
             const iterationField = fields.find(f =>
               f.__typename === 'ProjectV2IterationField' &&
@@ -282,21 +288,26 @@ jobs:
 
             if (iterationFieldId && matchingIteration) {
               await github.graphql(`
-                mutation {
+                mutation($projectId: ID!, $itemId: ID!, $fieldId: ID!, $iterationId: ID!) {
                   updateProjectV2ItemFieldValue(input: {
-                    projectId: "${projectNodeId}",
-                    itemId: "${itemId}",
-                    fieldId: "${iterationFieldId}",
+                    projectId: $projectId,
+                    itemId: $itemId,
+                    fieldId: $fieldId,
                     value: {
-                      iterationId: "${matchingIteration.id}"
+                      iterationId: $iterationId
                     }
                   }) {
                     projectV2Item { id }
                   }
                 }
-              `);
+              `, {
+                projectId: projectNodeId,
+                itemId,
+                fieldId: iterationFieldId,
+                iterationId: matchingIteration.id,
+              });
             }
-            
+
             // 5. Hierarchy 필드 task로 설정
             const hierarchyField = fields.find(f =>
               f.__typename === 'ProjectV2SingleSelectField' &&

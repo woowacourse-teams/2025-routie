@@ -35,12 +35,12 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const { issue, repository } = context.payload;
-            
+
             const labels = [];
             // author 기반 라벨 추가
             const feTeam = ['ohgus', 'AHHYUNJU', 'aydenote', 'jeongyou'];
             const beTeam = ['threepebbles', 'goohong', 'cookie-meringue', 'DongchannN'];
-            
+
             const author = issue.user.login;
             const authorLabel = feTeam.includes(author) ? 'frontend' : beTeam.includes(author) ? 'backend' : null;
             if (authorLabel) labels.push(authorLabel);
@@ -62,30 +62,30 @@ jobs:
           script: |
             // GitHub Actions에서 전달 받은 Issue 정보
             const { issue } = context.payload;
-            
+
             // Project v2 ID
             const projectNodeId = 'PVT_kwDOA_44FM4A9rer';
-            
+
             const fieldData = await github.graphql(`
-              query {
-                node(id: "${projectNodeId}") {
+              query($projectId: ID!) {
+                node(id: $projectId) {
                   ... on ProjectV2 {
                     fields(first: 50) {
                       nodes {
                         __typename
-            
+
                         ... on ProjectV2FieldCommon {
                           id
                           name
                         }
-            
+
                         ... on ProjectV2SingleSelectField {
                           options {
                             id
                             name
                           }
                         }
-            
+
                         ... on ProjectV2IterationField {
                           configuration {
                             __typename
@@ -103,10 +103,12 @@ jobs:
                   }
                 }
               }
-            `);
+            `, {
+              projectId: projectNodeId,
+            });
 
             const fields = fieldData.node.fields.nodes;
-            
+
             // 1. Issue를 Project 아이템으로 추가
             const addItemResponse = await github.graphql(`
               mutation($projectId: ID!, $contentId: ID!) {
@@ -127,7 +129,7 @@ jobs:
             );
             const statusFieldId = statusField?.id;
             const todoOptionId = statusField?.options?.find(o => o.name.toLowerCase() === 'todo')?.id;
-            
+
             if (statusFieldId && todoOptionId) {
               await github.graphql(`
                 mutation($projectId: ID!, $itemId: ID!, $fieldId: ID!, $optionId: String!) {
@@ -143,7 +145,6 @@ jobs:
               `, {
                 projectId: projectNodeId,
                 itemId,
-                fieldId: statusFieldId,
                 optionId: todoOptionId,
               });
             }
@@ -154,25 +155,30 @@ jobs:
               f.name?.toLowerCase() === 'start date'
             );
             const startDateFieldId = startDateField?.id;
-            
+
             const today = new Date();
             const todayISOString = today.toISOString().split('T')[0];
-            
+
             if (startDateFieldId) {
               await github.graphql(`
-                mutation {
+                mutation($projectId: ID!, $itemId: ID!, $fieldId: ID!, $date: String!) {
                   updateProjectV2ItemFieldValue(input: {
-                    projectId: "${projectNodeId}",
-                    itemId: "${itemId}",
-                    fieldId: "${startDateFieldId}",
-                    value: { date: "${todayISOString}" }
+                    projectId: $projectId,
+                    itemId: $itemId,
+                    fieldId: $fieldId,
+                    value: { date: $date }
                   }) {
                     projectV2Item { id }
                   }
                 }
-              `);
+              `, {
+                projectId: projectNodeId,
+                itemId,
+                fieldId: startDateFieldId,
+                date: todayISOString,
+              });
             }
-            
+
             // 4. iteration 설정
             const iterationField = fields.find(f =>
               f.__typename === 'ProjectV2IterationField' &&
@@ -193,28 +199,33 @@ jobs:
 
             if (iterationFieldId && matchingIteration) {
               await github.graphql(`
-                mutation {
+                mutation($projectId: ID!, $itemId: ID!, $fieldId: ID!, $iterationId: ID!) {
                   updateProjectV2ItemFieldValue(input: {
-                    projectId: "${projectNodeId}",
-                    itemId: "${itemId}",
-                    fieldId: "${iterationFieldId}",
+                    projectId: $projectId,
+                    itemId: $itemId,
+                    fieldId: $fieldId,
                     value: {
-                      iterationId: "${matchingIteration.id}"
+                      iterationId: $iterationId
                     }
                   }) {
                     projectV2Item { id }
                   }
                 }
-              `);
+              `, {
+                projectId: projectNodeId,
+                itemId,
+                fieldId: iterationFieldId,
+                iterationId: matchingIteration.id,
+              });
             }
-            
+
             // 5. Issue title 기반 Hierarchy 필드 설정
             const hierarchyField = fields.find(f =>
               f.__typename === 'ProjectV2SingleSelectField' &&
               f.name?.toLowerCase() === 'hierarchy'
             );
             const hierarchyFieldId = hierarchyField?.id;
-            
+
             const title = issue.title;
             const titleMap = {
               '[EPIC]': 'epic',
