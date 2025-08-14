@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 
 import Button from '@/@common/components/Button/Button';
@@ -29,9 +29,15 @@ const KakaoMap = ({ lat = 37.554, lng = 126.97, level = 7 }: KakaoMapProps) => {
   const { placeList } = usePlaceListContext();
   const { routieIdList } = useRoutieContext();
 
-  const routiePlaces = placeList
-    .filter((place) => routieIdList.includes(place.id))
-    .sort((a, b) => routieIdList.indexOf(a.id) - routieIdList.indexOf(b.id));
+  const routiePlaces = useMemo(
+    () =>
+      placeList
+        .filter((place) => routieIdList.includes(place.id))
+        .sort(
+          (a, b) => routieIdList.indexOf(a.id) - routieIdList.indexOf(b.id),
+        ),
+    [placeList, routieIdList],
+  );
 
   const { sdkReady, sdkError } = useKakaoMapSDK();
   const { mapRef, mapState, errorMessage } = useKakaoMapInit({
@@ -62,31 +68,7 @@ const KakaoMap = ({ lat = 37.554, lng = 126.97, level = 7 }: KakaoMapProps) => {
   };
 
   useEffect(() => {
-    if (!mapRef.current) return;
-
-    clearMarkers();
-
-    placeList.forEach((place) => {
-      drawMarkers(place.latitude, place.longitude, () => {
-        setSelectedPlace(place);
-        openAt(place.latitude, place.longitude);
-        fitMapToMarker(place.latitude, place.longitude);
-      });
-    });
-
-    fitMapToMarkers(placeList);
-  }, [
-    mapRef.current,
-    drawMarkers,
-    placeList,
-    fitMapToMarkers,
-    clearMarkers,
-    openAt,
-    fitMapToMarker,
-  ]);
-
-  useEffect(() => {
-    if (!mapRef.current) return;
+    if (mapState !== 'ready' || !mapRef.current) return;
 
     window.kakao.maps.event.addListener(
       mapRef.current,
@@ -95,22 +77,41 @@ const KakaoMap = ({ lat = 37.554, lng = 126.97, level = 7 }: KakaoMapProps) => {
     );
 
     return () => {
-      window.kakao.maps.event.removeListener(
-        mapRef.current,
-        'click',
-        handleMapClick,
-      );
+      if (mapRef.current) {
+        window.kakao.maps.event.removeListener(
+          mapRef.current,
+          'click',
+          handleMapClick,
+        );
+      }
     };
-  }, [mapRef.current, close, handleMapClick]);
+  }, [mapState]);
 
   useEffect(() => {
-    fitMapToMarkers(placeList);
-    clearPolyline();
+    if (mapState !== 'ready' || !mapRef.current) return;
 
-    routiePlaces.forEach((place) => {
-      loadPolyline(place.latitude, place.longitude);
-    });
-  }, [loadPolyline, fitMapToMarkers, routiePlaces, placeList, clearPolyline]);
+    const renderMapElements = () => {
+      clearMarkers();
+
+      placeList.forEach((place) => {
+        drawMarkers(place.latitude, place.longitude, () => {
+          setSelectedPlace(place);
+          openAt(place.latitude, place.longitude);
+          fitMapToMarker(place.latitude, place.longitude);
+        });
+      });
+
+      fitMapToMarkers(placeList);
+
+      clearPolyline();
+
+      routiePlaces.forEach((place) => {
+        loadPolyline(place.latitude, place.longitude);
+      });
+    };
+
+    renderMapElements();
+  }, [mapState, placeList, routiePlaces]);
 
   return (
     <div css={KakaoMapWrapperStyle}>
