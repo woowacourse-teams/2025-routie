@@ -28,11 +28,16 @@ public enum ErrorCode {
             "지원하지 않는 이동 전략입니다.",
             HttpStatus.BAD_REQUEST
     ),
-    KAKAO_LOCAL_API_ERROR(
-            "6001", 
-            "외부 장소 검색 서비스에 문제가 발생했습니다.", 
+    GOOGLE_TRANSIT_ROUTE_API_ERROR(
+            "5005",
+            "경로 계산을 위한 외부 API 호출 중 오류가 발생했습니다.",
             HttpStatus.BAD_GATEWAY
-    )
+    ),
+    KAKAO_LOCAL_API_ERROR(
+            "6001",
+            "외부 장소 검색 서비스에 문제가 발생했습니다.",
+            HttpStatus.BAD_GATEWAY
+    ),
     ;
 
     private final String code;
