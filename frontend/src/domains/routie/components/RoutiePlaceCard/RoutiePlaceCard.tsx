@@ -18,7 +18,7 @@ import { getDetailPlace } from '../../apis/routie';
 import { useRoutieContext } from '../../contexts/useRoutieContext';
 import { Routie } from '../../types/routie.types';
 import formatMinutesToHours from '../../utils/formatMinutesToHours';
-import DraggableCardWrapper from '../DraggableWrapper/DraggableWrapper';
+import DraggableWrapper from '../DraggableWrapper/DraggableWrapper';
 
 import {
   dragIconStyle,
@@ -49,7 +49,7 @@ const RoutiePlaceCard = ({ routie }: { routie: Routie }) => {
 
   return (
     place && (
-      <DraggableCardWrapper>
+      <DraggableWrapper>
         <Card id={routie.placeId.toString()} variant="defaultStatic">
           <Flex justifyContent="flex-start" gap={1.5}>
             <Flex width="100%" justifyContent="space-between" gap={1.5}>
@@ -132,7 +132,7 @@ const RoutiePlaceCard = ({ routie }: { routie: Routie }) => {
             </Flex>
           </Flex>
         </Card>
-      </DraggableCardWrapper>
+      </DraggableWrapper>
     )
   );
 };

@@ -4,13 +4,13 @@ interface DraggableCardWrapperProps
   children: React.ReactNode;
 }
 
-const DraggableCardWrapper = ({ children }: DraggableCardWrapperProps) => {
-  return <div css={DraggableCardWrapperStyle}>{children}</div>;
+const DraggableWrapper = ({ children }: DraggableCardWrapperProps) => {
+  return <div css={DraggableWrapperStyle}>{children}</div>;
 };
 
-export default DraggableCardWrapper;
+export default DraggableWrapper;
 
-const DraggableCardWrapperStyle = css`
+const DraggableWrapperStyle = css`
   cursor: grab;
   border-radius: 1.2rem;
   transition: transform 120ms ease, box-shadow 120ms ease, opacity 120ms ease;
