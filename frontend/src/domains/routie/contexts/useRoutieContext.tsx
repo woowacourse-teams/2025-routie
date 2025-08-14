@@ -40,14 +40,14 @@ export const RoutieProvider = ({ children }: { children: React.ReactNode }) => {
   const [routiePlaces, setRoutiePlaces] = useState<Routie[]>([]);
   const [routes, setRoutes] = useState<Routes[]>([]);
   const routieIdList = routiePlaces.map((routie) => routie.placeId);
-  const { isValidateActive, routieTime, validateRoutie } =
+  const { isValidateActive, combineDateTime, validateRoutie } =
     useRoutieValidateContext();
 
   const refetchRoutieData = useCallback(async () => {
     try {
       const routies = await getRoutie(
         isValidateActive,
-        routieTime.startDateTime,
+        combineDateTime.startDateTime,
       );
       setRoutiePlaces(routies.routiePlaces);
       setRoutes(routies.routes);
@@ -55,7 +55,7 @@ export const RoutieProvider = ({ children }: { children: React.ReactNode }) => {
     } catch (error) {
       console.error('루티 정보를 불러오는데 실패했습니다.', error);
     }
-  }, [isValidateActive, routieTime.startDateTime, validateRoutie]);
+  }, [isValidateActive, combineDateTime.startDateTime, validateRoutie]);
 
   const handleAddRoutie = useCallback(
     async (id: number) => {
@@ -102,9 +102,8 @@ export const RoutieProvider = ({ children }: { children: React.ReactNode }) => {
     refetchRoutieData();
   }, [
     isValidateActive,
-    routieTime.startDateTime,
-    routieTime.endDateTime,
-    refetchRoutieData,
+    combineDateTime.startDateTime,
+    combineDateTime.endDateTime,
   ]);
 
   return (
