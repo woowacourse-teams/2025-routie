@@ -48,7 +48,11 @@ const useMapMarker = ({ map }: { map: RefObject<KakaoMapType> }) => {
         bounds.extend(position);
       });
 
-      map.current.panTo(bounds);
+      setTimeout(() => {
+        if (map.current) {
+          map.current.panTo(bounds);
+        }
+      }, 100);
     },
     [],
   );
@@ -58,12 +62,9 @@ const useMapMarker = ({ map }: { map: RefObject<KakaoMapType> }) => {
 
     const position = new window.kakao.maps.LatLng(lat, lng);
 
-    map.current.jump(position, 8, {
-      animate: {
-        duration: 500,
-        easing: 'ease-in-out',
-      },
-    });
+    setTimeout(() => {
+      map.current.panTo(position);
+    }, 120);
   }, []);
 
   return { drawMarkers, fitMapToMarkers, clearMarkers, fitMapToMarker };
