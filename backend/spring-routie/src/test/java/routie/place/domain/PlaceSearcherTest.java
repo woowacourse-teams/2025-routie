@@ -14,9 +14,9 @@ class PlaceSearcherTest {
 
     @Test
     @Disabled
-    void searchPlaceTest() {
+    void searchPlacesPlaceTest() {
         String query = "선릉역";
-        List<SearchedPlace> searchedPlaces = placeSearcher.search(query);
+        List<SearchedPlace> searchedPlaces = placeSearcher.searchPlaces(query, 5);
         for (final SearchedPlace searchedPlace : searchedPlaces) {
             System.out.println(
                     searchedPlace.searchedPlaceId() + ", "

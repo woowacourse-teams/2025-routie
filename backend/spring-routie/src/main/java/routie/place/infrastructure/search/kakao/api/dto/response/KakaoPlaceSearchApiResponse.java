@@ -1,10 +1,10 @@
-package routie.place.infrastructure.search;
+package routie.place.infrastructure.search.kakao.api.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import routie.place.domain.SearchedPlace;
 
-public record KakaoPlaceSearchResponse(
+public record KakaoPlaceSearchApiResponse(
         @JsonProperty("documents") List<Document> documents,
         @JsonProperty("meta") Meta meta
 ) {

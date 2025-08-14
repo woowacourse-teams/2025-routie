@@ -1,6 +1,7 @@
 package routie.place.controller;
 
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
 import io.restassured.RestAssured;
@@ -61,7 +62,7 @@ class PlaceSearchControllerTest {
                 )
         );
 
-        when(placeSearcher.search(anyString()))
+        when(placeSearcher.searchPlaces(anyString(), eq(5)))
                 .thenReturn(stubbedSearchedPlaces);
     }
 
