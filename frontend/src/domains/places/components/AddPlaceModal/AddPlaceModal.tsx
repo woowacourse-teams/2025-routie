@@ -66,14 +66,16 @@ const AddPlaceModal = ({
     e.preventDefault();
     const addPlaceForm = { ...form, ...placeLocationInfo };
 
-    if (isValid) {
+    if (!isValid) {
       setShowErrors(true);
       return;
     }
 
     try {
       await addPlace(addPlaceForm);
-      await onPlaceAdded?.();
+      if (onPlaceAdded) {
+        await onPlaceAdded();
+      }
     } catch (error) {
       console.log(error);
     }

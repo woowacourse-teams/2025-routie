@@ -24,16 +24,16 @@ export const usePlaceFormRequiredFieldsValidation = (form: FormState) => {
     !form.openAt ||
     !form.closeAt
   ) {
-    return true;
+    return false;
   }
 
   if (form.breakStartAt && !form.breakEndAt) {
-    return true;
+    return false;
   }
 
   if (!form.breakStartAt && form.breakEndAt) {
-    return true;
+    return false;
   }
 
-  return false;
+  return true;
 };
