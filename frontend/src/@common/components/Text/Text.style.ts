@@ -28,14 +28,8 @@ const textVariant: Record<TextVariantProps, SerializedStyles> = {
 };
 
 export const TextStyle = ({ color, variant }: TextProps) => css`
-  overflow: hidden;
-
   box-sizing: border-box;
   max-width: 100%;
-
   color: ${color ?? theme.colors.black};
   ${variant && textVariant[variant]}
-
-  text-overflow: ellipsis;
-  white-space: nowrap;
 `;
