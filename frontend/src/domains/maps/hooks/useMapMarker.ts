@@ -50,7 +50,7 @@ const useMapMarker = ({ map }: { map: RefObject<KakaoMapType> }) => {
 
       setTimeout(() => {
         if (map.current) {
-          map.current.panTo(bounds);
+          map.current.setBounds(bounds);
         }
       }, 100);
     },
