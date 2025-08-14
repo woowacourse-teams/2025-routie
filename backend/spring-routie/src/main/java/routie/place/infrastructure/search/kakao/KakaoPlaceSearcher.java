@@ -27,6 +27,9 @@ public class KakaoPlaceSearcher implements PlaceSearcher {
 
     @Override
     public List<SearchedPlace> searchPlaces(final String query, final Integer size) {
+        validateQuery(query);
+        validateSize(size);
+
         KakaoPlaceSearchApiResponse kakaoPlaceSearchApiResponse = kakaoPlaceSearchApiClient.search(
                 new KakaoPlaceSearchApiRequest(query, size)
         );
@@ -39,5 +42,17 @@ public class KakaoPlaceSearcher implements PlaceSearcher {
                 .stream()
                 .map(Document::toSearchedPlace)
                 .toList();
+    }
+
+    private void validateQuery(final String query) {
+        if (query == null || query.isBlank()) {
+            throw new IllegalArgumentException("검색어는 비어있을 수 없습니다.");
+        }
+    }
+
+    private void validateSize(final Integer size) {
+        if (size == null || size < 1 || size > 15) {
+            throw new IllegalArgumentException("검색 결과의 크기는 1에서 15 사이여야 합니다.");
+        }
     }
 }
