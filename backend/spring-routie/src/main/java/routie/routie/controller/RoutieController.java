@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import routie.place.domain.MovingStrategy;
 import routie.routie.controller.dto.request.RoutiePlaceCreateRequest;
 import routie.routie.controller.dto.request.RoutieUpdateRequest;
 import routie.routie.controller.dto.response.RoutiePlaceCreateResponse;
@@ -43,21 +44,24 @@ public class RoutieController {
     @GetMapping
     public ResponseEntity<RoutieReadResponse> readRoutie(
             @PathVariable final String routieSpaceIdentifier,
-            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) final LocalDateTime startDateTime
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) final LocalDateTime startDateTime,
+            @RequestParam(required = false) final MovingStrategy movingStrategy
     ) {
-        return ResponseEntity.ok(routieService.getRoutie(routieSpaceIdentifier, startDateTime));
+        return ResponseEntity.ok(routieService.getRoutie(routieSpaceIdentifier, startDateTime, movingStrategy));
     }
 
     @GetMapping("/validation")
     public ResponseEntity<RoutieValidationResponse> validateRoutie(
             @PathVariable final String routieSpaceIdentifier,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) final LocalDateTime startDateTime,
-            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) final LocalDateTime endDateTime
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) final LocalDateTime endDateTime,
+            @RequestParam final MovingStrategy movingStrategy
     ) {
         RoutieValidationResponse routieValidationResponse = routieService.validateRoutie(
                 routieSpaceIdentifier,
                 startDateTime,
-                endDateTime
+                endDateTime,
+                movingStrategy
         );
         return ResponseEntity.ok(routieValidationResponse);
     }
