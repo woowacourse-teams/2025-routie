@@ -25,3 +25,7 @@ logging:
 kakao:
   api:
     key: ${KAKAO_API_KEY}
+
+v-world:
+  api:
+    key: ${V_WORLD_API_KEY}
