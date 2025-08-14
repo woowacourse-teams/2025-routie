@@ -250,7 +250,7 @@ jobs:
 
             if (startDateFieldId) {
               await github.graphql(`
-                mutation($projectId: ID!, $itemId: ID!, $fieldId: ID!, $date: String!) {
+                mutation($projectId: ID!, $itemId: ID!, $fieldId: ID!, $date: Date!) {
                   updateProjectV2ItemFieldValue(input: {
                     projectId: $projectId,
                     itemId: $itemId,
