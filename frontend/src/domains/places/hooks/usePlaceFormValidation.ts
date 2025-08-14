@@ -11,7 +11,29 @@ export const usePlaceFormValidation = (form: FormState) => {
     breakEndAt: form.breakEndAt === '',
   };
 
-  const isValid = Object.values(isEmpty).every((field) => !field);
+  const isValid = usePlaceFormRequiredFieldsValidation(form);
 
   return { isEmpty, isValid };
+};
+
+export const usePlaceFormRequiredFieldsValidation = (form: FormState) => {
+  if (
+    !form.name ||
+    !form.roadAddressName ||
+    !form.stayDurationMinutes ||
+    !form.openAt ||
+    !form.closeAt
+  ) {
+    return true;
+  }
+
+  if (form.breakStartAt && !form.breakEndAt) {
+    return true;
+  }
+
+  if (!form.breakStartAt && form.breakEndAt) {
+    return true;
+  }
+
+  return false;
 };
