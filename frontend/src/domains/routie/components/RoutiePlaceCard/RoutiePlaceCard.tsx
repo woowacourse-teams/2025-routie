@@ -38,6 +38,7 @@ const RoutiePlaceCard = ({ routie }: { routie: Routie }) => {
     longitude: 0,
     latitude: 0,
   });
+
   const { handleDeleteRoutie } = useRoutieContext();
   const { triggerEvent } = useGoogleEventTrigger();
 
@@ -79,7 +80,7 @@ const RoutiePlaceCard = ({ routie }: { routie: Routie }) => {
                 width="100%"
                 padding={0.5}
               >
-                <Flex style={{ width: '100%' }} justifyContent="space-between">
+                <Flex width="100%" justifyContent="space-between">
                   <Text variant="caption">{place.name}</Text>
                   <Tooltip
                     content={
