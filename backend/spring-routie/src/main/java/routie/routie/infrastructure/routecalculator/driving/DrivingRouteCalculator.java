@@ -35,7 +35,7 @@ public class DrivingRouteCalculator implements RouteCalculator {
         );
         List<SectionResponse> sectionResponses = getRouteResponse(kakaoDrivingRouteApiResponse).sectionResponses();
 
-        return mapToRoutes(routiePlaces, movingStrategy, sectionResponses);
+        return mapToRoutes(routiePlaces, sectionResponses);
     }
 
     private KakaoDrivingRouteApiResponse.RouteResponse getRouteResponse(
@@ -48,7 +48,6 @@ public class DrivingRouteCalculator implements RouteCalculator {
 
     private Routes mapToRoutes(
             final List<RoutiePlace> routiePlaces,
-            final MovingStrategy movingStrategy,
             final List<SectionResponse> sectionResponses
     ) {
         Map<RoutiePlace, Route> routeMap = new HashMap<>();
@@ -56,7 +55,7 @@ public class DrivingRouteCalculator implements RouteCalculator {
             SectionResponse sectionResponse = sectionResponses.get(i);
             RoutiePlace from = routiePlaces.get(i);
             RoutiePlace to = routiePlaces.get(i + 1);
-            Route route = new Route(from, to, movingStrategy, sectionResponse.duration() / 60,
+            Route route = new Route(from, to, sectionResponse.duration() / 60,
                     sectionResponse.distance());
             routeMap.put(from, route);
         }
