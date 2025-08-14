@@ -23,3 +23,7 @@ spring:
 kakao:
   api:
     key: test-api-key
+
+v-world:
+  api:
+    key: test-api-key
