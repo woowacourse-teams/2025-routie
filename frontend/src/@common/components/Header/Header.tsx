@@ -31,15 +31,6 @@ const Header = ({ handleViewModeChange }: HeaderProps) => {
           onClick={() => navigate('/')}
           css={buttonStyle}
         ></HomeButton>
-        {handleViewModeChange && (
-          <Button variant="primary" width="20%" onClick={handleViewModeChange}>
-            <Flex justifyContent="center" width="100%">
-              <Text variant="subTitle" color="white">
-                뷰모드 변경
-              </Text>
-            </Flex>
-          </Button>
-        )}
       </Flex>
     </div>
   );

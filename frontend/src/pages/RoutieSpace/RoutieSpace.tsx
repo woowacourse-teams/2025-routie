@@ -4,7 +4,6 @@ import KakaoMap from '@/domains/maps/components/KakaoMap';
 import { RoutieProvider } from '@/domains/routie/contexts/useRoutieContext';
 import { RoutieValidateProvider } from '@/domains/routie/contexts/useRoutieValidateContext';
 import MapWithSideSheet from '@/layouts/MapWithSideSheet/MapWithSideSheet';
-import PlaceList from '@/layouts/PlaceList/PlaceList';
 import { PlaceListProvider } from '@/layouts/PlaceList/contexts/PlaceListProvider';
 import SideSheet from '@/layouts/SideSheet/SideSheet';
 import Sidebar from '@/layouts/Sidebar/Sidebar';
@@ -21,8 +20,7 @@ const RoutieSpace = () => {
               <Sidebar handleViewModeChange={handleViewModeChange} />
             </Flex>
             <Flex direction="column" justifyContent="flex-start" height="100%">
-              {viewMode === 'list' && <PlaceList />}
-              {viewMode === 'map' && <MapWithSideSheet />}
+              <MapWithSideSheet />
             </Flex>
           </Flex>
         </PlaceListProvider>
