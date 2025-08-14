@@ -24,7 +24,7 @@ import PlaceOverlayCard from './PlaceOverlayCard';
 
 import type { KakaoMapProps } from '../types/KaKaoMap.types';
 
-const KakaoMap = ({ lat = 36.5, lng = 127.8, level = 13 }: KakaoMapProps) => {
+const KakaoMap = ({ lat = 37.554, lng = 126.97, level = 7 }: KakaoMapProps) => {
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const { placeList } = usePlaceListContext();
   const { routieIdList } = useRoutieContext();
