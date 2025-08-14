@@ -44,7 +44,7 @@ public class KakaoPlaceSearchApiClient {
     @Scheduled(cron = "0 0 9 * * *", zone = "Asia/Seoul")
     public void resetQuotaExceededFlag() {
         if (isQuotaExceeded.get()) {
-            log.atInfo().log("카카오 로컬 API 쿼터 초과 상태를 초기화합니다.");
+            log.info("카카오 로컬 API 쿼터 초과 상태를 초기화합니다.");
             isQuotaExceeded.set(false);
         }
     }

@@ -1,9 +1,6 @@
 package routie.place.infrastructure.search.kakao.api.config.error;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.io.IOException;
-import java.net.URI;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpMethod;
@@ -15,6 +12,10 @@ import org.springframework.web.client.ResponseErrorHandler;
 import routie.exception.BusinessException;
 import routie.exception.ErrorCode;
 import routie.place.infrastructure.search.kakao.api.dto.response.KakaoPlaceSearchApiErrorResponse;
+
+import java.io.IOException;
+import java.net.URI;
+import java.util.List;
 
 @Slf4j
 @Component
@@ -58,7 +59,7 @@ public class KakaoPlaceSearchApiErrorHandler implements ResponseErrorHandler {
                         )
                 );
 
-        log.warn("카카오 검색 API 오류 발생: {} ", "errorResponse.code()");
+        log.warn("카카오 검색 API 오류 발생: {} ", kakaoPlaceSearchApiErrorResponse);
         throw new BusinessException(ErrorCode.KAKAO_LOCAL_API_ERROR);
     }
 }

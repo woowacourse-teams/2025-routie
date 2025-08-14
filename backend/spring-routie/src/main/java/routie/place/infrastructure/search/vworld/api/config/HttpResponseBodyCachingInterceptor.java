@@ -34,7 +34,7 @@ public class HttpResponseBodyCachingInterceptor implements ClientHttpRequestInte
             ClientHttpResponse response = execution.execute(request, body);
             return CachedResponseBodyClientHttpResponse.from(response);
         } catch (final IOException e) {
-            log.atWarn().log("V World API 요청 중 오류 발생: {}", e.getMessage());
+            log.warn("V World API 요청 중 오류 발생", e);
             throw new BusinessException(ErrorCode.V_WORLD_API_ERROR);
         }
     }

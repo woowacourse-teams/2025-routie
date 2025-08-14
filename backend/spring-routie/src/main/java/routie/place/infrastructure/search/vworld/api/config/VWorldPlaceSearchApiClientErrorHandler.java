@@ -30,7 +30,7 @@ public class VWorldPlaceSearchApiClientErrorHandler implements ResponseErrorHand
                     parseResponseBody(response, VWorldPlaceSearchApiStatusResponse.class);
             return !vWorldPlaceSearchApiStatusResponse.isSuccess();
         } catch (final Exception e) {
-            log.atWarn().log("V World API 응답 상태 파싱 실패", e);
+            log.warn("V World API 응답 상태 파싱 실패", e);
             throw new BusinessException(ErrorCode.V_WORLD_API_ERROR);
         }
     }
@@ -49,7 +49,7 @@ public class VWorldPlaceSearchApiClientErrorHandler implements ResponseErrorHand
         try {
             return parseResponseBody(response, VWorldPlaceSearchApiErrorResponse.class).toString();
         } catch (final Exception e) {
-            return String.format("V World API 에러 응답 파싱 실패: %s", e.getMessage());
+            return String.format("V World API 에러 응답 파싱 실패: %s", e);
         }
     }
 
