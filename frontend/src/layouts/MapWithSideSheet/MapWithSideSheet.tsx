@@ -6,7 +6,7 @@ import { containerCss } from './MapWithSideSheet.styles';
 import Text from '@/@common/components/Text/Text';
 
 const MapWithSideSheet = () => {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(true);
 
   return (
     <Flex>
