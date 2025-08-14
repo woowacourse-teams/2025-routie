@@ -28,6 +28,8 @@ public record PlaceListResponse(
             Double latitude,
             @JsonFormat(pattern = "HH:mm") LocalTime openAt,
             @JsonFormat(pattern = "HH:mm") LocalTime closeAt,
+            @JsonFormat(pattern = "HH:mm") LocalTime breakStartAt,
+            @JsonFormat(pattern = "HH:mm") LocalTime breakEndAt,
             List<DayOfWeek> closedDayOfWeeks
     ) {
         public static PlaceCardResponse from(final Place place) {
@@ -40,6 +42,8 @@ public record PlaceListResponse(
                     place.getLatitude(),
                     place.getOpenAt(),
                     place.getCloseAt(),
+                    place.getBreakStartAt(),
+                    place.getBreakEndAt(),
                     place.getPlaceClosedDayOfWeeks().stream()
                             .map(PlaceClosedDayOfWeek::getClosedDayOfWeek)
                             .toList()
