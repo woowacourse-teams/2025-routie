@@ -107,10 +107,23 @@ export const PlaceCard = ({ selected, ...props }: PlaceCardProps) => {
               <Text variant="caption" color={theme.colors.gray[200]}>
                 {props.roadAddressName}
               </Text>
+              <Flex direction="row" gap={1}>
+                <Text variant="description">영업 시간</Text>
+                <Pill type="time">
+                  {props.openAt}-{props.closeAt}
+                </Pill>
+              </Flex>
+              {props.breakStartAt && (
+                <>
+                  <Flex direction="row" gap={1}>
+                    <Text variant="description">브레이크</Text>
+                    <Pill type="time">
+                      {props.breakStartAt}-{props.breakEndAt}
+                    </Pill>
+                  </Flex>
+                </>
+              )}
 
-              <Pill type="time">
-                {props.openAt}-{props.closeAt}
-              </Pill>
               <DatePreviewList
                 value={getCheckedListExcept(props.closedDayOfWeeks)}
               />
