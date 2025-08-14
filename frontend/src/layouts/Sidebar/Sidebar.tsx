@@ -6,7 +6,7 @@ import Header from '@/@common/components/Header/Header';
 import Text from '@/@common/components/Text/Text';
 import ToggleSwitch from '@/@common/components/ToggleSwitch/ToggleSwitch';
 import AddPlaceModal from '@/domains/places/components/AddPlaceModal/AddPlaceModal';
-import EmptyRoutieMessage from '@/domains/routie/components/EmptyRoutieMessage/EmptyRoutieMessage';
+import EmptyMessage from '@/@common/components/EmptyMessage/EmptyMessage';
 import RoutieSection from '@/domains/routie/components/RoutieSection/RoutieSection';
 import RoutieValidationLoadingCard from '@/domains/routie/components/RoutieValidationLoadingCard/RoutieValidationLoadingCard';
 import RoutieValidationResultCard from '@/domains/routie/components/RoutieValidationResultCard/RoutieValidationResultCard';
@@ -128,7 +128,14 @@ const Sidebar = ({ handleViewModeChange }: SidebarProps) => {
           }}
         >
           <Text variant="subTitle">내 동선</Text>
-          {routiePlaces.length === 0 && <EmptyRoutieMessage />}
+          {routiePlaces.length === 0 && (
+            <EmptyMessage
+              messages={[
+                '아직 동선이 없습니다.',
+                '장소 목록에서 2곳 이상을 선택하면 동선이 생성됩니다!',
+              ]}
+            />
+          )}
           <Flex
             direction="column"
             justifyContent="flex-start"
