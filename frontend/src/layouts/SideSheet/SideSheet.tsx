@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { ReactNode, useState } from 'react';
 import {
   sheetBase,
   sheetOpen,
@@ -16,6 +16,9 @@ import { useRoutieContext } from '@/domains/routie/contexts/useRoutieContext';
 import { PlaceCard } from '@/domains/places/components/PlaceCard/PlaceCard';
 import theme from '@/styles/theme';
 import EmptyMessage from '@/@common/components/EmptyMessage/EmptyMessage';
+import Button from '@/@common/components/Button/Button';
+import { useGoogleEventTrigger } from '@/libs/googleAnalytics/hooks/useGoogleEventTrigger';
+import AddPlaceModal from '@/domains/places/components/AddPlaceModal/AddPlaceModal';
 
 type SideSheetProps = {
   open: boolean;
@@ -24,8 +27,23 @@ type SideSheetProps = {
 };
 
 const SideSheet = ({ open, onToggle, children }: SideSheetProps) => {
-  const { placeList } = usePlaceListContext();
+  const { placeList, refetchPlaceList } = usePlaceListContext();
   const { routieIdList } = useRoutieContext();
+  const [addModalOpen, setAddModalOpen] = useState(false);
+  const { triggerEvent } = useGoogleEventTrigger();
+
+  const openAddModal = () => {
+    triggerEvent({
+      action: 'click',
+      category: 'place',
+      label: '장소 추가하기 모달 열기 버튼',
+    });
+    setAddModalOpen((prev) => !prev);
+  };
+
+  const closeAddModal = () => {
+    setAddModalOpen((prev) => !prev);
+  };
 
   return (
     <aside
@@ -50,17 +68,28 @@ const SideSheet = ({ open, onToggle, children }: SideSheetProps) => {
         alignItems="stretch"
         css={{ flex: 1, minHeight: 0 }}
       >
-        <Text
-          variant="title"
-          css={{
-            paddingBottom: '1.5rem',
-            marginBottom: '2rem',
-            borderBottom: `1px solid ${theme.colors.gray[100]}`,
-            width: '100%',
-          }}
+        <Flex
+          alignItems="center"
+          justifyContent="space-between"
+          width="100%"
+          padding={2}
         >
-          장소 목록
-        </Text>
+          <Text
+            variant="title"
+            css={{
+              width: '100%',
+            }}
+          >
+            장소 목록
+          </Text>
+          <Button variant="primary" onClick={openAddModal}>
+            <Flex width="100%">
+              <Text variant="subTitle" color="white">
+                + 장소 추가
+              </Text>
+            </Flex>
+          </Button>
+        </Flex>
         {placeList.length === 0 && (
           <EmptyMessage
             messages={[
@@ -69,6 +98,11 @@ const SideSheet = ({ open, onToggle, children }: SideSheetProps) => {
             ]}
           />
         )}
+        <AddPlaceModal
+          isOpen={addModalOpen}
+          onClose={closeAddModal}
+          onPlaceAdded={refetchPlaceList}
+        />
         <div
           css={{
             flex: 1,
