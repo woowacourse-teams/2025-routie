@@ -66,22 +66,39 @@ public class RoutieService {
                 .orElseThrow(() -> new IllegalArgumentException("루티 스페이스 내에서 해당하는 장소를 찾을 수 없습니다: " + placeId));
     }
 
-    public RoutieReadResponse getRoutie(final String routieSpaceIdentifier, final LocalDateTime startDateTime) {
+    public RoutieReadResponse getRoutie(
+            final String routieSpaceIdentifier,
+            final LocalDateTime startDateTime,
+            final MovingStrategy movingStrategy
+    ) {
         Routie routie = getRoutieSpaceByIdentifier(routieSpaceIdentifier).getRoutie();
         List<RoutiePlace> routiePlaces = routie.getRoutiePlaces();
-        Routes routes = getRoutes(routiePlaces);
-        TimePeriods timePeriods = timePeriodCalculator.calculateTimePeriods(startDateTime, routes, routiePlaces);
+
+        Routes routes = getRoutes(routiePlaces, movingStrategy);
+        TimePeriods timePeriods = getTimePeriods(startDateTime, movingStrategy, routes, routiePlaces);
+
         return RoutieReadResponse.from(routie, routes.orderedList(), timePeriods);
     }
 
-    private Routes getRoutes(final List<RoutiePlace> routiePlaces) {
+    private Routes getRoutes(final List<RoutiePlace> routiePlaces, final MovingStrategy movingStrategy) {
         Routes routes = Routes.empty();
-
-        if (routiePlaces.size() >= MIN_ROUTIE_PLACES_FOR_ROUTE) {
-            routes = routeCalculator.calculateRoutes(routiePlaces, MovingStrategy.DRIVING);
+        if (routiePlaces.size() >= MIN_ROUTIE_PLACES_FOR_ROUTE && movingStrategy != null) {
+            routes = routeCalculator.calculateRoutes(routiePlaces, movingStrategy);
         }
-
         return routes;
+    }
+
+    private TimePeriods getTimePeriods(
+            final LocalDateTime startDateTime,
+            final MovingStrategy movingStrategy,
+            final Routes routes,
+            final List<RoutiePlace> routiePlaces
+    ) {
+        TimePeriods timePeriods = TimePeriods.empty();
+        if (startDateTime != null && movingStrategy != null) {
+            timePeriods = timePeriodCalculator.calculateTimePeriods(startDateTime, routes, routiePlaces);
+        }
+        return timePeriods;
     }
 
     @Transactional
@@ -125,11 +142,12 @@ public class RoutieService {
     public RoutieValidationResponse validateRoutie(
             final String routieSpaceIdentifier,
             final LocalDateTime startDateTime,
-            final LocalDateTime endDateTime
+            final LocalDateTime endDateTime,
+            final MovingStrategy movingStrategy
     ) {
         Routie routie = getRoutieSpaceByIdentifier(routieSpaceIdentifier).getRoutie();
         List<RoutiePlace> routiePlaces = routie.getRoutiePlaces();
-        Routes routes = getRoutes(routiePlaces);
+        Routes routes = getRoutes(routiePlaces, movingStrategy);
 
         TimePeriods timePeriods = timePeriodCalculator.calculateTimePeriods(
                 startDateTime,

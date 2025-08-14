@@ -78,4 +78,8 @@ public class Routes {
 
         return List.copyOf(orderedRoutiePlaces);
     }
+
+    public boolean isEmpty() {
+        return routes.isEmpty();
+    }
 }
