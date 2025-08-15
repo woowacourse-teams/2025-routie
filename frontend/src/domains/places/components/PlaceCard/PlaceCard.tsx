@@ -1,3 +1,4 @@
+import { css } from '@emotion/react';
 import Card from '@/@common/components/Card/Card';
 import Flex from '@/@common/components/Flex/Flex';
 import IconButton from '@/@common/components/IconButton/IconButton';
@@ -92,15 +93,15 @@ export const PlaceCard = ({ selected, ...props }: PlaceCardProps) => {
               icon={selected ? checkIcon : plusIcon}
               variant={selected ? 'selected' : 'select'}
               onClick={handlePlaceSelect}
-              css={{
-                width: '4rem',
-                height: '100%',
+              css={css`
+                width: 4rem;
+                height: 100%;
 
-                '& img': {
-                  width: '2rem',
-                  height: '2rem',
-                },
-              }}
+                & img {
+                  width: 2rem;
+                  height: 2rem;
+                }
+              `}
             />
             <Flex direction="column" alignItems="flex-start" gap={1}>
               <Text variant="subTitle">{props.name}</Text>
@@ -132,28 +133,28 @@ export const PlaceCard = ({ selected, ...props }: PlaceCardProps) => {
               <IconButton
                 icon={editIcon}
                 onClick={handleOpenEditModal}
-                css={{
-                  flex: 1,
+                css={css`
+                  flex: 1;
 
-                  '& img': {
-                    width: '2rem',
-                    height: '2rem',
-                  },
-                }}
+                  & img {
+                    width: 2rem;
+                    height: 2rem;
+                  }
+                `}
               />
 
               <IconButton
                 icon={trashIcon}
                 variant="delete"
                 onClick={handleDelete}
-                css={{
-                  flex: 1,
+                css={css`
+                  flex: 1;
 
-                  '& img': {
-                    width: '2rem',
-                    height: '2rem',
-                  },
-                }}
+                  & img {
+                    width: 2rem;
+                    height: 2rem;
+                  }
+                `}
               />
             </Flex>
           </Flex>

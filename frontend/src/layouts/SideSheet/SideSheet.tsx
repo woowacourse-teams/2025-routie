@@ -1,4 +1,5 @@
 import { ReactNode, useState } from 'react';
+import { css } from '@emotion/react';
 import {
   sheetBase,
   sheetOpen,
@@ -66,7 +67,10 @@ const SideSheet = ({ open, onToggle, children }: SideSheetProps) => {
         direction="column"
         padding={3}
         alignItems="stretch"
-        css={{ flex: 1, minHeight: 0 }}
+        css={css`
+          flex: 1;
+          min-height: 0;
+        `}
       >
         <Flex
           alignItems="center"
@@ -76,9 +80,9 @@ const SideSheet = ({ open, onToggle, children }: SideSheetProps) => {
         >
           <Text
             variant="title"
-            css={{
-              width: '100%',
-            }}
+            css={css`
+              width: 100%;
+            `}
           >
             장소 목록
           </Text>
@@ -104,14 +108,18 @@ const SideSheet = ({ open, onToggle, children }: SideSheetProps) => {
           onPlaceAdded={refetchPlaceList}
         />
         <div
-          css={{
-            flex: 1,
-            minHeight: 0,
-            position: 'relative',
-          }}
+          css={css`
+            position: relative;
+            flex: 1;
+            min-height: 0;
+          `}
         >
           <div
-            css={{ overflowY: 'auto', height: '100%', paddingRight: '0.5rem' }}
+            css={css`
+              overflow-y: auto;
+              height: 100%;
+              padding-right: 0.5rem;
+            `}
           >
             <div css={sheetContent}>
               {placeList.map((place) => {
