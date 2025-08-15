@@ -16,6 +16,7 @@ import search from '@/assets/icons/search.svg';
 import success from '@/assets/icons/success.svg';
 import timepass from '@/assets/icons/timepass.svg';
 import train from '@/assets/icons/train.svg';
+import trash from '@/assets/icons/trash.svg';
 
 const allIcons = {
   check,
@@ -31,6 +32,7 @@ const allIcons = {
   plus,
   search,
   success,
+  trash,
   timepass,
   durationTime,
   closeRed,
