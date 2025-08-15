@@ -16,40 +16,37 @@ interface SearchListProps {
 const SearchList = ({ searchResults, handleSelect }: SearchListProps) => {
   return (
     <ul css={listStyle}>
-      {searchResults?.map((searchResult) => (
-        <li key={searchResult.searchedPlaceId}>
-          <Button
-            type="button"
-            variant="secondary"
-            css={itemButtonStyle}
-            onClick={() => handleSelect(searchResult)}
-          >
-            <Flex gap={1}>
-              <img src={pinIcon} alt="pin" />
-              <Flex
-                direction="column"
-                alignItems="flex-start"
-                gap={0.5}
-                width="100%"
-              >
-                <Text variant="caption">{searchResult.name}</Text>
+      {searchResults?.map((searchResult) => {
+        const isRoadAddress = Boolean(searchResult.roadAddressName);
+        const addressType = isRoadAddress ? '도로명' : '지번';
+        const address = isRoadAddress
+          ? searchResult.roadAddressName
+          : searchResult.addressName;
 
-                {searchResult.roadAddressName ? (
-                  <SearchAddress
-                    addressType="도로명"
-                    address={searchResult.roadAddressName}
-                  />
-                ) : (
-                  <SearchAddress
-                    addressType="지번"
-                    address={searchResult.addressName}
-                  />
-                )}
+        return (
+          <li key={searchResult.searchedPlaceId}>
+            <Button
+              type="button"
+              variant="secondary"
+              css={itemButtonStyle}
+              onClick={() => handleSelect(searchResult)}
+            >
+              <Flex gap={1}>
+                <img src={pinIcon} alt="pin" />
+                <Flex
+                  direction="column"
+                  alignItems="flex-start"
+                  gap={0.5}
+                  width="100%"
+                >
+                  <Text variant="caption">{searchResult.name}</Text>
+                  <SearchAddress addressType={addressType} address={address} />
+                </Flex>
               </Flex>
-            </Flex>
-          </Button>
-        </li>
-      ))}
+            </Button>
+          </li>
+        );
+      })}
     </ul>
   );
 };
