@@ -21,12 +21,9 @@ export const SheetBaseStyle = css`
     box-shadow 300ms ease, opacity 300ms ease;
 `;
 
-export const SheetContentStyle = css`
-  overflow-y: visible;
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  justify-content: flex-start;
+export const SheetContentContainerStyle = css`
+  flex: 1;
+  min-height: 0;
 `;
 
 export const SheetOpenStyle = css`
@@ -82,4 +79,16 @@ export const IconBaseStyle = css`
 
 export const IconFlippedStyle = css`
   transform: scaleX(-1);
+`;
+
+export const SheetListWrapperStyle = css`
+  position: relative;
+  flex: 1;
+  min-height: 0;
+`;
+
+export const SheetScrollableAreaStyle = css`
+  overflow-y: auto;
+  height: 100%;
+  padding-right: 0.5rem;
 `;
