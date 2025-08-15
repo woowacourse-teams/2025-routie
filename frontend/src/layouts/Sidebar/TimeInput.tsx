@@ -1,44 +1,38 @@
 import Flex from '@/@common/components/Flex/Flex';
 import Input from '@/@common/components/Input/Input';
-import { getKoreanDateTimeISO } from '@/@common/utils/format';
 import { useRoutieValidateContext } from '@/domains/routie/contexts/useRoutieValidateContext';
 
-const TimeInput = ({
-  time,
-  onChange,
-}: {
-  time: { startDateTime: string; endDateTime: string };
-  onChange: (field: 'startDateTime' | 'endDateTime', value: string) => void;
-}) => {
-  const { isValidateActive } = useRoutieValidateContext();
-  const minimumStartDateTime = getKoreanDateTimeISO(new Date());
+const TimeInput = () => {
+  const { isValidateActive, routieTime, handleTimeChange } =
+    useRoutieValidateContext();
 
-  const scheduleInputVariant = isValidateActive ? 'primary' : 'disabled';
+  const scheduleInputVariant =
+    isValidateActive && routieTime.date !== '' ? 'primary' : 'disabled';
 
   return (
     <Flex justifyContent="space-between" width="100%" gap={1}>
       <Flex direction="column" alignItems="flex-start" gap={1} width="100%">
         <Input
           variant={scheduleInputVariant}
+          disabled={routieTime.date === ''}
           id="startAt"
-          label="시작"
-          type="datetime-local"
-          value={time.startDateTime}
-          min={minimumStartDateTime}
-          onChange={(value) => onChange('startDateTime', value)}
+          label="시작 시간"
+          type="time"
+          value={routieTime.startTime}
+          step="600"
+          onChange={(value) => handleTimeChange('startTime', value)}
         />
       </Flex>
       <Flex direction="column" alignItems="flex-start" gap={1} width="100%">
         <Input
           variant={scheduleInputVariant}
-          disabled={time.startDateTime === ''}
+          disabled={routieTime.date === '' || routieTime.startTime === ''}
           id="endAt"
-          label="종료"
-          type="datetime-local"
-          value={time.endDateTime}
-          min={time.startDateTime ? time.startDateTime : minimumStartDateTime}
-          max={time.startDateTime ? time.startDateTime : minimumStartDateTime}
-          onChange={(value) => onChange('endDateTime', value)}
+          label="종료 시간"
+          type="time"
+          value={routieTime.endTime}
+          step="600"
+          onChange={(value) => handleTimeChange('endTime', value)}
         />
       </Flex>
     </Flex>

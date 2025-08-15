@@ -19,6 +19,7 @@ import { useGoogleEventTrigger } from '@/libs/googleAnalytics/hooks/useGoogleEve
 
 import { usePlaceListContext } from '../PlaceList/contexts/PlaceListContext';
 
+import DateInput from './DateInput';
 import TimeInput from './TimeInput';
 
 interface SidebarProps {
@@ -31,11 +32,9 @@ const Sidebar = ({ handleViewModeChange }: SidebarProps) => {
   const [addModalOpen, setAddModalOpen] = useState(false);
   const {
     isValidateActive,
-    routieTime,
     validationStatus,
     waitingReason,
     handleValidateToggle,
-    handleTimeChange,
   } = useRoutieValidateContext();
   const { triggerEvent } = useGoogleEventTrigger();
 
@@ -115,7 +114,8 @@ const Sidebar = ({ handleViewModeChange }: SidebarProps) => {
           </Flex>
 
           {renderValidationCard()}
-          <TimeInput time={routieTime} onChange={handleTimeChange} />
+          <DateInput />
+          <TimeInput />
         </Flex>
         <Flex
           direction="column"
