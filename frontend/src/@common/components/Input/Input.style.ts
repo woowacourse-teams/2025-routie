@@ -29,8 +29,8 @@ const inputVariant: Record<InputVariantProps, SerializedStyles> = {
   `,
   disabled: css`
     cursor: not-allowed;
-    border-color: ${theme.colors.black};
-    background-color: ${theme.colors.gray[100]};
+    border: none;
+    background-color: ${theme.colors.gray[50]};
   `,
   error: css`
     border-color: ${theme.colors.red[100]};
