@@ -31,6 +31,7 @@ export const useKakaoMapInit = ({
       const options = {
         center: new window.kakao.maps.LatLng(lat, lng),
         level: level,
+        maxLevel: 11,
       };
 
       mapRef.current = new window.kakao.maps.Map(containerRef.current, options);
