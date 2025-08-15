@@ -30,7 +30,7 @@ const Header = ({ handleViewModeChange }: HeaderProps) => {
           icon={logoIcon}
           onClick={() => navigate('/')}
           css={buttonStyle}
-        ></HomeButton>
+        />
       </Flex>
     </div>
   );

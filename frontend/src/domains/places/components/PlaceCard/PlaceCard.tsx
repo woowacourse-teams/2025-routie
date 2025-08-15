@@ -86,7 +86,6 @@ export const PlaceCard = ({ selected, ...props }: PlaceCardProps) => {
             justifyContent="space-between"
             width="100%"
             height="100%"
-            alignItems="center"
             gap={2}
           >
             <IconButton
@@ -115,14 +114,12 @@ export const PlaceCard = ({ selected, ...props }: PlaceCardProps) => {
                 </Pill>
               </Flex>
               {props.breakStartAt && (
-                <>
-                  <Flex direction="row" gap={1}>
-                    <Text variant="description">브레이크</Text>
-                    <Pill type="time">
-                      {props.breakStartAt}-{props.breakEndAt}
-                    </Pill>
-                  </Flex>
-                </>
+                <Flex direction="row" gap={1}>
+                  <Text variant="description">브레이크</Text>
+                  <Pill type="time">
+                    {props.breakStartAt}-{props.breakEndAt}
+                  </Pill>
+                </Flex>
               )}
 
               <DatePreviewList

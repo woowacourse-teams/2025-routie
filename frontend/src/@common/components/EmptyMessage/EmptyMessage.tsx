@@ -3,9 +3,10 @@ import Flex from '@/@common/components/Flex/Flex';
 import Text from '@/@common/components/Text/Text';
 import theme from '@/styles/theme';
 
-type EmptyMessageProps = {
+interface EmptyMessageProps {
   messages: string[];
-};
+}
+
 const EmptyMessage = ({ messages }: EmptyMessageProps) => {
   return (
     <Flex
