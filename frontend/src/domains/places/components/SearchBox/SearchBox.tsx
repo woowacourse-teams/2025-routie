@@ -41,7 +41,7 @@ const SearchBox = ({ onChange, handleSearchPlaceMap }: SearchBoxProps) => {
   };
 
   return (
-    <Flex direction="row" gap={1} width="100%" css={{ position: 'relative' }}>
+    <Flex gap={1} width="100%" css={{ position: 'relative' }}>
       <Input
         id="search"
         value={keyword}
