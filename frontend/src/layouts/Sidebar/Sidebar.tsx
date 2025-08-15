@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 
 import Button from '@/@common/components/Button/Button';
 import Flex from '@/@common/components/Flex/Flex';
@@ -28,7 +28,7 @@ interface SidebarProps {
 }
 
 const Sidebar = ({ handleViewModeChange }: SidebarProps) => {
-  const { routes, routiePlaces } = useRoutieContext();
+  const { routiePlaces } = useRoutieContext();
   const { refetchPlaceList } = usePlaceListContext();
   const [addModalOpen, setAddModalOpen] = useState(false);
   const {
@@ -38,10 +38,6 @@ const Sidebar = ({ handleViewModeChange }: SidebarProps) => {
     handleValidateToggle,
   } = useRoutieValidateContext();
   const { triggerEvent } = useGoogleEventTrigger();
-
-  const totalMovingTime = useMemo(() => {
-    return routes?.reduce((acc, cur) => acc + cur.duration, 0) ?? 0;
-  }, [routes]);
 
   const openAddModal = () => {
     triggerEvent({
@@ -68,7 +64,7 @@ const Sidebar = ({ handleViewModeChange }: SidebarProps) => {
         return <RoutieValidationLoadingCard />;
       case 'success':
       case 'error':
-        return <RoutieValidationResultCard total_time={totalMovingTime} />;
+        return <RoutieValidationResultCard />;
       case 'inactive':
       default:
         return <RoutieValidationUnavailableCard />;
