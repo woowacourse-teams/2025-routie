@@ -33,13 +33,9 @@ export interface UseRoutieValidateReturn {
 }
 
 const useRoutieValidate = (): UseRoutieValidateReturn => {
-  const getInitialValidateActive = () => {
-    const saved = sessionStorage.getItem('isValidateActive');
-    return saved ? JSON.parse(saved) : true;
-  };
-
-  const [isValidateActive, setIsValidateActive] = useState(
-    getInitialValidateActive,
+  const [isValidateActive, setIsValidateActive] = useSessionStorage(
+    'isValidateActive',
+    true,
   );
   const [routieTime, setRoutieTime] = useSessionStorage(
     'routieTime',
@@ -111,13 +107,8 @@ const useRoutieValidate = (): UseRoutieValidateReturn => {
   );
 
   const handleValidateToggle = useCallback(() => {
-    const newIsValidateActive = !isValidateActive;
-    sessionStorage.setItem(
-      'isValidateActive',
-      JSON.stringify(newIsValidateActive),
-    );
-    setIsValidateActive(newIsValidateActive);
-  }, [isValidateActive]);
+    setIsValidateActive(!isValidateActive);
+  }, [isValidateActive, setIsValidateActive]);
 
   const combineDateTime = useMemo(() => {
     return getCombineDateTime(routieTime);
