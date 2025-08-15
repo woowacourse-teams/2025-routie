@@ -7,4 +7,4 @@ export interface PillProps extends ComponentProps<'div'> {
 
 export type PillVariantProps = 'default' | 'filled';
 
-type PillType = 'time' | 'distance';
+type PillType = 'time' | 'distance' | 'default';
