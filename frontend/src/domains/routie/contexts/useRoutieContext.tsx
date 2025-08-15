@@ -100,11 +100,7 @@ export const RoutieProvider = ({ children }: { children: React.ReactNode }) => {
 
   useEffect(() => {
     refetchRoutieData();
-  }, [
-    isValidateActive,
-    combineDateTime.startDateTime,
-    combineDateTime.endDateTime,
-  ]);
+  }, [isValidateActive, combineDateTime]);
 
   return (
     <RoutieContext.Provider
