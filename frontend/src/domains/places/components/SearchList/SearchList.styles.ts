@@ -28,3 +28,10 @@ export const itemButtonStyle = css`
     background: ${theme.colors.purple[50]};
   }
 `;
+
+export const itemEmptyStyle = css`
+  width: 100%;
+  padding: 12px 16px;
+  border: 0;
+  border-radius: 0;
+`;

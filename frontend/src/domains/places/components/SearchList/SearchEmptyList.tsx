@@ -1,6 +1,6 @@
 import Text from '@/@common/components/Text/Text';
 
-import { itemButtonStyle, listStyle } from '../SearchList/SearchList.styles';
+import { itemEmptyStyle, listStyle } from '../SearchList/SearchList.styles';
 
 interface SearchEmptyList {
   keyword: string;
@@ -9,15 +9,7 @@ interface SearchEmptyList {
 const SearchEmptyList = ({ keyword }: SearchEmptyList) => {
   return (
     <ul css={listStyle}>
-      <li
-        css={[
-          itemButtonStyle,
-          {
-            cursor: 'default',
-            ':hover': { background: 'none' },
-          },
-        ]}
-      >
+      <li css={itemEmptyStyle}>
         <Text variant="label">
           {`"${keyword}"에 대한 검색 결과가 없습니다.`}
         </Text>
