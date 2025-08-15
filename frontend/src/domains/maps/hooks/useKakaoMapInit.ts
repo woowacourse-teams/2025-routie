@@ -10,12 +10,11 @@ import type {
 export const useKakaoMapInit = ({
   containerRef,
   sdkReady,
-  lat,
-  lng,
-  level,
 }: UseKakaoMapInitProps): UseKakaoMapInitReturn => {
   const mapRef = useRef<KakaoMapType | null>(null);
   const isInitializedRef = useRef(false);
+  const INITIAL_LAT_LNG = { lat: 37.554, lng: 126.97 };
+  const INITIAL_LEVEL = 7;
 
   const [mapState, setMapState] = useState<MapStateType>('loading');
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -29,8 +28,11 @@ export const useKakaoMapInit = ({
 
     try {
       const options = {
-        center: new window.kakao.maps.LatLng(lat, lng),
-        level: level,
+        center: new window.kakao.maps.LatLng(
+          INITIAL_LAT_LNG.lat,
+          INITIAL_LAT_LNG.lng,
+        ),
+        level: INITIAL_LEVEL,
         maxLevel: 11,
       };
 
@@ -49,7 +51,7 @@ export const useKakaoMapInit = ({
       setMapState('error');
       setErrorMessage('지도를 생성하는데 실패했습니다.');
     }
-  }, [containerRef, lat, lng, level]);
+  }, [containerRef]);
 
   useEffect(() => {
     if (sdkReady && !isInitializedRef.current) {
