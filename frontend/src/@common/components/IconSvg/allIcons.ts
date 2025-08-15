@@ -1,3 +1,4 @@
+import car from '@/assets/icons/car.svg';
 import check from '@/assets/icons/check.svg';
 import clock from '@/assets/icons/clock.svg';
 import closeRed from '@/assets/icons/close-red.svg';
@@ -14,6 +15,7 @@ import plus from '@/assets/icons/plus.svg';
 import search from '@/assets/icons/search.svg';
 import success from '@/assets/icons/success.svg';
 import timepass from '@/assets/icons/timepass.svg';
+import train from '@/assets/icons/train.svg';
 import trash from '@/assets/icons/trash.svg';
 
 const allIcons = {
@@ -34,6 +36,8 @@ const allIcons = {
   timepass,
   durationTime,
   closeRed,
+  car,
+  train,
 } as const;
 
 export default allIcons;
