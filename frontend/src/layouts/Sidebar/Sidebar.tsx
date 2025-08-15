@@ -12,6 +12,7 @@ import RoutieValidationLoadingCard from '@/domains/routie/components/RoutieValid
 import RoutieValidationResultCard from '@/domains/routie/components/RoutieValidationResultCard/RoutieValidationResultCard';
 import RoutieValidationUnavailableCard from '@/domains/routie/components/RoutieValidationUnavailableCard/RoutieValidationUnavailableCard';
 import RoutieValidationWaitingCard from '@/domains/routie/components/RoutieValidationWaitingCard/RoutieValidationWaitingCard';
+import SelectMovingStrategy from '@/domains/routie/components/SelectMovingStrategy/SelectMovingStrategy';
 import { useRoutieContext } from '@/domains/routie/contexts/useRoutieContext';
 import { useRoutieValidateContext } from '@/domains/routie/contexts/useRoutieValidateContext';
 import RoutieSpaceName from '@/domains/routieSpace/components/RoutieSpaceName/RoutieSpaceName';
@@ -115,6 +116,7 @@ const Sidebar = ({ handleViewModeChange }: SidebarProps) => {
           </Flex>
 
           {renderValidationCard()}
+          <SelectMovingStrategy />
           <TimeInput time={routieTime} onChange={handleTimeChange} />
         </Flex>
         <Flex
