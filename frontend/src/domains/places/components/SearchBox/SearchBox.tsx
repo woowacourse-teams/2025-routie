@@ -28,6 +28,8 @@ const SearchBox = ({ onChange, handleSearchPlaceMap }: SearchBoxProps) => {
     handleReset,
     handleEnterSearch,
   } = useSearchPlace();
+  const hasResults = searchResults && searchResults.length > 0;
+  const isEmpty = searchResults && searchResults.length === 0;
 
   const handleSelect = (searchPlace: PlaceSearchType) => {
     handleReset();
@@ -80,13 +82,13 @@ const SearchBox = ({ onChange, handleSearchPlaceMap }: SearchBoxProps) => {
           margin-top: 1rem;
         `}
       >
-        {searchResults && searchResults.length > 0 ? (
+        {hasResults ? (
           <SearchList
-            searchResults={searchResults}
+            searchResults={searchResults!}
             handleSelect={handleSelect}
           />
         ) : (
-          searchResults?.length === 0 && <SearchEmptyList keyword={keyword} />
+          isEmpty && <SearchEmptyList keyword={keyword} />
         )}
       </Flex>
     </Flex>
