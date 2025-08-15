@@ -1,3 +1,5 @@
+import { css } from '@emotion/react';
+
 import Button from '@/@common/components/Button/Button';
 import Flex from '@/@common/components/Flex/Flex';
 import Input from '@/@common/components/Input/Input';
@@ -41,7 +43,13 @@ const SearchBox = ({ onChange, handleSearchPlaceMap }: SearchBoxProps) => {
   };
 
   return (
-    <Flex gap={1} width="100%" css={{ position: 'relative' }}>
+    <Flex
+      gap={1}
+      width="100%"
+      css={css`
+        position: relative;
+      `}
+    >
       <Input
         id="search"
         value={keyword}
@@ -66,7 +74,11 @@ const SearchBox = ({ onChange, handleSearchPlaceMap }: SearchBoxProps) => {
       </Button>
       <Flex
         width="100%"
-        css={{ position: 'absolute', top: '100%', marginTop: '1rem' }}
+        css={css`
+          position: absolute;
+          top: 100%;
+          margin-top: 1rem;
+        `}
       >
         {searchResults && searchResults.length > 0 ? (
           <SearchList
