@@ -15,7 +15,7 @@ const Icon = ({ name, size = 14, onClick, className }: IconProps) => {
       alt={name}
       onClick={onClick}
       className={className}
-      css={IconStyle({ name, size, onClick })}
+      css={IconStyle({ size, onClick })}
     />
   );
 };
