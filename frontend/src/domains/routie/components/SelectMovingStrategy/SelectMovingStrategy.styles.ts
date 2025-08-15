@@ -25,6 +25,8 @@ export const backgroundSliderStyle = (
 `;
 
 export const movingStrategyIconWrapperStyle = css`
+  cursor: pointer;
+
   position: relative;
 
   flex: 1;
@@ -32,4 +34,8 @@ export const movingStrategyIconWrapperStyle = css`
 
   box-sizing: border-box;
   padding: 0.4rem;
+`;
+
+export const movingStrategyIconStyle = css`
+  cursor: pointer;
 `;
