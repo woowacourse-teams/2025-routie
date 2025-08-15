@@ -1,13 +1,13 @@
 import { ReactNode, useState } from 'react';
 import { css } from '@emotion/react';
 import {
-  sheetBase,
-  sheetOpen,
-  sheetClosed,
-  tabBase,
-  iconBase,
-  iconFlipped,
-  sheetContent,
+  SheetBaseStyle,
+  SheetContentStyle,
+  SheetOpenStyle,
+  SheetCloseStyle,
+  TabBaseStyle,
+  IconBaseStyle,
+  IconFlippedStyle,
 } from './SideSheet.styles';
 import CloseSheetIcon from '@/assets/icons/closeSheet.svg';
 import Flex from '@/@common/components/Flex/Flex';
@@ -48,17 +48,17 @@ const SideSheet = ({ open, onToggle, children }: SideSheetProps) => {
 
   return (
     <aside
-      css={[sheetBase, open ? sheetOpen : sheetClosed]}
+      css={[SheetBaseStyle, open ? SheetOpenStyle : SheetCloseStyle]}
       aria-hidden={!open}
     >
       <button
-        css={[tabBase]}
+        css={[TabBaseStyle]}
         type="button"
         aria-label={open ? '사이드 시트 접기' : '사이드 시트 펼치기'}
         onClick={onToggle}
       >
         <img
-          css={[iconBase, !open && iconFlipped]}
+          css={[IconBaseStyle, !open && IconFlippedStyle]}
           src={CloseSheetIcon}
           alt={open ? '사이드 시트 닫기 버튼' : '사이드 시트 열기 버튼'}
         ></img>
@@ -121,7 +121,7 @@ const SideSheet = ({ open, onToggle, children }: SideSheetProps) => {
               padding-right: 0.5rem;
             `}
           >
-            <div css={sheetContent}>
+            <div css={SheetContentStyle}>
               {placeList.map((place) => {
                 const selected = routieIdList.includes(place.id);
                 return (

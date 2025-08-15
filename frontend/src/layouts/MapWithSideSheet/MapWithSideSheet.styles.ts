@@ -1,6 +1,6 @@
 import { css } from '@emotion/react';
 
-export const containerCss = css`
+export const ContainerStyle = css`
   position: relative;
   overflow: hidden;
   width: 100%;

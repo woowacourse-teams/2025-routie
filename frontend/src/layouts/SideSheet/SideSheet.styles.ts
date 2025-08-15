@@ -1,7 +1,7 @@
 import { css } from '@emotion/react';
 import theme from '@/styles/theme';
 
-export const sheetBase = css`
+export const SheetBaseStyle = css`
   position: absolute;
   z-index: 1000;
   top: 1rem;
@@ -21,7 +21,7 @@ export const sheetBase = css`
     box-shadow 300ms ease, opacity 300ms ease;
 `;
 
-export const sheetContent = css`
+export const SheetContentStyle = css`
   overflow-y: visible;
   display: flex;
   flex-direction: column;
@@ -29,20 +29,20 @@ export const sheetContent = css`
   justify-content: flex-start;
 `;
 
-export const sheetOpen = css`
+export const SheetOpenStyle = css`
   pointer-events: auto;
   transform: translateX(0);
   opacity: 1;
   box-shadow: 0 4px 20px rgb(0 0 0 / 15%);
 `;
 
-export const sheetClosed = css`
+export const SheetCloseStyle = css`
   transform: translateX(calc(-100% + 3.6rem - 20px));
   opacity: 0.96;
   box-shadow: none;
 `;
 
-export const tabBase = css`
+export const TabBaseStyle = css`
   pointer-events: auto;
   cursor: pointer;
 
@@ -73,13 +73,13 @@ export const tabBase = css`
   }
 `;
 
-export const iconBase = css`
+export const IconBaseStyle = css`
   transform-origin: center;
   width: 1.4rem;
   height: 1.4rem;
   transition: transform 300ms ease;
 `;
 
-export const iconFlipped = css`
+export const IconFlippedStyle = css`
   transform: scaleX(-1);
 `;
