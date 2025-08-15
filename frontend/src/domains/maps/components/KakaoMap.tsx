@@ -31,7 +31,7 @@ const KakaoMap = ({ lat = 37.554, lng = 126.97, level = 7 }: KakaoMapProps) => {
 
   const routiePlaces = useMemo(
     () =>
-      placeList
+      [...placeList]
         .filter((place) => routieIdList.includes(place.id))
         .sort(
           (a, b) => routieIdList.indexOf(a.id) - routieIdList.indexOf(b.id),
