@@ -1,5 +1,6 @@
 import { useCallback, useState, useEffect, useMemo } from 'react';
 
+import { useSessionStorage } from '@/@common/hooks/useSessionStorage';
 import { getCombineDateTime } from '@/@common/utils/format';
 
 import { getRoutieValidation } from '../apis/routie';
@@ -40,11 +41,14 @@ const useRoutieValidate = (): UseRoutieValidateReturn => {
   const [isValidateActive, setIsValidateActive] = useState(
     getInitialValidateActive,
   );
-  const [routieTime, setRoutieTime] = useState({
-    date: '',
-    startTime: '',
-    endTime: '',
-  });
+  const [routieTime, setRoutieTime] = useSessionStorage(
+    'routieTime',
+    {
+      date: '',
+      startTime: '',
+      endTime: '',
+    },
+  );
   const [validationErrors, setValidationErrors] =
     useState<validationErrorCodeType | null>(null);
   const [validationStatus, setValidationStatus] =
@@ -123,12 +127,15 @@ const useRoutieValidate = (): UseRoutieValidateReturn => {
     updateValidationStatus();
   }, [isValidateActive, routieTime, updateValidationStatus]);
 
-  const handleTimeChange = useCallback((field: string, value: string) => {
-    setRoutieTime((prev) => ({
-      ...prev,
-      [field]: value,
-    }));
-  }, []);
+  const handleTimeChange = useCallback(
+    (field: string, value: string) => {
+      setRoutieTime({
+        ...routieTime,
+        [field]: value,
+      });
+    },
+    [routieTime, setRoutieTime],
+  );
 
   const validateRoutie = useCallback(
     async (placeCount?: number) => {
