@@ -95,7 +95,7 @@ export const RoutieProvider = ({ children }: { children: React.ReactNode }) => {
         console.error(error);
       }
     },
-    [validateRoutie],
+    [refetchRoutieData],
   );
 
   useEffect(() => {
