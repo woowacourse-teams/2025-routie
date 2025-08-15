@@ -17,7 +17,7 @@ const SearchList = ({ searchResults, handleSelect }: SearchListProps) => {
   return (
     <ul css={listStyle}>
       {searchResults?.map((searchResult) => (
-        <li key={searchResult.name + searchResult.addressName}>
+        <li key={searchResult.searchedPlaceId}>
           <Button
             type="button"
             variant="secondary"
