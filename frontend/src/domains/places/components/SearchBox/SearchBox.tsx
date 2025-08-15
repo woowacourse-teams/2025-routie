@@ -56,6 +56,7 @@ const SearchBox = ({ onChange, handleSearchPlaceMap }: SearchBoxProps) => {
         width="20%"
         type="button"
         onClick={handleSearch}
+        disabled={keyword ? false : true}
       >
         <Flex width="100%">
           <Text color={theme.colors.white} variant="label">
