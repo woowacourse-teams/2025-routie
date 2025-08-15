@@ -30,8 +30,6 @@ const useCustomOverlay = ({ map }: { map: RefObject<KakaoMapType> }) => {
         map: map.current,
         clickable: true,
       });
-
-      overlayRef.current.setMap(map.current);
     },
     [map],
   );
