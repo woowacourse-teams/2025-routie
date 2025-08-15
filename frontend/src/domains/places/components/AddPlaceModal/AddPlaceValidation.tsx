@@ -23,6 +23,10 @@ const AddPlaceValidation = ({
   handleInputChange,
   handleToggleDay,
 }: AddPlaceValidationProps) => {
+  const breakStartAtValidation =
+    showErrors && !isEmpty.breakEndAt && isEmpty.breakStartAt;
+  const breakEndAtValidation =
+    showErrors && !isEmpty.breakStartAt && isEmpty.breakEndAt;
   return (
     <Flex direction="column" alignItems="flex-start" width="100%" gap={2}>
       <BusinessHourInputs
@@ -38,6 +42,10 @@ const AddPlaceValidation = ({
         breakStartAt={form.breakStartAt}
         breakEndAt={form.breakEndAt}
         onChange={handleInputChange}
+        error={{
+          breakStartAt: breakStartAtValidation,
+          breakEndAt: breakEndAtValidation,
+        }}
       />
       <ClosedDaySelector
         closedDayOfWeeks={form.closedDayOfWeeks}

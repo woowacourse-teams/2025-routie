@@ -1,3 +1,4 @@
+import Text from '@/@common/components/Text/Text';
 import clockIcon from '@/assets/icons/clock.svg';
 import searchIcon from '@/assets/icons/search.svg';
 
@@ -27,7 +28,7 @@ const Input = ({
     <>
       {label && (
         <label css={InputLabelStyle} htmlFor={id}>
-          {label}
+          <Text variant="caption">{label}</Text>
         </label>
       )}
       <div css={InputContainerStyle}>

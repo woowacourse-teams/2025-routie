@@ -1,38 +1,41 @@
-package routie.place.infrastructure.search;
+package routie.place.infrastructure.search.kakao.api.config;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import java.time.Duration;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.web.client.RestClient;
+import routie.place.infrastructure.search.kakao.api.KakaoPlaceSearchApiClient;
+import routie.place.infrastructure.search.kakao.api.config.error.KakaoPlaceSearchApiErrorHandler;
 
 @Configuration
-public class KakaoLocalRestClientConfig {
+public class KakaoPlaceSearchApiClientConfig {
 
     private final String kakaoApiKey;
-    private final ObjectMapper objectMapper;
+    private final KakaoPlaceSearchApiErrorHandler kakaoPlaceSearchApiErrorHandler;
 
-    public KakaoLocalRestClientConfig(
+    public KakaoPlaceSearchApiClientConfig(
             @Value("${kakao.api.key}") final String kakaoApiKey,
-            final ObjectMapper objectMapper
+            final KakaoPlaceSearchApiErrorHandler kakaoPlaceSearchApiErrorHandler
     ) {
         this.kakaoApiKey = kakaoApiKey;
-        this.objectMapper = objectMapper;
+        this.kakaoPlaceSearchApiErrorHandler = kakaoPlaceSearchApiErrorHandler;
     }
 
     @Bean
-    public RestClient kakaoRestClient() {
+    public KakaoPlaceSearchApiClient kakaoLocalApiClient() {
         SimpleClientHttpRequestFactory requestFactory = new SimpleClientHttpRequestFactory();
         requestFactory.setConnectTimeout(Duration.ofSeconds(2));
         requestFactory.setReadTimeout(Duration.ofSeconds(4));
 
-        return RestClient.builder()
+        RestClient restClient = RestClient.builder()
                 .requestFactory(requestFactory)
                 .baseUrl("https://dapi.kakao.com")
                 .defaultHeader("Authorization", "KakaoAK " + kakaoApiKey)
-                .defaultStatusHandler(new KakaoLocalResponseErrorHandler(objectMapper))
+                .defaultStatusHandler(kakaoPlaceSearchApiErrorHandler)
                 .build();
+
+        return new KakaoPlaceSearchApiClient(restClient);
     }
 }

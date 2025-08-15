@@ -6,6 +6,6 @@ export interface IconButtonProps extends ComponentProps<'button'> {
   onClick: () => void;
 }
 
-export type IconButtonVariantProps = 'delete' | 'drag'| 'select' | 'selected';
+export type IconButtonVariantProps = 'delete' | 'select' | 'selected';
 
 export type IconButtonStyleProps = Pick<IconButtonProps, 'variant'>;

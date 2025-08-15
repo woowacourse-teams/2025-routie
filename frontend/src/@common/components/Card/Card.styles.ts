@@ -12,9 +12,12 @@ const cardVariant: Record<CardVariantProps, SerializedStyles> = {
   `,
 
   defaultStatic: css`
+    position: relative;
+
     padding: 0.8rem;
     border: 1px solid ${theme.colors.purple[50]};
     border-left: 4px solid ${theme.colors.purple[100]};
+
     box-shadow: 2px 4px 4px 0 rgb(0 0 0 / 25%);
   `,
 

@@ -1,41 +1,53 @@
 import { useCallback, useState, useEffect, useMemo } from 'react';
 
+import { useSessionStorage } from '@/@common/hooks/useSessionStorage';
+import { getCombineDateTime } from '@/@common/utils/format';
+
 import { getRoutieValidation } from '../apis/routie';
-import { validationErrorCodeType, ValidationStatus, WaitingReason } from '../types/routie.types';
+import {
+  validationErrorCodeType,
+  ValidationStatus,
+  WaitingReason,
+} from '../types/routie.types';
 
 export interface UseRoutieValidateReturn {
   isValidateActive: boolean;
   routieTime: {
-    startDateTime: string;
-    endDateTime: string;
+    date: string;
+    startTime: string;
+    endTime: string;
   };
   validationErrors: validationErrorCodeType | null;
   validationStatus: ValidationStatus;
   waitingReason: WaitingReason;
   handleValidateToggle: () => void;
   handleTimeChange: (
-    field: 'startDateTime' | 'endDateTime',
+    field: 'date' | 'startTime' | 'endTime',
     value: string,
   ) => void;
   validateRoutie: (placeCount?: number) => Promise<void>;
+  combineDateTime: {
+    startDateTime: string;
+    endDateTime: string;
+  };
 }
 
 const useRoutieValidate = (): UseRoutieValidateReturn => {
-  const getInitialValidateActive = () => {
-    const saved = sessionStorage.getItem('isValidateActive');
-    return saved ? JSON.parse(saved) : true;
-  };
-
-  const [isValidateActive, setIsValidateActive] = useState(
-    getInitialValidateActive,
+  const [isValidateActive, setIsValidateActive] = useSessionStorage(
+    'isValidateActive',
+    true,
   );
-  const [routieTime, setRoutieTime] = useState({
-    startDateTime: '',
-    endDateTime: '',
-  });
+  const [routieTime, setRoutieTime] = useSessionStorage(
+    'routieTime',
+    {
+      date: '',
+      startTime: '',
+      endTime: '',
+    },
+  );
   const [validationErrors, setValidationErrors] =
     useState<validationErrorCodeType | null>(null);
-  const [validationStatus, setValidationStatus] = 
+  const [validationStatus, setValidationStatus] =
     useState<ValidationStatus>('inactive');
 
   const getValidationConditions = useCallback(
@@ -43,15 +55,25 @@ const useRoutieValidate = (): UseRoutieValidateReturn => {
       if (!isValidateActive) {
         return { canValidate: false, waitingReason: null };
       }
-      
-      if (routieTime.startDateTime === '' || routieTime.endDateTime === '') {
-        return { canValidate: false, waitingReason: 'no_time' as WaitingReason };
+
+      if (
+        routieTime.date === '' ||
+        routieTime.startTime === '' ||
+        routieTime.endTime === ''
+      ) {
+        return {
+          canValidate: false,
+          waitingReason: 'no_time' as WaitingReason,
+        };
       }
-      
+
       if (placeCount === undefined || placeCount < 2) {
-        return { canValidate: false, waitingReason: 'insufficient_places' as WaitingReason };
+        return {
+          canValidate: false,
+          waitingReason: 'insufficient_places' as WaitingReason,
+        };
       }
-      
+
       return { canValidate: true, waitingReason: null };
     },
     [isValidateActive, routieTime],
@@ -59,13 +81,14 @@ const useRoutieValidate = (): UseRoutieValidateReturn => {
 
   const waitingReason = useMemo(
     () => getValidationConditions().waitingReason,
-    [getValidationConditions]
+    [isValidateActive, routieTime],
   );
 
   const updateValidationStatus = useCallback(
     (placeCount?: number) => {
-      const { canValidate, waitingReason } = getValidationConditions(placeCount);
-      
+      const { canValidate, waitingReason } =
+        getValidationConditions(placeCount);
+
       if (!isValidateActive) {
         setValidationStatus('inactive');
         return;
@@ -84,29 +107,31 @@ const useRoutieValidate = (): UseRoutieValidateReturn => {
   );
 
   const handleValidateToggle = useCallback(() => {
-    const newIsValidateActive = !isValidateActive;
-    sessionStorage.setItem(
-      'isValidateActive',
-      JSON.stringify(newIsValidateActive),
-    );
-    setIsValidateActive(newIsValidateActive);
-  }, [isValidateActive]);
+    setIsValidateActive(!isValidateActive);
+  }, [isValidateActive, setIsValidateActive]);
+
+  const combineDateTime = useMemo(() => {
+    return getCombineDateTime(routieTime);
+  }, [routieTime]);
 
   useEffect(() => {
     updateValidationStatus();
   }, [isValidateActive, routieTime, updateValidationStatus]);
 
-  const handleTimeChange = useCallback((field: string, value: string) => {
-    setRoutieTime((prev) => ({
-      ...prev,
-      [field]: value,
-    }));
-  }, []);
+  const handleTimeChange = useCallback(
+    (field: string, value: string) => {
+      setRoutieTime({
+        ...routieTime,
+        [field]: value,
+      });
+    },
+    [routieTime, setRoutieTime],
+  );
 
   const validateRoutie = useCallback(
     async (placeCount?: number) => {
       const { canValidate } = getValidationConditions(placeCount);
-      
+
       if (!canValidate) {
         updateValidationStatus(placeCount);
         return;
@@ -115,7 +140,7 @@ const useRoutieValidate = (): UseRoutieValidateReturn => {
       setValidationStatus('validating');
 
       try {
-        const response = await getRoutieValidation(routieTime);
+        const response = await getRoutieValidation(combineDateTime);
         const invalidResult = response.validationResultResponses.find(
           (result) => result.isValid === false,
         );
@@ -133,7 +158,7 @@ const useRoutieValidate = (): UseRoutieValidateReturn => {
         setValidationStatus('error');
       }
     },
-    [getValidationConditions, routieTime, updateValidationStatus],
+    [getValidationConditions, updateValidationStatus, combineDateTime],
   );
 
   return {
@@ -145,6 +170,7 @@ const useRoutieValidate = (): UseRoutieValidateReturn => {
     handleValidateToggle,
     handleTimeChange,
     validateRoutie,
+    combineDateTime,
   };
 };
 

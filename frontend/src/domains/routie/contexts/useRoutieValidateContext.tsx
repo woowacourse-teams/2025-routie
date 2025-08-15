@@ -7,8 +7,9 @@ import useRoutieValidate, {
 const RoutieValidateContext = createContext<UseRoutieValidateReturn>({
   isValidateActive: true,
   routieTime: {
-    startDateTime: '',
-    endDateTime: '',
+    date: '',
+    startTime: '',
+    endTime: '',
   },
   validationErrors: null,
   validationStatus: 'waiting',
@@ -16,6 +17,10 @@ const RoutieValidateContext = createContext<UseRoutieValidateReturn>({
   handleValidateToggle: () => {},
   handleTimeChange: () => {},
   validateRoutie: async () => {},
+  combineDateTime: {
+    startDateTime: '',
+    endDateTime: '',
+  },
 });
 
 export const RoutieValidateProvider = ({
@@ -32,6 +37,7 @@ export const RoutieValidateProvider = ({
     handleValidateToggle,
     handleTimeChange,
     validateRoutie,
+    combineDateTime,
   } = useRoutieValidate();
 
   const contextValue = useMemo(() => {
@@ -44,6 +50,7 @@ export const RoutieValidateProvider = ({
       handleValidateToggle,
       handleTimeChange,
       validateRoutie,
+      combineDateTime,
     };
   }, [
     isValidateActive,
@@ -54,6 +61,7 @@ export const RoutieValidateProvider = ({
     handleValidateToggle,
     handleTimeChange,
     validateRoutie,
+    combineDateTime,
   ]);
 
   return (

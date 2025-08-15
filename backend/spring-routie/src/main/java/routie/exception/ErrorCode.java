@@ -29,11 +29,15 @@ public enum ErrorCode {
             HttpStatus.BAD_REQUEST
     ),
     KAKAO_LOCAL_API_ERROR(
-            "6001", 
-            "외부 장소 검색 서비스에 문제가 발생했습니다.", 
+            "6001",
+            "외부 장소 검색 서비스에 문제가 발생했습니다.",
             HttpStatus.BAD_GATEWAY
-    )
-    ;
+    ),
+    V_WORLD_API_ERROR(
+            "6002",
+            "외부 장소 검색 서비스에 문제가 발생했습니다.",
+            HttpStatus.BAD_GATEWAY
+    );
 
     private final String code;
     private final String message;

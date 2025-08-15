@@ -1,18 +1,38 @@
-import { RefObject, useCallback } from 'react';
+import { RefObject, useCallback, useRef } from 'react';
 
 import type { KakaoMapType } from '../types/KaKaoMap.types';
 
+type Marker = InstanceType<typeof window.kakao.maps.Marker>;
+
 const useMapMarker = ({ map }: { map: RefObject<KakaoMapType> }) => {
-  const drawMarkers = useCallback((lat: number, lng: number) => {
-    if (!map.current) return;
+  const markersRef = useRef<Marker[]>([]);
 
-    const position = new window.kakao.maps.LatLng(lat, lng);
-
-    const marker = new window.kakao.maps.Marker({
-      position,
+  const clearMarkers = useCallback(() => {
+    markersRef.current.forEach((marker) => {
+      marker.setMap(null);
     });
-    marker.setMap(map.current);
+    markersRef.current = [];
   }, []);
+
+  const drawMarkers = useCallback(
+    (lat: number, lng: number, onClick?: () => void) => {
+      if (!map.current) return;
+
+      const position = new window.kakao.maps.LatLng(lat, lng);
+      const marker = new window.kakao.maps.Marker({
+        position,
+      });
+      marker.setMap(map.current);
+
+      if (onClick) {
+        window.kakao.maps.event.addListener(marker, 'click', onClick);
+      }
+
+      markersRef.current.push(marker);
+      return marker;
+    },
+    [map],
+  );
 
   const fitMapToMarkers = useCallback(
     (places: Array<{ latitude: number; longitude: number }>) => {
@@ -28,12 +48,26 @@ const useMapMarker = ({ map }: { map: RefObject<KakaoMapType> }) => {
         bounds.extend(position);
       });
 
-      map.current.setBounds(bounds);
+      setTimeout(() => {
+        if (map.current) {
+          map.current.setBounds(bounds);
+        }
+      }, 100);
     },
     [],
   );
 
-  return { drawMarkers, fitMapToMarkers };
+  const fitMapToMarker = useCallback((lat: number, lng: number) => {
+    if (!map.current) return;
+
+    const position = new window.kakao.maps.LatLng(lat, lng);
+
+    setTimeout(() => {
+      map.current.panTo(position);
+    }, 120);
+  }, []);
+
+  return { drawMarkers, fitMapToMarkers, clearMarkers, fitMapToMarker };
 };
 
 export default useMapMarker;

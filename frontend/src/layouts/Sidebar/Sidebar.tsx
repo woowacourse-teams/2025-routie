@@ -10,10 +10,12 @@ import RoutieValidationLoadingCard from '@/domains/routie/components/RoutieValid
 import RoutieValidationResultCard from '@/domains/routie/components/RoutieValidationResultCard/RoutieValidationResultCard';
 import RoutieValidationUnavailableCard from '@/domains/routie/components/RoutieValidationUnavailableCard/RoutieValidationUnavailableCard';
 import RoutieValidationWaitingCard from '@/domains/routie/components/RoutieValidationWaitingCard/RoutieValidationWaitingCard';
+import SelectMovingStrategy from '@/domains/routie/components/SelectMovingStrategy/SelectMovingStrategy';
 import { useRoutieContext } from '@/domains/routie/contexts/useRoutieContext';
 import { useRoutieValidateContext } from '@/domains/routie/contexts/useRoutieValidateContext';
 import RoutieSpaceName from '@/domains/routieSpace/components/RoutieSpaceName/RoutieSpaceName';
 
+import DateInput from './DateInput';
 import TimeInput from './TimeInput';
 
 interface SidebarProps {
@@ -24,11 +26,9 @@ const Sidebar = ({ handleViewModeChange }: SidebarProps) => {
   const { routes, routiePlaces } = useRoutieContext();
   const {
     isValidateActive,
-    routieTime,
     validationStatus,
     waitingReason,
     handleValidateToggle,
-    handleTimeChange,
   } = useRoutieValidateContext();
 
   const totalMovingTime = useMemo(() => {
@@ -85,9 +85,10 @@ const Sidebar = ({ handleViewModeChange }: SidebarProps) => {
               onToggle={handleValidateToggle}
             />
           </Flex>
-
           {renderValidationCard()}
-          <TimeInput time={routieTime} onChange={handleTimeChange} />
+          <SelectMovingStrategy />
+          <DateInput />
+          <TimeInput />
         </Flex>
         <Flex
           direction="column"

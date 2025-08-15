@@ -55,10 +55,10 @@ public class Place {
     @Column(name = "stay_duration_minutes", nullable = false)
     private Integer stayDurationMinutes;
 
-    @Column(name = "open_at", nullable = false)
+    @Column(name = "open_at")
     private LocalTime openAt;
 
-    @Column(name = "close_at", nullable = false)
+    @Column(name = "close_at")
     private LocalTime closeAt;
 
     @Column(name = "break_start_at")
@@ -103,7 +103,6 @@ public class Place {
         validateLongitude(longitude);
         validateLatitude(latitude);
         validateStayDurationMinutes(stayDurationMinutes);
-        validateOperatingTime(openAt, closeAt);
         validateBreakTime(breakStartAt, breakEndAt);
         validateBreakTimeWithOperatingTime(openAt, closeAt, breakStartAt, breakEndAt);
 
@@ -152,6 +151,15 @@ public class Place {
         );
     }
 
+    private static List<PlaceClosedDayOfWeek> createClosedDayOfWeeks(final List<DayOfWeek> closedDayOfWeeks) {
+        if (closedDayOfWeeks == null) {
+            return List.of();
+        }
+        return closedDayOfWeeks.stream()
+                .map(PlaceClosedDayOfWeek::new)
+                .toList();
+    }
+
     public void modify(
             final int stayDurationMinutes,
             final LocalTime openAt,
@@ -161,8 +169,8 @@ public class Place {
             final List<DayOfWeek> closedDayOfWeeks
     ) {
         validateStayDurationMinutes(stayDurationMinutes);
-        validateOperatingTime(openAt, closeAt);
         validateBreakTime(breakStartAt, breakEndAt);
+        validateOperatingTime(openAt, closeAt);
         validateBreakTimeWithOperatingTime(openAt, closeAt, breakStartAt, breakEndAt);
 
         this.stayDurationMinutes = stayDurationMinutes;
@@ -172,15 +180,6 @@ public class Place {
         this.breakEndAt = breakEndAt;
         this.placeClosedDayOfWeeks.clear();
         this.placeClosedDayOfWeeks.addAll(createClosedDayOfWeeks(closedDayOfWeeks));
-    }
-
-    private static List<PlaceClosedDayOfWeek> createClosedDayOfWeeks(final List<DayOfWeek> closedDayOfWeeks) {
-        if (closedDayOfWeeks == null) {
-            throw new IllegalArgumentException("휴무일은 필수 입력 사항입니다.");
-        }
-        return closedDayOfWeeks.stream()
-                .map(PlaceClosedDayOfWeek::new)
-                .toList();
     }
 
     private void validateStayDurationMinutes(final int stayDurationMinutes) {
@@ -230,8 +229,11 @@ public class Place {
     }
 
     private void validateOperatingTime(final LocalTime openAt, final LocalTime closeAt) {
-        if (openAt == null || closeAt == null) {
-            throw new IllegalArgumentException("영업 시간은 필수 입력 사항입니다.");
+        boolean hasOpenAt = openAt != null;
+        boolean hasCloseAt = closeAt != null;
+
+        if (hasOpenAt != hasCloseAt) {
+            throw new IllegalArgumentException("영업 시작 시간과 종료 시간은 함께 존재해야 합니다.");
         }
     }
 
