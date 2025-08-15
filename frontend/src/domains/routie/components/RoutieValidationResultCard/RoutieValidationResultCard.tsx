@@ -27,7 +27,7 @@ const RoutieValidationResultCard = () => {
       <Flex width="100%" gap={1.5} justifyContent="flex-start" height="100%">
         <img src={isValidRoutie ? successIcon : failIcon} alt="available" />
         <Flex direction="column" gap={0.3} alignItems="flex-start">
-          <Text variant="caption">{resultMessage}</Text>
+          <Text variant="subTitle">{resultMessage}</Text>
         </Flex>
       </Flex>
     </Card>
