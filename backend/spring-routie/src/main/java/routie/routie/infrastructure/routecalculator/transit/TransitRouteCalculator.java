@@ -1,5 +1,6 @@
 package routie.routie.infrastructure.routecalculator.transit;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -32,12 +33,15 @@ public class TransitRouteCalculator implements RouteCalculator {
     @Override
     public Routes calculateRoutes(final RouteCalculationContext routeCalculationContext) {
         List<RoutiePlace> routiePlaces = routeCalculationContext.getRoutiePlaces();
+        LocalDateTime startDateTime = routeCalculationContext.getStartDateTime()
+                .orElseThrow(() -> new IllegalArgumentException("대중교통 Route 계산에서 startDateTime은 null이 될 수 없습니다."));
+
         Map<RoutiePlace, Route> routeMap = new HashMap<>();
         for (int sequence = 0; sequence < routiePlaces.size() - 1; sequence++) {
             RoutiePlace from = routiePlaces.get(sequence);
             RoutiePlace to = routiePlaces.get(sequence + 1);
             GoogleTransitRouteApiResponse googleTransitRouteApiResponse =
-                    googleTransitRouteApiClient.getRoute(GoogleTransitRouteApiRequest.from(from, to));
+                    googleTransitRouteApiClient.getRoute(GoogleTransitRouteApiRequest.from(startDateTime, from, to));
 
             RouteResponse routeResponse = googleTransitRouteApiResponse.routeResponses()
                     .getFirst();
