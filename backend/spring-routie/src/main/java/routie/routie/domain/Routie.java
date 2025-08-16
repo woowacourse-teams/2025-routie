@@ -20,7 +20,7 @@ import routie.place.domain.Place;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Routie {
 
-    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true)
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE}, orphanRemoval = true)
     @JoinColumn(name = "routie_space_id", nullable = false)
     private List<RoutiePlace> routiePlaces = new ArrayList<>();
 
@@ -85,5 +85,10 @@ public class Routie {
         routiePlaces.sort(Comparator.comparingInt(RoutiePlace::getSequence));
         IntStream.range(0, routiePlaces.size())
                 .forEach(index -> routiePlaces.get(index).updateSequence(index + 1));
+    }
+
+    public void updateRoutiePlaces(final List<RoutiePlace> newRoutiePlaces) {
+        this.routiePlaces.clear();
+        this.routiePlaces.addAll(newRoutiePlaces);
     }
 }

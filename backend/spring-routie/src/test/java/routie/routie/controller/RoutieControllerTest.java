@@ -162,6 +162,59 @@ class RoutieControllerTest {
     }
 
     @Test
+    @DisplayName("새로운 장소만으로 루티를 완전히 교체할 수 있다")
+    void updateRoutie_WithNewPlaces_ReplacesEntireRoutie() {
+        // given
+        Place newPlace = new PlaceBuilder()
+                .name("새로운 장소")
+                .roadAddressName("새로운 도로명 주소")
+                .addressName("새로운 지번 주소")
+                .longitude(127.1)
+                .latitude(37.6)
+                .stayDurationMinutes(120)
+                .openAt(LocalTime.of(8, 0))
+                .closeAt(LocalTime.of(22, 0))
+                .breakStartAt(null)
+                .breakEndAt(null)
+                .routieSpace(routieSpace)
+                .placeClosedDayOfWeeks(List.of())
+                .build();
+        placeRepository.save(newPlace);
+
+        Map<String, Object> requestBody = Map.of(
+                "routiePlaces", List.of(
+                        Map.of("placeId", newPlace.getId(), "sequence", 1)
+                )
+        );
+
+        // when
+        Response response = RestAssured
+                .given().log().all()
+                .contentType("application/json")
+                .body(requestBody)
+                .when()
+                .patch("/routie-spaces/" + routieSpace.getIdentifier() + "/routie")
+                .then().log().all()
+                .extract().response();
+
+        // then
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.NO_CONTENT.value());
+
+        RoutieReadResponse routieReadResponse = RestAssured
+                .given()
+                .when()
+                .get("/routie-spaces/" + routieSpace.getIdentifier() + "/routie")
+                .then()
+                .statusCode(HttpStatus.OK.value())
+                .extract()
+                .as(RoutieReadResponse.class);
+
+        assertThat(routieReadResponse.routiePlaces()).hasSize(1);
+        assertThat(routieReadResponse.routiePlaces().getFirst().placeId()).isEqualTo(newPlace.getId());
+        assertThat(routieReadResponse.routiePlaces().getFirst().sequence()).isEqualTo(1);
+    }
+
+    @Test
     @DisplayName("유효한 경로 검증 시 200 OK와 함께 isValid true를 반환한다")
     void validateRoutie_WithValidCase_ReturnsOkWithTrue() {
         // given: 검증 조건에 어긋나지 않는 출발, 도착 시각
