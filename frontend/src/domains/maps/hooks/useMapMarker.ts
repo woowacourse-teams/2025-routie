@@ -15,27 +15,17 @@ const useMapMarker = ({ map }: { map: RefObject<KakaoMapType> }) => {
   }, []);
 
   const drawMarkers = useCallback(
-    (
-      place: { latitude: number; longitude: number; title: string },
-      onClick?: () => void,
-    ) => {
+    (lat: number, lng: number, onClick?: () => void) => {
       if (!map.current) return;
 
-      const position = new window.kakao.maps.LatLng(
-        place.latitude,
-        place.longitude,
-      );
+      const position = new window.kakao.maps.LatLng(lat, lng);
       const marker = new window.kakao.maps.Marker({
         position,
-        title: place.title,
       });
       marker.setMap(map.current);
 
       if (onClick) {
-        window.kakao.maps.event.addListener(marker, 'click', () => {
-          onClick();
-          fitMapToMarker(place.latitude, place.longitude);
-        });
+        window.kakao.maps.event.addListener(marker, 'click', onClick);
       }
 
       markersRef.current.push(marker);
