@@ -104,7 +104,7 @@ const Home = () => {
                 onClick={handleReturnToRoutieSpace}
                 css={continueButtonStyle}
               >
-                <Flex direction="row" gap={1.5} padding={1}>
+                <Flex gap={1.5} padding={1}>
                   <img src={reload} width={'25rem'} />
                   <Text variant="title" color={theme.home.violet}>
                     이어서 만들기
