@@ -4,7 +4,7 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import routie.exception.BusinessException;
 import routie.exception.ErrorCode;
-import routie.place.domain.MovingStrategy;
+import routie.routie.domain.route.MovingStrategy;
 import routie.routie.domain.route.RouteCalculationContext;
 import routie.routie.domain.route.RouteCalculator;
 import routie.routie.domain.route.Routes;

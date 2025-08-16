@@ -14,12 +14,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import routie.place.domain.MovingStrategy;
 import routie.routie.controller.dto.request.RoutiePlaceCreateRequest;
 import routie.routie.controller.dto.request.RoutieUpdateRequest;
 import routie.routie.controller.dto.response.RoutiePlaceCreateResponse;
 import routie.routie.controller.dto.response.RoutieReadResponse;
 import routie.routie.controller.dto.response.RoutieValidationResponse;
+import routie.routie.domain.route.MovingStrategy;
 import routie.routie.service.RoutieService;
 
 @RestController

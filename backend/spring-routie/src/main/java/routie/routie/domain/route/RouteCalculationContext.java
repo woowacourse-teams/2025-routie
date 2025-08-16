@@ -4,7 +4,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import lombok.Getter;
-import routie.place.domain.MovingStrategy;
 import routie.routie.domain.RoutiePlace;
 
 @Getter
