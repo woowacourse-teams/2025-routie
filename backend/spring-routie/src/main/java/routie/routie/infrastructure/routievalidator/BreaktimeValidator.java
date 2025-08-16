@@ -13,7 +13,7 @@ import routie.routie.domain.timeperiod.TimePeriod;
 @Component
 public class BreaktimeValidator implements RoutieValidator {
 
-    private static final LocalTime END_OF_DAY = LocalTime.of(23, 59, 59, 999_999_999);
+    private static final LocalTime END_OF_DAY = LocalTime.MAX;
     private static final LocalTime START_OF_DAY = LocalTime.MIN;
 
     @Override
