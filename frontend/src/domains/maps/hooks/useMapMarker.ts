@@ -15,7 +15,7 @@ const useMapMarker = ({ map }: { map: RefObject<KakaoMapType> }) => {
     markersRef.current = [];
   }, []);
 
-  const drawMarkers = useCallback(
+   const drawMarkers = useCallback(
     (lat: number, lng: number, index: number, onClick?: () => void) => {
       if (!map.current) return;
 
