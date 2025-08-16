@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
+import { Global } from '@emotion/react';
 
 import Button from '@/@common/components/Button/Button';
 import Flex from '@/@common/components/Flex/Flex';
@@ -19,6 +20,7 @@ import {
   KakaoMapErrorStyle,
   KakaoMapLoadingStyle,
   KakaoMapWrapperStyle,
+  MarkerLabelStyle,
 } from './KakaoMap.styles';
 import PlaceOverlayCard from './PlaceOverlayCard';
 
@@ -93,8 +95,8 @@ const KakaoMap = ({ lat = 37.554, lng = 126.97, level = 7 }: KakaoMapProps) => {
     const renderMapElements = () => {
       clearMarkers();
 
-      placeList.forEach((place) => {
-        drawMarkers(place.latitude, place.longitude, () => {
+      placeList.forEach((place, index) => {
+        drawMarkers(place.latitude, place.longitude, index + 1, () => {
           setSelectedPlace(place);
           openAt(place.latitude, place.longitude);
           fitMapToMarker(place.latitude, place.longitude);
@@ -115,6 +117,7 @@ const KakaoMap = ({ lat = 37.554, lng = 126.97, level = 7 }: KakaoMapProps) => {
 
   return (
     <div css={KakaoMapWrapperStyle}>
+      <Global styles={MarkerLabelStyle} />
       <div
         ref={mapContainerRef}
         css={KakaoMapContainerStyle}
