@@ -1,7 +1,10 @@
 import { useState } from 'react';
-import KakaoMap from '@/domains/maps/components/KakaoMap';
+
 import Flex from '@/@common/components/Flex/Flex';
+import KakaoMap from '@/domains/maps/components/KakaoMap';
+
 import SideSheet from '../SideSheet/SideSheet';
+
 import { ContainerStyle } from './MapWithSideSheet.styles';
 
 const MapWithSideSheet = () => {

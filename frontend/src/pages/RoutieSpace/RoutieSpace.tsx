@@ -7,7 +7,7 @@ import { PlaceListProvider } from '@/layouts/PlaceList/contexts/PlaceListProvide
 import Sidebar from '@/layouts/Sidebar/Sidebar';
 
 const RoutieSpace = () => {
-  const { viewMode, handleViewModeChange } = useMapView();
+  const { handleViewModeChange } = useMapView();
 
   return (
     <RoutieValidateProvider>
