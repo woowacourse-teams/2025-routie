@@ -45,11 +45,11 @@ export const MarkerLabelStyle = css`
     align-items: center;
     justify-content: center;
 
-    width: 30px;
-    height: 30px;
+    width: 3rem;
+    height: 3rem;
     border-radius: 50%;
 
-    font-size: 16px;
+    font-size: 1.6rem;
     font-weight: bold;
     color: white;
 
