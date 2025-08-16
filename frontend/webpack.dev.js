@@ -7,9 +7,14 @@ module.exports = merge(common(), {
   mode: 'development',
   devtool: 'eval-source-map',
   devServer: {
-    static: {
-      directory: path.resolve(__dirname, 'dist'),
-    },
+    static: [
+      {
+        directory: path.resolve(__dirname, 'dist'),
+      },
+      {
+        directory: path.resolve(__dirname, 'public'),
+      },
+    ],
     port: 3000,
     hot: true,
     historyApiFallback: true,
