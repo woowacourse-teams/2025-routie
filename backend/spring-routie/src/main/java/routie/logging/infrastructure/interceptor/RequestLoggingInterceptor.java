@@ -8,7 +8,7 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import routie.logging.domain.LogDataBuilder;
 import routie.logging.domain.LoggingField;
 import routie.logging.infrastructure.TraceIdHolder;
-import routie.logging.service.ClientRequestLogger;
+import routie.logging.infrastructure.ClientRequestLogger;
 
 @RequiredArgsConstructor
 public class RequestLoggingInterceptor implements HandlerInterceptor {

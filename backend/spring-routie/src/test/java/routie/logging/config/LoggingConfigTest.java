@@ -17,7 +17,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import routie.logging.infrastructure.aspect.RequestLoggingAspect;
 import routie.logging.infrastructure.interceptor.RequestLoggingInterceptor;
-import routie.logging.service.ClientRequestLogger;
+import routie.logging.infrastructure.ClientRequestLogger;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = LoggingConfig.class)

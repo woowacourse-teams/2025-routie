@@ -1,4 +1,4 @@
-package routie.logging.config;
+package routie.logging.infrastructure.strategy;
 
 import static routie.logging.domain.LoggingField.CLIENT_IP;
 import static routie.logging.domain.LoggingField.HTTP_METHOD;

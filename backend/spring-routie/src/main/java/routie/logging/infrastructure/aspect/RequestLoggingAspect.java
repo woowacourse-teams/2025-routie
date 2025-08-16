@@ -13,7 +13,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import routie.logging.domain.LogDataBuilder;
 import routie.logging.domain.LoggingField;
 import routie.logging.infrastructure.TraceIdHolder;
-import routie.logging.service.ClientRequestLogger;
+import routie.logging.infrastructure.ClientRequestLogger;
 
 @Slf4j
 @Aspect

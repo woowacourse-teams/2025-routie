@@ -1,6 +1,4 @@
-package routie.logging.service;
-
-import static routie.logging.domain.LoggingField.HANDLER_PARAMS;
+package routie.logging.infrastructure;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.Map;

@@ -9,7 +9,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.mock.web.MockHttpServletRequest;
-import routie.logging.config.DevLoggingStrategy;
+import routie.logging.infrastructure.strategy.DevLoggingStrategy;
 import routie.logging.extractor.dto.HandlerParameter;
 
 class LogDataBuilderTest {
