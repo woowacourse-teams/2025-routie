@@ -1,28 +1,34 @@
 package routie.routie.infrastructure.routecalculator.transit.googletransitapi;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.time.LocalDateTime;
 import routie.place.domain.Place;
 import routie.routie.domain.RoutiePlace;
 
 public final class GoogleTransitRouteApiRequest {
-    @JsonProperty("origin")
+    private final LocalDateTime startDateTime;
     private final CoordinateRequest origin;
-    @JsonProperty("destination")
     private final CoordinateRequest destination;
-    @JsonProperty("travelMode")
     private final String travelMode;
 
     public GoogleTransitRouteApiRequest(
+            @JsonProperty("departureTime") final LocalDateTime startDateTime,
             @JsonProperty("origin") final CoordinateRequest origin,
             @JsonProperty("destination") final CoordinateRequest destination
     ) {
+        this.startDateTime = startDateTime;
         this.origin = origin;
         this.destination = destination;
         this.travelMode = "TRANSIT";
     }
 
-    public static GoogleTransitRouteApiRequest from(final RoutiePlace from, final RoutiePlace to) {
+    public static GoogleTransitRouteApiRequest from(
+            final LocalDateTime startDateTime,
+            final RoutiePlace from,
+            final RoutiePlace to
+    ) {
         return new GoogleTransitRouteApiRequest(
+                startDateTime,
                 CoordinateRequest.from(from),
                 CoordinateRequest.from(to)
         );
