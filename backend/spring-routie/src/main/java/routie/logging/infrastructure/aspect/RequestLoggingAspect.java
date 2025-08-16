@@ -12,8 +12,8 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import routie.logging.domain.LogDataBuilder;
 import routie.logging.domain.LoggingField;
-import routie.logging.infrastructure.TraceIdHolder;
 import routie.logging.infrastructure.ClientRequestLogger;
+import routie.logging.infrastructure.TraceIdHolder;
 
 @Slf4j
 @Aspect
@@ -29,7 +29,8 @@ public class RequestLoggingAspect {
         long startTime = System.currentTimeMillis();
         TraceIdHolder.setTraceId();
 
-        ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
+        ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes) RequestContextHolder
+                .currentRequestAttributes();
         HttpServletRequest httpServletRequest = servletRequestAttributes.getRequest();
 
         boolean isSuccess = false;

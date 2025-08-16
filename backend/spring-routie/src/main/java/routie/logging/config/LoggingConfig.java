@@ -8,11 +8,11 @@ import org.springframework.lang.NonNull;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import routie.logging.domain.LogDataBuilder;
+import routie.logging.infrastructure.ClientRequestLogger;
 import routie.logging.infrastructure.aspect.RequestLoggingAspect;
 import routie.logging.infrastructure.interceptor.RequestLoggingInterceptor;
 import routie.logging.infrastructure.strategy.DevLoggingStrategy;
 import routie.logging.infrastructure.strategy.ProdLoggingStrategy;
-import routie.logging.infrastructure.ClientRequestLogger;
 
 @Configuration
 @RequiredArgsConstructor

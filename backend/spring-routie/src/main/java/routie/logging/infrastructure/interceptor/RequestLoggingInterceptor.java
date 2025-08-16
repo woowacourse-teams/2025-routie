@@ -7,8 +7,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.servlet.HandlerInterceptor;
 import routie.logging.domain.LogDataBuilder;
 import routie.logging.domain.LoggingField;
-import routie.logging.infrastructure.TraceIdHolder;
 import routie.logging.infrastructure.ClientRequestLogger;
+import routie.logging.infrastructure.TraceIdHolder;
 
 @RequiredArgsConstructor
 public class RequestLoggingInterceptor implements HandlerInterceptor {
