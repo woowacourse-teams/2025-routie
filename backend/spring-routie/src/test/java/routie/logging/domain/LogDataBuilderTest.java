@@ -9,8 +9,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.mock.web.MockHttpServletRequest;
-import routie.logging.infrastructure.strategy.DevLoggingStrategy;
 import routie.logging.extractor.dto.HandlerParameter;
+import routie.logging.infrastructure.strategy.DevLoggingStrategy;
 
 class LogDataBuilderTest {
 
@@ -89,6 +89,35 @@ class LogDataBuilderTest {
                 .handlerMethod(null)
                 .handlerParameters(null)
                 .build();
+
+        // when
+        Map<LoggingField, Object> result = logDataBuilder.buildLogData(loggingContext);
+
+        // then
+        assertThat(result).hasSize(5);
+        assertThat(result).doesNotContainKey(LoggingField.HANDLER_METHOD);
+        assertThat(result).doesNotContainKey(LoggingField.HANDLER_PARAMS);
+        assertThat(result.get(LoggingField.HTTP_METHOD)).isEqualTo("GET");
+        assertThat(result.get(LoggingField.REQUEST_RESULT)).isEqualTo("SUCCESS");
+    }
+
+    @Test
+    @DisplayName("UnsupportedOperationException 발생 시 해당 필드 제외")
+    void buildLogData_WithUnsupportedOperationException_FiltersExceptionFields() {
+        // given
+        MockHttpServletRequest request = new MockHttpServletRequest("GET", "/api/test");
+
+        TestLoggingContext loggingContext = new TestLoggingContext(request, 100L, null, "SUCCESS", null) {
+            @Override
+            public String getHandlerMethod() {
+                throw new UnsupportedOperationException("Handler method not available");
+            }
+
+            @Override
+            public List<HandlerParameter> getHandlerParameters() {
+                throw new UnsupportedOperationException("Handler parameters not available");
+            }
+        };
 
         // when
         Map<LoggingField, Object> result = logDataBuilder.buildLogData(loggingContext);

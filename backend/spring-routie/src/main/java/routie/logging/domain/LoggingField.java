@@ -1,5 +1,6 @@
 package routie.logging.domain;
 
+import java.util.Optional;
 import java.util.function.Function;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -21,8 +22,12 @@ public enum LoggingField {
     private final String fieldName;
     private final Function<LoggingContext, Object> extractor;
 
-    public Object extract(final LoggingContext loggingContext) {
-        return extractor.apply(loggingContext);
+    public Optional<Object> extract(final LoggingContext context) {
+        try {
+            return Optional.ofNullable(extractor.apply(context));
+        } catch (final UnsupportedOperationException e) {
+            return Optional.empty();
+        }
     }
 
     public boolean isJsonSerializationRequired() {

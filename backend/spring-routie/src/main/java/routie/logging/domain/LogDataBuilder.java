@@ -1,6 +1,7 @@
 package routie.logging.domain;
 
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 
@@ -12,11 +13,20 @@ public class LogDataBuilder {
     public Map<LoggingField, Object> buildLogData(final LoggingContext loggingContext) {
         return loggingStrategy.getLoggingFields()
                 .stream()
-                .filter(loggingField -> loggingField.extract(loggingContext) != null)
-                .collect(
-                        Collectors.toMap(
-                                loggingField -> loggingField,
-                                loggingField -> loggingField.extract(loggingContext)
-                        ));
+                .map(field -> extractAsEntry(field, loggingContext))
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .collect(Collectors.toMap(
+                        Map.Entry::getKey,
+                        Map.Entry::getValue
+                ));
+    }
+
+    private Optional<Map.Entry<LoggingField, Object>> extractAsEntry(
+            final LoggingField field,
+            final LoggingContext context
+    ) {
+        return field.extract(context)
+                .map(value -> Map.entry(field, value));
     }
 }

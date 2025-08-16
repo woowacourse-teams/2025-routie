@@ -27,7 +27,7 @@ public class InterceptorLoggingContext implements LoggingContext {
 
     @Override
     public String getHandlerMethod() {
-        return null;
+        throw new UnsupportedOperationException("Handler Method is not available in Interceptor context.");
     }
 
     @Override
@@ -37,6 +37,6 @@ public class InterceptorLoggingContext implements LoggingContext {
 
     @Override
     public List<HandlerParameter> getHandlerParameters() {
-        return List.of();
+        throw new UnsupportedOperationException("Handler Parameters are not available in Interceptor context.");
     }
 }
