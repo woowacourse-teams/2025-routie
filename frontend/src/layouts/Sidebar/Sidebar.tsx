@@ -1,10 +1,10 @@
 import { useMemo } from 'react';
 
+import EmptyMessage from '@/@common/components/EmptyMessage/EmptyMessage';
 import Flex from '@/@common/components/Flex/Flex';
 import Header from '@/@common/components/Header/Header';
 import Text from '@/@common/components/Text/Text';
 import ToggleSwitch from '@/@common/components/ToggleSwitch/ToggleSwitch';
-import EmptyMessage from '@/@common/components/EmptyMessage/EmptyMessage';
 import RoutieSection from '@/domains/routie/components/RoutieSection/RoutieSection';
 import RoutieValidationLoadingCard from '@/domains/routie/components/RoutieValidationLoadingCard/RoutieValidationLoadingCard';
 import RoutieValidationResultCard from '@/domains/routie/components/RoutieValidationResultCard/RoutieValidationResultCard';
@@ -18,11 +18,7 @@ import RoutieSpaceName from '@/domains/routieSpace/components/RoutieSpaceName/Ro
 import DateInput from './DateInput';
 import TimeInput from './TimeInput';
 
-interface SidebarProps {
-  handleViewModeChange: () => void;
-}
-
-const Sidebar = ({ handleViewModeChange }: SidebarProps) => {
+const Sidebar = () => {
   const { routes, routiePlaces } = useRoutieContext();
   const {
     isValidateActive,
@@ -67,7 +63,7 @@ const Sidebar = ({ handleViewModeChange }: SidebarProps) => {
           overflow: 'hidden',
         }}
       >
-        <Header handleViewModeChange={handleViewModeChange} />
+        <Header />
         <Flex
           direction="column"
           width="100%"
