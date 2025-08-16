@@ -42,6 +42,55 @@ class PlaceTest {
     }
 
     @Test
+    @DisplayName("영업 시간이 모두 없을 때 생성 성공")
+    void createPlaceWithNoOperatingTime() {
+        // given
+
+        // when
+        Place place = Place.create(
+                "스타벅스",
+                "테스트 도로명 주소",
+                "테스트 지번 주소",
+                10.123,
+                10.123,
+                60,
+                null,
+                null,
+                LocalTime.of(14, 0),
+                LocalTime.of(15, 0),
+                routieSpace,
+                List.of(DayOfWeek.SUNDAY)
+        );
+
+        // then
+        assertThat(place.getName()).isEqualTo("스타벅스");
+        assertThat(place.getBreakStartAt()).isEqualTo(LocalTime.of(14, 0));
+        assertThat(place.getBreakEndAt()).isEqualTo(LocalTime.of(15, 0));
+    }
+
+    @Test
+    @DisplayName("영업 시간이 둘 중 하나만 있는 경우 생성 실패")
+    void createPlaceWithNoOneOfOperatingTime() {
+        // given
+
+        // when, then
+        assertThatThrownBy(() -> Place.create(
+                "스타벅스",
+                "테스트 도로명 주소",
+                "테스트 지번 주소",
+                10.123,
+                10.123,
+                60,
+                LocalTime.of(14, 0),
+                null,
+                LocalTime.of(14, 0),
+                LocalTime.of(15, 0),
+                routieSpace,
+                List.of(DayOfWeek.SUNDAY)
+        )).isInstanceOf(IllegalArgumentException.class);
+    }
+
+    @Test
     @DisplayName("브레이크 타임이 모두 없을 때 생성 성공")
     void createPlaceWithoutBreakTimeSuccess() {
         // given
