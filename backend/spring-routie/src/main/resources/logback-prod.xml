@@ -1,21 +1,12 @@
 <included>
-    <appender name="ROUTIE_INFO_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>${LOG_DIR}/routie-info.log</file>
+    <appender name="ROUTIE_LOG_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_DIR}/routie.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>${LOG_DIR}/routie-info.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <fileNamePattern>${LOG_DIR}/routie.%d{yyyy-MM-dd}.log</fileNamePattern>
             <maxHistory>7</maxHistory>
         </rollingPolicy>
-
-        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
             <level>INFO</level>
-            <onMatch>ACCEPT</onMatch>
-            <onMismatch>NEUTRAL</onMismatch>
-        </filter>
-
-        <filter class="ch.qos.logback.classic.filter.LevelFilter">
-            <level>WARN</level>
-            <onMatch>ACCEPT</onMatch>
-            <onMismatch>DENY</onMismatch>
         </filter>
 
         <encoder>
@@ -24,16 +15,14 @@
         </encoder>
     </appender>
 
-    <appender name="ROUTIE_ERROR_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>${LOG_DIR}/routie-error.json</file>
+    <appender name="ROUTIE_EXCEPTION_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_DIR}/routie-exception.json</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>${LOG_DIR}/routie-error.%d{yyyy-MM-dd}.json</fileNamePattern>
+            <fileNamePattern>${LOG_DIR}/routie-exception.%d{yyyy-MM-dd}.json</fileNamePattern>
             <maxHistory>7</maxHistory>
         </rollingPolicy>
-        <filter class="ch.qos.logback.classic.filter.LevelFilter">
-            <level>ERROR</level>
-            <onMatch>ACCEPT</onMatch>
-            <onMismatch>DENY</onMismatch>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>WARN</level>
         </filter>
 
         <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
@@ -61,11 +50,7 @@
                 <stackTrace>
                     <fieldName>stacktrace</fieldName>
                 </stackTrace>
-                <uuid>
-                    <fieldName>traceId</fieldName>
-                    <strategy>random</strategy>
-                </uuid>
-
+                <mdc/>
             </providers>
         </encoder>
     </appender>
@@ -73,14 +58,11 @@
     <appender name="ROUTIE_REQUEST_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>${LOG_DIR}/routie-request.json</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>${LOG_DIR}/routie-request.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <fileNamePattern>${LOG_DIR}/routie-request.%d{yyyy-MM-dd}.json</fileNamePattern>
             <maxHistory>7</maxHistory>
         </rollingPolicy>
-
-        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
             <level>INFO</level>
-            <onMatch>ACCEPT</onMatch>
-            <onMismatch>DENY</onMismatch>
         </filter>
 
         <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
@@ -93,16 +75,7 @@
                 <logLevel>
                     <fieldName>level</fieldName>
                 </logLevel>
-                <uuid>
-                    <fieldName>traceId</fieldName>
-                    <strategy>random</strategy>
-                </uuid>
-                <mdc>
-                    <includeMdcKeyName>httpMethod</includeMdcKeyName>
-                    <includeMdcKeyName>url</includeMdcKeyName>
-                    <includeMdcKeyName>clientIp</includeMdcKeyName>
-                    <includeMdcKeyName>responseTimeMs</includeMdcKeyName>
-                </mdc>
+                <mdc/>
             </providers>
         </encoder>
     </appender>
@@ -114,17 +87,24 @@
         </encoder>
     </appender>
 
+
     <logger name="routie" level="INFO" additivity="false">
-        <appender-ref ref="ROUTIE_INFO_FILE"/>
-        <appender-ref ref="ROUTIE_ERROR_FILE"/>
+        <appender-ref ref="ROUTIE_LOG_FILE"/>
         <appender-ref ref="CONSOLE"/>
     </logger>
 
-    <logger name="routie.logging" level="INFO" additivity="false">
-        <appender-ref ref="ROUTIE_REQUEST_FILE"/>
+    <logger name="routie.exception" level="WARN" additivity="false">
+        <appender-ref ref="ROUTIE_EXCEPTION_FILE"/>
+        <appender-ref ref="CONSOLE"/>
     </logger>
 
-    <root level="INFO">
+
+    <logger name="routie.logging" level="INFO" additivity="false">
+        <appender-ref ref="ROUTIE_REQUEST_FILE"/>
+        <appender-ref ref="CONSOLE"/>
+    </logger>
+
+    <root level="WARN">
         <appender-ref ref="CONSOLE"/>
     </root>
 
