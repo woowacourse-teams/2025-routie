@@ -36,3 +36,23 @@ export const KakaoMapErrorStyle = css`
 
   background-color: #f8f9fa;
 `;
+
+export const MarkerLabelStyle = css`
+  .marker-label {
+    cursor: pointer;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+
+    font-size: 16px;
+    font-weight: bold;
+    color: white;
+
+    background: #2b6cb0;
+  }
+`;
