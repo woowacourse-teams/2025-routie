@@ -1,8 +1,5 @@
 import { ValidationApiResponse } from '../types/api.types';
-import {
-  validationErrorCodeType,
-  RoutieValidationResponseType,
-} from '../types/routie.types';
+import { RoutieValidationResponseType } from '../types/routie.types';
 
 export const adaptValidationResponse = (
   apiResponse: ValidationApiResponse,
@@ -10,7 +7,7 @@ export const adaptValidationResponse = (
   return {
     validationResultResponses: apiResponse.validationResultResponses.map(
       (response) => ({
-        validationCode: response.validationCode as validationErrorCodeType,
+        validationCode: response.validationCode,
         isValid: response.isValid,
         invalidRoutiePlaces: response.invalidRoutiePlaces.map((place) => ({
           routiePlaceId: place.routiePlaceId,
