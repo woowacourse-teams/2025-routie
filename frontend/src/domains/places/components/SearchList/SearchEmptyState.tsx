@@ -1,12 +1,12 @@
 import Text from '@/@common/components/Text/Text';
 
-import { itemEmptyStyle, listStyle } from '../SearchList/SearchList.styles';
+import { itemEmptyStyle, listStyle } from './SearchList.styles';
 
-interface SearchEmptyList {
+interface SearchEmptyStateProps {
   keyword: string;
 }
 
-const SearchEmptyList = ({ keyword }: SearchEmptyList) => {
+const SearchEmptyState = ({ keyword }: SearchEmptyStateProps) => {
   return (
     <ul css={listStyle}>
       <li css={itemEmptyStyle}>
@@ -17,4 +17,4 @@ const SearchEmptyList = ({ keyword }: SearchEmptyList) => {
     </ul>
   );
 };
-export default SearchEmptyList;
+export default SearchEmptyState;

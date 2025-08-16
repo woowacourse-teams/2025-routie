@@ -8,7 +8,7 @@ import theme from '@/styles/theme';
 
 import useSearchPlace from '../../hooks/useSearchPlace';
 import { PlaceLocationType, PlaceSearchType } from '../../types/place.types';
-import SearchEmptyList from '../SearchList/SearchEmptyList';
+import SearchEmptyState from '../SearchList/SearchEmptyState';
 import SearchList from '../SearchList/SearchList';
 
 interface SearchBoxProps {
@@ -88,7 +88,7 @@ const SearchBox = ({ onChange, handleSearchPlaceMap }: SearchBoxProps) => {
             handleSelect={handleSelect}
           />
         ) : (
-          isEmpty && <SearchEmptyList keyword={keyword} />
+          isEmpty && <SearchEmptyState keyword={keyword} />
         )}
       </Flex>
     </Flex>
