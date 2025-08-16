@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
+import { Global } from '@emotion/react';
 
 import Button from '@/@common/components/Button/Button';
 import Flex from '@/@common/components/Flex/Flex';
@@ -19,6 +20,7 @@ import {
   KakaoMapErrorStyle,
   KakaoMapLoadingStyle,
   KakaoMapWrapperStyle,
+  MarkerLabelStyle,
 } from './KakaoMap.styles';
 import PlaceOverlayCard from './PlaceOverlayCard';
 
@@ -42,9 +44,10 @@ const KakaoMap = () => {
     containerRef: mapContainerRef,
     sdkReady,
   });
-  const { fitMapToMarkers, drawMarkers, clearMarkers } = useMapMarker({
-    map: mapRef,
-  });
+  const { fitMapToMarker, fitMapToMarkers, drawMarkers, clearMarkers } =
+    useMapMarker({
+      map: mapRef,
+    });
   const { loadPolyline, clearPolyline } = usePolyline({
     map: mapRef,
   });
@@ -87,11 +90,16 @@ const KakaoMap = () => {
     const renderMapElements = () => {
       clearMarkers();
 
-      placeList.forEach((place) => {
-        const { latitude, longitude, name } = place;
-        drawMarkers({ latitude, longitude, title: name }, () => {
-          setSelectedPlace(place);
-          openAt(latitude, longitude);
+      placeList.forEach((place, index) => {
+        drawMarkers({
+          lat: place.latitude,
+          lng: place.longitude,
+          index: index + 1,
+          onClick: () => {
+            setSelectedPlace(place);
+            openAt(place.latitude, place.longitude);
+            fitMapToMarker(place.latitude, place.longitude);
+          },
         });
       });
 
@@ -109,6 +117,7 @@ const KakaoMap = () => {
 
   return (
     <div css={KakaoMapWrapperStyle}>
+      <Global styles={MarkerLabelStyle} />
       <div
         ref={mapContainerRef}
         css={KakaoMapContainerStyle}
