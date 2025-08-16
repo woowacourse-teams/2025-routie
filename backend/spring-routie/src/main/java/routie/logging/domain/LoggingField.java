@@ -24,4 +24,8 @@ public enum LoggingField {
     public Object extract(final LoggingContext loggingContext) {
         return extractor.apply(loggingContext);
     }
+
+    public boolean isJsonSerializationRequired() {
+        return this == HANDLER_PARAMS;
+    }
 }

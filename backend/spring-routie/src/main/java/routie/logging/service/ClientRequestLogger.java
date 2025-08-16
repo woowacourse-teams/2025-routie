@@ -40,21 +40,18 @@ public class ClientRequestLogger {
     }
 
     private String convertToString(final LoggingField loggingField, final Object value) {
-        if (isJsonSerializationRequired(loggingField)) {
+        if (loggingField.isJsonSerializationRequired()) {
             return serializeToJson(value);
         }
         return String.valueOf(value);
-    }
-
-    private boolean isJsonSerializationRequired(final LoggingField loggingField) {
-        return HANDLER_PARAMS == loggingField;
     }
 
     private String serializeToJson(final Object value) {
         try {
             return objectMapper.writeValueAsString(value);
         } catch (final Exception e) {
-            return "[]";
+            log.debug("Failed to serialize object to JSON: {}", value.getClass().getSimpleName());
+            return "{\"error\":\"serialization_failed\",\"type\":\"" + value.getClass().getSimpleName() + "\"}";
         }
     }
 
