@@ -44,9 +44,10 @@ const KakaoMap = () => {
     containerRef: mapContainerRef,
     sdkReady,
   });
-  const { fitMapToMarkers, drawMarkers, clearMarkers } = useMapMarker({
-    map: mapRef,
-  });
+  const { fitMapToMarker, fitMapToMarkers, drawMarkers, clearMarkers } =
+    useMapMarker({
+      map: mapRef,
+    });
   const { loadPolyline, clearPolyline } = usePolyline({
     map: mapRef,
   });
