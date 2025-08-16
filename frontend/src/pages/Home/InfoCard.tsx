@@ -28,13 +28,7 @@ const InfoCard = ({
   return (
     <Flex width={size} height={size} alignItems="stretch" css={CardStyle}>
       <Flex direction="column" justifyContent="space-between" width="100%">
-        <Flex
-          justifyContent="center"
-          alignItems="center"
-          width="6rem"
-          height="6rem"
-          css={CircleStyle(circleColor)}
-        >
+        <Flex width="6rem" height="6rem" css={CircleStyle(circleColor)}>
           <img src={iconSrc} alt={iconAlt} width={iconSize} height={iconSize} />
         </Flex>
 
