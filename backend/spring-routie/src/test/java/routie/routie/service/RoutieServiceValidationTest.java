@@ -20,6 +20,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.transaction.annotation.Transactional;
+import routie.place.domain.MovingStrategy;
 import routie.place.domain.Place;
 import routie.place.domain.PlaceBuilder;
 import routie.place.repository.PlaceRepository;
@@ -111,7 +112,7 @@ class RoutieServiceValidationTest {
 
         // when
         RoutieValidationResponse response = routieService.validateRoutie(
-                routieSpace.getIdentifier(), startTime, endTime
+                routieSpace.getIdentifier(), startTime, endTime, MovingStrategy.DRIVING
         );
 
         // then
@@ -127,7 +128,7 @@ class RoutieServiceValidationTest {
         LocalDateTime endTime = LocalDateTime.of(2025, 7, 29, 11, 0);
 
         RoutieValidationResponse response = routieService.validateRoutie(
-                routieSpace.getIdentifier(), startTime, endTime
+                routieSpace.getIdentifier(), startTime, endTime, MovingStrategy.DRIVING
         );
 
         assertValidationResultIsFalse(response, ValidationStrategy.IS_WITHIN_TOTAL_TIME);
@@ -140,7 +141,7 @@ class RoutieServiceValidationTest {
         LocalDateTime endTime = LocalDateTime.of(2025, 7, 29, 18, 0);
 
         RoutieValidationResponse response = routieService.validateRoutie(
-                routieSpace.getIdentifier(), startTime, endTime
+                routieSpace.getIdentifier(), startTime, endTime, MovingStrategy.DRIVING
         );
 
         assertValidationResultIsFalse(response, ValidationStrategy.IS_WITHIN_OPERATION_HOURS);
@@ -153,7 +154,7 @@ class RoutieServiceValidationTest {
         LocalDateTime endTime = LocalDateTime.of(2025, 7, 28, 18, 0);
 
         RoutieValidationResponse response = routieService.validateRoutie(
-                routieSpace.getIdentifier(), startTime, endTime
+                routieSpace.getIdentifier(), startTime, endTime, MovingStrategy.DRIVING
         );
 
         assertValidationResultIsFalse(response, ValidationStrategy.IS_NOT_CLOSED_DAY);
@@ -166,7 +167,7 @@ class RoutieServiceValidationTest {
         LocalDateTime endTime = LocalDateTime.of(2025, 7, 29, 20, 0);
 
         RoutieValidationResponse response = routieService.validateRoutie(
-                routieSpace.getIdentifier(), startTime, endTime
+                routieSpace.getIdentifier(), startTime, endTime, MovingStrategy.DRIVING
         );
 
         assertValidationResultIsFalse(response, ValidationStrategy.IS_NOT_DURING_BREAKTIME);
@@ -214,7 +215,7 @@ class RoutieServiceValidationTest {
 
         // when
         RoutieValidationResponse response = routieService.validateRoutie(
-                singleRoutieSpace.getIdentifier(), startTime, endTime
+                routieSpace.getIdentifier(), startTime, endTime, MovingStrategy.DRIVING
         );
 
         // then: 총 시간 부족으로 인해 해당 조건만 false여야 함

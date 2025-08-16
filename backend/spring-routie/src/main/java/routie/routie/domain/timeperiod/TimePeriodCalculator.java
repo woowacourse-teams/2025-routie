@@ -16,13 +16,10 @@ public class TimePeriodCalculator {
             final List<RoutiePlace> routiePlaces
     ) {
         validateRoutes(routes);
+        validateStartDateTime(startDateTime);
         validateRoutiePlaces(routiePlaces);
 
         TimePeriods timePeriods = TimePeriods.empty();
-
-        if (startDateTime == null) {
-            return timePeriods;
-        }
 
         if (routiePlaces.size() == 1) {
             RoutiePlace firstRoutiePlace = routiePlaces.getFirst();
@@ -54,6 +51,12 @@ public class TimePeriodCalculator {
         }
 
         return timePeriods;
+    }
+
+    private void validateStartDateTime(final LocalDateTime startDateTime) {
+        if (startDateTime == null) {
+            throw new IllegalArgumentException("시작 시각은 null일 수 없습니다.");
+        }
     }
 
     private void validateRoutes(final Routes routes) {

@@ -3,7 +3,6 @@ package routie.routie.controller.dto.response;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import java.time.LocalDateTime;
 import java.util.List;
-import routie.place.domain.MovingStrategy;
 import routie.routie.domain.Routie;
 import routie.routie.domain.RoutiePlace;
 import routie.routie.domain.route.Route;
@@ -53,7 +52,6 @@ public record RoutieReadResponse(
     public record RouteResponse(
             int fromSequence,
             int toSequence,
-            MovingStrategy movingStrategy,
             int duration,
             int distance
     ) {
@@ -62,7 +60,6 @@ public record RoutieReadResponse(
             return new RouteResponse(
                     route.from().getSequence(),
                     route.to().getSequence(),
-                    route.movingStrategy(),
                     route.duration(),
                     route.distance()
             );
