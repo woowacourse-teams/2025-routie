@@ -1,4 +1,3 @@
-
 import Button from '@/@common/components/Button/Button';
 import Flex from '@/@common/components/Flex/Flex';
 import Header from '@/@common/components/Header/Header';
@@ -94,7 +93,7 @@ const Home = () => {
           <Flex gap={8} width="70%">
             <Button onClick={handleCreateRoutieSpace} css={createButtonStyle}>
               <Flex direction="row" gap={1.5} padding={1}>
-                <img src={arrowWhite} width={'30rem'}></img>
+                <img src={arrowWhite} width={'30rem'} />
                 <Text variant="title" color="white">
                   동선 만들러가기
                 </Text>
@@ -106,7 +105,7 @@ const Home = () => {
                 css={continueButtonStyle}
               >
                 <Flex direction="row" gap={1.5} padding={1}>
-                  <img src={reload} width={'25rem'}></img>
+                  <img src={reload} width={'25rem'} />
                   <Text variant="title" color={theme.home.violet}>
                     이어서 만들기
                   </Text>
