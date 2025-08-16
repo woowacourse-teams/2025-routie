@@ -8,6 +8,9 @@ export interface UseKakaoMapSDKReturn {
 export interface UseKakaoMapInitProps {
   containerRef: React.RefObject<HTMLDivElement | null>;
   sdkReady: boolean;
+  lat: number;
+  lng: number;
+  level: number;
 }
 
 export interface UseKakaoMapInitReturn {
@@ -15,4 +18,10 @@ export interface UseKakaoMapInitReturn {
   mapState: MapStateType;
   errorMessage: string | null;
   initializeMap: () => void;
+}
+
+export interface KakaoMapProps {
+  lat?: number;
+  lng?: number;
+  level?: number;
 }

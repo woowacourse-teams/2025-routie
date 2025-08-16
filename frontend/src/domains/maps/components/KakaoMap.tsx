@@ -22,7 +22,9 @@ import {
 } from './KakaoMap.styles';
 import PlaceOverlayCard from './PlaceOverlayCard';
 
-const KakaoMap = () => {
+import type { KakaoMapProps } from '../types/KaKaoMap.types';
+
+const KakaoMap = ({ lat = 37.554, lng = 126.97, level = 7 }: KakaoMapProps) => {
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const { placeList } = usePlaceListContext();
   const { routieIdList } = useRoutieContext();
@@ -41,10 +43,14 @@ const KakaoMap = () => {
   const { mapRef, mapState, errorMessage } = useKakaoMapInit({
     containerRef: mapContainerRef,
     sdkReady,
+    lat,
+    lng,
+    level,
   });
-  const { fitMapToMarkers, drawMarkers, clearMarkers } = useMapMarker({
-    map: mapRef,
-  });
+  const { fitMapToMarker, fitMapToMarkers, drawMarkers, clearMarkers } =
+    useMapMarker({
+      map: mapRef,
+    });
   const { loadPolyline, clearPolyline } = usePolyline({
     map: mapRef,
   });
@@ -88,10 +94,10 @@ const KakaoMap = () => {
       clearMarkers();
 
       placeList.forEach((place) => {
-        const { latitude, longitude, name } = place;
-        drawMarkers({ latitude, longitude, title: name }, () => {
+        drawMarkers(place.latitude, place.longitude, () => {
           setSelectedPlace(place);
-          openAt(latitude, longitude);
+          openAt(place.latitude, place.longitude);
+          fitMapToMarker(place.latitude, place.longitude);
         });
       });
 
