@@ -43,11 +43,16 @@ const CardStyle = (
   width: string | undefined,
   height: string | undefined,
 ) => css`
+  overflow: hidden;
+
   box-sizing: border-box;
   width: ${width ? width : '100%'};
   height: ${height ? height : 'auto'};
   padding: 1.6rem;
   border-radius: 8px;
+
+  text-overflow: ellipsis;
+  white-space: nowrap;
 
   background-color: ${theme.colors.white};
   ${cardVariant[variant]}

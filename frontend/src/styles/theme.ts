@@ -42,6 +42,14 @@ const theme = {
       thin: 200,
     },
   },
+  home: {
+    gray: '#F9FAFB',
+    violet: '#8b5cf6',
+    pink: '#ff6f91',
+    orange: '#ff9671',
+    yellow: '#ffc75f',
+    text: '#4b4453',
+  },
 };
 
 export default theme;

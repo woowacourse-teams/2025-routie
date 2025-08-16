@@ -1,7 +1,7 @@
 import { ComponentProps } from 'react';
 
 export interface ButtonProps extends ComponentProps<'button'> {
-  variant: ButtonVariantProps;
+  variant?: ButtonVariantProps;
   width?: string;
 }
 
