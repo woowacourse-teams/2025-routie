@@ -91,10 +91,15 @@ const KakaoMap = () => {
       clearMarkers();
 
       placeList.forEach((place, index) => {
-        drawMarkers(place.latitude, place.longitude, index + 1, () => {
-          setSelectedPlace(place);
-          openAt(place.latitude, place.longitude);
-          fitMapToMarker(place.latitude, place.longitude);
+        drawMarkers({
+          lat: place.latitude,
+          lng: place.longitude,
+          index: index + 1,
+          onClick: () => {
+            setSelectedPlace(place);
+            openAt(place.latitude, place.longitude);
+            fitMapToMarker(place.latitude, place.longitude);
+          },
         });
       });
 
