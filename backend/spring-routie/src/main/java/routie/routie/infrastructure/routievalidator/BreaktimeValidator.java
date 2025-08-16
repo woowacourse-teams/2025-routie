@@ -1,5 +1,7 @@
 package routie.routie.infrastructure.routievalidator;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 import org.springframework.stereotype.Component;
@@ -44,28 +46,34 @@ public class BreaktimeValidator implements RoutieValidator {
             return true;
         }
 
-        final LocalTime visitStartTime = timePeriod.startTime().toLocalTime();
-        final LocalTime visitEndTime = timePeriod.endTime().toLocalTime();
+        final LocalDateTime visitStartTime = timePeriod.startTime();
+        final LocalDateTime visitEndTime = timePeriod.endTime();
 
         return !doPeriodsOverlap(visitStartTime, visitEndTime, breakStartAt, breakEndAt);
     }
 
     private boolean doPeriodsOverlap(
-            final LocalTime visitStart,
-            final LocalTime visitEnd,
-            final LocalTime breakStart,
-            final LocalTime breakEnd
+            final LocalDateTime visitStart,
+            final LocalDateTime visitEnd,
+            final LocalTime breakStartAt,
+            final LocalTime breakEndAt
     ) {
-        if (visitStart.isAfter(visitEnd)) {
-            return doPeriodsOverlap(visitStart, END_OF_DAY, breakStart, breakEnd) ||
-                    doPeriodsOverlap(START_OF_DAY, visitEnd, breakStart, breakEnd);
+        LocalDate currentDate = visitStart.toLocalDate().minusDays(1);
+        LocalDate endDate = visitEnd.toLocalDate();
+
+        while (!currentDate.isAfter(endDate)) {
+            LocalDateTime breakStart = currentDate.atTime(breakStartAt);
+            LocalDateTime breakEnd = breakStartAt.isAfter(breakEndAt)
+                    ? breakStart.plusDays(1).with(breakEndAt)
+                    : breakStart.with(breakEndAt);
+
+            boolean overlaps = visitStart.isBefore(breakEnd) && breakStart.isBefore(visitEnd);
+            if (overlaps) {
+                return true;
+            }
+            currentDate = currentDate.plusDays(1);
         }
 
-        if (breakStart.isAfter(breakEnd)) {
-            return doPeriodsOverlap(visitStart, visitEnd, breakStart, END_OF_DAY) ||
-                    doPeriodsOverlap(visitStart, visitEnd, START_OF_DAY, breakEnd);
-        }
-
-        return visitStart.isBefore(breakEnd) && visitEnd.isAfter(breakStart);
+        return false;
     }
 }
