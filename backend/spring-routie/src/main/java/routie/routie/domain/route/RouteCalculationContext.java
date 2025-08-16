@@ -15,9 +15,9 @@ public class RouteCalculationContext {
     private final Optional<LocalDateTime> startDateTime;
 
     public RouteCalculationContext(
+            final LocalDateTime startDateTime,
             final List<RoutiePlace> routiePlaces,
-            final MovingStrategy movingStrategy,
-            final LocalDateTime startDateTime
+            final MovingStrategy movingStrategy
     ) {
         this.routiePlaces = routiePlaces;
         this.movingStrategy = movingStrategy;

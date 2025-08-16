@@ -10,6 +10,7 @@ import routie.exception.ErrorCode;
 import routie.place.domain.MovingStrategy;
 import routie.routie.domain.RoutiePlace;
 import routie.routie.domain.route.Route;
+import routie.routie.domain.route.RouteCalculationContext;
 import routie.routie.domain.route.RouteCalculator;
 import routie.routie.domain.route.Routes;
 import routie.routie.infrastructure.routecalculator.transit.googletransitapi.GoogleTransitRouteApiClient;
@@ -29,7 +30,8 @@ public class TransitRouteCalculator implements RouteCalculator {
     }
 
     @Override
-    public Routes calculateRoutes(final List<RoutiePlace> routiePlaces, final MovingStrategy movingStrategy) {
+    public Routes calculateRoutes(final RouteCalculationContext routeCalculationContext) {
+        List<RoutiePlace> routiePlaces = routeCalculationContext.getRoutiePlaces();
         Map<RoutiePlace, Route> routeMap = new HashMap<>();
         for (int sequence = 0; sequence < routiePlaces.size() - 1; sequence++) {
             RoutiePlace from = routiePlaces.get(sequence);

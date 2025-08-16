@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 import routie.exception.BusinessException;
 import routie.exception.ErrorCode;
 import routie.place.domain.MovingStrategy;
-import routie.routie.domain.RoutiePlace;
+import routie.routie.domain.route.RouteCalculationContext;
 import routie.routie.domain.route.RouteCalculator;
 import routie.routie.domain.route.Routes;
 
@@ -20,11 +20,12 @@ public class RouteCalculatorComposite implements RouteCalculator {
     }
 
     @Override
-    public Routes calculateRoutes(final List<RoutiePlace> routiePlaces, final MovingStrategy movingStrategy) {
-        return selectRouteCalculator(movingStrategy).calculateRoutes(routiePlaces, movingStrategy);
+    public Routes calculateRoutes(final RouteCalculationContext routeCalculationContext) {
+        return selectRouteCalculator(routeCalculationContext).calculateRoutes(routeCalculationContext);
     }
 
-    private RouteCalculator selectRouteCalculator(final MovingStrategy movingStrategy) {
+    private RouteCalculator selectRouteCalculator(final RouteCalculationContext routeCalculationContext) {
+        MovingStrategy movingStrategy = routeCalculationContext.getMovingStrategy();
         return routeCalculators.stream()
                 .filter(calculator -> calculator.supportsStrategy(movingStrategy))
                 .findFirst()

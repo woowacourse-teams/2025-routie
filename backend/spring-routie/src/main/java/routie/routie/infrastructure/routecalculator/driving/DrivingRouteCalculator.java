@@ -10,6 +10,7 @@ import routie.exception.ErrorCode;
 import routie.place.domain.MovingStrategy;
 import routie.routie.domain.RoutiePlace;
 import routie.routie.domain.route.Route;
+import routie.routie.domain.route.RouteCalculationContext;
 import routie.routie.domain.route.RouteCalculator;
 import routie.routie.domain.route.Routes;
 import routie.routie.infrastructure.routecalculator.driving.kakaodrivingapi.KakaoDrivingRouteApiClient;
@@ -29,7 +30,8 @@ public class DrivingRouteCalculator implements RouteCalculator {
     }
 
     @Override
-    public Routes calculateRoutes(final List<RoutiePlace> routiePlaces, final MovingStrategy movingStrategy) {
+    public Routes calculateRoutes(final RouteCalculationContext routeCalculationContext) {
+        List<RoutiePlace> routiePlaces = routeCalculationContext.getRoutiePlaces();
         KakaoDrivingRouteApiResponse kakaoDrivingRouteApiResponse = kakaoDrivingRouteApiClient.getRoute(
                 KakaoDrivingRouteApiRequest.from(routiePlaces)
         );

@@ -22,6 +22,7 @@ import routie.routie.controller.dto.response.RoutieUpdateResponse;
 import routie.routie.controller.dto.response.RoutieValidationResponse;
 import routie.routie.domain.Routie;
 import routie.routie.domain.RoutiePlace;
+import routie.routie.domain.route.RouteCalculationContext;
 import routie.routie.domain.route.RouteCalculator;
 import routie.routie.domain.route.Routes;
 import routie.routie.domain.routievalidator.RoutieValidator;
@@ -74,16 +75,26 @@ public class RoutieService {
         Routie routie = getRoutieSpaceByIdentifier(routieSpaceIdentifier).getRoutie();
         List<RoutiePlace> routiePlaces = routie.getRoutiePlaces();
 
-        Routes routes = getRoutes(routiePlaces, movingStrategy);
+        Routes routes = getRoutes(startDateTime, routiePlaces, movingStrategy);
         TimePeriods timePeriods = getTimePeriods(startDateTime, movingStrategy, routes, routiePlaces);
 
         return RoutieReadResponse.from(routie, routes.orderedList(), timePeriods);
     }
 
-    private Routes getRoutes(final List<RoutiePlace> routiePlaces, final MovingStrategy movingStrategy) {
+    private Routes getRoutes(
+            final LocalDateTime startDateTime,
+            final List<RoutiePlace> routiePlaces,
+            final MovingStrategy movingStrategy
+    ) {
         Routes routes = Routes.empty();
+        RouteCalculationContext routeCalculationContext = new RouteCalculationContext(
+                startDateTime,
+                routiePlaces,
+                movingStrategy
+        );
+
         if (routiePlaces.size() >= MIN_ROUTIE_PLACES_FOR_ROUTE && movingStrategy != null) {
-            routes = routeCalculator.calculateRoutes(routiePlaces, movingStrategy);
+            routes = routeCalculator.calculateRoutes(routeCalculationContext);
         }
         return routes;
     }
@@ -147,7 +158,7 @@ public class RoutieService {
     ) {
         Routie routie = getRoutieSpaceByIdentifier(routieSpaceIdentifier).getRoutie();
         List<RoutiePlace> routiePlaces = routie.getRoutiePlaces();
-        Routes routes = getRoutes(routiePlaces, movingStrategy);
+        Routes routes = getRoutes(startDateTime, routiePlaces, movingStrategy);
 
         TimePeriods timePeriods = timePeriodCalculator.calculateTimePeriods(
                 startDateTime,
