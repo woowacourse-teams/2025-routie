@@ -1,11 +1,13 @@
 import { css } from '@emotion/react';
 
+import theme from '@/styles/theme';
+
 export const CardStyle = css`
   min-width: 20rem;
   padding: 6rem 0;
   border-radius: 3rem;
 
-  background-color: white;
+  background-color: ${theme.colors.white};
   box-shadow: 0 4px 12px rgb(0 0 0 / 8%);
 `;
 
@@ -15,7 +17,7 @@ export const CircleStyle = (color: string) => css`
   border-radius: 50%;
 
   font-weight: bold;
-  color: white;
+  color: ${theme.colors.white};
 
   background-color: ${color};
 `;
