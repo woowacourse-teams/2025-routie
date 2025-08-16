@@ -31,12 +31,12 @@ type InvalidRoutiePlace = {
   routiePlaceId: number;
 };
 
-type ValidationResultResponse = {
+type ValidationResultType = {
   validationCode: validationErrorCodeType;
   isValid: boolean;
   invalidRoutiePlaces: InvalidRoutiePlace[];
 };
 
-export type validationResultResponseType = {
-  validationResultResponses: ValidationResultResponse[];
+export type RoutieValidationResponseType = {
+  validationResultResponses: ValidationResultType[];
 };

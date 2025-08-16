@@ -1,6 +1,8 @@
 import { apiClient } from '@/apis';
 
-import { Routie, validationResultResponseType } from '../types/routie.types';
+import { adaptValidationResponse } from '../adapters/routieValidationAdapter';
+import { ValidationApiResponse } from '../types/api.types';
+import { Routie, RoutieValidationResponseType } from '../types/routie.types';
 
 export const getRoutie = async (
   isValidateActive: boolean,
@@ -63,7 +65,7 @@ export const getDetailPlace = async (id: number) => {
 export const getRoutieValidation = async (time: {
   startDateTime: string;
   endDateTime: string;
-}): Promise<validationResultResponseType> => {
+}): Promise<RoutieValidationResponseType> => {
   const routieSpaceUuid = localStorage.getItem('routieSpaceUuid');
 
   if (!routieSpaceUuid) {
@@ -78,9 +80,9 @@ export const getRoutieValidation = async (time: {
     throw new Error('일정 검증 실패');
   }
 
-  const data = await response.json();
+  const data: ValidationApiResponse = await response.json();
 
-  return data;
+  return adaptValidationResponse(data);
 };
 
 export const addRoutiePlace = async (placeId: number) => {
