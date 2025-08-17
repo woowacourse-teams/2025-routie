@@ -14,10 +14,10 @@ interface DrawMarkerProps {
 
 type UseMapMarkerType = {
   map: RefObject<KakaoMapType>;
-  createMarkerElement: (sequence: number) => HTMLElement;
+  createCustomMarkerElement: (sequence: number) => HTMLElement;
 };
 
-const useMapMarker = ({ map, createMarkerElement }: UseMapMarkerType) => {
+const useMapMarker = ({ map, createCustomMarkerElement }: UseMapMarkerType) => {
   const markersRef = useRef<(Marker | CustomOverlay)[]>([]);
 
   const clearMarkers = useCallback(() => {
@@ -34,7 +34,7 @@ const useMapMarker = ({ map, createMarkerElement }: UseMapMarkerType) => {
       const position = new window.kakao.maps.LatLng(lat, lng);
 
       if (routieSequence) {
-        const content = createMarkerElement(routieSequence);
+        const content = createCustomMarkerElement(routieSequence);
 
         const overlay = new window.kakao.maps.CustomOverlay({
           position,

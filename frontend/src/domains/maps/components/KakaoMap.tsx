@@ -22,26 +22,9 @@ import {
 } from './KakaoMap.styles';
 import PlaceOverlayCard from './PlaceOverlayCard';
 
-import type { KakaoMapProps } from '../types/KaKaoMap.types';
+import createCustomMarkerElement from '../utils/createCustomMarkerElement';
 
-const createMarkerElement = (sequence: number) => {
-  const content = document.createElement('div');
-  Object.assign(content.style, {
-    cursor: 'pointer',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: '3rem',
-    height: '3rem',
-    borderRadius: '50%',
-    fontSize: '1.6rem',
-    fontWeight: 'bold',
-    color: 'white',
-    background: '#2b6cb0',
-  });
-  content.innerText = String(sequence);
-  return content;
-};
+import type { KakaoMapProps } from '../types/KaKaoMap.types';
 
 const KakaoMap = ({ lat = 37.554, lng = 126.97, level = 7 }: KakaoMapProps) => {
   const mapContainerRef = useRef<HTMLDivElement>(null);
@@ -69,7 +52,7 @@ const KakaoMap = ({ lat = 37.554, lng = 126.97, level = 7 }: KakaoMapProps) => {
   const { fitMapToMarker, fitMapToMarkers, drawMarkers, clearMarkers } =
     useMapMarker({
       map: mapRef,
-      createMarkerElement,
+      createCustomMarkerElement,
     });
   const { loadPolyline, clearPolyline } = usePolyline({
     map: mapRef,
