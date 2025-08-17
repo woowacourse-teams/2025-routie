@@ -11,7 +11,7 @@ if (process.env.NODE_ENV === 'production') {
     dsn: process.env.REACT_APP_SENTRY_DSN,
     sendDefaultPii: true,
     integrations: [Sentry.browserTracingIntegration()],
-    tracePropagationTargets: ['localhost', 'https://api.routie.me'],
+    tracePropagationTargets: ['https://api.routie.me'],
     tracesSampleRate: 1.0,
   });
 }
