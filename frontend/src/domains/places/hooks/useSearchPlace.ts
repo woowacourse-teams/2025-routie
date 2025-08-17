@@ -5,7 +5,9 @@ import { PlaceSearchType } from '../types/place.types';
 
 const useSearchPlace = () => {
   const [keyword, setKeyword] = useState('');
-  const [searchResults, setSearchResults] = useState<PlaceSearchType[]>([]);
+  const [searchResults, setSearchResults] = useState<PlaceSearchType[] | null>(
+    null,
+  );
 
   const handleSearch = async () => {
     if (!keyword) return setSearchResults([]);
@@ -20,11 +22,12 @@ const useSearchPlace = () => {
 
   const handleChangeKeyword = (keyword: string) => {
     setKeyword(keyword);
+    setSearchResults(null);
   };
 
   const handleReset = () => {
     setKeyword('');
-    setSearchResults([]);
+    setSearchResults(null);
   };
 
   const handleEnterSearch = (e: React.KeyboardEvent<HTMLInputElement>) => {
