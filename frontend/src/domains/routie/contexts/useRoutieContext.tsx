@@ -6,6 +6,7 @@ import {
   useCallback,
 } from 'react';
 
+import { useToastContext } from '@/@common/contexts/useToastContext';
 import {
   addRoutiePlace,
   deleteRoutiePlace,
@@ -42,6 +43,7 @@ export const RoutieProvider = ({ children }: { children: React.ReactNode }) => {
   const routieIdList = routiePlaces.map((routie) => routie.placeId);
   const { isValidateActive, combineDateTime, validateRoutie } =
     useRoutieValidateContext();
+  const { showToast } = useToastContext();
 
   const refetchRoutieData = useCallback(async () => {
     try {
@@ -62,8 +64,16 @@ export const RoutieProvider = ({ children }: { children: React.ReactNode }) => {
       try {
         await addRoutiePlace(id);
         await refetchRoutieData();
+        showToast({
+          message: '내 동선에 장소가 추가되었습니다.',
+          type: 'success',
+        });
       } catch (error) {
         console.error(error);
+        showToast({
+          message: '내 동선에 장소를 추가하지 못했습니다. 다시 시도해주세요.',
+          type: 'error',
+        });
       }
     },
     [refetchRoutieData],
@@ -74,8 +84,16 @@ export const RoutieProvider = ({ children }: { children: React.ReactNode }) => {
       try {
         await deleteRoutiePlace(id);
         await refetchRoutieData();
+        showToast({
+          message: '내 동선에서 장소가 삭제되었습니다.',
+          type: 'success',
+        });
       } catch (error) {
         console.error(error);
+        showToast({
+          message: '내 동선에 장소 삭제를 실패하였습니다. 다시 시도해주세요.',
+          type: 'error',
+        });
       }
     },
     [refetchRoutieData],
