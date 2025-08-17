@@ -1,0 +1,74 @@
+name: Sync package.json version
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  sync-version-main:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Extract version from tag
+        run: echo "VERSION=${GITHUB_REF_NAME#v}" >> $GITHUB_ENV
+
+      - name: Update frontend/package.json and package-lock.json
+        run: |
+          jq ".version = \"${VERSION}\"" frontend/package.json > tmp.json
+          mv tmp.json frontend/package.json
+
+          if [ -f frontend/package-lock.json ]; then
+            jq ".version = \"${VERSION}\"" frontend/package-lock.json > tmp-lock.json
+            mv tmp-lock.json frontend/package-lock.json
+          fi
+
+      - name: Create Pull Request to main
+        uses: peter-evans/create-pull-request@v6
+        with:
+          branch: sync-version/main-${{ env.VERSION }}
+          base: main
+          title: 'chore(main): sync frontend package.json to ${{ env.VERSION }}'
+          body: '자동 생성된 package.json / package-lock.json 버전 동기화 PR (main)'
+          commit-message: 'chore(main): sync frontend package.json to ${{ env.VERSION }}'
+          delete-branch: true
+
+  sync-version-develop:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Extract version from tag
+        run: echo "VERSION=${GITHUB_REF_NAME#v}" >> $GITHUB_ENV
+
+      - name: Update frontend/package.json and package-lock.json
+        run: |
+          jq ".version = \"${VERSION}\"" frontend/package.json > tmp.json
+          mv tmp.json frontend/package.json
+
+          if [ -f frontend/package-lock.json ]; then
+            jq ".version = \"${VERSION}\"" frontend/package-lock.json > tmp-lock.json
+            mv tmp-lock.json frontend/package-lock.json
+          fi
+
+      - name: Create Pull Request to develop
+        uses: peter-evans/create-pull-request@v6
+        with:
+          branch: sync-version/develop-${{ env.VERSION }}
+          base: develop
+          title: 'chore(develop): sync frontend package.json to ${{ env.VERSION }}'
+          body: '자동 생성된 package.json / package-lock.json 버전 동기화 PR (develop)'
+          commit-message: 'chore(develop): sync frontend package.json to ${{ env.VERSION }}'
+          delete-branch: true
