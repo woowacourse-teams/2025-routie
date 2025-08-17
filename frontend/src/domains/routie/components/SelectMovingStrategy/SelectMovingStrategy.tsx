@@ -1,8 +1,8 @@
-import { useState } from 'react';
-
 import Flex from '@/@common/components/Flex/Flex';
 import Icon from '@/@common/components/IconSvg/Icon';
 import Text from '@/@common/components/Text/Text';
+
+import { useRoutieContext } from '../../contexts/useRoutieContext';
 
 import {
   backgroundSliderStyle,
@@ -13,7 +13,6 @@ import {
 
 import type {
   MovingStrategyOption,
-  MovingStrategyType,
 } from './SelectMovingStrategy.types';
 
 const MOVING_STRATEGY_OPTIONS: MovingStrategyOption[] = [
@@ -22,8 +21,7 @@ const MOVING_STRATEGY_OPTIONS: MovingStrategyOption[] = [
 ];
 
 const SelectMovingStrategy = () => {
-  const [movingStrategy, setMovingStrategy] =
-    useState<MovingStrategyType>('DRIVING');
+  const { movingStrategy, setMovingStrategy } = useRoutieContext();
 
   const selectedIndex = MOVING_STRATEGY_OPTIONS.findIndex(
     (option) => option.type === movingStrategy,
