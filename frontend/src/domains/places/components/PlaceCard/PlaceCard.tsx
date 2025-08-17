@@ -128,7 +128,7 @@ export const PlaceCard = ({ selected, ...props }: PlaceCardProps) => {
                 value={getCheckedListExcept(props.closedDayOfWeeks)}
               />
             </Flex>
-            <Flex direction="column" alignItems="center" gap={5} height="100%">
+            <Flex direction="column" gap={5} height="100%">
               <IconButton
                 icon={editIcon}
                 onClick={handleOpenEditModal}

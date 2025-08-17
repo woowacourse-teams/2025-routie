@@ -3,7 +3,7 @@ import { ComponentProps } from 'react';
 export interface IconButtonProps extends ComponentProps<'button'> {
   variant?: IconButtonVariantProps;
   icon: string;
-  onClick?: () => void | Promise<void>;
+  onClick?: () => void;
 }
 
 export type IconButtonVariantProps =
