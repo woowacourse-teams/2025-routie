@@ -55,6 +55,7 @@ const StayDurationInput = ({
         {stayDurationStepOptions.map((durationStep) => (
           <Button
             key={durationStep}
+            type="button"
             onClick={() => handleIncreaseButton(durationStep)}
             css={css`
               justify-content: center;
