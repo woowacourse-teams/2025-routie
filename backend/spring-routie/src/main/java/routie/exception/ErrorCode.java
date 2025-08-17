@@ -28,11 +28,6 @@ public enum ErrorCode {
             "지원하지 않는 이동 전략입니다.",
             HttpStatus.BAD_REQUEST
     ),
-    GOOGLE_TRANSIT_ROUTE_API_ERROR(
-            "5005",
-            "경로 계산을 위한 외부 API 호출 중 오류가 발생했습니다.",
-            HttpStatus.BAD_GATEWAY
-    ),
     KAKAO_LOCAL_API_ERROR(
             "6001",
             "외부 장소 검색 서비스에 문제가 발생했습니다.",
@@ -43,7 +38,124 @@ public enum ErrorCode {
             "외부 장소 검색 서비스에 문제가 발생했습니다.",
             HttpStatus.BAD_GATEWAY
     ),
-    ;
+
+    // Place Domain Validation Errors
+    PLACE_CLOSED_DAY_NULL(
+            "7001",
+            "휴무일은 null일 수 없습니다.",
+            HttpStatus.BAD_REQUEST
+    ),
+    PLACE_STAY_DURATION_INVALID(
+            "7002",
+            "체류 시간은 0분 이상 1440분 이하여야 합니다.",
+            HttpStatus.BAD_REQUEST
+    ),
+    PLACE_NAME_REQUIRED(
+            "7003",
+            "장소명은 필수입니다.",
+            HttpStatus.BAD_REQUEST
+    ),
+    PLACE_NAME_LENGTH_INVALID(
+            "7004",
+            "장소명은 1자 이상 30자 이하여야 합니다.",
+            HttpStatus.BAD_REQUEST
+    ),
+    PLACE_ROAD_ADDRESS_LENGTH_INVALID(
+            "7005",
+            "도로명 주소는 1자 이상 50자 이하여야 합니다.",
+            HttpStatus.BAD_REQUEST
+    ),
+    PLACE_ADDRESS_REQUIRED(
+            "7006",
+            "지번 주소는 필수입니다.",
+            HttpStatus.BAD_REQUEST
+    ),
+    PLACE_ADDRESS_LENGTH_INVALID(
+            "7007",
+            "지번 주소는 1자 이상 50자 이하여야 합니다.",
+            HttpStatus.BAD_REQUEST
+    ),
+    PLACE_LONGITUDE_INVALID(
+            "7008",
+            "경도는 -180.0 이상 180.0 이하이어야 합니다.",
+            HttpStatus.BAD_REQUEST
+    ),
+    PLACE_LATITUDE_INVALID(
+            "7009",
+            "위도는 -90.0 이상 90.0 이하이어야 합니다.",
+            HttpStatus.BAD_REQUEST
+    ),
+    PLACE_BUSINESS_HOURS_INCOMPLETE(
+            "7010",
+            "영업 시작 시간과 종료 시간은 함께 존재해야 합니다.",
+            HttpStatus.BAD_REQUEST
+    ),
+    PLACE_BREAK_TIME_INCOMPLETE(
+            "7011",
+            "브레이크 타임 시작 시간과 종료 시간은 함께 존재해야 합니다.",
+            HttpStatus.BAD_REQUEST
+    ),
+    PLACE_BREAK_TIME_OUTSIDE_BUSINESS_HOURS(
+            "7012",
+            "브레이크 타임은 영업 시간 내에 있어야 합니다.",
+            HttpStatus.BAD_REQUEST
+    ),
+
+    // SearchedPlace Domain Validation Errors
+    SEARCHED_PLACE_ID_REQUIRED(
+            "7020",
+            "검색된 장소 ID는 필수값입니다.",
+            HttpStatus.BAD_REQUEST
+    ),
+    SEARCHED_PLACE_NAME_REQUIRED(
+            "7021",
+            "장소 이름은 필수값입니다.",
+            HttpStatus.BAD_REQUEST
+    ),
+    SEARCHED_PLACE_ADDRESS_REQUIRED(
+            "7022",
+            "지번은 필수값입니다.",
+            HttpStatus.BAD_REQUEST
+    ),
+    SEARCHED_PLACE_LONGITUDE_INVALID(
+            "7023",
+            "유효한 경도 값이 아닙니다.",
+            HttpStatus.BAD_REQUEST
+    ),
+    SEARCHED_PLACE_LATITUDE_INVALID(
+            "7024",
+            "유효한 위도 값이 아닙니다.",
+            HttpStatus.BAD_REQUEST
+    ),
+
+    // Place Service Errors
+    ROUTIE_SPACE_NOT_FOUND(
+            "7030",
+            "해당 루티 스페이스를 찾을 수 없습니다.",
+            HttpStatus.NOT_FOUND
+    ),
+    PLACE_NOT_FOUND(
+            "7031",
+            "해당 장소를 찾을 수 없습니다.",
+            HttpStatus.NOT_FOUND
+    ),
+
+    // Place Search Errors
+    SEARCH_QUERY_EMPTY(
+            "7040",
+            "검색어는 비어있을 수 없습니다.",
+            HttpStatus.BAD_REQUEST
+    ),
+    SEARCH_SIZE_INVALID_KAKAO(
+            "7041",
+            "검색 결과의 크기는 1에서 15 사이여야 합니다.",
+            HttpStatus.BAD_REQUEST
+    ),
+    SEARCH_SIZE_INVALID_VWORLD(
+            "7042",
+            "검색 결과의 크기는 1에서 1,000 사이여야 합니다.",
+            HttpStatus.BAD_REQUEST
+    );
 
     private final String code;
     private final String message;
