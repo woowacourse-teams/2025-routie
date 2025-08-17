@@ -62,10 +62,13 @@ export const getDetailPlace = async (id: number) => {
   return data;
 };
 
-export const getRoutieValidation = async (time: {
-  startDateTime: string;
-  endDateTime: string;
-}): Promise<RoutieValidationResponseType> => {
+export const getRoutieValidation = async (
+  time: {
+    startDateTime: string;
+    endDateTime: string;
+  },
+  movingStrategy: string,
+): Promise<RoutieValidationResponseType> => {
   const routieSpaceUuid = localStorage.getItem('routieSpaceUuid');
 
   if (!routieSpaceUuid) {
@@ -73,7 +76,7 @@ export const getRoutieValidation = async (time: {
   }
 
   const response = await apiClient.get(
-    `/routie-spaces/${routieSpaceUuid}/routie/validation?startDateTime=${time.startDateTime}&endDateTime=${time.endDateTime}`,
+    `/routie-spaces/${routieSpaceUuid}/routie/validation?startDateTime=${time.startDateTime}&endDateTime=${time.endDateTime}&movingStrategy=${movingStrategy}`,
   );
 
   if (!response.ok) {

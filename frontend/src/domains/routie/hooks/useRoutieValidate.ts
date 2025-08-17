@@ -25,7 +25,10 @@ export interface UseRoutieValidateReturn {
     field: 'date' | 'startTime' | 'endTime',
     value: string,
   ) => void;
-  validateRoutie: (placeCount?: number) => Promise<void>;
+  validateRoutie: (
+    movingStrategy: string,
+    placeCount?: number,
+  ) => Promise<void>;
   combineDateTime: {
     startDateTime: string;
     endDateTime: string;
@@ -129,7 +132,7 @@ const useRoutieValidate = (): UseRoutieValidateReturn => {
   );
 
   const validateRoutie = useCallback(
-    async (placeCount?: number) => {
+    async (movingStrategy: string, placeCount?: number) => {
       const { canValidate } = getValidationConditions(placeCount);
 
       if (!canValidate) {
@@ -140,7 +143,11 @@ const useRoutieValidate = (): UseRoutieValidateReturn => {
       setValidationStatus('validating');
 
       try {
-        const response = await getRoutieValidation(combineDateTime);
+        const response = await getRoutieValidation(
+          combineDateTime,
+          movingStrategy,
+        );
+
         const invalidResult = response.validationResultResponses.find(
           (result) => result.isValid === false,
         );

@@ -7,6 +7,7 @@ import {
 } from 'react';
 
 import { useToastContext } from '@/@common/contexts/useToastContext';
+
 import {
   addRoutiePlace,
   deleteRoutiePlace,
@@ -61,11 +62,16 @@ export const RoutieProvider = ({ children }: { children: React.ReactNode }) => {
       );
       setRoutiePlaces(routies.routiePlaces);
       setRoutes(routies.routes);
-      validateRoutie(routies.routiePlaces.length);
+      validateRoutie(movingStrategy, routies.routiePlaces.length);
     } catch (error) {
       console.error('루티 정보를 불러오는데 실패했습니다.', error);
     }
-  }, [isValidateActive, combineDateTime.startDateTime, validateRoutie]);
+  }, [
+    isValidateActive,
+    combineDateTime.startDateTime,
+    validateRoutie,
+    movingStrategy,
+  ]);
 
   const handleAddRoutie = useCallback(
     async (id: number) => {
