@@ -12,9 +12,12 @@ import {
   editRoutieSequence,
   getRoutie,
 } from '../apis/routie';
+import { useMovingStrategy } from '../hooks/useMovingStrategy';
 import { Routes, Routie } from '../types/routie.types';
 
 import { useRoutieValidateContext } from './useRoutieValidateContext';
+
+import type { MovingStrategyType } from '../components/SelectMovingStrategy/SelectMovingStrategy.types';
 
 type RoutieContextType = {
   routiePlaces: Routie[];
@@ -24,6 +27,8 @@ type RoutieContextType = {
   handleDeleteRoutie: (id: number) => Promise<void>;
   handleChangeRoutie: (sortedPlaces: Routie[]) => Promise<void>;
   routieIdList: number[];
+  movingStrategy: MovingStrategyType;
+  setMovingStrategy: (strategy: MovingStrategyType) => void;
 };
 
 const RoutieContext = createContext<RoutieContextType>({
@@ -34,6 +39,8 @@ const RoutieContext = createContext<RoutieContextType>({
   handleChangeRoutie: async () => {},
   refetchRoutieData: async () => {},
   routieIdList: [],
+  movingStrategy: 'DRIVING',
+  setMovingStrategy: () => {},
 });
 
 export const RoutieProvider = ({ children }: { children: React.ReactNode }) => {
@@ -42,6 +49,7 @@ export const RoutieProvider = ({ children }: { children: React.ReactNode }) => {
   const routieIdList = routiePlaces.map((routie) => routie.placeId);
   const { isValidateActive, combineDateTime, validateRoutie } =
     useRoutieValidateContext();
+  const { movingStrategy, setMovingStrategy } = useMovingStrategy();
 
   const refetchRoutieData = useCallback(async () => {
     try {
@@ -112,6 +120,8 @@ export const RoutieProvider = ({ children }: { children: React.ReactNode }) => {
         handleAddRoutie,
         handleDeleteRoutie,
         handleChangeRoutie,
+        movingStrategy,
+        setMovingStrategy,
       }}
     >
       {children}
