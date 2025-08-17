@@ -11,6 +11,7 @@ import checkIcon from '@/assets/icons/check.svg';
 import editIcon from '@/assets/icons/edit.svg';
 import plusIcon from '@/assets/icons/plus.svg';
 import trashIcon from '@/assets/icons/trash.svg';
+import disableTrashIcon from '@/assets/icons/trash-disable.svg';
 import { useRoutieContext } from '@/domains/routie/contexts/useRoutieContext';
 import { usePlaceListContext } from '@/layouts/PlaceList/contexts/PlaceListContext';
 import { useGoogleEventTrigger } from '@/libs/googleAnalytics/hooks/useGoogleEventTrigger';
@@ -150,27 +151,22 @@ export const PlaceCard = ({ selected, ...props }: PlaceCardProps) => {
                 value={getCheckedListExcept(props.closedDayOfWeeks)}
               />
             </Flex>
-            <Flex direction="column" height="100%">
+            <Flex direction="column" gap={5} height="100%">
               <IconButton
                 icon={editIcon}
                 onClick={handleOpenEditModal}
                 css={css`
-                  flex: 1;
-
                   & img {
                     width: 2rem;
                     height: 2rem;
                   }
                 `}
               />
-
               <IconButton
-                icon={trashIcon}
-                variant="delete"
-                onClick={handleDelete}
+                icon={selected ? disableTrashIcon : trashIcon}
+                variant={selected ? 'disable' : 'delete'}
+                onClick={selected ? undefined : handleDelete}
                 css={css`
-                  flex: 1;
-
                   & img {
                     width: 2rem;
                     height: 2rem;
