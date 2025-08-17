@@ -127,33 +127,30 @@ export const PlaceCard = ({ selected, ...props }: PlaceCardProps) => {
                 value={getCheckedListExcept(props.closedDayOfWeeks)}
               />
             </Flex>
-            <Flex direction="column" height="100%">
+            <Flex direction="column" alignItems="center" gap={5} height="100%">
               <IconButton
                 icon={editIcon}
                 onClick={handleOpenEditModal}
                 css={css`
-                  flex: 1;
-
                   & img {
                     width: 2rem;
                     height: 2rem;
                   }
                 `}
               />
-
-              <IconButton
-                icon={trashIcon}
-                variant="delete"
-                onClick={handleDelete}
-                css={css`
-                  flex: 1;
-
-                  & img {
-                    width: 2rem;
-                    height: 2rem;
-                  }
-                `}
-              />
+              {!selected && (
+                <IconButton
+                  icon={trashIcon}
+                  variant="delete"
+                  onClick={handleDelete}
+                  css={css`
+                    & img {
+                      width: 2rem;
+                      height: 2rem;
+                    }
+                  `}
+                />
+              )}
             </Flex>
           </Flex>
         </Flex>
