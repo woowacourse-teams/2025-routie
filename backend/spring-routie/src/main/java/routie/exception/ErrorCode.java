@@ -177,6 +177,141 @@ public enum ErrorCode {
             "8010",
             "존재하지 않는 루티 스페이스입니다.",
             HttpStatus.NOT_FOUND
+    ),
+    
+    // Routie Domain Validation Errors
+    ROUTIE_PLACE_ALREADY_REGISTERED(
+            "9001",
+            "이미 등록된 장소입니다.",
+            HttpStatus.BAD_REQUEST
+    ),
+    ROUTIE_PLACE_ENTITY_NULL(
+            "9002",
+            "장소는 null일 수 없습니다.",
+            HttpStatus.BAD_REQUEST
+    ),
+    ROUTIE_PLACE_NOT_REGISTERED(
+            "9003",
+            "루티에 등록되지 않은 장소입니다.",
+            HttpStatus.BAD_REQUEST
+    ),
+    ROUTIE_PLACE_ORDER_INVALID(
+            "9004",
+            "루티 장소 순서는 1 이상의 값이어야 합니다.",
+            HttpStatus.BAD_REQUEST
+    ),
+    
+    // Route Domain Validation Errors
+    ROUTE_ORIGIN_NULL(
+            "9010",
+            "출발지는 null일 수 없습니다.",
+            HttpStatus.BAD_REQUEST
+    ),
+    ROUTE_DESTINATION_NULL(
+            "9011",
+            "도착지는 null일 수 없습니다.",
+            HttpStatus.BAD_REQUEST
+    ),
+    ROUTE_MOVING_STRATEGY_NULL(
+            "9012",
+            "이동 전략은 null일 수 없습니다.",
+            HttpStatus.BAD_REQUEST
+    ),
+    ROUTES_NULL(
+            "9013",
+            "Routes 는 null일 수 없습니다.",
+            HttpStatus.BAD_REQUEST
+    ),
+    ROUTE_NULL(
+            "9014",
+            "Route 는 null일 수 없습니다.",
+            HttpStatus.BAD_REQUEST
+    ),
+    ROUTE_ROUTIE_PLACE_NULL(
+            "9015",
+            "RoutiePlace 는 null일 수 없습니다.",
+            HttpStatus.BAD_REQUEST
+    ),
+    
+    // TimePeriod Domain Validation Errors
+    TIME_PERIOD_ROUTIE_PLACE_NULL(
+            "9020",
+            "RoutiePlace는 null일 수 없습니다.",
+            HttpStatus.BAD_REQUEST
+    ),
+    TIME_PERIOD_START_TIME_NULL(
+            "9021",
+            "시작 시간은 null일 수 없습니다.",
+            HttpStatus.BAD_REQUEST
+    ),
+    TIME_PERIOD_END_TIME_NULL(
+            "9022",
+            "종료 시간은 null일 수 없습니다.",
+            HttpStatus.BAD_REQUEST
+    ),
+    TIME_PERIODS_NULL(
+            "9023",
+            "TimePeriods는 null일 수 없습니다.",
+            HttpStatus.BAD_REQUEST
+    ),
+    TIME_PERIOD_NULL(
+            "9024",
+            "TimePeriod는 null일 수 없습니다.",
+            HttpStatus.BAD_REQUEST
+    ),
+    ROUTES_COLLECTION_NULL(
+            "9025",
+            "루트들은 null일 수 없습니다.",
+            HttpStatus.BAD_REQUEST
+    ),
+    ROUTIE_PLACES_COLLECTION_NULL(
+            "9026",
+            "RoutiePlace 목록은 null일 수 없습니다.",
+            HttpStatus.BAD_REQUEST
+    ),
+    
+    // Validation Domain Errors
+    START_TIME_NULL(
+            "9030",
+            "시작 시간은 null일 수 없습니다.",
+            HttpStatus.BAD_REQUEST
+    ),
+    END_TIME_NULL(
+            "9031",
+            "종료 시간은 null일 수 없습니다.",
+            HttpStatus.BAD_REQUEST
+    ),
+    DURATION_NULL(
+            "9032",
+            "기간은 null일 수 없습니다.",
+            HttpStatus.BAD_REQUEST
+    ),
+    VALIDATION_STRATEGY_NULL(
+            "9040",
+            "ValidationStrategy는 null일 수 없습니다.",
+            HttpStatus.BAD_REQUEST
+    ),
+    INVALID_PLACES_COLLECTION_NULL(
+            "9041",
+            "유효하지 않은 RoutiePlace 목록은 null일 수 없습니다.",
+            HttpStatus.BAD_REQUEST
+    ),
+    
+    // Routie Business Logic Errors
+    PLACE_NOT_FOUND_IN_ROUTIE_SPACE(
+            "9050",
+            "루티 스페이스 내에서 해당하는 장소를 찾을 수 없습니다.",
+            HttpStatus.NOT_FOUND
+    ),
+    PLACE_NOT_FOUND_BY_ID(
+            "9051",
+            "해당하는 id의 장소를 찾을 수 없습니다.",
+            HttpStatus.NOT_FOUND
+    ),
+    ROUTIE_SPACE_NOT_FOUND_BY_IDENTIFIER(
+            "9052",
+            "해당하는 식별자의 루티 스페이스를 찾을 수 없습니다.",
+            HttpStatus.NOT_FOUND
     );
 
     private final String code;

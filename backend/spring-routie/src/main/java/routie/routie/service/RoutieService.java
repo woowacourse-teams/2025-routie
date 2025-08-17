@@ -10,6 +10,8 @@ import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import routie.exception.BusinessException;
+import routie.exception.ErrorCode;
 import routie.place.domain.Place;
 import routie.place.repository.PlaceRepository;
 import routie.routie.controller.dto.request.RoutiePlaceCreateRequest;
@@ -64,7 +66,10 @@ public class RoutieService {
 
     private Place getPlaceByRoutieSpaceAndPlaceId(final RoutieSpace routieSpace, final Long placeId) {
         return placeRepository.findByIdAndRoutieSpace(placeId, routieSpace)
-                .orElseThrow(() -> new IllegalArgumentException("루티 스페이스 내에서 해당하는 장소를 찾을 수 없습니다: " + placeId));
+                .orElseThrow(() -> new BusinessException(
+                        ErrorCode.PLACE_NOT_FOUND_IN_ROUTIE_SPACE,
+                        "루티 스페이스 내에서 해당하는 장소를 찾을 수 없습니다: " + placeId
+                ));
     }
 
     public RoutieReadResponse getRoutie(
@@ -129,7 +134,10 @@ public class RoutieService {
                         r.sequence(),
                         Optional.ofNullable(placeMap.get(r.placeId()))
                                 .orElseThrow(
-                                        () -> new IllegalArgumentException("해당하는 id의 장소를 찾을 수 없습니다: " + r.placeId()))
+                                        () -> new BusinessException(
+                                                ErrorCode.PLACE_NOT_FOUND_BY_ID,
+                                                "해당하는 id의 장소를 찾을 수 없습니다: " + r.placeId()
+                                        ))
                 )).toList();
 
         routieSpace.getRoutie().updateRoutiePlaces(routiePlaces);
@@ -139,7 +147,8 @@ public class RoutieService {
 
     private RoutieSpace getRoutieSpaceByIdentifier(final String routieSpaceIdentifier) {
         return routieSpaceRepository.findByIdentifier(routieSpaceIdentifier)
-                .orElseThrow(() -> new IllegalArgumentException("해당하는 식별자의 루티 스페이스를 찾을 수 없습니다."));
+                .orElseThrow(() -> new BusinessException(ErrorCode.ROUTIE_SPACE_NOT_FOUND_BY_IDENTIFIER,
+                        "해당하는 식별자의 루티 스페이스를 찾을 수 없습니다: " + routieSpaceIdentifier));
     }
 
     public RoutieValidationResponse validateRoutie(
