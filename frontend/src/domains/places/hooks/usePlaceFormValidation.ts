@@ -17,13 +17,7 @@ export const usePlaceFormValidation = (form: FormState) => {
 };
 
 export const usePlaceFormRequiredFieldsValidation = (form: FormState) => {
-  if (
-    !form.name ||
-    !form.roadAddressName ||
-    !form.stayDurationMinutes ||
-    !form.openAt ||
-    !form.closeAt
-  ) {
+  if (!form.name || !form.roadAddressName || !form.openAt || !form.closeAt) {
     return false;
   }
 
