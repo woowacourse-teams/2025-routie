@@ -1,13 +1,14 @@
-package routie.logging.interceptor;
+package routie.logging.infrastructure.interceptor;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.HashMap;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.servlet.HandlerInterceptor;
-import routie.logging.extractor.ClientIpExtractor;
-import routie.logging.logger.ClientRequestLogger;
+import routie.logging.domain.LogDataBuilder;
+import routie.logging.domain.LoggingField;
+import routie.logging.infrastructure.ClientRequestLogger;
+import routie.logging.infrastructure.TraceIdHolder;
 
 @RequiredArgsConstructor
 public class RequestLoggingInterceptor implements HandlerInterceptor {
@@ -15,6 +16,7 @@ public class RequestLoggingInterceptor implements HandlerInterceptor {
     private static final String START_TIME_ATTRIBUTE = "startTime";
 
     private final ClientRequestLogger clientRequestLogger;
+    private final LogDataBuilder logDataBuilder;
 
     @Override
     public boolean preHandle(
@@ -22,6 +24,7 @@ public class RequestLoggingInterceptor implements HandlerInterceptor {
             final HttpServletResponse response,
             final Object handler
     ) {
+        TraceIdHolder.setTraceId();
         request.setAttribute(START_TIME_ATTRIBUTE, System.currentTimeMillis());
         return true;
     }
@@ -33,14 +36,19 @@ public class RequestLoggingInterceptor implements HandlerInterceptor {
             final Object handler,
             final Exception ex
     ) {
-        Long startTime = (Long) request.getAttribute(START_TIME_ATTRIBUTE);
+        try {
+            Long startTime = (Long) request.getAttribute(START_TIME_ATTRIBUTE);
+            long executionTime = startTime == null ? -1 : System.currentTimeMillis() - startTime;
 
-        Map<String, Object> logData = new HashMap<>();
-        logData.put("httpMethod", request.getMethod());
-        logData.put("url", request.getRequestURI());
-        logData.put("clientIp", ClientIpExtractor.extractClientIp(request));
-        logData.put("responseTimeMs", startTime == null ? -1 : System.currentTimeMillis() - startTime);
+            Map<LoggingField, Object> logData = logDataBuilder.buildLogData(new InterceptorLoggingContext(
+                    request,
+                    response,
+                    executionTime
+            ));
 
-        clientRequestLogger.log(logData);
+            clientRequestLogger.log(logData);
+        } finally {
+            TraceIdHolder.clearTraceId();
+        }
     }
 }
