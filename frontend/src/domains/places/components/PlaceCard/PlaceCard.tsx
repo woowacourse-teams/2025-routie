@@ -10,6 +10,7 @@ import checkIcon from '@/assets/icons/check.svg';
 import editIcon from '@/assets/icons/edit.svg';
 import plusIcon from '@/assets/icons/plus.svg';
 import trashIcon from '@/assets/icons/trash.svg';
+import disableTrashIcon from '@/assets/icons/trash-disable.svg';
 import { useRoutieContext } from '@/domains/routie/contexts/useRoutieContext';
 import { usePlaceListContext } from '@/layouts/PlaceList/contexts/PlaceListContext';
 import { useGoogleEventTrigger } from '@/libs/googleAnalytics/hooks/useGoogleEventTrigger';
@@ -138,19 +139,17 @@ export const PlaceCard = ({ selected, ...props }: PlaceCardProps) => {
                   }
                 `}
               />
-              {!selected && (
-                <IconButton
-                  icon={trashIcon}
-                  variant="delete"
-                  onClick={handleDelete}
-                  css={css`
-                    & img {
-                      width: 2rem;
-                      height: 2rem;
-                    }
-                  `}
-                />
-              )}
+              <IconButton
+                icon={selected ? disableTrashIcon : trashIcon}
+                variant={selected ? 'disable' : 'delete'}
+                onClick={selected ? undefined : handleDelete}
+                css={css`
+                  & img {
+                    width: 2rem;
+                    height: 2rem;
+                  }
+                `}
+              />
             </Flex>
           </Flex>
         </Flex>

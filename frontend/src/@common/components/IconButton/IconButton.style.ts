@@ -31,6 +31,18 @@ const iconButtonVariant: Record<IconButtonVariantProps, SerializedStyles> = {
 
     background-color: ${theme.colors.green[50]};
   `,
+
+  disable: css`
+    cursor: not-allowed;
+
+    &:hover {
+      background-color: transparent;
+    }
+
+    & * {
+      pointer-events: none;
+    }
+  `,
 };
 
 export const iconButtonStyle = ({ variant }: IconButtonStyleProps) => css`
