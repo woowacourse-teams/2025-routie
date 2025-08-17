@@ -3,6 +3,8 @@ package routie.routiespace.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import routie.exception.BusinessException;
+import routie.exception.ErrorCode;
 import routie.routiespace.controller.dto.request.RoutieSpaceUpdateRequest;
 import routie.routiespace.controller.dto.response.RoutieSpaceCreateResponse;
 import routie.routiespace.controller.dto.response.RoutieSpaceReadResponse;
@@ -46,6 +48,6 @@ public class RoutieSpaceService {
 
     private RoutieSpace getRoutieSpaceByRoutieSpaceIdentifier(final String routieSpaceIdentifier) {
         return routieSpaceRepository.findByIdentifier(routieSpaceIdentifier)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 루티 스페이스입니다."));
+                .orElseThrow(() -> new BusinessException(ErrorCode.ROUTIE_SPACE_NOT_EXISTS));
     }
 }

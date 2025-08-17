@@ -155,6 +155,28 @@ public enum ErrorCode {
             "7042",
             "검색 결과의 크기는 1에서 1,000 사이여야 합니다.",
             HttpStatus.BAD_REQUEST
+    ),
+
+    ROUTIE_SPACE_IDENTIFIER_PROVIDER_NULL(
+            "8001",
+            "루티 스페이스 식별자 제공자는 null일 수 없습니다.",
+            HttpStatus.BAD_REQUEST
+    ),
+    ROUTIE_SPACE_NAME_EMPTY(
+            "8002",
+            "루티 스페이스 이름은 비어있을 수 없습니다.",
+            HttpStatus.BAD_REQUEST
+    ),
+    ROUTIE_SPACE_NAME_LENGTH_INVALID(
+            "8003",
+            "루티 스페이스 이름은 50자 이하여야 합니다.",
+            HttpStatus.BAD_REQUEST
+    ),
+
+    ROUTIE_SPACE_NOT_EXISTS(
+            "8010",
+            "존재하지 않는 루티 스페이스입니다.",
+            HttpStatus.NOT_FOUND
     );
 
     private final String code;
