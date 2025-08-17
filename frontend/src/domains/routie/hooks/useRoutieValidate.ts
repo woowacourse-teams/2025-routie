@@ -127,10 +127,6 @@ const useRoutieValidate = (): UseRoutieValidateReturn => {
     return getCombineDateTime(routieTime);
   }, [routieTime]);
 
-  useEffect(() => {
-    updateValidationStatus();
-  }, [isValidateActive, routieTime, updateValidationStatus]);
-
   const handleTimeChange = useCallback(
     (field: string, value: string) => {
       setRoutieTime({
