@@ -6,13 +6,15 @@ import './styles/font.css';
 
 import Route from './routes';
 
-Sentry.init({
-  dsn: process.env.REACT_APP_SENTRY_DSN,
-  sendDefaultPii: true,
-  integrations: [Sentry.browserTracingIntegration()],
-  tracePropagationTargets: ['localhost', 'https://api.routie.me'],
-  tracesSampleRate: 1.0,
-});
+if (process.env.NODE_ENV === 'production') {
+  Sentry.init({
+    dsn: process.env.REACT_APP_SENTRY_DSN,
+    sendDefaultPii: true,
+    integrations: [Sentry.browserTracingIntegration()],
+    tracePropagationTargets: ['https://api.routie.me'],
+    tracesSampleRate: 1.0,
+  });
+}
 
 async function enableMocking() {
   if (window.location.hostname !== 'localhost') {
