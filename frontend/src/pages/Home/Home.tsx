@@ -1,52 +1,119 @@
-import { useNavigate } from 'react-router';
-
 import Button from '@/@common/components/Button/Button';
 import Flex from '@/@common/components/Flex/Flex';
 import Header from '@/@common/components/Header/Header';
 import Text from '@/@common/components/Text/Text';
-import { createRoutieSpace } from '@/domains/routieSpace/apis/createRoutieSpace';
+import arrowWhite from '@/assets/icons/arrow-white.svg';
+import check from '@/assets/icons/check-home.svg';
+import clock from '@/assets/icons/clock-home.svg';
+import collectPlace from '@/assets/icons/place-home.svg';
+import reload from '@/assets/icons/reload.svg';
+import theme from '@/styles/theme';
+
+import {
+  continueButtonStyle,
+  createButtonStyle,
+  HomepageStyle,
+  infoCardsWrapperStyle,
+  subTitleTextStyle,
+  titleTextStyle,
+  violetTextStyle,
+} from './Home.styles';
+import InfoCard from './InfoCard';
+import { useRoutieSpaceNavigation } from './hooks/useRoutieSpaceNavigation';
 
 const Home = () => {
-  const navigate = useNavigate();
-
-  const handleCreateRoutieSpace = async () => {
-    try {
-      await createRoutieSpace();
-
-      const uuid = localStorage.getItem('routieSpaceUuid');
-
-      if (!uuid) return;
-
-      navigate(`/routie-spaces?routieSpaceIdentifier=${uuid}`);
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  const { handleCreateRoutieSpace, handleReturnToRoutieSpace } =
+    useRoutieSpaceNavigation();
+  const existingUuid = localStorage.getItem('routieSpaceUuid');
 
   return (
     <>
       <Header />
-      <Flex direction="column" height="70dvh">
-        <Button
-          variant="primary"
-          onClick={handleCreateRoutieSpace}
-          width="fit-content"
-        >
-          <Flex
-            direction="column"
-            gap={1}
-            width="60rem"
-            height="20rem"
-            padding={1}
+      <Flex
+        direction="column"
+        height="calc(100dvh - 7.1rem)"
+        padding={5}
+        width="100%"
+        css={HomepageStyle}
+      >
+        <Flex direction="column" gap={3}>
+          <Text variant="title" css={titleTextStyle} color={theme.home.text}>
+            그 장소들, 정말 다 갈 수 있을까요?
+          </Text>
+          <Text
+            variant="subTitle"
+            color={theme.home.text}
+            css={subTitleTextStyle}
           >
-            <Text variant="title" color="white">
-              루티 스페이스를 생성해
-            </Text>
-            <Text variant="title" color="white">
-              나만의 루티를 만들어보세용 👍
-            </Text>
+            루티가 당신의 동선을 <span css={violetTextStyle}>체크</span>
+            해드릴게요!
+          </Text>
+          <Flex
+            justifyContent="space-between"
+            width="100%"
+            gap={5}
+            css={infoCardsWrapperStyle}
+          >
+            <InfoCard
+              circleColor={theme.home.pink}
+              iconSrc={collectPlace}
+              iconAlt="장소 수집 아이콘"
+              title="가고 싶은 곳 모으기"
+              textColor={theme.home.text}
+              descriptions={[
+                '가고 싶은 곳들을 하나씩 모아보세요.',
+                '카페, 맛집, 쇼핑몰까지!',
+              ]}
+            />
+
+            <InfoCard
+              circleColor={theme.home.orange}
+              iconSrc={check}
+              iconAlt="체크 아이콘"
+              title="가능한 동선인지 즉시 확인"
+              textColor={theme.home.text}
+              descriptions={[
+                '소화할 수 있는 동선인지',
+                '자동으로 판단해드려요!',
+              ]}
+            />
+
+            <InfoCard
+              circleColor={theme.home.yellow}
+              iconSrc={clock}
+              iconAlt="시계 아이콘"
+              title="이동시간, 거리까지 딱!"
+              textColor={theme.home.text}
+              descriptions={[
+                '각 장소별 이동시간과 거리를',
+                '자동으로 계산해요!',
+              ]}
+            />
           </Flex>
-        </Button>
+          <Flex gap={8} width="70%">
+            <Button onClick={handleCreateRoutieSpace} css={createButtonStyle}>
+              <Flex direction="row" gap={1.5} padding={1}>
+                <img src={arrowWhite} width={'30rem'} />
+                <Text variant="title" color="white">
+                  동선 만들러가기
+                </Text>
+              </Flex>
+            </Button>
+            {existingUuid && (
+              <Button
+                onClick={handleReturnToRoutieSpace}
+                css={continueButtonStyle}
+              >
+                <Flex gap={1.5} padding={1}>
+                  <img src={reload} width={'25rem'} />
+                  <Text variant="title" color={theme.home.violet}>
+                    이어서 만들기
+                  </Text>
+                </Flex>
+              </Button>
+            )}
+          </Flex>
+        </Flex>
       </Flex>
     </>
   );

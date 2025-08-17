@@ -24,7 +24,9 @@ import {
 } from './KakaoMap.styles';
 import PlaceOverlayCard from './PlaceOverlayCard';
 
-const KakaoMap = () => {
+import type { KakaoMapProps } from '../types/KaKaoMap.types';
+
+const KakaoMap = ({ lat = 37.554, lng = 126.97, level = 7 }: KakaoMapProps) => {
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const { placeList } = usePlaceListContext();
   const { routieIdList } = useRoutieContext();
@@ -43,6 +45,9 @@ const KakaoMap = () => {
   const { mapRef, mapState, errorMessage } = useKakaoMapInit({
     containerRef: mapContainerRef,
     sdkReady,
+    lat,
+    lng,
+    level,
   });
   const { fitMapToMarker, fitMapToMarkers, drawMarkers, clearMarkers } =
     useMapMarker({
@@ -89,7 +94,6 @@ const KakaoMap = () => {
 
     const renderMapElements = () => {
       clearMarkers();
-
       placeList.forEach((place, index) => {
         drawMarkers({
           lat: place.latitude,
@@ -100,6 +104,7 @@ const KakaoMap = () => {
             openAt(place.latitude, place.longitude);
             fitMapToMarker(place.latitude, place.longitude);
           },
+
         });
       });
 

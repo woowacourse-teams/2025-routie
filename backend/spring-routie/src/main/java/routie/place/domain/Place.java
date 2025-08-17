@@ -103,6 +103,7 @@ public class Place {
         validateLongitude(longitude);
         validateLatitude(latitude);
         validateStayDurationMinutes(stayDurationMinutes);
+        validateOperatingTime(openAt, closeAt);
         validateBreakTime(breakStartAt, breakEndAt);
         validateBreakTimeWithOperatingTime(openAt, closeAt, breakStartAt, breakEndAt);
 
@@ -252,6 +253,9 @@ public class Place {
             final LocalTime breakStartAt,
             final LocalTime breakEndAt
     ) {
+        if (openAt == null || closeAt == null) {
+            return;
+        }
         if (breakStartAt == null || breakEndAt == null) {
             return;
         }

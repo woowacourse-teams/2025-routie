@@ -7,7 +7,13 @@ import successIcon from '@/assets/icons/success.svg';
 import { VALIDATION_RESULT_MESSAGE } from '../../constants/routieValidation';
 import { useRoutieValidateContext } from '../../contexts/useRoutieValidateContext';
 
-const RoutieValidationResultCard = () => {
+interface RoutieValidationResultCardProps {
+  total_time: number;
+}
+
+const RoutieValidationResultCard = ({
+  total_time,
+}: RoutieValidationResultCardProps) => {
   const { validationErrors } = useRoutieValidateContext();
 
   const isValidRoutie = validationErrors === null;
@@ -27,7 +33,8 @@ const RoutieValidationResultCard = () => {
       <Flex width="100%" gap={1.5} justifyContent="flex-start" height="100%">
         <img src={isValidRoutie ? successIcon : failIcon} alt="available" />
         <Flex direction="column" gap={0.3} alignItems="flex-start">
-          <Text variant="subTitle">{resultMessage}</Text>
+          <Text variant="caption">{resultMessage}</Text>
+          <Text variant="description">예상 소요 시간: {total_time}분</Text>
         </Flex>
       </Flex>
     </Card>

@@ -1,12 +1,10 @@
-import { useState } from 'react';
+import { useMemo } from 'react';
 
-import Button from '@/@common/components/Button/Button';
+import EmptyMessage from '@/@common/components/EmptyMessage/EmptyMessage';
 import Flex from '@/@common/components/Flex/Flex';
 import Header from '@/@common/components/Header/Header';
 import Text from '@/@common/components/Text/Text';
 import ToggleSwitch from '@/@common/components/ToggleSwitch/ToggleSwitch';
-import AddPlaceModal from '@/domains/places/components/AddPlaceModal/AddPlaceModal';
-import EmptyRoutieMessage from '@/domains/routie/components/EmptyRoutieMessage/EmptyRoutieMessage';
 import RoutieSection from '@/domains/routie/components/RoutieSection/RoutieSection';
 import RoutieValidationLoadingCard from '@/domains/routie/components/RoutieValidationLoadingCard/RoutieValidationLoadingCard';
 import RoutieValidationResultCard from '@/domains/routie/components/RoutieValidationResultCard/RoutieValidationResultCard';
@@ -16,41 +14,22 @@ import SelectMovingStrategy from '@/domains/routie/components/SelectMovingStrate
 import { useRoutieContext } from '@/domains/routie/contexts/useRoutieContext';
 import { useRoutieValidateContext } from '@/domains/routie/contexts/useRoutieValidateContext';
 import RoutieSpaceName from '@/domains/routieSpace/components/RoutieSpaceName/RoutieSpaceName';
-import { useGoogleEventTrigger } from '@/libs/googleAnalytics/hooks/useGoogleEventTrigger';
-
-import { usePlaceListContext } from '../PlaceList/contexts/PlaceListContext';
 
 import DateInput from './DateInput';
 import TimeInput from './TimeInput';
 
-interface SidebarProps {
-  handleViewModeChange: () => void;
-}
-
-const Sidebar = ({ handleViewModeChange }: SidebarProps) => {
-  const { routiePlaces } = useRoutieContext();
-  const { refetchPlaceList } = usePlaceListContext();
-  const [addModalOpen, setAddModalOpen] = useState(false);
+const Sidebar = () => {
+  const { routes, routiePlaces } = useRoutieContext();
   const {
     isValidateActive,
     validationStatus,
     waitingReason,
     handleValidateToggle,
   } = useRoutieValidateContext();
-  const { triggerEvent } = useGoogleEventTrigger();
 
-  const openAddModal = () => {
-    triggerEvent({
-      action: 'click',
-      category: 'place',
-      label: '장소 추가하기 모달 열기 버튼',
-    });
-    setAddModalOpen((prev) => !prev);
-  };
-
-  const closeAddModal = () => {
-    setAddModalOpen((prev) => !prev);
-  };
+  const totalMovingTime = useMemo(() => {
+    return routes?.reduce((acc, cur) => acc + cur.duration, 0) ?? 0;
+  }, [routes]);
 
   const renderValidationCard = () => {
     if (!isValidateActive) {
@@ -64,7 +43,7 @@ const Sidebar = ({ handleViewModeChange }: SidebarProps) => {
         return <RoutieValidationLoadingCard />;
       case 'success':
       case 'error':
-        return <RoutieValidationResultCard />;
+        return <RoutieValidationResultCard total_time={totalMovingTime} />;
       case 'inactive':
       default:
         return <RoutieValidationUnavailableCard />;
@@ -84,7 +63,7 @@ const Sidebar = ({ handleViewModeChange }: SidebarProps) => {
           overflow: 'hidden',
         }}
       >
-        <Header handleViewModeChange={handleViewModeChange} />
+        <Header />
         <Flex
           direction="column"
           width="100%"
@@ -94,13 +73,6 @@ const Sidebar = ({ handleViewModeChange }: SidebarProps) => {
         >
           <Flex direction="column" width="100%" gap={1.2}>
             <RoutieSpaceName />
-            <Button variant="primary" onClick={openAddModal}>
-              <Flex width="100%">
-                <Text variant="subTitle" color="white">
-                  + 장소 추가하기
-                </Text>
-              </Flex>
-            </Button>
           </Flex>
           <Flex justifyContent="flex-end" width="100%" gap={1}>
             <Text variant="subTitle">일정 검증</Text>
@@ -124,13 +96,15 @@ const Sidebar = ({ handleViewModeChange }: SidebarProps) => {
             overflow: 'hidden',
           }}
         >
-          <Flex padding={0.5} justifyContent="space-between" width="100%">
-            <Text variant="subTitle">내 동선</Text>
-            <Text variant="caption" color="gray">
-              {routiePlaces.length}개의 장소가 동선에 추가되었어요
-            </Text>
-          </Flex>
-          {routiePlaces.length === 0 && <EmptyRoutieMessage />}
+          <Text variant="subTitle">내 동선</Text>
+          {routiePlaces.length === 0 && (
+            <EmptyMessage
+              messages={[
+                '아직 동선이 없습니다.',
+                '장소 목록에서 2곳 이상을 선택하면 동선이 생성됩니다!',
+              ]}
+            />
+          )}
           <Flex
             direction="column"
             justifyContent="flex-start"
@@ -145,11 +119,6 @@ const Sidebar = ({ handleViewModeChange }: SidebarProps) => {
           </Flex>
         </Flex>
       </Flex>
-      <AddPlaceModal
-        isOpen={addModalOpen}
-        onClose={closeAddModal}
-        onPlaceAdded={refetchPlaceList}
-      />
     </>
   );
 };
