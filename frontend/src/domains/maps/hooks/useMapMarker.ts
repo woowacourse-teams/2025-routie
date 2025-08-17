@@ -7,7 +7,7 @@ type Marker = InstanceType<typeof window.kakao.maps.Marker>;
 interface DrawMarkerProps {
   lat: number;
   lng: number;
-  index: number;
+  routieSequence?: number;
   onClick?: () => void;
 }
 
@@ -22,29 +22,43 @@ const useMapMarker = ({ map }: { map: RefObject<KakaoMapType> }) => {
   }, []);
 
   const drawMarkers = useCallback(
-    ({ lat, lng, index, onClick }: DrawMarkerProps) => {
+    ({ lat, lng, routieSequence, onClick }: DrawMarkerProps) => {
       if (!map.current) return;
 
       const position = new window.kakao.maps.LatLng(lat, lng);
 
-      const content = document.createElement('div');
-      content.className = 'marker-label';
-      content.innerText = String(index);
+      if (routieSequence) {
+        const content = document.createElement('div');
+        content.className = 'marker-label';
+        content.innerText = String(routieSequence);
 
-      const overlay = new window.kakao.maps.CustomOverlay({
-        position,
-        content,
-        yAnchor: 1,
-      });
+        const overlay = new window.kakao.maps.CustomOverlay({
+          position,
+          content,
+          yAnchor: 1,
+        });
 
-      overlay.setMap(map.current);
+        overlay.setMap(map.current);
 
-      if (onClick) {
-        content.addEventListener('click', onClick);
+        if (onClick) {
+          content.addEventListener('click', onClick);
+        }
+        markersRef.current.push(overlay);
+        return overlay;
+      } else {
+        const marker = new window.kakao.maps.Marker({
+          position,
+        });
+
+        marker.setMap(map.current);
+
+        if (onClick) {
+          window.kakao.maps.event.addListener(marker, 'click', onClick);
+        }
+
+        markersRef.current.push(marker);
+        return marker;
       }
-
-      markersRef.current.push(overlay);
-      return overlay;
     },
     [map],
   );

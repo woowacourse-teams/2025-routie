@@ -94,17 +94,19 @@ const KakaoMap = ({ lat = 37.554, lng = 126.97, level = 7 }: KakaoMapProps) => {
 
     const renderMapElements = () => {
       clearMarkers();
-      placeList.forEach((place, index) => {
+      placeList.forEach((place) => {
+        const routieIndex = routieIdList.indexOf(place.id);
+        const routieSequence = routieIndex !== -1 ? routieIndex + 1 : undefined;
+
         drawMarkers({
           lat: place.latitude,
           lng: place.longitude,
-          index: index + 1,
+          routieSequence,
           onClick: () => {
             setSelectedPlace(place);
             openAt(place.latitude, place.longitude);
             fitMapToMarker(place.latitude, place.longitude);
           },
-
         });
       });
 
