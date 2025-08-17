@@ -63,13 +63,13 @@ public class TimePeriodCalculator {
 
     private void validateRoutes(final Routes routes) {
         if (routes == null) {
-            throw new BusinessException(ErrorCode.ROUTES_COLLECTION_NULL);
+            throw new BusinessException(ErrorCode.ROUTES_NULL);
         }
     }
 
     private void validateRoutiePlaces(final List<RoutiePlace> routiePlaces) {
         if (routiePlaces == null) {
-            throw new BusinessException(ErrorCode.ROUTIE_PLACES_COLLECTION_NULL);
+            throw new BusinessException(ErrorCode.ROUTIE_PLACES_NULL);
         }
     }
 }

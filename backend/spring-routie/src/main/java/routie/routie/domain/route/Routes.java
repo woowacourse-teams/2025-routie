@@ -53,7 +53,7 @@ public class Routes {
 
     private void validateRoutiePlace(final RoutiePlace routiePlace) {
         if (routiePlace == null) {
-            throw new BusinessException(ErrorCode.ROUTE_ROUTIE_PLACE_NULL);
+            throw new BusinessException(ErrorCode.ROUTIE_PLACE_NULL);
         }
     }
 

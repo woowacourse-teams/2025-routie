@@ -147,8 +147,7 @@ public class RoutieService {
 
     private RoutieSpace getRoutieSpaceByIdentifier(final String routieSpaceIdentifier) {
         return routieSpaceRepository.findByIdentifier(routieSpaceIdentifier)
-                .orElseThrow(() -> new BusinessException(ErrorCode.ROUTIE_SPACE_NOT_FOUND_BY_IDENTIFIER,
-                        "해당하는 식별자의 루티 스페이스를 찾을 수 없습니다: " + routieSpaceIdentifier));
+                .orElseThrow(() -> new BusinessException(ErrorCode.ROUTIE_SPACE_NOT_FOUND_BY_IDENTIFIER));
     }
 
     public RoutieValidationResponse validateRoutie(

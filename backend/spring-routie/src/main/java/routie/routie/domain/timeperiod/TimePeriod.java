@@ -19,7 +19,7 @@ public record TimePeriod(
 
     public void validateRoutiePlace(final RoutiePlace routiePlace) {
         if (routiePlace == null) {
-            throw new BusinessException(ErrorCode.TIME_PERIOD_ROUTIE_PLACE_NULL);
+            throw new BusinessException(ErrorCode.ROUTIE_PLACE_NULL);
         }
     }
 
