@@ -8,6 +8,8 @@ import java.time.LocalTime;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import routie.exception.BusinessException;
+import routie.exception.ErrorCode;
 import routie.routiespace.domain.RoutieSpace;
 
 class PlaceTest {
@@ -87,7 +89,8 @@ class PlaceTest {
                 LocalTime.of(15, 0),
                 routieSpace,
                 List.of(DayOfWeek.SUNDAY)
-        )).isInstanceOf(IllegalArgumentException.class);
+        )).isInstanceOf(BusinessException.class)
+          .hasMessage(ErrorCode.PLACE_BUSINESS_HOURS_INCOMPLETE.getMessage());
     }
 
     @Test
@@ -139,7 +142,8 @@ class PlaceTest {
                 null,
                 routieSpace,
                 null
-        )).isInstanceOf(IllegalArgumentException.class);
+        )).isInstanceOf(BusinessException.class)
+          .hasMessage(ErrorCode.PLACE_STAY_DURATION_INVALID.getMessage());
     }
 
     @Test
@@ -162,7 +166,8 @@ class PlaceTest {
                 null,
                 routieSpace,
                 null
-        )).isInstanceOf(IllegalArgumentException.class);
+        )).isInstanceOf(BusinessException.class)
+          .hasMessage(ErrorCode.PLACE_STAY_DURATION_INVALID.getMessage());
     }
 
     @Test
@@ -185,7 +190,8 @@ class PlaceTest {
                 null,
                 routieSpace,
                 null
-        )).isInstanceOf(IllegalArgumentException.class);
+        )).isInstanceOf(BusinessException.class)
+          .hasMessage(ErrorCode.PLACE_NAME_REQUIRED.getMessage());
     }
 
     @Test
@@ -208,7 +214,8 @@ class PlaceTest {
                 null,
                 routieSpace,
                 null
-        )).isInstanceOf(IllegalArgumentException.class);
+        )).isInstanceOf(BusinessException.class)
+          .hasMessage(ErrorCode.PLACE_NAME_REQUIRED.getMessage());
     }
 
     @Test
@@ -231,7 +238,8 @@ class PlaceTest {
                 null,
                 routieSpace,
                 null
-        )).isInstanceOf(IllegalArgumentException.class);
+        )).isInstanceOf(BusinessException.class)
+          .hasMessage(ErrorCode.PLACE_NAME_LENGTH_INVALID.getMessage());
     }
 
     @Test
@@ -254,7 +262,8 @@ class PlaceTest {
                 breakEndAt,
                 routieSpace,
                 null
-        )).isInstanceOf(IllegalArgumentException.class);
+        )).isInstanceOf(BusinessException.class)
+          .hasMessage(ErrorCode.PLACE_BREAK_TIME_INCOMPLETE.getMessage());
     }
 
     @Test
@@ -276,7 +285,8 @@ class PlaceTest {
                 LocalTime.of(15, 0),
                 routieSpace,
                 null
-        )).isInstanceOf(IllegalArgumentException.class);
+        )).isInstanceOf(BusinessException.class)
+          .hasMessage(ErrorCode.PLACE_BREAK_TIME_INCOMPLETE.getMessage());
     }
 
     @Test
@@ -300,7 +310,8 @@ class PlaceTest {
                 breakEndAt,
                 routieSpace,
                 null
-        )).isInstanceOf(IllegalArgumentException.class);
+        )).isInstanceOf(BusinessException.class)
+          .hasMessage(ErrorCode.PLACE_BREAK_TIME_OUTSIDE_BUSINESS_HOURS.getMessage());
     }
 
     @Test
@@ -324,7 +335,8 @@ class PlaceTest {
                 breakEndAt,
                 routieSpace,
                 null
-        )).isInstanceOf(IllegalArgumentException.class);
+        )).isInstanceOf(BusinessException.class)
+          .hasMessage(ErrorCode.PLACE_BREAK_TIME_OUTSIDE_BUSINESS_HOURS.getMessage());
     }
 
     @Test
@@ -348,7 +360,8 @@ class PlaceTest {
                 breakEndAt,
                 routieSpace,
                 null
-        )).isInstanceOf(IllegalArgumentException.class);
+        )).isInstanceOf(BusinessException.class)
+          .hasMessage(ErrorCode.PLACE_BREAK_TIME_OUTSIDE_BUSINESS_HOURS.getMessage());
     }
 
     @Test
@@ -372,6 +385,7 @@ class PlaceTest {
                 breakEndAt,
                 routieSpace,
                 null
-        )).isInstanceOf(IllegalArgumentException.class);
+        )).isInstanceOf(BusinessException.class)
+          .hasMessage(ErrorCode.PLACE_BREAK_TIME_OUTSIDE_BUSINESS_HOURS.getMessage());
     }
 }
