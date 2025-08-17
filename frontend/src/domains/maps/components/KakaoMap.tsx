@@ -22,6 +22,8 @@ import {
 } from './KakaoMap.styles';
 import PlaceOverlayCard from './PlaceOverlayCard';
 
+import createCustomMarkerElement from '../utils/createCustomMarkerElement';
+
 import type { KakaoMapProps } from '../types/KaKaoMap.types';
 
 const KakaoMap = ({ lat = 37.554, lng = 126.97, level = 7 }: KakaoMapProps) => {
@@ -50,6 +52,7 @@ const KakaoMap = ({ lat = 37.554, lng = 126.97, level = 7 }: KakaoMapProps) => {
   const { fitMapToMarker, fitMapToMarkers, drawMarkers, clearMarkers } =
     useMapMarker({
       map: mapRef,
+      createCustomMarkerElement,
     });
   const { loadPolyline, clearPolyline } = usePolyline({
     map: mapRef,
@@ -92,12 +95,19 @@ const KakaoMap = ({ lat = 37.554, lng = 126.97, level = 7 }: KakaoMapProps) => {
 
     const renderMapElements = () => {
       clearMarkers();
-
       placeList.forEach((place) => {
-        drawMarkers(place.latitude, place.longitude, () => {
-          setSelectedPlace(place);
-          openAt(place.latitude, place.longitude);
-          fitMapToMarker(place.latitude, place.longitude);
+        const routieIndex = routieIdList.indexOf(place.id);
+        const routieSequence = routieIndex !== -1 ? routieIndex + 1 : undefined;
+
+        drawMarkers({
+          lat: place.latitude,
+          lng: place.longitude,
+          routieSequence,
+          onClick: () => {
+            setSelectedPlace(place);
+            openAt(place.latitude, place.longitude);
+            fitMapToMarker(place.latitude, place.longitude);
+          },
         });
       });
 

@@ -3,9 +3,22 @@ import { RefObject, useCallback, useRef } from 'react';
 import type { KakaoMapType } from '../types/KaKaoMap.types';
 
 type Marker = InstanceType<typeof window.kakao.maps.Marker>;
+type CustomOverlay = InstanceType<typeof window.kakao.maps.CustomOverlay>;
 
-const useMapMarker = ({ map }: { map: RefObject<KakaoMapType> }) => {
-  const markersRef = useRef<Marker[]>([]);
+interface DrawMarkerProps {
+  lat: number;
+  lng: number;
+  routieSequence?: number;
+  onClick?: () => void;
+}
+
+type UseMapMarkerType = {
+  map: RefObject<KakaoMapType>;
+  createCustomMarkerElement: (sequence: number) => HTMLElement;
+};
+
+const useMapMarker = ({ map, createCustomMarkerElement }: UseMapMarkerType) => {
+  const markersRef = useRef<(Marker | CustomOverlay)[]>([]);
 
   const clearMarkers = useCallback(() => {
     markersRef.current.forEach((marker) => {
@@ -15,21 +28,41 @@ const useMapMarker = ({ map }: { map: RefObject<KakaoMapType> }) => {
   }, []);
 
   const drawMarkers = useCallback(
-    (lat: number, lng: number, onClick?: () => void) => {
+    ({ lat, lng, routieSequence, onClick }: DrawMarkerProps) => {
       if (!map.current) return;
 
       const position = new window.kakao.maps.LatLng(lat, lng);
-      const marker = new window.kakao.maps.Marker({
-        position,
-      });
-      marker.setMap(map.current);
 
-      if (onClick) {
-        window.kakao.maps.event.addListener(marker, 'click', onClick);
+      if (routieSequence) {
+        const content = createCustomMarkerElement(routieSequence);
+
+        const overlay = new window.kakao.maps.CustomOverlay({
+          position,
+          content,
+          yAnchor: 1,
+        });
+
+        overlay.setMap(map.current);
+
+        if (onClick) {
+          content.addEventListener('click', onClick);
+        }
+        markersRef.current.push(overlay);
+        return overlay;
+      } else {
+        const marker = new window.kakao.maps.Marker({
+          position,
+        });
+
+        marker.setMap(map.current);
+
+        if (onClick) {
+          window.kakao.maps.event.addListener(marker, 'click', onClick);
+        }
+
+        markersRef.current.push(marker);
+        return marker;
       }
-
-      markersRef.current.push(marker);
-      return marker;
     },
     [map],
   );
