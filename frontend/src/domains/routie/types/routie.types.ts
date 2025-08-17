@@ -27,11 +27,11 @@ export type ValidationStatus =
 
 export type WaitingReason = 'no_time' | 'insufficient_places' | null;
 
-type InvalidRoutiePlace = {
+export type InvalidRoutiePlace = {
   routiePlaceId: number;
 };
 
-type ValidationResultType = {
+export type ValidationResultType = {
   validationCode: validationErrorCodeType;
   isValid: boolean;
   invalidRoutiePlaces: InvalidRoutiePlace[];

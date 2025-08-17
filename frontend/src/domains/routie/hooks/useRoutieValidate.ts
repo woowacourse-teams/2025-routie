@@ -5,9 +5,11 @@ import { getCombineDateTime } from '@/@common/utils/format';
 
 import { getRoutieValidation } from '../apis/routie';
 import {
+  ValidationResultType,
   validationErrorCodeType,
   ValidationStatus,
   WaitingReason,
+  InvalidRoutiePlace,
 } from '../types/routie.types';
 
 export interface UseRoutieValidateReturn {
@@ -17,6 +19,7 @@ export interface UseRoutieValidateReturn {
     startTime: string;
     endTime: string;
   };
+  invalidRoutiePlaces: InvalidRoutiePlace[];
   validationErrors: validationErrorCodeType | null;
   validationStatus: ValidationStatus;
   waitingReason: WaitingReason;
@@ -45,11 +48,8 @@ const useRoutieValidate = (): UseRoutieValidateReturn => {
     {
       date: '',
       startTime: '',
-      endTime: '',
-    },
-  );
-  const [validationErrors, setValidationErrors] =
-    useState<validationErrorCodeType | null>(null);
+  const [invalidResult, setInvalidResult] =
+    useState<ValidationResultType | null>(null);
   const [validationStatus, setValidationStatus] =
     useState<ValidationStatus>('inactive');
 
@@ -85,6 +85,16 @@ const useRoutieValidate = (): UseRoutieValidateReturn => {
   const waitingReason = useMemo(
     () => getValidationConditions().waitingReason,
     [isValidateActive, routieTime],
+  );
+
+  const validationErrors = useMemo(
+    () => invalidResult?.validationCode ?? null,
+    [invalidResult],
+  );
+
+  const invalidRoutiePlaces = useMemo(
+    () => invalidResult?.invalidRoutiePlaces ?? [],
+    [invalidResult],
   );
 
   const updateValidationStatus = useCallback(
@@ -153,12 +163,12 @@ const useRoutieValidate = (): UseRoutieValidateReturn => {
         );
 
         if (invalidResult) {
-          setValidationErrors(invalidResult.validationCode);
+          setInvalidResult(invalidResult);
           setValidationStatus('error');
           return;
         }
 
-        setValidationErrors(null);
+        setInvalidResult(null);
         setValidationStatus('success');
       } catch (error) {
         console.error(error);
@@ -171,6 +181,7 @@ const useRoutieValidate = (): UseRoutieValidateReturn => {
   return {
     isValidateActive,
     routieTime,
+    invalidRoutiePlaces,
     validationErrors,
     validationStatus,
     waitingReason,
