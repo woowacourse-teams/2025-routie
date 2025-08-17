@@ -1,5 +1,6 @@
 import { useState } from 'react';
 
+import { useToastContext } from '@/@common/contexts/useToastContext';
 import Flex from '@/@common/components/Flex/Flex';
 import Modal, { ModalProps } from '@/@common/components/Modal/Modal';
 import Text from '@/@common/components/Text/Text';
@@ -36,6 +37,7 @@ const AddPlaceModal = ({
   const [placeLocationInfo, setPlaceLocationInfo] =
     useState<PlaceLocationType>();
   const isStep1Valid = getValidatedStep(1, isEmpty);
+  const { showToast } = useToastContext();
 
   const handleClose = () => {
     resetForm();
@@ -76,8 +78,16 @@ const AddPlaceModal = ({
       if (onPlaceAdded) {
         await onPlaceAdded();
       }
+      showToast({
+        message: '장소가 추가되었습니다.',
+        type: 'success',
+      });
     } catch (error) {
       console.log(error);
+      showToast({
+        message: '장소 추가를 실패하였습니다. 다시 시도해주세요.',
+        type: 'error',
+      });
     }
     handleClose();
   };

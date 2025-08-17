@@ -1,5 +1,6 @@
 import { css } from '@emotion/react';
 
+import { useToastContext } from '@/@common/contexts/useToastContext';
 import Card from '@/@common/components/Card/Card';
 import Flex from '@/@common/components/Flex/Flex';
 import IconButton from '@/@common/components/IconButton/IconButton';
@@ -31,6 +32,7 @@ export const PlaceCard = ({ selected, ...props }: PlaceCardProps) => {
   const { handleAddRoutie } = useRoutieContext();
   const { openModal, closeModal, modalOpen } = useModal();
   const { triggerEvent } = useGoogleEventTrigger();
+  const { showToast } = useToastContext();
 
   const handlePlaceSelect = async () => {
     if (selected) return;
@@ -56,8 +58,16 @@ export const PlaceCard = ({ selected, ...props }: PlaceCardProps) => {
         category: 'place',
         label: '장소 삭제하기 버튼',
       });
+      showToast({
+        message: '장소가 삭제되었습니다.',
+        type: 'success',
+      });
     } catch (error) {
       console.error(error);
+      showToast({
+        message: '장소 삭제를 실패하였습니다. 다시 시도해주세요.',
+        type: 'error',
+      });
     }
   };
 

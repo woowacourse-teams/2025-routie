@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 
+import { useToastContext } from '@/@common/contexts/useToastContext';
 import Flex from '@/@common/components/Flex/Flex';
 import Modal, { ModalProps } from '@/@common/components/Modal/Modal';
 import { useRoutieContext } from '@/domains/routie/contexts/useRoutieContext';
@@ -40,6 +41,7 @@ const EditPlaceModal = ({
   const { routieIdList, refetchRoutieData } = useRoutieContext();
   const { isEmpty, isValid } = usePlaceFormValidation(form);
   const [showErrors, setShowErrors] = useState(false);
+  const { showToast } = useToastContext();
 
   const initialFormRef = useRef<typeof form | null>(null);
 
@@ -85,8 +87,16 @@ const EditPlaceModal = ({
       if (placeInRoutie) {
         await refetchRoutieData();
       }
+      showToast({
+        message: '장소 정보가 수정되었습니다.',
+        type: 'success',
+      });
     } catch (error) {
       console.log(error);
+      showToast({
+        message: '장소 정보를 수정하지 못했습니다. 다시 시도해주세요.',
+        type: 'error',
+      });
     }
     handleClose();
   };
