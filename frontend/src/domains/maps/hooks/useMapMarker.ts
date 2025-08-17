@@ -3,6 +3,7 @@ import { RefObject, useCallback, useRef } from 'react';
 import type { KakaoMapType } from '../types/KaKaoMap.types';
 
 type Marker = InstanceType<typeof window.kakao.maps.Marker>;
+type CustomOverlay = InstanceType<typeof window.kakao.maps.CustomOverlay>;
 
 interface DrawMarkerProps {
   lat: number;
@@ -11,8 +12,13 @@ interface DrawMarkerProps {
   onClick?: () => void;
 }
 
-const useMapMarker = ({ map }: { map: RefObject<KakaoMapType> }) => {
-  const markersRef = useRef<Marker[]>([]);
+type UseMapMarkerType = {
+  map: RefObject<KakaoMapType>;
+  createMarkerElement: (sequence: number) => HTMLElement;
+};
+
+const useMapMarker = ({ map, createMarkerElement }: UseMapMarkerType) => {
+  const markersRef = useRef<(Marker | CustomOverlay)[]>([]);
 
   const clearMarkers = useCallback(() => {
     markersRef.current.forEach((marker) => {
@@ -28,9 +34,7 @@ const useMapMarker = ({ map }: { map: RefObject<KakaoMapType> }) => {
       const position = new window.kakao.maps.LatLng(lat, lng);
 
       if (routieSequence) {
-        const content = document.createElement('div');
-        content.className = 'marker-label';
-        content.innerText = String(routieSequence);
+        const content = createMarkerElement(routieSequence);
 
         const overlay = new window.kakao.maps.CustomOverlay({
           position,

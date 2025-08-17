@@ -1,6 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
-import { Global } from '@emotion/react';
 
 import Button from '@/@common/components/Button/Button';
 import Flex from '@/@common/components/Flex/Flex';
@@ -20,11 +19,29 @@ import {
   KakaoMapErrorStyle,
   KakaoMapLoadingStyle,
   KakaoMapWrapperStyle,
-  MarkerLabelStyle,
 } from './KakaoMap.styles';
 import PlaceOverlayCard from './PlaceOverlayCard';
 
 import type { KakaoMapProps } from '../types/KaKaoMap.types';
+
+const createMarkerElement = (sequence: number) => {
+  const content = document.createElement('div');
+  Object.assign(content.style, {
+    cursor: 'pointer',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '3rem',
+    height: '3rem',
+    borderRadius: '50%',
+    fontSize: '1.6rem',
+    fontWeight: 'bold',
+    color: 'white',
+    background: '#2b6cb0',
+  });
+  content.innerText = String(sequence);
+  return content;
+};
 
 const KakaoMap = ({ lat = 37.554, lng = 126.97, level = 7 }: KakaoMapProps) => {
   const mapContainerRef = useRef<HTMLDivElement>(null);
@@ -52,6 +69,7 @@ const KakaoMap = ({ lat = 37.554, lng = 126.97, level = 7 }: KakaoMapProps) => {
   const { fitMapToMarker, fitMapToMarkers, drawMarkers, clearMarkers } =
     useMapMarker({
       map: mapRef,
+      createMarkerElement,
     });
   const { loadPolyline, clearPolyline } = usePolyline({
     map: mapRef,
@@ -124,7 +142,6 @@ const KakaoMap = ({ lat = 37.554, lng = 126.97, level = 7 }: KakaoMapProps) => {
 
   return (
     <div css={KakaoMapWrapperStyle}>
-      <Global styles={MarkerLabelStyle} />
       <div
         ref={mapContainerRef}
         css={KakaoMapContainerStyle}
