@@ -1,7 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 
-import Button from '@/@common/components/Button/Button';
 import Flex from '@/@common/components/Flex/Flex';
 import Text from '@/@common/components/Text/Text';
 import { PlaceCardProps } from '@/domains/places/components/PlaceCard/PlaceCard';
@@ -13,6 +12,7 @@ import { useKakaoMapInit } from '../hooks/useKakaoMapInit';
 import { useKakaoMapSDK } from '../hooks/useKakaoMapSDK';
 import useMapMarker from '../hooks/useMapMarker';
 import usePolyline from '../hooks/usePolyline';
+import createCustomMarkerElement from '../utils/createCustomMarkerElement';
 
 import {
   KakaoMapContainerStyle,
@@ -21,8 +21,6 @@ import {
   KakaoMapWrapperStyle,
 } from './KakaoMap.styles';
 import PlaceOverlayCard from './PlaceOverlayCard';
-
-import createCustomMarkerElement from '../utils/createCustomMarkerElement';
 
 import type { KakaoMapProps } from '../types/KaKaoMap.types';
 
@@ -162,19 +160,6 @@ const KakaoMap = ({ lat = 37.554, lng = 126.97, level = 7 }: KakaoMapProps) => {
           <Text variant="caption">{finalError}</Text>
         </Flex>
       )}
-
-      <Button
-        variant="primary"
-        width="10%"
-        onClick={() => fitMapToMarkers(routiePlaces)}
-        css={{ position: 'absolute', top: '10px', right: '10px', zIndex: 1 }}
-      >
-        <Flex justifyContent="center" width="100%">
-          <Text variant="subTitle" color="white">
-            동선만 보기
-          </Text>
-        </Flex>
-      </Button>
 
       {containerEl &&
         selectedPlace &&
