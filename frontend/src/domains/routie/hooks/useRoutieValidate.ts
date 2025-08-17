@@ -1,4 +1,4 @@
-import { useCallback, useState, useEffect, useMemo } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 
 import { useSessionStorage } from '@/@common/hooks/useSessionStorage';
 import { getCombineDateTime } from '@/@common/utils/format';
@@ -43,11 +43,11 @@ const useRoutieValidate = (): UseRoutieValidateReturn => {
     'isValidateActive',
     true,
   );
-  const [routieTime, setRoutieTime] = useSessionStorage(
-    'routieTime',
-    {
-      date: '',
-      startTime: '',
+  const [routieTime, setRoutieTime] = useSessionStorage('routieTime', {
+    date: '',
+    startTime: '',
+    endTime: '',
+  });
   const [invalidResult, setInvalidResult] =
     useState<ValidationResultType | null>(null);
   const [validationStatus, setValidationStatus] =
