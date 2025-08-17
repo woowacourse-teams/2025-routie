@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -41,8 +42,15 @@ public class RequestLoggingAspect {
         } finally {
             long executionTime = System.currentTimeMillis() - startTime;
             logClientRequest(joinPoint, httpServletRequest, executionTime, isSuccess);
-            TraceIdHolder.clearTraceId();
+            if (isSuccess) {
+                TraceIdHolder.clearTraceId();
+            }
         }
+    }
+
+    @After("execution(* routie.exception.GlobalExceptionHandler.*(..))")
+    public void cleanupAfterExceptionHandling() {
+        TraceIdHolder.clearTraceId();
     }
 
     private void logClientRequest(
