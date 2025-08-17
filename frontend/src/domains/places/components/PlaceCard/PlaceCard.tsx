@@ -113,26 +113,39 @@ export const PlaceCard = ({ selected, ...props }: PlaceCardProps) => {
                 }
               `}
             />
-            <Flex direction="column" alignItems="flex-start" gap={1}>
-              <Text variant="subTitle">{props.name}</Text>
-              <Text variant="caption" color={theme.colors.gray[200]}>
+            <Flex
+              direction="column"
+              alignItems="flex-start"
+              gap={1}
+              css={css`
+                flex: 1;
+                min-width: 0;
+              `}
+            >
+              <Text variant="subTitle" ellipsis>
+                {props.name}
+              </Text>
+              <Text variant="caption" color={theme.colors.gray[200]} ellipsis>
                 {props.roadAddressName}
               </Text>
               <Flex direction="row" gap={1}>
-                <Text variant="description">영업 시간</Text>
+                <Text variant="description" ellipsis>
+                  영업 시간
+                </Text>
                 <Pill type="time">
                   {props.openAt}-{props.closeAt}
                 </Pill>
               </Flex>
               {props.breakStartAt && (
                 <Flex direction="row" gap={1}>
-                  <Text variant="description">브레이크</Text>
+                  <Text variant="description" ellipsis>
+                    브레이크
+                  </Text>
                   <Pill type="time">
                     {props.breakStartAt}-{props.breakEndAt}
                   </Pill>
                 </Flex>
               )}
-
               <DatePreviewList
                 value={getCheckedListExcept(props.closedDayOfWeeks)}
               />

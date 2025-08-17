@@ -27,9 +27,16 @@ const textVariant: Record<TextVariantProps, SerializedStyles> = {
   `,
 };
 
-export const TextStyle = ({ color, variant }: TextProps) => css`
+export const TextStyle = ({ color, variant, ellipsis }: TextProps) => css`
   box-sizing: border-box;
   max-width: 100%;
   color: ${color ?? theme.colors.black};
   ${variant && textVariant[variant]}
+  ${ellipsis &&
+  css`
+    overflow: hidden;
+    display: block;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  `}
 `;
