@@ -15,7 +15,7 @@ Sentry.init({
 });
 
 async function enableMocking() {
-  if (process.env.NODE_ENV !== 'development') {
+  if (window.location.hostname !== 'localhost') {
     return;
   }
 
