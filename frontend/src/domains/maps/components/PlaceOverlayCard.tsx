@@ -41,8 +41,10 @@ const PlaceOverlayCard = ({ place, onClose }: Props) => {
           <IconButton icon={closeIcon} onClick={onClose} />
         </Flex>
 
-        <Text variant="subTitle">{place.name}</Text>
-        <Text variant="caption" color={theme.colors.gray[200]}>
+        <Text variant="subTitle" ellipsis>
+          {place.name}
+        </Text>
+        <Text variant="caption" color={theme.colors.gray[200]} ellipsis>
           {place.roadAddressName}
         </Text>
         <Pill type="time">
