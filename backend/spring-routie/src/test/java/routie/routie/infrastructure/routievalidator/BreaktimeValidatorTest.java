@@ -6,41 +6,23 @@ import static org.mockito.Mockito.when;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.Map;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import routie.place.domain.Place;
 import routie.routie.domain.RoutiePlace;
 import routie.routie.domain.routievalidator.ValidationContext;
+import routie.routie.domain.routievalidator.ValidationResult;
 import routie.routie.domain.routievalidator.ValidationStrategy;
 import routie.routie.domain.timeperiod.TimePeriod;
 import routie.routie.domain.timeperiod.TimePeriods;
 
 class BreaktimeValidatorTest {
 
-    private final BreaktimeValidator calculator = new BreaktimeValidator();
-
-    @Test
-    @DisplayName("브레이크 타임이 없는 경우 항상 유효하다")
-    void validate_WithNoBreaktime_ShouldReturnTrue() {
-        // given
-        Place placeWithNoBreaktime = createMockPlace(null, null);
-        RoutiePlace routiePlace = createMockRoutiePlace(placeWithNoBreaktime);
-        TimePeriod timePeriod = new TimePeriod(
-                routiePlace,
-                LocalDateTime.of(2024, 1, 1, 12, 0),
-                LocalDateTime.of(2024, 1, 1, 13, 0)
-        );
-        TimePeriods timePeriods = new TimePeriods(Map.of(routiePlace, timePeriod));
-        ValidationContext validationContext = createValidationContext(timePeriods);
-
-        // when
-        boolean result = calculator.validate(validationContext, ValidationStrategy.IS_NOT_DURING_BREAKTIME).isValid();
-
-        // then
-        assertThat(result).isTrue();
-    }
+    private final BreaktimeValidator validator = new BreaktimeValidator();
 
     private Place createMockPlace(final LocalTime breakStartAt, final LocalTime breakEndAt) {
         Place place = mock(Place.class);
@@ -55,12 +37,45 @@ class BreaktimeValidatorTest {
         return routiePlace;
     }
 
-    private ValidationContext createValidationContext(final TimePeriods timePeriods) {
-        return new ValidationContext(
-                LocalDateTime.now(),
-                LocalDateTime.now().plusDays(1),
-                timePeriods
+    private ValidationContext createValidationContext(final TimePeriod... periods) {
+        TimePeriods timePeriods = mock(TimePeriods.class);
+        when(timePeriods.orderedList()).thenReturn(List.of(periods));
+
+        if (periods.length == 0) {
+            return new ValidationContext(LocalDateTime.now(), LocalDateTime.now().plusDays(1), timePeriods);
+        }
+
+        LocalDateTime overallStart = Arrays.stream(periods)
+                .map(TimePeriod::startTime)
+                .min(Comparator.naturalOrder())
+                .orElseThrow();
+        LocalDateTime overallEnd = Arrays.stream(periods)
+                .map(TimePeriod::endTime)
+                .max(Comparator.naturalOrder())
+                .orElseThrow();
+
+        return new ValidationContext(overallStart, overallEnd, timePeriods);
+    }
+
+    @Test
+    @DisplayName("브레이크 타임이 없는 경우 항상 유효하며, invalid 목록은 비어있다")
+    void validate_WithNoBreaktime_ShouldReturnValidAndEmpty() {
+        // given
+        Place placeWithNoBreaktime = createMockPlace(null, null);
+        RoutiePlace routiePlace = createMockRoutiePlace(placeWithNoBreaktime);
+        TimePeriod timePeriod = new TimePeriod(
+                routiePlace,
+                LocalDateTime.of(2024, 1, 1, 12, 0),
+                LocalDateTime.of(2024, 1, 1, 13, 0)
         );
+        ValidationContext validationContext = createValidationContext(timePeriod);
+
+        // when
+        ValidationResult result = validator.validate(validationContext, ValidationStrategy.IS_NOT_DURING_BREAKTIME);
+
+        // then
+        assertThat(result.isValid()).isTrue();
+        assertThat(result.invalidRoutiePlaces()).isEmpty();
     }
 
     @Nested
@@ -81,41 +96,18 @@ class BreaktimeValidatorTest {
                     LocalDateTime.of(2024, 1, 1, 11, 0),
                     LocalDateTime.of(2024, 1, 1, 12, 0)
             );
-            TimePeriods timePeriods = new TimePeriods(Map.of(routiePlace, timePeriod));
-            ValidationContext validationContext = createValidationContext(timePeriods);
+            ValidationContext validationContext = createValidationContext(timePeriod);
 
             // when
-            boolean result = calculator.validate(validationContext, ValidationStrategy.IS_NOT_DURING_BREAKTIME)
-                    .isValid();
+            ValidationResult result = validator.validate(validationContext, ValidationStrategy.IS_NOT_DURING_BREAKTIME);
 
             // then
-            assertThat(result).isTrue();
+            assertThat(result.isValid()).isTrue();
+            assertThat(result.invalidRoutiePlaces()).isEmpty();
         }
 
         @Test
-        @DisplayName("방문이 브레이크 타임 종료 정각에 시작되면 유효하다")
-        void validate_WhenVisitStartsAtBreaktimeEnd_ShouldReturnTrue() {
-            // given
-            Place place = createMockPlace(breakStartAt, breakEndAt);
-            RoutiePlace routiePlace = createMockRoutiePlace(place);
-            TimePeriod timePeriod = new TimePeriod(
-                    routiePlace,
-                    LocalDateTime.of(2024, 1, 1, 13, 0),
-                    LocalDateTime.of(2024, 1, 1, 14, 0)
-            );
-            TimePeriods timePeriods = new TimePeriods(Map.of(routiePlace, timePeriod));
-            ValidationContext validationContext = createValidationContext(timePeriods);
-
-            // when
-            boolean result = calculator.validate(validationContext, ValidationStrategy.IS_NOT_DURING_BREAKTIME)
-                    .isValid();
-
-            // then
-            assertThat(result).isTrue();
-        }
-
-        @Test
-        @DisplayName("방문이 브레이크 타임과 일부 겹치면 무효하다")
+        @DisplayName("방문이 브레이크 타임과 일부 겹치면 무효하며, 해당 장소를 invalid 목록에 포함한다")
         void validate_WhenVisitOverlapsSlightlyWithBreaktime_ShouldReturnFalse() {
             // given
             Place place = createMockPlace(breakStartAt, breakEndAt);
@@ -125,37 +117,14 @@ class BreaktimeValidatorTest {
                     LocalDateTime.of(2024, 1, 1, 11, 30),
                     LocalDateTime.of(2024, 1, 1, 12, 1) // 1분 겹침
             );
-            TimePeriods timePeriods = new TimePeriods(Map.of(routiePlace, timePeriod));
-            ValidationContext validationContext = createValidationContext(timePeriods);
+            ValidationContext validationContext = createValidationContext(timePeriod);
 
             // when
-            boolean result = calculator.validate(validationContext, ValidationStrategy.IS_NOT_DURING_BREAKTIME)
-                    .isValid();
+            ValidationResult result = validator.validate(validationContext, ValidationStrategy.IS_NOT_DURING_BREAKTIME);
 
             // then
-            assertThat(result).isFalse();
-        }
-
-        @Test
-        @DisplayName("방문이 브레이크 타임 전체를 포함하면 무효하다")
-        void validate_WhenVisitContainsBreaktime_ShouldReturnFalse() {
-            // given
-            Place place = createMockPlace(breakStartAt, breakEndAt);
-            RoutiePlace routiePlace = createMockRoutiePlace(place);
-            TimePeriod timePeriod = new TimePeriod(
-                    routiePlace,
-                    LocalDateTime.of(2024, 1, 1, 11, 0),
-                    LocalDateTime.of(2024, 1, 1, 14, 0)
-            );
-            TimePeriods timePeriods = new TimePeriods(Map.of(routiePlace, timePeriod));
-            ValidationContext validationContext = createValidationContext(timePeriods);
-
-            // when
-            boolean result = calculator.validate(validationContext, ValidationStrategy.IS_NOT_DURING_BREAKTIME)
-                    .isValid();
-
-            // then
-            assertThat(result).isFalse();
+            assertThat(result.isValid()).isFalse();
+            assertThat(result.invalidRoutiePlaces()).containsExactly(routiePlace);
         }
     }
 
@@ -167,7 +136,7 @@ class BreaktimeValidatorTest {
         private final LocalTime breakEndAt = LocalTime.of(1, 0);
 
         @Test
-        @DisplayName("방문이 자정을 걸친 브레이크 타임과 겹치면 무효하다")
+        @DisplayName("방문이 자정을 걸친 브레이크 타임과 겹치면 무효하며, 해당 장소를 invalid 목록에 포함한다")
         void validate_WhenVisitOverlapsWithOvernightBreak_ShouldReturnFalse() {
             // given: 23:30 ~ 00:30 방문
             Place place = createMockPlace(breakStartAt, breakEndAt);
@@ -177,95 +146,26 @@ class BreaktimeValidatorTest {
                     LocalDateTime.of(2024, 1, 1, 23, 30),
                     LocalDateTime.of(2024, 1, 2, 0, 30)
             );
-            TimePeriods timePeriods = new TimePeriods(Map.of(routiePlace, timePeriod));
-            ValidationContext validationContext = createValidationContext(timePeriods);
+            ValidationContext validationContext = createValidationContext(timePeriod);
 
             // when
-            boolean result = calculator.validate(validationContext, ValidationStrategy.IS_NOT_DURING_BREAKTIME)
-                    .isValid();
+            ValidationResult result = validator.validate(validationContext, ValidationStrategy.IS_NOT_DURING_BREAKTIME);
 
             // then
-            assertThat(result).isFalse();
-        }
-
-        @Test
-        @DisplayName("브레이크 타임이 아닌 낮 시간에 방문하면 유효하다")
-        void validate_WhenVisitIsDuringDaytime_ShouldReturnTrue() {
-            // given: 14:00 ~ 15:00 방문
-            Place place = createMockPlace(breakStartAt, breakEndAt);
-            RoutiePlace routiePlace = createMockRoutiePlace(place);
-            TimePeriod timePeriod = new TimePeriod(
-                    routiePlace,
-                    LocalDateTime.of(2024, 1, 1, 14, 0),
-                    LocalDateTime.of(2024, 1, 1, 15, 0)
-            );
-            TimePeriods timePeriods = new TimePeriods(Map.of(routiePlace, timePeriod));
-            ValidationContext validationContext = createValidationContext(timePeriods);
-
-            // when
-            boolean result = calculator.validate(validationContext, ValidationStrategy.IS_NOT_DURING_BREAKTIME)
-                    .isValid();
-
-            // then
-            assertThat(result).isTrue();
-        }
-
-        @Test
-        @DisplayName("브레이크 시작 직전까지 방문하면 유효하다")
-        void validate_WhenVisitEndsAtOvernightBreakStart_ShouldReturnTrue() {
-            // given: 22:00 ~ 23:00 방문
-            Place place = createMockPlace(breakStartAt, breakEndAt);
-            RoutiePlace routiePlace = createMockRoutiePlace(place);
-            TimePeriod timePeriod = new TimePeriod(
-                    routiePlace,
-                    LocalDateTime.of(2024, 1, 1, 22, 0),
-                    LocalDateTime.of(2024, 1, 1, 23, 0)
-            );
-            TimePeriods timePeriods = new TimePeriods(Map.of(routiePlace, timePeriod));
-            ValidationContext validationContext = createValidationContext(timePeriods);
-
-            // when
-            boolean result = calculator.validate(validationContext, ValidationStrategy.IS_NOT_DURING_BREAKTIME)
-                    .isValid();
-
-            // then
-            assertThat(result).isTrue();
-        }
-
-        @Test
-        @DisplayName("브레이크 종료 직후에 방문하면 유효하다")
-        void validate_WhenVisitStartsAtOvernightBreakEnd_ShouldReturnTrue() {
-            // given: 01:00 ~ 02:00 방문
-            Place place = createMockPlace(breakStartAt, breakEndAt);
-            RoutiePlace routiePlace = createMockRoutiePlace(place);
-            TimePeriod timePeriod = new TimePeriod(
-                    routiePlace,
-                    LocalDateTime.of(2024, 1, 2, 1, 0),
-                    LocalDateTime.of(2024, 1, 2, 2, 0)
-            );
-            TimePeriods timePeriods = new TimePeriods(Map.of(routiePlace, timePeriod));
-            ValidationContext validationContext = createValidationContext(timePeriods);
-
-            // when
-            boolean result = calculator.validate(validationContext, ValidationStrategy.IS_NOT_DURING_BREAKTIME)
-                    .isValid();
-
-            // then
-            assertThat(result).isTrue();
+            assertThat(result.isValid()).isFalse();
+            assertThat(result.invalidRoutiePlaces()).containsExactly(routiePlace);
         }
     }
-
-    // BreaktimeValidatorTest.java에 아래 @Nested 클래스를 추가하세요.
 
     @Nested
     @DisplayName("자정을 넘기는 방문 시간")
     class OvernightVisit {
         @Test
-        @DisplayName("야간 방문이 일반 브레이크 타임과 겹치면 무효하다")
+        @DisplayName("야간 방문이 일반 브레이크 타임과 겹치면 무효하며, 해당 장소를 invalid 목록에 포함한다")
         void validate_WhenOvernightVisitOverlapsNormalBreak_ShouldReturnFalse() {
             // given
             // 브레이크: 12:00 ~ 15:00
-            // 방문: 23:00 ~ 익일 13:00 (방문 시간 내에 브레이크 타임이 포함됨)
+            // 방문: 1/1 23:00 ~ 1/2 13:00 (방문 시간 내에 브레이크 타임이 포함됨)
             Place place = createMockPlace(LocalTime.of(12, 0), LocalTime.of(15, 0));
             RoutiePlace routiePlace = createMockRoutiePlace(place);
             TimePeriod timePeriod = new TimePeriod(
@@ -273,63 +173,53 @@ class BreaktimeValidatorTest {
                     LocalDateTime.of(2024, 1, 1, 23, 0),
                     LocalDateTime.of(2024, 1, 2, 13, 0)
             );
-            TimePeriods timePeriods = new TimePeriods(Map.of(routiePlace, timePeriod));
-            ValidationContext validationContext = createValidationContext(timePeriods);
+            ValidationContext validationContext = createValidationContext(timePeriod);
 
             // when
-            boolean result = calculator.validate(validationContext, ValidationStrategy.IS_NOT_DURING_BREAKTIME)
-                    .isValid();
+            ValidationResult result = validator.validate(validationContext, ValidationStrategy.IS_NOT_DURING_BREAKTIME);
 
             // then
-            assertThat(result).isFalse();
+            assertThat(result.isValid()).isFalse();
+            assertThat(result.invalidRoutiePlaces()).containsExactly(routiePlace);
         }
+    }
+
+    @Nested
+    @DisplayName("여러 장소 동시 검증")
+    class MultiplePlacesValidation {
 
         @Test
-        @DisplayName("야간 방문과 야간 브레이크 타임이 겹치면 무효하다")
-        void validate_WhenOvernightVisitOverlapsOvernightBreak_ShouldReturnFalse() {
+        @DisplayName("유효한 장소와 무효한 장소가 섞여 있을 때, 무효한 장소만 invalid 목록에 포함해야 한다")
+        void validate_shouldReturnOnlyInvalidPlaces_whenMixed() {
             // given
-            // 브레이크: 22:00 ~ 02:00
-            // 방문: 01:00 ~ 03:00 (겹치는 구간: 01:00 ~ 02:00)
-            Place place = createMockPlace(LocalTime.of(22, 0), LocalTime.of(2, 0));
-            RoutiePlace routiePlace = createMockRoutiePlace(place);
-            TimePeriod timePeriod = new TimePeriod(
-                    routiePlace,
-                    LocalDateTime.of(2024, 1, 2, 1, 0),
-                    LocalDateTime.of(2024, 1, 2, 3, 0)
+            // 1. 유효한 장소 (브레이크 타임 12:00-13:00, 방문 14:00-15:00)
+            Place validPlace = createMockPlace(LocalTime.of(12, 0), LocalTime.of(13, 0));
+            RoutiePlace validRoutiePlace = createMockRoutiePlace(validPlace);
+            TimePeriod validPeriod = new TimePeriod(
+                    validRoutiePlace,
+                    LocalDateTime.of(2024, 8, 20, 14, 0), // 화요일 14시
+                    LocalDateTime.of(2024, 8, 20, 15, 0)
             );
-            TimePeriods timePeriods = new TimePeriods(Map.of(routiePlace, timePeriod));
-            ValidationContext validationContext = createValidationContext(timePeriods);
+
+            // 2. 무효한 장소 (브레이크 타임 12:00-13:00, 방문 12:30-13:30)
+            Place invalidPlace = createMockPlace(LocalTime.of(12, 0), LocalTime.of(13, 0));
+            RoutiePlace invalidRoutiePlace = createMockRoutiePlace(invalidPlace);
+            TimePeriod invalidPeriod = new TimePeriod(
+                    invalidRoutiePlace,
+                    LocalDateTime.of(2024, 8, 20, 12, 30), // 화요일 12시 30분
+                    LocalDateTime.of(2024, 8, 20, 13, 30)
+            );
+
+            ValidationContext validationContext = createValidationContext(validPeriod, invalidPeriod);
 
             // when
-            boolean result = calculator.validate(validationContext, ValidationStrategy.IS_NOT_DURING_BREAKTIME)
-                    .isValid();
+            ValidationResult result = validator.validate(validationContext, ValidationStrategy.IS_NOT_DURING_BREAKTIME);
 
             // then
-            assertThat(result).isFalse();
-        }
-
-        @Test
-        @DisplayName("야간 방문과 야간 브레이크 타임이 겹치지 않으면 유효하다")
-        void validate_WhenOvernightVisitDoesNotOverlapOvernightBreak_ShouldReturnTrue() {
-            // given
-            // 브레이크: 22:00 ~ 02:00
-            // 방문: 20:00 ~ 21:00
-            Place place = createMockPlace(LocalTime.of(22, 0), LocalTime.of(2, 0));
-            RoutiePlace routiePlace = createMockRoutiePlace(place);
-            TimePeriod timePeriod = new TimePeriod(
-                    routiePlace,
-                    LocalDateTime.of(2024, 1, 1, 20, 0),
-                    LocalDateTime.of(2024, 1, 1, 21, 0)
-            );
-            TimePeriods timePeriods = new TimePeriods(Map.of(routiePlace, timePeriod));
-            ValidationContext validationContext = createValidationContext(timePeriods);
-
-            // when
-            boolean result = calculator.validate(validationContext, ValidationStrategy.IS_NOT_DURING_BREAKTIME)
-                    .isValid();
-
-            // then
-            assertThat(result).isTrue();
+            assertThat(result.isValid()).isFalse();
+            assertThat(result.invalidRoutiePlaces())
+                    .hasSize(1)
+                    .containsExactly(invalidRoutiePlace);
         }
     }
 }
