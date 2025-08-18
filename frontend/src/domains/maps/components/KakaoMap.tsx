@@ -12,7 +12,6 @@ import { useKakaoMapInit } from '../hooks/useKakaoMapInit';
 import { useKakaoMapSDK } from '../hooks/useKakaoMapSDK';
 import useMapMarker from '../hooks/useMapMarker';
 import usePolyline from '../hooks/usePolyline';
-import createCustomMarkerElement from '../utils/createCustomMarkerElement';
 
 import {
   KakaoMapContainerStyle,
@@ -50,7 +49,6 @@ const KakaoMap = ({ lat = 37.554, lng = 126.97, level = 7 }: KakaoMapProps) => {
   const { fitMapToMarker, fitMapToMarkers, drawMarkers, clearMarkers } =
     useMapMarker({
       map: mapRef,
-      createCustomMarkerElement,
     });
   const { loadPolyline, clearPolyline } = usePolyline({
     map: mapRef,
