@@ -133,7 +133,7 @@ export const PlaceCard = ({ selected, ...props }: PlaceCardProps) => {
               </Text>
               <Flex direction="row" gap={1}>
                 <Text variant="description" ellipsis>
-                  영업 시간
+                  영업시간
                 </Text>
                 <Pill type="time">
                   {props.openAt} -{' '}
