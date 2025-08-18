@@ -132,7 +132,7 @@ export const RoutieProvider = ({ children }: { children: React.ReactNode }) => {
 
   useEffect(() => {
     refetchRoutieData();
-  }, [isValidateActive, combineDateTime]);
+  }, [isValidateActive, combineDateTime, movingStrategy]);
 
   return (
     <RoutieContext.Provider
