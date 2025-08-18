@@ -15,7 +15,7 @@ import BreakTimeInputs from '../PlaceFormSection/BreakTimeInputs';
 import BusinessHourInputs from '../PlaceFormSection/BusinessHourInputs';
 import ClosedDaySelector from '../PlaceFormSection/ClosedDaySelector';
 import PlaceNameInput from '../PlaceFormSection/PlaceNameInput';
-import StayDurationInput from '../PlaceFormSection/StayDurationInput';
+import StayDurationInput from '../StayDurationInput/StayDurationInput';
 
 import EditPlaceModalButtons from './EditPlaceModalButtons';
 import EditPlaceModalHeader from './EditPlaceModalHeader';
