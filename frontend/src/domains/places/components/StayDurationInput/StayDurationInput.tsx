@@ -1,12 +1,15 @@
-import { css } from '@emotion/react';
-
 import Button from '@/@common/components/Button/Button';
 import Flex from '@/@common/components/Flex/Flex';
 import Input from '@/@common/components/Input/Input';
 import Text from '@/@common/components/Text/Text';
-import theme from '@/styles/theme';
 
 import { STAYDURATION_STEP_OPTIONS } from '../../constants/step';
+
+import {
+  stayDurationButton,
+  stayDurationContainer,
+  stayDurationInputContainer,
+} from './StayDurationInput.styles';
 
 interface StayDurationInputProps {
   value: number;
@@ -29,18 +32,8 @@ const StayDurationInput = ({
     <Flex direction="column" alignItems="flex-start" gap={0.75} width="100%">
       <Text variant="caption">체류 시간 (분)</Text>
 
-      <Flex
-        gap={0.6}
-        width="100%"
-        css={css`
-          flex: 0 0 auto;
-        `}
-      >
-        <div
-          css={css`
-            flex: 0 0 auto;
-          `}
-        >
+      <Flex gap={0.6} width="100%" css={stayDurationContainer}>
+        <div css={stayDurationInputContainer}>
           <Input
             id="stayDurationMinutes"
             type="number"
@@ -58,14 +51,7 @@ const StayDurationInput = ({
             key={durationStep}
             type="button"
             onClick={() => handleStayDurationButton(durationStep)}
-            css={css`
-              justify-content: center;
-
-              :hover {
-                color: ${theme.colors.white};
-                background-color: ${theme.colors.purple[300]};
-              }
-            `}
+            css={stayDurationButton}
           >
             {durationStep > 0 ? `+${durationStep}` : durationStep}
           </Button>

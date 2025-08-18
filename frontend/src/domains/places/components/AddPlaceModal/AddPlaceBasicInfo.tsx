@@ -4,8 +4,8 @@ import { PlaceLocationType } from '../../types/place.types';
 import AddressInput from '../PlaceFormSection/AddressInput';
 import { FormState } from '../PlaceFormSection/PlaceForm.types';
 import PlaceNameInput from '../PlaceFormSection/PlaceNameInput';
-import StayDurationInput from '../PlaceFormSection/StayDurationInput';
 import SearchBox from '../SearchBox/SearchBox';
+import StayDurationInput from '../StayDurationInput/StayDurationInput';
 
 interface AddPlaceBasicInfoProps {
   form: FormState;
