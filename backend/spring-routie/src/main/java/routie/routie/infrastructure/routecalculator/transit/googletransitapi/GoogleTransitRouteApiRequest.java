@@ -2,19 +2,25 @@ package routie.routie.infrastructure.routecalculator.transit.googletransitapi;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.LocalDateTime;
+import lombok.Getter;
 import routie.place.domain.Place;
 import routie.routie.domain.RoutiePlace;
 
+@Getter
 public final class GoogleTransitRouteApiRequest {
+    @JsonProperty("departureTime")
     private final LocalDateTime startDateTime;
+    @JsonProperty("origin")
     private final CoordinateRequest origin;
+    @JsonProperty("destination")
     private final CoordinateRequest destination;
+    @JsonProperty("travelMode")
     private final String travelMode;
 
     public GoogleTransitRouteApiRequest(
-            @JsonProperty("departureTime") final LocalDateTime startDateTime,
-            @JsonProperty("origin") final CoordinateRequest origin,
-            @JsonProperty("destination") final CoordinateRequest destination
+            final LocalDateTime startDateTime,
+            final CoordinateRequest origin,
+            final CoordinateRequest destination
     ) {
         this.startDateTime = startDateTime;
         this.origin = origin;
@@ -32,21 +38,6 @@ public final class GoogleTransitRouteApiRequest {
                 CoordinateRequest.from(from),
                 CoordinateRequest.from(to)
         );
-    }
-
-    @JsonProperty("origin")
-    public CoordinateRequest origin() {
-        return origin;
-    }
-
-    @JsonProperty("destination")
-    public CoordinateRequest destination() {
-        return destination;
-    }
-
-    @JsonProperty("travelMode")
-    public String travelMode() {
-        return travelMode;
     }
 
     public record CoordinateRequest(
