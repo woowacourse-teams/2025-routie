@@ -2,6 +2,9 @@ package routie.routie.infrastructure.routecalculator.transit.googletransitapi;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import lombok.Getter;
 import routie.place.domain.Place;
 import routie.routie.domain.RoutiePlace;
@@ -9,7 +12,7 @@ import routie.routie.domain.RoutiePlace;
 @Getter
 public final class GoogleTransitRouteApiRequest {
     @JsonProperty("departureTime")
-    private final LocalDateTime startDateTime;
+    private final String startDateTime;
     @JsonProperty("origin")
     private final CoordinateRequest origin;
     @JsonProperty("destination")
@@ -17,8 +20,8 @@ public final class GoogleTransitRouteApiRequest {
     @JsonProperty("travelMode")
     private final String travelMode;
 
-    public GoogleTransitRouteApiRequest(
-            final LocalDateTime startDateTime,
+    private GoogleTransitRouteApiRequest(
+            final String startDateTime,
             final CoordinateRequest origin,
             final CoordinateRequest destination
     ) {
@@ -33,8 +36,11 @@ public final class GoogleTransitRouteApiRequest {
             final RoutiePlace from,
             final RoutiePlace to
     ) {
+        ZonedDateTime zonedDateTime = startDateTime.atZone(ZoneId.systemDefault());
+        String formattedDateTime = zonedDateTime.format(DateTimeFormatter.ISO_OFFSET_DATE_TIME);
+
         return new GoogleTransitRouteApiRequest(
-                startDateTime,
+                formattedDateTime,
                 CoordinateRequest.from(from),
                 CoordinateRequest.from(to)
         );
