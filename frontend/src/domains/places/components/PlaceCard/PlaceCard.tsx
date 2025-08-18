@@ -1,17 +1,17 @@
 import { css } from '@emotion/react';
 
-import { useToastContext } from '@/@common/contexts/useToastContext';
 import Card from '@/@common/components/Card/Card';
 import Flex from '@/@common/components/Flex/Flex';
 import IconButton from '@/@common/components/IconButton/IconButton';
 import Pill from '@/@common/components/Pill/Pill';
 import Text from '@/@common/components/Text/Text';
+import { useToastContext } from '@/@common/contexts/useToastContext';
 import useModal from '@/@common/hooks/useModal';
 import checkIcon from '@/assets/icons/check.svg';
 import editIcon from '@/assets/icons/edit.svg';
 import plusIcon from '@/assets/icons/plus.svg';
-import trashIcon from '@/assets/icons/trash.svg';
 import disableTrashIcon from '@/assets/icons/trash-disable.svg';
+import trashIcon from '@/assets/icons/trash.svg';
 import { useRoutieContext } from '@/domains/routie/contexts/useRoutieContext';
 import { usePlaceListContext } from '@/layouts/PlaceList/contexts/PlaceListContext';
 import { useGoogleEventTrigger } from '@/libs/googleAnalytics/hooks/useGoogleEventTrigger';
@@ -20,6 +20,7 @@ import theme from '@/styles/theme';
 import deletePlace from '../../apis/deletePlace';
 import { PlaceBaseType } from '../../types/place.types';
 import { getCheckedListExcept } from '../../utils/getCheckedListExcept';
+import { getFormatedCloseAt } from '../../utils/getFormatedCloseAt';
 import DatePreviewList from '../DatePreviewList/DatePreviewList';
 import EditPlaceModal from '../EditPlaceModal/EditPlaceModal';
 
@@ -80,6 +81,7 @@ export const PlaceCard = ({ selected, ...props }: PlaceCardProps) => {
       label: '장소 수정하기 버튼',
     });
   };
+
   return (
     <>
       <Card
@@ -134,7 +136,8 @@ export const PlaceCard = ({ selected, ...props }: PlaceCardProps) => {
                   영업 시간
                 </Text>
                 <Pill type="time">
-                  {props.openAt}-{props.closeAt}
+                  {props.openAt} -{' '}
+                  {getFormatedCloseAt(props.openAt, props.closeAt)}
                 </Pill>
               </Flex>
               {props.breakStartAt && (
@@ -143,7 +146,7 @@ export const PlaceCard = ({ selected, ...props }: PlaceCardProps) => {
                     브레이크
                   </Text>
                   <Pill type="time">
-                    {props.breakStartAt}-{props.breakEndAt}
+                    {props.breakStartAt} - {props.breakEndAt}
                   </Pill>
                 </Flex>
               )}
