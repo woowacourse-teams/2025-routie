@@ -4,6 +4,7 @@ import java.time.LocalTime;
 import java.util.List;
 import org.springframework.stereotype.Component;
 import routie.place.domain.Place;
+import routie.routie.domain.RoutiePlace;
 import routie.routie.domain.routievalidator.RoutieValidator;
 import routie.routie.domain.routievalidator.ValidationContext;
 import routie.routie.domain.routievalidator.ValidationResult;
@@ -24,10 +25,15 @@ public class OperationHoursValidator implements RoutieValidator {
     ) {
         List<TimePeriod> timePeriods = validationContext.timePeriods().orderedList();
 
-        return ValidationResult.withoutRoutiePlaces(
-                timePeriods.stream()
-                        .allMatch(this::isWithinBusinessHours),
-                validationStrategy
+        List<RoutiePlace> invalidRoutiePlaces = timePeriods.stream()
+                .filter(timePeriod -> !this.isWithinBusinessHours(timePeriod))
+                .map(TimePeriod::routiePlace)
+                .toList();
+
+        return new ValidationResult(
+                invalidRoutiePlaces.isEmpty(),
+                validationStrategy,
+                invalidRoutiePlaces
         );
     }
 

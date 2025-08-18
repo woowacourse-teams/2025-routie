@@ -6,6 +6,7 @@ import java.time.LocalTime;
 import java.util.List;
 import org.springframework.stereotype.Component;
 import routie.place.domain.Place;
+import routie.routie.domain.RoutiePlace;
 import routie.routie.domain.routievalidator.RoutieValidator;
 import routie.routie.domain.routievalidator.ValidationContext;
 import routie.routie.domain.routievalidator.ValidationResult;
@@ -14,9 +15,6 @@ import routie.routie.domain.timeperiod.TimePeriod;
 
 @Component
 public class BreaktimeValidator implements RoutieValidator {
-
-    private static final LocalTime END_OF_DAY = LocalTime.MAX;
-    private static final LocalTime START_OF_DAY = LocalTime.MIN;
 
     @Override
     public boolean supportsStrategy(final ValidationStrategy validationStrategy) {
@@ -30,10 +28,15 @@ public class BreaktimeValidator implements RoutieValidator {
     ) {
         List<TimePeriod> timePeriods = validationContext.timePeriods().orderedList();
 
-        return ValidationResult.withoutRoutiePlaces(
-                timePeriods.stream()
-                        .allMatch(this::isNotDuringBreaktime),
-                validationStrategy
+        List<RoutiePlace> invalidRoutiePlaces = timePeriods.stream()
+                .filter(timePeriod -> !this.isNotDuringBreaktime(timePeriod))
+                .map(TimePeriod::routiePlace)
+                .toList();
+
+        return new ValidationResult(
+                invalidRoutiePlaces.isEmpty(),
+                validationStrategy,
+                invalidRoutiePlaces
         );
     }
 
