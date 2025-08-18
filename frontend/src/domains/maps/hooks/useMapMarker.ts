@@ -40,7 +40,8 @@ const useMapMarker = ({ map }: UseMapMarkerType) => {
         const overlay = new window.kakao.maps.CustomOverlay({
           position,
           content,
-          yAnchor: 1,
+          yAnchor: 0.5,
+          xAnchor: 0.5,
         });
 
         overlay.setMap(map.current);
