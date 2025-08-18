@@ -44,15 +44,23 @@ public class OperationHoursValidator implements RoutieValidator {
         final LocalTime visitStartTime = timePeriod.startTime().toLocalTime();
         final LocalTime visitEndTime = timePeriod.endTime().toLocalTime();
 
-        return isWithinOperatingHours(visitStartTime, openAt, closeAt) &&
-                isWithinOperatingHours(visitEndTime, openAt, closeAt);
+        return isTimeWithinOperatingHours(visitStartTime, openAt, closeAt) &&
+                isTimeWithinOperatingHours(visitEndTime, openAt, closeAt);
     }
 
-    private boolean isWithinOperatingHours(
+    private boolean isTimeWithinOperatingHours(
             final LocalTime time,
             final LocalTime openAt,
             final LocalTime closeAt
     ) {
+        if (isOvernight(openAt, closeAt)) {
+            return !time.isBefore(openAt) || !time.isAfter(closeAt);
+        }
+
         return !time.isBefore(openAt) && !time.isAfter(closeAt);
+    }
+
+    private boolean isOvernight(final LocalTime openAt, final LocalTime closeAt) {
+        return openAt.isAfter(closeAt);
     }
 }
