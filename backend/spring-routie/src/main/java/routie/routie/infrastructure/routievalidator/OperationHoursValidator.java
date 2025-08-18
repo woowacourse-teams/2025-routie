@@ -53,10 +53,14 @@ public class OperationHoursValidator implements RoutieValidator {
             final LocalTime openAt,
             final LocalTime closeAt
     ) {
-        if (openAt.isAfter(closeAt)) {
+        if (isOvernight(openAt, closeAt)) {
             return !time.isBefore(openAt) || !time.isAfter(closeAt);
         }
 
         return !time.isBefore(openAt) && !time.isAfter(closeAt);
+    }
+
+    private boolean isOvernight(final LocalTime openAt, final LocalTime closeAt) {
+        return openAt.isAfter(closeAt);
     }
 }
