@@ -78,7 +78,6 @@ public class GoogleTransitRouteApiClientConfig {
             throw new BusinessException(ErrorCode.GOOGLE_TRANSIT_ROUTE_API_ERROR);
         }
 
-
         public record GoogleErrorResponse(
                 @JsonProperty("error") GoogleErrorPayload error
         ) {
