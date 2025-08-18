@@ -1,7 +1,10 @@
 package routie.routie.infrastructure.routecalculator.transit.googletransitapi;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import lombok.Getter;
 import routie.place.domain.Place;
 import routie.routie.domain.RoutiePlace;
@@ -9,16 +12,20 @@ import routie.routie.domain.RoutiePlace;
 @Getter
 public final class GoogleTransitRouteApiRequest {
     @JsonProperty("departureTime")
-    private final LocalDateTime startDateTime;
+    @JsonFormat(shape = JsonFormat.Shape.STRING)
+    private final ZonedDateTime startDateTime;
+
     @JsonProperty("origin")
     private final CoordinateRequest origin;
+
     @JsonProperty("destination")
     private final CoordinateRequest destination;
+
     @JsonProperty("travelMode")
     private final String travelMode;
 
     public GoogleTransitRouteApiRequest(
-            final LocalDateTime startDateTime,
+            final ZonedDateTime startDateTime,
             final CoordinateRequest origin,
             final CoordinateRequest destination
     ) {
@@ -33,8 +40,10 @@ public final class GoogleTransitRouteApiRequest {
             final RoutiePlace from,
             final RoutiePlace to
     ) {
+        ZonedDateTime zonedDateTime = startDateTime.atZone(ZoneId.of("Asia/Seoul"));
+
         return new GoogleTransitRouteApiRequest(
-                startDateTime,
+                zonedDateTime,
                 CoordinateRequest.from(from),
                 CoordinateRequest.from(to)
         );

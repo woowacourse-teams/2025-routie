@@ -65,8 +65,8 @@ class RoutieControllerTest {
                 .name("장소 A")
                 .roadAddressName("도로명 주소")
                 .addressName("지번 주소")
-                .longitude(127.0)
-                .latitude(37.5)
+                .longitude(126.9765)
+                .latitude(37.5710)
                 .stayDurationMinutes(60)
                 .openAt(LocalTime.of(9, 0))
                 .closeAt(LocalTime.of(18, 0))
@@ -80,8 +80,8 @@ class RoutieControllerTest {
                 .name("장소 B")
                 .roadAddressName("도로명 주소")
                 .addressName("지번 주소")
-                .longitude(127.0)
-                .latitude(37.5)
+                .longitude(127.0276)
+                .latitude(37.4979)
                 .stayDurationMinutes(90)
                 .openAt(LocalTime.of(10, 0))
                 .closeAt(LocalTime.of(20, 0))
@@ -95,8 +95,8 @@ class RoutieControllerTest {
                 .name("장소 C")
                 .roadAddressName("도로명 주소")
                 .addressName("지번 주소")
-                .longitude(127.0)
-                .latitude(37.5)
+                .longitude(126.9765)
+                .latitude(37.5710)
                 .stayDurationMinutes(60)
                 .openAt(LocalTime.of(9, 0))
                 .closeAt(LocalTime.of(18, 0))
@@ -218,8 +218,8 @@ class RoutieControllerTest {
     @DisplayName("유효한 경로 검증 시 200 OK와 함께 isValid true를 반환한다")
     void validateRoutie_WithValidCase_ReturnsOkWithTrue() {
         // given: 검증 조건에 어긋나지 않는 출발, 도착 시각
-        LocalDateTime startTime = LocalDateTime.of(2025, 7, 29, 9, 0);
-        LocalDateTime endTime = LocalDateTime.of(2025, 7, 29, 18, 0);
+        LocalDateTime startTime = LocalDateTime.of(2025, 8, 18, 9, 0);
+        LocalDateTime endTime = LocalDateTime.of(2025, 8, 18, 18, 0);
 
         // when
         Response response = RestAssured
