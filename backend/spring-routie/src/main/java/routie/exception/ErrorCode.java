@@ -125,6 +125,11 @@ public enum ErrorCode {
             "검색 결과의 크기는 1에서 1,000 사이여야 합니다.",
             HttpStatus.BAD_REQUEST
     ),
+    PLACE_SEARCH_SERVICE_UNAVAILABLE(
+            "1050",
+            "장소 검색 서비스를 사용할 수 없습니다.",
+            HttpStatus.SERVICE_UNAVAILABLE
+    ),
 
     // Place Business Logic
     PLACE_NOT_FOUND(
@@ -304,18 +309,23 @@ public enum ErrorCode {
             "경로 계산을 위한 외부 API 호출 중 오류가 발생했습니다.",
             HttpStatus.BAD_GATEWAY
     ),
-    KAKAO_DRIVING_ROUTE_API_RESPONSE_EMPTY(
+    GOOGLE_TRANSIT_ROUTE_API_ERROR(
             "9001",
+            "경로 계산을 위한 외부 API 호출 중 오류가 발생했습니다.",
+            HttpStatus.BAD_GATEWAY
+    ),
+    KAKAO_DRIVING_ROUTE_API_RESPONSE_EMPTY(
+            "9010",
             "경로 계산을 위한 외부 API 응답이 비어 있습니다.",
             HttpStatus.BAD_GATEWAY
     ),
     KAKAO_LOCAL_API_ERROR(
-            "9002",
+            "9011",
             "외부 장소 검색 서비스에 문제가 발생했습니다.",
             HttpStatus.BAD_GATEWAY
     ),
     V_WORLD_API_ERROR(
-            "9003",
+            "9012",
             "외부 장소 검색 서비스에 문제가 발생했습니다.",
             HttpStatus.BAD_GATEWAY
     );
