@@ -1,13 +1,15 @@
-import { useCallback, useState, useEffect, useMemo } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 
 import { useSessionStorage } from '@/@common/hooks/useSessionStorage';
 import { getCombineDateTime } from '@/@common/utils/format';
 
 import { getRoutieValidation } from '../apis/routie';
 import {
+  ValidationResultType,
   validationErrorCodeType,
   ValidationStatus,
   WaitingReason,
+  InvalidRoutiePlace,
 } from '../types/routie.types';
 
 export interface UseRoutieValidateReturn {
@@ -17,6 +19,7 @@ export interface UseRoutieValidateReturn {
     startTime: string;
     endTime: string;
   };
+  currentInvalidRoutiePlaces: InvalidRoutiePlace[];
   validationErrors: validationErrorCodeType | null;
   validationStatus: ValidationStatus;
   waitingReason: WaitingReason;
@@ -25,7 +28,10 @@ export interface UseRoutieValidateReturn {
     field: 'date' | 'startTime' | 'endTime',
     value: string,
   ) => void;
-  validateRoutie: (placeCount?: number) => Promise<void>;
+  validateRoutie: (
+    movingStrategy: string,
+    placeCount?: number,
+  ) => Promise<void>;
   combineDateTime: {
     startDateTime: string;
     endDateTime: string;
@@ -37,16 +43,13 @@ const useRoutieValidate = (): UseRoutieValidateReturn => {
     'isValidateActive',
     true,
   );
-  const [routieTime, setRoutieTime] = useSessionStorage(
-    'routieTime',
-    {
-      date: '',
-      startTime: '',
-      endTime: '',
-    },
-  );
-  const [validationErrors, setValidationErrors] =
-    useState<validationErrorCodeType | null>(null);
+  const [routieTime, setRoutieTime] = useSessionStorage('routieTime', {
+    date: '',
+    startTime: '',
+    endTime: '',
+  });
+  const [invalidResult, setInvalidResult] =
+    useState<ValidationResultType | null>(null);
   const [validationStatus, setValidationStatus] =
     useState<ValidationStatus>('inactive');
 
@@ -84,6 +87,16 @@ const useRoutieValidate = (): UseRoutieValidateReturn => {
     [isValidateActive, routieTime],
   );
 
+  const validationErrors = useMemo(
+    () => invalidResult?.validationCode ?? null,
+    [invalidResult],
+  );
+
+  const currentInvalidRoutiePlaces = useMemo(
+    () => invalidResult?.invalidRoutiePlaces ?? [],
+    [invalidResult],
+  );
+
   const updateValidationStatus = useCallback(
     (placeCount?: number) => {
       const { canValidate, waitingReason } =
@@ -114,10 +127,6 @@ const useRoutieValidate = (): UseRoutieValidateReturn => {
     return getCombineDateTime(routieTime);
   }, [routieTime]);
 
-  useEffect(() => {
-    updateValidationStatus();
-  }, [isValidateActive, routieTime, updateValidationStatus]);
-
   const handleTimeChange = useCallback(
     (field: string, value: string) => {
       setRoutieTime({
@@ -129,7 +138,7 @@ const useRoutieValidate = (): UseRoutieValidateReturn => {
   );
 
   const validateRoutie = useCallback(
-    async (placeCount?: number) => {
+    async (movingStrategy: string, placeCount?: number) => {
       const { canValidate } = getValidationConditions(placeCount);
 
       if (!canValidate) {
@@ -140,18 +149,22 @@ const useRoutieValidate = (): UseRoutieValidateReturn => {
       setValidationStatus('validating');
 
       try {
-        const response = await getRoutieValidation(combineDateTime);
+        const response = await getRoutieValidation(
+          combineDateTime,
+          movingStrategy,
+        );
+
         const invalidResult = response.validationResultResponses.find(
           (result) => result.isValid === false,
         );
 
         if (invalidResult) {
-          setValidationErrors(invalidResult.validationCode);
+          setInvalidResult(invalidResult);
           setValidationStatus('error');
           return;
         }
 
-        setValidationErrors(null);
+        setInvalidResult(null);
         setValidationStatus('success');
       } catch (error) {
         console.error(error);
@@ -164,6 +177,7 @@ const useRoutieValidate = (): UseRoutieValidateReturn => {
   return {
     isValidateActive,
     routieTime,
+    currentInvalidRoutiePlaces,
     validationErrors,
     validationStatus,
     waitingReason,
