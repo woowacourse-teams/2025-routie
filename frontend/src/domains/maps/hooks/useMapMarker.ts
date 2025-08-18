@@ -1,5 +1,7 @@
 import { RefObject, useCallback, useRef } from 'react';
 
+import createCustomMarkerElement from '../utils/createCustomMarkerElement';
+
 import type { KakaoMapType } from '../types/KaKaoMap.types';
 
 type Marker = InstanceType<typeof window.kakao.maps.Marker>;
@@ -14,10 +16,9 @@ interface DrawMarkerProps {
 
 type UseMapMarkerType = {
   map: RefObject<KakaoMapType>;
-  createCustomMarkerElement: (sequence: number) => HTMLElement;
 };
 
-const useMapMarker = ({ map, createCustomMarkerElement }: UseMapMarkerType) => {
+const useMapMarker = ({ map }: UseMapMarkerType) => {
   const markersRef = useRef<(Marker | CustomOverlay)[]>([]);
 
   const clearMarkers = useCallback(() => {
