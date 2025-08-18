@@ -59,6 +59,7 @@ export const RoutieProvider = ({ children }: { children: React.ReactNode }) => {
       const routies = await getRoutie(
         isValidateActive,
         combineDateTime.startDateTime,
+        movingStrategy,
       );
       setRoutiePlaces(routies.routiePlaces);
       setRoutes(routies.routes);
