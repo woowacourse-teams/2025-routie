@@ -26,7 +26,6 @@ export const getRoutie = async (
   }
 
   const query = queryParams.toString() ? `?${queryParams.toString()}` : '';
-  console.log(query);
 
   const response = await apiClient.get(
     `/routie-spaces/${routieSpaceUuid}/routie${query}`,
