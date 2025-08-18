@@ -6,6 +6,8 @@ import Input from '@/@common/components/Input/Input';
 import Text from '@/@common/components/Text/Text';
 import theme from '@/styles/theme';
 
+import { STAYDURATION_STEP_OPTIONS } from '../../constants/step';
+
 interface StayDurationInputProps {
   value: number;
   onChange: (field: 'stayDurationMinutes', value: string) => void;
@@ -18,7 +20,6 @@ const StayDurationInput = ({
   error = false,
 }: StayDurationInputProps) => {
   const inputVariant = error ? 'error' : 'primary';
-  const stayDurationStepOptions = [-30, -10, 10, 30];
 
   const handleIncreaseButton = (buttonNumber: number) => {
     onChange('stayDurationMinutes', String(Math.max(0, value + buttonNumber)));
@@ -52,7 +53,7 @@ const StayDurationInput = ({
           />
         </div>
 
-        {stayDurationStepOptions.map((durationStep) => (
+        {STAYDURATION_STEP_OPTIONS.map((durationStep) => (
           <Button
             key={durationStep}
             type="button"
