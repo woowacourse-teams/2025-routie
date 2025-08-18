@@ -36,7 +36,7 @@ public final class GoogleTransitRouteApiRequest {
             final RoutiePlace from,
             final RoutiePlace to
     ) {
-        ZonedDateTime zonedDateTime = startDateTime.atZone(ZoneId.systemDefault());
+        ZonedDateTime zonedDateTime = startDateTime.atZone(ZoneId.of("Asia/Seoul"));
         String formattedDateTime = zonedDateTime.format(DateTimeFormatter.ISO_OFFSET_DATE_TIME);
 
         return new GoogleTransitRouteApiRequest(
