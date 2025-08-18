@@ -24,6 +24,7 @@ import {
   dragIconStyle,
   PlaceInfoViewPillStyle,
 } from './RoutiePlaceCard.styles';
+import { getFormatedCloseAt } from '@/domains/places/utils/getFormatedCloseAt';
 
 const RoutiePlaceCard = ({ routie }: { routie: Routie }) => {
   const [place, setPlace] = useState<PlaceBaseType>({
@@ -87,7 +88,8 @@ const RoutiePlaceCard = ({ routie }: { routie: Routie }) => {
                     content={
                       <div>
                         <Text variant="label">
-                          오픈: {place.openAt} / 마감: {place.closeAt}
+                          오픈: {place.openAt} / 마감:{' '}
+                          {getFormatedCloseAt(place.openAt, place.closeAt)}
                         </Text>
 
                         <Text variant="label">
