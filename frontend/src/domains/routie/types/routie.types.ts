@@ -3,7 +3,6 @@ import { VALIDATION_RESULT_CODE } from '../constants/routieValidation';
 export type Routes = {
   fromSequence: number;
   toSequence: number;
-  movingStrategy: 'DRIVING';
   duration: number;
   distance: number;
 };
