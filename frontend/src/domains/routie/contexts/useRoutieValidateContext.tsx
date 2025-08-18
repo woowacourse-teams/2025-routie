@@ -11,7 +11,7 @@ const RoutieValidateContext = createContext<UseRoutieValidateReturn>({
     startTime: '',
     endTime: '',
   },
-  invalidRoutiePlaces: [],
+  currentInvalidRoutiePlaces: [],
   validationErrors: null,
   validationStatus: 'waiting',
   waitingReason: null,
@@ -32,7 +32,7 @@ export const RoutieValidateProvider = ({
   const {
     isValidateActive,
     routieTime,
-    invalidRoutiePlaces,
+    currentInvalidRoutiePlaces,
     validationErrors,
     validationStatus,
     waitingReason,
@@ -46,7 +46,7 @@ export const RoutieValidateProvider = ({
     return {
       isValidateActive,
       routieTime,
-      invalidRoutiePlaces,
+      currentInvalidRoutiePlaces,
       validationErrors,
       validationStatus,
       waitingReason,
@@ -58,7 +58,7 @@ export const RoutieValidateProvider = ({
   }, [
     isValidateActive,
     routieTime,
-    invalidRoutiePlaces,
+    currentInvalidRoutiePlaces,
     validationErrors,
     validationStatus,
     waitingReason,

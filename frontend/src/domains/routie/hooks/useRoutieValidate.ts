@@ -19,7 +19,7 @@ export interface UseRoutieValidateReturn {
     startTime: string;
     endTime: string;
   };
-  invalidRoutiePlaces: InvalidRoutiePlace[];
+  currentInvalidRoutiePlaces: InvalidRoutiePlace[];
   validationErrors: validationErrorCodeType | null;
   validationStatus: ValidationStatus;
   waitingReason: WaitingReason;
@@ -92,7 +92,7 @@ const useRoutieValidate = (): UseRoutieValidateReturn => {
     [invalidResult],
   );
 
-  const invalidRoutiePlaces = useMemo(
+  const currentInvalidRoutiePlaces = useMemo(
     () => invalidResult?.invalidRoutiePlaces ?? [],
     [invalidResult],
   );
@@ -177,7 +177,7 @@ const useRoutieValidate = (): UseRoutieValidateReturn => {
   return {
     isValidateActive,
     routieTime,
-    invalidRoutiePlaces,
+    currentInvalidRoutiePlaces,
     validationErrors,
     validationStatus,
     waitingReason,
