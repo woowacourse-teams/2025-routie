@@ -307,7 +307,7 @@ class RoutieControllerTest {
 
     @Test
     @DisplayName("잘못된 형식의 시간 파라미터로 요청 시 500 Internal Server Error를 반환한다")
-    void validateRoutie_WithInvalidTimeFormat_ReturnsBadRequest() {
+    void validateRoutie_WithInvalidTimeFormat_ReturnsInternalServerError() {
         // given
         // invalidStartTime이 ISO_DATE_TIME 형식이 아님
         String invalidStartTime = "2025-07-29 10:00:00";
@@ -319,7 +319,7 @@ class RoutieControllerTest {
                 .queryParam("startDateTime", invalidStartTime)
                 .queryParam("endDateTime", validEndTime)
                 .when()
-                .get("/routie-spaces/" + routieSpace.getIdentifier() + "/routie/validity")
+                .get("/routie-spaces/" + routieSpace.getIdentifier() + "/routie/validation")
                 .then().log().all()
                 .extract().response();
 
