@@ -24,7 +24,7 @@ public final class GoogleTransitRouteApiRequest {
     @JsonProperty("travelMode")
     private final String travelMode;
 
-    private GoogleTransitRouteApiRequest(
+    public GoogleTransitRouteApiRequest(
             final ZonedDateTime startDateTime,
             final CoordinateRequest origin,
             final CoordinateRequest destination
