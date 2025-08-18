@@ -21,7 +21,7 @@ const StayDurationInput = ({
 }: StayDurationInputProps) => {
   const inputVariant = error ? 'error' : 'primary';
 
-  const handleIncreaseButton = (buttonNumber: number) => {
+  const handleStayDurationButton = (buttonNumber: number) => {
     onChange('stayDurationMinutes', String(Math.max(0, value + buttonNumber)));
   };
 
@@ -57,7 +57,7 @@ const StayDurationInput = ({
           <Button
             key={durationStep}
             type="button"
-            onClick={() => handleIncreaseButton(durationStep)}
+            onClick={() => handleStayDurationButton(durationStep)}
             css={css`
               justify-content: center;
 
