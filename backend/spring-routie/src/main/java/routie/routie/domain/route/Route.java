@@ -1,5 +1,7 @@
 package routie.routie.domain.route;
 
+import routie.exception.BusinessException;
+import routie.exception.ErrorCode;
 import routie.routie.domain.RoutiePlace;
 
 public record Route(
@@ -16,13 +18,13 @@ public record Route(
 
     private void validateOrigin(final RoutiePlace routiePlace) {
         if (routiePlace == null) {
-            throw new IllegalArgumentException("출발지는 null일 수 없습니다.");
+            throw new BusinessException(ErrorCode.ROUTE_ORIGIN_NULL);
         }
     }
 
     private void validateDestination(final RoutiePlace routiePlace) {
         if (routiePlace == null) {
-            throw new IllegalArgumentException("도착지는 null일 수 없습니다.");
+            throw new BusinessException(ErrorCode.ROUTE_DESTINATION_NULL);
         }
     }
 }

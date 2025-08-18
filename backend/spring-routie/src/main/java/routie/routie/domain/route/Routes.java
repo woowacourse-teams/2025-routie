@@ -5,6 +5,8 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+import routie.exception.BusinessException;
+import routie.exception.ErrorCode;
 import routie.routie.domain.RoutiePlace;
 
 public class Routes {
@@ -25,7 +27,7 @@ public class Routes {
 
     private void validateRoutes(final Map<RoutiePlace, Route> routes) {
         if (routes == null) {
-            throw new IllegalArgumentException("Routes 는 null일 수 없습니다.");
+            throw new BusinessException(ErrorCode.ROUTES_NULL);
         }
     }
 
@@ -51,13 +53,13 @@ public class Routes {
 
     private void validateRoutiePlace(final RoutiePlace routiePlace) {
         if (routiePlace == null) {
-            throw new IllegalArgumentException("RoutiePlace 는 null일 수 없습니다.");
+            throw new BusinessException(ErrorCode.ROUTIE_PLACE_NULL);
         }
     }
 
     private void validateRoute(final Route route) {
         if (route == null) {
-            throw new IllegalArgumentException("Route 는 null일 수 없습니다.");
+            throw new BusinessException(ErrorCode.ROUTE_NULL);
         }
     }
 

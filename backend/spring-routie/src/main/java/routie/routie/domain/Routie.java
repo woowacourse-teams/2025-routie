@@ -12,6 +12,8 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import routie.exception.BusinessException;
+import routie.exception.ErrorCode;
 import routie.place.domain.Place;
 
 @Getter
@@ -42,7 +44,7 @@ public class Routie {
 
     private void validatePlaceAlreadyExists(final Place place) {
         if (containsPlace(place)) {
-            throw new IllegalArgumentException("이미 등록된 장소입니다.");
+            throw new BusinessException(ErrorCode.ROUTIE_PLACE_ALREADY_REGISTERED);
         }
     }
 
@@ -66,7 +68,7 @@ public class Routie {
 
     private void validatePlace(final Place place) {
         if (place == null) {
-            throw new IllegalArgumentException("장소는 null일 수 없습니다.");
+            throw new BusinessException(ErrorCode.ROUTIE_PLACE_ENTITY_NULL);
         }
     }
 
@@ -74,7 +76,7 @@ public class Routie {
         return routiePlaces.stream()
                 .filter(routiePlace -> routiePlace.getPlace().equals(place))
                 .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException("루티에 등록되지 않은 장소입니다."));
+                .orElseThrow(() -> new BusinessException(ErrorCode.ROUTIE_PLACE_NOT_REGISTERED));
     }
     // TODO: 추후 성능 이슈가 발생하면 하나의 SQL로 정렬하는 방식으로 변경 필요
     // 현재 방식은 UPDATE 쿼리를 N번 발생시켜 성능에 영향을 줄 수 있음

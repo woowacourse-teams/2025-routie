@@ -8,42 +8,327 @@ import org.springframework.http.HttpStatus;
 @RequiredArgsConstructor
 public enum ErrorCode {
 
+    /**
+     * 0XXX: COMMON
+     */
     BAD_REQUEST(
-            "5000",
+            "0000",
             "잘못된 요청입니다.",
             HttpStatus.BAD_REQUEST
     ),
+
+    /**
+     * 1XXX: Place domain
+     */
+    // Place
+    PLACE_NAME_REQUIRED(
+            "1000",
+            "장소명은 필수입니다.",
+            HttpStatus.BAD_REQUEST
+    ),
+    PLACE_NAME_LENGTH_INVALID(
+            "1001",
+            "장소명은 1자 이상 30자 이하여야 합니다.",
+            HttpStatus.BAD_REQUEST
+    ),
+    PLACE_ADDRESS_REQUIRED(
+            "1002",
+            "지번 주소는 필수입니다.",
+            HttpStatus.BAD_REQUEST
+    ),
+    PLACE_ADDRESS_LENGTH_INVALID(
+            "1003",
+            "지번 주소는 1자 이상 50자 이하여야 합니다.",
+            HttpStatus.BAD_REQUEST
+    ),
+    PLACE_ROAD_ADDRESS_LENGTH_INVALID(
+            "1004",
+            "도로명 주소는 1자 이상 50자 이하여야 합니다.",
+            HttpStatus.BAD_REQUEST
+    ),
+    PLACE_LONGITUDE_INVALID(
+            "1005",
+            "경도는 -180.0 이상 180.0 이하이어야 합니다.",
+            HttpStatus.BAD_REQUEST
+    ),
+    PLACE_LATITUDE_INVALID(
+            "1006",
+            "위도는 -90.0 이상 90.0 이하이어야 합니다.",
+            HttpStatus.BAD_REQUEST
+    ),
+    PLACE_STAY_DURATION_INVALID(
+            "1007",
+            "체류 시간은 0분 이상 1440분 이하여야 합니다.",
+            HttpStatus.BAD_REQUEST
+    ),
+    PLACE_BUSINESS_HOURS_INCOMPLETE(
+            "1008",
+            "영업 시작 시간과 종료 시간은 함께 존재해야 합니다.",
+            HttpStatus.BAD_REQUEST
+    ),
+    PLACE_BREAK_TIME_INCOMPLETE(
+            "1009",
+            "브레이크 타임 시작 시간과 종료 시간은 함께 존재해야 합니다.",
+            HttpStatus.BAD_REQUEST
+    ),
+    PLACE_BREAK_TIME_OUTSIDE_BUSINESS_HOURS(
+            "1010",
+            "브레이크 타임은 영업 시간 내에 있어야 합니다.",
+            HttpStatus.BAD_REQUEST
+    ),
+    PLACE_CLOSED_DAY_NULL(
+            "1011",
+            "휴무일은 null일 수 없습니다.",
+            HttpStatus.BAD_REQUEST
+    ),
+
+    // SearchedPlace Validation
+    SEARCHED_PLACE_ID_REQUIRED(
+            "1020",
+            "검색된 장소 ID는 필수값입니다.",
+            HttpStatus.BAD_REQUEST
+    ),
+    SEARCHED_PLACE_NAME_REQUIRED(
+            "1021",
+            "장소 이름은 필수값입니다.",
+            HttpStatus.BAD_REQUEST
+    ),
+    SEARCHED_PLACE_ADDRESS_REQUIRED(
+            "1022",
+            "지번은 필수값입니다.",
+            HttpStatus.BAD_REQUEST
+    ),
+    SEARCHED_PLACE_LONGITUDE_INVALID(
+            "1023",
+            "유효한 경도 값이 아닙니다.",
+            HttpStatus.BAD_REQUEST
+    ),
+    SEARCHED_PLACE_LATITUDE_INVALID(
+            "1024",
+            "유효한 위도 값이 아닙니다.",
+            HttpStatus.BAD_REQUEST
+    ),
+
+    // Place Search
+    SEARCH_QUERY_EMPTY(
+            "1030",
+            "검색어는 비어있을 수 없습니다.",
+            HttpStatus.BAD_REQUEST
+    ),
+    SEARCH_SIZE_INVALID_KAKAO(
+            "1031",
+            "검색 결과의 크기는 1에서 15 사이여야 합니다.",
+            HttpStatus.BAD_REQUEST
+    ),
+    SEARCH_SIZE_INVALID_VWORLD(
+            "1032",
+            "검색 결과의 크기는 1에서 1,000 사이여야 합니다.",
+            HttpStatus.BAD_REQUEST
+    ),
+    PLACE_SEARCH_SERVICE_UNAVAILABLE(
+            "1050",
+            "장소 검색 서비스를 사용할 수 없습니다.",
+            HttpStatus.SERVICE_UNAVAILABLE
+    ),
+
+    // Place Business Logic
+    PLACE_NOT_FOUND(
+            "1100",
+            "해당 장소를 찾을 수 없습니다.",
+            HttpStatus.NOT_FOUND
+    ),
+    PLACE_NOT_FOUND_IN_ROUTIE_SPACE(
+            "1101",
+            "루티 스페이스 내에서 해당하는 장소를 찾을 수 없습니다.",
+            HttpStatus.NOT_FOUND
+    ),
+    PLACE_NOT_FOUND_BY_ID(
+            "1102",
+            "해당하는 id의 장소를 찾을 수 없습니다.",
+            HttpStatus.NOT_FOUND
+    ),
+
+    /**
+     * 2XXX: Routie Space domain
+     */
+    // RoutieSpace
+    ROUTIE_SPACE_NAME_EMPTY(
+            "2000",
+            "루티 스페이스 이름은 비어있을 수 없습니다.",
+            HttpStatus.BAD_REQUEST
+    ),
+    ROUTIE_SPACE_NAME_LENGTH_INVALID(
+            "2001",
+            "루티 스페이스 이름은 50자 이하여야 합니다.",
+            HttpStatus.BAD_REQUEST
+    ),
+    ROUTIE_SPACE_IDENTIFIER_PROVIDER_NULL(
+            "2002",
+            "루티 스페이스 식별자 제공자는 null일 수 없습니다.",
+            HttpStatus.BAD_REQUEST
+    ),
+
+    // RoutieSpace Business Logic
+    ROUTIE_SPACE_NOT_FOUND(
+            "2100",
+            "해당 루티 스페이스를 찾을 수 없습니다.",
+            HttpStatus.NOT_FOUND
+    ),
+    ROUTIE_SPACE_NOT_FOUND_BY_IDENTIFIER(
+            "2101",
+            "해당하는 식별자의 루티 스페이스를 찾을 수 없습니다.",
+            HttpStatus.NOT_FOUND
+    ),
+    ROUTIE_SPACE_NOT_EXISTS(
+            "2102",
+            "존재하지 않는 루티 스페이스입니다.",
+            HttpStatus.NOT_FOUND
+    ),
+
+    /**
+     * 3XXX: Routie domain
+     */
+    // Routie
+    ROUTIE_PLACE_ALREADY_REGISTERED(
+            "3000",
+            "이미 등록된 장소입니다.",
+            HttpStatus.BAD_REQUEST
+    ),
+    ROUTIE_PLACE_NOT_REGISTERED(
+            "3001",
+            "루티에 등록되지 않은 장소입니다.",
+            HttpStatus.BAD_REQUEST
+    ),
+    ROUTIE_PLACE_ORDER_INVALID(
+            "3002",
+            "루티 장소 순서는 1 이상의 값이어야 합니다.",
+            HttpStatus.BAD_REQUEST
+    ),
+    ROUTIE_PLACE_ENTITY_NULL(
+            "3003",
+            "장소는 null일 수 없습니다.",
+            HttpStatus.BAD_REQUEST
+    ),
+    ROUTES_NULL(
+            "3004",
+            "Routes 는 null일 수 없습니다.",
+            HttpStatus.BAD_REQUEST
+    ),
+    ROUTIE_PLACE_NULL(
+            "3005",
+            "RoutiePlace 는 null일 수 없습니다.",
+            HttpStatus.BAD_REQUEST
+    ),
+    ROUTE_NULL(
+            "3006",
+            "Route 는 null일 수 없습니다.",
+            HttpStatus.BAD_REQUEST
+    ),
+    ROUTIE_PLACES_NULL(
+            "3007",
+            "RoutiePlace 목록은 null일 수 없습니다.",
+            HttpStatus.BAD_REQUEST
+    ),
+
+    // Route
+    ROUTE_ORIGIN_NULL(
+            "3020",
+            "출발지는 null일 수 없습니다.",
+            HttpStatus.BAD_REQUEST
+    ),
+    ROUTE_DESTINATION_NULL(
+            "3021",
+            "도착지는 null일 수 없습니다.",
+            HttpStatus.BAD_REQUEST
+    ),
+    ROUTE_MOVING_STRATEGY_NULL(
+            "3022",
+            "이동 전략은 null일 수 없습니다.",
+            HttpStatus.BAD_REQUEST
+    ),
+    ROUTIE_START_TIME_NULL(
+            "3023",
+            "일정 시간 시간은 null일 수 없습니다.",
+            HttpStatus.BAD_REQUEST
+    ),
+    ROUTIE_END_TIME_NULL(
+            "3024",
+            "일정 종료 시간은 null일 수 없습니다.",
+            HttpStatus.BAD_REQUEST
+    ),
+    ROUTIE_TIME_PERIODS_NULL(
+            "3025",
+            "TimePeriods는 null일 수 없습니다.",
+            HttpStatus.BAD_REQUEST
+    ),
+
+    // TimePeriod Validation
+    TIME_PERIOD_START_TIME_NULL(
+            "3030",
+            "장소 도착 시간은 null일 수 없습니다.",
+            HttpStatus.BAD_REQUEST
+    ),
+    TIME_PERIOD_END_TIME_NULL(
+            "3031",
+            "장소 출발 시간은 null일 수 없습니다.",
+            HttpStatus.BAD_REQUEST
+    ),
+    TIME_PERIODS_NULL(
+            "3032",
+            "TimePeriods는 null일 수 없습니다.",
+            HttpStatus.BAD_REQUEST
+    ),
+    TIME_PERIOD_NULL(
+            "3033",
+            "TimePeriod는 null일 수 없습니다.",
+            HttpStatus.BAD_REQUEST
+    ),
+
+    // ValidationStrategy
+    VALIDATION_STRATEGY_NULL(
+            "3040",
+            "ValidationStrategy는 null일 수 없습니다.",
+            HttpStatus.BAD_REQUEST
+    ),
+    INVALID_PLACES_COLLECTION_NULL(
+            "3041",
+            "유효하지 않은 RoutiePlace 목록은 null일 수 없습니다.",
+            HttpStatus.BAD_REQUEST
+    ),
+    MOVING_STRATEGY_NOT_SUPPORTED(
+            "3042",
+            "지원하지 않는 이동 전략입니다.",
+            HttpStatus.BAD_REQUEST
+    ),
+
+    /**
+     * 9XXX: External API
+     */
     KAKAO_DRIVING_ROUTE_API_ERROR(
-            "5002",
+            "9000",
+            "경로 계산을 위한 외부 API 호출 중 오류가 발생했습니다.",
+            HttpStatus.BAD_GATEWAY
+    ),
+    GOOGLE_TRANSIT_ROUTE_API_ERROR(
+            "9001",
             "경로 계산을 위한 외부 API 호출 중 오류가 발생했습니다.",
             HttpStatus.BAD_GATEWAY
     ),
     KAKAO_DRIVING_ROUTE_API_RESPONSE_EMPTY(
-            "5003",
+            "9010",
             "경로 계산을 위한 외부 API 응답이 비어 있습니다.",
             HttpStatus.BAD_GATEWAY
     ),
-    MOVING_STRATEGY_NOT_SUPPORTED(
-            "5004",
-            "지원하지 않는 이동 전략입니다.",
-            HttpStatus.BAD_REQUEST
-    ),
-    GOOGLE_TRANSIT_ROUTE_API_ERROR(
-            "5005",
-            "경로 계산을 위한 외부 API 호출 중 오류가 발생했습니다.",
-            HttpStatus.BAD_GATEWAY
-    ),
     KAKAO_LOCAL_API_ERROR(
-            "6001",
+            "9011",
             "외부 장소 검색 서비스에 문제가 발생했습니다.",
             HttpStatus.BAD_GATEWAY
     ),
     V_WORLD_API_ERROR(
-            "6002",
+            "9012",
             "외부 장소 검색 서비스에 문제가 발생했습니다.",
             HttpStatus.BAD_GATEWAY
-    ),
-    ;
+    );
 
     private final String code;
     private final String message;

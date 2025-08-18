@@ -1,6 +1,8 @@
 package routie.routie.domain.routievalidator;
 
 import java.util.List;
+import routie.exception.BusinessException;
+import routie.exception.ErrorCode;
 import routie.routie.domain.RoutiePlace;
 
 public record ValidationResult(
@@ -11,10 +13,10 @@ public record ValidationResult(
 
     public ValidationResult {
         if (strategy == null) {
-            throw new IllegalArgumentException("ValidationStrategy는 null일 수 없습니다.");
+            throw new BusinessException(ErrorCode.VALIDATION_STRATEGY_NULL);
         }
         if (invalidRoutiePlaces == null) {
-            throw new IllegalArgumentException("유효하지 않은 RoutiePlace 목록은 null일 수 없습니다.");
+            throw new BusinessException(ErrorCode.INVALID_PLACES_COLLECTION_NULL);
         }
     }
 

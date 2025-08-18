@@ -4,6 +4,8 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+import routie.exception.BusinessException;
+import routie.exception.ErrorCode;
 import routie.routie.domain.RoutiePlace;
 
 public class TimePeriods {
@@ -25,7 +27,7 @@ public class TimePeriods {
 
     private void validateTimePeriods(final Map<RoutiePlace, TimePeriod> timePeriods) {
         if (timePeriods == null) {
-            throw new IllegalArgumentException("TimePeriods는 null일 수 없습니다.");
+            throw new BusinessException(ErrorCode.TIME_PERIODS_NULL);
         }
     }
 
@@ -56,13 +58,13 @@ public class TimePeriods {
 
     private void validateRoutiePlace(final RoutiePlace routiePlace) {
         if (routiePlace == null) {
-            throw new IllegalArgumentException("RoutiePlace는 null일 수 없습니다.");
+            throw new BusinessException(ErrorCode.ROUTIE_PLACE_NULL);
         }
     }
 
     private void validateTimePeriod(final TimePeriod timePeriod) {
         if (timePeriod == null) {
-            throw new IllegalArgumentException("TimePeriod는 null일 수 없습니다.");
+            throw new BusinessException(ErrorCode.TIME_PERIOD_NULL);
         }
     }
 

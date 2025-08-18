@@ -2,6 +2,8 @@ package routie.place.infrastructure.search;
 
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import routie.exception.BusinessException;
+import routie.exception.ErrorCode;
 import routie.place.domain.PlaceSearcher;
 import routie.place.domain.SearchedPlace;
 
@@ -24,6 +26,6 @@ public class PlaceSearcherComposite implements PlaceSearcher {
         return placeSearchers.stream()
                 .filter(PlaceSearcher::isAvailable)
                 .findFirst()
-                .orElseThrow(() -> new IllegalStateException("사용 가능한 장소 검색기가 없습니다."));
+                .orElseThrow(() -> new BusinessException(ErrorCode.PLACE_SEARCH_SERVICE_UNAVAILABLE));
     }
 }
