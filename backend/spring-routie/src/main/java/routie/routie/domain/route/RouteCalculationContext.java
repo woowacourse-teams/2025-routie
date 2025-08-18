@@ -6,12 +6,13 @@ import java.util.Optional;
 import lombok.Getter;
 import routie.routie.domain.RoutiePlace;
 
-@Getter
 public class RouteCalculationContext {
 
+    @Getter
     private final List<RoutiePlace> routiePlaces;
+    @Getter
     private final MovingStrategy movingStrategy;
-    private final Optional<LocalDateTime> startDateTime;
+    private final LocalDateTime startDateTime;
 
     public RouteCalculationContext(
             final LocalDateTime startDateTime,
@@ -20,7 +21,10 @@ public class RouteCalculationContext {
     ) {
         this.routiePlaces = routiePlaces;
         this.movingStrategy = movingStrategy;
-        this.startDateTime = Optional.ofNullable(startDateTime);
+        this.startDateTime = startDateTime;
     }
 
+    public Optional<LocalDateTime> getStartDateTime() {
+        return Optional.ofNullable(startDateTime);
+    }
 }
