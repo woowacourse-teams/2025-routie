@@ -14,7 +14,7 @@ const RoutieSection = () => {
       </div>
 
       {routiePlaces.length - 1 !== index && routes[index] && (
-        <RoutieRoutes routie={routie} routes={routes[index]} />
+        <RoutieRoutes routieId={routie.id} routes={routes[index]} />
       )}
     </div>
   ));
