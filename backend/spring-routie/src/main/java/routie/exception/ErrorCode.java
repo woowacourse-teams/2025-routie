@@ -248,7 +248,7 @@ public enum ErrorCode {
     ),
     ROUTIE_START_TIME_NULL(
             "3023",
-            "일정 시간 시간은 null일 수 없습니다.",
+            "일정 시작 시간은 null일 수 없습니다.",
             HttpStatus.BAD_REQUEST
     ),
     ROUTIE_END_TIME_NULL(
@@ -270,12 +270,12 @@ public enum ErrorCode {
     // TimePeriod Validation
     TIME_PERIOD_START_TIME_NULL(
             "3030",
-            "장소 도착 시간은 null일 수 없습니다.",
+            "장소 시작 시간은 null일 수 없습니다.",
             HttpStatus.BAD_REQUEST
     ),
     TIME_PERIOD_END_TIME_NULL(
             "3031",
-            "장소 출발 시간은 null일 수 없습니다.",
+            "장소 도착 시간은 null일 수 없습니다.",
             HttpStatus.BAD_REQUEST
     ),
     TIME_PERIODS_NULL(
