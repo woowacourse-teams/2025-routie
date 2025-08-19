@@ -1,5 +1,20 @@
-import { ReactNode, useState } from 'react';
+import { useState } from 'react';
+
 import { css } from '@emotion/react';
+
+import Button from '@/@common/components/Button/Button';
+import EmptyMessage from '@/@common/components/EmptyMessage/EmptyMessage';
+import Flex from '@/@common/components/Flex/Flex';
+import Text from '@/@common/components/Text/Text';
+import CloseSheetIcon from '@/assets/icons/closeSheet.svg';
+import AddPlaceModal from '@/domains/places/components/AddPlaceModal/AddPlaceModal';
+import { PlaceCard } from '@/domains/places/components/PlaceCard/PlaceCard';
+import { useRoutieContext } from '@/domains/routie/contexts/useRoutieContext';
+import { useGoogleEventTrigger } from '@/libs/googleAnalytics/hooks/useGoogleEventTrigger';
+import theme from '@/styles/theme';
+
+import { usePlaceListContext } from '../PlaceList/contexts/PlaceListContext';
+
 import {
   SheetBaseStyle,
   SheetContentContainerStyle,
@@ -11,17 +26,6 @@ import {
   SheetListWrapperStyle,
   SheetScrollableAreaStyle,
 } from './SideSheet.styles';
-import CloseSheetIcon from '@/assets/icons/closeSheet.svg';
-import Flex from '@/@common/components/Flex/Flex';
-import Text from '@/@common/components/Text/Text';
-import { usePlaceListContext } from '../PlaceList/contexts/PlaceListContext';
-import { useRoutieContext } from '@/domains/routie/contexts/useRoutieContext';
-import { PlaceCard } from '@/domains/places/components/PlaceCard/PlaceCard';
-import EmptyMessage from '@/@common/components/EmptyMessage/EmptyMessage';
-import Button from '@/@common/components/Button/Button';
-import { useGoogleEventTrigger } from '@/libs/googleAnalytics/hooks/useGoogleEventTrigger';
-import AddPlaceModal from '@/domains/places/components/AddPlaceModal/AddPlaceModal';
-import theme from '@/styles/theme';
 
 interface SideSheetProps {
   open: boolean;
