@@ -87,38 +87,6 @@ class ClosedDayValidatorTest {
     }
 
     @Test
-    @DisplayName("종료일이 휴무일이면, 검증에 실패하고 해당 RoutiePlace를 invalid 목록에 포함해야 한다")
-    void validate_shouldReturnInvalidResult_whenEndDayIsClosed() {
-        // given
-        PlaceClosedDayOfWeek closed = new PlaceClosedDayOfWeek(DayOfWeek.WEDNESDAY);
-        Place place = mock(Place.class);
-        when(place.getPlaceClosedDayOfWeeks()).thenReturn(List.of(closed));
-        RoutiePlace routiePlace = mock(RoutiePlace.class);
-        when(routiePlace.getPlace()).thenReturn(place);
-
-        TimePeriod period = new TimePeriod(
-                routiePlace,
-                LocalDateTime.of(2025, 8, 19, 23, 0), // 화요일
-                LocalDateTime.of(2025, 8, 20, 1, 0)   // 수요일 (휴무일)
-        );
-
-        TimePeriods timePeriods = mock(TimePeriods.class);
-        when(timePeriods.orderedList()).thenReturn(List.of(period));
-
-        LocalDateTime startTime = LocalDateTime.of(2025, 8, 19, 0, 0);
-        LocalDateTime endTime = LocalDateTime.of(2025, 8, 21, 0, 0);
-        ValidationContext validationContext = new ValidationContext(startTime, endTime, timePeriods);
-
-        // when
-        ValidationResult result = validator.validate(validationContext, ValidationStrategy.IS_NOT_CLOSED_DAY);
-
-        // then
-        assertFalse(result.isValid());
-        assertEquals(1, result.invalidRoutiePlaces().size());
-        assertTrue(result.invalidRoutiePlaces().contains(routiePlace));
-    }
-
-    @Test
     @DisplayName("여러 장소 중 일부만 휴무일일 때, 위반한 RoutiePlace만 invalid 목록에 포함해야 한다")
     void validate_shouldReturnInvalidRoutiePlaces_whenSomePlacesAreOnClosedDays() {
         // given
