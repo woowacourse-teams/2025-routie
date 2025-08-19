@@ -55,6 +55,7 @@ const Sidebar = () => {
         gap={1}
         style={{
           overflow: 'hidden',
+          borderRight: '1px solid black',
         }}
       >
         <Header />
