@@ -405,7 +405,7 @@ class RoutieControllerTest {
         RoutieReadResponse routieReadResponse = RestAssured
                 .given().log().all()
                 .when()
-                .queryParam("movingStrategy", "TRANSIT")
+                .queryParam("movingStrategy", "DRIVING")
                 .get("/routie-spaces/" + routieSpace.getIdentifier() + "/routie")
                 .then().log().all()
                 .statusCode(HttpStatus.OK.value())
