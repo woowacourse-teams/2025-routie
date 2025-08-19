@@ -13,6 +13,7 @@ export const SheetBaseStyle = css`
 
   width: 40rem;
   min-height: 0;
+  border: 1px solid black;
   border-radius: 12px;
 
   background: ${theme.colors.white};
@@ -45,7 +46,7 @@ export const TabBaseStyle = css`
 
   position: absolute;
   top: 50%;
-  right: -1.8rem;
+  right: -2.5rem;
   transform: translateY(-50%);
 
   display: flex;
