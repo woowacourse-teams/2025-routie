@@ -6,6 +6,7 @@ import Text from '@/@common/components/Text/Text';
 import { useToastContext } from '@/@common/contexts/useToastContext';
 import { useAddPlaceForm } from '@/domains/places/hooks/useAddPlaceForm';
 import { usePlaceFormValidation } from '@/domains/places/hooks/usePlaceFormValidation';
+import { usePlaceListContext } from '@/layouts/PlaceList/contexts/PlaceListContext';
 
 import addPlace from '../../apis/addPlace';
 import { useFunnel } from '../../hooks/useFunnel';
@@ -24,6 +25,7 @@ const AddPlaceModal = ({ isOpen, onClose }: Omit<ModalProps, 'children'>) => {
   const { isEmpty, isValid } = usePlaceFormValidation(form);
   const { step, nextStep, prevStep, resetFunnel, isStep1, isStep2 } =
     useFunnel();
+  const { handlePlaceAdded } = usePlaceListContext();
 
   const [showErrors, setShowErrors] = useState(false);
   const [placeLocationInfo, setPlaceLocationInfo] =
@@ -67,15 +69,15 @@ const AddPlaceModal = ({ isOpen, onClose }: Omit<ModalProps, 'children'>) => {
 
     try {
       await addPlace(addPlaceForm);
-      if (onPlaceAdded) {
-        await onPlaceAdded();
-      }
+
+      await handlePlaceAdded();
+
       showToast({
         message: '장소가 추가되었습니다.',
         type: 'success',
       });
     } catch (error) {
-      console.log(error);
+      console.error(error);
       showToast({
         message: '장소 추가를 실패하였습니다. 다시 시도해주세요.',
         type: 'error',

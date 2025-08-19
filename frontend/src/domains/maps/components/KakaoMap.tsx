@@ -23,7 +23,7 @@ import PlaceOverlayCard from './PlaceOverlayCard';
 
 const KakaoMap = () => {
   const mapContainerRef = useRef<HTMLDivElement>(null);
-  const { placeList } = usePlaceListContext();
+  const { placeList, newlyAddedPlace } = usePlaceListContext();
   const { routieIdList } = useRoutieContext();
   const [isInitialLoad, setIsInitialLoad] = useState(true);
 
@@ -42,9 +42,10 @@ const KakaoMap = () => {
     containerRef: mapContainerRef,
     sdkReady,
   });
-  const { fitMapToMarkers, drawMarkers, clearMarkers } = useMapMarker({
-    map: mapRef,
-  });
+  const { fitMapToMarkers, drawMarkers, clearMarkers, fitMapToMarker } =
+    useMapMarker({
+      map: mapRef,
+    });
   const { loadPolyline, clearPolyline } = usePolyline({
     map: mapRef,
   });
@@ -103,6 +104,9 @@ const KakaoMap = () => {
       if (isInitialLoad && placeList.length > 0) {
         fitMapToMarkers(placeList);
         setIsInitialLoad(false);
+      } else if (newlyAddedPlace) {
+        fitMapToMarker(newlyAddedPlace.latitude, newlyAddedPlace.longitude);
+      }
 
       clearPolyline();
 
@@ -112,7 +116,7 @@ const KakaoMap = () => {
     };
 
     renderMapElements();
-  }, [mapState, placeList, routiePlaces]);
+  }, [mapState, placeList, routiePlaces, newlyAddedPlace]);
 
   return (
     <div css={KakaoMapWrapperStyle}>
