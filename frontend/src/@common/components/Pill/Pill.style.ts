@@ -20,7 +20,7 @@ export const PillStyle = ({ variant = 'default' }: PillProps) => css`
   gap: 0.8rem;
   align-items: center;
 
-  width: fit-content;
+  width: max-content;
   padding: 0.3rem 0.8rem;
   border-radius: 0.8rem;
 

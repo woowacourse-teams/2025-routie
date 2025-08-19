@@ -24,6 +24,7 @@ import DraggableWrapper from '../DraggableWrapper/DraggableWrapper';
 
 import {
   dragIconStyle,
+  EllipsisParentStyle,
   PlaceInfoViewPillStyle,
 } from './RoutiePlaceCard.styles';
 
@@ -91,9 +92,12 @@ const RoutiePlaceCard = ({ routie }: { routie: Routie }) => {
                 gap={1.1}
                 width="100%"
                 padding={0.5}
+                css={EllipsisParentStyle}
               >
-                <Flex width="100%" justifyContent="space-between">
-                  <Text variant="caption">{place.name}</Text>
+                <Flex width="100%" justifyContent="space-between" gap={1}>
+                  <Text variant="caption" ellipsis>
+                    {place.name}
+                  </Text>
                   <Tooltip
                     content={
                       <div>
