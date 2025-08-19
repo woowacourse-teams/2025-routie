@@ -33,7 +33,7 @@ interface SideSheetProps {
 }
 
 const SideSheet = ({ open, onToggle }: SideSheetProps) => {
-  const { placeList, refetchPlaceList } = usePlaceListContext();
+  const { placeList } = usePlaceListContext();
   const { routieIdList } = useRoutieContext();
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const { triggerEvent } = useGoogleEventTrigger();
