@@ -13,7 +13,7 @@ export const SheetBaseStyle = css`
 
   width: 40rem;
   min-height: 0;
-  border: 1px solid black;
+  border: 1px solid ${theme.colors.black};
   border-radius: 12px;
 
   background: ${theme.colors.white};
