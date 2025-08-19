@@ -1,9 +1,7 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { DefinePlugin } = require('webpack');
-const childProcess = require('child_process');
 
-const commitHash = childProcess.execSync('git rev-parse --short HEAD').toString().trim();
 const buildDate = new Date().toISOString();
 
 module.exports = () => {
@@ -45,7 +43,6 @@ module.exports = () => {
       }),
       new DefinePlugin({
         __BUILD_VERSION__: JSON.stringify(require('./package.json').version),
-        __COMMIT_HASH__: JSON.stringify(commitHash),
         __BUILD_DATE__: JSON.stringify(buildDate),
       }),
     ],
