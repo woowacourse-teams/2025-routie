@@ -57,14 +57,10 @@ const useRoutieValidate = (): UseRoutieValidateReturn => {
         return { canValidate: false, waitingReason: null };
       }
 
-      if (
-        routieTime.date === '' ||
-        routieTime.startTime === '' ||
-        routieTime.endTime === ''
-      ) {
+      if (emptyDate) {
         return {
           canValidate: false,
-          waitingReason: 'no_time' as WaitingReason,
+          waitingReason: 'no_date' as WaitingReason,
         };
       }
 
@@ -77,12 +73,12 @@ const useRoutieValidate = (): UseRoutieValidateReturn => {
 
       return { canValidate: true, waitingReason: null };
     },
-    [isValidateActive, routieTime],
+    [isValidateActive, emptyDate],
   );
 
   const waitingReason = useMemo(
     () => getValidationConditions().waitingReason,
-    [isValidateActive, routieTime],
+    [isValidateActive, emptyDate],
   );
 
   const validationErrors = useMemo(
