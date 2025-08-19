@@ -68,7 +68,7 @@ const RoutiePlaceCard = ({ routie }: { routie: Routie }) => {
   const { currentInvalidRoutiePlaces } = useRoutieValidateContext();
 
   const isUnavailable = currentInvalidRoutiePlaces.some(
-    (invalid) => invalid.routiePlaceId === routie.placeId,
+    (invalid) => invalid.routiePlaceId === routie.id,
   );
 
   return (
