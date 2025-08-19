@@ -65,7 +65,11 @@ export const RoutieProvider = ({ children }: { children: React.ReactNode }) => {
       setRoutes(routies.routes);
       validateRoutie(movingStrategy, routies.routiePlaces.length);
     } catch (error) {
-      console.error('루티 정보를 불러오는데 실패했습니다.', error);
+      console.error(error);
+      showToast({
+        message: '동선 정보를 불러오는데 실패했습니다. 다시 시도해주세요.',
+        type: 'error',
+      });
     }
   }, [
     isValidateActive,
@@ -126,6 +130,10 @@ export const RoutieProvider = ({ children }: { children: React.ReactNode }) => {
         refetchRoutieData();
       } catch (error) {
         console.error(error);
+        showToast({
+          message: '순서 변경에 실패했습니다.',
+          type: 'error',
+        });
       }
     },
     [refetchRoutieData],
