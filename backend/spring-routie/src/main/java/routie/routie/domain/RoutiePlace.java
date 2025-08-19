@@ -10,6 +10,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -23,7 +24,15 @@ import routie.place.domain.Place;
 
 @Entity
 @Getter
-@Table(name = "routie_places")
+@Table(
+        name = "routie_places",
+        uniqueConstraints = {
+                @UniqueConstraint(
+                        name = "uk_routie_space_sequence",
+                        columnNames = {"routie_space_id", "sequence"}
+                )
+        }
+)
 @EntityListeners(AuditingEntityListener.class)
 @AllArgsConstructor(access = AccessLevel.PACKAGE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
