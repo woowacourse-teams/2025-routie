@@ -75,7 +75,7 @@ public class TransitRouteCalculator implements RouteCalculator {
         LocalDateTime latestAllowed = now.plusDays(FUTURE_DAYS_LIMIT);
 
         if (startDateTime.isBefore(earliestAllowed) || startDateTime.isAfter(latestAllowed)) {
-            throw new IllegalArgumentException("대중교통 Route 계산 시작 시간은 현재로부터 과거 7일부터 미래 100일 사이여야 합니다.");
+            throw new BusinessException(ErrorCode.GOOGLE_TRANSIT_ROUTE_API_DEPARTURE_TIME_OUT_OF_RANGE);
         }
     }
 
