@@ -37,7 +37,7 @@ public class TransitRouteCalculator implements RouteCalculator {
     public Routes calculateRoutes(final RouteCalculationContext routeCalculationContext) {
         List<RoutiePlace> routiePlaces = routeCalculationContext.getRoutiePlaces();
         LocalDateTime startDateTime = routeCalculationContext.getStartDateTime()
-                .orElseThrow(() -> new IllegalArgumentException("대중교통 Route 계산에서 startDateTime은 null이 될 수 없습니다."));
+                .orElse(LocalDateTime.now());
 
         validateStartDateTime(startDateTime);
 
