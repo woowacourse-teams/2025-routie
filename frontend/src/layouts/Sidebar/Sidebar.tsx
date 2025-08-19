@@ -1,5 +1,3 @@
-import { useMemo } from 'react';
-
 import EmptyMessage from '@/@common/components/EmptyMessage/EmptyMessage';
 import Flex from '@/@common/components/Flex/Flex';
 import Header from '@/@common/components/Header/Header';
@@ -19,17 +17,13 @@ import DateInput from './DateInput';
 import TimeInput from './TimeInput';
 
 const Sidebar = () => {
-  const { routes, routiePlaces } = useRoutieContext();
+  const { routiePlaces } = useRoutieContext();
   const {
     isValidateActive,
     validationStatus,
     waitingReason,
     handleValidateToggle,
   } = useRoutieValidateContext();
-
-  const totalMovingTime = useMemo(() => {
-    return routes?.reduce((acc, cur) => acc + cur.duration, 0) ?? 0;
-  }, [routes]);
 
   const renderValidationCard = () => {
     if (!isValidateActive) {
@@ -43,7 +37,7 @@ const Sidebar = () => {
         return <RoutieValidationLoadingCard />;
       case 'success':
       case 'error':
-        return <RoutieValidationResultCard total_time={totalMovingTime} />;
+        return <RoutieValidationResultCard />;
       case 'inactive':
       default:
         return <RoutieValidationUnavailableCard />;
@@ -96,7 +90,12 @@ const Sidebar = () => {
             overflow: 'hidden',
           }}
         >
-          <Text variant="subTitle">내 동선</Text>
+          <Flex padding={0.5} justifyContent="space-between" width="100%">
+            <Text variant="subTitle">내 동선</Text>
+            <Text variant="caption" color="gray">
+              {routiePlaces.length}개의 장소가 동선에 추가되었어요
+            </Text>
+          </Flex>
           {routiePlaces.length === 0 && (
             <EmptyMessage
               messages={[
