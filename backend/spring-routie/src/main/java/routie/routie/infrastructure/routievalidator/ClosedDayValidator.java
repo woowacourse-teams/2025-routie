@@ -44,8 +44,7 @@ public class ClosedDayValidator implements RoutieValidator {
                 .toList();
 
         DayOfWeek startDay = timePeriod.startTime().getDayOfWeek();
-        DayOfWeek endDay = timePeriod.endTime().getDayOfWeek();
 
-        return !closedDayOfWeeks.contains(startDay) && !closedDayOfWeeks.contains(endDay);
+        return !closedDayOfWeeks.contains(startDay);
     }
 }
