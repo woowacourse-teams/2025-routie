@@ -17,6 +17,7 @@ import theme from '@/styles/theme';
 
 import { getDetailPlace } from '../../apis/routie';
 import { useRoutieContext } from '../../contexts/useRoutieContext';
+import { useRoutieValidateContext } from '../../contexts/useRoutieValidateContext';
 import { Routie } from '../../types/routie.types';
 import formatMinutesToHours from '../../utils/formatMinutesToHours';
 import DraggableWrapper from '../DraggableWrapper/DraggableWrapper';
@@ -64,10 +65,19 @@ const RoutiePlaceCard = ({ routie }: { routie: Routie }) => {
   const checkedListExcept = getCheckedListExcept(place.closedDayOfWeeks);
   const checkedDaysInKorean = getCheckedDaysInKorean(checkedListExcept);
 
+  const { currentInvalidRoutiePlaces } = useRoutieValidateContext();
+
+  const isUnavailable = currentInvalidRoutiePlaces.some(
+    (invalid) => invalid.routiePlaceId === routie.placeId,
+  );
+
   return (
     place && (
       <DraggableWrapper>
-        <Card id={routie.placeId.toString()} variant="defaultStatic">
+        <Card
+          id={routie.placeId.toString()}
+          variant={isUnavailable ? 'unavailable' : 'defaultStatic'}
+        >
           <Flex justifyContent="flex-start" gap={1.5}>
             <Flex width="100%" justifyContent="space-between" gap={1.5}>
               <Flex padding={1}>

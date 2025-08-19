@@ -7,6 +7,7 @@ import { Routie, RoutieValidationResponseType } from '../types/routie.types';
 export const getRoutie = async (
   isValidateActive: boolean,
   routieTime: string,
+  movingStrategy: string,
 ) => {
   const routieSpaceUuid = localStorage.getItem('routieSpaceUuid');
 
@@ -14,8 +15,17 @@ export const getRoutie = async (
     throw new Error('루티 스페이스 uuid가 없습니다.');
   }
 
-  const query =
-    isValidateActive && routieTime ? `?startDateTime=${routieTime}` : '';
+  const queryParams = new URLSearchParams();
+
+  if (isValidateActive && routieTime) {
+    queryParams.append('startDateTime', routieTime);
+  }
+
+  if (movingStrategy) {
+    queryParams.append('movingStrategy', movingStrategy);
+  }
+
+  const query = queryParams.toString() ? `?${queryParams.toString()}` : '';
 
   const response = await apiClient.get(
     `/routie-spaces/${routieSpaceUuid}/routie${query}`,
