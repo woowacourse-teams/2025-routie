@@ -16,6 +16,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -267,5 +268,10 @@ public class Place {
         if (breakStartAt.isBefore(openAt) || breakEndAt.isAfter(closeAt)) {
             throw new BusinessException(ErrorCode.PLACE_BREAK_TIME_OUTSIDE_BUSINESS_HOURS);
         }
+    }
+
+    public boolean hasSameCoordinate(final Place otherPlace) {
+        return Objects.equals(otherPlace.getLatitude(), latitude)
+                && Objects.equals(otherPlace.getLongitude(), longitude);
     }
 }

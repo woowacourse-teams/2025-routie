@@ -32,12 +32,24 @@ public class DrivingRouteCalculator implements RouteCalculator {
     @Override
     public Routes calculateRoutes(final RouteCalculationContext routeCalculationContext) {
         List<RoutiePlace> routiePlaces = routeCalculationContext.getRoutiePlaces();
+
+        RoutiePlace from = routiePlaces.getFirst();
+        RoutiePlace to = routiePlaces.getLast();
+        if (isZeroDistanceRoute(routiePlaces, from, to)) {
+            return new Routes(Map.of(from, new Route(from, to, 0, 0)));
+        }
+
         KakaoDrivingRouteApiResponse kakaoDrivingRouteApiResponse = kakaoDrivingRouteApiClient.getRoute(
                 KakaoDrivingRouteApiRequest.from(routiePlaces)
         );
         List<SectionResponse> sectionResponses = getRouteResponse(kakaoDrivingRouteApiResponse).sectionResponses();
 
         return mapToRoutes(routiePlaces, sectionResponses);
+    }
+
+    private boolean isZeroDistanceRoute(final List<RoutiePlace> routiePlaces, final RoutiePlace from,
+                                        final RoutiePlace to) {
+        return routiePlaces.size() == 2 && from.getPlace().hasSameCoordinate(to.getPlace());
     }
 
     private KakaoDrivingRouteApiResponse.RouteResponse getRouteResponse(

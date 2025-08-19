@@ -45,6 +45,12 @@ public class TransitRouteCalculator implements RouteCalculator {
         for (int sequence = 0; sequence < routiePlaces.size() - 1; sequence++) {
             RoutiePlace from = routiePlaces.get(sequence);
             RoutiePlace to = routiePlaces.get(sequence + 1);
+
+            if (from.getPlace().hasSameCoordinate(to.getPlace())) {
+                routeMap.put(from, new Route(from, to, 0, 0));
+                continue;
+            }
+
             GoogleTransitRouteApiResponse googleTransitRouteApiResponse =
                     googleTransitRouteApiClient.getRoute(GoogleTransitRouteApiRequest.from(startDateTime, from, to));
 
