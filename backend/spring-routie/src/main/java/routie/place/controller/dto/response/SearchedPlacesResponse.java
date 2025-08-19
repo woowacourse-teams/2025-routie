@@ -28,7 +28,7 @@ public record SearchedPlacesResponse(
             return new SearchedPlaceResponse(
                     searchedPlace.searchedPlaceId(),
                     searchedPlace.name(),
-                    searchedPlace.roadAddressName(),
+                    searchedPlace.roadAddressName().isEmpty() ? null : searchedPlace.roadAddressName(),
                     searchedPlace.addressName(),
                     searchedPlace.longitude(),
                     searchedPlace.latitude()
