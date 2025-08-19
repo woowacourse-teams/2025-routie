@@ -103,7 +103,7 @@ const RoutiePlaceCard = ({ routie }: { routie: Routie }) => {
                         </Text>
 
                         <Text variant="label">
-                          브레이크:{' '}
+                          브레이크 타임:{' '}
                           {place.breakStartAt && place.breakEndAt
                             ? `${place.breakStartAt} ~ ${place.breakEndAt}`
                             : '없음'}
