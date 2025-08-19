@@ -31,7 +31,6 @@ const RoutieSpaceName = () => {
         <input
           ref={inputRef}
           css={routieSpaceNameInputStyle(errorCase === 'invalidNameLength')}
-          maxLength={20}
           autoFocus
           value={name}
           onChange={handleChange}
