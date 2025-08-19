@@ -109,7 +109,12 @@ const SideSheet = ({ open, onToggle }: SideSheetProps) => {
         />
         <div css={SheetListWrapperStyle}>
           <div css={SheetScrollableAreaStyle}>
-            <Flex direction='column' justifyContent='flex-start' gap={1} css={{ overflowY: 'visible' }}>
+            <Flex
+              direction="column"
+              justifyContent="flex-start"
+              gap={1}
+              css={{ overflowY: 'visible' }}
+            >
               {placeList.map((place) => {
                 const selected = routieIdList.includes(place.id);
                 return (
