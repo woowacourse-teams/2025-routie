@@ -69,7 +69,13 @@ const RoutieSpaceName = () => {
           <Text variant="title">{name}</Text>
         </Flex>
       )}
-      <IconButton icon={editIcon} onClick={handleClick} />
+      <Button variant="primary" onClick={handleClick} width="6.5rem">
+        <Flex width="100%">
+          <Text variant="subTitle" color={theme.colors.white}>
+            {isEditing ? '저장' : '수정'}
+          </Text>
+        </Flex>
+      </Button>
     </Flex>
   );
 };
