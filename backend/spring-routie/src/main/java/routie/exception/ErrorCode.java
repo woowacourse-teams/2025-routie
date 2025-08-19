@@ -261,6 +261,11 @@ public enum ErrorCode {
             "TimePeriods는 null일 수 없습니다.",
             HttpStatus.BAD_REQUEST
     ),
+    ROUTIE_END_TIME_BEFORE_START_TIME(
+            "3026",
+            "일정 종료 시간은 시작 시간보다 빠를 수 없습니다.",
+            HttpStatus.BAD_REQUEST
+    ),
 
     // TimePeriod Validation
     TIME_PERIOD_START_TIME_NULL(
