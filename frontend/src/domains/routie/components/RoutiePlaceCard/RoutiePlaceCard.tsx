@@ -11,6 +11,7 @@ import closeRed from '@/assets/icons/close-red.svg';
 import { PlaceBaseType } from '@/domains/places/types/place.types';
 import { getCheckedDaysInKorean } from '@/domains/places/utils/getCheckedDaysInKorean';
 import { getCheckedListExcept } from '@/domains/places/utils/getCheckedListExcept';
+import { getFormatedCloseAt } from '@/domains/places/utils/getFormatedCloseAt';
 import { useGoogleEventTrigger } from '@/libs/googleAnalytics/hooks/useGoogleEventTrigger';
 import theme from '@/styles/theme';
 
@@ -87,7 +88,8 @@ const RoutiePlaceCard = ({ routie }: { routie: Routie }) => {
                     content={
                       <div>
                         <Text variant="label">
-                          오픈: {place.openAt} / 마감: {place.closeAt}
+                          오픈: {place.openAt} / 마감:{' '}
+                          {getFormatedCloseAt(place.openAt, place.closeAt)}
                         </Text>
 
                         <Text variant="label">
