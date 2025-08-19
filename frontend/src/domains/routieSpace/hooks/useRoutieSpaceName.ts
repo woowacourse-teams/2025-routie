@@ -25,6 +25,7 @@ interface UseRoutieSpaceNameReturn {
   handleClick: () => Promise<void>;
   handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
+
 const useRoutieSpaceName = (): UseRoutieSpaceNameReturn => {
   const [name, setName] = useState('');
   const [originalName, setOriginalName] = useState('');
