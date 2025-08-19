@@ -28,8 +28,8 @@ import routie.place.domain.Place;
         name = "routie_places",
         uniqueConstraints = {
                 @UniqueConstraint(
-                        name = "uk_routie_space_sequence",
-                        columnNames = {"routie_space_id", "sequence"}
+                        name = "uk_routie_space_place",
+                        columnNames = {"routie_space_id", "place_id"}
                 )
         }
 )
