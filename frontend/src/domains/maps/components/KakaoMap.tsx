@@ -41,10 +41,9 @@ const KakaoMap = () => {
     containerRef: mapContainerRef,
     sdkReady,
   });
-  const { fitMapToMarker, fitMapToMarkers, drawMarkers, clearMarkers } =
-    useMapMarker({
-      map: mapRef,
-    });
+  const { fitMapToMarkers, drawMarkers, clearMarkers } = useMapMarker({
+    map: mapRef,
+  });
   const { loadPolyline, clearPolyline } = usePolyline({
     map: mapRef,
   });
@@ -91,13 +90,11 @@ const KakaoMap = () => {
         const routieSequence = routieIndex !== -1 ? routieIndex + 1 : undefined;
 
         drawMarkers({
-          lat: place.latitude,
-          lng: place.longitude,
+          place,
           routieSequence,
           onClick: () => {
             setSelectedPlace(place);
             openAt(place.latitude, place.longitude);
-            fitMapToMarker(place.latitude, place.longitude);
           },
         });
       });
