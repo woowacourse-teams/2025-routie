@@ -72,8 +72,10 @@ public class DrivingRouteCalculator implements RouteCalculator {
             SectionResponse sectionResponse = sectionResponses.get(i);
             RoutiePlace from = routiePlaces.get(i);
             RoutiePlace to = routiePlaces.get(i + 1);
-            Route route = new Route(from, to, sectionResponse.duration() / 60,
-                    sectionResponse.distance());
+            Route route = new Route(
+                    from, to, sectionResponse.duration() / 60,
+                    sectionResponse.distance()
+            );
             routeMap.put(from, route);
         }
         return new Routes(routeMap);
