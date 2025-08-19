@@ -56,7 +56,7 @@ public class TransitRouteCalculator implements RouteCalculator {
                     new Route(
                             from,
                             to,
-                            parseDurationResponseToInt(routeResponse.duration()),
+                            parseDurationResponseToInt(routeResponse.duration()) / 60,
                             routeResponse.distance()
                     )
             );
