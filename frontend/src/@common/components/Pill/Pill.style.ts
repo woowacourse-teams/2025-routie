@@ -13,6 +13,10 @@ const pillVariant: Record<PillVariantProps, SerializedStyles> = {
   filled: css`
     background-color: ${theme.colors.purple[100]};
   `,
+
+  invalid: css`
+    background-color: ${theme.colors.red[50]};
+  `,
 };
 
 export const PillStyle = ({ variant = 'default' }: PillProps) => css`

@@ -77,7 +77,7 @@ const RoutiePlaceCard = ({ routie }: { routie: Routie }) => {
       <DraggableWrapper>
         <Card
           id={routie.placeId.toString()}
-          variant={isUnavailable ? 'unavailable' : 'defaultStatic'}
+          variant={isUnavailable ? 'invalid' : 'defaultStatic'}
         >
           <Flex justifyContent="flex-start" gap={1.5}>
             <Flex width="100%" justifyContent="space-between" gap={1.5}>
@@ -122,7 +122,11 @@ const RoutiePlaceCard = ({ routie }: { routie: Routie }) => {
                       </div>
                     }
                   >
-                    <Pill type="default" css={PlaceInfoViewPillStyle}>
+                    <Pill
+                      variant={isUnavailable ? 'invalid' : 'default'}
+                      type="default"
+                      css={PlaceInfoViewPillStyle}
+                    >
                       <Text variant="label">정보보기</Text>
                     </Pill>
                   </Tooltip>
