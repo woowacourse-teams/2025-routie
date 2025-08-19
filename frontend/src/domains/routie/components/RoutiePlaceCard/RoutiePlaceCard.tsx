@@ -11,6 +11,7 @@ import closeRed from '@/assets/icons/close-red.svg';
 import { PlaceBaseType } from '@/domains/places/types/place.types';
 import { getCheckedDaysInKorean } from '@/domains/places/utils/getCheckedDaysInKorean';
 import { getCheckedListExcept } from '@/domains/places/utils/getCheckedListExcept';
+import { getFormatedCloseAt } from '@/domains/places/utils/getFormatedCloseAt';
 import { useGoogleEventTrigger } from '@/libs/googleAnalytics/hooks/useGoogleEventTrigger';
 import theme from '@/styles/theme';
 
@@ -24,7 +25,6 @@ import {
   dragIconStyle,
   PlaceInfoViewPillStyle,
 } from './RoutiePlaceCard.styles';
-import { getFormatedCloseAt } from '@/domains/places/utils/getFormatedCloseAt';
 
 const RoutiePlaceCard = ({ routie }: { routie: Routie }) => {
   const [place, setPlace] = useState<PlaceBaseType>({
