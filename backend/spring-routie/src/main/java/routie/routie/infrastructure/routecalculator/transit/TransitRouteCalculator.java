@@ -46,7 +46,7 @@ public class TransitRouteCalculator implements RouteCalculator {
             RoutiePlace from = routiePlaces.get(sequence);
             RoutiePlace to = routiePlaces.get(sequence + 1);
 
-            if (from.getPlace().hasSameCoordinate(to.getPlace())) {
+            if (isZeroDistanceRoute(from, to)) {
                 routeMap.put(from, new Route(from, to, 0, 0));
                 continue;
             }
@@ -68,6 +68,10 @@ public class TransitRouteCalculator implements RouteCalculator {
             );
         }
         return new Routes(routeMap);
+    }
+
+    private boolean isZeroDistanceRoute(final RoutiePlace from, final RoutiePlace to) {
+        return from.getPlace().hasSameCoordinate(to.getPlace());
     }
 
     /**
