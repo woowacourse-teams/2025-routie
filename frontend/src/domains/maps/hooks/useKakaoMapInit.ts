@@ -15,7 +15,6 @@ export const useKakaoMapInit = ({
   const isInitializedRef = useRef(false);
   const INITIAL_LAT_LNG = { lat: 37.554, lng: 126.97 };
   const INITIAL_LEVEL = 7;
-  const MAX_LEVEL = 11;
 
   const [mapState, setMapState] = useState<MapStateType>('loading');
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -34,7 +33,6 @@ export const useKakaoMapInit = ({
           INITIAL_LAT_LNG.lng,
         ),
         level: INITIAL_LEVEL,
-        maxLevel: MAX_LEVEL,
       };
 
       mapRef.current = new window.kakao.maps.Map(containerRef.current, options);
