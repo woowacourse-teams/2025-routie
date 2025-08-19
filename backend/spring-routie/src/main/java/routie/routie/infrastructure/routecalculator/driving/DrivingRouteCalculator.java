@@ -47,8 +47,11 @@ public class DrivingRouteCalculator implements RouteCalculator {
         return mapToRoutes(routiePlaces, sectionResponses);
     }
 
-    private boolean isZeroDistanceRoute(final List<RoutiePlace> routiePlaces, final RoutiePlace from,
-                                        final RoutiePlace to) {
+    private boolean isZeroDistanceRoute(
+            final List<RoutiePlace> routiePlaces,
+            final RoutiePlace from,
+            final RoutiePlace to
+    ) {
         return routiePlaces.size() == 2 && from.getPlace().hasSameCoordinate(to.getPlace());
     }
 
