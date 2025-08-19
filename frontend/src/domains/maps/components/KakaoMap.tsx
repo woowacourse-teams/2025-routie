@@ -25,6 +25,7 @@ const KakaoMap = () => {
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const { placeList } = usePlaceListContext();
   const { routieIdList } = useRoutieContext();
+  const [isInitialLoad, setIsInitialLoad] = useState(true);
 
   const routiePlaces = useMemo(
     () =>
@@ -99,7 +100,9 @@ const KakaoMap = () => {
         });
       });
 
-      fitMapToMarkers(placeList);
+      if (isInitialLoad && placeList.length > 0) {
+        fitMapToMarkers(placeList);
+        setIsInitialLoad(false);
 
       clearPolyline();
 
