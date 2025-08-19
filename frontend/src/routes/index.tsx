@@ -5,6 +5,7 @@ import { ToastProvider } from '@/@common/contexts/useToastContext';
 import { useGoogleAnalytics } from '@/libs/googleAnalytics/hooks/useGoogleAnalytics';
 import Home from '@/pages/Home/Home';
 import RoutieSpace from '@/pages/RoutieSpace/RoutieSpace';
+import VersionInfo from '@/pages/VersionInfo/VersionInfo';
 
 const LayoutWithAnalytics = ({ children }: { children: React.ReactNode }) => {
   useGoogleAnalytics();
@@ -27,6 +28,10 @@ const router = createBrowserRouter([
         <RoutieSpace />
       </LayoutWithAnalytics>
     ),
+  },
+  {
+    path: '/version',
+    element: <VersionInfo />,
   },
 ]);
 
