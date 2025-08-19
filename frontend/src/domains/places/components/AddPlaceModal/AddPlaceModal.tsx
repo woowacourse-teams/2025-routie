@@ -18,15 +18,7 @@ import AddPlaceModalButtons from './AddPlaceModalButtons';
 import AddPlaceModalHeader from './AddPlaceModalHeader';
 import AddPlaceValidation from './AddPlaceValidation';
 
-interface AddPlaceModalProps extends Omit<ModalProps, 'children'> {
-  onPlaceAdded?: () => Promise<void>;
-}
-
-const AddPlaceModal = ({
-  isOpen,
-  onClose,
-  onPlaceAdded,
-}: AddPlaceModalProps) => {
+const AddPlaceModal = ({ isOpen, onClose }: Omit<ModalProps, 'children'>) => {
   const { form, handleInputChange, handleToggleDay, resetForm } =
     useAddPlaceForm();
   const { isEmpty, isValid } = usePlaceFormValidation(form);

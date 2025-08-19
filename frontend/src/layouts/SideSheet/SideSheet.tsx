@@ -106,7 +106,6 @@ const SideSheet = ({ open, onToggle }: SideSheetProps) => {
         <AddPlaceModal
           isOpen={isAddModalOpen}
           onClose={handleCloseAddModalClick}
-          onPlaceAdded={refetchPlaceList}
         />
         <div css={SheetListWrapperStyle}>
           <div css={SheetScrollableAreaStyle}>
