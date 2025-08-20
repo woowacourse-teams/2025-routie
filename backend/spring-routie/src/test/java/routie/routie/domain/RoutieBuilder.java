@@ -12,7 +12,7 @@ public class RoutieBuilder {
     }
 
     public Routie build() {
-        return new Routie(
+        return Routie.create(
                 routiePlaces
         );
     }
