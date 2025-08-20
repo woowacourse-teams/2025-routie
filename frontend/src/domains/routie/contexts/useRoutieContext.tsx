@@ -31,6 +31,7 @@ type RoutieContextType = {
   routieIdList: number[];
   movingStrategy: MovingStrategyType;
   setMovingStrategy: (strategy: MovingStrategyType) => void;
+  fetchedStrategy: MovingStrategyType;
 };
 
 const RoutieContext = createContext<RoutieContextType>({
@@ -43,6 +44,7 @@ const RoutieContext = createContext<RoutieContextType>({
   routieIdList: [],
   movingStrategy: 'DRIVING',
   setMovingStrategy: () => {},
+  fetchedStrategy: 'DRIVING',
 });
 
 export const RoutieProvider = ({ children }: { children: React.ReactNode }) => {
@@ -52,6 +54,8 @@ export const RoutieProvider = ({ children }: { children: React.ReactNode }) => {
   const { isValidateActive, combineDateTime, validateRoutie } =
     useRoutieValidateContext();
   const { movingStrategy, setMovingStrategy } = useMovingStrategy();
+  const [fetchedStrategy, setFetchedStrategy] =
+    useState<MovingStrategyType>(movingStrategy);
   const { showToast } = useToastContext();
 
   const sortBySequence = (a: Routie, b: Routie) => a.sequence - b.sequence;
@@ -67,6 +71,7 @@ export const RoutieProvider = ({ children }: { children: React.ReactNode }) => {
       setRoutiePlaces(sortedPlaces);
       setRoutes(routies.routes);
       validateRoutie(movingStrategy, routies.routiePlaces.length);
+      setFetchedStrategy(movingStrategy);
     } catch (error) {
       console.error(error);
       showToast({
@@ -158,6 +163,7 @@ export const RoutieProvider = ({ children }: { children: React.ReactNode }) => {
         handleChangeRoutie,
         movingStrategy,
         setMovingStrategy,
+        fetchedStrategy,
       }}
     >
       {children}
