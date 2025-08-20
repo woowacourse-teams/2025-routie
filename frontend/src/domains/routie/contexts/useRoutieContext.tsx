@@ -54,6 +54,8 @@ export const RoutieProvider = ({ children }: { children: React.ReactNode }) => {
   const { movingStrategy, setMovingStrategy } = useMovingStrategy();
   const { showToast } = useToastContext();
 
+  const sortBySequence = (a: Routie, b: Routie) => a.sequence - b.sequence;
+
   const refetchRoutieData = useCallback(async () => {
     try {
       const routies = await getRoutie(
@@ -61,7 +63,8 @@ export const RoutieProvider = ({ children }: { children: React.ReactNode }) => {
         combineDateTime.startDateTime,
         movingStrategy,
       );
-      setRoutiePlaces(routies.routiePlaces);
+      const sortedPlaces = [...routies.routiePlaces].sort(sortBySequence);
+      setRoutiePlaces(sortedPlaces);
       setRoutes(routies.routes);
       validateRoutie(movingStrategy, routies.routiePlaces.length);
     } catch (error) {
