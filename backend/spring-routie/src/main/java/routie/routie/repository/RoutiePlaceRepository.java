@@ -9,6 +9,7 @@ import routie.routie.domain.RoutiePlace;
 
 @Repository
 public interface RoutiePlaceRepository extends JpaRepository<RoutiePlace, Long> {
+    boolean existsRoutiePlaceByPlaceId(Long placeId);
 
     @Modifying
     @Query("DELETE FROM RoutiePlace rp WHERE rp.place.routieSpace.id = :routieSpaceId")

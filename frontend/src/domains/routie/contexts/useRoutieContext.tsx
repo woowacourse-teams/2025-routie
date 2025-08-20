@@ -57,7 +57,6 @@ export const RoutieProvider = ({ children }: { children: React.ReactNode }) => {
   const refetchRoutieData = useCallback(async () => {
     try {
       const routies = await getRoutie(
-        isValidateActive,
         combineDateTime.startDateTime,
         movingStrategy,
       );
@@ -71,12 +70,7 @@ export const RoutieProvider = ({ children }: { children: React.ReactNode }) => {
         type: 'error',
       });
     }
-  }, [
-    isValidateActive,
-    combineDateTime.startDateTime,
-    validateRoutie,
-    movingStrategy,
-  ]);
+  }, [combineDateTime.startDateTime, validateRoutie, movingStrategy]);
 
   const handleAddRoutie = useCallback(
     async (id: number) => {
