@@ -24,9 +24,7 @@ const useRoutieTime = () => {
     [routieTime, setRoutieTime],
   );
 
-  const emptyDate = useMemo(() => {
-    return routieTime.date === '';
-  }, [routieTime.date]);
+  const emptyDate = routieTime.date === '';
 
   return { routieTime, combineDateTime, handleTimeChange, emptyDate };
 };
