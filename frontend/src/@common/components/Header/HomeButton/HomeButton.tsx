@@ -9,7 +9,12 @@ type HomeButtonProps = {
   onClick: () => void;
 } & React.ButtonHTMLAttributes<HTMLButtonElement>;
 
-const HomeButton = ({ icon, isHome, onClick, ...props }: HomeButtonProps) => {
+const HomeButton = ({
+  icon,
+  isHome = true,
+  onClick,
+  ...props
+}: HomeButtonProps) => {
   return (
     <button onClick={onClick} {...props}>
       <Flex gap={1}>
