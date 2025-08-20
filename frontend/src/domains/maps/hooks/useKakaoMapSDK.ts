@@ -1,6 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
 import type { UseKakaoMapSDKReturn } from '../types/KaKaoMap.types';
 
+const MAX_ATTEMPTS = 10;
+const RETRY_DELAY = 500;
+
 export const useKakaoMapSDK = (): UseKakaoMapSDKReturn => {
   const [sdkReady, setSdkReady] = useState(false);
   const [sdkError, setSdkError] = useState<string | null>(null);
@@ -10,33 +13,28 @@ export const useKakaoMapSDK = (): UseKakaoMapSDKReturn => {
 
   useEffect(() => {
     const loadSdk = () => {
-      if (!window.kakao?.maps) {
-        if (attemptsRef.current < 10) {
-          attemptsRef.current += 1;
-          setSdkError('카카오맵 불러오는 중 ...');
-
-          if (timerRef.current) {
-            window.clearTimeout(timerRef.current);
-          }
-          timerRef.current = window.setTimeout(loadSdk, 500);
-        } else {
-          setSdkError('카카오맵 불러오기 실패');
-        }
+      if (window.kakao?.maps) {
+        window.kakao.maps.load(() => {
+          setSdkReady(true);
+          setSdkError(null);
+        });
         return;
       }
+      if (attemptsRef.current < MAX_ATTEMPTS) {
+        attemptsRef.current += 1;
+        setSdkError('카카오맵 불러오는 중 ...');
 
-      window.kakao.maps.load(() => {
-        setSdkReady(true);
-        setSdkError(null);
-      });
+        window.clearTimeout(timerRef.current ?? undefined);
+        timerRef.current = window.setTimeout(loadSdk, RETRY_DELAY);
+      } else {
+        setSdkError('카카오맵 불러오기 실패');
+      }
     };
 
     loadSdk();
 
     return () => {
-      if (timerRef.current) {
-        window.clearTimeout(timerRef.current);
-      }
+      window.clearTimeout(timerRef.current ?? undefined);
     };
   }, []);
 
