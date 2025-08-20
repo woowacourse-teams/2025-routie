@@ -5,7 +5,7 @@ export const useKakaoMapSDK = (): UseKakaoMapSDKReturn => {
   const [sdkReady, setSdkReady] = useState(false);
   const [sdkError, setSdkError] = useState<string | null>(null);
 
-  const timersRef = useRef<Map<string, number>>(new Map());
+  const timerRef = useRef<number | null>(null);
   const attemptsRef = useRef(0);
 
   useEffect(() => {
@@ -15,8 +15,10 @@ export const useKakaoMapSDK = (): UseKakaoMapSDKReturn => {
           attemptsRef.current += 1;
           setSdkError('카카오맵 불러오는 중 ...');
 
-          const timeoutId = window.setTimeout(loadSdk, 500);
-          timersRef.current.set(`retry_${attemptsRef.current}`, timeoutId);
+          if (timerRef.current) {
+            window.window.clearTimeout(timerRef.current);
+          }
+          timerRef.current = window.setTimeout(loadSdk, 500);
         } else {
           setSdkError('카카오맵 불러오기 실패');
         }
@@ -32,10 +34,9 @@ export const useKakaoMapSDK = (): UseKakaoMapSDKReturn => {
     loadSdk();
 
     return () => {
-      timersRef.current.forEach((timeoutId) => {
-        window.clearTimeout(timeoutId);
-      });
-      timersRef.current.clear();
+      if (timerRef.current) {
+        window.clearTimeout(timerRef.current);
+      }
     };
   }, []);
 
