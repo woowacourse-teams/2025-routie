@@ -10,7 +10,8 @@ export interface CardProps extends ComponentProps<'div'> {
 
 export type CardVariantProps =
   | 'default'
-  |'defaultStatic'
+  | 'defaultStatic'
   | 'available'
   | 'unavailable'
-  | 'disabled';
+  | 'disabled'
+  | 'invalid';
