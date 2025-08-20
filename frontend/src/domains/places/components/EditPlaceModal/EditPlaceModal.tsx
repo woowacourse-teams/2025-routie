@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
 
-import { useToastContext } from '@/@common/contexts/useToastContext';
 import Flex from '@/@common/components/Flex/Flex';
 import Modal, { ModalProps } from '@/@common/components/Modal/Modal';
+import { useToastContext } from '@/@common/contexts/useToastContext';
 import { useRoutieContext } from '@/domains/routie/contexts/useRoutieContext';
 
 import editPlace from '../../apis/editPlace';
@@ -54,6 +54,12 @@ const EditPlaceModal = ({
         initialFormRef.current = { ...initialData };
       } catch (error) {
         console.error('장소 데이터 조회 실패:', error);
+        if (error instanceof Error) {
+          showToast({
+            message: error.message,
+            type: 'error',
+          });
+        }
       }
     };
 
@@ -93,10 +99,12 @@ const EditPlaceModal = ({
       });
     } catch (error) {
       console.log(error);
-      showToast({
-        message: '장소 정보를 수정하지 못했습니다. 다시 시도해주세요.',
-        type: 'error',
-      });
+      if (error instanceof Error) {
+        showToast({
+          message: error.message,
+          type: 'error',
+        });
+      }
     }
     handleClose();
   };

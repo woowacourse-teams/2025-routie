@@ -83,11 +83,13 @@ const AddPlaceModal = ({
         type: 'success',
       });
     } catch (error) {
-      console.log(error);
-      showToast({
-        message: '장소 추가를 실패하였습니다. 다시 시도해주세요.',
-        type: 'error',
-      });
+      console.error(error);
+      if (error instanceof Error) {
+        showToast({
+          message: error.message,
+          type: 'error',
+        });
+      }
     }
     handleClose();
   };

@@ -20,10 +20,12 @@ export const useRoutieSpaceNavigation = () => {
       });
     } catch (error) {
       console.error(error);
-      showToast({
-        message: '루티스페이스 생성에 실패하였습니다. 다시 시도해주세요',
-        type: 'error',
-      });
+      if (error instanceof Error) {
+        showToast({
+          message: error.message,
+          type: 'error',
+        });
+      }
     }
   }, [navigate]);
 

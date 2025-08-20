@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 
+import { useToastContext } from '@/@common/contexts/useToastContext';
 import getPlaceList from '@/domains/places/apis/getplaceList';
 import { PlaceCardProps } from '@/domains/places/components/PlaceCard/PlaceCard';
 
@@ -11,6 +12,7 @@ interface Props {
 
 export const PlaceListProvider = ({ children }: Props) => {
   const [placeList, setPlaceList] = useState<PlaceCardProps[]>([]);
+  const { showToast } = useToastContext();
 
   const refetchPlaceList = useCallback(async () => {
     try {
@@ -18,6 +20,12 @@ export const PlaceListProvider = ({ children }: Props) => {
       setPlaceList(newPlaceList);
     } catch (error) {
       console.error('장소 목록을 불러오는데 실패했습니다.', error);
+      if (error instanceof Error) {
+        showToast({
+          message: error.message,
+          type: 'error',
+        });
+      }
     }
   }, []);
 

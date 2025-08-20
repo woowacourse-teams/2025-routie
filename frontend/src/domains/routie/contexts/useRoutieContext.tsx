@@ -65,10 +65,12 @@ export const RoutieProvider = ({ children }: { children: React.ReactNode }) => {
       validateRoutie(movingStrategy, routies.routiePlaces.length);
     } catch (error) {
       console.error(error);
-      showToast({
-        message: '동선 정보를 불러오는데 실패했습니다. 다시 시도해주세요.',
-        type: 'error',
-      });
+      if (error instanceof Error) {
+        showToast({
+          message: error.message,
+          type: 'error',
+        });
+      }
     }
   }, [combineDateTime.startDateTime, validateRoutie, movingStrategy]);
 
@@ -83,10 +85,12 @@ export const RoutieProvider = ({ children }: { children: React.ReactNode }) => {
         });
       } catch (error) {
         console.error(error);
-        showToast({
-          message: '내 동선에 장소를 추가하지 못했습니다. 다시 시도해주세요.',
-          type: 'error',
-        });
+        if (error instanceof Error) {
+          showToast({
+            message: error.message,
+            type: 'error',
+          });
+        }
       }
     },
     [refetchRoutieData],
@@ -103,10 +107,12 @@ export const RoutieProvider = ({ children }: { children: React.ReactNode }) => {
         });
       } catch (error) {
         console.error(error);
-        showToast({
-          message: '내 동선에 장소 삭제를 실패하였습니다. 다시 시도해주세요.',
-          type: 'error',
-        });
+        if (error instanceof Error) {
+          showToast({
+            message: error.message,
+            type: 'error',
+          });
+        }
       }
     },
     [refetchRoutieData],
@@ -124,10 +130,12 @@ export const RoutieProvider = ({ children }: { children: React.ReactNode }) => {
         refetchRoutieData();
       } catch (error) {
         console.error(error);
-        showToast({
-          message: '순서 변경에 실패했습니다.',
-          type: 'error',
-        });
+        if (error instanceof Error) {
+          showToast({
+            message: error.message,
+            type: 'error',
+          });
+        }
       }
     },
     [refetchRoutieData],
