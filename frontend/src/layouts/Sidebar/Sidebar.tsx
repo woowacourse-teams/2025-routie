@@ -59,7 +59,9 @@ const Sidebar = () => {
           borderRight: `1px solid ${theme.colors.black}`,
         }}
       >
-        <Header />
+        <Header isHome={false}>
+          <RoutieSpaceName />
+        </Header>
         <Flex
           direction="column"
           width="100%"
@@ -67,8 +69,8 @@ const Sidebar = () => {
           padding={1.6}
           justifyContent="flex-start"
         >
-          <Flex direction="column" width="100%" gap={1.2}>
-            <RoutieSpaceName />
+          <Flex width="100%" justifyContent="flex-start" gap={1}>
+            <Text variant="title2">언제, 어떻게 떠날까요?</Text>
           </Flex>
           <Flex justifyContent="flex-end" width="100%" gap={1}>
             <Text variant="subTitle">일정 검증</Text>

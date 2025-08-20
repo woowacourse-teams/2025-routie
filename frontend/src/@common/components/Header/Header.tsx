@@ -1,3 +1,4 @@
+import { PropsWithChildren } from 'react';
 import { useNavigate } from 'react-router';
 
 import Flex from '@/@common/components/Flex/Flex';
@@ -7,7 +8,11 @@ import headerStyle from './Header.style';
 import HomeButton from './HomeButton/HomeButton';
 import { buttonStyle } from './HomeButton/HomeButton.styles';
 
-const Header = () => {
+type HeaderProps = {
+  isHome?: boolean;
+} & PropsWithChildren;
+
+const Header = ({ children, isHome }: HeaderProps) => {
   const navigate = useNavigate();
 
   return (
@@ -23,7 +28,9 @@ const Header = () => {
           icon={logoIcon}
           onClick={() => navigate('/')}
           css={buttonStyle}
+          isHome={isHome}
         />
+        {children}
       </Flex>
     </div>
   );
