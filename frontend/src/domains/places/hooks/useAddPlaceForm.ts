@@ -54,7 +54,7 @@ export const useAddPlaceForm = () => {
 
   const handleInputChange = (
     field: keyof Omit<FormState, 'closedDayOfWeeks'>,
-    value: string,
+    value: string | null,
   ) => {
     dispatch({ type: 'UPDATE', field, value });
   };
