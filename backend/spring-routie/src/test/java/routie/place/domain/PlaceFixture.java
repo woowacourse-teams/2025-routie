@@ -58,4 +58,9 @@ public class PlaceFixture {
     public static List<PlaceClosedDayOfWeek> anyPlaceClosedDayOfWeeks() {
         return new ArrayList<>();
     }
+
+    public static Place anyPlace() {
+        return new PlaceBuilder()
+                .build();
+    }
 }
