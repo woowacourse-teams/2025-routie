@@ -1,3 +1,6 @@
+import { useEffect } from 'react';
+import { useSearchParams } from 'react-router';
+
 import Flex from '@/@common/components/Flex/Flex';
 import { RoutieProvider } from '@/domains/routie/contexts/useRoutieContext';
 import { RoutieValidateProvider } from '@/domains/routie/contexts/useRoutieValidateContext';
@@ -6,6 +9,15 @@ import { PlaceListProvider } from '@/layouts/PlaceList/contexts/PlaceListProvide
 import Sidebar from '@/layouts/Sidebar/Sidebar';
 
 const RoutieSpace = () => {
+  const [searchParams] = useSearchParams();
+  const routieSpaceIdentifier = searchParams.get('routieSpaceIdentifier');
+
+  useEffect(() => {
+    if (routieSpaceIdentifier) {
+      localStorage.setItem('routieSpaceUuid', routieSpaceIdentifier);
+    }
+  }, [routieSpaceIdentifier]);
+
   return (
     <RoutieValidateProvider>
       <RoutieProvider>

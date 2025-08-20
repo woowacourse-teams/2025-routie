@@ -14,5 +14,5 @@ export const createRoutieSpace = async () => {
     throw new Error('루티 스페이스 UUID가 응답에 없습니다.');
   }
 
-  localStorage.setItem('routieSpaceUuid', uuid);
+  return uuid;
 };
