@@ -147,6 +147,11 @@ public enum ErrorCode {
             "해당하는 id의 장소를 찾을 수 없습니다.",
             HttpStatus.NOT_FOUND
     ),
+    ROUTIE_PLACE_EXIST(
+            "1103",
+            "장소가 루티 장소에 등록되어 있습니다.",
+            HttpStatus.BAD_REQUEST
+    ),
 
     /**
      * 2XXX: Routie Space domain

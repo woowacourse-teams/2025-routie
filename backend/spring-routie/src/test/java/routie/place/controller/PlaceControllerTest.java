@@ -22,6 +22,8 @@ import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import routie.place.domain.Place;
 import routie.place.domain.PlaceBuilder;
 import routie.place.repository.PlaceRepository;
+import routie.routie.domain.RoutiePlace;
+import routie.routie.repository.RoutiePlaceRepository;
 import routie.routiespace.domain.RoutieSpace;
 import routie.routiespace.domain.RoutieSpaceIdentifierProvider;
 import routie.routiespace.repository.RoutieSpaceRepository;
@@ -35,6 +37,9 @@ public class PlaceControllerTest {
 
     @Autowired
     private PlaceRepository placeRepository;
+
+    @Autowired
+    private RoutiePlaceRepository routiePlaceRepository;
 
     @Autowired
     private RoutieSpaceRepository routieSpaceRepository;
@@ -206,6 +211,50 @@ public class PlaceControllerTest {
 
         HttpStatus actualHttpStatus = HttpStatus.valueOf(response.getStatusCode());
         HttpStatus expectedHttpStatus = HttpStatus.NO_CONTENT;
+
+        // then
+        assertThat(expectedHttpStatus).isEqualTo(actualHttpStatus);
+    }
+
+    @Test
+    @DisplayName("루티 장소에서 사용 중인 장소는 삭제할 수 없다")
+    public void cannotDeletePlaceWhenUsedInRoutiePlace() {
+        // given
+        long placeId = testPlace.getId();
+        testRoutieSpace.getRoutie().createLastRoutiePlace(testPlace);
+        routieSpaceRepository.save(testRoutieSpace);
+
+        // when
+        Response response = RestAssured
+                .when()
+                .delete("/routie-spaces/" + testRoutieSpace.getIdentifier() + "/places/" + placeId)
+                .then()
+                .log().all()
+                .extract().response();
+
+        HttpStatus actualHttpStatus = HttpStatus.valueOf(response.getStatusCode());
+        HttpStatus expectedHttpStatus = HttpStatus.BAD_REQUEST;
+
+        // then
+        assertThat(expectedHttpStatus).isEqualTo(actualHttpStatus);
+    }
+
+    @Test
+    @DisplayName("존재하지 않는 장소 삭제 시 예외가 발생한다")
+    public void deleteNonExistentPlace() {
+        // given
+        long nonExistentPlaceId = 999999L;
+
+        // when
+        Response response = RestAssured
+                .when()
+                .delete("/routie-spaces/" + testRoutieSpace.getIdentifier() + "/places/" + nonExistentPlaceId)
+                .then()
+                .log().all()
+                .extract().response();
+
+        HttpStatus actualHttpStatus = HttpStatus.valueOf(response.getStatusCode());
+        HttpStatus expectedHttpStatus = HttpStatus.NOT_FOUND;
 
         // then
         assertThat(expectedHttpStatus).isEqualTo(actualHttpStatus);
