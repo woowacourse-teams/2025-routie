@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef } from 'react';
 
-export function useDebouncedAsync<T extends (...args: any[]) => Promise<any>>(
+export function useDebounceAsync<T extends (...args: any[]) => Promise<any>>(
   asyncFn: T,
   delay: number,
 ) {
