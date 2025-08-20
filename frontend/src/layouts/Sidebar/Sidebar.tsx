@@ -12,6 +12,7 @@ import SelectMovingStrategy from '@/domains/routie/components/SelectMovingStrate
 import { useRoutieContext } from '@/domains/routie/contexts/useRoutieContext';
 import { useRoutieValidateContext } from '@/domains/routie/contexts/useRoutieValidateContext';
 import RoutieSpaceName from '@/domains/routieSpace/components/RoutieSpaceName/RoutieSpaceName';
+import theme from '@/styles/theme';
 
 import DateInput from './DateInput';
 import TimeInput from './TimeInput';
@@ -55,6 +56,7 @@ const Sidebar = () => {
         gap={1}
         style={{
           overflow: 'hidden',
+          borderRight: `1px solid ${theme.colors.black}`,
         }}
       >
         <Header />
