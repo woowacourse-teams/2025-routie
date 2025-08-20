@@ -1,24 +1,42 @@
-import { useEffect, useState } from 'react';
-
+import { useEffect, useRef, useState } from 'react';
 import type { UseKakaoMapSDKReturn } from '../types/KaKaoMap.types';
+
+const MAX_ATTEMPTS = 10;
+const RETRY_DELAY = 500;
 
 export const useKakaoMapSDK = (): UseKakaoMapSDKReturn => {
   const [sdkReady, setSdkReady] = useState(false);
   const [sdkError, setSdkError] = useState<string | null>(null);
 
-  useEffect(() => {
-    if (!window.kakao?.maps) {
-      setSdkError('카카오맵 SDK를 찾을 수 없습니다.');
-      return;
-    }
+  const timerRef = useRef<number | null>(null);
+  const attemptsRef = useRef(0);
 
-    window.kakao.maps.load(() => {
-      setSdkReady(true);
-    });
+  useEffect(() => {
+    const loadSdk = () => {
+      if (window.kakao?.maps) {
+        window.kakao.maps.load(() => {
+          setSdkReady(true);
+          setSdkError(null);
+        });
+        return;
+      }
+      if (attemptsRef.current < MAX_ATTEMPTS) {
+        attemptsRef.current += 1;
+        setSdkError('카카오맵 불러오는 중 ...');
+
+        window.clearTimeout(timerRef.current ?? undefined);
+        timerRef.current = window.setTimeout(loadSdk, RETRY_DELAY);
+      } else {
+        setSdkError('카카오맵 불러오기 실패');
+      }
+    };
+
+    loadSdk();
+
+    return () => {
+      window.clearTimeout(timerRef.current ?? undefined);
+    };
   }, []);
 
-  return {
-    sdkReady,
-    sdkError,
-  };
+  return { sdkReady, sdkError };
 };
