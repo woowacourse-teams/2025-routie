@@ -1,15 +1,15 @@
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { useSessionStorage } from '@/@common/hooks/useSessionStorage';
 import { getCombineDateTime } from '@/@common/utils/format';
 
 import { getRoutieValidation } from '../apis/routie';
 import {
-  ValidationResultType,
+  InvalidRoutiePlace,
   validationErrorCodeType,
+  ValidationResultType,
   ValidationStatus,
   WaitingReason,
-  InvalidRoutiePlace,
 } from '../types/routie.types';
 
 export interface UseRoutieValidateReturn {
@@ -173,6 +173,12 @@ const useRoutieValidate = (): UseRoutieValidateReturn => {
     },
     [getValidationConditions, updateValidationStatus, combineDateTime],
   );
+
+  useEffect(() => {
+    if (!isValidateActive) {
+      setInvalidResult(null);
+    }
+  }, [isValidateActive]);
 
   return {
     isValidateActive,
