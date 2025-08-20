@@ -16,7 +16,7 @@ export const useKakaoMapSDK = (): UseKakaoMapSDKReturn => {
           setSdkError('카카오맵 불러오는 중 ...');
 
           if (timerRef.current) {
-            window.window.clearTimeout(timerRef.current);
+            window.clearTimeout(timerRef.current);
           }
           timerRef.current = window.setTimeout(loadSdk, 500);
         } else {
