@@ -106,5 +106,5 @@ flyway {
     url = System.getenv('MYSQL_URL')
     user = System.getenv('MYSQL_USERNAME')
     password = System.getenv('MYSQL_PASSWORD')
-    locations = ["classpath:db/migration"]
+    locations = ["filesystem:src/main/resources/db/migration"]
 }
