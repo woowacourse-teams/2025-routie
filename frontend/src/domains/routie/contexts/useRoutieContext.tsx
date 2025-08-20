@@ -1,5 +1,6 @@
 import {
   createContext,
+  useCallback,
   useContext,
   useState,
   useEffect,
@@ -8,6 +9,7 @@ import {
 
 import { useToastContext } from '@/@common/contexts/useToastContext';
 import { useAsyncLock } from '@/@common/hooks/useAsyncLock';
+import { useDebounceAsync } from '@/@common/hooks/useDebounceAsync';
 
 import {
   addRoutiePlace,
@@ -90,6 +92,8 @@ export const RoutieProvider = ({ children }: { children: React.ReactNode }) => {
     movingStrategy,
   ]);
 
+  const debouncedRefetchRoutieData = useDebounceAsync(refetchRoutieData, 300);
+
   const handleAddRoutie = useCallback(
     async (id: number) => {
       return runAddWithLock(async () => {
@@ -156,8 +160,14 @@ export const RoutieProvider = ({ children }: { children: React.ReactNode }) => {
   );
 
   useEffect(() => {
-    refetchRoutieData();
-  }, [isValidateActive, combineDateTime, movingStrategy]);
+    debouncedRefetchRoutieData();
+  }, [
+    isValidateActive,
+    movingStrategy,
+    combineDateTime.startDateTime,
+    combineDateTime.endDateTime,
+    debouncedRefetchRoutieData,
+  ]);
 
   return (
     <RoutieContext.Provider
