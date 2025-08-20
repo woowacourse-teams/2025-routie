@@ -3,8 +3,6 @@ package routie.routie.service;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import java.time.DayOfWeek;
-import java.time.LocalTime;
 import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
@@ -67,48 +65,15 @@ class RoutieServiceTest {
         testRoutieSpace = RoutieSpaceFixture.emptyRoutieSpace();
 
         testPlace1 = new PlaceBuilder()
-                .name("카페 A")
-                .roadAddressName("서울시 강남구 테헤란로 123")
-                .addressName("서울시 강남구 역삼동 123-45")
-                .longitude(127.027926)
-                .latitude(37.497175)
-                .stayDurationMinutes(60)
-                .openAt(LocalTime.of(9, 0))
-                .closeAt(LocalTime.of(22, 0))
-                .breakStartAt(null)
-                .breakEndAt(null)
                 .routieSpace(testRoutieSpace)
-                .placeClosedDayOfWeeksByDayOfWeeks(List.of(DayOfWeek.SUNDAY))
                 .build();
 
         testPlace2 = new PlaceBuilder()
-                .name("레스토랑 B")
-                .roadAddressName("서울시 강남구 테헤란로 456")
-                .addressName("서울시 강남구 역삼동 456-78")
-                .longitude(127.028926)
-                .latitude(37.498175)
-                .stayDurationMinutes(90)
-                .openAt(LocalTime.of(11, 0))
-                .closeAt(LocalTime.of(23, 0))
-                .breakStartAt(LocalTime.of(15, 0))
-                .breakEndAt(LocalTime.of(17, 0))
                 .routieSpace(testRoutieSpace)
-                .placeClosedDayOfWeeks(List.of())
                 .build();
 
         testPlace3 = new PlaceBuilder()
-                .name("쇼핑몰 C")
-                .roadAddressName("서울시 강남구 테헤란로 789")
-                .addressName("서울시 강남구 역삼동 789-12")
-                .longitude(127.029926)
-                .latitude(37.499175)
-                .stayDurationMinutes(120)
-                .openAt(LocalTime.of(10, 0))
-                .closeAt(LocalTime.of(22, 0))
-                .breakStartAt(null)
-                .breakEndAt(null)
                 .routieSpace(testRoutieSpace)
-                .placeClosedDayOfWeeksByDayOfWeeks(List.of(DayOfWeek.MONDAY))
                 .build();
 
         testRoutieSpace.getPlaces().addAll(List.of(testPlace1, testPlace2, testPlace3));
