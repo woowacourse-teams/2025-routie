@@ -2,9 +2,8 @@ import {
   createContext,
   useCallback,
   useContext,
-  useState,
   useEffect,
-  useCallback,
+  useState,
 } from 'react';
 
 import { useToastContext } from '@/@common/contexts/useToastContext';
@@ -76,7 +75,7 @@ export const RoutieProvider = ({ children }: { children: React.ReactNode }) => {
       const sortedPlaces = [...routies.routiePlaces].sort(sortBySequence);
       setRoutiePlaces(sortedPlaces);
       setRoutes(routies.routes);
-      validateRoutie(movingStrategy, routies.routiePlaces.length);
+      await validateRoutie(movingStrategy, routies.routiePlaces.length);
       setFetchedStrategy(movingStrategy);
     } catch (error) {
       console.error(error);
@@ -90,6 +89,7 @@ export const RoutieProvider = ({ children }: { children: React.ReactNode }) => {
     combineDateTime.startDateTime,
     validateRoutie,
     movingStrategy,
+    showToast,
   ]);
 
   const debouncedRefetchRoutieData = useDebounceAsync(refetchRoutieData, 300);
@@ -147,7 +147,7 @@ export const RoutieProvider = ({ children }: { children: React.ReactNode }) => {
         .sort((a, b) => a.sequence - b.sequence);
       try {
         await editRoutieSequence(sortedList);
-        refetchRoutieData();
+        await refetchRoutieData();
       } catch (error) {
         console.error(error);
         showToast({
@@ -156,7 +156,7 @@ export const RoutieProvider = ({ children }: { children: React.ReactNode }) => {
         });
       }
     },
-    [refetchRoutieData],
+    [refetchRoutieData, showToast],
   );
 
   useEffect(() => {
