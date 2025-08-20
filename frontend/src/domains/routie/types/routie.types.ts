@@ -24,7 +24,7 @@ export type ValidationStatus =
   | 'success'
   | 'error';
 
-export type WaitingReason = 'no_time' | 'insufficient_places' | null;
+export type WaitingReason = 'no_date' | 'insufficient_places' | null;
 
 export type InvalidRoutiePlace = {
   routiePlaceId: number;
