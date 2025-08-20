@@ -11,3 +11,7 @@ export const PlaceInfoViewPillStyle = css`
 export const dragIconStyle = css`
   cursor: grab;
 `;
+
+export const EllipsisParentStyle = css`
+  min-width: 0;
+`;

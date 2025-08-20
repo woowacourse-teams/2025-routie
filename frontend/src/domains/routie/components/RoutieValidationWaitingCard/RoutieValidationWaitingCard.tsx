@@ -12,10 +12,10 @@ interface RoutieValidationWaitingCardProps {
 
 const getWaitingMessage = (reason: WaitingReason) => {
   switch (reason) {
-    case 'no_time':
+    case 'no_date':
       return {
         title: '검증 대기중',
-        description: '시작 시간과 종료 시간을 입력해주세요.',
+        description: '날짜를 입력해주세요.',
       };
     case 'insufficient_places':
       return {
