@@ -129,7 +129,7 @@ export const PlaceCard = ({ selected, ...props }: PlaceCardProps) => {
                 {props.name}
               </Text>
               <Text variant="caption" color={theme.colors.gray[200]} ellipsis>
-                {props.roadAddressName}
+                {props.roadAddressName || props.addressName}
               </Text>
               <Flex direction="row" gap={1}>
                 <Text
