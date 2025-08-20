@@ -38,7 +38,7 @@ const AddPlaceBasicInfo = ({
         disabled
       />
       <AddressInput
-        value={form.roadAddressName}
+        value={form.roadAddressName || form.addressName}
         onChange={handleInputChange}
         error={showErrors && isEmpty.roadAddressName}
         disabled
