@@ -7,6 +7,7 @@ import {
 } from 'react';
 
 import { useToastContext } from '@/@common/contexts/useToastContext';
+import { useAsyncLock } from '@/@common/hooks/useAsyncLock';
 
 import {
   addRoutiePlace,
@@ -58,6 +59,9 @@ export const RoutieProvider = ({ children }: { children: React.ReactNode }) => {
     useState<MovingStrategyType>(movingStrategy);
   const { showToast } = useToastContext();
 
+  const { runWithLock: runAddWithLock } = useAsyncLock();
+  const { runWithLock: runDeleteWithLock } = useAsyncLock();
+
   const sortBySequence = (a: Routie, b: Routie) => a.sequence - b.sequence;
 
   const refetchRoutieData = useCallback(async () => {
@@ -88,42 +92,46 @@ export const RoutieProvider = ({ children }: { children: React.ReactNode }) => {
 
   const handleAddRoutie = useCallback(
     async (id: number) => {
-      try {
-        await addRoutiePlace(id);
-        await refetchRoutieData();
-        showToast({
-          message: '내 동선에 장소가 추가되었습니다.',
-          type: 'success',
-        });
-      } catch (error) {
-        console.error(error);
-        showToast({
-          message: '내 동선에 장소를 추가하지 못했습니다. 다시 시도해주세요.',
-          type: 'error',
-        });
-      }
+      return runAddWithLock(async () => {
+        try {
+          await addRoutiePlace(id);
+          await refetchRoutieData();
+          showToast({
+            message: '내 동선에 장소가 추가되었습니다.',
+            type: 'success',
+          });
+        } catch (error) {
+          console.error(error);
+          showToast({
+            message: '내 동선에 장소를 추가하지 못했습니다. 다시 시도해주세요.',
+            type: 'error',
+          });
+        }
+      });
     },
-    [refetchRoutieData],
+    [refetchRoutieData, runAddWithLock, showToast],
   );
 
   const handleDeleteRoutie = useCallback(
     async (id: number) => {
-      try {
-        await deleteRoutiePlace(id);
-        await refetchRoutieData();
-        showToast({
-          message: '내 동선에서 장소가 삭제되었습니다.',
-          type: 'success',
-        });
-      } catch (error) {
-        console.error(error);
-        showToast({
-          message: '내 동선에 장소 삭제를 실패하였습니다. 다시 시도해주세요.',
-          type: 'error',
-        });
-      }
+      return runDeleteWithLock(async () => {
+        try {
+          await deleteRoutiePlace(id);
+          await refetchRoutieData();
+          showToast({
+            message: '내 동선에서 장소가 삭제되었습니다.',
+            type: 'success',
+          });
+        } catch (error) {
+          console.error(error);
+          showToast({
+            message: '내 동선에 장소 삭제를 실패하였습니다. 다시 시도해주세요.',
+            type: 'error',
+          });
+        }
+      });
     },
-    [refetchRoutieData],
+    [refetchRoutieData, showToast, runDeleteWithLock],
   );
 
   const handleChangeRoutie = useCallback(
