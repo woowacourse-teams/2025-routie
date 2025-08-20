@@ -1,6 +1,5 @@
 package routie.routie.service;
 
-import jakarta.persistence.EntityManager;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -50,7 +49,6 @@ public class RoutieService {
     private final TimePeriodCalculator timePeriodCalculator;
     private final RouteCalculator routeCalculator;
     private final RoutieValidator routieValidator;
-    private final EntityManager entityManager;
 
     @Transactional
     public RoutiePlaceCreateResponse addRoutiePlace(
@@ -122,15 +120,11 @@ public class RoutieService {
     public void modifyRoutie(final String routieSpaceIdentifier, final RoutieUpdateRequest routieUpdateRequest) {
         RoutieSpace routieSpace = getRoutieSpaceByIdentifier(routieSpaceIdentifier);
         routiePlaceRepository.deleteByRoutieSpaceId(routieSpace.getId());
-        routiePlaceRepository.flush();
-        entityManager.clear();
-
-        routieSpace = getRoutieSpaceByIdentifier(routieSpaceIdentifier);
 
         Map<Long, Place> placeMap = getPlaceMap(routieUpdateRequest);
         List<RoutiePlace> newRoutiePlaces = createNewRoutiePlaces(routieUpdateRequest, placeMap);
 
-        routieSpace.getRoutie().updateRoutiePlaces(newRoutiePlaces);
+        routieSpace.getRoutie().getRoutiePlaces().addAll(newRoutiePlaces);
     }
 
     private Map<Long, Place> getPlaceMap(final RoutieUpdateRequest request) {
