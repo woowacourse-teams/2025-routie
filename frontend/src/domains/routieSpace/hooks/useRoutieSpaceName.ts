@@ -10,7 +10,7 @@ import {
 const MAX_NAME_LENGTH = 15;
 const ERROR_MESSAGE = {
   noName: '루티 스페이스 이름은 비어있을 수 없습니다.',
-  invalidNameLength: '루티 스페이스 이름은 15자 이하여야 합니다.',
+  invalidNameLength: `루티 스페이스 이름은 ${MAX_NAME_LENGTH}자 이하여야 합니다.`,
 } as const;
 
 type ERROR_CASE = keyof typeof ERROR_MESSAGE;
