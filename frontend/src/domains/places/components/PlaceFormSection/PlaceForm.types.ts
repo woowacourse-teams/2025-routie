@@ -5,8 +5,8 @@ export type FormState = {
   stayDurationMinutes: number;
   openAt: string;
   closeAt: string;
-  breakStartAt: string;
-  breakEndAt: string;
+  breakStartAt: string | null;
+  breakEndAt: string | null;
   closedDayOfWeeks: string[];
 };
 

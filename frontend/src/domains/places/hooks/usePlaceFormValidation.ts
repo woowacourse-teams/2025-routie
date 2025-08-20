@@ -8,8 +8,8 @@ export const usePlaceFormValidation = (form: FormState) => {
     stayDurationMinutes: form.stayDurationMinutes < 0,
     openAt: form.openAt === '',
     closeAt: form.closeAt === '',
-    breakStartAt: form.breakStartAt === '' || form.breakStartAt === null,
-    breakEndAt: form.breakEndAt === '' || form.breakEndAt === null,
+    breakStartAt: form.breakStartAt === null,
+    breakEndAt: form.breakEndAt === null,
   };
 
   const isValid = usePlaceFormRequiredFieldsValidation(form);

@@ -14,8 +14,8 @@ const initialFormState: FormState = {
   stayDurationMinutes: 0,
   openAt: '00:00',
   closeAt: '23:59',
-  breakStartAt: '',
-  breakEndAt: '',
+  breakStartAt: null,
+  breakEndAt: null,
   closedDayOfWeeks: [],
   addressName: '',
 };
