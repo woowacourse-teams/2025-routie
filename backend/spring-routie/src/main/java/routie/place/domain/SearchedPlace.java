@@ -18,6 +18,10 @@ public record SearchedPlace(
         validateAddressName(addressName);
         validateLongitude(longitude);
         validateLatitude(latitude);
+
+        if (roadAddressName.isEmpty()) {
+            roadAddressName = null;
+        }
     }
 
     private void validateSearchedPlaceId(final String searchedPlaceId) {
