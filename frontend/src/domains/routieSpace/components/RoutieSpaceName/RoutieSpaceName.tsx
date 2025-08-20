@@ -1,3 +1,5 @@
+import { css } from '@emotion/react';
+
 import Button from '@/@common/components/Button/Button';
 import Flex from '@/@common/components/Flex/Flex';
 import Text from '@/@common/components/Text/Text';
@@ -20,13 +22,7 @@ const RoutieSpaceName = () => {
   } = useRoutieSpaceName();
 
   return (
-    <Flex
-      alignItems="center"
-      justifyContent="space-between"
-      width="100%"
-      margin={0.4}
-      gap={3}
-    >
+    <Flex justifyContent="space-between" width="100%" margin={0.4} gap={3}>
       {isEditing ? (
         <input
           ref={inputRef}
@@ -38,17 +34,20 @@ const RoutieSpaceName = () => {
         />
       ) : (
         <Flex justifyContent="flex-start" padding={0.4} width="100%">
-          <Text variant="title">{name}</Text>
+          <Text variant="title2">{name}</Text>
         </Flex>
       )}
       <Button
         variant="primary"
         onClick={handleClick}
-        width="7rem"
+        width="5rem"
         disabled={isLoading}
+        css={css`
+          padding: 0.8rem 0.6rem;
+        `}
       >
         <Flex width="100%">
-          <Text variant="subTitle" color={theme.colors.white}>
+          <Text variant="caption" color={theme.colors.white}>
             {isEditing ? '저장' : '수정'}
           </Text>
         </Flex>

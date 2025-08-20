@@ -8,6 +8,7 @@ export interface TextProps extends ComponentProps<'p'> {
 
 export type TextVariantProps =
   | 'title'
+  | 'title2'
   | 'subTitle'
   | 'caption'
   | 'label'
