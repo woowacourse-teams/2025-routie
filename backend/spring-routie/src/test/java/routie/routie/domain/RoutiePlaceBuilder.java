@@ -7,12 +7,12 @@ public class RoutiePlaceBuilder {
     private int sequence;
     private Place place;
 
-    public RoutiePlaceBuilder sequence() {
+    public RoutiePlaceBuilder sequence(final int sequence) {
         this.sequence = sequence;
         return this;
     }
 
-    public RoutiePlaceBuilder place() {
+    public RoutiePlaceBuilder place(final Place place) {
         this.place = place;
         return this;
     }
