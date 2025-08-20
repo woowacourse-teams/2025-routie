@@ -1,15 +1,24 @@
 package routie.routie.service;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
+import java.time.DayOfWeek;
+import java.time.LocalTime;
 import java.util.Comparator;
+import java.util.List;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.CyclicBarrier;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.TransactionTemplate;
 import routie.exception.BusinessException;
@@ -24,18 +33,6 @@ import routie.routie.repository.RoutiePlaceRepository;
 import routie.routiespace.domain.RoutieSpace;
 import routie.routiespace.domain.RoutieSpaceFixture;
 import routie.routiespace.repository.RoutieSpaceRepository;
-
-import java.time.DayOfWeek;
-import java.time.LocalTime;
-import java.util.List;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicInteger;
-
-import static org.assertj.core.api.Assertions.*;
 
 @SpringBootTest
 @ActiveProfiles("test")
@@ -67,7 +64,7 @@ class RoutieServiceTest {
         placeRepository.deleteAll();
         routieSpaceRepository.deleteAll();
 
-        testRoutieSpace = RoutieSpaceFixture.createEmpty();
+        testRoutieSpace = RoutieSpaceFixture.emptyRoutieSpace();
 
         testPlace1 = new PlaceBuilder()
                 .name("카페 A")
