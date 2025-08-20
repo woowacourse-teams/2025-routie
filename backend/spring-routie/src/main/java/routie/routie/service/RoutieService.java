@@ -19,7 +19,6 @@ import routie.routie.controller.dto.request.RoutieUpdateRequest;
 import routie.routie.controller.dto.request.RoutieUpdateRequest.RoutiePlaceRequest;
 import routie.routie.controller.dto.response.RoutiePlaceCreateResponse;
 import routie.routie.controller.dto.response.RoutieReadResponse;
-import routie.routie.controller.dto.response.RoutieUpdateResponse;
 import routie.routie.controller.dto.response.RoutieValidationResponse;
 import routie.routie.domain.Routie;
 import routie.routie.domain.RoutiePlace;
@@ -120,29 +119,34 @@ public class RoutieService {
     @Transactional
     public void modifyRoutie(final String routieSpaceIdentifier, final RoutieUpdateRequest routieUpdateRequest) {
         RoutieSpace routieSpace = getRoutieSpaceByIdentifier(routieSpaceIdentifier);
-        Routie routie = routieSpace.getRoutie();
+        routiePlaceRepository.deleteByRoutieSpaceId(routieSpace.getId());
 
-        List<Long> placeIds = routieUpdateRequest.routiePlaces().stream()
+        Map<Long, Place> placeMap = getPlaceMap(routieUpdateRequest);
+        List<RoutiePlace> newRoutiePlaces = createNewRoutiePlaces(routieUpdateRequest, placeMap);
+
+        routieSpace.getRoutie().getRoutiePlaces().addAll(newRoutiePlaces);
+    }
+
+    private Map<Long, Place> getPlaceMap(final RoutieUpdateRequest request) {
+        List<Long> placeIds = request.routiePlaces().stream()
                 .map(RoutiePlaceRequest::placeId)
                 .toList();
 
-        Map<Long, Place> placeMap = placeRepository.findAllById(placeIds).stream()
+        return placeRepository.findAllById(placeIds).stream()
                 .collect(Collectors.toMap(Place::getId, Function.identity()));
+    }
 
-        List<RoutiePlace> routiePlaces = routieUpdateRequest.routiePlaces().stream()
+    private List<RoutiePlace> createNewRoutiePlaces(final RoutieUpdateRequest request,
+                                                    final Map<Long, Place> placeMap) {
+        return request.routiePlaces().stream()
                 .map(r -> new RoutiePlace(
                         r.sequence(),
                         Optional.ofNullable(placeMap.get(r.placeId()))
-                                .orElseThrow(
-                                        () -> new BusinessException(
-                                                ErrorCode.PLACE_NOT_FOUND_BY_ID,
-                                                "해당하는 id의 장소를 찾을 수 없습니다: " + r.placeId()
-                                        ))
+                                .orElseThrow(() -> new BusinessException(
+                                        ErrorCode.PLACE_NOT_FOUND_BY_ID,
+                                        "해당하는 id의 장소를 찾을 수 없습니다: " + r.placeId()
+                                ))
                 )).toList();
-
-        routieSpace.getRoutie().updateRoutiePlaces(routiePlaces);
-
-        RoutieUpdateResponse.from(routie);
     }
 
     private RoutieSpace getRoutieSpaceByIdentifier(final String routieSpaceIdentifier) {
