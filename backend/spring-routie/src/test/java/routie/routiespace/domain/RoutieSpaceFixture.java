@@ -6,6 +6,7 @@ import java.util.UUID;
 import java.util.concurrent.atomic.AtomicLong;
 import routie.place.domain.Place;
 import routie.routie.domain.Routie;
+import routie.routie.domain.RoutieFixture;
 
 public class RoutieSpaceFixture {
 
@@ -20,7 +21,7 @@ public class RoutieSpaceFixture {
     }
 
     public static Routie emptyRoutie() {
-        return Routie.empty();
+        return RoutieFixture.emptyRoutie();
     }
 
     public static List<Place> emptyPlaces() {
