@@ -86,6 +86,13 @@ jobs:
           mkdir -p config
           echo '${{ secrets.APPLICATION_YML_DEV }}' > config/application.yml
 
+      - name: Execute Flyway Migration
+        run: ./gradlew flywayMigrate
+        env:
+          MYSQL_URL: ${{ secrets.MYSQL_URL_DEV }}
+          MYSQL_USERNAME: ${{ secrets.MYSQL_USERNAME_DEV }}
+          MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD_DEV }}
+
       - name: Kill existing Spring Process
         run: |
           PID=$(sudo lsof -ti:8080 || true)
