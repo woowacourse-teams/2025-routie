@@ -57,7 +57,7 @@ public class TimePeriodCalculator {
 
     private void validateStartDateTime(final LocalDateTime startDateTime) {
         if (startDateTime == null) {
-            throw new IllegalArgumentException("시작 시각은 null일 수 없습니다.");
+            throw new BusinessException(ErrorCode.TIME_PERIOD_START_TIME_NULL);
         }
     }
 

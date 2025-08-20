@@ -248,7 +248,7 @@ public enum ErrorCode {
     ),
     ROUTIE_START_TIME_NULL(
             "3023",
-            "일정 시간 시간은 null일 수 없습니다.",
+            "일정 시작 시간은 null일 수 없습니다.",
             HttpStatus.BAD_REQUEST
     ),
     ROUTIE_END_TIME_NULL(
@@ -261,16 +261,21 @@ public enum ErrorCode {
             "TimePeriods는 null일 수 없습니다.",
             HttpStatus.BAD_REQUEST
     ),
+    ROUTIE_END_TIME_BEFORE_START_TIME(
+            "3026",
+            "일정 종료 시간은 시작 시간보다 빠를 수 없습니다.",
+            HttpStatus.BAD_REQUEST
+    ),
 
     // TimePeriod Validation
     TIME_PERIOD_START_TIME_NULL(
             "3030",
-            "장소 도착 시간은 null일 수 없습니다.",
+            "장소 시작 시간은 null일 수 없습니다.",
             HttpStatus.BAD_REQUEST
     ),
     TIME_PERIOD_END_TIME_NULL(
             "3031",
-            "장소 출발 시간은 null일 수 없습니다.",
+            "장소 도착 시간은 null일 수 없습니다.",
             HttpStatus.BAD_REQUEST
     ),
     TIME_PERIODS_NULL(
@@ -313,6 +318,11 @@ public enum ErrorCode {
             "9001",
             "경로 계산을 위한 외부 API 호출 중 오류가 발생했습니다.",
             HttpStatus.BAD_GATEWAY
+    ),
+    GOOGLE_TRANSIT_ROUTE_API_DEPARTURE_TIME_OUT_OF_RANGE(
+            "9002",
+            "대중교통 Route 계산 시작 시간은 현재로부터 과거 7일부터 미래 100일 사이여야 합니다.",
+            HttpStatus.BAD_REQUEST
     ),
     KAKAO_DRIVING_ROUTE_API_RESPONSE_EMPTY(
             "9010",
