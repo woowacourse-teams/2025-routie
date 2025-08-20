@@ -1,6 +1,6 @@
 import { useCallback, useRef, useState } from 'react';
 
-export function useAsyncLock() {
+export const useAsyncLock = () => {
   const isLockedRef = useRef(false);
   const [loading, setLoading] = useState(false);
 
