@@ -1,5 +1,6 @@
 import Card from '@/@common/components/Card/Card';
 import Flex from '@/@common/components/Flex/Flex';
+import Icon from '@/@common/components/IconSvg/Icon';
 import Text from '@/@common/components/Text/Text';
 import failIcon from '@/assets/icons/fail.svg';
 import successIcon from '@/assets/icons/success.svg';
@@ -25,7 +26,7 @@ const RoutieValidationResultCard = () => {
       height="5.4rem"
     >
       <Flex width="100%" gap={1.5} justifyContent="flex-start" height="100%">
-        <img src={isValidRoutie ? successIcon : failIcon} alt="available" />
+        <Icon name={isValidRoutie ? 'success' : 'fail'} size={28} />
         <Flex direction="column" gap={0.3} alignItems="flex-start">
           <Text variant="subTitle">{resultMessage}</Text>
         </Flex>
