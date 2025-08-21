@@ -8,6 +8,7 @@ import durationTime from '@/assets/icons/duration-time.svg';
 import edit from '@/assets/icons/edit.svg';
 import fail from '@/assets/icons/fail.svg';
 import info from '@/assets/icons/info.svg';
+import loading from '@/assets/icons/loading.svg';
 import logo from '@/assets/icons/logo.svg';
 import minus from '@/assets/icons/minus.svg';
 import pin from '@/assets/icons/pin.svg';
@@ -17,6 +18,7 @@ import success from '@/assets/icons/success.svg';
 import timepass from '@/assets/icons/timepass.svg';
 import train from '@/assets/icons/train.svg';
 import trash from '@/assets/icons/trash.svg';
+import waiting from '@/assets/icons/waiting.svg';
 
 const allIcons = {
   check,
@@ -27,6 +29,7 @@ const allIcons = {
   fail,
   info,
   logo,
+  loading,
   minus,
   pin,
   plus,
@@ -35,6 +38,7 @@ const allIcons = {
   trash,
   timepass,
   durationTime,
+  waiting,
   closeRed,
   car,
   train,
