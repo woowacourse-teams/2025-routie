@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { useToastContext } from '@/@common/contexts/useToastContext';
 import { useSessionStorage } from '@/@common/hooks/useSessionStorage';
+import { isTimeRangeInvalid } from '@/@common/utils/isTimeRangeInvalid ';
 
 import { getRoutieValidation } from '../apis/routie';
 import {
@@ -119,12 +120,26 @@ const useRoutieValidate = (): UseRoutieValidateReturn => {
     setIsValidateActive(!isValidateActive);
   }, [isValidateActive, setIsValidateActive]);
 
+  const hasInvalidTimeRange = isTimeRangeInvalid(
+    routieTime.startTime,
+    routieTime.endTime,
+  );
+
   const validateRoutie = useCallback(
     async (movingStrategy: string, placeCount?: number) => {
       const { canValidate } = getValidationConditions(placeCount);
 
       if (!canValidate) {
         updateValidationStatus(placeCount);
+        return;
+      }
+
+      if (hasInvalidTimeRange) {
+        setValidationStatus('error');
+        showToast({
+          message: '종료 시간이 시작 시간보다 빠를 수 없습니다.',
+          type: 'error',
+        });
         return;
       }
 
@@ -159,7 +174,13 @@ const useRoutieValidate = (): UseRoutieValidateReturn => {
         }
       }
     },
-    [getValidationConditions, updateValidationStatus, combineDateTime],
+    [
+      isTimeRangeInvalid,
+      getValidationConditions,
+      updateValidationStatus,
+      combineDateTime,
+      showToast,
+    ],
   );
 
   useEffect(() => {
