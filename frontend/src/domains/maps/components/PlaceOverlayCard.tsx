@@ -57,7 +57,7 @@ const PlaceOverlayCard = ({ place, onClose }: Props) => {
           {place.name}
         </Text>
         <Text variant="caption" color={theme.colors.gray[200]} ellipsis>
-          {place.roadAddressName}
+          {place.roadAddressName || place.addressName}
         </Text>
         <Pill type="time">
           {place.openAt}-{place.closeAt}
