@@ -4,8 +4,10 @@ import Flex from '@/@common/components/Flex/Flex';
 import Modal, { ModalProps } from '@/@common/components/Modal/Modal';
 import Text from '@/@common/components/Text/Text';
 import { useToastContext } from '@/@common/contexts/useToastContext';
+import { useAsyncLock } from '@/@common/hooks/useAsyncLock';
 import { useAddPlaceForm } from '@/domains/places/hooks/useAddPlaceForm';
 import { usePlaceFormValidation } from '@/domains/places/hooks/usePlaceFormValidation';
+import { usePlaceListContext } from '@/layouts/PlaceList/contexts/PlaceListContext';
 
 import addPlace from '../../apis/addPlace';
 import { useFunnel } from '../../hooks/useFunnel';
@@ -18,20 +20,13 @@ import AddPlaceModalButtons from './AddPlaceModalButtons';
 import AddPlaceModalHeader from './AddPlaceModalHeader';
 import AddPlaceValidation from './AddPlaceValidation';
 
-interface AddPlaceModalProps extends Omit<ModalProps, 'children'> {
-  onPlaceAdded?: () => Promise<void>;
-}
-
-const AddPlaceModal = ({
-  isOpen,
-  onClose,
-  onPlaceAdded,
-}: AddPlaceModalProps) => {
+const AddPlaceModal = ({ isOpen, onClose }: Omit<ModalProps, 'children'>) => {
   const { form, handleInputChange, handleToggleDay, resetForm } =
     useAddPlaceForm();
   const { isEmpty, isValid } = usePlaceFormValidation(form);
   const { step, nextStep, prevStep, resetFunnel, isStep1, isStep2 } =
     useFunnel();
+  const { handlePlaceAdded } = usePlaceListContext();
 
   const [showErrors, setShowErrors] = useState(false);
   const [placeLocationInfo, setPlaceLocationInfo] =
@@ -64,6 +59,8 @@ const AddPlaceModal = ({
     prevStep();
   };
 
+  const { runWithLock: runSubmitWithLock } = useAsyncLock();
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const addPlaceForm = { ...form, ...placeLocationInfo };
@@ -73,25 +70,25 @@ const AddPlaceModal = ({
       return;
     }
 
-    try {
-      await addPlace(addPlaceForm);
-      if (onPlaceAdded) {
-        await onPlaceAdded();
-      }
-      showToast({
-        message: '장소가 추가되었습니다.',
-        type: 'success',
-      });
-    } catch (error) {
-      console.error(error);
-      if (error instanceof Error) {
+    return runSubmitWithLock(async () => {
+      try {
+        await addPlace(addPlaceForm);
+        await handlePlaceAdded();
         showToast({
-          message: error.message,
-          type: 'error',
+          message: '장소가 추가되었습니다.',
+          type: 'success',
         });
+        handleClose();
+      } catch (error) {
+        console.error(error);
+        if (error instanceof Error) {
+          showToast({
+            message: error.message,
+            type: 'error',
+          });
+        }
       }
-    }
-    handleClose();
+    });
   };
 
   const renderContent = () => {

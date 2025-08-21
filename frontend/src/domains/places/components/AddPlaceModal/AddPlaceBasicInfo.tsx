@@ -13,7 +13,7 @@ interface AddPlaceBasicInfoProps {
   showErrors: boolean;
   handleInputChange: (
     field: keyof Omit<FormState, 'closedDayOfWeeks'>,
-    value: string,
+    value: string | null,
   ) => void;
   handleSearchPlaceMap: (placeLocation: PlaceLocationType) => void;
 }

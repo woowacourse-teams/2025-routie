@@ -28,6 +28,7 @@ const theme = {
   font: {
     size: {
       heading: '2.4rem',
+      subHeading: '2rem',
       body: '1.6rem',
       caption: '1.4rem',
       label: '1.2rem',

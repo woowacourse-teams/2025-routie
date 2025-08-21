@@ -6,6 +6,8 @@ export interface PlaceListContextType {
   placeList: PlaceCardProps[];
   refetchPlaceList: () => Promise<void>;
   handleDelete: (id: number) => void;
+  newlyAddedPlace: PlaceCardProps | null;
+  handlePlaceAdded: () => Promise<void>;
 }
 
 export const PlaceListContext = createContext<PlaceListContextType | null>(

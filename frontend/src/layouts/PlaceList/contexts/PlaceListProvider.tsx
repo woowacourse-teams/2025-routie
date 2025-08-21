@@ -13,6 +13,9 @@ interface Props {
 export const PlaceListProvider = ({ children }: Props) => {
   const [placeList, setPlaceList] = useState<PlaceCardProps[]>([]);
   const { showToast } = useToastContext();
+  const [newlyAddedPlace, setNewlyAddedPlace] = useState<PlaceCardProps | null>(
+    null,
+  );
 
   const refetchPlaceList = useCallback(async () => {
     try {
@@ -33,13 +36,44 @@ export const PlaceListProvider = ({ children }: Props) => {
     setPlaceList((prev) => prev.filter((place) => place.id !== id));
   }, []);
 
+  const handlePlaceAdded = useCallback(async () => {
+    const previousPlaceIds = placeList.map((place) => place.id);
+
+    try {
+      const newPlaceList = await getPlaceList();
+      setPlaceList(newPlaceList);
+
+      const newPlace = newPlaceList.find(
+        (place) => !previousPlaceIds.includes(place.id),
+      );
+      if (newPlace) {
+        setNewlyAddedPlace(newPlace);
+        setTimeout(() => setNewlyAddedPlace(null), 500);
+      }
+    } catch (error) {
+      console.error('장소 목록을 불러오는데 실패했습니다.', error);
+      if (error instanceof Error) {
+        showToast({
+          message: error.message,
+          type: 'error',
+        });
+      }
+    }
+  }, [placeList]);
+
   useEffect(() => {
     refetchPlaceList();
   }, []);
 
   return (
     <PlaceListContext.Provider
-      value={{ placeList, refetchPlaceList, handleDelete }}
+      value={{
+        placeList,
+        refetchPlaceList,
+        handleDelete,
+        newlyAddedPlace,
+        handlePlaceAdded,
+      }}
     >
       {children}
     </PlaceListContext.Provider>

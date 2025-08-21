@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from 'react';
 import Flex from '@/@common/components/Flex/Flex';
 import Modal, { ModalProps } from '@/@common/components/Modal/Modal';
 import { useToastContext } from '@/@common/contexts/useToastContext';
+import { useAsyncLock } from '@/@common/hooks/useAsyncLock';
 import { useRoutieContext } from '@/domains/routie/contexts/useRoutieContext';
 
 import editPlace from '../../apis/editPlace';
@@ -42,8 +43,13 @@ const EditPlaceModal = ({
   const { isEmpty, isValid } = usePlaceFormValidation(form);
   const [showErrors, setShowErrors] = useState(false);
   const { showToast } = useToastContext();
-
   const initialFormRef = useRef<typeof form | null>(null);
+  const inputAddressName =
+    form.roadAddressName === null ? form.addressName : form.roadAddressName;
+  const breakStartAtValidation =
+    showErrors && !isEmpty.breakEndAt && isEmpty.breakStartAt;
+  const breakEndAtValidation =
+    showErrors && !isEmpty.breakStartAt && isEmpty.breakEndAt;
 
   useEffect(() => {
     if (!isOpen) return;
@@ -77,6 +83,8 @@ const EditPlaceModal = ({
 
   const placeInRoutie = routieIdList.includes(id);
 
+  const { runWithLock: runSubmitWithLock } = useAsyncLock();
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!isValid) {
@@ -84,29 +92,32 @@ const EditPlaceModal = ({
 
       return;
     }
-    try {
-      const { name, roadAddressName, ...rest } = form;
 
-      await editPlace({ placeId: id, editableFields: rest });
-      await onPlaceChange();
+    return runSubmitWithLock(async () => {
+      try {
+        const { name, roadAddressName, addressName, ...rest } = form;
 
-      if (placeInRoutie) {
-        await refetchRoutieData();
-      }
-      showToast({
-        message: '장소 정보가 수정되었습니다.',
-        type: 'success',
-      });
-    } catch (error) {
-      console.log(error);
-      if (error instanceof Error) {
+        await editPlace({ placeId: id, editableFields: rest });
+        await onPlaceChange();
+
+        if (placeInRoutie) {
+          await refetchRoutieData();
+        }
         showToast({
-          message: error.message,
-          type: 'error',
+          message: '장소 정보가 수정되었습니다.',
+          type: 'success',
         });
+        handleClose();
+      } catch (error) {
+        console.error(error);
+        if (error instanceof Error) {
+          showToast({
+            message: error.message,
+            type: 'error',
+          });
+        }
       }
-    }
-    handleClose();
+    });
   };
 
   return (
@@ -127,7 +138,7 @@ const EditPlaceModal = ({
                 disabled={true}
               />
               <AddressInput
-                value={form.roadAddressName}
+                value={inputAddressName}
                 onChange={handleInputChange}
                 disabled={true}
               />
@@ -149,6 +160,10 @@ const EditPlaceModal = ({
                 breakStartAt={form.breakStartAt}
                 breakEndAt={form.breakEndAt}
                 onChange={handleInputChange}
+                error={{
+                  breakStartAt: breakStartAtValidation,
+                  breakEndAt: breakEndAtValidation,
+                }}
               />
               <ClosedDaySelector
                 closedDayOfWeeks={form.closedDayOfWeeks}

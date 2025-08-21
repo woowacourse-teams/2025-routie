@@ -10,10 +10,13 @@ export const useRoutieSpaceNavigation = () => {
 
   const handleCreateRoutieSpace = useCallback(async () => {
     try {
-      await createRoutieSpace();
-      const newUuid = localStorage.getItem('routieSpaceUuid');
-      if (!newUuid) return;
-      navigate(`/routie-spaces?routieSpaceIdentifier=${newUuid}`);
+      const newUuid = await createRoutieSpace();
+      const queryParams = new URLSearchParams({
+        routieSpaceIdentifier: newUuid,
+      });
+
+      navigate(`/routie-spaces?${queryParams.toString()}`);
+
       showToast({
         message: '새 루티 스페이스가 생성되었습니다',
         type: 'success',

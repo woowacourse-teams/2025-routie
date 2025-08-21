@@ -6,6 +6,7 @@ import IconButton from '@/@common/components/IconButton/IconButton';
 import Pill from '@/@common/components/Pill/Pill';
 import Text from '@/@common/components/Text/Text';
 import { useToastContext } from '@/@common/contexts/useToastContext';
+import { useAsyncLock } from '@/@common/hooks/useAsyncLock';
 import useModal from '@/@common/hooks/useModal';
 import checkIcon from '@/assets/icons/check.svg';
 import editIcon from '@/assets/icons/edit.svg';
@@ -35,6 +36,7 @@ export const PlaceCard = ({ selected, ...props }: PlaceCardProps) => {
   const { openModal, closeModal, modalOpen } = useModal();
   const { triggerEvent } = useGoogleEventTrigger();
   const { showToast } = useToastContext();
+  const { runWithLock: runDeleteWithLock } = useAsyncLock();
 
   const handlePlaceSelect = async () => {
     if (selected) return;
@@ -52,27 +54,29 @@ export const PlaceCard = ({ selected, ...props }: PlaceCardProps) => {
   };
 
   const handleDelete = async () => {
-    try {
-      await deletePlace(props.id);
-      refetchPlaceList();
-      triggerEvent({
-        action: 'click',
-        category: 'place',
-        label: '장소 삭제하기 버튼',
-      });
-      showToast({
-        message: '장소가 삭제되었습니다.',
-        type: 'success',
-      });
-    } catch (error) {
-      console.error(error);
-      if (error instanceof Error) {
-        showToast({
-          message: error.message,
-          type: 'error',
+    return runDeleteWithLock(async () => {
+      try {
+        await deletePlace(props.id);
+        await refetchPlaceList();
+        triggerEvent({
+          action: 'click',
+          category: 'place',
+          label: '장소 삭제하기 버튼',
         });
+        showToast({
+          message: '장소가 삭제되었습니다.',
+          type: 'success',
+        });
+      } catch (error) {
+        console.error(error);
+        if (error instanceof Error) {
+          showToast({
+            message: error.message,
+            type: 'error',
+          });
+        }
       }
-    }
+    });
   };
 
   const handleOpenEditModal = () => {
@@ -131,7 +135,7 @@ export const PlaceCard = ({ selected, ...props }: PlaceCardProps) => {
                 {props.name}
               </Text>
               <Text variant="caption" color={theme.colors.gray[200]} ellipsis>
-                {props.roadAddressName}
+                {props.roadAddressName || props.addressName}
               </Text>
               <Flex direction="row" gap={1}>
                 <Text

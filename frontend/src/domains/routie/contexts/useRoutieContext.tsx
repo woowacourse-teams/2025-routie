@@ -1,12 +1,14 @@
 import {
   createContext,
-  useContext,
-  useState,
-  useEffect,
   useCallback,
+  useContext,
+  useEffect,
+  useState,
 } from 'react';
 
 import { useToastContext } from '@/@common/contexts/useToastContext';
+import { useAsyncLock } from '@/@common/hooks/useAsyncLock';
+import { useDebounceAsync } from '@/@common/hooks/useDebounceAsync';
 
 import {
   addRoutiePlace,
@@ -31,6 +33,7 @@ type RoutieContextType = {
   routieIdList: number[];
   movingStrategy: MovingStrategyType;
   setMovingStrategy: (strategy: MovingStrategyType) => void;
+  fetchedStrategy: MovingStrategyType;
 };
 
 const RoutieContext = createContext<RoutieContextType>({
@@ -43,6 +46,7 @@ const RoutieContext = createContext<RoutieContextType>({
   routieIdList: [],
   movingStrategy: 'DRIVING',
   setMovingStrategy: () => {},
+  fetchedStrategy: 'DRIVING',
 });
 
 export const RoutieProvider = ({ children }: { children: React.ReactNode }) => {
@@ -52,7 +56,14 @@ export const RoutieProvider = ({ children }: { children: React.ReactNode }) => {
   const { isValidateActive, combineDateTime, validateRoutie } =
     useRoutieValidateContext();
   const { movingStrategy, setMovingStrategy } = useMovingStrategy();
+  const [fetchedStrategy, setFetchedStrategy] =
+    useState<MovingStrategyType>(movingStrategy);
   const { showToast } = useToastContext();
+
+  const { runWithLock: runAddWithLock } = useAsyncLock();
+  const { runWithLock: runDeleteWithLock } = useAsyncLock();
+
+  const sortBySequence = (a: Routie, b: Routie) => a.sequence - b.sequence;
 
   const refetchRoutieData = useCallback(async () => {
     try {
@@ -60,9 +71,11 @@ export const RoutieProvider = ({ children }: { children: React.ReactNode }) => {
         combineDateTime.startDateTime,
         movingStrategy,
       );
-      setRoutiePlaces(routies.routiePlaces);
+      const sortedPlaces = [...routies.routiePlaces].sort(sortBySequence);
+      setRoutiePlaces(sortedPlaces);
       setRoutes(routies.routes);
-      validateRoutie(movingStrategy, routies.routiePlaces.length);
+      await validateRoutie(movingStrategy, routies.routiePlaces.length);
+      setFetchedStrategy(movingStrategy);
     } catch (error) {
       console.error(error);
       if (error instanceof Error) {
@@ -72,50 +85,62 @@ export const RoutieProvider = ({ children }: { children: React.ReactNode }) => {
         });
       }
     }
-  }, [combineDateTime.startDateTime, validateRoutie, movingStrategy]);
+  }, [
+    isValidateActive,
+    combineDateTime.startDateTime,
+    validateRoutie,
+    movingStrategy,
+    showToast,
+  ]);
+
+  const debouncedRefetchRoutieData = useDebounceAsync(refetchRoutieData, 300);
 
   const handleAddRoutie = useCallback(
     async (id: number) => {
-      try {
-        await addRoutiePlace(id);
-        await refetchRoutieData();
-        showToast({
-          message: '내 동선에 장소가 추가되었습니다.',
-          type: 'success',
-        });
-      } catch (error) {
-        console.error(error);
-        if (error instanceof Error) {
+      return runAddWithLock(async () => {
+        try {
+          await addRoutiePlace(id);
+          await refetchRoutieData();
           showToast({
-            message: error.message,
-            type: 'error',
+            message: '내 동선에 장소가 추가되었습니다.',
+            type: 'success',
           });
+        } catch (error) {
+          console.error(error);
+          if (error instanceof Error) {
+            showToast({
+              message: error.message,
+              type: 'error',
+            });
+          }
         }
-      }
+      });
     },
-    [refetchRoutieData],
+    [refetchRoutieData, runAddWithLock, showToast],
   );
 
   const handleDeleteRoutie = useCallback(
     async (id: number) => {
-      try {
-        await deleteRoutiePlace(id);
-        await refetchRoutieData();
-        showToast({
-          message: '내 동선에서 장소가 삭제되었습니다.',
-          type: 'success',
-        });
-      } catch (error) {
-        console.error(error);
-        if (error instanceof Error) {
+      return runDeleteWithLock(async () => {
+        try {
+          await deleteRoutiePlace(id);
+          await refetchRoutieData();
           showToast({
-            message: error.message,
-            type: 'error',
+            message: '내 동선에서 장소가 삭제되었습니다.',
+            type: 'success',
           });
+        } catch (error) {
+          console.error(error);
+          if (error instanceof Error) {
+            showToast({
+              message: error.message,
+              type: 'error',
+            });
+          }
         }
-      }
+      });
     },
-    [refetchRoutieData],
+    [refetchRoutieData, showToast, runDeleteWithLock],
   );
 
   const handleChangeRoutie = useCallback(
@@ -127,7 +152,7 @@ export const RoutieProvider = ({ children }: { children: React.ReactNode }) => {
         .sort((a, b) => a.sequence - b.sequence);
       try {
         await editRoutieSequence(sortedList);
-        refetchRoutieData();
+        await refetchRoutieData();
       } catch (error) {
         console.error(error);
         if (error instanceof Error) {
@@ -138,12 +163,18 @@ export const RoutieProvider = ({ children }: { children: React.ReactNode }) => {
         }
       }
     },
-    [refetchRoutieData],
+    [refetchRoutieData, showToast],
   );
 
   useEffect(() => {
-    refetchRoutieData();
-  }, [isValidateActive, combineDateTime, movingStrategy]);
+    debouncedRefetchRoutieData();
+  }, [
+    isValidateActive,
+    movingStrategy,
+    combineDateTime.startDateTime,
+    combineDateTime.endDateTime,
+    debouncedRefetchRoutieData,
+  ]);
 
   return (
     <RoutieContext.Provider
@@ -157,6 +188,7 @@ export const RoutieProvider = ({ children }: { children: React.ReactNode }) => {
         handleChangeRoutie,
         movingStrategy,
         setMovingStrategy,
+        fetchedStrategy,
       }}
     >
       {children}

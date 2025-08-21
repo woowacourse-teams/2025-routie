@@ -147,7 +147,7 @@ const RoutiePlaceCard = ({ routie }: { routie: Routie }) => {
                 <Flex gap={0.4} alignItems="center">
                   <Icon name="pin" size={12} />
                   <Text variant="label" color={theme.colors.gray[300]} ellipsis>
-                    {place.roadAddressName}
+                    {place.roadAddressName || place.addressName}
                   </Text>
                 </Flex>
 

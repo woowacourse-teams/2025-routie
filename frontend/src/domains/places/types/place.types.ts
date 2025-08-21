@@ -6,13 +6,13 @@ export type PlaceLocationType = {
 
 export type PlaceSearchType = PlaceLocationType & {
   name: string;
-  roadAddressName: string;
+  roadAddressName: string | null;
   addressName: string;
 };
 
 export type PlaceBaseType = {
   name: string;
-  roadAddressName: string;
+  roadAddressName: string | null;
   addressName: string;
   stayDurationMinutes: number;
   openAt: string;
