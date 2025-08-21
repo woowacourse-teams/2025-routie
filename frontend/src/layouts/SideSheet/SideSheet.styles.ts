@@ -1,4 +1,5 @@
 import { css } from '@emotion/react';
+
 import theme from '@/styles/theme';
 
 export const SheetBaseStyle = css`
@@ -16,7 +17,7 @@ export const SheetBaseStyle = css`
   border: 1px solid ${theme.colors.black};
   border-radius: 12px;
 
-  background: ${theme.colors.white};
+  background-color: ${theme.home.gray};
 
   transition: transform 300ms cubic-bezier(0.25, 0.8, 0.25, 1),
     box-shadow 300ms ease, opacity 300ms ease;
@@ -25,6 +26,7 @@ export const SheetBaseStyle = css`
 export const SheetContentContainerStyle = css`
   flex: 1;
   min-height: 0;
+  padding: 2.4rem 1.6rem;
 `;
 
 export const SheetOpenStyle = css`
@@ -35,7 +37,7 @@ export const SheetOpenStyle = css`
 `;
 
 export const SheetCloseStyle = css`
-  transform: translateX(calc(-100% + 3.6rem - 20px));
+  transform: translateX(calc(-100% + 3rem - 20px));
   opacity: 0.96;
   box-shadow: none;
 `;
