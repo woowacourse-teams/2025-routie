@@ -14,4 +14,5 @@ export type CardVariantProps =
   | 'available'
   | 'unavailable'
   | 'disabled'
-  | 'invalid';
+  | 'invalid'
+  | 'valid';

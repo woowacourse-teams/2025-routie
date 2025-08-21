@@ -10,7 +10,7 @@ const RoutieValidationResultCard = () => {
   const { validationErrors } = useRoutieValidateContext();
 
   const isValidRoutie = validationErrors === null;
-  const variant = isValidRoutie ? 'available' : 'unavailable';
+  const variant = isValidRoutie ? 'valid' : 'unavailable';
 
   const resultMessage = validationErrors
     ? VALIDATION_RESULT_MESSAGE[validationErrors]
