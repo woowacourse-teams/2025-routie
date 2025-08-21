@@ -8,9 +8,9 @@ import headerStyle from './Header.style';
 import HomeButton from './HomeButton/HomeButton';
 import { buttonStyle } from './HomeButton/HomeButton.styles';
 
-type HeaderProps = {
+interface HeaderProps extends PropsWithChildren {
   isHome?: boolean;
-} & PropsWithChildren;
+}
 
 const Header = ({ children, isHome }: HeaderProps) => {
   const navigate = useNavigate();
