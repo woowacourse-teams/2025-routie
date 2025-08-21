@@ -16,6 +16,7 @@ import search from '@/assets/icons/search.svg';
 import success from '@/assets/icons/success.svg';
 import timepass from '@/assets/icons/timepass.svg';
 import train from '@/assets/icons/train.svg';
+import disableTrash from '@/assets/icons/trash-disable.svg';
 import trash from '@/assets/icons/trash.svg';
 
 const allIcons = {
@@ -38,6 +39,7 @@ const allIcons = {
   closeRed,
   car,
   train,
+  disableTrash,
 } as const;
 
 export default allIcons;
