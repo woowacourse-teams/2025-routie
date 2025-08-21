@@ -7,11 +7,6 @@ import Pill from '@/@common/components/Pill/Pill';
 import Text from '@/@common/components/Text/Text';
 import { useToastContext } from '@/@common/contexts/useToastContext';
 import useModal from '@/@common/hooks/useModal';
-import checkIcon from '@/assets/icons/check.svg';
-import editIcon from '@/assets/icons/edit.svg';
-import plusIcon from '@/assets/icons/plus.svg';
-import disableTrashIcon from '@/assets/icons/trash-disable.svg';
-import trashIcon from '@/assets/icons/trash.svg';
 import { useRoutieContext } from '@/domains/routie/contexts/useRoutieContext';
 import { usePlaceListContext } from '@/layouts/PlaceList/contexts/PlaceListContext';
 import { useGoogleEventTrigger } from '@/libs/googleAnalytics/hooks/useGoogleEventTrigger';
@@ -86,15 +81,17 @@ export const PlaceCard = ({ selected, ...props }: PlaceCardProps) => {
     <>
       <Card
         id={props.id.toString()}
-        width="100%"
         variant={selected ? 'available' : 'default'}
       >
         <Flex
           direction="column"
-          gap={1.5}
+          gap={1.6}
           justifyContent="flex-start"
           alignItems="flex-start"
-          height="15rem"
+          height="12rem"
+          css={css`
+            padding: 0.8rem 0.4rem;
+          `}
         >
           <Flex
             justifyContent="space-between"
@@ -102,20 +99,6 @@ export const PlaceCard = ({ selected, ...props }: PlaceCardProps) => {
             height="100%"
             gap={2}
           >
-            <IconButton
-              icon={selected ? checkIcon : plusIcon}
-              variant={selected ? 'selected' : 'select'}
-              onClick={handlePlaceSelect}
-              css={css`
-                width: 4rem;
-                height: 100%;
-
-                & img {
-                  width: 2rem;
-                  height: 2rem;
-                }
-              `}
-            />
             <Flex
               direction="column"
               alignItems="flex-start"
@@ -131,42 +114,35 @@ export const PlaceCard = ({ selected, ...props }: PlaceCardProps) => {
               <Text variant="caption" color={theme.colors.gray[200]} ellipsis>
                 {props.roadAddressName}
               </Text>
-              <Flex direction="row" gap={1}>
-                <Text
-                  variant="description"
-                  ellipsis
-                  css={css`
-                    width: 5.5rem;
-                  `}
-                >
-                  영업 시간
-                </Text>
-                <Pill type="time">
+
+              <Flex gap={0.4}>
+                <Pill type="default">
+                  <Text variant="description" ellipsis>
+                    영업 시간
+                  </Text>
                   {props.openAt} -{' '}
                   {getFormatedCloseAt(props.openAt, props.closeAt)}
                 </Pill>
-              </Flex>
-              {props.breakStartAt && (
-                <Flex direction="row" gap={1}>
-                  <Text
-                    variant="description"
-                    ellipsis
-                    css={css`
-                      width: 5.5rem;
-                    `}
-                  >
-                    브레이크 타임
-                  </Text>
-                  <Pill type="time">
+                {props.breakStartAt && (
+                  <Pill type="default">
+                    <Text
+                      variant="description"
+                      ellipsis
+                      css={css`
+                        width: 5.5rem;
+                      `}
+                    >
+                      브레이크 타임
+                    </Text>
                     {props.breakStartAt} - {props.breakEndAt}
                   </Pill>
-                </Flex>
-              )}
+                )}
+              </Flex>
               <DatePreviewList
                 value={getCheckedListExcept(props.closedDayOfWeeks)}
               />
             </Flex>
-            <Flex direction="column" gap={5} height="100%">
+            <Flex direction="column" gap={1.6} height="100%">
               <Icon
                 name={selected ? 'check' : 'plus'}
                 onClick={handlePlaceSelect}
