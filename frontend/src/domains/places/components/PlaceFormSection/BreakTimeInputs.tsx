@@ -2,8 +2,8 @@ import Flex from '@/@common/components/Flex/Flex';
 import Input from '@/@common/components/Input/Input';
 
 interface BreakTimeInputsProps {
-  breakStartAt: string;
-  breakEndAt: string;
+  breakStartAt: string | null;
+  breakEndAt: string | null;
   onChange: (field: 'breakStartAt' | 'breakEndAt', value: string) => void;
   error?: {
     breakStartAt?: boolean;
@@ -23,7 +23,7 @@ const BreakTimeInputs = ({
         <Input
           id="breakStartAt"
           type="time"
-          value={breakStartAt}
+          value={breakStartAt ?? ''}
           onChange={(value) => onChange('breakStartAt', value)}
           variant={error?.breakStartAt ? 'error' : 'primary'}
           label="브레이크 타임 시작 시간"
@@ -33,7 +33,7 @@ const BreakTimeInputs = ({
         <Input
           id="breakEndAt"
           type="time"
-          value={breakEndAt}
+          value={breakEndAt ?? ''}
           onChange={(value) => onChange('breakEndAt', value)}
           variant={error?.breakEndAt ? 'error' : 'primary'}
           label="브레이크 타임 종료 시간"

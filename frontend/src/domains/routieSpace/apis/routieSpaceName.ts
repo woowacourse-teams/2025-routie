@@ -9,10 +9,6 @@ export const getRoutieSpaceName = async () => {
 
   const response = await apiClient.get(`/routie-spaces/${routieSpaceUuid}`);
 
-  if (!response.ok) {
-    throw new Error('루티 스페이스 이름 조회 실패');
-  }
-
   const data = await response.json();
 
   return data.name;
@@ -28,10 +24,6 @@ export const editRoutieSpaceName = async (name: string) => {
   const response = await apiClient.patch(`/routie-spaces/${routieSpaceUuid}`, {
     name,
   });
-
-  if (!response.ok) {
-    throw new Error('루티 스페이스 이름 수정 실패');
-  }
 
   const data = await response.json();
 

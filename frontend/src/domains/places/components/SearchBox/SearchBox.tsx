@@ -14,7 +14,7 @@ import SearchList from '../SearchList/SearchList';
 interface SearchBoxProps {
   onChange: (
     field: 'name' | 'roadAddressName' | 'addressName',
-    value: string,
+    value: string | null,
   ) => void;
   handleSearchPlaceMap: (searchInfo: PlaceLocationType) => void;
 }

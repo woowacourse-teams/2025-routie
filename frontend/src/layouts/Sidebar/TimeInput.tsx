@@ -2,12 +2,17 @@ import Flex from '@/@common/components/Flex/Flex';
 import Input from '@/@common/components/Input/Input';
 import { useRoutieValidateContext } from '@/domains/routie/contexts/useRoutieValidateContext';
 
+import { isTimeRangeInvalid } from '../../@common/utils/isTimeRangeInvalid ';
+
 const TimeInput = () => {
   const { isValidateActive, routieTime, handleTimeChange } =
     useRoutieValidateContext();
 
+  const error = isTimeRangeInvalid(routieTime.startTime, routieTime.endTime);
+
   const scheduleInputVariant =
     isValidateActive && routieTime.date !== '' ? 'primary' : 'disabled';
+  const endInputVariant = error ? 'error' : scheduleInputVariant;
 
   return (
     <Flex justifyContent="space-between" width="100%" gap={1}>
@@ -25,7 +30,7 @@ const TimeInput = () => {
       </Flex>
       <Flex direction="column" alignItems="flex-start" gap={1} width="100%">
         <Input
-          variant={scheduleInputVariant}
+          variant={endInputVariant}
           disabled={
             routieTime.date === '' ||
             routieTime.startTime === '' ||

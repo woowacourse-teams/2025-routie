@@ -82,10 +82,12 @@ const useRoutieSpaceName = (): UseRoutieSpaceNameReturn => {
         setOriginalName(displayName);
       } catch (error) {
         console.error('루티 스페이스 이름 수정 중 에러 발생:', error);
-        showToast({
-          message: '이름 수정에 실패했습니다. 다시 시도해주세요.',
-          type: 'error',
-        });
+        if (error instanceof Error) {
+          showToast({
+            message: error.message,
+            type: 'error',
+          });
+        }
         setName(originalName);
       } finally {
         setIsLoading(false);
@@ -111,10 +113,12 @@ const useRoutieSpaceName = (): UseRoutieSpaceNameReturn => {
         setOriginalName(displayName);
       } catch (error) {
         console.error('루티 스페이스 이름 불러오기 실패:', error);
-        showToast({
-          message: '이름을 불러오는데 실패했습니다.',
-          type: 'error',
-        });
+        if (error instanceof Error) {
+          showToast({
+            message: error.message,
+            type: 'error',
+          });
+        }
         setName('이름 못 찾음');
         setOriginalName('이름 못 찾음');
       }

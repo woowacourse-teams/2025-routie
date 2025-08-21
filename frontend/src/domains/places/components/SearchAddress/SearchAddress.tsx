@@ -11,7 +11,7 @@ interface SearchAddressProps {
 
 const SearchAddress = ({ addressType, address }: SearchAddressProps) => {
   return (
-    <Flex width="100%" gap={0.5}>
+    <Flex width="100%" gap={0.5} justifyContent="flex-start">
       <Pill
         type="distance"
         css={css`

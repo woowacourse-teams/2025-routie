@@ -3,13 +3,13 @@ import { FormState } from '../components/PlaceFormSection/PlaceForm.types';
 export const usePlaceFormValidation = (form: FormState) => {
   const isEmpty = {
     name: form.name.trim() === '',
-    roadAddressName: form.roadAddressName.trim() === '',
+    roadAddressName: form.roadAddressName?.trim() === '',
     addressName: form.addressName.trim() === '',
     stayDurationMinutes: form.stayDurationMinutes < 0,
     openAt: form.openAt === '',
     closeAt: form.closeAt === '',
-    breakStartAt: form.breakStartAt === '',
-    breakEndAt: form.breakEndAt === '',
+    breakStartAt: form.breakStartAt === null,
+    breakEndAt: form.breakEndAt === null,
   };
 
   const isValid = usePlaceFormRequiredFieldsValidation(form);

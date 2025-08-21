@@ -1,14 +1,16 @@
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
+import { useToastContext } from '@/@common/contexts/useToastContext';
 import { useSessionStorage } from '@/@common/hooks/useSessionStorage';
+import { isTimeRangeInvalid } from '@/@common/utils/isTimeRangeInvalid ';
 
 import { getRoutieValidation } from '../apis/routie';
 import {
-  ValidationResultType,
+  InvalidRoutiePlace,
   validationErrorCodeType,
+  ValidationResultType,
   ValidationStatus,
   WaitingReason,
-  InvalidRoutiePlace,
 } from '../types/routie.types';
 
 import useRoutieTime from './useRoutieTime';
@@ -50,6 +52,7 @@ const useRoutieValidate = (): UseRoutieValidateReturn => {
     useState<ValidationResultType | null>(null);
   const [validationStatus, setValidationStatus] =
     useState<ValidationStatus>('inactive');
+  const { showToast } = useToastContext();
 
   const getValidationConditions = useCallback(
     (placeCount?: number) => {
@@ -117,12 +120,26 @@ const useRoutieValidate = (): UseRoutieValidateReturn => {
     setIsValidateActive(!isValidateActive);
   }, [isValidateActive, setIsValidateActive]);
 
+  const hasInvalidTimeRange = isTimeRangeInvalid(
+    routieTime.startTime,
+    routieTime.endTime,
+  );
+
   const validateRoutie = useCallback(
     async (movingStrategy: string, placeCount?: number) => {
       const { canValidate } = getValidationConditions(placeCount);
 
       if (!canValidate) {
         updateValidationStatus(placeCount);
+        return;
+      }
+
+      if (hasInvalidTimeRange) {
+        setValidationStatus('error');
+        showToast({
+          message: '종료 시간이 시작 시간보다 빠를 수 없습니다.',
+          type: 'error',
+        });
         return;
       }
 
@@ -149,10 +166,28 @@ const useRoutieValidate = (): UseRoutieValidateReturn => {
       } catch (error) {
         console.error(error);
         setValidationStatus('error');
+        if (error instanceof Error) {
+          showToast({
+            message: error.message,
+            type: 'error',
+          });
+        }
       }
     },
-    [getValidationConditions, updateValidationStatus, combineDateTime],
+    [
+      isTimeRangeInvalid,
+      getValidationConditions,
+      updateValidationStatus,
+      combineDateTime,
+      showToast,
+    ],
   );
+
+  useEffect(() => {
+    if (!isValidateActive) {
+      setInvalidResult(null);
+    }
+  }, [isValidateActive]);
 
   return {
     isValidateActive,

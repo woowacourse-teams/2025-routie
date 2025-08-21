@@ -13,10 +13,6 @@ const getPlaceList = async () => {
     `/routie-spaces/${routieSpaceUuid}/places`,
   );
 
-  if (!response.ok) {
-    throw new Error('장소 목록 조회 실패');
-  }
-
   const data = await response.json();
 
   return data.places as PlaceCardProps[];

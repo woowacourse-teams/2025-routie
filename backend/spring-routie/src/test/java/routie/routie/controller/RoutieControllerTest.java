@@ -58,8 +58,8 @@ class RoutieControllerTest {
     void setUp() {
         RestAssured.port = port;
 
-        routieSpace = RoutieSpaceFixture.emptyRoutieSpace();
-        routieSpaceWithOneRoutiePlace = RoutieSpaceFixture.emptyRoutieSpace();
+        routieSpace = RoutieSpaceFixture.createEmpty();
+        routieSpaceWithOneRoutiePlace = RoutieSpaceFixture.createEmpty();
 
         Place placeA = new PlaceBuilder()
                 .name("장소 A")

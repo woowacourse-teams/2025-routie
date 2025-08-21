@@ -1,5 +1,7 @@
 import { useState } from 'react';
 
+import { useToastContext } from '@/@common/contexts/useToastContext';
+
 import searchPlace from '../apis/searchPlace';
 import { PlaceSearchType } from '../types/place.types';
 
@@ -8,6 +10,7 @@ const useSearchPlace = () => {
   const [searchResults, setSearchResults] = useState<PlaceSearchType[] | null>(
     null,
   );
+  const { showToast } = useToastContext();
 
   const handleSearch = async () => {
     if (!keyword) return setSearchResults([]);
@@ -17,6 +20,12 @@ const useSearchPlace = () => {
       setSearchResults(searchedPlaces);
     } catch (error) {
       console.error(error);
+      if (error instanceof Error) {
+        showToast({
+          message: error.message,
+          type: 'error',
+        });
+      }
     }
   };
 
