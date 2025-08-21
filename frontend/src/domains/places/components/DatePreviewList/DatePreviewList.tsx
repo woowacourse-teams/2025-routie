@@ -9,7 +9,7 @@ interface DatePreviewListProps {
 
 const DatePreviewList = ({ value }: DatePreviewListProps) => {
   return (
-    <Flex justifyContent="space-around" width="100%" gap={0.3}>
+    <Flex justifyContent="flex-start" width="100%" gap={0.8}>
       {DAY_KR_LIST.map((day, index) => (
         <DatePreviewItem key={day} label={day} isChecked={value[index]} />
       ))}

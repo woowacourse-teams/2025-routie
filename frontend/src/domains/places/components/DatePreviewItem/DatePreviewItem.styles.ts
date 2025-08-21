@@ -13,7 +13,7 @@ const datePreviewItemStyle = (isChecked: boolean) => css`
   border-radius: 2rem;
 
   background-color: ${isChecked
-    ? theme.colors.purple[300]
+    ? theme.colors.purple[200]
     : theme.colors.gray[200]};
 `;
 
