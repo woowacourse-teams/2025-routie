@@ -1,71 +1,104 @@
-import { useCallback, useState, useEffect, useMemo } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+
+import { useToastContext } from '@/@common/contexts/useToastContext';
+import { useSessionStorage } from '@/@common/hooks/useSessionStorage';
+import { isTimeRangeInvalid } from '@/@common/utils/isTimeRangeInvalid ';
 
 import { getRoutieValidation } from '../apis/routie';
-import { validationErrorCodeType, ValidationStatus, WaitingReason } from '../types/routie.types';
+import {
+  InvalidRoutiePlace,
+  validationErrorCodeType,
+  ValidationResultType,
+  ValidationStatus,
+  WaitingReason,
+} from '../types/routie.types';
+
+import useRoutieTime from './useRoutieTime';
 
 export interface UseRoutieValidateReturn {
   isValidateActive: boolean;
   routieTime: {
-    startDateTime: string;
-    endDateTime: string;
+    date: string;
+    startTime: string;
+    endTime: string;
   };
+  currentInvalidRoutiePlaces: InvalidRoutiePlace[];
   validationErrors: validationErrorCodeType | null;
   validationStatus: ValidationStatus;
   waitingReason: WaitingReason;
   handleValidateToggle: () => void;
   handleTimeChange: (
-    field: 'startDateTime' | 'endDateTime',
+    field: 'date' | 'startTime' | 'endTime',
     value: string,
   ) => void;
-  validateRoutie: (placeCount?: number) => Promise<void>;
+  validateRoutie: (
+    movingStrategy: string,
+    placeCount?: number,
+  ) => Promise<void>;
+  combineDateTime: {
+    startDateTime: string;
+    endDateTime: string;
+  };
 }
 
 const useRoutieValidate = (): UseRoutieValidateReturn => {
-  const getInitialValidateActive = () => {
-    const saved = sessionStorage.getItem('isValidateActive');
-    return saved ? JSON.parse(saved) : true;
-  };
-
-  const [isValidateActive, setIsValidateActive] = useState(
-    getInitialValidateActive,
+  const [isValidateActive, setIsValidateActive] = useSessionStorage(
+    'isValidateActive',
+    true,
   );
-  const [routieTime, setRoutieTime] = useState({
-    startDateTime: '',
-    endDateTime: '',
-  });
-  const [validationErrors, setValidationErrors] =
-    useState<validationErrorCodeType | null>(null);
-  const [validationStatus, setValidationStatus] = 
+  const { routieTime, handleTimeChange, combineDateTime, emptyDate } =
+    useRoutieTime();
+  const [invalidResult, setInvalidResult] =
+    useState<ValidationResultType | null>(null);
+  const [validationStatus, setValidationStatus] =
     useState<ValidationStatus>('inactive');
+  const { showToast } = useToastContext();
 
   const getValidationConditions = useCallback(
     (placeCount?: number) => {
       if (!isValidateActive) {
         return { canValidate: false, waitingReason: null };
       }
-      
-      if (routieTime.startDateTime === '' || routieTime.endDateTime === '') {
-        return { canValidate: false, waitingReason: 'no_time' as WaitingReason };
+
+      if (emptyDate) {
+        return {
+          canValidate: false,
+          waitingReason: 'no_date' as WaitingReason,
+        };
       }
-      
+
       if (placeCount === undefined || placeCount < 2) {
-        return { canValidate: false, waitingReason: 'insufficient_places' as WaitingReason };
+        return {
+          canValidate: false,
+          waitingReason: 'insufficient_places' as WaitingReason,
+        };
       }
-      
+
       return { canValidate: true, waitingReason: null };
     },
-    [isValidateActive, routieTime],
+    [isValidateActive, emptyDate],
   );
 
   const waitingReason = useMemo(
     () => getValidationConditions().waitingReason,
-    [getValidationConditions]
+    [isValidateActive, emptyDate],
+  );
+
+  const validationErrors = useMemo(
+    () => invalidResult?.validationCode ?? null,
+    [invalidResult],
+  );
+
+  const currentInvalidRoutiePlaces = useMemo(
+    () => invalidResult?.invalidRoutiePlaces ?? [],
+    [invalidResult],
   );
 
   const updateValidationStatus = useCallback(
     (placeCount?: number) => {
-      const { canValidate, waitingReason } = getValidationConditions(placeCount);
-      
+      const { canValidate, waitingReason } =
+        getValidationConditions(placeCount);
+
       if (!isValidateActive) {
         setValidationStatus('inactive');
         return;
@@ -84,67 +117,89 @@ const useRoutieValidate = (): UseRoutieValidateReturn => {
   );
 
   const handleValidateToggle = useCallback(() => {
-    const newIsValidateActive = !isValidateActive;
-    sessionStorage.setItem(
-      'isValidateActive',
-      JSON.stringify(newIsValidateActive),
-    );
-    setIsValidateActive(newIsValidateActive);
-  }, [isValidateActive]);
+    setIsValidateActive(!isValidateActive);
+  }, [isValidateActive, setIsValidateActive]);
 
-  useEffect(() => {
-    updateValidationStatus();
-  }, [isValidateActive, routieTime, updateValidationStatus]);
-
-  const handleTimeChange = useCallback((field: string, value: string) => {
-    setRoutieTime((prev) => ({
-      ...prev,
-      [field]: value,
-    }));
-  }, []);
+  const hasInvalidTimeRange = isTimeRangeInvalid(
+    routieTime.startTime,
+    routieTime.endTime,
+  );
 
   const validateRoutie = useCallback(
-    async (placeCount?: number) => {
+    async (movingStrategy: string, placeCount?: number) => {
       const { canValidate } = getValidationConditions(placeCount);
-      
+
       if (!canValidate) {
         updateValidationStatus(placeCount);
+        return;
+      }
+
+      if (hasInvalidTimeRange) {
+        setValidationStatus('error');
+        showToast({
+          message: '종료 시간이 시작 시간보다 빠를 수 없습니다.',
+          type: 'error',
+        });
         return;
       }
 
       setValidationStatus('validating');
 
       try {
-        const response = await getRoutieValidation(routieTime);
+        const response = await getRoutieValidation(
+          combineDateTime,
+          movingStrategy,
+        );
+
         const invalidResult = response.validationResultResponses.find(
           (result) => result.isValid === false,
         );
 
         if (invalidResult) {
-          setValidationErrors(invalidResult.validationCode);
+          setInvalidResult(invalidResult);
           setValidationStatus('error');
           return;
         }
 
-        setValidationErrors(null);
+        setInvalidResult(null);
         setValidationStatus('success');
       } catch (error) {
         console.error(error);
         setValidationStatus('error');
+        if (error instanceof Error) {
+          showToast({
+            message: error.message,
+            type: 'error',
+          });
+        }
       }
     },
-    [getValidationConditions, routieTime, updateValidationStatus],
+    [
+      isTimeRangeInvalid,
+      getValidationConditions,
+      updateValidationStatus,
+      combineDateTime,
+      showToast,
+    ],
   );
+
+  useEffect(() => {
+    if (!isValidateActive) {
+      setInvalidResult(null);
+    }
+  }, [isValidateActive]);
 
   return {
     isValidateActive,
     routieTime,
+    currentInvalidRoutiePlaces,
     validationErrors,
     validationStatus,
     waitingReason,
     handleValidateToggle,
     handleTimeChange,
     validateRoutie,
+    combineDateTime,
   };
 };
 

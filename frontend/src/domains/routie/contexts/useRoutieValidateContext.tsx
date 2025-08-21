@@ -7,15 +7,21 @@ import useRoutieValidate, {
 const RoutieValidateContext = createContext<UseRoutieValidateReturn>({
   isValidateActive: true,
   routieTime: {
-    startDateTime: '',
-    endDateTime: '',
+    date: '',
+    startTime: '',
+    endTime: '',
   },
+  currentInvalidRoutiePlaces: [],
   validationErrors: null,
   validationStatus: 'waiting',
   waitingReason: null,
   handleValidateToggle: () => {},
   handleTimeChange: () => {},
   validateRoutie: async () => {},
+  combineDateTime: {
+    startDateTime: '',
+    endDateTime: '',
+  },
 });
 
 export const RoutieValidateProvider = ({
@@ -26,34 +32,40 @@ export const RoutieValidateProvider = ({
   const {
     isValidateActive,
     routieTime,
+    currentInvalidRoutiePlaces,
     validationErrors,
     validationStatus,
     waitingReason,
     handleValidateToggle,
     handleTimeChange,
     validateRoutie,
+    combineDateTime,
   } = useRoutieValidate();
 
   const contextValue = useMemo(() => {
     return {
       isValidateActive,
       routieTime,
+      currentInvalidRoutiePlaces,
       validationErrors,
       validationStatus,
       waitingReason,
       handleValidateToggle,
       handleTimeChange,
       validateRoutie,
+      combineDateTime,
     };
   }, [
     isValidateActive,
     routieTime,
+    currentInvalidRoutiePlaces,
     validationErrors,
     validationStatus,
     waitingReason,
     handleValidateToggle,
     handleTimeChange,
     validateRoutie,
+    combineDateTime,
   ]);
 
   return (

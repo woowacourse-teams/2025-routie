@@ -1,14 +1,22 @@
+import { useLayoutEffect } from 'react';
+import { useSearchParams } from 'react-router';
+
 import Flex from '@/@common/components/Flex/Flex';
-import useMapView from '@/@common/hooks/useMapView';
-import KakaoMap from '@/domains/maps/components/KakaoMap';
 import { RoutieProvider } from '@/domains/routie/contexts/useRoutieContext';
 import { RoutieValidateProvider } from '@/domains/routie/contexts/useRoutieValidateContext';
-import PlaceList from '@/layouts/PlaceList/PlaceList';
+import MapWithSideSheet from '@/layouts/MapWithSideSheet/MapWithSideSheet';
 import { PlaceListProvider } from '@/layouts/PlaceList/contexts/PlaceListProvider';
 import Sidebar from '@/layouts/Sidebar/Sidebar';
 
 const RoutieSpace = () => {
-  const { viewMode, handleViewModeChange } = useMapView();
+  const [searchParams] = useSearchParams();
+  const routieSpaceIdentifier = searchParams.get('routieSpaceIdentifier');
+
+  useLayoutEffect(() => {
+    if (routieSpaceIdentifier) {
+      localStorage.setItem('routieSpaceUuid', routieSpaceIdentifier);
+    }
+  }, [routieSpaceIdentifier]);
 
   return (
     <RoutieValidateProvider>
@@ -16,11 +24,10 @@ const RoutieSpace = () => {
         <PlaceListProvider>
           <Flex justifyContent="flex-start" height="100vh">
             <Flex direction="column" justifyContent="flex-start" height="100%">
-              <Sidebar handleViewModeChange={handleViewModeChange} />
+              <Sidebar />
             </Flex>
             <Flex direction="column" justifyContent="flex-start" height="100%">
-              {viewMode === 'list' && <PlaceList />}
-              {viewMode === 'map' && <KakaoMap />}
+              <MapWithSideSheet />
             </Flex>
           </Flex>
         </PlaceListProvider>

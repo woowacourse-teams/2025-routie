@@ -1,11 +1,13 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 
-import Button from '@/@common/components/Button/Button';
 import Flex from '@/@common/components/Flex/Flex';
 import Text from '@/@common/components/Text/Text';
+import { PlaceCardProps } from '@/domains/places/components/PlaceCard/PlaceCard';
 import { useRoutieContext } from '@/domains/routie/contexts/useRoutieContext';
 import { usePlaceListContext } from '@/layouts/PlaceList/contexts/PlaceListContext';
 
+import useCustomOverlay from '../hooks/useCustomOverlay';
 import { useKakaoMapInit } from '../hooks/useKakaoMapInit';
 import { useKakaoMapSDK } from '../hooks/useKakaoMapSDK';
 import useMapMarker from '../hooks/useMapMarker';
@@ -17,56 +19,104 @@ import {
   KakaoMapLoadingStyle,
   KakaoMapWrapperStyle,
 } from './KakaoMap.styles';
+import PlaceOverlayCard from './PlaceOverlayCard';
 
-import type { KakaoMapProps } from '../types/KaKaoMap.types';
-
-const KakaoMap = ({ lat = 36.5, lng = 127.8, level = 13 }: KakaoMapProps) => {
+const KakaoMap = () => {
   const mapContainerRef = useRef<HTMLDivElement>(null);
-  const { placeList } = usePlaceListContext();
+  const { placeList, newlyAddedPlace } = usePlaceListContext();
   const { routieIdList } = useRoutieContext();
+  const [isInitialLoad, setIsInitialLoad] = useState(true);
 
-  const routiePlaces = placeList
-    .filter((place) => routieIdList.includes(place.id))
-    .sort((a, b) => routieIdList.indexOf(a.id) - routieIdList.indexOf(b.id));
+  const routiePlaces = useMemo(
+    () =>
+      [...placeList]
+        .filter((place) => routieIdList.includes(place.id))
+        .sort(
+          (a, b) => routieIdList.indexOf(a.id) - routieIdList.indexOf(b.id),
+        ),
+    [placeList, routieIdList],
+  );
 
   const { sdkReady, sdkError } = useKakaoMapSDK();
   const { mapRef, mapState, errorMessage } = useKakaoMapInit({
     containerRef: mapContainerRef,
     sdkReady,
-    lat,
-    lng,
-    level,
   });
-  const { fitMapToMarkers, drawMarkers } = useMapMarker({
-    map: mapRef,
-  });
+  const { fitMapToMarkers, drawMarkers, clearMarkers, fitMapToMarker } =
+    useMapMarker({
+      map: mapRef,
+    });
   const { loadPolyline, clearPolyline } = usePolyline({
     map: mapRef,
   });
+  const { containerEl, openAt, close } = useCustomOverlay({ map: mapRef });
+  const [selectedPlace, setSelectedPlace] = useState<PlaceCardProps | null>(
+    null,
+  );
 
   const finalError = sdkError || errorMessage;
   const finalMapState = sdkError ? 'error' : mapState;
 
-  useEffect(() => {
-    if (!mapRef.current) {
-      return;
-    }
-
-    placeList.forEach((place) => {
-      drawMarkers(place.latitude, place.longitude);
-    });
-
-    fitMapToMarkers(placeList);
-  }, [mapRef.current, drawMarkers, placeList]);
+  const handleMapClick = () => {
+    setSelectedPlace(null);
+    close();
+  };
 
   useEffect(() => {
-    fitMapToMarkers(placeList);
-    clearPolyline();
+    if (mapState !== 'ready' || !mapRef.current) return;
 
-    routiePlaces.forEach((place) => {
-      loadPolyline(place.latitude, place.longitude);
-    });
-  }, [loadPolyline, fitMapToMarkers, routiePlaces]);
+    window.kakao.maps.event.addListener(
+      mapRef.current,
+      'click',
+      handleMapClick,
+    );
+
+    return () => {
+      if (mapRef.current) {
+        window.kakao.maps.event.removeListener(
+          mapRef.current,
+          'click',
+          handleMapClick,
+        );
+      }
+    };
+  }, [mapState]);
+
+  useEffect(() => {
+    if (mapState !== 'ready' || !mapRef.current) return;
+
+    const renderMapElements = () => {
+      clearMarkers();
+      placeList.forEach((place) => {
+        const routieIndex = routieIdList.indexOf(place.id);
+        const routieSequence = routieIndex !== -1 ? routieIndex + 1 : undefined;
+
+        drawMarkers({
+          place,
+          routieSequence,
+          onClick: () => {
+            setSelectedPlace(place);
+            openAt(place.latitude, place.longitude);
+          },
+        });
+      });
+
+      if (isInitialLoad && placeList.length > 0) {
+        fitMapToMarkers(placeList);
+        setIsInitialLoad(false);
+      } else if (newlyAddedPlace) {
+        fitMapToMarker(newlyAddedPlace.latitude, newlyAddedPlace.longitude);
+      }
+
+      clearPolyline();
+
+      routiePlaces.forEach((place) => {
+        loadPolyline(place.latitude, place.longitude);
+      });
+    };
+
+    renderMapElements();
+  }, [mapState, placeList, routiePlaces, newlyAddedPlace]);
 
   return (
     <div css={KakaoMapWrapperStyle}>
@@ -108,18 +158,12 @@ const KakaoMap = ({ lat = 36.5, lng = 127.8, level = 13 }: KakaoMapProps) => {
         </Flex>
       )}
 
-      <Button
-        variant="primary"
-        width="10%"
-        onClick={() => fitMapToMarkers(routiePlaces)}
-        css={{ position: 'absolute', top: '10px', right: '10px', zIndex: 1 }}
-      >
-        <Flex justifyContent="center" width="100%">
-          <Text variant="subTitle" color="white">
-            동선만 보기
-          </Text>
-        </Flex>
-      </Button>
+      {containerEl &&
+        selectedPlace &&
+        createPortal(
+          <PlaceOverlayCard place={selectedPlace} onClose={handleMapClick} />,
+          containerEl,
+        )}
     </div>
   );
 };

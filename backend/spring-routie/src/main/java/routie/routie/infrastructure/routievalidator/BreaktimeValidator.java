@@ -1,9 +1,12 @@
 package routie.routie.infrastructure.routievalidator;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 import org.springframework.stereotype.Component;
 import routie.place.domain.Place;
+import routie.routie.domain.RoutiePlace;
 import routie.routie.domain.routievalidator.RoutieValidator;
 import routie.routie.domain.routievalidator.ValidationContext;
 import routie.routie.domain.routievalidator.ValidationResult;
@@ -12,6 +15,7 @@ import routie.routie.domain.timeperiod.TimePeriod;
 
 @Component
 public class BreaktimeValidator implements RoutieValidator {
+
     @Override
     public boolean supportsStrategy(final ValidationStrategy validationStrategy) {
         return validationStrategy == ValidationStrategy.IS_NOT_DURING_BREAKTIME;
@@ -24,28 +28,55 @@ public class BreaktimeValidator implements RoutieValidator {
     ) {
         List<TimePeriod> timePeriods = validationContext.timePeriods().orderedList();
 
-        return ValidationResult.withoutRoutiePlaces(
-                timePeriods.stream()
-                        .allMatch(this::isWithoutBreaktime),
-                validationStrategy
+        List<RoutiePlace> invalidRoutiePlaces = timePeriods.stream()
+                .filter(timePeriod -> !this.isNotDuringBreaktime(timePeriod))
+                .map(TimePeriod::routiePlace)
+                .toList();
+
+        return new ValidationResult(
+                invalidRoutiePlaces.isEmpty(),
+                validationStrategy,
+                invalidRoutiePlaces
         );
     }
 
-    private boolean isWithoutBreaktime(final TimePeriod timePeriod) {
+    private boolean isNotDuringBreaktime(final TimePeriod timePeriod) {
         final Place place = timePeriod.routiePlace().getPlace();
         final LocalTime breakStartAt = place.getBreakStartAt();
         final LocalTime breakEndAt = place.getBreakEndAt();
 
-        if (breakStartAt == null || breakEndAt == null) {
+        if (breakStartAt == null || breakEndAt == null || breakStartAt.equals(breakEndAt)) {
             return true;
         }
 
-        final LocalTime visitStartTime = timePeriod.startTime().toLocalTime();
-        final LocalTime visitEndTime = timePeriod.endTime().toLocalTime();
+        final LocalDateTime visitStartTime = timePeriod.startTime();
+        final LocalDateTime visitEndTime = timePeriod.endTime();
 
-        boolean endsBeforeBreak = !visitEndTime.isAfter(breakStartAt);
-        boolean startsAfterBreak = !visitStartTime.isBefore(breakEndAt);
+        return !doPeriodsOverlap(visitStartTime, visitEndTime, breakStartAt, breakEndAt);
+    }
 
-        return endsBeforeBreak || startsAfterBreak;
+    private boolean doPeriodsOverlap(
+            final LocalDateTime visitStart,
+            final LocalDateTime visitEnd,
+            final LocalTime breakStartAt,
+            final LocalTime breakEndAt
+    ) {
+        LocalDate currentDate = visitStart.toLocalDate().minusDays(1);
+        LocalDate endDate = visitEnd.toLocalDate();
+
+        while (!currentDate.isAfter(endDate)) {
+            LocalDateTime breakStart = currentDate.atTime(breakStartAt);
+            LocalDateTime breakEnd = breakStartAt.isAfter(breakEndAt)
+                    ? breakStart.plusDays(1).with(breakEndAt)
+                    : breakStart.with(breakEndAt);
+
+            boolean overlaps = visitStart.isBefore(breakEnd) && breakStart.isBefore(visitEnd);
+            if (overlaps) {
+                return true;
+            }
+            currentDate = currentDate.plusDays(1);
+        }
+
+        return false;
     }
 }

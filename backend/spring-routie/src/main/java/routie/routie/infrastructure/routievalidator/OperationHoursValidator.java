@@ -4,6 +4,7 @@ import java.time.LocalTime;
 import java.util.List;
 import org.springframework.stereotype.Component;
 import routie.place.domain.Place;
+import routie.routie.domain.RoutiePlace;
 import routie.routie.domain.routievalidator.RoutieValidator;
 import routie.routie.domain.routievalidator.ValidationContext;
 import routie.routie.domain.routievalidator.ValidationResult;
@@ -24,10 +25,15 @@ public class OperationHoursValidator implements RoutieValidator {
     ) {
         List<TimePeriod> timePeriods = validationContext.timePeriods().orderedList();
 
-        return ValidationResult.withoutRoutiePlaces(
-                timePeriods.stream()
-                        .allMatch(this::isWithinBusinessHours),
-                validationStrategy
+        List<RoutiePlace> invalidRoutiePlaces = timePeriods.stream()
+                .filter(timePeriod -> !this.isWithinBusinessHours(timePeriod))
+                .map(TimePeriod::routiePlace)
+                .toList();
+
+        return new ValidationResult(
+                invalidRoutiePlaces.isEmpty(),
+                validationStrategy,
+                invalidRoutiePlaces
         );
     }
 
@@ -44,15 +50,23 @@ public class OperationHoursValidator implements RoutieValidator {
         final LocalTime visitStartTime = timePeriod.startTime().toLocalTime();
         final LocalTime visitEndTime = timePeriod.endTime().toLocalTime();
 
-        return isWithinOperatingHours(visitStartTime, openAt, closeAt) &&
-                isWithinOperatingHours(visitEndTime, openAt, closeAt);
+        return isTimeWithinOperatingHours(visitStartTime, openAt, closeAt) &&
+                isTimeWithinOperatingHours(visitEndTime, openAt, closeAt);
     }
 
-    private boolean isWithinOperatingHours(
+    private boolean isTimeWithinOperatingHours(
             final LocalTime time,
             final LocalTime openAt,
             final LocalTime closeAt
     ) {
+        if (isOvernight(openAt, closeAt)) {
+            return !time.isBefore(openAt) || !time.isAfter(closeAt);
+        }
+
         return !time.isBefore(openAt) && !time.isAfter(closeAt);
+    }
+
+    private boolean isOvernight(final LocalTime openAt, final LocalTime closeAt) {
+        return openAt.isAfter(closeAt);
     }
 }

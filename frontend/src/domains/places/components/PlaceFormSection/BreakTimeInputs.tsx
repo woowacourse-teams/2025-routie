@@ -2,31 +2,30 @@ import Flex from '@/@common/components/Flex/Flex';
 import Input from '@/@common/components/Input/Input';
 
 interface BreakTimeInputsProps {
-  breakStartAt: string;
-  breakEndAt: string;
+  breakStartAt: string | null;
+  breakEndAt: string | null;
   onChange: (field: 'breakStartAt' | 'breakEndAt', value: string) => void;
+  error?: {
+    breakStartAt?: boolean;
+    breakEndAt?: boolean;
+  };
 }
 
 const BreakTimeInputs = ({
   breakStartAt,
   breakEndAt,
   onChange,
+  error,
 }: BreakTimeInputsProps) => {
-  const isPartial =
-    (breakStartAt !== '' && breakEndAt === '') ||
-    (breakStartAt === '' && breakEndAt !== '');
-
-  const breakStartAtError = isPartial && breakStartAt === '';
-  const breakEndAtError = isPartial && breakEndAt === '';
   return (
     <Flex justifyContent="space-between" width="100%" gap={1}>
       <Flex direction="column" alignItems="flex-start" gap={1} width="100%">
         <Input
           id="breakStartAt"
           type="time"
-          value={breakStartAt}
+          value={breakStartAt ?? ''}
           onChange={(value) => onChange('breakStartAt', value)}
-          variant={breakStartAtError ? 'error' : 'primary'}
+          variant={error?.breakStartAt ? 'error' : 'primary'}
           label="브레이크 타임 시작 시간"
         />
       </Flex>
@@ -34,9 +33,9 @@ const BreakTimeInputs = ({
         <Input
           id="breakEndAt"
           type="time"
-          value={breakEndAt}
+          value={breakEndAt ?? ''}
           onChange={(value) => onChange('breakEndAt', value)}
-          variant={breakEndAtError ? 'error' : 'primary'}
+          variant={error?.breakEndAt ? 'error' : 'primary'}
           label="브레이크 타임 종료 시간"
         />
       </Flex>

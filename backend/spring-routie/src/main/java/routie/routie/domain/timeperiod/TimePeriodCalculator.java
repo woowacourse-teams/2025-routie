@@ -3,6 +3,8 @@ package routie.routie.domain.timeperiod;
 import java.time.LocalDateTime;
 import java.util.List;
 import org.springframework.stereotype.Component;
+import routie.exception.BusinessException;
+import routie.exception.ErrorCode;
 import routie.routie.domain.RoutiePlace;
 import routie.routie.domain.route.Route;
 import routie.routie.domain.route.Routes;
@@ -16,13 +18,10 @@ public class TimePeriodCalculator {
             final List<RoutiePlace> routiePlaces
     ) {
         validateRoutes(routes);
+        validateStartDateTime(startDateTime);
         validateRoutiePlaces(routiePlaces);
 
         TimePeriods timePeriods = TimePeriods.empty();
-
-        if (startDateTime == null) {
-            return timePeriods;
-        }
 
         if (routiePlaces.size() == 1) {
             RoutiePlace firstRoutiePlace = routiePlaces.getFirst();
@@ -56,15 +55,21 @@ public class TimePeriodCalculator {
         return timePeriods;
     }
 
+    private void validateStartDateTime(final LocalDateTime startDateTime) {
+        if (startDateTime == null) {
+            throw new BusinessException(ErrorCode.TIME_PERIOD_START_TIME_NULL);
+        }
+    }
+
     private void validateRoutes(final Routes routes) {
         if (routes == null) {
-            throw new IllegalArgumentException("루트들은 null일 수 없습니다.");
+            throw new BusinessException(ErrorCode.ROUTES_NULL);
         }
     }
 
     private void validateRoutiePlaces(final List<RoutiePlace> routiePlaces) {
         if (routiePlaces == null) {
-            throw new IllegalArgumentException("RoutiePlace 목록은 null일 수 없습니다.");
+            throw new BusinessException(ErrorCode.ROUTIE_PLACES_NULL);
         }
     }
 }

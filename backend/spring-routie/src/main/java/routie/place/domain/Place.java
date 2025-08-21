@@ -16,6 +16,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -23,6 +24,8 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import routie.exception.BusinessException;
+import routie.exception.ErrorCode;
 import routie.routiespace.domain.RoutieSpace;
 
 @Entity
@@ -55,10 +58,10 @@ public class Place {
     @Column(name = "stay_duration_minutes", nullable = false)
     private Integer stayDurationMinutes;
 
-    @Column(name = "open_at", nullable = false)
+    @Column(name = "open_at")
     private LocalTime openAt;
 
-    @Column(name = "close_at", nullable = false)
+    @Column(name = "close_at")
     private LocalTime closeAt;
 
     @Column(name = "break_start_at")
@@ -71,7 +74,7 @@ public class Place {
     @JoinColumn(name = "routie_space_id")
     private RoutieSpace routieSpace;
 
-    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true)
     @JoinColumn(name = "place_id", nullable = false)
     private List<PlaceClosedDayOfWeek> placeClosedDayOfWeeks = new ArrayList<>();
 
@@ -152,6 +155,15 @@ public class Place {
         );
     }
 
+    private static List<PlaceClosedDayOfWeek> createClosedDayOfWeeks(final List<DayOfWeek> closedDayOfWeeks) {
+        if (closedDayOfWeeks == null) {
+            return List.of();
+        }
+        return closedDayOfWeeks.stream()
+                .map(PlaceClosedDayOfWeek::new)
+                .toList();
+    }
+
     public void modify(
             final int stayDurationMinutes,
             final LocalTime openAt,
@@ -161,8 +173,8 @@ public class Place {
             final List<DayOfWeek> closedDayOfWeeks
     ) {
         validateStayDurationMinutes(stayDurationMinutes);
-        validateOperatingTime(openAt, closeAt);
         validateBreakTime(breakStartAt, breakEndAt);
+        validateOperatingTime(openAt, closeAt);
         validateBreakTimeWithOperatingTime(openAt, closeAt, breakStartAt, breakEndAt);
 
         this.stayDurationMinutes = stayDurationMinutes;
@@ -174,27 +186,18 @@ public class Place {
         this.placeClosedDayOfWeeks.addAll(createClosedDayOfWeeks(closedDayOfWeeks));
     }
 
-    private static List<PlaceClosedDayOfWeek> createClosedDayOfWeeks(final List<DayOfWeek> closedDayOfWeeks) {
-        if (closedDayOfWeeks == null) {
-            throw new IllegalArgumentException("휴무일은 필수 입력 사항입니다.");
-        }
-        return closedDayOfWeeks.stream()
-                .map(PlaceClosedDayOfWeek::new)
-                .toList();
-    }
-
     private void validateStayDurationMinutes(final int stayDurationMinutes) {
         if (stayDurationMinutes < 0 || stayDurationMinutes > 1440) {
-            throw new IllegalArgumentException("체류 시간은 0분 이상 1440분 이하여야 합니다.");
+            throw new BusinessException(ErrorCode.PLACE_STAY_DURATION_INVALID);
         }
     }
 
     private void validateName(final String name) {
         if (name == null || name.isBlank()) {
-            throw new IllegalArgumentException("장소명은 필수입니다.");
+            throw new BusinessException(ErrorCode.PLACE_NAME_REQUIRED);
         }
         if (name.length() > 30) {
-            throw new IllegalArgumentException("장소명은 1자 이상 30자 이하여야 합니다.");
+            throw new BusinessException(ErrorCode.PLACE_NAME_LENGTH_INVALID);
         }
     }
 
@@ -204,34 +207,37 @@ public class Place {
         }
 
         if (roadAddressName.isBlank() || roadAddressName.length() > 50) {
-            throw new IllegalArgumentException("도로명 주소는 1자 이상 50자 이하여야 합니다.");
+            throw new BusinessException(ErrorCode.PLACE_ROAD_ADDRESS_LENGTH_INVALID);
         }
     }
 
     private void validateAddressName(final String addressName) {
         if (addressName == null || addressName.isBlank()) {
-            throw new IllegalArgumentException("지번 주소는 필수입니다.");
+            throw new BusinessException(ErrorCode.PLACE_ADDRESS_REQUIRED);
         }
         if (addressName.length() > 50) {
-            throw new IllegalArgumentException("지번 주소는 1자 이상 50자 이하여야 합니다.");
+            throw new BusinessException(ErrorCode.PLACE_ADDRESS_LENGTH_INVALID);
         }
     }
 
     private void validateLongitude(final double longitude) {
         if (longitude < -180.0 || longitude > 180.0) {
-            throw new IllegalArgumentException("경도는 -180.0 이상 180.0 이하이어야 합니다.");
+            throw new BusinessException(ErrorCode.PLACE_LONGITUDE_INVALID);
         }
     }
 
     private void validateLatitude(final double latitude) {
         if (latitude < -90.0 || latitude > 90.0) {
-            throw new IllegalArgumentException("위도는 -90.0 이상 90.0 이하이어야 합니다.");
+            throw new BusinessException(ErrorCode.PLACE_LATITUDE_INVALID);
         }
     }
 
     private void validateOperatingTime(final LocalTime openAt, final LocalTime closeAt) {
-        if (openAt == null || closeAt == null) {
-            throw new IllegalArgumentException("영업 시간은 필수 입력 사항입니다.");
+        boolean hasOpenAt = openAt != null;
+        boolean hasCloseAt = closeAt != null;
+
+        if (hasOpenAt != hasCloseAt) {
+            throw new BusinessException(ErrorCode.PLACE_BUSINESS_HOURS_INCOMPLETE);
         }
     }
 
@@ -240,7 +246,7 @@ public class Place {
         boolean hasBreakEnd = breakEndAt != null;
 
         if (hasBreakStart != hasBreakEnd) {
-            throw new IllegalArgumentException("브레이크 타임 시작 시간과 종료 시간은 함께 존재해야 합니다.");
+            throw new BusinessException(ErrorCode.PLACE_BREAK_TIME_INCOMPLETE);
         }
     }
 
@@ -250,6 +256,9 @@ public class Place {
             final LocalTime breakStartAt,
             final LocalTime breakEndAt
     ) {
+        if (openAt == null || closeAt == null) {
+            return;
+        }
         if (breakStartAt == null || breakEndAt == null) {
             return;
         }
@@ -257,7 +266,12 @@ public class Place {
             return;
         }
         if (breakStartAt.isBefore(openAt) || breakEndAt.isAfter(closeAt)) {
-            throw new IllegalArgumentException("브레이크 타임은 영업 시간 내에 있어야 합니다.");
+            throw new BusinessException(ErrorCode.PLACE_BREAK_TIME_OUTSIDE_BUSINESS_HOURS);
         }
+    }
+
+    public boolean hasSameCoordinate(final Place otherPlace) {
+        return Objects.equals(otherPlace.getLatitude(), latitude)
+                && Objects.equals(otherPlace.getLongitude(), longitude);
     }
 }

@@ -1,5 +1,8 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const { DefinePlugin } = require('webpack');
+
+const buildDate = new Date().toISOString();
 
 module.exports = () => {
   return {
@@ -37,6 +40,10 @@ module.exports = () => {
     plugins: [
       new HtmlWebpackPlugin({
         template: 'public/index.html',
+      }),
+      new DefinePlugin({
+        __BUILD_VERSION__: JSON.stringify(require('./package.json').version),
+        __BUILD_DATE__: JSON.stringify(buildDate),
       }),
     ],
   };

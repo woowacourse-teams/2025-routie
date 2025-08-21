@@ -12,7 +12,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public ProblemDetail handleUnExpectedException(final Exception ex) {
-        log.error("[UNEXPECTED] ", ex);
+        log.error("[UNEXPECTED] {}", ex.getMessage(), ex);
         ProblemDetail problemDetail = ProblemDetail.forStatus(HttpStatus.INTERNAL_SERVER_ERROR);
         problemDetail.setDetail(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase());
         return problemDetail;
@@ -20,7 +20,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(BusinessException.class)
     public ProblemDetail handleRoutieException(final BusinessException ex) {
-        log.warn("[EXPECTED] ", ex);
+        log.warn("[EXPECTED] {}", ex.getMessage(), ex);
         return buildProblemDetail(ex.getErrorCode());
     }
 

@@ -1,10 +1,14 @@
 import {
   createContext,
-  useContext,
-  useState,
-  useEffect,
   useCallback,
+  useContext,
+  useEffect,
+  useState,
 } from 'react';
+
+import { useToastContext } from '@/@common/contexts/useToastContext';
+import { useAsyncLock } from '@/@common/hooks/useAsyncLock';
+import { useDebounceAsync } from '@/@common/hooks/useDebounceAsync';
 
 import {
   addRoutiePlace,
@@ -12,9 +16,12 @@ import {
   editRoutieSequence,
   getRoutie,
 } from '../apis/routie';
+import { useMovingStrategy } from '../hooks/useMovingStrategy';
 import { Routes, Routie } from '../types/routie.types';
 
 import { useRoutieValidateContext } from './useRoutieValidateContext';
+
+import type { MovingStrategyType } from '../components/SelectMovingStrategy/SelectMovingStrategy.types';
 
 type RoutieContextType = {
   routiePlaces: Routie[];
@@ -24,6 +31,9 @@ type RoutieContextType = {
   handleDeleteRoutie: (id: number) => Promise<void>;
   handleChangeRoutie: (sortedPlaces: Routie[]) => Promise<void>;
   routieIdList: number[];
+  movingStrategy: MovingStrategyType;
+  setMovingStrategy: (strategy: MovingStrategyType) => void;
+  fetchedStrategy: MovingStrategyType;
 };
 
 const RoutieContext = createContext<RoutieContextType>({
@@ -34,51 +44,103 @@ const RoutieContext = createContext<RoutieContextType>({
   handleChangeRoutie: async () => {},
   refetchRoutieData: async () => {},
   routieIdList: [],
+  movingStrategy: 'DRIVING',
+  setMovingStrategy: () => {},
+  fetchedStrategy: 'DRIVING',
 });
 
 export const RoutieProvider = ({ children }: { children: React.ReactNode }) => {
   const [routiePlaces, setRoutiePlaces] = useState<Routie[]>([]);
   const [routes, setRoutes] = useState<Routes[]>([]);
   const routieIdList = routiePlaces.map((routie) => routie.placeId);
-  const { isValidateActive, routieTime, validateRoutie } =
+  const { isValidateActive, combineDateTime, validateRoutie } =
     useRoutieValidateContext();
+  const { movingStrategy, setMovingStrategy } = useMovingStrategy();
+  const [fetchedStrategy, setFetchedStrategy] =
+    useState<MovingStrategyType>(movingStrategy);
+  const { showToast } = useToastContext();
+
+  const { runWithLock: runAddWithLock } = useAsyncLock();
+  const { runWithLock: runDeleteWithLock } = useAsyncLock();
+
+  const sortBySequence = (a: Routie, b: Routie) => a.sequence - b.sequence;
 
   const refetchRoutieData = useCallback(async () => {
     try {
       const routies = await getRoutie(
-        isValidateActive,
-        routieTime.startDateTime,
+        combineDateTime.startDateTime,
+        movingStrategy,
       );
-      setRoutiePlaces(routies.routiePlaces);
+      const sortedPlaces = [...routies.routiePlaces].sort(sortBySequence);
+      setRoutiePlaces(sortedPlaces);
       setRoutes(routies.routes);
-      validateRoutie(routies.routiePlaces.length);
+      await validateRoutie(movingStrategy, routies.routiePlaces.length);
+      setFetchedStrategy(movingStrategy);
     } catch (error) {
-      console.error('루티 정보를 불러오는데 실패했습니다.', error);
+      console.error(error);
+      if (error instanceof Error) {
+        showToast({
+          message: error.message,
+          type: 'error',
+        });
+      }
     }
-  }, [isValidateActive, routieTime.startDateTime, validateRoutie]);
+  }, [
+    isValidateActive,
+    combineDateTime.startDateTime,
+    validateRoutie,
+    movingStrategy,
+    showToast,
+  ]);
+
+  const debouncedRefetchRoutieData = useDebounceAsync(refetchRoutieData, 300);
 
   const handleAddRoutie = useCallback(
     async (id: number) => {
-      try {
-        await addRoutiePlace(id);
-        await refetchRoutieData();
-      } catch (error) {
-        console.error(error);
-      }
+      return runAddWithLock(async () => {
+        try {
+          await addRoutiePlace(id);
+          await refetchRoutieData();
+          showToast({
+            message: '내 동선에 장소가 추가되었습니다.',
+            type: 'success',
+          });
+        } catch (error) {
+          console.error(error);
+          if (error instanceof Error) {
+            showToast({
+              message: error.message,
+              type: 'error',
+            });
+          }
+        }
+      });
     },
-    [refetchRoutieData],
+    [refetchRoutieData, runAddWithLock, showToast],
   );
 
   const handleDeleteRoutie = useCallback(
     async (id: number) => {
-      try {
-        await deleteRoutiePlace(id);
-        await refetchRoutieData();
-      } catch (error) {
-        console.error(error);
-      }
+      return runDeleteWithLock(async () => {
+        try {
+          await deleteRoutiePlace(id);
+          await refetchRoutieData();
+          showToast({
+            message: '내 동선에서 장소가 삭제되었습니다.',
+            type: 'success',
+          });
+        } catch (error) {
+          console.error(error);
+          if (error instanceof Error) {
+            showToast({
+              message: error.message,
+              type: 'error',
+            });
+          }
+        }
+      });
     },
-    [refetchRoutieData],
+    [refetchRoutieData, showToast, runDeleteWithLock],
   );
 
   const handleChangeRoutie = useCallback(
@@ -90,21 +152,28 @@ export const RoutieProvider = ({ children }: { children: React.ReactNode }) => {
         .sort((a, b) => a.sequence - b.sequence);
       try {
         await editRoutieSequence(sortedList);
-        refetchRoutieData();
+        await refetchRoutieData();
       } catch (error) {
         console.error(error);
+        if (error instanceof Error) {
+          showToast({
+            message: error.message,
+            type: 'error',
+          });
+        }
       }
     },
-    [validateRoutie],
+    [refetchRoutieData, showToast],
   );
 
   useEffect(() => {
-    refetchRoutieData();
+    debouncedRefetchRoutieData();
   }, [
     isValidateActive,
-    routieTime.startDateTime,
-    routieTime.endDateTime,
-    refetchRoutieData,
+    movingStrategy,
+    combineDateTime.startDateTime,
+    combineDateTime.endDateTime,
+    debouncedRefetchRoutieData,
   ]);
 
   return (
@@ -117,6 +186,9 @@ export const RoutieProvider = ({ children }: { children: React.ReactNode }) => {
         handleAddRoutie,
         handleDeleteRoutie,
         handleChangeRoutie,
+        movingStrategy,
+        setMovingStrategy,
+        fetchedStrategy,
       }}
     >
       {children}

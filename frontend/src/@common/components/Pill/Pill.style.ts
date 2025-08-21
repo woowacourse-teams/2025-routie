@@ -6,11 +6,16 @@ import { PillProps, PillVariantProps } from './Pill.types';
 
 const pillVariant: Record<PillVariantProps, SerializedStyles> = {
   default: css`
+    border: 1px solid ${theme.colors.gray[100]};
     background-color: ${theme.colors.white};
   `,
 
   filled: css`
     background-color: ${theme.colors.purple[100]};
+  `,
+
+  invalid: css`
+    background-color: ${theme.colors.red[50]};
   `,
 };
 
@@ -19,9 +24,8 @@ export const PillStyle = ({ variant = 'default' }: PillProps) => css`
   gap: 0.8rem;
   align-items: center;
 
-  width: fit-content;
+  width: max-content;
   padding: 0.3rem 0.8rem;
-  border: 1px solid ${theme.colors.gray[100]};
   border-radius: 0.8rem;
 
   color: ${theme.colors.purple[400]};

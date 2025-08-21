@@ -1,8 +1,11 @@
 import { createBrowserRouter, RouterProvider } from 'react-router';
 
+import Toast from '@/@common/components/Toast/Toast';
+import { ToastProvider } from '@/@common/contexts/useToastContext';
 import { useGoogleAnalytics } from '@/libs/googleAnalytics/hooks/useGoogleAnalytics';
 import Home from '@/pages/Home/Home';
 import RoutieSpace from '@/pages/RoutieSpace/RoutieSpace';
+import VersionInfo from '@/pages/VersionInfo/VersionInfo';
 
 const LayoutWithAnalytics = ({ children }: { children: React.ReactNode }) => {
   useGoogleAnalytics();
@@ -26,10 +29,19 @@ const router = createBrowserRouter([
       </LayoutWithAnalytics>
     ),
   },
+  {
+    path: '/version',
+    element: <VersionInfo />,
+  },
 ]);
 
 const Route = () => {
-  return <RouterProvider router={router} />;
+  return (
+    <ToastProvider>
+      <RouterProvider router={router} />
+      <Toast />
+    </ToastProvider>
+  );
 };
 
 export default Route;

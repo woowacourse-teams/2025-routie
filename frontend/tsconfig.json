@@ -20,6 +20,7 @@
     "vitest.config.mts",
     "global.d.ts",
     "vitest.setup.ts",
-    "kakao.d.ts"
+    "kakao.d.ts",
+    "version.d.ts"
   ]
 }

@@ -2,42 +2,41 @@ import { useState } from 'react';
 
 import Flex from '@/@common/components/Flex/Flex';
 import Modal, { ModalProps } from '@/@common/components/Modal/Modal';
+import Text from '@/@common/components/Text/Text';
+import { useToastContext } from '@/@common/contexts/useToastContext';
+import { useAsyncLock } from '@/@common/hooks/useAsyncLock';
 import { useAddPlaceForm } from '@/domains/places/hooks/useAddPlaceForm';
+import { usePlaceFormValidation } from '@/domains/places/hooks/usePlaceFormValidation';
+import { usePlaceListContext } from '@/layouts/PlaceList/contexts/PlaceListContext';
 
 import addPlace from '../../apis/addPlace';
-import { usePlaceFormValidation } from '../../hooks/usePlaceFormValidation';
-import useSearchPlace from '../../hooks/useSearchPlace';
+import { useFunnel } from '../../hooks/useFunnel';
 import { PlaceLocationType } from '../../types/place.types';
-import AddressInput from '../PlaceFormSection/AddressInput';
-import BreakTimeInputs from '../PlaceFormSection/BreakTimeInputs';
-import BusinessHourInputs from '../PlaceFormSection/BusinessHourInputs';
-import ClosedDaySelector from '../PlaceFormSection/ClosedDaySelector';
-import PlaceNameInput from '../PlaceFormSection/PlaceNameInput';
-import StayDurationInput from '../PlaceFormSection/StayDurationInput';
-import SearchBox from '../SearchBox/SearchBox';
+import { getValidatedStep } from '../../utils/getValidatedStep';
 
+import AddPlaceBasicInfo from './AddPlaceBasicInfo';
 import { ModalInputContainerStyle } from './AddPlaceModal.styles';
 import AddPlaceModalButtons from './AddPlaceModalButtons';
 import AddPlaceModalHeader from './AddPlaceModalHeader';
+import AddPlaceValidation from './AddPlaceValidation';
 
-interface AddPlaceModalProps extends Omit<ModalProps, 'children'> {
-  onPlaceAdded?: () => Promise<void>;
-}
-
-const AddPlaceModal = ({
-  isOpen,
-  onClose,
-  onPlaceAdded,
-}: AddPlaceModalProps) => {
+const AddPlaceModal = ({ isOpen, onClose }: Omit<ModalProps, 'children'>) => {
   const { form, handleInputChange, handleToggleDay, resetForm } =
     useAddPlaceForm();
   const { isEmpty, isValid } = usePlaceFormValidation(form);
+  const { step, nextStep, prevStep, resetFunnel, isStep1, isStep2 } =
+    useFunnel();
+  const { handlePlaceAdded } = usePlaceListContext();
+
   const [showErrors, setShowErrors] = useState(false);
   const [placeLocationInfo, setPlaceLocationInfo] =
     useState<PlaceLocationType>();
+  const isStep1Valid = getValidatedStep(1, isEmpty);
+  const { showToast } = useToastContext();
 
   const handleClose = () => {
     resetForm();
+    resetFunnel();
     setShowErrors(false);
     onClose();
   };
@@ -45,6 +44,22 @@ const AddPlaceModal = ({
   const handleSearchPlaceMap = (placeLocation: PlaceLocationType) => {
     setPlaceLocationInfo(placeLocation);
   };
+
+  const handleNext = () => {
+    if (!isStep1Valid) {
+      setShowErrors(true);
+      return;
+    }
+    setShowErrors(false);
+    nextStep();
+  };
+
+  const handlePrev = () => {
+    setShowErrors(false);
+    prevStep();
+  };
+
+  const { runWithLock: runSubmitWithLock } = useAsyncLock();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -54,15 +69,53 @@ const AddPlaceModal = ({
       setShowErrors(true);
       return;
     }
-    try {
-      await addPlace(addPlaceForm);
-      if (onPlaceAdded) {
-        await onPlaceAdded();
+
+    return runSubmitWithLock(async () => {
+      try {
+        await addPlace(addPlaceForm);
+        await handlePlaceAdded();
+        showToast({
+          message: '장소가 추가되었습니다.',
+          type: 'success',
+        });
+        handleClose();
+      } catch (error) {
+        console.error(error);
+        if (error instanceof Error) {
+          showToast({
+            message: error.message,
+            type: 'error',
+          });
+        }
       }
-    } catch (error) {
-      console.log(error);
+    });
+  };
+
+  const renderContent = () => {
+    switch (step) {
+      case 1:
+        return (
+          <AddPlaceBasicInfo
+            form={form}
+            isEmpty={isEmpty}
+            showErrors={showErrors}
+            handleInputChange={handleInputChange}
+            handleSearchPlaceMap={handleSearchPlaceMap}
+          />
+        );
+      case 2:
+        return (
+          <AddPlaceValidation
+            form={form}
+            isEmpty={isEmpty}
+            showErrors={showErrors}
+            handleInputChange={handleInputChange}
+            handleToggleDay={handleToggleDay}
+          />
+        );
+      default:
+        return <></>;
     }
-    handleClose();
   };
 
   return (
@@ -70,59 +123,21 @@ const AddPlaceModal = ({
       <form onSubmit={handleSubmit}>
         <Flex direction="column" width="44rem" gap={2}>
           <AddPlaceModalHeader onClose={handleClose} />
-          <div css={ModalInputContainerStyle}>
-            <Flex
-              direction="column"
-              alignItems="flex-start"
-              width="100%"
-              gap={2}
-            >
-              <SearchBox
-                onChange={handleInputChange}
-                handleSearchPlaceMap={handleSearchPlaceMap}
-              />
-              {form.name && (
-                <PlaceNameInput
-                  value={form.name}
-                  onChange={handleInputChange}
-                  error={showErrors && isEmpty.name}
-                  disabled
-                />
-              )}
-              {form.roadAddressName && (
-                <AddressInput
-                  value={form.roadAddressName}
-                  onChange={handleInputChange}
-                  error={showErrors && isEmpty.roadAddressName}
-                  disabled
-                />
-              )}
-              <StayDurationInput
-                value={form.stayDurationMinutes}
-                onChange={handleInputChange}
-                error={showErrors && isEmpty.stayDurationMinutes}
-              />
-              <BusinessHourInputs
-                openAt={form.openAt}
-                closeAt={form.closeAt}
-                onChange={handleInputChange}
-                error={{
-                  openAt: showErrors && isEmpty.openAt,
-                  closeAt: showErrors && isEmpty.closeAt,
-                }}
-              />
-              <BreakTimeInputs
-                breakStartAt={form.breakStartAt}
-                breakEndAt={form.breakEndAt}
-                onChange={handleInputChange}
-              />
-              <ClosedDaySelector
-                closedDayOfWeeks={form.closedDayOfWeeks}
-                onToggleDay={handleToggleDay}
-              />
-            </Flex>
-          </div>
-          <AddPlaceModalButtons />
+          <Flex justifyContent="flex-start" gap={1.6} width="100%">
+            <Text variant="caption" css={isStep1 && { fontWeight: 700 }}>
+              1. 기본 정보
+            </Text>
+            <Text variant="caption" css={isStep2 && { fontWeight: 700 }}>
+              2. 검증 정보
+            </Text>
+          </Flex>
+          <div css={ModalInputContainerStyle}>{renderContent()}</div>
+          <AddPlaceModalButtons
+            step={step}
+            isStep1Valid={isStep1Valid}
+            onNext={handleNext}
+            onPrev={handlePrev}
+          />
         </Flex>
       </form>
     </Modal>

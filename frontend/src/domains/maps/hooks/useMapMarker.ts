@@ -1,18 +1,86 @@
-import { RefObject, useCallback } from 'react';
+import { RefObject, useCallback, useRef } from 'react';
+
+import createCustomMarkerElement from '../utils/createCustomMarkerElement';
 
 import type { KakaoMapType } from '../types/KaKaoMap.types';
 
-const useMapMarker = ({ map }: { map: RefObject<KakaoMapType> }) => {
-  const drawMarkers = useCallback((lat: number, lng: number) => {
-    if (!map.current) return;
+type Marker = InstanceType<typeof window.kakao.maps.Marker>;
+type CustomOverlay = InstanceType<typeof window.kakao.maps.CustomOverlay>;
 
-    const position = new window.kakao.maps.LatLng(lat, lng);
+interface DrawMarkerProps {
+  place: {
+    latitude: number;
+    longitude: number;
+    name: string;
+  };
+  routieSequence?: number;
+  onClick?: () => void;
+}
 
-    const marker = new window.kakao.maps.Marker({
-      position,
+type UseMapMarkerType = {
+  map: RefObject<KakaoMapType>;
+};
+
+const useMapMarker = ({ map }: UseMapMarkerType) => {
+  const markersRef = useRef<(Marker | CustomOverlay)[]>([]);
+
+  const clearMarkers = useCallback(() => {
+    markersRef.current.forEach((marker) => {
+      marker.setMap(null);
     });
-    marker.setMap(map.current);
+    markersRef.current = [];
   }, []);
+
+  const drawMarkers = useCallback(
+    ({ place, routieSequence, onClick }: DrawMarkerProps) => {
+      if (!map.current) return;
+
+      const position = new window.kakao.maps.LatLng(
+        place.latitude,
+        place.longitude,
+      );
+
+      if (routieSequence) {
+        const content = createCustomMarkerElement(routieSequence);
+
+        const overlay = new window.kakao.maps.CustomOverlay({
+          position,
+          content,
+          yAnchor: 0.5,
+          xAnchor: 0.5,
+        });
+
+        overlay.setMap(map.current);
+
+        if (onClick) {
+          content.addEventListener('click', () => {
+            onClick();
+            fitMapToMarker(place.latitude, place.longitude);
+          });
+        }
+        markersRef.current.push(overlay);
+        return overlay;
+      } else {
+        const marker = new window.kakao.maps.Marker({
+          position,
+          title: place.name,
+        });
+
+        marker.setMap(map.current);
+
+        if (onClick) {
+          window.kakao.maps.event.addListener(marker, 'click', () => {
+            onClick();
+            fitMapToMarker(place.latitude, place.longitude);
+          });
+        }
+
+        markersRef.current.push(marker);
+        return marker;
+      }
+    },
+    [map],
+  );
 
   const fitMapToMarkers = useCallback(
     (places: Array<{ latitude: number; longitude: number }>) => {
@@ -28,12 +96,26 @@ const useMapMarker = ({ map }: { map: RefObject<KakaoMapType> }) => {
         bounds.extend(position);
       });
 
-      map.current.setBounds(bounds);
+      setTimeout(() => {
+        if (map.current) {
+          map.current.setBounds(bounds);
+        }
+      }, 100);
     },
     [],
   );
 
-  return { drawMarkers, fitMapToMarkers };
+  const fitMapToMarker = useCallback((lat: number, lng: number) => {
+    if (!map.current) return;
+
+    const position = new window.kakao.maps.LatLng(lat, lng);
+
+    setTimeout(() => {
+      map.current.panTo(position);
+    }, 120);
+  }, []);
+
+  return { drawMarkers, fitMapToMarkers, clearMarkers, fitMapToMarker };
 };
 
 export default useMapMarker;

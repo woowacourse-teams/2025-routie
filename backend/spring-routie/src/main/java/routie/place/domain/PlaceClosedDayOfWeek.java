@@ -17,16 +17,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import routie.exception.BusinessException;
+import routie.exception.ErrorCode;
 
 @Getter
 @Entity
-@Table(
-        name = "place_closed_dayofweeks", uniqueConstraints = {
-//                @UniqueConstraint(
-//                        name = "uk_place_closed_day", columnNames = {"place_id", "closed_day"}
-//                )
-}
-)
+@Table(name = "place_closed_dayofweeks")
 @EntityListeners(AuditingEntityListener.class)
 @AllArgsConstructor(access = AccessLevel.PACKAGE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -53,7 +49,7 @@ public class PlaceClosedDayOfWeek {
 
     private void validateClosedDayOfWeek(final DayOfWeek closedDayOfWeek) {
         if (closedDayOfWeek == null) {
-            throw new IllegalArgumentException("휴무일은 null일 수 없습니다.");
+            throw new BusinessException(ErrorCode.PLACE_CLOSED_DAY_NULL);
         }
     }
 }

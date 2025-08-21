@@ -10,6 +10,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -17,11 +18,21 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import routie.exception.BusinessException;
+import routie.exception.ErrorCode;
 import routie.place.domain.Place;
 
 @Entity
 @Getter
-@Table(name = "routie_places")
+@Table(
+        name = "routie_places",
+        uniqueConstraints = {
+                @UniqueConstraint(
+                        name = "uk_routie_space_place",
+                        columnNames = {"routie_space_id", "place_id"}
+                )
+        }
+)
 @EntityListeners(AuditingEntityListener.class)
 @AllArgsConstructor(access = AccessLevel.PACKAGE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -53,7 +64,7 @@ public class RoutiePlace {
 
     private void validatePlace(final Place place) {
         if (place == null) {
-            throw new IllegalArgumentException("장소는 null일 수 없습니다.");
+            throw new BusinessException(ErrorCode.ROUTIE_PLACE_ENTITY_NULL);
         }
     }
 
@@ -64,7 +75,7 @@ public class RoutiePlace {
 
     private void validateSequence(final int sequence) {
         if (sequence < 1) {
-            throw new IllegalArgumentException("루티 장소 순서는 1 이상의 값이어야 합니다.");
+            throw new BusinessException(ErrorCode.ROUTIE_PLACE_ORDER_INVALID);
         }
     }
 }

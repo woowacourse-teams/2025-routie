@@ -20,6 +20,8 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import routie.exception.BusinessException;
+import routie.exception.ErrorCode;
 import routie.place.domain.Place;
 import routie.routie.domain.Routie;
 
@@ -76,7 +78,7 @@ public class RoutieSpace {
             final RoutieSpaceIdentifierProvider routieSpaceIdentifierProvider
     ) {
         if (routieSpaceIdentifierProvider == null) {
-            throw new IllegalArgumentException("루티 스페이스 식별자 제공자는 null일 수 없습니다.");
+            throw new BusinessException(ErrorCode.ROUTIE_SPACE_IDENTIFIER_PROVIDER_NULL);
         }
     }
 
@@ -87,10 +89,10 @@ public class RoutieSpace {
 
     private void validateName(final String name) {
         if (name == null || name.isBlank()) {
-            throw new IllegalArgumentException("루티 스페이스 이름은 비어있을 수 없습니다.");
+            throw new BusinessException(ErrorCode.ROUTIE_SPACE_NAME_EMPTY);
         }
         if (name.length() > 50) {
-            throw new IllegalArgumentException("루티 스페이스 이름은 50자 이하여야 합니다.");
+            throw new BusinessException(ErrorCode.ROUTIE_SPACE_NAME_LENGTH_INVALID);
         }
     }
 }

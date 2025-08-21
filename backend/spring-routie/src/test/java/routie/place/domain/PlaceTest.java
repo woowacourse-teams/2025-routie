@@ -8,6 +8,8 @@ import java.time.LocalTime;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import routie.exception.BusinessException;
+import routie.exception.ErrorCode;
 import routie.routiespace.domain.RoutieSpace;
 
 class PlaceTest {
@@ -39,6 +41,56 @@ class PlaceTest {
         assertThat(place.getName()).isEqualTo("스타벅스");
         assertThat(place.getBreakStartAt()).isEqualTo(LocalTime.of(14, 0));
         assertThat(place.getBreakEndAt()).isEqualTo(LocalTime.of(15, 0));
+    }
+
+    @Test
+    @DisplayName("영업 시간이 모두 없을 때 생성 성공")
+    void createPlaceWithNoOperatingTime() {
+        // given
+
+        // when
+        Place place = Place.create(
+                "스타벅스",
+                "테스트 도로명 주소",
+                "테스트 지번 주소",
+                10.123,
+                10.123,
+                60,
+                null,
+                null,
+                LocalTime.of(14, 0),
+                LocalTime.of(15, 0),
+                routieSpace,
+                List.of(DayOfWeek.SUNDAY)
+        );
+
+        // then
+        assertThat(place.getName()).isEqualTo("스타벅스");
+        assertThat(place.getBreakStartAt()).isEqualTo(LocalTime.of(14, 0));
+        assertThat(place.getBreakEndAt()).isEqualTo(LocalTime.of(15, 0));
+    }
+
+    @Test
+    @DisplayName("영업 시간이 둘 중 하나만 있는 경우 생성 실패")
+    void createPlaceWithNoOneOfOperatingTime() {
+        // given
+
+        // when, then
+        assertThatThrownBy(() -> Place.create(
+                "스타벅스",
+                "테스트 도로명 주소",
+                "테스트 지번 주소",
+                10.123,
+                10.123,
+                60,
+                LocalTime.of(14, 0),
+                null,
+                LocalTime.of(14, 0),
+                LocalTime.of(15, 0),
+                routieSpace,
+                List.of(DayOfWeek.SUNDAY)
+        )).isInstanceOf(BusinessException.class)
+          .hasMessage(ErrorCode.PLACE_BUSINESS_HOURS_INCOMPLETE.getMessage());
     }
 
     @Test
@@ -90,7 +142,8 @@ class PlaceTest {
                 null,
                 routieSpace,
                 null
-        )).isInstanceOf(IllegalArgumentException.class);
+        )).isInstanceOf(BusinessException.class)
+          .hasMessage(ErrorCode.PLACE_STAY_DURATION_INVALID.getMessage());
     }
 
     @Test
@@ -113,7 +166,8 @@ class PlaceTest {
                 null,
                 routieSpace,
                 null
-        )).isInstanceOf(IllegalArgumentException.class);
+        )).isInstanceOf(BusinessException.class)
+          .hasMessage(ErrorCode.PLACE_STAY_DURATION_INVALID.getMessage());
     }
 
     @Test
@@ -136,7 +190,8 @@ class PlaceTest {
                 null,
                 routieSpace,
                 null
-        )).isInstanceOf(IllegalArgumentException.class);
+        )).isInstanceOf(BusinessException.class)
+          .hasMessage(ErrorCode.PLACE_NAME_REQUIRED.getMessage());
     }
 
     @Test
@@ -159,7 +214,8 @@ class PlaceTest {
                 null,
                 routieSpace,
                 null
-        )).isInstanceOf(IllegalArgumentException.class);
+        )).isInstanceOf(BusinessException.class)
+          .hasMessage(ErrorCode.PLACE_NAME_REQUIRED.getMessage());
     }
 
     @Test
@@ -182,76 +238,8 @@ class PlaceTest {
                 null,
                 routieSpace,
                 null
-        )).isInstanceOf(IllegalArgumentException.class);
-    }
-
-    @Test
-    @DisplayName("오픈 시간을 입력하지 않은 경우 실패")
-    void createPlaceWithoutOpenTimeFail() {
-        // given
-        LocalTime openAt = null;
-
-        // when & then
-        assertThatThrownBy(() -> Place.create(
-                "카페",
-                "테스트 도로명 주소",
-                "테스트 지번 주소",
-                10.123,
-                10.123,
-                60,
-                openAt,
-                LocalTime.of(22, 0),
-                null,
-                null,
-                routieSpace,
-                null
-        )).isInstanceOf(IllegalArgumentException.class);
-    }
-
-    @Test
-    @DisplayName("마감 시간을 입력하지 않은 경우 실패")
-    void createPlaceWithoutCloseTimeFail() {
-        // given
-        LocalTime closeAt = null;
-
-        // when & then
-        assertThatThrownBy(() -> Place.create(
-                "카페",
-                "테스트 도로명 주소",
-                "테스트 지번 주소",
-                10.123,
-                10.123,
-                60,
-                LocalTime.of(10, 0),
-                closeAt,
-                null,
-                null,
-                routieSpace,
-                null
-        )).isInstanceOf(IllegalArgumentException.class);
-    }
-
-    @Test
-    @DisplayName("영업시간을 모두 입력하지 않은 경우 실패")
-    void createPlaceWithoutOperatingTimeFail() {
-        // given
-        LocalTime openAt = null;
-        LocalTime closeAt = null;
-
-        assertThatThrownBy(() -> Place.create(
-                "카페",
-                "테스트 도로명 주소",
-                "테스트 지번 주소",
-                10.123,
-                10.123,
-                60,
-                openAt,
-                closeAt,
-                null,
-                null,
-                routieSpace,
-                null
-        )).isInstanceOf(IllegalArgumentException.class);
+        )).isInstanceOf(BusinessException.class)
+          .hasMessage(ErrorCode.PLACE_NAME_LENGTH_INVALID.getMessage());
     }
 
     @Test
@@ -274,7 +262,8 @@ class PlaceTest {
                 breakEndAt,
                 routieSpace,
                 null
-        )).isInstanceOf(IllegalArgumentException.class);
+        )).isInstanceOf(BusinessException.class)
+          .hasMessage(ErrorCode.PLACE_BREAK_TIME_INCOMPLETE.getMessage());
     }
 
     @Test
@@ -296,7 +285,8 @@ class PlaceTest {
                 LocalTime.of(15, 0),
                 routieSpace,
                 null
-        )).isInstanceOf(IllegalArgumentException.class);
+        )).isInstanceOf(BusinessException.class)
+          .hasMessage(ErrorCode.PLACE_BREAK_TIME_INCOMPLETE.getMessage());
     }
 
     @Test
@@ -320,7 +310,8 @@ class PlaceTest {
                 breakEndAt,
                 routieSpace,
                 null
-        )).isInstanceOf(IllegalArgumentException.class);
+        )).isInstanceOf(BusinessException.class)
+          .hasMessage(ErrorCode.PLACE_BREAK_TIME_OUTSIDE_BUSINESS_HOURS.getMessage());
     }
 
     @Test
@@ -344,7 +335,8 @@ class PlaceTest {
                 breakEndAt,
                 routieSpace,
                 null
-        )).isInstanceOf(IllegalArgumentException.class);
+        )).isInstanceOf(BusinessException.class)
+          .hasMessage(ErrorCode.PLACE_BREAK_TIME_OUTSIDE_BUSINESS_HOURS.getMessage());
     }
 
     @Test
@@ -368,7 +360,8 @@ class PlaceTest {
                 breakEndAt,
                 routieSpace,
                 null
-        )).isInstanceOf(IllegalArgumentException.class);
+        )).isInstanceOf(BusinessException.class)
+          .hasMessage(ErrorCode.PLACE_BREAK_TIME_OUTSIDE_BUSINESS_HOURS.getMessage());
     }
 
     @Test
@@ -392,6 +385,7 @@ class PlaceTest {
                 breakEndAt,
                 routieSpace,
                 null
-        )).isInstanceOf(IllegalArgumentException.class);
+        )).isInstanceOf(BusinessException.class)
+          .hasMessage(ErrorCode.PLACE_BREAK_TIME_OUTSIDE_BUSINESS_HOURS.getMessage());
     }
 }

@@ -3,6 +3,7 @@ const theme = {
     white: '#FFFFFF',
     black: '#000000',
     gray: {
+      25: '#E6E8EB',
       50: '#BBBEC4',
       100: '#ABB0B7',
       200: '#9AA0A9',
@@ -20,7 +21,7 @@ const theme = {
       100: '#EC221F',
     },
     green: {
-      50: '#E2FBD5',
+      50: '#DEEBE4',
       75: '#A6F280',
       100: '#56BB23',
     },
@@ -28,6 +29,7 @@ const theme = {
   font: {
     size: {
       heading: '2.4rem',
+      subHeading: '2rem',
       body: '1.6rem',
       caption: '1.4rem',
       label: '1.2rem',
@@ -41,6 +43,14 @@ const theme = {
       light: 300,
       thin: 200,
     },
+  },
+  home: {
+    gray: '#F9FAFB',
+    violet: '#8b5cf6',
+    pink: '#ff6f91',
+    orange: '#ff9671',
+    yellow: '#ffc75f',
+    text: '#4b4453',
   },
 };
 

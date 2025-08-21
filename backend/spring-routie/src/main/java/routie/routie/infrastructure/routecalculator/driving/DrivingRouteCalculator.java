@@ -7,9 +7,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import routie.exception.BusinessException;
 import routie.exception.ErrorCode;
-import routie.place.domain.MovingStrategy;
 import routie.routie.domain.RoutiePlace;
+import routie.routie.domain.route.MovingStrategy;
 import routie.routie.domain.route.Route;
+import routie.routie.domain.route.RouteCalculationContext;
 import routie.routie.domain.route.RouteCalculator;
 import routie.routie.domain.route.Routes;
 import routie.routie.infrastructure.routecalculator.driving.kakaodrivingapi.KakaoDrivingRouteApiClient;
@@ -29,13 +30,29 @@ public class DrivingRouteCalculator implements RouteCalculator {
     }
 
     @Override
-    public Routes calculateRoutes(final List<RoutiePlace> routiePlaces, final MovingStrategy movingStrategy) {
+    public Routes calculateRoutes(final RouteCalculationContext routeCalculationContext) {
+        List<RoutiePlace> routiePlaces = routeCalculationContext.getOrderedRoutiePlaces();
+
+        RoutiePlace from = routiePlaces.getFirst();
+        RoutiePlace to = routiePlaces.getLast();
+        if (isZeroDistanceRoute(routiePlaces, from, to)) {
+            return new Routes(Map.of(from, new Route(from, to, 0, 0)));
+        }
+
         KakaoDrivingRouteApiResponse kakaoDrivingRouteApiResponse = kakaoDrivingRouteApiClient.getRoute(
                 KakaoDrivingRouteApiRequest.from(routiePlaces)
         );
         List<SectionResponse> sectionResponses = getRouteResponse(kakaoDrivingRouteApiResponse).sectionResponses();
 
-        return mapToRoutes(routiePlaces, movingStrategy, sectionResponses);
+        return mapToRoutes(routiePlaces, sectionResponses);
+    }
+
+    private boolean isZeroDistanceRoute(
+            final List<RoutiePlace> routiePlaces,
+            final RoutiePlace from,
+            final RoutiePlace to
+    ) {
+        return routiePlaces.size() == 2 && from.getPlace().hasSameCoordinate(to.getPlace());
     }
 
     private KakaoDrivingRouteApiResponse.RouteResponse getRouteResponse(
@@ -48,7 +65,6 @@ public class DrivingRouteCalculator implements RouteCalculator {
 
     private Routes mapToRoutes(
             final List<RoutiePlace> routiePlaces,
-            final MovingStrategy movingStrategy,
             final List<SectionResponse> sectionResponses
     ) {
         Map<RoutiePlace, Route> routeMap = new HashMap<>();
@@ -56,8 +72,10 @@ public class DrivingRouteCalculator implements RouteCalculator {
             SectionResponse sectionResponse = sectionResponses.get(i);
             RoutiePlace from = routiePlaces.get(i);
             RoutiePlace to = routiePlaces.get(i + 1);
-            Route route = new Route(from, to, movingStrategy, sectionResponse.duration() / 60,
-                    sectionResponse.distance());
+            Route route = new Route(
+                    from, to, sectionResponse.duration() / 60,
+                    sectionResponse.distance()
+            );
             routeMap.put(from, route);
         }
         return new Routes(routeMap);

@@ -1,6 +1,8 @@
 package routie.routie.domain.routievalidator;
 
 import java.time.LocalDateTime;
+import routie.exception.BusinessException;
+import routie.exception.ErrorCode;
 import routie.routie.domain.timeperiod.TimePeriods;
 
 public record ValidationContext(
@@ -13,23 +15,30 @@ public record ValidationContext(
         validateStartDateTime(startDateTime);
         validateEndDateTime(endDateTime);
         validateTimePeriods(timePeriods);
+        validateTimeOrder(startDateTime, endDateTime);
     }
 
     private void validateStartDateTime(final LocalDateTime startDateTime) {
         if (startDateTime == null) {
-            throw new IllegalArgumentException("시작 시간은 null일 수 없습니다.");
+            throw new BusinessException(ErrorCode.ROUTIE_START_TIME_NULL);
         }
     }
 
     private void validateEndDateTime(final LocalDateTime endDateTime) {
         if (endDateTime == null) {
-            throw new IllegalArgumentException("종료 시간은 null일 수 없습니다.");
+            throw new BusinessException(ErrorCode.ROUTIE_END_TIME_NULL);
         }
     }
 
     private void validateTimePeriods(final TimePeriods timePeriods) {
         if (timePeriods == null) {
-            throw new IllegalArgumentException("기간은 null일 수 없습니다.");
+            throw new BusinessException(ErrorCode.ROUTIE_TIME_PERIODS_NULL);
+        }
+    }
+
+    private void validateTimeOrder(final LocalDateTime startDateTime, final LocalDateTime endDateTime) {
+        if (endDateTime.isBefore(startDateTime)) {
+            throw new BusinessException(ErrorCode.ROUTIE_END_TIME_BEFORE_START_TIME);
         }
     }
 }

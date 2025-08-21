@@ -17,6 +17,12 @@ spring:
         format_sql: true
         dialect: org.hibernate.dialect.MySQLDialect
     show-sql: true
+    
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health
 
 logging:
   file:
@@ -25,3 +31,11 @@ logging:
 kakao:
   api:
     key: ${KAKAO_API_KEY}
+
+google:
+  api:
+    key: ${GOOGLE_API_KEY}
+
+v-world:
+  api:
+    key: ${V_WORLD_API_KEY}

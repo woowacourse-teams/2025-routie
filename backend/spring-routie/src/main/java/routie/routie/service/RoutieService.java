@@ -10,7 +10,8 @@ import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import routie.place.domain.MovingStrategy;
+import routie.exception.BusinessException;
+import routie.exception.ErrorCode;
 import routie.place.domain.Place;
 import routie.place.repository.PlaceRepository;
 import routie.routie.controller.dto.request.RoutiePlaceCreateRequest;
@@ -18,10 +19,11 @@ import routie.routie.controller.dto.request.RoutieUpdateRequest;
 import routie.routie.controller.dto.request.RoutieUpdateRequest.RoutiePlaceRequest;
 import routie.routie.controller.dto.response.RoutiePlaceCreateResponse;
 import routie.routie.controller.dto.response.RoutieReadResponse;
-import routie.routie.controller.dto.response.RoutieUpdateResponse;
 import routie.routie.controller.dto.response.RoutieValidationResponse;
 import routie.routie.domain.Routie;
 import routie.routie.domain.RoutiePlace;
+import routie.routie.domain.route.MovingStrategy;
+import routie.routie.domain.route.RouteCalculationContext;
 import routie.routie.domain.route.RouteCalculator;
 import routie.routie.domain.route.Routes;
 import routie.routie.domain.routievalidator.RoutieValidator;
@@ -63,79 +65,105 @@ public class RoutieService {
 
     private Place getPlaceByRoutieSpaceAndPlaceId(final RoutieSpace routieSpace, final Long placeId) {
         return placeRepository.findByIdAndRoutieSpace(placeId, routieSpace)
-                .orElseThrow(() -> new IllegalArgumentException("루티 스페이스 내에서 해당하는 장소를 찾을 수 없습니다: " + placeId));
+                .orElseThrow(() -> new BusinessException(
+                        ErrorCode.PLACE_NOT_FOUND_IN_ROUTIE_SPACE,
+                        "루티 스페이스 내에서 해당하는 장소를 찾을 수 없습니다: " + placeId
+                ));
     }
 
-    public RoutieReadResponse getRoutie(final String routieSpaceIdentifier, final LocalDateTime startDateTime) {
+    public RoutieReadResponse getRoutie(
+            final String routieSpaceIdentifier,
+            final LocalDateTime startDateTime,
+            final MovingStrategy movingStrategy
+    ) {
         Routie routie = getRoutieSpaceByIdentifier(routieSpaceIdentifier).getRoutie();
         List<RoutiePlace> routiePlaces = routie.getRoutiePlaces();
-        Routes routes = getRoutes(routiePlaces);
-        TimePeriods timePeriods = timePeriodCalculator.calculateTimePeriods(startDateTime, routes, routiePlaces);
+
+        Routes routes = getRoutes(startDateTime, routiePlaces, movingStrategy);
+        TimePeriods timePeriods = getTimePeriods(startDateTime, movingStrategy, routes, routiePlaces);
+
         return RoutieReadResponse.from(routie, routes.orderedList(), timePeriods);
     }
 
-    private Routes getRoutes(final List<RoutiePlace> routiePlaces) {
+    private Routes getRoutes(
+            final LocalDateTime startDateTime,
+            final List<RoutiePlace> routiePlaces,
+            final MovingStrategy movingStrategy
+    ) {
         Routes routes = Routes.empty();
+        RouteCalculationContext routeCalculationContext = new RouteCalculationContext(
+                startDateTime,
+                routiePlaces,
+                movingStrategy
+        );
 
-        if (routiePlaces.size() >= MIN_ROUTIE_PLACES_FOR_ROUTE) {
-            routes = routeCalculator.calculateRoutes(routiePlaces, MovingStrategy.DRIVING);
+        if (routiePlaces.size() >= MIN_ROUTIE_PLACES_FOR_ROUTE && movingStrategy != null) {
+            routes = routeCalculator.calculateRoutes(routeCalculationContext);
         }
-
         return routes;
+    }
+
+    private TimePeriods getTimePeriods(
+            final LocalDateTime startDateTime,
+            final MovingStrategy movingStrategy,
+            final Routes routes,
+            final List<RoutiePlace> routiePlaces
+    ) {
+        TimePeriods timePeriods = TimePeriods.empty();
+        if (startDateTime != null && movingStrategy != null) {
+            timePeriods = timePeriodCalculator.calculateTimePeriods(startDateTime, routes, routiePlaces);
+        }
+        return timePeriods;
     }
 
     @Transactional
     public void modifyRoutie(final String routieSpaceIdentifier, final RoutieUpdateRequest routieUpdateRequest) {
         RoutieSpace routieSpace = getRoutieSpaceByIdentifier(routieSpaceIdentifier);
-        Routie routie = routieSpace.getRoutie();
+        routiePlaceRepository.deleteByRoutieSpaceId(routieSpace.getId());
 
-        List<Long> placeIds = routieUpdateRequest.routiePlaces().stream()
+        Map<Long, Place> placeMap = getPlaceMap(routieUpdateRequest);
+        List<RoutiePlace> newRoutiePlaces = createNewRoutiePlaces(routieUpdateRequest, placeMap);
+
+        routieSpace.getRoutie().getRoutiePlaces().addAll(newRoutiePlaces);
+    }
+
+    private Map<Long, Place> getPlaceMap(final RoutieUpdateRequest request) {
+        List<Long> placeIds = request.routiePlaces().stream()
                 .map(RoutiePlaceRequest::placeId)
                 .toList();
 
-        Map<Long, Place> placeMap = placeRepository.findAllById(placeIds).stream()
+        return placeRepository.findAllById(placeIds).stream()
                 .collect(Collectors.toMap(Place::getId, Function.identity()));
+    }
 
-//        List<Long> routiePlaceIds = routie.getRoutiePlaces().stream()
-//                .map(RoutiePlace::getId)
-//                .toList();
-//        routiePlaceRepository.deleteAllById(routiePlaceIds);
-
-        routie.getRoutiePlaces().clear(); // 급한 예외로 인해 새로 작성된 줄
-
-        List<RoutiePlace> routiePlaces = routieUpdateRequest.routiePlaces().stream()
+    private List<RoutiePlace> createNewRoutiePlaces(final RoutieUpdateRequest request,
+                                                    final Map<Long, Place> placeMap) {
+        return request.routiePlaces().stream()
                 .map(r -> new RoutiePlace(
                         r.sequence(),
                         Optional.ofNullable(placeMap.get(r.placeId()))
-                                .orElseThrow(
-                                        () -> new IllegalArgumentException("해당하는 id의 장소를 찾을 수 없습니다: " + r.placeId()))
+                                .orElseThrow(() -> new BusinessException(
+                                        ErrorCode.PLACE_NOT_FOUND_BY_ID,
+                                        "해당하는 id의 장소를 찾을 수 없습니다: " + r.placeId()
+                                ))
                 )).toList();
-
-        routieSpace.getRoutie().getRoutiePlaces().addAll(routiePlaces); // 급한 예외로 인해 새로 작성한 줄
-//        routieSpace.updateRoutie(Routie.create(routiePlaces));
-
-        RoutieUpdateResponse.from(routie);
     }
 
     private RoutieSpace getRoutieSpaceByIdentifier(final String routieSpaceIdentifier) {
         return routieSpaceRepository.findByIdentifier(routieSpaceIdentifier)
-                .orElseThrow(() -> new IllegalArgumentException("해당하는 식별자의 루티 스페이스를 찾을 수 없습니다."));
+                .orElseThrow(() -> new BusinessException(ErrorCode.ROUTIE_SPACE_NOT_FOUND_BY_IDENTIFIER));
     }
 
     public RoutieValidationResponse validateRoutie(
             final String routieSpaceIdentifier,
             final LocalDateTime startDateTime,
-            final LocalDateTime endDateTime
+            final LocalDateTime endDateTime,
+            final MovingStrategy movingStrategy
     ) {
         Routie routie = getRoutieSpaceByIdentifier(routieSpaceIdentifier).getRoutie();
         List<RoutiePlace> routiePlaces = routie.getRoutiePlaces();
-        Routes routes = getRoutes(routiePlaces);
-
-        TimePeriods timePeriods = timePeriodCalculator.calculateTimePeriods(
-                startDateTime,
-                routes,
-                routiePlaces
-        );
+        Routes routes = getRoutes(startDateTime, routiePlaces, movingStrategy);
+        TimePeriods timePeriods = timePeriodCalculator.calculateTimePeriods(startDateTime, routes, routiePlaces);
 
         ValidationContext validationContext = new ValidationContext(startDateTime, endDateTime, timePeriods);
         List<ValidationResult> validationResults = new ArrayList<>();

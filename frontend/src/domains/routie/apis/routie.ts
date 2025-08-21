@@ -1,27 +1,31 @@
 import { apiClient } from '@/apis';
 
-import { Routie, validationResultResponseType } from '../types/routie.types';
+import { adaptValidationResponse } from '../adapters/routieValidationAdapter';
+import { ValidationApiResponse } from '../types/api.types';
+import { Routie, RoutieValidationResponseType } from '../types/routie.types';
 
-export const getRoutie = async (
-  isValidateActive: boolean,
-  routieTime: string,
-) => {
+export const getRoutie = async (routieTime: string, movingStrategy: string) => {
   const routieSpaceUuid = localStorage.getItem('routieSpaceUuid');
 
   if (!routieSpaceUuid) {
     throw new Error('루티 스페이스 uuid가 없습니다.');
   }
 
-  const query =
-    isValidateActive && routieTime ? `?startDateTime=${routieTime}` : '';
+  const queryParams = new URLSearchParams();
+
+  if (routieTime) {
+    queryParams.append('startDateTime', routieTime);
+  }
+
+  if (movingStrategy) {
+    queryParams.append('movingStrategy', movingStrategy);
+  }
+
+  const query = queryParams.toString() ? `?${queryParams.toString()}` : '';
 
   const response = await apiClient.get(
     `/routie-spaces/${routieSpaceUuid}/routie${query}`,
   );
-
-  if (!response.ok) {
-    throw new Error('전체 루티 조회 실패');
-  }
 
   const data = await response.json();
 
@@ -51,19 +55,18 @@ export const getDetailPlace = async (id: number) => {
     `/routie-spaces/${routieSpaceUuid}/places/${id}`,
   );
 
-  if (!response.ok) {
-    throw new Error('루티 상세 조회 실패');
-  }
-
   const data = await response.json();
 
   return data;
 };
 
-export const getRoutieValidation = async (time: {
-  startDateTime: string;
-  endDateTime: string;
-}): Promise<validationResultResponseType> => {
+export const getRoutieValidation = async (
+  time: {
+    startDateTime: string;
+    endDateTime: string;
+  },
+  movingStrategy: string,
+): Promise<RoutieValidationResponseType> => {
   const routieSpaceUuid = localStorage.getItem('routieSpaceUuid');
 
   if (!routieSpaceUuid) {
@@ -71,16 +74,12 @@ export const getRoutieValidation = async (time: {
   }
 
   const response = await apiClient.get(
-    `/routie-spaces/${routieSpaceUuid}/routie/validation?startDateTime=${time.startDateTime}&endDateTime=${time.endDateTime}`,
+    `/routie-spaces/${routieSpaceUuid}/routie/validation?startDateTime=${time.startDateTime}&endDateTime=${time.endDateTime}&movingStrategy=${movingStrategy}`,
   );
 
-  if (!response.ok) {
-    throw new Error('일정 검증 실패');
-  }
+  const data: ValidationApiResponse = await response.json();
 
-  const data = await response.json();
-
-  return data;
+  return adaptValidationResponse(data);
 };
 
 export const addRoutiePlace = async (placeId: number) => {
@@ -97,10 +96,6 @@ export const addRoutiePlace = async (placeId: number) => {
     },
   );
 
-  if (!response.ok) {
-    throw new Error('루티에 장소 추가 실패');
-  }
-
   const data = await response.json();
 
   return data;
@@ -116,7 +111,4 @@ export const deleteRoutiePlace = async (placeId: number) => {
   const response = await apiClient.delete(
     `/routie-spaces/${routieSpaceUuid}/routie/places/${placeId}`,
   );
-  if (!response.ok) {
-    throw new Error('루티에 장소 제거 실패');
-  }
 };

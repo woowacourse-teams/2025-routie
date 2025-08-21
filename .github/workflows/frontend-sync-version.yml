@@ -1,0 +1,79 @@
+name: Sync package.json version
+
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  sync-and-pr:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout full history
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Extract version from tag
+        run: echo "VERSION=${GITHUB_REF_NAME#v}" >> $GITHUB_ENV
+
+      - name: Set git identity
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Update version on develop (commit & push directly)
+        run: |
+          # ensure we have develop
+          git fetch origin develop:develop
+          git checkout develop
+
+          jq ".version = \"${VERSION}\"" frontend/package.json > tmp.json && mv tmp.json frontend/package.json
+
+          if [ -f frontend/package-lock.json ]; then
+            jq ".version = \"${VERSION}\"" frontend/package-lock.json > tmp-lock.json && mv tmp-lock.json frontend/package-lock.json
+          fi
+
+          if git diff --quiet; then
+            echo "No version changes to commit on develop."
+          else
+            git add frontend/package.json frontend/package-lock.json 2>/dev/null || true
+            git commit -m "chore: frontend package.json(/lock) 버전을 ${VERSION}으로 업데이트"
+            git push origin develop
+          fi
+
+      - name: Open/ensure PR from develop to main
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const {owner, repo} = context.repo;
+
+            // Check if an open PR from develop -> main already exists
+            const existing = await github.paginate(github.rest.pulls.list, {
+              owner, repo, state: 'open', base: 'main', head: `${owner}:develop`
+            });
+
+            if (existing.length > 0) {
+              core.info(`PR already open: #${existing[0].number}`);
+              return;
+            }
+
+            const title = `chore: frontend package.json(/lock) 버전을 ${process.env.VERSION}으로 업데이트`;
+            const body = [
+              `자동 생성: develop의 변경 사항을 main으로 병합하는 PR입니다.`,
+              ``,
+              `- 포함: frontend package.json(/lock) 버전 동기화 → ${process.env.VERSION}`,
+            ].join('\n');
+
+            const res = await github.rest.pulls.create({
+              owner, repo,
+              title,
+              head: 'develop',
+              base: 'main',
+              body
+            });
+            core.info(`Opened PR #${res.data.number}`);
