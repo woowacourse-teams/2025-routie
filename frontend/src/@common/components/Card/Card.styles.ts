@@ -32,7 +32,7 @@ const cardVariant: Record<CardVariantProps, SerializedStyles> = {
 
   disabled: css`
     border-left: 4px solid ${theme.colors.gray[300]};
-    background-color: ${theme.colors.gray[50]};
+    background-color: ${theme.colors.gray[25]};
   `,
 
   invalid: css`
