@@ -2,7 +2,7 @@ import { css } from '@emotion/react';
 
 import Card from '@/@common/components/Card/Card';
 import Flex from '@/@common/components/Flex/Flex';
-import IconButton from '@/@common/components/IconButton/IconButton';
+import Icon from '@/@common/components/IconSvg/Icon';
 import Pill from '@/@common/components/Pill/Pill';
 import Text from '@/@common/components/Text/Text';
 import { useToastContext } from '@/@common/contexts/useToastContext';
@@ -167,24 +167,48 @@ export const PlaceCard = ({ selected, ...props }: PlaceCardProps) => {
               />
             </Flex>
             <Flex direction="column" gap={5} height="100%">
-              <IconButton
-                icon={editIcon}
-                onClick={handleOpenEditModal}
+              <Icon
+                name={selected ? 'check' : 'plus'}
+                onClick={handlePlaceSelect}
+                size={selected ? 34 : 30}
                 css={css`
-                  & img {
-                    width: 2rem;
-                    height: 2rem;
+                  cursor: ${selected ? 'default' : 'pointer'};
+                  padding: 0.2rem;
+                  border-radius: 8px;
+
+                  &:hover {
+                    background-color: ${selected
+                      ? theme.colors.white
+                      : theme.colors.purple[200]};
                   }
                 `}
               />
-              <IconButton
-                icon={selected ? disableTrashIcon : trashIcon}
-                variant={selected ? 'disable' : 'delete'}
-                onClick={selected ? undefined : handleDelete}
+              <Icon
+                name="edit"
+                onClick={handleOpenEditModal}
+                size={30}
                 css={css`
-                  & img {
-                    width: 2rem;
-                    height: 2rem;
+                  padding: 0.4rem;
+                  border-radius: 8px;
+
+                  &:hover {
+                    background-color: ${theme.colors.purple[200]};
+                  }
+                `}
+              />
+              <Icon
+                name={selected ? 'disableTrash' : 'trash'}
+                onClick={selected ? undefined : handleDelete}
+                size={30}
+                css={css`
+                  cursor: ${selected ? 'default' : 'pointer'};
+                  padding: 0.4rem;
+                  border-radius: 8px;
+
+                  &:hover {
+                    background-color: ${selected
+                      ? theme.colors.white
+                      : theme.colors.red[50]};
                   }
                 `}
               />
