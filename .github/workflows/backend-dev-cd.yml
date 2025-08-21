@@ -67,6 +67,9 @@ jobs:
         working-directory: backend/spring-routie
 
     steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
       - name: Restore docker-compose.yml and Run Containers
         run: |
           echo '${{ secrets.DOCKER_COMPOSE_YML_DEV }}' > docker-compose.yml
@@ -85,6 +88,16 @@ jobs:
         run: |
           mkdir -p config
           echo '${{ secrets.APPLICATION_YML_DEV }}' > config/application.yml
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      - name: Execute Flyway Migration
+        run: ./gradlew flywayMigrate
+        env:
+          MYSQL_URL: ${{ secrets.MYSQL_URL_DEV }}
+          MYSQL_USERNAME: ${{ secrets.MYSQL_USERNAME_DEV }}
+          MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD_DEV }}
 
       - name: Kill existing Spring Process
         run: |

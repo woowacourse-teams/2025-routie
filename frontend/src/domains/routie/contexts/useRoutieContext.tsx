@@ -68,7 +68,6 @@ export const RoutieProvider = ({ children }: { children: React.ReactNode }) => {
   const refetchRoutieData = useCallback(async () => {
     try {
       const routies = await getRoutie(
-        isValidateActive,
         combineDateTime.startDateTime,
         movingStrategy,
       );

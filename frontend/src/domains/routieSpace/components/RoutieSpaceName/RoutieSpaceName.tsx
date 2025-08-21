@@ -1,75 +1,57 @@
-import { useEffect, useState } from 'react';
+import { css } from '@emotion/react';
 
+import Button from '@/@common/components/Button/Button';
 import Flex from '@/@common/components/Flex/Flex';
-import IconButton from '@/@common/components/IconButton/IconButton';
 import Text from '@/@common/components/Text/Text';
-import editIcon from '@/assets/icons/edit.svg';
+import theme from '@/styles/theme';
 
-import {
-  editRoutieSpaceName,
-  getRoutieSpaceName,
-} from '../../apis/routieSpaceName';
+import useRoutieSpaceName from '../../hooks/useRoutieSpaceName';
 
 import routieSpaceNameInputStyle from './RoutieSpaceName.style';
 
 const RoutieSpaceName = () => {
-  const [name, setName] = useState('');
-  const [isEditing, setIsEditing] = useState(false);
-
-  useEffect(() => {
-    const fetchRoutieSpaceName = async () => {
-      const name = await getRoutieSpaceName();
-      setName(name ?? '이름 못 찾음');
-    };
-    fetchRoutieSpaceName();
-  }, []);
-
-  const handleClick = async () => {
-    if (isEditing) {
-      try {
-        const updatedName = await editRoutieSpaceName(name);
-        setName(updatedName ?? '이름 못 찾음');
-      } catch (error) {
-        console.error('루티 스페이스 이름 수정 중 에러 발생:', error);
-      }
-      setIsEditing(false);
-    } else {
-      setIsEditing(true);
-    }
-  };
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setName(e.target.value);
-  };
+  const {
+    name,
+    isEditing,
+    isLoading,
+    errorCase,
+    inputRef,
+    handleEnter,
+    handleClick,
+    handleChange,
+  } = useRoutieSpaceName();
 
   return (
-    <Flex
-      alignItems="center"
-      justifyContent="space-between"
-      width="100%"
-      margin={0.4}
-      gap={3}
-    >
+    <Flex justifyContent="space-between" width="100%" margin={0.4} gap={3}>
       {isEditing ? (
         <input
-          id="routie-space-name"
-          css={routieSpaceNameInputStyle}
-          maxLength={20}
+          ref={inputRef}
+          css={routieSpaceNameInputStyle(errorCase === 'invalidNameLength')}
           autoFocus
           value={name}
           onChange={handleChange}
+          onKeyDown={handleEnter}
         />
       ) : (
-        <Flex
-          alignItems="center"
-          justifyContent="flex-start"
-          padding={0.4}
-          width="100%"
-        >
-          <Text variant="title">{name}</Text>
+        <Flex justifyContent="flex-start" padding={0.4} width="100%">
+          <Text variant="title2">{name}</Text>
         </Flex>
       )}
-      <IconButton icon={editIcon} onClick={handleClick} />
+      <Button
+        variant="primary"
+        onClick={handleClick}
+        width="5rem"
+        disabled={isLoading}
+        css={css`
+          padding: 0.8rem 0.6rem;
+        `}
+      >
+        <Flex width="100%">
+          <Text variant="caption" color={theme.colors.white}>
+            {isEditing ? '저장' : '수정'}
+          </Text>
+        </Flex>
+      </Button>
     </Flex>
   );
 };

@@ -4,11 +4,7 @@ import { adaptValidationResponse } from '../adapters/routieValidationAdapter';
 import { ValidationApiResponse } from '../types/api.types';
 import { Routie, RoutieValidationResponseType } from '../types/routie.types';
 
-export const getRoutie = async (
-  isValidateActive: boolean,
-  routieTime: string,
-  movingStrategy: string,
-) => {
+export const getRoutie = async (routieTime: string, movingStrategy: string) => {
   const routieSpaceUuid = localStorage.getItem('routieSpaceUuid');
 
   if (!routieSpaceUuid) {
@@ -17,7 +13,7 @@ export const getRoutie = async (
 
   const queryParams = new URLSearchParams();
 
-  if (isValidateActive && routieTime) {
+  if (routieTime) {
     queryParams.append('startDateTime', routieTime);
   }
 

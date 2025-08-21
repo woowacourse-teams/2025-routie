@@ -15,6 +15,7 @@ public record ValidationContext(
         validateStartDateTime(startDateTime);
         validateEndDateTime(endDateTime);
         validateTimePeriods(timePeriods);
+        validateTimeOrder(startDateTime, endDateTime);
     }
 
     private void validateStartDateTime(final LocalDateTime startDateTime) {
@@ -32,6 +33,12 @@ public record ValidationContext(
     private void validateTimePeriods(final TimePeriods timePeriods) {
         if (timePeriods == null) {
             throw new BusinessException(ErrorCode.ROUTIE_TIME_PERIODS_NULL);
+        }
+    }
+
+    private void validateTimeOrder(final LocalDateTime startDateTime, final LocalDateTime endDateTime) {
+        if (endDateTime.isBefore(startDateTime)) {
+            throw new BusinessException(ErrorCode.ROUTIE_END_TIME_BEFORE_START_TIME);
         }
     }
 }

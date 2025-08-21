@@ -9,6 +9,11 @@ const textVariant: Record<TextVariantProps, SerializedStyles> = {
     font-size: ${theme.font.size.heading};
     font-weight: ${theme.font.weight.bold};
   `,
+
+  title2: css`
+    font-size: ${theme.font.size.subHeading};
+    font-weight: ${theme.font.weight.semibold};
+  `,
   subTitle: css`
     font-size: ${theme.font.size.body};
     font-weight: ${theme.font.weight.semibold};
@@ -27,16 +32,18 @@ const textVariant: Record<TextVariantProps, SerializedStyles> = {
   `,
 };
 
+const ellipsisStyle = css`
+  overflow: hidden;
+  display: block;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+`;
+
 export const TextStyle = ({ color, variant, ellipsis }: TextProps) => css`
   box-sizing: border-box;
   max-width: 100%;
   color: ${color ?? theme.colors.black};
+
   ${variant && textVariant[variant]}
-  ${ellipsis &&
-  css`
-    overflow: hidden;
-    display: block;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  `}
+  ${ellipsis && ellipsisStyle}
 `;

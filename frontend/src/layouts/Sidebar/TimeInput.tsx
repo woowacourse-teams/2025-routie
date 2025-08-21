@@ -14,7 +14,7 @@ const TimeInput = () => {
       <Flex direction="column" alignItems="flex-start" gap={1} width="100%">
         <Input
           variant={scheduleInputVariant}
-          disabled={routieTime.date === ''}
+          disabled={routieTime.date === '' || !isValidateActive}
           id="startAt"
           label="시작 시간"
           type="time"
@@ -26,7 +26,11 @@ const TimeInput = () => {
       <Flex direction="column" alignItems="flex-start" gap={1} width="100%">
         <Input
           variant={scheduleInputVariant}
-          disabled={routieTime.date === '' || routieTime.startTime === ''}
+          disabled={
+            routieTime.date === '' ||
+            routieTime.startTime === '' ||
+            !isValidateActive
+          }
           id="endAt"
           label="종료 시간"
           type="time"

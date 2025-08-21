@@ -133,11 +133,17 @@ export const PlaceCard = ({ selected, ...props }: PlaceCardProps) => {
                 {props.name}
               </Text>
               <Text variant="caption" color={theme.colors.gray[200]} ellipsis>
-                {props.roadAddressName}
+                {props.roadAddressName || props.addressName}
               </Text>
               <Flex direction="row" gap={1}>
-                <Text variant="description" ellipsis>
-                  영업시간
+                <Text
+                  variant="description"
+                  ellipsis
+                  css={css`
+                    width: 5.5rem;
+                  `}
+                >
+                  영업 시간
                 </Text>
                 <Pill type="time">
                   {props.openAt} -{' '}
@@ -146,8 +152,14 @@ export const PlaceCard = ({ selected, ...props }: PlaceCardProps) => {
               </Flex>
               {props.breakStartAt && (
                 <Flex direction="row" gap={1}>
-                  <Text variant="description" ellipsis>
-                    브레이크
+                  <Text
+                    variant="description"
+                    ellipsis
+                    css={css`
+                      width: 5.5rem;
+                    `}
+                  >
+                    브레이크 타임
                   </Text>
                   <Pill type="time">
                     {props.breakStartAt} - {props.breakEndAt}

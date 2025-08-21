@@ -24,6 +24,7 @@ import DraggableWrapper from '../DraggableWrapper/DraggableWrapper';
 
 import {
   dragIconStyle,
+  EllipsisParentStyle,
   PlaceInfoViewPillStyle,
 } from './RoutiePlaceCard.styles';
 
@@ -76,7 +77,7 @@ const RoutiePlaceCard = ({ routie }: { routie: Routie }) => {
       <DraggableWrapper>
         <Card
           id={routie.placeId.toString()}
-          variant={isUnavailable ? 'unavailable' : 'defaultStatic'}
+          variant={isUnavailable ? 'invalid' : 'defaultStatic'}
         >
           <Flex justifyContent="flex-start" gap={1.5}>
             <Flex width="100%" justifyContent="space-between" gap={1.5}>
@@ -91,9 +92,12 @@ const RoutiePlaceCard = ({ routie }: { routie: Routie }) => {
                 gap={1.1}
                 width="100%"
                 padding={0.5}
+                css={EllipsisParentStyle}
               >
-                <Flex width="100%" justifyContent="space-between">
-                  <Text variant="caption">{place.name}</Text>
+                <Flex width="100%" justifyContent="space-between" gap={1}>
+                  <Text variant="caption" ellipsis>
+                    {place.name}
+                  </Text>
                   <Tooltip
                     content={
                       <div>
@@ -103,7 +107,7 @@ const RoutiePlaceCard = ({ routie }: { routie: Routie }) => {
                         </Text>
 
                         <Text variant="label">
-                          브레이크:{' '}
+                          브레이크 타임:{' '}
                           {place.breakStartAt && place.breakEndAt
                             ? `${place.breakStartAt} ~ ${place.breakEndAt}`
                             : '없음'}
@@ -118,7 +122,11 @@ const RoutiePlaceCard = ({ routie }: { routie: Routie }) => {
                       </div>
                     }
                   >
-                    <Pill type="default" css={PlaceInfoViewPillStyle}>
+                    <Pill
+                      variant={isUnavailable ? 'invalid' : 'default'}
+                      type="default"
+                      css={PlaceInfoViewPillStyle}
+                    >
                       <Text variant="label">정보보기</Text>
                     </Pill>
                   </Tooltip>
@@ -126,8 +134,8 @@ const RoutiePlaceCard = ({ routie }: { routie: Routie }) => {
 
                 <Flex gap={0.4} alignItems="center">
                   <Icon name="pin" size={12} />
-                  <Text variant="label" color={theme.colors.gray[300]}>
-                    {place.roadAddressName}
+                  <Text variant="label" color={theme.colors.gray[300]} ellipsis>
+                    {place.roadAddressName || place.addressName}
                   </Text>
                 </Flex>
 

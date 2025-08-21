@@ -13,7 +13,7 @@ interface AddPlaceBasicInfoProps {
   showErrors: boolean;
   handleInputChange: (
     field: keyof Omit<FormState, 'closedDayOfWeeks'>,
-    value: string,
+    value: string | null,
   ) => void;
   handleSearchPlaceMap: (placeLocation: PlaceLocationType) => void;
 }
@@ -38,7 +38,7 @@ const AddPlaceBasicInfo = ({
         disabled
       />
       <AddressInput
-        value={form.roadAddressName}
+        value={form.roadAddressName || form.addressName}
         onChange={handleInputChange}
         error={showErrors && isEmpty.roadAddressName}
         disabled

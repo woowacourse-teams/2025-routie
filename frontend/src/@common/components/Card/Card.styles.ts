@@ -36,6 +36,13 @@ const cardVariant: Record<CardVariantProps, SerializedStyles> = {
     border-left: 4px solid ${theme.colors.gray[300]};
     background-color: ${theme.colors.gray[50]};
   `,
+
+  invalid: css`
+    position: relative;
+    padding: 0.8rem;
+    border: 0.4rem solid ${theme.colors.red[50]};
+    box-shadow: 0.2rem 0.4rem 0.4rem 0 rgb(0 0 0 / 25%);
+  `,
 };
 
 const CardStyle = (

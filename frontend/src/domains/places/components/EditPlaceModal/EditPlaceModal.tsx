@@ -43,8 +43,13 @@ const EditPlaceModal = ({
   const { isEmpty, isValid } = usePlaceFormValidation(form);
   const [showErrors, setShowErrors] = useState(false);
   const { showToast } = useToastContext();
-
   const initialFormRef = useRef<typeof form | null>(null);
+  const inputAddressName =
+    form.roadAddressName === null ? form.addressName : form.roadAddressName;
+  const breakStartAtValidation =
+    showErrors && !isEmpty.breakEndAt && isEmpty.breakStartAt;
+  const breakEndAtValidation =
+    showErrors && !isEmpty.breakStartAt && isEmpty.breakEndAt;
 
   useEffect(() => {
     if (!isOpen) return;
@@ -84,7 +89,7 @@ const EditPlaceModal = ({
 
     return runSubmitWithLock(async () => {
       try {
-        const { name, roadAddressName, ...rest } = form;
+        const { name, roadAddressName, addressName, ...rest } = form;
 
         await editPlace({ placeId: id, editableFields: rest });
         await onPlaceChange();
@@ -125,7 +130,7 @@ const EditPlaceModal = ({
                 disabled={true}
               />
               <AddressInput
-                value={form.roadAddressName}
+                value={inputAddressName}
                 onChange={handleInputChange}
                 disabled={true}
               />
@@ -147,6 +152,10 @@ const EditPlaceModal = ({
                 breakStartAt={form.breakStartAt}
                 breakEndAt={form.breakEndAt}
                 onChange={handleInputChange}
+                error={{
+                  breakStartAt: breakStartAtValidation,
+                  breakEndAt: breakEndAtValidation,
+                }}
               />
               <ClosedDaySelector
                 closedDayOfWeeks={form.closedDayOfWeeks}
