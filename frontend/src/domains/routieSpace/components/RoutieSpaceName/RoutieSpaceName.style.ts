@@ -22,8 +22,10 @@ const routieSpaceNameInputStyle = (invalidNameLength: boolean) => css`
   border: none;
   border-radius: 8px;
 
-  font-size: ${theme.font.size.heading};
-  font-weight: ${theme.font.weight.bold};
+  font-size: ${theme.font.size.subHeading};
+  font-weight: ${theme.font.weight.semibold};
+
+  background-color: inherit;
 
   ${invalidNameLength ? invalidBorder : defaultBorder}
 `;
