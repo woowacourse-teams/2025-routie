@@ -5,8 +5,6 @@ import Text from '@/@common/components/Text/Text';
 
 import { WaitingReason } from '../../types/routie.types';
 
-import { waitingCardStyle } from './RoutieValidationWaitingCard.styles';
-
 interface RoutieValidationWaitingCardProps {
   reason: WaitingReason;
 }
@@ -39,7 +37,6 @@ const RoutieValidationWaitingCard = ({
   return (
     <Card
       id="routie-validation-waiting-card"
-      width="100%"
       variant="disabled"
       height="5.4rem"
     >
@@ -47,7 +44,6 @@ const RoutieValidationWaitingCard = ({
         <Icon name="waiting" size={28} />
         <Flex alignItems="flex-start">
           <Text variant="caption">{description}</Text>
-        <Flex gap={0.3} direction="column" alignItems="flex-start">
           <Text variant="caption">{title}</Text>
           <Text variant="description">{description}</Text>
         </Flex>
