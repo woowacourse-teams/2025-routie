@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
 
-import { useToastContext } from '@/@common/contexts/useToastContext';
 import Flex from '@/@common/components/Flex/Flex';
 import Modal, { ModalProps } from '@/@common/components/Modal/Modal';
+import { useToastContext } from '@/@common/contexts/useToastContext';
 import { useRoutieContext } from '@/domains/routie/contexts/useRoutieContext';
 
 import editPlace from '../../apis/editPlace';
@@ -42,8 +42,13 @@ const EditPlaceModal = ({
   const { isEmpty, isValid } = usePlaceFormValidation(form);
   const [showErrors, setShowErrors] = useState(false);
   const { showToast } = useToastContext();
-
   const initialFormRef = useRef<typeof form | null>(null);
+  const inputAddressName =
+    form.roadAddressName === null ? form.addressName : form.roadAddressName;
+  const breakStartAtValidation =
+    showErrors && !isEmpty.breakEndAt && isEmpty.breakStartAt;
+  const breakEndAtValidation =
+    showErrors && !isEmpty.breakStartAt && isEmpty.breakEndAt;
 
   useEffect(() => {
     if (!isOpen) return;
@@ -79,7 +84,7 @@ const EditPlaceModal = ({
       return;
     }
     try {
-      const { name, roadAddressName, ...rest } = form;
+      const { name, roadAddressName, addressName, ...rest } = form;
 
       await editPlace({ placeId: id, editableFields: rest });
       await onPlaceChange();
@@ -119,7 +124,7 @@ const EditPlaceModal = ({
                 disabled={true}
               />
               <AddressInput
-                value={form.roadAddressName}
+                value={inputAddressName}
                 onChange={handleInputChange}
                 disabled={true}
               />
@@ -141,6 +146,10 @@ const EditPlaceModal = ({
                 breakStartAt={form.breakStartAt}
                 breakEndAt={form.breakEndAt}
                 onChange={handleInputChange}
+                error={{
+                  breakStartAt: breakStartAtValidation,
+                  breakEndAt: breakEndAtValidation,
+                }}
               />
               <ClosedDaySelector
                 closedDayOfWeeks={form.closedDayOfWeeks}
