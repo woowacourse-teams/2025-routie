@@ -14,9 +14,6 @@ const RoutieValidationUnavailableCard = () => {
         <Icon name="info" size={28} />
         <Flex alignItems="flex-start">
           <Text variant="caption">일정 검증 기능이 비활성화 상태입니다</Text>
-          <Text variant="description">
-            기능을 활성화하면 일정 검증을 받아보실 수 있습니다.
-          </Text>
         </Flex>
       </Flex>
     </Card>

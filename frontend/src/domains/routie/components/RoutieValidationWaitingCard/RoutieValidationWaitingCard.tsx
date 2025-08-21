@@ -32,7 +32,7 @@ const getWaitingMessage = (reason: WaitingReason) => {
 const RoutieValidationWaitingCard = ({
   reason,
 }: RoutieValidationWaitingCardProps) => {
-  const { title, description } = getWaitingMessage(reason);
+  const { description } = getWaitingMessage(reason);
 
   return (
     <Card
@@ -44,8 +44,6 @@ const RoutieValidationWaitingCard = ({
         <Icon name="waiting" size={28} />
         <Flex alignItems="flex-start">
           <Text variant="caption">{description}</Text>
-          <Text variant="caption">{title}</Text>
-          <Text variant="description">{description}</Text>
         </Flex>
       </Flex>
     </Card>
