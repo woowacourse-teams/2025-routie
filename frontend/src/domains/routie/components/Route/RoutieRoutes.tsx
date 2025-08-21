@@ -20,7 +20,7 @@ const RoutieRoutes = ({ routieId, routes }: RoutieRoutesProps) => {
   const isUpdating = movingStrategy !== fetchedStrategy;
 
   return isUpdating ? (
-    <Flex key={routieId} margin={1} gap={1} alignItems="center">
+    <Flex key={routieId} margin={1} gap={1}>
       <Text variant="description">--- ---</Text>
       <Pill type="distance">
         <Text variant="description" color={theme.colors.purple[400]}>
@@ -29,7 +29,7 @@ const RoutieRoutes = ({ routieId, routes }: RoutieRoutesProps) => {
       </Pill>
     </Flex>
   ) : (
-    <Flex key={routieId} margin={1} gap={1} alignItems="center">
+    <Flex key={routieId} margin={1} gap={1}>
       <Text variant="description">
         {MOVING_EN_TO_KR[fetchedStrategy]}{' '}
         {formatMinutesToHours(routes.duration)}
