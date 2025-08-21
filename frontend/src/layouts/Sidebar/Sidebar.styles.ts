@@ -6,7 +6,7 @@ export const SidebarSectionStyle = (overflow: boolean) => css`
   overflow: ${overflow ? 'hidden' : ''};
   border-radius: 8px;
   background-color: ${theme.home.gray};
-  box-shadow: 0 0 10px 0 rgb(0 0 0 / 20%);
+  box-shadow: 0 0 1rem 0 rgb(0 0 0 / 20%);
 `;
 
 export const SidebarContainerStyle = css`
