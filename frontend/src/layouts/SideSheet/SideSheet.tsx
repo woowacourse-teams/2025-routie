@@ -69,7 +69,6 @@ const SideSheet = ({ open, onToggle }: SideSheetProps) => {
       </button>
       <Flex
         direction="column"
-        padding={3}
         alignItems="stretch"
         css={SheetContentContainerStyle}
       >
@@ -98,12 +97,14 @@ const SideSheet = ({ open, onToggle }: SideSheetProps) => {
           </Button>
         </Flex>
         {placeList.length === 0 && (
-          <EmptyMessage
-            messages={[
-              '추가된 장소가 없습니다.',
-              '장소 추가하기 버튼을 이용하여 장소를 추가하세요!',
-            ]}
-          />
+          <Flex height="100%">
+            <EmptyMessage
+              messages={[
+                '추가된 장소가 없습니다.',
+                '장소 추가하기 버튼을 이용하여 장소를 추가하세요!',
+              ]}
+            />
+          </Flex>
         )}
         <AddPlaceModal
           isOpen={isAddModalOpen}
@@ -114,7 +115,7 @@ const SideSheet = ({ open, onToggle }: SideSheetProps) => {
             <Flex
               direction="column"
               justifyContent="flex-start"
-              gap={1}
+              gap={2}
               css={{ overflowY: 'visible' }}
             >
               {placeList.map((place) => {
