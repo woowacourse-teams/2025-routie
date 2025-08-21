@@ -31,7 +31,7 @@ import routie.routie.domain.route.MovingStrategy;
 import routie.routie.domain.routievalidator.ValidationStrategy;
 import routie.routie.infrastructure.routecalculator.driving.kakaodrivingapi.TestRouteApiConfig;
 import routie.routiespace.domain.RoutieSpace;
-import routie.routiespace.domain.RoutieSpaceBuilder;
+import routie.routiespace.domain.RoutieSpaceFixture;
 import routie.routiespace.repository.RoutieSpaceRepository;
 
 @Transactional
@@ -99,10 +99,7 @@ class RoutieServiceValidationTest {
         RoutiePlace routiePlace2 = new RoutiePlace(2, placeB);
         routie = Routie.create(new ArrayList<>(List.of(routiePlace1, routiePlace2)));
 
-        routieSpace = new RoutieSpaceBuilder()
-                .places(List.of())
-                .routie(routie)
-                .build();
+        routieSpace = RoutieSpaceFixture.createWithoutId(List.of(), routie);
         routieSpaceRepository.save(routieSpace);
     }
 
@@ -210,10 +207,7 @@ class RoutieServiceValidationTest {
 
         RoutiePlace singleRoutiePlace = new RoutiePlace(1, singlePlace);
         Routie singleRoutie = Routie.create(List.of(singleRoutiePlace));
-        RoutieSpace singleRoutieSpace = new RoutieSpaceBuilder()
-                .places(new ArrayList<>())
-                .routie(singleRoutie)
-                .build();
+        RoutieSpace singleRoutieSpace = RoutieSpaceFixture.createWithoutId(List.of(), singleRoutie);
         routieSpaceRepository.save(singleRoutieSpace);
 
         LocalDateTime startTime = LocalDateTime.of(2025, 7, 29, 10, 0);

@@ -13,10 +13,6 @@ const addPlace = async (placeInfo: FormState) => {
     placeInfo,
   );
 
-  if (!response.ok) {
-    throw new Error('장소 추가하기에 실패하였습니다.');
-  }
-
   const data = await response.json();
 
   return data;

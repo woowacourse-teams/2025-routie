@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
+import { useToastContext } from '@/@common/contexts/useToastContext';
 import { useSessionStorage } from '@/@common/hooks/useSessionStorage';
 
 import { getRoutieValidation } from '../apis/routie';
@@ -50,6 +51,7 @@ const useRoutieValidate = (): UseRoutieValidateReturn => {
     useState<ValidationResultType | null>(null);
   const [validationStatus, setValidationStatus] =
     useState<ValidationStatus>('inactive');
+  const { showToast } = useToastContext();
 
   const getValidationConditions = useCallback(
     (placeCount?: number) => {
@@ -149,6 +151,12 @@ const useRoutieValidate = (): UseRoutieValidateReturn => {
       } catch (error) {
         console.error(error);
         setValidationStatus('error');
+        if (error instanceof Error) {
+          showToast({
+            message: error.message,
+            type: 'error',
+          });
+        }
       }
     },
     [getValidationConditions, updateValidationStatus, combineDateTime],

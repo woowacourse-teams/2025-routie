@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 
+import { useToastContext } from '@/@common/contexts/useToastContext';
 import getPlaceList from '@/domains/places/apis/getplaceList';
 import { PlaceCardProps } from '@/domains/places/components/PlaceCard/PlaceCard';
 
@@ -11,7 +12,10 @@ interface Props {
 
 export const PlaceListProvider = ({ children }: Props) => {
   const [placeList, setPlaceList] = useState<PlaceCardProps[]>([]);
-  const [newlyAddedPlace, setNewlyAddedPlace] = useState<PlaceCardProps | null>(null);
+  const { showToast } = useToastContext();
+  const [newlyAddedPlace, setNewlyAddedPlace] = useState<PlaceCardProps | null>(
+    null,
+  );
 
   const refetchPlaceList = useCallback(async () => {
     try {
@@ -19,6 +23,12 @@ export const PlaceListProvider = ({ children }: Props) => {
       setPlaceList(newPlaceList);
     } catch (error) {
       console.error('장소 목록을 불러오는데 실패했습니다.', error);
+      if (error instanceof Error) {
+        showToast({
+          message: error.message,
+          type: 'error',
+        });
+      }
     }
   }, []);
 
@@ -27,19 +37,27 @@ export const PlaceListProvider = ({ children }: Props) => {
   }, []);
 
   const handlePlaceAdded = useCallback(async () => {
-    const previousPlaceIds = placeList.map(place => place.id);
-    
+    const previousPlaceIds = placeList.map((place) => place.id);
+
     try {
       const newPlaceList = await getPlaceList();
       setPlaceList(newPlaceList);
-      
-      const newPlace = newPlaceList.find(place => !previousPlaceIds.includes(place.id));
+
+      const newPlace = newPlaceList.find(
+        (place) => !previousPlaceIds.includes(place.id),
+      );
       if (newPlace) {
         setNewlyAddedPlace(newPlace);
         setTimeout(() => setNewlyAddedPlace(null), 500);
       }
     } catch (error) {
       console.error('장소 목록을 불러오는데 실패했습니다.', error);
+      if (error instanceof Error) {
+        showToast({
+          message: error.message,
+          type: 'error',
+        });
+      }
     }
   }, [placeList]);
 
@@ -49,7 +67,13 @@ export const PlaceListProvider = ({ children }: Props) => {
 
   return (
     <PlaceListContext.Provider
-      value={{ placeList, refetchPlaceList, handleDelete, newlyAddedPlace, handlePlaceAdded }}
+      value={{
+        placeList,
+        refetchPlaceList,
+        handleDelete,
+        newlyAddedPlace,
+        handlePlaceAdded,
+      }}
     >
       {children}
     </PlaceListContext.Provider>

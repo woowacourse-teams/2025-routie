@@ -78,14 +78,16 @@ const AddPlaceModal = ({ isOpen, onClose }: Omit<ModalProps, 'children'>) => {
           message: '장소가 추가되었습니다.',
           type: 'success',
         });
+        handleClose();
       } catch (error) {
         console.error(error);
-        showToast({
-          message: '장소 추가를 실패하였습니다. 다시 시도해주세요.',
-          type: 'error',
-        });
+        if (error instanceof Error) {
+          showToast({
+            message: error.message,
+            type: 'error',
+          });
+        }
       }
-      handleClose();
     });
   };
 

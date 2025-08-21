@@ -60,6 +60,12 @@ const EditPlaceModal = ({
         initialFormRef.current = { ...initialData };
       } catch (error) {
         console.error('장소 데이터 조회 실패:', error);
+        if (error instanceof Error) {
+          showToast({
+            message: error.message,
+            type: 'error',
+          });
+        }
       }
     };
 
@@ -101,14 +107,16 @@ const EditPlaceModal = ({
           message: '장소 정보가 수정되었습니다.',
           type: 'success',
         });
+        handleClose();
       } catch (error) {
         console.error(error);
-        showToast({
-          message: '장소 정보를 수정하지 못했습니다. 다시 시도해주세요.',
-          type: 'error',
-        });
+        if (error instanceof Error) {
+          showToast({
+            message: error.message,
+            type: 'error',
+          });
+        }
       }
-      handleClose();
     });
   };
 

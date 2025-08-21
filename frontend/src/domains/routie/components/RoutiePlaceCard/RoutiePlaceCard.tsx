@@ -7,6 +7,7 @@ import Icon from '@/@common/components/IconSvg/Icon';
 import Pill from '@/@common/components/Pill/Pill';
 import Text from '@/@common/components/Text/Text';
 import Tooltip from '@/@common/components/Tooltip/Tooltip';
+import { useToastContext } from '@/@common/contexts/useToastContext';
 import closeRed from '@/assets/icons/close-red.svg';
 import { PlaceBaseType } from '@/domains/places/types/place.types';
 import { getCheckedDaysInKorean } from '@/domains/places/utils/getCheckedDaysInKorean';
@@ -45,11 +46,22 @@ const RoutiePlaceCard = ({ routie }: { routie: Routie }) => {
 
   const { handleDeleteRoutie } = useRoutieContext();
   const { triggerEvent } = useGoogleEventTrigger();
+  const { showToast } = useToastContext();
 
   useEffect(() => {
     const fetchDetailPlace = async () => {
-      const detailPlace = await getDetailPlace(routie.placeId);
-      setPlace(detailPlace);
+      try {
+        const detailPlace = await getDetailPlace(routie.placeId);
+        setPlace(detailPlace);
+      } catch (error) {
+        console.error(error);
+        if (error instanceof Error) {
+          showToast({
+            message: error.message,
+            type: 'error',
+          });
+        }
+      }
     };
     fetchDetailPlace();
   }, [routie]);

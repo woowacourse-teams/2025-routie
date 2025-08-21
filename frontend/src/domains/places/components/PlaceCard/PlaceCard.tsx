@@ -69,10 +69,12 @@ export const PlaceCard = ({ selected, ...props }: PlaceCardProps) => {
         });
       } catch (error) {
         console.error(error);
-        showToast({
-          message: '장소 삭제를 실패하였습니다. 다시 시도해주세요.',
-          type: 'error',
-        });
+        if (error instanceof Error) {
+          showToast({
+            message: error.message,
+            type: 'error',
+          });
+        }
       }
     });
   };
