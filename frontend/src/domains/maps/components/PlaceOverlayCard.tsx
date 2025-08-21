@@ -1,11 +1,12 @@
+import { css } from '@emotion/react';
+
 import Card from '@/@common/components/Card/Card';
 import Flex from '@/@common/components/Flex/Flex';
 import IconButton from '@/@common/components/IconButton/IconButton';
+import Icon from '@/@common/components/IconSvg/Icon';
 import Pill from '@/@common/components/Pill/Pill';
 import Text from '@/@common/components/Text/Text';
-import checkIcon from '@/assets/icons/check.svg';
 import closeIcon from '@/assets/icons/close.svg';
-import plusIcon from '@/assets/icons/plus.svg';
 import type { PlaceCardProps } from '@/domains/places/components/PlaceCard/PlaceCard';
 import { useRoutieContext } from '@/domains/routie/contexts/useRoutieContext';
 import theme from '@/styles/theme';
@@ -33,10 +34,21 @@ const PlaceOverlayCard = ({ place, onClose }: Props) => {
     >
       <Flex direction="column" gap={1.2} alignItems="flex-start">
         <Flex justifyContent="space-between" width="100%">
-          <IconButton
-            icon={selected ? checkIcon : plusIcon}
-            variant={selected ? 'selected' : 'select'}
+          <Icon
+            name={selected ? 'check' : 'plus'}
+            size={selected ? 34 : 28}
             onClick={handleSelect}
+            css={css`
+              cursor: ${selected ? 'default' : 'pointer'};
+              padding: 0.2rem;
+              border-radius: 8px;
+
+              &:hover {
+                background-color: ${selected
+                  ? theme.colors.white
+                  : theme.colors.purple[200]};
+              }
+            `}
           />
           <IconButton icon={closeIcon} onClick={onClose} />
         </Flex>
