@@ -18,9 +18,8 @@ export const containerStyle = css`
 
   position: fixed;
   z-index: 10000;
-  right: 0;
-  bottom: 16px;
-  left: 0;
+  top: 16px;
+  right: 5rem;
 
   display: flex;
   flex-direction: column;
@@ -37,13 +36,14 @@ export const itemWrapper = (leaving?: boolean) => css`
 
   min-width: 32rem;
   max-width: min(94vw, 48rem);
+  height: 4rem;
   padding: 1.6rem 2rem;
   border-radius: 12px;
 
   color: ${theme.colors.white};
 
-  background: ${theme.colors.gray[100]};
-  box-shadow: 0 0.8rem 2rem ${theme.colors.gray[300]};
+  background: ${theme.colors.white};
+  box-shadow: 0 0.8rem 2rem ${theme.colors.gray[200]};
 
   animation: ${leaving ? slideOut : slideIn} 0.35s ease;
 `;
@@ -52,7 +52,7 @@ export const typeColor: Record<ToastInfoType['type'], string> = {
   success: theme.colors.green[100],
   error: theme.colors.red[100],
   warning: theme.colors.green[100],
-  info: theme.colors.white,
+  info: theme.colors.gray[200],
 };
 
 export const badgeStyle = (type: ToastInfoType['type']) => css`
