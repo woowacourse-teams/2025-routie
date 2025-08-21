@@ -4,6 +4,7 @@ import Flex from '@/@common/components/Flex/Flex';
 import Modal, { ModalProps } from '@/@common/components/Modal/Modal';
 import Text from '@/@common/components/Text/Text';
 import { useToastContext } from '@/@common/contexts/useToastContext';
+import { useAsyncLock } from '@/@common/hooks/useAsyncLock';
 import { useAddPlaceForm } from '@/domains/places/hooks/useAddPlaceForm';
 import { usePlaceFormValidation } from '@/domains/places/hooks/usePlaceFormValidation';
 import { usePlaceListContext } from '@/layouts/PlaceList/contexts/PlaceListContext';
@@ -58,6 +59,8 @@ const AddPlaceModal = ({ isOpen, onClose }: Omit<ModalProps, 'children'>) => {
     prevStep();
   };
 
+  const { runWithLock: runSubmitWithLock } = useAsyncLock();
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const addPlaceForm = { ...form, ...placeLocationInfo };
@@ -67,23 +70,23 @@ const AddPlaceModal = ({ isOpen, onClose }: Omit<ModalProps, 'children'>) => {
       return;
     }
 
-    try {
-      await addPlace(addPlaceForm);
-
-      await handlePlaceAdded();
-
-      showToast({
-        message: '장소가 추가되었습니다.',
-        type: 'success',
-      });
-    } catch (error) {
-      console.error(error);
-      showToast({
-        message: '장소 추가를 실패하였습니다. 다시 시도해주세요.',
-        type: 'error',
-      });
-    }
-    handleClose();
+    return runSubmitWithLock(async () => {
+      try {
+        await addPlace(addPlaceForm);
+        await handlePlaceAdded();
+        showToast({
+          message: '장소가 추가되었습니다.',
+          type: 'success',
+        });
+      } catch (error) {
+        console.error(error);
+        showToast({
+          message: '장소 추가를 실패하였습니다. 다시 시도해주세요.',
+          type: 'error',
+        });
+      }
+      handleClose();
+    });
   };
 
   const renderContent = () => {

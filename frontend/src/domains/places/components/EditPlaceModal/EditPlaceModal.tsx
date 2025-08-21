@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from 'react';
 import Flex from '@/@common/components/Flex/Flex';
 import Modal, { ModalProps } from '@/@common/components/Modal/Modal';
 import { useToastContext } from '@/@common/contexts/useToastContext';
+import { useAsyncLock } from '@/@common/hooks/useAsyncLock';
 import { useRoutieContext } from '@/domains/routie/contexts/useRoutieContext';
 
 import editPlace from '../../apis/editPlace';
@@ -76,6 +77,8 @@ const EditPlaceModal = ({
 
   const placeInRoutie = routieIdList.includes(id);
 
+  const { runWithLock: runSubmitWithLock } = useAsyncLock();
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!isValid) {
@@ -83,27 +86,30 @@ const EditPlaceModal = ({
 
       return;
     }
-    try {
-      const { name, roadAddressName, addressName, ...rest } = form;
 
-      await editPlace({ placeId: id, editableFields: rest });
-      await onPlaceChange();
+    return runSubmitWithLock(async () => {
+      try {
+        const { name, roadAddressName, addressName, ...rest } = form;
 
-      if (placeInRoutie) {
-        await refetchRoutieData();
+        await editPlace({ placeId: id, editableFields: rest });
+        await onPlaceChange();
+
+        if (placeInRoutie) {
+          await refetchRoutieData();
+        }
+        showToast({
+          message: '장소 정보가 수정되었습니다.',
+          type: 'success',
+        });
+      } catch (error) {
+        console.error(error);
+        showToast({
+          message: '장소 정보를 수정하지 못했습니다. 다시 시도해주세요.',
+          type: 'error',
+        });
       }
-      showToast({
-        message: '장소 정보가 수정되었습니다.',
-        type: 'success',
-      });
-    } catch (error) {
-      console.log(error);
-      showToast({
-        message: '장소 정보를 수정하지 못했습니다. 다시 시도해주세요.',
-        type: 'error',
-      });
-    }
-    handleClose();
+      handleClose();
+    });
   };
 
   return (

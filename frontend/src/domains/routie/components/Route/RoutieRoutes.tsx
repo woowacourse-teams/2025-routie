@@ -15,12 +15,23 @@ interface RoutieRoutesProps {
 }
 
 const RoutieRoutes = ({ routieId, routes }: RoutieRoutesProps) => {
-  const { movingStrategy } = useRoutieContext();
+  const { movingStrategy, fetchedStrategy } = useRoutieContext();
 
-  return (
+  const isUpdating = movingStrategy !== fetchedStrategy;
+
+  return isUpdating ? (
+    <Flex key={routieId} margin={1} gap={1}>
+      <Text variant="description">--- ---</Text>
+      <Pill type="distance">
+        <Text variant="description" color={theme.colors.purple[400]}>
+          --- km
+        </Text>
+      </Pill>
+    </Flex>
+  ) : (
     <Flex key={routieId} margin={1} gap={1}>
       <Text variant="description">
-        {MOVING_EN_TO_KR[movingStrategy]}{' '}
+        {MOVING_EN_TO_KR[fetchedStrategy]}{' '}
         {formatMinutesToHours(routes.duration)}
       </Text>
       <Pill type="distance">

@@ -6,6 +6,7 @@ import IconButton from '@/@common/components/IconButton/IconButton';
 import Pill from '@/@common/components/Pill/Pill';
 import Text from '@/@common/components/Text/Text';
 import { useToastContext } from '@/@common/contexts/useToastContext';
+import { useAsyncLock } from '@/@common/hooks/useAsyncLock';
 import useModal from '@/@common/hooks/useModal';
 import checkIcon from '@/assets/icons/check.svg';
 import editIcon from '@/assets/icons/edit.svg';
@@ -35,6 +36,7 @@ export const PlaceCard = ({ selected, ...props }: PlaceCardProps) => {
   const { openModal, closeModal, modalOpen } = useModal();
   const { triggerEvent } = useGoogleEventTrigger();
   const { showToast } = useToastContext();
+  const { runWithLock: runDeleteWithLock } = useAsyncLock();
 
   const handlePlaceSelect = async () => {
     if (selected) return;
@@ -52,25 +54,27 @@ export const PlaceCard = ({ selected, ...props }: PlaceCardProps) => {
   };
 
   const handleDelete = async () => {
-    try {
-      await deletePlace(props.id);
-      refetchPlaceList();
-      triggerEvent({
-        action: 'click',
-        category: 'place',
-        label: '장소 삭제하기 버튼',
-      });
-      showToast({
-        message: '장소가 삭제되었습니다.',
-        type: 'success',
-      });
-    } catch (error) {
-      console.error(error);
-      showToast({
-        message: '장소 삭제를 실패하였습니다. 다시 시도해주세요.',
-        type: 'error',
-      });
-    }
+    return runDeleteWithLock(async () => {
+      try {
+        await deletePlace(props.id);
+        await refetchPlaceList();
+        triggerEvent({
+          action: 'click',
+          category: 'place',
+          label: '장소 삭제하기 버튼',
+        });
+        showToast({
+          message: '장소가 삭제되었습니다.',
+          type: 'success',
+        });
+      } catch (error) {
+        console.error(error);
+        showToast({
+          message: '장소 삭제를 실패하였습니다. 다시 시도해주세요.',
+          type: 'error',
+        });
+      }
+    });
   };
 
   const handleOpenEditModal = () => {
