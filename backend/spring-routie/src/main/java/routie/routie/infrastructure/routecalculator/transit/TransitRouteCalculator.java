@@ -35,7 +35,7 @@ public class TransitRouteCalculator implements RouteCalculator {
 
     @Override
     public Routes calculateRoutes(final RouteCalculationContext routeCalculationContext) {
-        List<RoutiePlace> routiePlaces = routeCalculationContext.getRoutiePlaces();
+        List<RoutiePlace> routiePlaces = routeCalculationContext.getOrderedRoutiePlaces();
         LocalDateTime startDateTime = routeCalculationContext.getStartDateTime()
                 .orElse(LocalDateTime.now());
 

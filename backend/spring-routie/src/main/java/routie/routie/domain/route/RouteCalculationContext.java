@@ -1,6 +1,7 @@
 package routie.routie.domain.route;
 
 import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import lombok.Getter;
@@ -26,5 +27,11 @@ public class RouteCalculationContext {
 
     public Optional<LocalDateTime> getStartDateTime() {
         return Optional.ofNullable(startDateTime);
+    }
+
+    public List<RoutiePlace> getOrderedRoutiePlaces() {
+        return routiePlaces.stream()
+                .sorted(Comparator.comparingInt(RoutiePlace::getSequence))
+                .toList();
     }
 }

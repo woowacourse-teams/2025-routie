@@ -31,7 +31,7 @@ public class DrivingRouteCalculator implements RouteCalculator {
 
     @Override
     public Routes calculateRoutes(final RouteCalculationContext routeCalculationContext) {
-        List<RoutiePlace> routiePlaces = routeCalculationContext.getRoutiePlaces();
+        List<RoutiePlace> routiePlaces = routeCalculationContext.getOrderedRoutiePlaces();
 
         RoutiePlace from = routiePlaces.getFirst();
         RoutiePlace to = routiePlaces.getLast();
