@@ -2,24 +2,23 @@ package routie.place.domain;
 
 import java.time.DayOfWeek;
 import java.time.LocalTime;
-import java.util.ArrayList;
 import java.util.List;
 import routie.routiespace.domain.RoutieSpace;
 
 public class PlaceBuilder {
 
-    private String name = "Default Place Name";
-    private String roadAddressName = "Default Road Address";
-    private String addressName = "Default Address";
-    private Double longitude = 127.0;
-    private Double latitude = 37.504497373023206;
-    private int stayDurationMinutes = 60;
-    private LocalTime openAt = LocalTime.of(0, 0);
-    private LocalTime closeAt = LocalTime.of(23, 59);
-    private LocalTime breakStartAt = null;
-    private LocalTime breakEndAt = null;
-    private RoutieSpace routieSpace = null;
-    private List<PlaceClosedDayOfWeek> placeClosedDayOfWeeks = new ArrayList<>();
+    private String name = PlaceFixture.anyName();
+    private String roadAddressName = PlaceFixture.anyRoadAddressName();
+    private String addressName = PlaceFixture.anyAddressName();
+    private Double longitude = PlaceFixture.anyLongitude();
+    private Double latitude = PlaceFixture.anyLatitude();
+    private int stayDurationMinutes = PlaceFixture.anyStayDurationMinutes();
+    private LocalTime openAt = PlaceFixture.anyOpenAt();
+    private LocalTime closeAt = PlaceFixture.anyCloseAt();
+    private LocalTime breakStartAt = PlaceFixture.anyBreakStartAt();
+    private LocalTime breakEndAt = PlaceFixture.anyBreakEndAt();
+    private RoutieSpace routieSpace = PlaceFixture.anyRoutieSpace();
+    private List<PlaceClosedDayOfWeek> placeClosedDayOfWeeks = PlaceFixture.anyPlaceClosedDayOfWeeks();
 
     public PlaceBuilder name(final String name) {
         this.name = name;

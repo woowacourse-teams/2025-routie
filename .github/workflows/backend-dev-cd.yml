@@ -67,46 +67,41 @@ jobs:
         working-directory: backend/spring-routie
 
     steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
       - name: Restore docker-compose.yml and Run Containers
         run: |
           echo '${{ secrets.DOCKER_COMPOSE_YML_DEV }}' > docker-compose.yml
           sudo docker compose up -d
 
-      - name: Clean old JARs
-        run: rm -f build/libs/*.jar
-
       - name: Download JAR Artifact
         uses: actions/download-artifact@v4
         with:
           name: spring-boot-app
-          path: backend/spring-routie/build/libs
+          path: /tmp/spring-deployment
 
       - name: Restore application.yml
         run: |
-          mkdir -p config
-          echo '${{ secrets.APPLICATION_YML_DEV }}' > config/application.yml
+          echo '${{ secrets.APPLICATION_YML_DEV }}' > /tmp/spring-deployment/application.yml
 
-      - name: Kill existing Spring Process
-        run: |
-          PID=$(sudo lsof -ti:8080 || true)
-          if [ -n "$PID" ]; then
-            echo "Killing process on port 8080: $PID"
-            sudo kill -9 "$PID"
-          else
-            echo "No process found on port 8080"
-          fi
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
 
-      - name: Start Spring Boot Application with external config
+      - name: Execute Flyway Migration
+        run: ./gradlew flywayMigrate
+        env:
+          MYSQL_URL: ${{ secrets.MYSQL_URL_DEV }}
+          MYSQL_USERNAME: ${{ secrets.MYSQL_USERNAME_DEV }}
+          MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD_DEV }}
+
+      - name: Setup Deploy Environment
         run: |
-          JAR_NAME=$(ls build/libs/*.jar 2>/dev/null | head -n 1)
-          if [ -z "$JAR_NAME" ]; then
-            echo "No JAR file found. Deployment aborted."
-            exit 1
-          fi
-          echo "Starting $JAR_NAME"
-          sudo nohup java \
-            -Djava.net.preferIPv4Stack=true \
-            -jar "$JAR_NAME" \
-            --spring.profiles.active=dev \
-            --server.port=8080 \
-            --spring.config.location=./config/application.yml > app.log 2>&1 &
+          chmod +x /home/ubuntu/scripts/deploy.sh
+          chmod +x /home/ubuntu/scripts/rollback.sh
+
+      - name: Execute Deployment Script
+        env:
+          JAR_SOURCE_PATH: "/tmp/spring-deployment"
+          DEPLOY_BASE_PATH: "/home/ubuntu/app"
+        run: /home/ubuntu/scripts/deploy.sh
