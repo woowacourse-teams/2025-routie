@@ -10,7 +10,7 @@ const RoutieValidationResultCard = () => {
   const { validationErrors } = useRoutieValidateContext();
 
   const isValidRoutie = validationErrors === null;
-  const variant = isValidRoutie ? 'available' : 'unavailable';
+  const variant = isValidRoutie ? 'valid' : 'unavailable';
 
   const resultMessage = validationErrors
     ? VALIDATION_RESULT_MESSAGE[validationErrors]
@@ -19,14 +19,13 @@ const RoutieValidationResultCard = () => {
   return (
     <Card
       id="routie-validation-available-status-card"
-      width="100%"
       variant={variant}
       height="5.4rem"
     >
       <Flex width="100%" gap={1.5} justifyContent="flex-start" height="100%">
-        <Icon name={isValidRoutie ? 'check' : 'fail'} size={32} />
-        <Flex direction="column" gap={0.3} alignItems="flex-start">
-          <Text variant="subTitle">{resultMessage}</Text>
+        <Icon name={isValidRoutie ? 'check' : 'fail'} size={28} />
+        <Flex alignItems="flex-start">
+          <Text variant="caption">{resultMessage}</Text>
         </Flex>
       </Flex>
     </Card>
