@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useLayoutEffect } from 'react';
 import { useSearchParams } from 'react-router';
 
 import Flex from '@/@common/components/Flex/Flex';
@@ -12,7 +12,7 @@ const RoutieSpace = () => {
   const [searchParams] = useSearchParams();
   const routieSpaceIdentifier = searchParams.get('routieSpaceIdentifier');
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (routieSpaceIdentifier) {
       localStorage.setItem('routieSpaceUuid', routieSpaceIdentifier);
     }
