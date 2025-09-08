@@ -4,30 +4,19 @@ import Card from '@/@common/components/Card/Card';
 import Flex from '@/@common/components/Flex/Flex';
 import IconButton from '@/@common/components/IconButton/IconButton';
 import Icon from '@/@common/components/IconSvg/Icon';
-import Pill from '@/@common/components/Pill/Pill';
 import Text from '@/@common/components/Text/Text';
-import Tooltip from '@/@common/components/Tooltip/Tooltip';
 import { useToastContext } from '@/@common/contexts/useToastContext';
 import closeRed from '@/assets/icons/close-red.svg';
 import { PlaceBaseType } from '@/domains/places/types/place.types';
-import { getCheckedDaysInKorean } from '@/domains/places/utils/getCheckedDaysInKorean';
-import { getCheckedListExcept } from '@/domains/places/utils/getCheckedListExcept';
-import { getFormatedCloseAt } from '@/domains/places/utils/getFormatedCloseAt';
 import { useGoogleEventTrigger } from '@/libs/googleAnalytics/hooks/useGoogleEventTrigger';
 import theme from '@/styles/theme';
 
 import { getDetailPlace } from '../../apis/routie';
 import { useRoutieContext } from '../../contexts/useRoutieContext';
-import { useRoutieValidateContext } from '../../contexts/useRoutieValidateContext';
 import { Routie } from '../../types/routie.types';
-import formatMinutesToHours from '../../utils/formatMinutesToHours';
 import DraggableWrapper from '../DraggableWrapper/DraggableWrapper';
 
-import {
-  dragIconStyle,
-  EllipsisParentStyle,
-  PlaceInfoViewPillStyle,
-} from './RoutiePlaceCard.styles';
+import { dragIconStyle, EllipsisParentStyle } from './RoutiePlaceCard.styles';
 
 const RoutiePlaceCard = ({ routie }: { routie: Routie }) => {
   const [place, setPlace] = useState<PlaceBaseType>({
@@ -75,22 +64,10 @@ const RoutiePlaceCard = ({ routie }: { routie: Routie }) => {
     });
   };
 
-  const checkedListExcept = getCheckedListExcept(place.closedDayOfWeeks);
-  const checkedDaysInKorean = getCheckedDaysInKorean(checkedListExcept);
-
-  const { currentInvalidRoutiePlaces } = useRoutieValidateContext();
-
-  const isUnavailable = currentInvalidRoutiePlaces.some(
-    (invalid) => invalid.routiePlaceId === routie.id,
-  );
-
   return (
     place && (
       <DraggableWrapper>
-        <Card
-          id={routie.placeId.toString()}
-          variant={isUnavailable ? 'invalid' : 'defaultStatic'}
-        >
+        <Card id={routie.placeId.toString()} variant={'defaultStatic'}>
           <Flex justifyContent="flex-start" gap={1.5}>
             <Flex width="100%" justifyContent="space-between" gap={1.5}>
               <Flex padding={1}>
@@ -110,38 +87,6 @@ const RoutiePlaceCard = ({ routie }: { routie: Routie }) => {
                   <Text variant="caption" ellipsis>
                     {place.name}
                   </Text>
-                  <Tooltip
-                    content={
-                      <div>
-                        <Text variant="label">
-                          오픈: {place.openAt} / 마감:{' '}
-                          {getFormatedCloseAt(place.openAt, place.closeAt)}
-                        </Text>
-
-                        <Text variant="label">
-                          브레이크 타임:{' '}
-                          {place.breakStartAt && place.breakEndAt
-                            ? `${place.breakStartAt} ~ ${place.breakEndAt}`
-                            : '없음'}
-                        </Text>
-
-                        <Text variant="label">
-                          휴무일:{' '}
-                          {place.closedDayOfWeeks.length > 0
-                            ? checkedDaysInKorean.join(', ')
-                            : '없음'}
-                        </Text>
-                      </div>
-                    }
-                  >
-                    <Pill
-                      variant={isUnavailable ? 'invalid' : 'default'}
-                      type="default"
-                      css={PlaceInfoViewPillStyle}
-                    >
-                      <Text variant="label">정보보기</Text>
-                    </Pill>
-                  </Tooltip>
                 </Flex>
 
                 <Flex gap={0.4} alignItems="center">
@@ -149,22 +94,6 @@ const RoutiePlaceCard = ({ routie }: { routie: Routie }) => {
                   <Text variant="label" color={theme.colors.gray[300]} ellipsis>
                     {place.roadAddressName || place.addressName}
                   </Text>
-                </Flex>
-
-                <Flex gap={0.4} alignItems="center">
-                  <Pill type="default">
-                    <Icon name="timepass" size={12} />
-                    <Text variant="label">
-                      {routie.arriveDateTime?.slice(-5)}-
-                      {routie.departureDateTime?.slice(-5)}{' '}
-                    </Text>
-                  </Pill>
-                  <Pill type="default" variant="filled">
-                    <Icon name="durationTime" size={12} />
-                    <Text variant="label">
-                      {formatMinutesToHours(place.stayDurationMinutes)}
-                    </Text>
-                  </Pill>
                 </Flex>
               </Flex>
               <Flex direction="column" gap={3}>
