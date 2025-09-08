@@ -55,28 +55,9 @@ public class Place {
     @Column(name = "latitude", nullable = false)
     private Double latitude;
 
-    @Column(name = "stay_duration_minutes", nullable = false)
-    private Integer stayDurationMinutes;
-
-    @Column(name = "open_at")
-    private LocalTime openAt;
-
-    @Column(name = "close_at")
-    private LocalTime closeAt;
-
-    @Column(name = "break_start_at")
-    private LocalTime breakStartAt;
-
-    @Column(name = "break_end_at")
-    private LocalTime breakEndAt;
-
     @ManyToOne
     @JoinColumn(name = "routie_space_id")
     private RoutieSpace routieSpace;
-
-    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true)
-    @JoinColumn(name = "place_id", nullable = false)
-    private List<PlaceClosedDayOfWeek> placeClosedDayOfWeeks = new ArrayList<>();
 
     @CreatedDate
     @Column(name = "created_at")
@@ -92,36 +73,20 @@ public class Place {
             final String addressName,
             final Double longitude,
             final Double latitude,
-            final int stayDurationMinutes,
-            final LocalTime openAt,
-            final LocalTime closeAt,
-            final LocalTime breakStartAt,
-            final LocalTime breakEndAt,
-            final RoutieSpace routieSpace,
-            final List<PlaceClosedDayOfWeek> placeClosedDayOfWeeks
+            final RoutieSpace routieSpace
     ) {
         validateName(name);
         validateRoadAddressName(roadAddressName);
         validateAddressName(addressName);
         validateLongitude(longitude);
         validateLatitude(latitude);
-        validateStayDurationMinutes(stayDurationMinutes);
-        validateOperatingTime(openAt, closeAt);
-        validateBreakTime(breakStartAt, breakEndAt);
-        validateBreakTimeWithOperatingTime(openAt, closeAt, breakStartAt, breakEndAt);
 
         this.name = name;
         this.roadAddressName = roadAddressName;
         this.addressName = addressName;
         this.longitude = longitude;
         this.latitude = latitude;
-        this.stayDurationMinutes = stayDurationMinutes;
-        this.openAt = openAt;
-        this.closeAt = closeAt;
-        this.breakStartAt = breakStartAt;
-        this.breakEndAt = breakEndAt;
         this.routieSpace = routieSpace;
-        this.placeClosedDayOfWeeks = placeClosedDayOfWeeks;
     }
 
     public static Place create(
@@ -130,66 +95,16 @@ public class Place {
             final String addressName,
             final Double longitude,
             final Double latitude,
-            final int stayDurationMinutes,
-            final LocalTime openAt,
-            final LocalTime closeAt,
-            final LocalTime breakStartAt,
-            final LocalTime breakEndAt,
-            final RoutieSpace routieSpace,
-            final List<DayOfWeek> closedDayOfWeeks
+            final RoutieSpace routieSpace
     ) {
-        List<PlaceClosedDayOfWeek> placeClosedDayOfWeeks = createClosedDayOfWeeks(closedDayOfWeeks);
         return new Place(
                 name,
                 roadAddressName,
                 addressName,
                 longitude,
                 latitude,
-                stayDurationMinutes,
-                openAt,
-                closeAt,
-                breakStartAt,
-                breakEndAt,
-                routieSpace,
-                placeClosedDayOfWeeks
+                routieSpace
         );
-    }
-
-    private static List<PlaceClosedDayOfWeek> createClosedDayOfWeeks(final List<DayOfWeek> closedDayOfWeeks) {
-        if (closedDayOfWeeks == null) {
-            return List.of();
-        }
-        return closedDayOfWeeks.stream()
-                .map(PlaceClosedDayOfWeek::new)
-                .toList();
-    }
-
-    public void modify(
-            final int stayDurationMinutes,
-            final LocalTime openAt,
-            final LocalTime closeAt,
-            final LocalTime breakStartAt,
-            final LocalTime breakEndAt,
-            final List<DayOfWeek> closedDayOfWeeks
-    ) {
-        validateStayDurationMinutes(stayDurationMinutes);
-        validateBreakTime(breakStartAt, breakEndAt);
-        validateOperatingTime(openAt, closeAt);
-        validateBreakTimeWithOperatingTime(openAt, closeAt, breakStartAt, breakEndAt);
-
-        this.stayDurationMinutes = stayDurationMinutes;
-        this.openAt = openAt;
-        this.closeAt = closeAt;
-        this.breakStartAt = breakStartAt;
-        this.breakEndAt = breakEndAt;
-        this.placeClosedDayOfWeeks.clear();
-        this.placeClosedDayOfWeeks.addAll(createClosedDayOfWeeks(closedDayOfWeeks));
-    }
-
-    private void validateStayDurationMinutes(final int stayDurationMinutes) {
-        if (stayDurationMinutes < 0 || stayDurationMinutes > 1440) {
-            throw new BusinessException(ErrorCode.PLACE_STAY_DURATION_INVALID);
-        }
     }
 
     private void validateName(final String name) {
@@ -229,44 +144,6 @@ public class Place {
     private void validateLatitude(final double latitude) {
         if (latitude < -90.0 || latitude > 90.0) {
             throw new BusinessException(ErrorCode.PLACE_LATITUDE_INVALID);
-        }
-    }
-
-    private void validateOperatingTime(final LocalTime openAt, final LocalTime closeAt) {
-        boolean hasOpenAt = openAt != null;
-        boolean hasCloseAt = closeAt != null;
-
-        if (hasOpenAt != hasCloseAt) {
-            throw new BusinessException(ErrorCode.PLACE_BUSINESS_HOURS_INCOMPLETE);
-        }
-    }
-
-    private void validateBreakTime(final LocalTime breakStartAt, final LocalTime breakEndAt) {
-        boolean hasBreakStart = breakStartAt != null;
-        boolean hasBreakEnd = breakEndAt != null;
-
-        if (hasBreakStart != hasBreakEnd) {
-            throw new BusinessException(ErrorCode.PLACE_BREAK_TIME_INCOMPLETE);
-        }
-    }
-
-    private void validateBreakTimeWithOperatingTime(
-            final LocalTime openAt,
-            final LocalTime closeAt,
-            final LocalTime breakStartAt,
-            final LocalTime breakEndAt
-    ) {
-        if (openAt == null || closeAt == null) {
-            return;
-        }
-        if (breakStartAt == null || breakEndAt == null) {
-            return;
-        }
-        if (openAt.equals(closeAt)) {
-            return;
-        }
-        if (breakStartAt.isBefore(openAt) || breakEndAt.isAfter(closeAt)) {
-            throw new BusinessException(ErrorCode.PLACE_BREAK_TIME_OUTSIDE_BUSINESS_HOURS);
         }
     }
 

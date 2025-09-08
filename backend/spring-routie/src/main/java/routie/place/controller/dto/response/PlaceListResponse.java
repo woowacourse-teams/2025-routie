@@ -25,12 +25,7 @@ public record PlaceListResponse(
             String roadAddressName,
             String addressName,
             Double longitude,
-            Double latitude,
-            @JsonFormat(pattern = "HH:mm") LocalTime openAt,
-            @JsonFormat(pattern = "HH:mm") LocalTime closeAt,
-            @JsonFormat(pattern = "HH:mm") LocalTime breakStartAt,
-            @JsonFormat(pattern = "HH:mm") LocalTime breakEndAt,
-            List<DayOfWeek> closedDayOfWeeks
+            Double latitude
     ) {
         public static PlaceCardResponse from(final Place place) {
             return new PlaceCardResponse(
@@ -39,14 +34,7 @@ public record PlaceListResponse(
                     place.getRoadAddressName(),
                     place.getAddressName(),
                     place.getLongitude(),
-                    place.getLatitude(),
-                    place.getOpenAt(),
-                    place.getCloseAt(),
-                    place.getBreakStartAt(),
-                    place.getBreakEndAt(),
-                    place.getPlaceClosedDayOfWeeks().stream()
-                            .map(PlaceClosedDayOfWeek::getClosedDayOfWeek)
-                            .toList()
+                    place.getLatitude()
             );
         }
     }

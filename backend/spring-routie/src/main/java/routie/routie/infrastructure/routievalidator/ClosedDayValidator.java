@@ -39,9 +39,7 @@ public class ClosedDayValidator implements RoutieValidator {
 
 
     private boolean isTimePeriodNotClosedDays(final TimePeriod timePeriod) {
-        List<DayOfWeek> closedDayOfWeeks = timePeriod.routiePlace().getPlace().getPlaceClosedDayOfWeeks().stream()
-                .map(PlaceClosedDayOfWeek::getClosedDayOfWeek)
-                .toList();
+        List<DayOfWeek> closedDayOfWeeks = List.of(); // 검증 필드 제거에 따른 구현
 
         DayOfWeek startDay = timePeriod.startTime().getDayOfWeek();
 

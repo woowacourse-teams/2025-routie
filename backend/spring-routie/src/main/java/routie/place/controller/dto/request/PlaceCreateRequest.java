@@ -13,12 +13,6 @@ public record PlaceCreateRequest(
         String roadAddressName,
         @NotBlank String addressName,
         @NotNull Double longitude,
-        @NotNull Double latitude,
-        @NotNull Integer stayDurationMinutes,
-        @JsonFormat(pattern = "HH:mm") LocalTime openAt,
-        @JsonFormat(pattern = "HH:mm") LocalTime closeAt,
-        @JsonFormat(pattern = "HH:mm") LocalTime breakStartAt,
-        @JsonFormat(pattern = "HH:mm") LocalTime breakEndAt,
-        List<DayOfWeek> closedDayOfWeeks
+        @NotNull Double latitude
 ) {
 }

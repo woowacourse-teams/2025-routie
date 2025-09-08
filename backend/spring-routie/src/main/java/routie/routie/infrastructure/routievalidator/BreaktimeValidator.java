@@ -42,8 +42,8 @@ public class BreaktimeValidator implements RoutieValidator {
 
     private boolean isNotDuringBreaktime(final TimePeriod timePeriod) {
         final Place place = timePeriod.routiePlace().getPlace();
-        final LocalTime breakStartAt = place.getBreakStartAt();
-        final LocalTime breakEndAt = place.getBreakEndAt();
+        final LocalTime breakStartAt = LocalTime.now(); // 검증 필드 제거에 따른 코딩
+        final LocalTime breakEndAt = LocalTime.now(); // 검증 필드 제거에 따른 코딩
 
         if (breakStartAt == null || breakEndAt == null || breakStartAt.equals(breakEndAt)) {
             return true;
