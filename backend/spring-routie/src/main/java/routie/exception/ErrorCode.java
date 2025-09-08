@@ -56,26 +56,6 @@ public enum ErrorCode {
             "위도는 -90.0 이상 90.0 이하이어야 합니다.",
             HttpStatus.BAD_REQUEST
     ),
-    PLACE_STAY_DURATION_INVALID(
-            "1007",
-            "체류 시간은 0분 이상 1440분 이하여야 합니다.",
-            HttpStatus.BAD_REQUEST
-    ),
-    PLACE_BUSINESS_HOURS_INCOMPLETE(
-            "1008",
-            "영업 시작 시간과 종료 시간은 함께 존재해야 합니다.",
-            HttpStatus.BAD_REQUEST
-    ),
-    PLACE_BREAK_TIME_INCOMPLETE(
-            "1009",
-            "브레이크 타임 시작 시간과 종료 시간은 함께 존재해야 합니다.",
-            HttpStatus.BAD_REQUEST
-    ),
-    PLACE_BREAK_TIME_OUTSIDE_BUSINESS_HOURS(
-            "1010",
-            "브레이크 타임은 영업 시간 내에 있어야 합니다.",
-            HttpStatus.BAD_REQUEST
-    ),
     PLACE_CLOSED_DAY_NULL(
             "1011",
             "휴무일은 null일 수 없습니다.",
