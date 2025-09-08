@@ -1,11 +1,6 @@
 package routie.place.controller.dto.response;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import java.time.DayOfWeek;
-import java.time.LocalTime;
-import java.util.List;
 import routie.place.domain.Place;
-import routie.place.domain.PlaceClosedDayOfWeek;
 
 public record PlaceReadResponse(
         String name,
