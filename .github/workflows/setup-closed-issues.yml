@@ -1,0 +1,82 @@
+name: Setup Closed Issues
+
+on:
+  issues:
+    types: [ closed ]
+
+jobs:
+  setup_issue:
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+      contents: read
+
+    steps:
+      - name: Set End date
+        continue-on-error: true
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.PROJECT_V2_TOKEN }}
+          script: |
+            // GitHub Project id
+            const projectId = 'PVT_kwDODYNUWs4BBQxw';
+            const issueNodeId = context.payload.issue.node_id;
+
+            // 1. Issue를 Project에 추가 (이미 있으면 기존 item id를 반환)
+            const addResp = await github.graphql(
+              `
+              mutation($projectId: ID!, $contentId: ID!) {
+                addProjectV2ItemById(input: { projectId: $projectId, contentId: $contentId }) {
+                  item { id }
+                }
+              }
+              `,
+              { projectId, contentId: issueNodeId }
+            );
+            // Issue item id
+            const issueItemId = addResp.addProjectV2ItemById.item.id;
+
+            // 2. End date 필드 id 조회
+            const fieldData = await github.graphql(
+              `
+              query($projectId: ID!) {
+                node(id: $projectId) {
+                  ... on ProjectV2 {
+                    fields(first: 100) {
+                      nodes {
+                        __typename
+                        ... on ProjectV2FieldCommon { id name }
+                      }
+                    }
+                  }
+                }
+              }
+              `, 
+              { projectId }
+            );
+            const fields = fieldData.node.fields.nodes;
+            const endDateField = fields.find(f => f.name?.toLowerCase() === 'end date');
+            if (!endDateField) {
+              console.log('End date 필드를 찾지 못했습니다.');
+              return;
+            }
+
+            // 3. End date을 Issue를 close한 날짜로 지정
+            const closedAt = context.payload.issue.closed_at; // ISO 8601
+            const closedDateStr = (closedAt ? new Date(closedAt) : new Date())
+              .toISOString().split('T')[0];
+            await github.graphql(
+              `
+              mutation($projectId: ID!, $itemId: ID!, $fieldId: ID!, $date: Date!) {
+                updateProjectV2ItemFieldValue(input: {
+                  projectId: $projectId,
+                  itemId: $itemId,
+                  fieldId: $fieldId,
+                  value: { date: $date }
+                }) {
+                  projectV2Item { id }
+                }
+              }
+              `,
+              { projectId, itemId: issueItemId , fieldId: endDateField.id, date: closedDateStr }
+            );
