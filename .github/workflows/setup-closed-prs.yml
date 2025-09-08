@@ -18,7 +18,7 @@ jobs:
           github-token: ${{ secrets.PROJECT_V2_TOKEN }}
           script: |
             // GitHub Project id
-            const projectId = 'PVT_kwDODYNUWs4BBQxw';
+            const projectId = 'PVT_kwDOA_44FM4A9rer';
             const pr = context.payload.pull_request;
             const prNodeId = pr.node_id;
 
