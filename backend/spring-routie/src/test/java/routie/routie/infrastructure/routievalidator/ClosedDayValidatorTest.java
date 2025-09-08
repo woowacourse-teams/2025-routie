@@ -9,6 +9,7 @@ import static org.mockito.Mockito.when;
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.util.List;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import routie.place.domain.Place;
@@ -20,6 +21,7 @@ import routie.routie.domain.routievalidator.ValidationStrategy;
 import routie.routie.domain.timeperiod.TimePeriod;
 import routie.routie.domain.timeperiod.TimePeriods;
 
+@Disabled("검증 기능 제거에 따른 비활성화")
 class ClosedDayValidatorTest {
 
     private final ClosedDayValidator validator = new ClosedDayValidator();
@@ -29,7 +31,6 @@ class ClosedDayValidatorTest {
     void validate_shouldReturnValidResult_whenAllDaysAreOpen() {
         // given
         Place place = mock(Place.class);
-        when(place.getPlaceClosedDayOfWeeks()).thenReturn(List.of());
         RoutiePlace routiePlace = mock(RoutiePlace.class);
         when(routiePlace.getPlace()).thenReturn(place);
 
@@ -60,7 +61,6 @@ class ClosedDayValidatorTest {
         // given
         PlaceClosedDayOfWeek closed = new PlaceClosedDayOfWeek(DayOfWeek.TUESDAY);
         Place place = mock(Place.class);
-        when(place.getPlaceClosedDayOfWeeks()).thenReturn(List.of(closed));
         RoutiePlace routiePlace = mock(RoutiePlace.class);
         when(routiePlace.getPlace()).thenReturn(place);
 
@@ -91,14 +91,12 @@ class ClosedDayValidatorTest {
     void validate_shouldReturnInvalidRoutiePlaces_whenSomePlacesAreOnClosedDays() {
         // given
         Place openPlace = mock(Place.class);
-        when(openPlace.getPlaceClosedDayOfWeeks()).thenReturn(List.of());
         RoutiePlace validRoutiePlace = mock(RoutiePlace.class);
         when(validRoutiePlace.getPlace()).thenReturn(openPlace);
         TimePeriod validPeriod = new TimePeriod(validRoutiePlace, LocalDateTime.of(2025, 8, 20, 10, 0),
                 LocalDateTime.of(2025, 8, 20, 12, 0));
 
         Place closedPlace = mock(Place.class);
-        when(closedPlace.getPlaceClosedDayOfWeeks()).thenReturn(List.of(new PlaceClosedDayOfWeek(DayOfWeek.TUESDAY)));
         RoutiePlace invalidRoutiePlace = mock(RoutiePlace.class);
         when(invalidRoutiePlace.getPlace()).thenReturn(closedPlace);
         TimePeriod invalidPeriod = new TimePeriod(invalidRoutiePlace, LocalDateTime.of(2025, 8, 19, 14, 0),

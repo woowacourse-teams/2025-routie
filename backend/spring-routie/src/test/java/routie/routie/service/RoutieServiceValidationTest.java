@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +35,7 @@ import routie.routiespace.domain.RoutieSpace;
 import routie.routiespace.domain.RoutieSpaceBuilder;
 import routie.routiespace.repository.RoutieSpaceRepository;
 
+@Disabled("검증 기능 제거에 따른 비활성화")
 @Transactional
 @Import(TestRouteApiConfig.class)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
@@ -69,13 +71,7 @@ class RoutieServiceValidationTest {
                 .addressName("주소 A")
                 .longitude(127.0)
                 .latitude(37.5)
-                .stayDurationMinutes(60)
-                .openAt(LocalTime.of(9, 0))
-                .closeAt(LocalTime.of(18, 0))
-                .breakStartAt(null)
-                .breakEndAt(null)
                 .routieSpace(null)
-                .placeClosedDayOfWeeks(List.of())
                 .build();
 
         placeB = placeBuilder
@@ -84,13 +80,7 @@ class RoutieServiceValidationTest {
                 .addressName("주소 B")
                 .longitude(127.0)
                 .latitude(37.5)
-                .stayDurationMinutes(90)
-                .openAt(LocalTime.of(10, 0))
-                .closeAt(LocalTime.of(20, 0))
-                .breakStartAt(LocalTime.of(14, 0))
-                .breakEndAt(LocalTime.of(15, 0))
                 .routieSpace(null)
-                .placeClosedDayOfWeeksByDayOfWeeks(List.of(DayOfWeek.MONDAY))
                 .build();
 
         placeRepository.saveAll(List.of(placeA, placeB));
@@ -197,13 +187,7 @@ class RoutieServiceValidationTest {
                 .addressName("단일 지번 주소")
                 .longitude(127.0)
                 .latitude(37.5)
-                .stayDurationMinutes(60)
-                .openAt(LocalTime.of(9, 0))
-                .closeAt(LocalTime.of(18, 0))
-                .breakStartAt(null)
-                .breakEndAt(null)
                 .routieSpace(null)
-                .placeClosedDayOfWeeks(List.of())
                 .build();
 
         placeRepository.save(singlePlace);

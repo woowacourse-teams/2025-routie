@@ -11,6 +11,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,13 +68,7 @@ class RoutieControllerTest {
                 .addressName("지번 주소")
                 .longitude(126.9765)
                 .latitude(37.5710)
-                .stayDurationMinutes(60)
-                .openAt(LocalTime.of(9, 0))
-                .closeAt(LocalTime.of(18, 0))
-                .breakStartAt(null)
-                .breakEndAt(null)
                 .routieSpace(routieSpace)
-                .placeClosedDayOfWeeks(List.of())
                 .build();
 
         Place placeB = new PlaceBuilder()
@@ -82,13 +77,7 @@ class RoutieControllerTest {
                 .addressName("지번 주소")
                 .longitude(127.0276)
                 .latitude(37.4979)
-                .stayDurationMinutes(90)
-                .openAt(LocalTime.of(10, 0))
-                .closeAt(LocalTime.of(20, 0))
-                .breakStartAt(LocalTime.of(14, 0))
-                .breakEndAt(LocalTime.of(15, 0))
                 .routieSpace(routieSpace)
-                .placeClosedDayOfWeeksByDayOfWeeks(List.of(DayOfWeek.MONDAY))
                 .build();
 
         Place placeC = new PlaceBuilder()
@@ -97,13 +86,7 @@ class RoutieControllerTest {
                 .addressName("지번 주소")
                 .longitude(126.9765)
                 .latitude(37.5710)
-                .stayDurationMinutes(60)
-                .openAt(LocalTime.of(9, 0))
-                .closeAt(LocalTime.of(18, 0))
-                .breakStartAt(null)
-                .breakEndAt(null)
                 .routieSpace(routieSpaceWithOneRoutiePlace)
-                .placeClosedDayOfWeeks(List.of())
                 .build();
 
         routieSpace.getPlaces().add(placeA);
@@ -130,13 +113,7 @@ class RoutieControllerTest {
                 .addressName("지번 주소")
                 .longitude(127.0)
                 .latitude(37.5)
-                .stayDurationMinutes(60)
-                .openAt(LocalTime.of(9, 0))
-                .closeAt(LocalTime.of(18, 0))
-                .breakStartAt(null)
-                .breakEndAt(null)
                 .routieSpace(routieSpace)
-                .placeClosedDayOfWeeks(List.of())
                 .build();
         placeRepository.save(place);
 
@@ -171,13 +148,7 @@ class RoutieControllerTest {
                 .addressName("새로운 지번 주소")
                 .longitude(127.1)
                 .latitude(37.6)
-                .stayDurationMinutes(120)
-                .openAt(LocalTime.of(8, 0))
-                .closeAt(LocalTime.of(22, 0))
-                .breakStartAt(null)
-                .breakEndAt(null)
                 .routieSpace(routieSpace)
-                .placeClosedDayOfWeeks(List.of())
                 .build();
         placeRepository.save(newPlace);
 
@@ -243,6 +214,7 @@ class RoutieControllerTest {
     }
 
     @Test
+    @Disabled("검증 기능 제거에 따른 비활성화")
     @DisplayName("장소 휴무일에 방문하는 경로 검증 시 200 OK와 함께 isValid false를 반환한다")
     void validateRoutie_OnClosedDay_ReturnsOkWithFalse() {
         // given: 월요일(장소 B의 휴무일)에 방문
@@ -274,6 +246,7 @@ class RoutieControllerTest {
     }
 
     @Test
+    @Disabled("검증 기능 제거에 따른 비활성화")
     @DisplayName("브레이크 타임에 겹치는 경로 검증 시 200 OK와 함께 isValid false를 반환한다")
     void validateRoutie_DuringBreakTime_ReturnsOkWithFalse() {
         // given
@@ -328,6 +301,7 @@ class RoutieControllerTest {
     }
 
     @Test
+    @Disabled("검증 기능 제거에 따른 비활성화")
     @DisplayName("startDateTime이 쿼리 파라미터로 온 요청에 대해서는 루티 플레이스의 도착, 출발 정보 정상 반환")
     void readRoutieWithStartDateTime() {
         // given
@@ -368,6 +342,7 @@ class RoutieControllerTest {
     }
 
     @Test
+    @Disabled("검증 기능 제거에 따른 비활성화")
     @DisplayName("RoutiePlace가 하나만 있을 때도 정상적으로 도착/출발 정보 반환")
     void readRoutieWithSingleRoutiePlace() {
         // given

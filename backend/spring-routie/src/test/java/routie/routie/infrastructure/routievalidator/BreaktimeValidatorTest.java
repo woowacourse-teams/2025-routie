@@ -9,6 +9,7 @@ import java.time.LocalTime;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -20,14 +21,13 @@ import routie.routie.domain.routievalidator.ValidationStrategy;
 import routie.routie.domain.timeperiod.TimePeriod;
 import routie.routie.domain.timeperiod.TimePeriods;
 
+@Disabled("검증 기능 제거에 따른 비활성화")
 class BreaktimeValidatorTest {
 
     private final BreaktimeValidator validator = new BreaktimeValidator();
 
     private Place createMockPlace(final LocalTime breakStartAt, final LocalTime breakEndAt) {
         Place place = mock(Place.class);
-        when(place.getBreakStartAt()).thenReturn(breakStartAt);
-        when(place.getBreakEndAt()).thenReturn(breakEndAt);
         return place;
     }
 

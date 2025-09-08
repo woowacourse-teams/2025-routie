@@ -17,7 +17,7 @@ class PlaceTest {
     private final RoutieSpace routieSpace = RoutieSpace.from(() -> "test-identifier");
 
     @Test
-    @DisplayName("브레이크 타임이 모두 있을 때 생성 성공")
+    @DisplayName("장소 생성 성공")
     void createPlaceWithFullBreakTimeSuccess() {
         // given
 
@@ -28,146 +28,11 @@ class PlaceTest {
                 "테스트 지번 주소",
                 10.123,
                 10.123,
-                60,
-                LocalTime.of(10, 0),
-                LocalTime.of(22, 0),
-                LocalTime.of(14, 0),
-                LocalTime.of(15, 0),
-                routieSpace,
-                List.of(DayOfWeek.SUNDAY)
+                routieSpace
         );
 
         // then
         assertThat(place.getName()).isEqualTo("스타벅스");
-        assertThat(place.getBreakStartAt()).isEqualTo(LocalTime.of(14, 0));
-        assertThat(place.getBreakEndAt()).isEqualTo(LocalTime.of(15, 0));
-    }
-
-    @Test
-    @DisplayName("영업 시간이 모두 없을 때 생성 성공")
-    void createPlaceWithNoOperatingTime() {
-        // given
-
-        // when
-        Place place = Place.create(
-                "스타벅스",
-                "테스트 도로명 주소",
-                "테스트 지번 주소",
-                10.123,
-                10.123,
-                60,
-                null,
-                null,
-                LocalTime.of(14, 0),
-                LocalTime.of(15, 0),
-                routieSpace,
-                List.of(DayOfWeek.SUNDAY)
-        );
-
-        // then
-        assertThat(place.getName()).isEqualTo("스타벅스");
-        assertThat(place.getBreakStartAt()).isEqualTo(LocalTime.of(14, 0));
-        assertThat(place.getBreakEndAt()).isEqualTo(LocalTime.of(15, 0));
-    }
-
-    @Test
-    @DisplayName("영업 시간이 둘 중 하나만 있는 경우 생성 실패")
-    void createPlaceWithNoOneOfOperatingTime() {
-        // given
-
-        // when, then
-        assertThatThrownBy(() -> Place.create(
-                "스타벅스",
-                "테스트 도로명 주소",
-                "테스트 지번 주소",
-                10.123,
-                10.123,
-                60,
-                LocalTime.of(14, 0),
-                null,
-                LocalTime.of(14, 0),
-                LocalTime.of(15, 0),
-                routieSpace,
-                List.of(DayOfWeek.SUNDAY)
-        )).isInstanceOf(BusinessException.class)
-          .hasMessage(ErrorCode.PLACE_BUSINESS_HOURS_INCOMPLETE.getMessage());
-    }
-
-    @Test
-    @DisplayName("브레이크 타임이 모두 없을 때 생성 성공")
-    void createPlaceWithoutBreakTimeSuccess() {
-        // given
-        LocalTime breakStartAt = null;
-        LocalTime breakEndAt = null;
-
-        // when
-        Place place = Place.create(
-                "편의점",
-                "테스트 도로명 주소",
-                "테스트 지번 주소",
-                10.123,
-                10.123,
-                30,
-                LocalTime.of(10, 0),
-                LocalTime.of(22, 0),
-                breakStartAt,
-                breakEndAt,
-                routieSpace,
-                List.of()
-        );
-
-        // then
-        assertThat(place.getName()).isEqualTo("편의점");
-        assertThat(place.getBreakStartAt()).isNull();
-        assertThat(place.getBreakEndAt()).isNull();
-    }
-
-    @Test
-    @DisplayName("체류 시간이 0 미만일 경우 실패")
-    void createPlaceWithNegativeStayDurationFail() {
-        // given
-        int lowStayDuration = -1;
-
-        // when & then
-        assertThatThrownBy(() -> Place.create(
-                "카페",
-                "테스트 도로명 주소",
-                "테스트 지번 주소",
-                10.123,
-                10.123,
-                lowStayDuration,
-                LocalTime.of(10, 0),
-                LocalTime.of(22, 0),
-                null,
-                null,
-                routieSpace,
-                null
-        )).isInstanceOf(BusinessException.class)
-          .hasMessage(ErrorCode.PLACE_STAY_DURATION_INVALID.getMessage());
-    }
-
-    @Test
-    @DisplayName("체류 시간이 1440 초과일 경우 실패")
-    void createPlaceWithExcessiveStayDurationFail() {
-        // given
-        int hugeStayDuration = 1441;
-
-        // when & then
-        assertThatThrownBy(() -> Place.create(
-                "카페",
-                "테스트 도로명 주소",
-                "테스트 지번 주소",
-                10.123,
-                10.123,
-                hugeStayDuration,
-                LocalTime.of(10, 0),
-                LocalTime.of(22, 0),
-                null,
-                null,
-                routieSpace,
-                null
-        )).isInstanceOf(BusinessException.class)
-          .hasMessage(ErrorCode.PLACE_STAY_DURATION_INVALID.getMessage());
     }
 
     @Test
@@ -183,15 +48,9 @@ class PlaceTest {
                 "테스트 지번 주소",
                 10.123,
                 10.123,
-                60,
-                LocalTime.of(10, 0),
-                LocalTime.of(22, 0),
-                null,
-                null,
-                routieSpace,
-                null
+                routieSpace
         )).isInstanceOf(BusinessException.class)
-          .hasMessage(ErrorCode.PLACE_NAME_REQUIRED.getMessage());
+                .hasMessage(ErrorCode.PLACE_NAME_REQUIRED.getMessage());
     }
 
     @Test
@@ -207,15 +66,9 @@ class PlaceTest {
                 "테스트 지번 주소",
                 10.123,
                 10.123,
-                60,
-                LocalTime.of(10, 0),
-                LocalTime.of(22, 0),
-                null,
-                null,
-                routieSpace,
-                null
+                routieSpace
         )).isInstanceOf(BusinessException.class)
-          .hasMessage(ErrorCode.PLACE_NAME_REQUIRED.getMessage());
+                .hasMessage(ErrorCode.PLACE_NAME_REQUIRED.getMessage());
     }
 
     @Test
@@ -231,161 +84,8 @@ class PlaceTest {
                 "테스트 지번 주소",
                 10.123,
                 10.123,
-                60,
-                LocalTime.of(10, 0),
-                LocalTime.of(22, 0),
-                null,
-                null,
-                routieSpace,
-                null
+                routieSpace
         )).isInstanceOf(BusinessException.class)
-          .hasMessage(ErrorCode.PLACE_NAME_LENGTH_INVALID.getMessage());
-    }
-
-    @Test
-    @DisplayName("브레이크 시작 시간만 입력한 경우 실패")
-    void createPlaceWithOnlyBreakStartTimeFail() {
-        // given
-        LocalTime breakEndAt = null;
-
-        // when & then
-        assertThatThrownBy(() -> Place.create(
-                "카페",
-                "테스트 도로명 주소",
-                "테스트 지번 주소",
-                10.123,
-                10.123,
-                60,
-                LocalTime.of(10, 0),
-                LocalTime.of(22, 0),
-                LocalTime.of(14, 0),
-                breakEndAt,
-                routieSpace,
-                null
-        )).isInstanceOf(BusinessException.class)
-          .hasMessage(ErrorCode.PLACE_BREAK_TIME_INCOMPLETE.getMessage());
-    }
-
-    @Test
-    @DisplayName("브레이크 종료 시간만 입력한 경우 실패")
-    void createPlaceWithOnlyBreakEndTimeFail() {
-        // given
-        LocalTime breakStartAt = null;
-
-        assertThatThrownBy(() -> Place.create(
-                "카페",
-                "테스트 도로명 주소",
-                "테스트 지번 주소",
-                10.123,
-                10.123,
-                60,
-                LocalTime.of(10, 0),
-                LocalTime.of(22, 0),
-                breakStartAt,
-                LocalTime.of(15, 0),
-                routieSpace,
-                null
-        )).isInstanceOf(BusinessException.class)
-          .hasMessage(ErrorCode.PLACE_BREAK_TIME_INCOMPLETE.getMessage());
-    }
-
-    @Test
-    @DisplayName("브레이크 타임이 유요하지 않은 경우 실패 : 영업 시간 10-22, 브레이크타임 9-11")
-    void createPlaceWithBreakTimeStartingBeforeOpenTimeFail() {
-        // given
-        LocalTime breakStartAt = LocalTime.of(9, 0);
-        LocalTime breakEndAt = LocalTime.of(11, 0);
-
-        // when & then
-        assertThatThrownBy(() -> Place.create(
-                "카페",
-                "테스트 도로명 주소",
-                "테스트 지번 주소",
-                10.123,
-                10.123,
-                60,
-                LocalTime.of(10, 0),
-                LocalTime.of(22, 0),
-                breakStartAt,
-                breakEndAt,
-                routieSpace,
-                null
-        )).isInstanceOf(BusinessException.class)
-          .hasMessage(ErrorCode.PLACE_BREAK_TIME_OUTSIDE_BUSINESS_HOURS.getMessage());
-    }
-
-    @Test
-    @DisplayName("브레이크 타임이 유요하지 않은 경우 실패 : 영업 시간 10-22, 브레이크타임 9-10")
-    void createPlaceWithBreakTimePartiallyBeforeOpenTimeFail() {
-        // given
-        LocalTime breakStartAt = LocalTime.of(9, 0);
-        LocalTime breakEndAt = LocalTime.of(10, 0);
-
-        // when & then
-        assertThatThrownBy(() -> Place.create(
-                "카페",
-                "테스트 도로명 주소",
-                "테스트 지번 주소",
-                10.123,
-                10.123,
-                60,
-                LocalTime.of(10, 0),
-                LocalTime.of(22, 0),
-                breakStartAt,
-                breakEndAt,
-                routieSpace,
-                null
-        )).isInstanceOf(BusinessException.class)
-          .hasMessage(ErrorCode.PLACE_BREAK_TIME_OUTSIDE_BUSINESS_HOURS.getMessage());
-    }
-
-    @Test
-    @DisplayName("브레이크 타임이 유요하지 않은 경우 실패 : 영업 시간 10-22, 브레이크타임 21-23")
-    void createPlaceWithBreakTimeEndingAfterCloseTimeFail() {
-        // given
-        LocalTime breakStartAt = LocalTime.of(21, 0);
-        LocalTime breakEndAt = LocalTime.of(23, 0);
-
-        // when & then
-        assertThatThrownBy(() -> Place.create(
-                "카페",
-                "테스트 도로명 주소",
-                "테스트 지번 주소",
-                10.123,
-                10.123,
-                60,
-                LocalTime.of(10, 0),
-                LocalTime.of(22, 0),
-                breakStartAt,
-                breakEndAt,
-                routieSpace,
-                null
-        )).isInstanceOf(BusinessException.class)
-          .hasMessage(ErrorCode.PLACE_BREAK_TIME_OUTSIDE_BUSINESS_HOURS.getMessage());
-    }
-
-    @Test
-    @DisplayName("브레이크 타임이 유요하지 않은 경우 실패 : 영업 시간 10-22, 브레이크타임 22-23")
-    void createPlaceWithBreakTimeStartingAtCloseTimeFail() {
-        // given
-        LocalTime breakStartAt = LocalTime.of(22, 0);
-        LocalTime breakEndAt = LocalTime.of(23, 0);
-
-        // when & then
-        assertThatThrownBy(() -> Place.create(
-                "카페",
-                "테스트 도로명 주소",
-                "테스트 지번 주소",
-                10.123,
-                10.123,
-                60,
-                LocalTime.of(10, 0),
-                LocalTime.of(22, 0),
-                breakStartAt,
-                breakEndAt,
-                routieSpace,
-                null
-        )).isInstanceOf(BusinessException.class)
-          .hasMessage(ErrorCode.PLACE_BREAK_TIME_OUTSIDE_BUSINESS_HOURS.getMessage());
+                .hasMessage(ErrorCode.PLACE_NAME_LENGTH_INVALID.getMessage());
     }
 }
