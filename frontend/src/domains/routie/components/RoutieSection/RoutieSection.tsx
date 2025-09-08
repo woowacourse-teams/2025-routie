@@ -1,23 +1,24 @@
+import Flex from '@/@common/components/Flex/Flex';
+
 import { useRoutieContext } from '../../contexts/useRoutieContext';
 import { useCardDrag } from '../../hooks/useCardDrag';
-import RoutieRoutes from '../Route/RoutieRoutes';
 import RoutiePlaceCard from '../RoutiePlaceCard/RoutiePlaceCard';
 
 const RoutieSection = () => {
-  const { routiePlaces, routes, handleChangeRoutie } = useRoutieContext();
+  const { routiePlaces, handleChangeRoutie } = useRoutieContext();
   const getDragProps = useCardDrag(routiePlaces, handleChangeRoutie);
 
-  return routiePlaces.map((routie, index) => (
-    <div key={routie.placeId} style={{ width: '100%' }}>
-      <div {...getDragProps(index)} style={{ width: '100%' }}>
-        <RoutiePlaceCard routie={routie} />
-      </div>
-
-      {routiePlaces.length - 1 !== index && routes[index] && (
-        <RoutieRoutes routieId={routie.id} routes={routes[index]} />
-      )}
-    </div>
-  ));
+  return (
+    <Flex direction="column" width="100%" gap={2}>
+      {routiePlaces.map((routie, index) => (
+        <div key={routie.placeId} style={{ width: '100%' }}>
+          <div {...getDragProps(index)} style={{ width: '100%' }}>
+            <RoutiePlaceCard routie={routie} />
+          </div>
+        </div>
+      ))}
+    </Flex>
+  );
 };
 
 export default RoutieSection;
