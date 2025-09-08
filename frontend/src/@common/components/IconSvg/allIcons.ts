@@ -3,6 +3,7 @@ import check from '@/assets/icons/check.svg';
 import clock from '@/assets/icons/clock.svg';
 import closeRed from '@/assets/icons/close-red.svg';
 import close from '@/assets/icons/close.svg';
+import copy from '@/assets/icons/copy.svg';
 import drag from '@/assets/icons/drag.svg';
 import durationTime from '@/assets/icons/duration-time.svg';
 import edit from '@/assets/icons/edit.svg';
@@ -25,6 +26,7 @@ const allIcons = {
   check,
   clock,
   close,
+  copy,
   drag,
   edit,
   fail,
