@@ -8,7 +8,5 @@
 -- ALTER TABLE places DROP COLUMN break_start_at;
 -- ALTER TABLE places DROP COLUMN break_end_at;
 
--- DROP TABLE place_closed_dayofweeks;
-
 -- flyway migration을 위한 DB 테이블에 영향이 없는 의미 없는 쿼리
 SELECT 1 as migration_completed;
