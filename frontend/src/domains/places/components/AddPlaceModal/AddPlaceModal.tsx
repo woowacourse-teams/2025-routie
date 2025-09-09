@@ -11,7 +11,7 @@ import { usePlaceListContext } from '@/layouts/PlaceList/contexts/PlaceListConte
 
 import addPlace from '../../apis/addPlace';
 import { useFunnel } from '../../hooks/useFunnel';
-import { PlaceLocationType } from '../../types/place.types';
+import { PlaceSearchType } from '../../types/place.types';
 import { getValidatedStep } from '../../utils/getValidatedStep';
 
 import AddPlaceBasicInfo from './AddPlaceBasicInfo';
@@ -29,8 +29,7 @@ const AddPlaceModal = ({ isOpen, onClose }: Omit<ModalProps, 'children'>) => {
   const { handlePlaceAdded } = usePlaceListContext();
 
   const [showErrors, setShowErrors] = useState(false);
-  const [placeLocationInfo, setPlaceLocationInfo] =
-    useState<PlaceLocationType>();
+  const [placeLocationInfo, setPlaceLocationInfo] = useState<PlaceSearchType>();
   const isStep1Valid = getValidatedStep(1, isEmpty);
   const { showToast } = useToastContext();
 
@@ -41,7 +40,7 @@ const AddPlaceModal = ({ isOpen, onClose }: Omit<ModalProps, 'children'>) => {
     onClose();
   };
 
-  const handleSearchPlaceMap = (placeLocation: PlaceLocationType) => {
+  const handleSearchPlaceMap = (placeLocation: PlaceSearchType) => {
     setPlaceLocationInfo(placeLocation);
   };
 

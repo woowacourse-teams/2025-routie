@@ -13,3 +13,10 @@ export interface PlaceAddType extends PlaceBaseType {
 export interface PlaceFetchType extends PlaceBaseType {
   id: number;
 }
+
+// 임시 타입
+export interface PlaceSearchType {
+  searchedPlaceId: string;
+  latitude: number;
+  longitude: number;
+}

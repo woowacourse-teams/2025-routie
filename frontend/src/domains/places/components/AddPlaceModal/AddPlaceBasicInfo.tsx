@@ -1,6 +1,6 @@
 import Flex from '@/@common/components/Flex/Flex';
 
-import { PlaceLocationType } from '../../types/place.types';
+import { PlaceSearchType } from '../../types/place.types';
 import AddressInput from '../PlaceFormSection/AddressInput';
 import { FormState } from '../PlaceFormSection/PlaceForm.types';
 import PlaceNameInput from '../PlaceFormSection/PlaceNameInput';
@@ -15,7 +15,7 @@ interface AddPlaceBasicInfoProps {
     field: keyof Omit<FormState, 'closedDayOfWeeks'>,
     value: string | null,
   ) => void;
-  handleSearchPlaceMap: (placeLocation: PlaceLocationType) => void;
+  handleSearchPlaceMap: (placeLocation: PlaceSearchType) => void;
 }
 
 const AddPlaceBasicInfo = ({
