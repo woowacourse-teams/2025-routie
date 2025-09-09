@@ -1,12 +1,12 @@
 import { createContext, useContext } from 'react';
 
-import { PlaceCardProps } from '@/domains/places/components/PlaceCard/PlaceCard';
+import { PlaceFetchType } from '@/domains/places/types/place.types';
 
 export interface PlaceListContextType {
-  placeList: PlaceCardProps[];
+  placeList: PlaceFetchType[];
   refetchPlaceList: () => Promise<void>;
   handleDelete: (id: number) => void;
-  newlyAddedPlace: PlaceCardProps | null;
+  newlyAddedPlace: PlaceFetchType | null;
   handlePlaceAdded: () => Promise<void>;
 }
 
