@@ -6,16 +6,16 @@ import IconButton from '@/@common/components/IconButton/IconButton';
 import Icon from '@/@common/components/IconSvg/Icon';
 import Text from '@/@common/components/Text/Text';
 import closeIcon from '@/assets/icons/close.svg';
-import type { PlaceCardProps } from '@/domains/places/components/PlaceCard/PlaceCard';
+import { PlaceFetchType } from '@/domains/places/types/place.types';
 import { useRoutieContext } from '@/domains/routie/contexts/useRoutieContext';
 import theme from '@/styles/theme';
 
-type Props = {
-  place: PlaceCardProps;
+interface PlaceOverlayCardProps {
+  place: PlaceFetchType;
   onClose: () => void;
-};
+}
 
-const PlaceOverlayCard = ({ place, onClose }: Props) => {
+const PlaceOverlayCard = ({ place, onClose }: PlaceOverlayCardProps) => {
   const { routieIdList, handleAddRoutie } = useRoutieContext();
   const selected = routieIdList.includes(place.id);
 
