@@ -23,12 +23,6 @@ const RoutiePlaceCard = ({ routie }: { routie: Routie }) => {
     name: '',
     roadAddressName: '',
     addressName: '',
-    stayDurationMinutes: 0,
-    openAt: '',
-    closeAt: '',
-    breakStartAt: '',
-    breakEndAt: '',
-    closedDayOfWeeks: [],
     longitude: 0,
     latitude: 0,
   });

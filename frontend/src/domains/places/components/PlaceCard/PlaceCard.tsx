@@ -12,10 +12,9 @@ import { useGoogleEventTrigger } from '@/libs/googleAnalytics/hooks/useGoogleEve
 import theme from '@/styles/theme';
 
 import deletePlace from '../../apis/deletePlace';
-import { PlaceBaseType } from '../../types/place.types';
+import { PlaceFetchType } from '../../types/place.types';
 
-export interface PlaceCardProps extends PlaceBaseType {
-  id: number;
+export interface PlaceCardProps extends PlaceFetchType {
   selected: boolean;
 }
 
