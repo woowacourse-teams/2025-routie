@@ -4,15 +4,13 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import routie.exception.BusinessException;
+import routie.exception.ErrorCode;
 import routie.place.controller.dto.request.PlaceCreateRequest;
-import routie.place.controller.dto.request.PlaceUpdateRequest;
 import routie.place.controller.dto.response.PlaceCreateResponse;
 import routie.place.controller.dto.response.PlaceListResponse;
 import routie.place.controller.dto.response.PlaceReadResponse;
 import routie.place.domain.Place;
-import routie.exception.BusinessException;
-import routie.exception.ErrorCode;
-import routie.place.repository.PlaceClosedDayOfWeekRepository;
 import routie.place.repository.PlaceRepository;
 import routie.routie.repository.RoutiePlaceRepository;
 import routie.routiespace.domain.RoutieSpace;
@@ -25,7 +23,6 @@ public class PlaceService {
 
     private final PlaceRepository placeRepository;
     private final RoutieSpaceRepository routieSpaceRepository;
-    private final PlaceClosedDayOfWeekRepository placeClosedDayOfWeekRepository;
     private final RoutiePlaceRepository routiePlaceRepository;
 
     public PlaceReadResponse getPlace(final String routieSpaceIdentifier, final long placeId) {
@@ -48,13 +45,7 @@ public class PlaceService {
                 placeCreateRequest.addressName(),
                 placeCreateRequest.longitude(),
                 placeCreateRequest.latitude(),
-                placeCreateRequest.stayDurationMinutes(),
-                placeCreateRequest.openAt(),
-                placeCreateRequest.closeAt(),
-                placeCreateRequest.breakStartAt(),
-                placeCreateRequest.breakEndAt(),
-                routieSpace,
-                placeCreateRequest.closedDayOfWeeks()
+                routieSpace
         );
         return new PlaceCreateResponse(placeRepository.save(place).getId());
     }
@@ -64,25 +55,6 @@ public class PlaceService {
                 .orElseThrow(() -> new BusinessException(ErrorCode.ROUTIE_SPACE_NOT_FOUND));
         final List<Place> places = routieSpace.getPlaces();
         return PlaceListResponse.from(places);
-    }
-
-    @Transactional
-    public void modifyPlace(
-            final PlaceUpdateRequest placeUpdateRequest,
-            final String routieSpaceIdentifier,
-            final long placeId
-    ) {
-        final RoutieSpace routieSpace = getRoutieSpaceByIdentifier(routieSpaceIdentifier);
-        final Place place = getPlaceByIdAndRoutieSpace(placeId, routieSpace);
-
-        place.modify(
-                placeUpdateRequest.stayDurationMinutes(),
-                placeUpdateRequest.openAt(),
-                placeUpdateRequest.closeAt(),
-                placeUpdateRequest.breakStartAt(),
-                placeUpdateRequest.breakEndAt(),
-                placeUpdateRequest.closedDayOfWeeks()
-        );
     }
 
     @Transactional

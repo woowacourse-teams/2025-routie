@@ -32,7 +32,7 @@ public class TimePeriodCalculator {
                             new TimePeriod(
                                     firstRoutiePlace,
                                     startDateTime,
-                                    startDateTime.plusMinutes(firstRoutiePlace.getPlace().getStayDurationMinutes())
+                                    startDateTime.plusMinutes(0) // 검증 필드 제거에 따른 구현
                             )
                     );
         }
@@ -42,7 +42,7 @@ public class TimePeriodCalculator {
 
         for (final RoutiePlace routiePlace : orderedRoutiePlaces) {
             LocalDateTime start = currentTime;
-            LocalDateTime end = start.plusMinutes(routiePlace.getPlace().getStayDurationMinutes());
+            LocalDateTime end = start.plusMinutes(0); // 검증 필드 제거에 따른 구현
 
             timePeriods = timePeriods.withAdded(routiePlace, new TimePeriod(routiePlace, start, end));
 

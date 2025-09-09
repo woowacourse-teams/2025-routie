@@ -79,13 +79,7 @@ public class RoutieSpaceControllerTest {
                 "서울시 강남구 도로명 주소",
                 "서울시 강남구 지번 주소",
                 127.04896282498558,
-                37.504497373023206,
-                60,
-                LocalTime.of(9, 0),
-                LocalTime.of(22, 0),
-                LocalTime.of(15, 0),
-                LocalTime.of(16, 0),
-                List.of(DayOfWeek.SUNDAY)
+                37.504497373023206
         );
 
         // when
@@ -117,13 +111,7 @@ public class RoutieSpaceControllerTest {
                 "서울시 강남구 도로명 주소",
                 "서울시 강남구 지번 주소",
                 127.04896282498558,
-                37.504497373023206,
-                60,
-                LocalTime.of(9, 0),
-                LocalTime.of(22, 0),
-                LocalTime.of(15, 0),
-                LocalTime.of(16, 0),
-                List.of(DayOfWeek.SUNDAY)
+                37.504497373023206
         );
 
         PlaceCreateRequest place2RequestBody = new PlaceCreateRequest(
@@ -132,13 +120,7 @@ public class RoutieSpaceControllerTest {
                 "서울시 강남구 도로명 주소",
                 "서울시 강남구 지번 주소",
                 127.04896282498558,
-                37.504497373023206,
-                90,
-                LocalTime.of(8, 0),
-                LocalTime.of(23, 0),
-                null,
-                null,
-                List.of(DayOfWeek.MONDAY, DayOfWeek.TUESDAY)
+                37.504497373023206
         );
 
         RestAssured
@@ -168,17 +150,11 @@ public class RoutieSpaceControllerTest {
         List<Object> places = response.jsonPath().getList("places");
         String firstPlaceName = response.jsonPath().getString("places[0].name");
         String firstPlaceAddress = response.jsonPath().getString("places[0].roadAddressName");
-        String firstPlaceOpenAt = response.jsonPath().getString("places[0].openAt");
-        String firstPlaceCloseAt = response.jsonPath().getString("places[0].closeAt");
-        List<String> firstPlaceClosedDays = response.jsonPath().getList("places[0].closedDayOfWeeks");
 
         // then
         assertThat(expectedHttpStatus).isEqualTo(actualHttpStatus);
         assertThat(places).hasSize(2);
         assertThat(firstPlaceName).isIn("스타벅스 강남점", "투썸플레이스 역삼점");
         assertThat(firstPlaceAddress).isNotNull();
-        assertThat(firstPlaceOpenAt).isNotNull();
-        assertThat(firstPlaceCloseAt).isNotNull();
-        assertThat(firstPlaceClosedDays).isNotNull();
     }
 }

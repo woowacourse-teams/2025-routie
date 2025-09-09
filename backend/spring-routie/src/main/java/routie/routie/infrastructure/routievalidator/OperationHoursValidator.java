@@ -40,8 +40,8 @@ public class OperationHoursValidator implements RoutieValidator {
     private boolean isWithinBusinessHours(final TimePeriod timePeriod) {
         Place place = timePeriod.routiePlace().getPlace();
 
-        final LocalTime openAt = place.getOpenAt();
-        final LocalTime closeAt = place.getCloseAt();
+        final LocalTime openAt = LocalTime.now(); // 검증 필드 제거에 따른 구현
+        final LocalTime closeAt = LocalTime.now(); // 검증 필드 제거에 따른 구현
 
         if (openAt == null || closeAt == null) {
             return true;

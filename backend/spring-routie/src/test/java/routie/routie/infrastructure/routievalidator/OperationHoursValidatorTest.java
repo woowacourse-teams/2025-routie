@@ -21,14 +21,13 @@ import routie.routie.domain.routievalidator.ValidationStrategy;
 import routie.routie.domain.timeperiod.TimePeriod;
 import routie.routie.domain.timeperiod.TimePeriods;
 
+@Disabled("검증 기능 제거에 따른 비활성화")
 class OperationHoursValidatorTest {
 
     private final OperationHoursValidator validator = new OperationHoursValidator();
 
     private Place createMockPlace(final LocalTime openAt, final LocalTime closeAt) {
         Place place = mock(Place.class);
-        when(place.getOpenAt()).thenReturn(openAt);
-        when(place.getCloseAt()).thenReturn(closeAt);
         return place;
     }
 
