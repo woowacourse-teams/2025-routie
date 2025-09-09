@@ -3,14 +3,14 @@ import Flex from '@/@common/components/Flex/Flex';
 import Text from '@/@common/components/Text/Text';
 import pinIcon from '@/assets/icons/pin.svg';
 
-import { PlaceSearchType } from '../../types/place.types';
+import { PlaceAddType } from '../../types/place.types';
 import SearchAddress from '../SearchAddress/SearchAddress';
 
 import { listStyle, itemButtonStyle } from './SearchList.styles';
 
 interface SearchListProps {
-  searchResults: PlaceSearchType[];
-  handleSelect: (item: PlaceSearchType) => void;
+  searchResults: PlaceAddType[];
+  handleSelect: (item: PlaceAddType) => void;
 }
 
 const SearchList = ({ searchResults, handleSelect }: SearchListProps) => {
