@@ -1,6 +1,8 @@
 import { apiClient } from '@/apis';
 
-const getPlace = async (placeId: number) => {
+import { PlaceBaseType } from '../types/place.types';
+
+const getPlace = async (placeId: number): Promise<PlaceBaseType> => {
   const routieSpaceUuid = localStorage.getItem('routieSpaceUuid');
 
   if (!routieSpaceUuid) {
