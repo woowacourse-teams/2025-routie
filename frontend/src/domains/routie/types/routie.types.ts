@@ -15,7 +15,19 @@ export type Routie = {
   departureDateTime?: string;
 };
 
-export type validationErrorCodeType = keyof typeof VALIDATION_RESULT_CODE;
+interface RoutieContextType {
+  routiePlaces: RoutieType[];
+  routes: RoutesType[];
+  refetchRoutieData: () => Promise<void>;
+  handleAddRoutie: (id: number) => Promise<void>;
+  handleDeleteRoutie: (id: number) => Promise<void>;
+  handleChangeRoutie: (sortedPlaces: RoutieType[]) => Promise<void>;
+  routieIdList: number[];
+  movingStrategy: MovingStrategyType;
+  setMovingStrategy: (strategy: MovingStrategyType) => void;
+  fetchedStrategy: MovingStrategyType;
+}
+
 
 export type ValidationStatus =
   | 'inactive'

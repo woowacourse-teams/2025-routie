@@ -17,24 +17,15 @@ import {
   getRoutie,
 } from '../apis/routie';
 import { useMovingStrategy } from '../hooks/useMovingStrategy';
-import { Routes, Routie } from '../types/routie.types';
 
 import { useRoutieValidateContext } from './useRoutieValidateContext';
 
 import type { MovingStrategyType } from '../components/SelectMovingStrategy/SelectMovingStrategy.types';
-
-type RoutieContextType = {
-  routiePlaces: Routie[];
-  routes: Routes[];
-  refetchRoutieData: () => Promise<void>;
-  handleAddRoutie: (id: number) => Promise<void>;
-  handleDeleteRoutie: (id: number) => Promise<void>;
-  handleChangeRoutie: (sortedPlaces: Routie[]) => Promise<void>;
-  routieIdList: number[];
-  movingStrategy: MovingStrategyType;
-  setMovingStrategy: (strategy: MovingStrategyType) => void;
-  fetchedStrategy: MovingStrategyType;
-};
+import type {
+  RoutesType,
+  RoutieContextType,
+  RoutieType,
+} from '../types/routie.types';
 
 const RoutieContext = createContext<RoutieContextType>({
   routiePlaces: [],
@@ -50,8 +41,8 @@ const RoutieContext = createContext<RoutieContextType>({
 });
 
 export const RoutieProvider = ({ children }: { children: React.ReactNode }) => {
-  const [routiePlaces, setRoutiePlaces] = useState<Routie[]>([]);
-  const [routes, setRoutes] = useState<Routes[]>([]);
+  const [routiePlaces, setRoutiePlaces] = useState<RoutieType[]>([]);
+  const [routes, setRoutes] = useState<RoutesType[]>([]);
   const routieIdList = routiePlaces.map((routie) => routie.placeId);
   const { isValidateActive, combineDateTime, validateRoutie } =
     useRoutieValidateContext();
@@ -63,7 +54,8 @@ export const RoutieProvider = ({ children }: { children: React.ReactNode }) => {
   const { runWithLock: runAddWithLock } = useAsyncLock();
   const { runWithLock: runDeleteWithLock } = useAsyncLock();
 
-  const sortBySequence = (a: Routie, b: Routie) => a.sequence - b.sequence;
+  const sortBySequence = (a: RoutieType, b: RoutieType) =>
+    a.sequence - b.sequence;
 
   const refetchRoutieData = useCallback(async () => {
     try {
@@ -144,7 +136,7 @@ export const RoutieProvider = ({ children }: { children: React.ReactNode }) => {
   );
 
   const handleChangeRoutie = useCallback(
-    async (places: Routie[]) => {
+    async (places: RoutieType[]) => {
       const sortedList = places
         .map((place, index) => {
           return { ...place, sequence: index + 1 };
