@@ -1,19 +1,20 @@
 import { useToastContext } from '../../contexts/useToastContext';
-import { ToastInfoType } from '../../types/toast.type';
 import Text from '../Text/Text';
 
 import {
-  containerStyle,
-  itemWrapper,
-  badgeStyle,
-  messageStyle,
+  ToastContainerStyle,
+  ToastItemWrapperStyle,
+  ToastBadgeStyle,
+  ToastMessageStyle,
 } from './Toast.styles';
+
+import type { ToastInfoProps } from './Toast.type';
 
 const Toast = () => {
   const { toast } = useToastContext();
 
   return (
-    <div css={containerStyle}>
+    <div css={ToastContainerStyle}>
       {toast?.map((item) => (
         <ToastItem key={item.id} item={item} />
       ))}
@@ -23,11 +24,11 @@ const Toast = () => {
 
 export default Toast;
 
-const ToastItem = ({ item }: { item: ToastInfoType }) => {
+const ToastItem = ({ item }: { item: ToastInfoProps }) => {
   return (
-    <div css={itemWrapper(item.leaving)}>
-      <span css={badgeStyle(item.type)} />
-      <Text variant="subTitle" css={messageStyle}>
+    <div css={ToastItemWrapperStyle(item.leaving)}>
+      <span css={ToastBadgeStyle(item.type)} />
+      <Text variant="subTitle" css={ToastMessageStyle}>
         {item.message}
       </Text>
     </div>
