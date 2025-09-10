@@ -80,4 +80,4 @@ const useToast = () => {
   return { toast, showToast };
 };
 
-export default useToast;
+export { useToast };
