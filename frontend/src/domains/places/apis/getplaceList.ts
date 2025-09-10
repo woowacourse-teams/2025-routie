@@ -1,8 +1,8 @@
 import { apiClient } from '@/apis';
 
-import { PlaceCardProps } from '../components/PlaceCard/PlaceCard';
+import { PlaceFetchType } from '../types/place.types';
 
-const getPlaceList = async () => {
+const getPlaceList = async (): Promise<PlaceFetchType[]> => {
   const routieSpaceUuid = localStorage.getItem('routieSpaceUuid');
 
   if (!routieSpaceUuid) {
@@ -15,7 +15,7 @@ const getPlaceList = async () => {
 
   const data = await response.json();
 
-  return data.places as PlaceCardProps[];
+  return data.places;
 };
 
 export default getPlaceList;

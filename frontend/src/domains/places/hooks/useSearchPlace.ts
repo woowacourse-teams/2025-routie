@@ -3,11 +3,11 @@ import { useState } from 'react';
 import { useToastContext } from '@/@common/contexts/useToastContext';
 
 import searchPlace from '../apis/searchPlace';
-import { PlaceSearchType } from '../types/place.types';
+import { PlaceAddType } from '../types/place.types';
 
 const useSearchPlace = () => {
   const [keyword, setKeyword] = useState('');
-  const [searchResults, setSearchResults] = useState<PlaceSearchType[] | null>(
+  const [searchResults, setSearchResults] = useState<PlaceAddType[] | null>(
     null,
   );
   const { showToast } = useToastContext();

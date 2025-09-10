@@ -1,14 +1,8 @@
 import EmptyMessage from '@/@common/components/EmptyMessage/EmptyMessage';
 import Flex from '@/@common/components/Flex/Flex';
 import Text from '@/@common/components/Text/Text';
-import ToggleSwitch from '@/@common/components/ToggleSwitch/ToggleSwitch';
 import RoutieSection from '@/domains/routie/components/RoutieSection/RoutieSection';
-import RoutieValidationLoadingCard from '@/domains/routie/components/RoutieValidationLoadingCard/RoutieValidationLoadingCard';
-import RoutieValidationResultCard from '@/domains/routie/components/RoutieValidationResultCard/RoutieValidationResultCard';
-import RoutieValidationUnavailableCard from '@/domains/routie/components/RoutieValidationUnavailableCard/RoutieValidationUnavailableCard';
-import RoutieValidationWaitingCard from '@/domains/routie/components/RoutieValidationWaitingCard/RoutieValidationWaitingCard';
 import { useRoutieContext } from '@/domains/routie/contexts/useRoutieContext';
-import { useRoutieValidateContext } from '@/domains/routie/contexts/useRoutieValidateContext';
 
 import {
   RoutieSectionScrollStyle,
@@ -17,31 +11,6 @@ import {
 
 const SidebarWhereSection = () => {
   const { routiePlaces } = useRoutieContext();
-  const {
-    isValidateActive,
-    validationStatus,
-    waitingReason,
-    handleValidateToggle,
-  } = useRoutieValidateContext();
-
-  const renderValidationCard = () => {
-    if (!isValidateActive) {
-      return <RoutieValidationUnavailableCard />;
-    }
-
-    switch (validationStatus) {
-      case 'waiting':
-        return <RoutieValidationWaitingCard reason={waitingReason} />;
-      case 'validating':
-        return <RoutieValidationLoadingCard />;
-      case 'success':
-      case 'error':
-        return <RoutieValidationResultCard />;
-      case 'inactive':
-      default:
-        return <RoutieValidationUnavailableCard />;
-    }
-  };
 
   return (
     <Flex
@@ -61,15 +30,7 @@ const SidebarWhereSection = () => {
             {routiePlaces.length}개의 장소
           </Text>
         </Flex>
-        <Flex width="100%" justifyContent="flex-end" gap={1.5}>
-          <Text variant="subTitle">일정 검증</Text>
-          <ToggleSwitch
-            active={isValidateActive}
-            onToggle={handleValidateToggle}
-          />
-        </Flex>
       </Flex>
-      {renderValidationCard()}
 
       {routiePlaces.length === 0 && (
         <Flex width="100%" height="100%">

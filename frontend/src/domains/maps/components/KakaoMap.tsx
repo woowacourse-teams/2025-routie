@@ -3,7 +3,7 @@ import { createPortal } from 'react-dom';
 
 import Flex from '@/@common/components/Flex/Flex';
 import Text from '@/@common/components/Text/Text';
-import { PlaceCardProps } from '@/domains/places/components/PlaceCard/PlaceCard';
+import { PlaceFetchType } from '@/domains/places/types/place.types';
 import { useRoutieContext } from '@/domains/routie/contexts/useRoutieContext';
 import { usePlaceListContext } from '@/layouts/PlaceList/contexts/PlaceListContext';
 
@@ -50,7 +50,7 @@ const KakaoMap = () => {
     map: mapRef,
   });
   const { containerEl, openAt, close } = useCustomOverlay({ map: mapRef });
-  const [selectedPlace, setSelectedPlace] = useState<PlaceCardProps | null>(
+  const [selectedPlace, setSelectedPlace] = useState<PlaceFetchType | null>(
     null,
   );
 

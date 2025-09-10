@@ -4,7 +4,6 @@ import RoutieSpaceName from '@/domains/routieSpace/components/RoutieSpaceName/Ro
 
 import ShareLinkButtonSection from './ShareLinkButtonSection';
 import { SidebarContainerStyle } from './Sidebar.styles';
-import SidebarWhenHowSection from './SidebarWhenHowSection';
 import SidebarWhereSection from './SidebarWhereSection';
 
 const Sidebar = () => {
@@ -21,7 +20,6 @@ const Sidebar = () => {
         <RoutieSpaceName />
       </Header>
       <ShareLinkButtonSection />
-      <SidebarWhenHowSection />
       <SidebarWhereSection />
     </Flex>
   );

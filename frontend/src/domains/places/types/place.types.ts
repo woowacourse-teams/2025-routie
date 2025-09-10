@@ -1,36 +1,22 @@
-export type PlaceLocationType = {
-  searchedPlaceId: string;
-  longitude: number;
-  latitude: number;
-};
-
-export type PlaceSearchType = PlaceLocationType & {
+export interface PlaceBaseType {
   name: string;
   roadAddressName: string | null;
   addressName: string;
-};
-
-export type PlaceBaseType = {
-  name: string;
-  roadAddressName: string | null;
-  addressName: string;
-  stayDurationMinutes: number;
-  openAt: string;
-  closeAt: string;
-  breakStartAt: string;
-  breakEndAt: string;
-  closedDayOfWeeks: string[];
-  longitude: number;
   latitude: number;
-};
+  longitude: number;
+}
 
-export type PlaceCreateType = PlaceBaseType & {
+export interface PlaceAddType extends PlaceBaseType {
   searchedPlaceId: string;
-};
+}
 
-export type PlaceListType = Omit<
-  PlaceBaseType,
-  'breakStartAt' | 'breakEndAt' | 'stayDurationMinutes'
-> & {
+export interface PlaceFetchType extends PlaceBaseType {
   id: number;
-};
+}
+
+// 임시 타입
+export interface PlaceSearchType {
+  searchedPlaceId: string;
+  latitude: number;
+  longitude: number;
+}

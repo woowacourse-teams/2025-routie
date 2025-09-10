@@ -7,7 +7,7 @@ import Text from '@/@common/components/Text/Text';
 import theme from '@/styles/theme';
 
 import useSearchPlace from '../../hooks/useSearchPlace';
-import { PlaceLocationType, PlaceSearchType } from '../../types/place.types';
+import { PlaceSearchType, PlaceAddType } from '../../types/place.types';
 import SearchEmptyState from '../SearchList/SearchEmptyState';
 import SearchList from '../SearchList/SearchList';
 
@@ -16,7 +16,7 @@ interface SearchBoxProps {
     field: 'name' | 'roadAddressName' | 'addressName',
     value: string | null,
   ) => void;
-  handleSearchPlaceMap: (searchInfo: PlaceLocationType) => void;
+  handleSearchPlaceMap: (searchInfo: PlaceSearchType) => void;
 }
 
 const SearchBox = ({ onChange, handleSearchPlaceMap }: SearchBoxProps) => {
@@ -31,7 +31,7 @@ const SearchBox = ({ onChange, handleSearchPlaceMap }: SearchBoxProps) => {
   const hasResults = searchResults && searchResults.length > 0;
   const isEmpty = searchResults && searchResults.length === 0;
 
-  const handleSelect = (searchPlace: PlaceSearchType) => {
+  const handleSelect = (searchPlace: PlaceAddType) => {
     handleReset();
     onChange('name', searchPlace.name);
     onChange('roadAddressName', searchPlace.roadAddressName);

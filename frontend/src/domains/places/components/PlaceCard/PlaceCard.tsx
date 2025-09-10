@@ -3,32 +3,24 @@ import { css } from '@emotion/react';
 import Card from '@/@common/components/Card/Card';
 import Flex from '@/@common/components/Flex/Flex';
 import Icon from '@/@common/components/IconSvg/Icon';
-import Pill from '@/@common/components/Pill/Pill';
 import Text from '@/@common/components/Text/Text';
 import { useToastContext } from '@/@common/contexts/useToastContext';
 import { useAsyncLock } from '@/@common/hooks/useAsyncLock';
-import useModal from '@/@common/hooks/useModal';
 import { useRoutieContext } from '@/domains/routie/contexts/useRoutieContext';
 import { usePlaceListContext } from '@/layouts/PlaceList/contexts/PlaceListContext';
 import { useGoogleEventTrigger } from '@/libs/googleAnalytics/hooks/useGoogleEventTrigger';
 import theme from '@/styles/theme';
 
 import deletePlace from '../../apis/deletePlace';
-import { PlaceBaseType } from '../../types/place.types';
-import { getCheckedListExcept } from '../../utils/getCheckedListExcept';
-import { getFormatedCloseAt } from '../../utils/getFormatedCloseAt';
-import DatePreviewList from '../DatePreviewList/DatePreviewList';
-import EditPlaceModal from '../EditPlaceModal/EditPlaceModal';
+import { PlaceFetchType } from '../../types/place.types';
 
-export interface PlaceCardProps extends PlaceBaseType {
-  id: number;
+export interface PlaceCardProps extends PlaceFetchType {
   selected: boolean;
 }
 
 export const PlaceCard = ({ selected, ...props }: PlaceCardProps) => {
   const { refetchPlaceList } = usePlaceListContext();
   const { handleAddRoutie } = useRoutieContext();
-  const { openModal, closeModal, modalOpen } = useModal();
   const { triggerEvent } = useGoogleEventTrigger();
   const { showToast } = useToastContext();
   const { runWithLock: runDeleteWithLock } = useAsyncLock();
@@ -74,15 +66,6 @@ export const PlaceCard = ({ selected, ...props }: PlaceCardProps) => {
     });
   };
 
-  const handleOpenEditModal = () => {
-    openModal();
-    triggerEvent({
-      action: 'click',
-      category: 'place',
-      label: '장소 수정하기 버튼',
-    });
-  };
-
   return (
     <>
       <Card
@@ -94,7 +77,7 @@ export const PlaceCard = ({ selected, ...props }: PlaceCardProps) => {
           gap={1.6}
           justifyContent="flex-start"
           alignItems="flex-start"
-          height="12rem"
+          height="8rem"
           css={css`
             padding: 0.8rem 0.4rem;
           `}
@@ -120,33 +103,6 @@ export const PlaceCard = ({ selected, ...props }: PlaceCardProps) => {
               <Text variant="caption" color={theme.colors.gray[200]} ellipsis>
                 {props.roadAddressName || props.addressName}
               </Text>
-
-              <Flex gap={0.4}>
-                <Pill type="default">
-                  <Text variant="description" ellipsis>
-                    영업 시간
-                  </Text>
-                  {props.openAt} -{' '}
-                  {getFormatedCloseAt(props.openAt, props.closeAt)}
-                </Pill>
-                {props.breakStartAt && (
-                  <Pill type="default">
-                    <Text
-                      variant="description"
-                      ellipsis
-                      css={css`
-                        width: 5.5rem;
-                      `}
-                    >
-                      브레이크 타임
-                    </Text>
-                    {props.breakStartAt} - {props.breakEndAt}
-                  </Pill>
-                )}
-              </Flex>
-              <DatePreviewList
-                value={getCheckedListExcept(props.closedDayOfWeeks)}
-              />
             </Flex>
             <Flex direction="column" gap={1.6} height="100%">
               <Icon
@@ -165,19 +121,7 @@ export const PlaceCard = ({ selected, ...props }: PlaceCardProps) => {
                   }
                 `}
               />
-              <Icon
-                name="edit"
-                onClick={handleOpenEditModal}
-                size={30}
-                css={css`
-                  padding: 0.4rem;
-                  border-radius: 8px;
 
-                  &:hover {
-                    background-color: ${theme.colors.purple[200]};
-                  }
-                `}
-              />
               <Icon
                 name={selected ? 'disableTrash' : 'trash'}
                 onClick={selected ? undefined : handleDelete}
@@ -198,12 +142,6 @@ export const PlaceCard = ({ selected, ...props }: PlaceCardProps) => {
           </Flex>
         </Flex>
       </Card>
-      <EditPlaceModal
-        id={props.id}
-        isOpen={modalOpen}
-        onClose={closeModal}
-        onPlaceChange={refetchPlaceList}
-      />
     </>
   );
 };
