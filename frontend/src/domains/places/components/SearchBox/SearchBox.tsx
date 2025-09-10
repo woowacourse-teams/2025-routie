@@ -6,18 +6,12 @@ import Input from '@/@common/components/Input/Input';
 import Text from '@/@common/components/Text/Text';
 import theme from '@/styles/theme';
 
-import useSearchPlace from '../../hooks/useSearchPlace';
-import { PlaceSearchType, PlaceAddType } from '../../types/place.types';
+import { useSearchPlace } from '../../hooks/useSearchPlace';
+import { PlaceAddType } from '../../types/place.types';
 import SearchEmptyState from '../SearchList/SearchEmptyState';
 import SearchList from '../SearchList/SearchList';
 
-interface SearchBoxProps {
-  onChange: (
-    field: 'name' | 'roadAddressName' | 'addressName',
-    value: string | null,
-  ) => void;
-  handleSearchPlaceMap: (searchInfo: PlaceSearchType) => void;
-}
+import type { SearchBoxProps } from './SearchBox.types';
 
 const SearchBox = ({ onChange, handleSearchPlaceMap }: SearchBoxProps) => {
   const {
