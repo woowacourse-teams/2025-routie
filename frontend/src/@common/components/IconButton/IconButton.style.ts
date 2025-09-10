@@ -4,10 +4,10 @@ import theme from '@/styles/theme';
 
 import {
   IconButtonStyleProps,
-  IconButtonVariantProps,
+  IconButtonVariantType,
 } from './IconButton.types';
 
-const iconButtonVariant: Record<IconButtonVariantProps, SerializedStyles> = {
+const iconButtonVariant: Record<IconButtonVariantType, SerializedStyles> = {
   delete: css`
     &:hover {
       background-color: ${theme.colors.red[50]};
@@ -45,7 +45,7 @@ const iconButtonVariant: Record<IconButtonVariantProps, SerializedStyles> = {
   `,
 };
 
-export const iconButtonStyle = ({ variant }: IconButtonStyleProps) => css`
+const IconButtonStyle = ({ variant }: IconButtonStyleProps) => css`
   cursor: pointer;
 
   display: flex;
@@ -66,3 +66,5 @@ export const iconButtonStyle = ({ variant }: IconButtonStyleProps) => css`
 
   ${variant && iconButtonVariant[variant]}
 `;
+
+export { IconButtonStyle };
