@@ -57,4 +57,4 @@ const useSearchPlace = () => {
   };
 };
 
-export default useSearchPlace;
+export { useSearchPlace };
