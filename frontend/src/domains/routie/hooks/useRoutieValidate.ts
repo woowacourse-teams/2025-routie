@@ -13,7 +13,7 @@ import {
   WaitingReason,
 } from '../types/routie.types';
 
-import useRoutieTime from './useRoutieTime';
+import { useRoutieTime } from './useRoutieTime';
 
 export interface UseRoutieValidateReturn {
   isValidateActive: boolean;

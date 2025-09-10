@@ -13,12 +13,13 @@ import theme from '@/styles/theme';
 
 import { getDetailPlace } from '../../apis/routie';
 import { useRoutieContext } from '../../contexts/useRoutieContext';
-import { Routie } from '../../types/routie.types';
 import DraggableWrapper from '../DraggableWrapper/DraggableWrapper';
 
 import { dragIconStyle, EllipsisParentStyle } from './RoutiePlaceCard.styles';
 
-const RoutiePlaceCard = ({ routie }: { routie: Routie }) => {
+import type { RoutieType } from '../../types/routie.types';
+
+const RoutiePlaceCard = ({ routie }: { routie: RoutieType }) => {
   const [place, setPlace] = useState<PlaceBaseType>({
     name: '',
     roadAddressName: '',
