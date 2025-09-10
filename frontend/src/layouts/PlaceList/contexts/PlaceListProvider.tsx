@@ -2,15 +2,14 @@ import { useCallback, useEffect, useState } from 'react';
 
 import { useToastContext } from '@/@common/contexts/useToastContext';
 import { getPlaceList } from '@/domains/places/apis/place';
-import { PlaceFetchType } from '@/domains/places/types/place.types';
+import type {
+  PlaceFetchType,
+  PlaceListProviderProps,
+} from '@/domains/places/types/place.types';
 
 import { PlaceListContext } from './PlaceListContext';
 
-interface Props {
-  children?: React.ReactNode;
-}
-
-export const PlaceListProvider = ({ children }: Props) => {
+const PlaceListProvider = ({ children }: PlaceListProviderProps) => {
   const [placeList, setPlaceList] = useState<PlaceFetchType[]>([]);
   const { showToast } = useToastContext();
   const [newlyAddedPlace, setNewlyAddedPlace] = useState<PlaceFetchType | null>(
@@ -79,3 +78,5 @@ export const PlaceListProvider = ({ children }: Props) => {
     </PlaceListContext.Provider>
   );
 };
+
+export default PlaceListProvider;

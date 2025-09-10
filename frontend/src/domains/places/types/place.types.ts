@@ -21,4 +21,23 @@ interface PlaceSearchType {
   longitude: number;
 }
 
-export type { PlaceBaseType, PlaceAddType, PlaceFetchType, PlaceSearchType };
+interface PlaceListContextType {
+  placeList: PlaceFetchType[];
+  refetchPlaceList: () => Promise<void>;
+  handleDelete: (id: number) => void;
+  newlyAddedPlace: PlaceFetchType | null;
+  handlePlaceAdded: () => Promise<void>;
+}
+
+interface PlaceListProviderProps {
+  children?: React.ReactNode;
+}
+
+export type {
+  PlaceBaseType,
+  PlaceAddType,
+  PlaceFetchType,
+  PlaceSearchType,
+  PlaceListContextType,
+  PlaceListProviderProps,
+};
