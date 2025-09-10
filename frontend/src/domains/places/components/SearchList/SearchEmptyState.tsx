@@ -1,6 +1,6 @@
-import Text from '@/@common/components/Text/Text';
+import EmptyMessage from '@/@common/components/EmptyMessage/EmptyMessage';
 
-import { itemEmptyStyle, listStyle } from './SearchList.styles';
+import { ListStyle } from './SearchList.styles';
 
 interface SearchEmptyStateProps {
   keyword: string;
@@ -8,12 +8,13 @@ interface SearchEmptyStateProps {
 
 const SearchEmptyState = ({ keyword }: SearchEmptyStateProps) => {
   return (
-    <ul css={listStyle}>
-      <li css={itemEmptyStyle}>
-        <Text variant="label">
-          {`"${keyword}"에 대한 검색 결과가 없습니다.`}
-        </Text>
-      </li>
+    <ul css={ListStyle}>
+      <EmptyMessage
+        messages={[
+          `"${keyword}"에 대한 검색 결과가 없습니다.`,
+          '장소를 다시 검색해주세요!',
+        ]}
+      />
     </ul>
   );
 };
