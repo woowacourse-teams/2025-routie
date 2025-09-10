@@ -7,6 +7,7 @@ import { PlaceAddType } from '../types/place.types';
 
 const useSearchPlace = () => {
   const [keyword, setKeyword] = useState('');
+  const [submittedKeyword, setSubmittedKeyword] = useState('');
   const [searchResults, setSearchResults] = useState<PlaceAddType[] | null>(
     null,
   );
@@ -14,6 +15,8 @@ const useSearchPlace = () => {
 
   const handleSearch = async () => {
     if (!keyword) return setSearchResults([]);
+
+    setSubmittedKeyword(keyword);
 
     try {
       const searchedPlaces = await searchPlace(keyword);
@@ -31,7 +34,6 @@ const useSearchPlace = () => {
 
   const handleChangeKeyword = (keyword: string) => {
     setKeyword(keyword);
-    setSearchResults(null);
   };
 
   const handleReset = () => {
@@ -54,6 +56,7 @@ const useSearchPlace = () => {
     setSearchResults,
     handleSearch,
     handleReset,
+    submittedKeyword,
   };
 };
 
