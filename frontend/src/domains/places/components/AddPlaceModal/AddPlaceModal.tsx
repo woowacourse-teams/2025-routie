@@ -1,7 +1,8 @@
 import { useState } from 'react';
 
 import Flex from '@/@common/components/Flex/Flex';
-import Modal, { ModalProps } from '@/@common/components/Modal/Modal';
+import Modal from '@/@common/components/Modal/Modal';
+import type { ModalProps } from '@/@common/components/Modal/Modal.types';
 import Text from '@/@common/components/Text/Text';
 import { useToastContext } from '@/@common/contexts/useToastContext';
 import { useAsyncLock } from '@/@common/hooks/useAsyncLock';
