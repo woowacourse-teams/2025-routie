@@ -4,6 +4,7 @@ import Flex from '@/@common/components/Flex/Flex';
 import Text from '@/@common/components/Text/Text';
 import theme from '@/styles/theme';
 
+// TODO: common에 있는 컴포넌트를 재사용하면 좋을 듯
 const EmptyRoutieMessage = () => (
   <Flex
     width="100%"
