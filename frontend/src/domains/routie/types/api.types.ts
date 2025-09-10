@@ -1,7 +1,7 @@
-import type { validationErrorCodeType } from './routie.types';
+import type { ValidationErrorCodeType } from './routie.types';
 
 export type ValidationResultApiResponse = {
-  validationCode: validationErrorCodeType;
+  validationCode: ValidationErrorCodeType;
   isValid: boolean;
   invalidRoutiePlaces: {
     routiePlaceId: number;

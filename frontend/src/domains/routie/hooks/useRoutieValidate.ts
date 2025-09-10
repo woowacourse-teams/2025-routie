@@ -7,7 +7,7 @@ import { isTimeRangeInvalid } from '@/@common/utils/isTimeRangeInvalid ';
 import { getRoutieValidation } from '../apis/routie';
 import {
   InvalidRoutiePlace,
-  validationErrorCodeType,
+  ValidationErrorCodeType,
   ValidationResultType,
   ValidationStatus,
   WaitingReason,
@@ -23,7 +23,7 @@ export interface UseRoutieValidateReturn {
     endTime: string;
   };
   currentInvalidRoutiePlaces: InvalidRoutiePlace[];
-  validationErrors: validationErrorCodeType | null;
+  validationErrors: ValidationErrorCodeType | null;
   validationStatus: ValidationStatus;
   waitingReason: WaitingReason;
   handleValidateToggle: () => void;
