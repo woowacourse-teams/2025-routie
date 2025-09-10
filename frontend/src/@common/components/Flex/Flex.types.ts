@@ -29,4 +29,4 @@ interface FlexProps extends ComponentProps<'div'> {
   padding?: number;
 }
 
-export default FlexProps;
+export type { FlexProps };
