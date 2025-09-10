@@ -1,6 +1,6 @@
 import { keyframes, css } from '@emotion/react';
 
-import type { ToastInfoProps } from '@/@common/components/Toast/Tdfdoast.type';
+import type { ToastInfoProps } from '@/@common/components/Toast/Toast.types';
 import theme from '@/styles/theme';
 
 const slideIn = keyframes`
