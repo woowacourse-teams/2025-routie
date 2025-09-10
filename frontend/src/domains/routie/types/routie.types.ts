@@ -1,20 +1,20 @@
 import { MovingStrategyType } from '../components/SelectMovingStrategy/SelectMovingStrategy.types';
 import { VALIDATION_RESULT_CODE } from '../constants/routieValidation';
 
-export type Routes = {
+interface RoutesType {
   fromSequence: number;
   toSequence: number;
   duration: number;
   distance: number;
-};
+}
 
-export type Routie = {
+interface RoutieType {
   id: number;
   sequence: number;
   placeId: number;
   arriveDateTime?: string;
   departureDateTime?: string;
-};
+}
 
 interface RoutieContextType {
   routiePlaces: RoutieType[];
@@ -40,18 +40,19 @@ type ValidationStatus =
 
 type WaitingReason = 'no_date' | 'insufficient_places' | null;
 
-export type InvalidRoutiePlace = {
+interface InvalidRoutiePlace {
   routiePlaceId: number;
-};
+}
 
-export type ValidationResultType = {
-  validationCode: validationErrorCodeType;
+interface ValidationResultType {
+  validationCode: ValidationErrorCodeType;
   isValid: boolean;
   invalidRoutiePlaces: InvalidRoutiePlace[];
-};
+}
 
-export type RoutieValidationResponseType = {
+interface RoutieValidationResponseType {
   validationResultResponses: ValidationResultType[];
+}
 
 export type {
   RoutieType,

@@ -1,14 +1,15 @@
 import type { ValidationErrorCodeType } from './routie.types';
 
-export type ValidationResultApiResponse = {
+interface ValidationResultApiResponse {
   validationCode: ValidationErrorCodeType;
   isValid: boolean;
   invalidRoutiePlaces: {
     routiePlaceId: number;
   }[];
-};
+}
 
-export type ValidationApiResponse = {
+interface ValidationApiResponse {
   validationResultResponses: ValidationResultApiResponse[];
-};
+}
+
 export type { ValidationApiResponse };
