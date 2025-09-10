@@ -1,4 +1,4 @@
-export interface PlaceBaseType {
+interface PlaceBaseType {
   name: string;
   roadAddressName: string | null;
   addressName: string;
@@ -6,17 +6,19 @@ export interface PlaceBaseType {
   longitude: number;
 }
 
-export interface PlaceAddType extends PlaceBaseType {
+interface PlaceAddType extends PlaceBaseType {
   searchedPlaceId: string;
 }
 
-export interface PlaceFetchType extends PlaceBaseType {
+interface PlaceFetchType extends PlaceBaseType {
   id: number;
 }
 
 // 임시 타입
-export interface PlaceSearchType {
+interface PlaceSearchType {
   searchedPlaceId: string;
   latitude: number;
   longitude: number;
 }
+
+export type { PlaceBaseType, PlaceAddType, PlaceFetchType, PlaceSearchType };
