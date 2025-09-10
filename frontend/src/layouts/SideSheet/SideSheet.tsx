@@ -27,10 +27,7 @@ import {
   SheetScrollableAreaStyle,
 } from './SideSheet.styles';
 
-interface SideSheetProps {
-  open: boolean;
-  onToggle: () => void;
-}
+import type { SideSheetProps } from './SideSheet.types';
 
 const SideSheet = ({ open, onToggle }: SideSheetProps) => {
   const { placeList } = usePlaceListContext();
