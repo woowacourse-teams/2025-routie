@@ -20,4 +20,4 @@ const formatMinutesToHours = (minutes: number): string => {
   return `${hours}시간 ${remainingMinutes}분`;
 };
 
-export default formatMinutesToHours;
+export { formatMinutesToHours };
