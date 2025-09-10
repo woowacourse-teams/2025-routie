@@ -12,13 +12,10 @@ import { useGoogleEventTrigger } from '@/libs/googleAnalytics/hooks/useGoogleEve
 import theme from '@/styles/theme';
 
 import { deletePlace } from '../../apis/place';
-import { PlaceFetchType } from '../../types/place.types';
 
-export interface PlaceCardProps extends PlaceFetchType {
-  selected: boolean;
-}
+import type { PlaceCardProps } from './PlaceCard.types';
 
-export const PlaceCard = ({ selected, ...props }: PlaceCardProps) => {
+const PlaceCard = ({ selected, ...props }: PlaceCardProps) => {
   const { refetchPlaceList } = usePlaceListContext();
   const { handleAddRoutie } = useRoutieContext();
   const { triggerEvent } = useGoogleEventTrigger();
@@ -145,3 +142,5 @@ export const PlaceCard = ({ selected, ...props }: PlaceCardProps) => {
     </>
   );
 };
+
+export default PlaceCard;
