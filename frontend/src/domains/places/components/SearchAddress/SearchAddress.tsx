@@ -4,10 +4,7 @@ import Flex from '@/@common/components/Flex/Flex';
 import Pill from '@/@common/components/Pill/Pill';
 import Text from '@/@common/components/Text/Text';
 
-interface SearchAddressProps {
-  addressType: '도로명' | '지번';
-  address: string;
-}
+import type { SearchAddressProps } from './SearchAddress.types';
 
 const SearchAddress = ({ addressType, address }: SearchAddressProps) => {
   return (
