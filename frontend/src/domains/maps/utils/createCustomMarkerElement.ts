@@ -17,4 +17,4 @@ const createCustomMarkerElement = (sequence: number) => {
   return content;
 };
 
-export default createCustomMarkerElement;
+export { createCustomMarkerElement };
