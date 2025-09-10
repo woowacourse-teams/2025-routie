@@ -1,11 +1,10 @@
 import { RefObject, useCallback, useRef, useState } from 'react';
 
 import type { KakaoMapType } from '../types/KaKaoMap.types';
-
-type CustomOverlay = InstanceType<typeof window.kakao.maps.CustomOverlay>;
+import type { CustomOverlayType } from '../types/Overlay.types';
 
 const useCustomOverlay = ({ map }: { map: RefObject<KakaoMapType> }) => {
-  const overlayRef = useRef<CustomOverlay | null>(null);
+  const overlayRef = useRef<CustomOverlayType | null>(null);
   const [containerEl, setContainerEl] = useState<HTMLDivElement | null>(null);
 
   const openAt = useCallback(

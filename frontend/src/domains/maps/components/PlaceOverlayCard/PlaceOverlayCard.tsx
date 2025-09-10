@@ -6,14 +6,10 @@ import IconButton from '@/@common/components/IconButton/IconButton';
 import Icon from '@/@common/components/IconSvg/Icon';
 import Text from '@/@common/components/Text/Text';
 import closeIcon from '@/assets/icons/close.svg';
-import { PlaceFetchType } from '@/domains/places/types/place.types';
 import { useRoutieContext } from '@/domains/routie/contexts/useRoutieContext';
 import theme from '@/styles/theme';
 
-interface PlaceOverlayCardProps {
-  place: PlaceFetchType;
-  onClose: () => void;
-}
+import type { PlaceOverlayCardProps } from '../../types/PlaceOverlayCard.types';
 
 const PlaceOverlayCard = ({ place, onClose }: PlaceOverlayCardProps) => {
   const { routieIdList, handleAddRoutie } = useRoutieContext();
