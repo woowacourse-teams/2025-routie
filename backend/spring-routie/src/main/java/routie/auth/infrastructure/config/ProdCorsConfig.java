@@ -1,4 +1,4 @@
-package routie.auth.config;
+package routie.auth.infrastructure.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
