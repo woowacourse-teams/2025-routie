@@ -3,15 +3,16 @@ import { createPortal } from 'react-dom';
 
 import Flex from '@/@common/components/Flex/Flex';
 import Text from '@/@common/components/Text/Text';
+import PlaceOverlayCard from '@/domains/maps/components/PlaceOverlayCard/PlaceOverlayCard';
 import { PlaceFetchType } from '@/domains/places/types/place.types';
 import { useRoutieContext } from '@/domains/routie/contexts/useRoutieContext';
 import { usePlaceListContext } from '@/layouts/PlaceList/contexts/PlaceListContext';
 
-import useCustomOverlay from '../hooks/useCustomOverlay';
-import { useKakaoMapInit } from '../hooks/useKakaoMapInit';
-import { useKakaoMapSDK } from '../hooks/useKakaoMapSDK';
-import useMapMarker from '../hooks/useMapMarker';
-import usePolyline from '../hooks/usePolyline';
+import { useCustomOverlay } from '../../hooks/useCustomOverlay';
+import { useKakaoMapInit } from '../../hooks/useKakaoMapInit';
+import { useKakaoMapSDK } from '../../hooks/useKakaoMapSDK';
+import { useMapMarker } from '../../hooks/useMapMarker';
+import { usePolyline } from '../../hooks/usePolyline';
 
 import {
   KakaoMapContainerStyle,
@@ -19,7 +20,6 @@ import {
   KakaoMapLoadingStyle,
   KakaoMapWrapperStyle,
 } from './KakaoMap.styles';
-import PlaceOverlayCard from './PlaceOverlayCard';
 
 const KakaoMap = () => {
   const mapContainerRef = useRef<HTMLDivElement>(null);
