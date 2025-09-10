@@ -8,7 +8,7 @@ import {
   ToastMessageStyle,
 } from './Toast.styles';
 
-import type { ToastInfoProps } from './Toast.type';
+import type { ToastInfoProps } from './Toast.types';
 
 const Toast = () => {
   const { toast } = useToastContext();
