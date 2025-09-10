@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import routie.exception.BusinessException;
 import routie.exception.ErrorCode;
 import routie.place.domain.Place;
-import routie.place.repository.PlaceRepository;
+import routie.place.domain.PlaceRepository;
 import routie.routie.controller.dto.request.RoutiePlaceCreateRequest;
 import routie.routie.controller.dto.request.RoutieUpdateRequest;
 import routie.routie.controller.dto.request.RoutieUpdateRequest.RoutiePlaceRequest;
@@ -32,9 +32,9 @@ import routie.routie.domain.routievalidator.ValidationResult;
 import routie.routie.domain.routievalidator.ValidationStrategy;
 import routie.routie.domain.timeperiod.TimePeriodCalculator;
 import routie.routie.domain.timeperiod.TimePeriods;
-import routie.routie.repository.RoutiePlaceRepository;
+import routie.routie.domain.RoutiePlaceRepository;
 import routie.routiespace.domain.RoutieSpace;
-import routie.routiespace.repository.RoutieSpaceRepository;
+import routie.routiespace.domain.RoutieSpaceRepository;
 
 @Service
 @RequiredArgsConstructor

@@ -3,9 +3,7 @@ package routie.routie.service;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import io.restassured.RestAssured;
-import java.time.DayOfWeek;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -23,7 +21,7 @@ import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.transaction.annotation.Transactional;
 import routie.place.domain.Place;
 import routie.place.domain.PlaceBuilder;
-import routie.place.repository.PlaceRepository;
+import routie.place.domain.PlaceRepository;
 import routie.routie.controller.dto.response.RoutieValidationResponse;
 import routie.routie.controller.dto.response.RoutieValidationResponse.ValidationResultResponse;
 import routie.routie.domain.Routie;
@@ -33,7 +31,7 @@ import routie.routie.domain.routievalidator.ValidationStrategy;
 import routie.routie.infrastructure.routecalculator.driving.kakaodrivingapi.TestRouteApiConfig;
 import routie.routiespace.domain.RoutieSpace;
 import routie.routiespace.domain.RoutieSpaceBuilder;
-import routie.routiespace.repository.RoutieSpaceRepository;
+import routie.routiespace.domain.RoutieSpaceRepository;
 
 @Disabled("검증 기능 제거에 따른 비활성화")
 @Transactional

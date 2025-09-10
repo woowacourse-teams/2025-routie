@@ -11,7 +11,7 @@ import routie.routiespace.controller.dto.response.RoutieSpaceReadResponse;
 import routie.routiespace.controller.dto.response.RoutieSpaceUpdateResponse;
 import routie.routiespace.domain.RoutieSpace;
 import routie.routiespace.domain.RoutieSpaceIdentifierProvider;
-import routie.routiespace.repository.RoutieSpaceRepository;
+import routie.routiespace.domain.RoutieSpaceRepository;
 
 @Service
 @RequiredArgsConstructor

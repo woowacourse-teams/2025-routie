@@ -1,9 +1,8 @@
-package routie.place.repository;
+package routie.place.domain;
 
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import routie.place.domain.Place;
 import routie.routiespace.domain.RoutieSpace;
 
 @Repository

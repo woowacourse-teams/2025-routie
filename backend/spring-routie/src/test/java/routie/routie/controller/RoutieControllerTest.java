@@ -4,9 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
-import java.time.DayOfWeek;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
@@ -24,7 +22,7 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import routie.place.domain.Place;
 import routie.place.domain.PlaceBuilder;
-import routie.place.repository.PlaceRepository;
+import routie.place.domain.PlaceRepository;
 import routie.routie.controller.dto.response.RoutieReadResponse;
 import routie.routie.controller.dto.response.RoutieReadResponse.RouteResponse;
 import routie.routie.controller.dto.response.RoutieReadResponse.RoutiePlaceResponse;
@@ -33,7 +31,7 @@ import routie.routie.domain.route.MovingStrategy;
 import routie.routie.infrastructure.routecalculator.driving.kakaodrivingapi.TestRouteApiConfig;
 import routie.routiespace.domain.RoutieSpace;
 import routie.routiespace.domain.RoutieSpaceFixture;
-import routie.routiespace.repository.RoutieSpaceRepository;
+import routie.routiespace.domain.RoutieSpaceRepository;
 
 @Import(TestRouteApiConfig.class)
 @DirtiesContext(classMode = ClassMode.AFTER_CLASS)

@@ -11,10 +11,10 @@ import routie.place.controller.dto.response.PlaceCreateResponse;
 import routie.place.controller.dto.response.PlaceListResponse;
 import routie.place.controller.dto.response.PlaceReadResponse;
 import routie.place.domain.Place;
-import routie.place.repository.PlaceRepository;
-import routie.routie.repository.RoutiePlaceRepository;
+import routie.place.domain.PlaceRepository;
+import routie.routie.domain.RoutiePlaceRepository;
 import routie.routiespace.domain.RoutieSpace;
-import routie.routiespace.repository.RoutieSpaceRepository;
+import routie.routiespace.domain.RoutieSpaceRepository;
 
 @Service
 @RequiredArgsConstructor
