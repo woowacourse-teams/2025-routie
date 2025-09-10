@@ -1,7 +1,7 @@
 import {
-  hiddenCheckbox,
-  toggleSwitchContainer,
-  toggleStyle,
+  ToggleHiddenCheckbox,
+  ToggleContainer,
+  ToggleStyle,
 } from './ToggleSwitch.style';
 
 interface ToggleSwitchProps {
@@ -11,15 +11,15 @@ interface ToggleSwitchProps {
 
 const ToggleSwitch = ({ active, onToggle }: ToggleSwitchProps) => {
   return (
-    <div css={toggleSwitchContainer}>
+    <div css={ToggleContainer}>
       <input
         type="checkbox"
         id="toggle"
         checked={active}
         onChange={onToggle}
-        css={hiddenCheckbox}
+        css={ToggleHiddenCheckbox}
       />
-      <label htmlFor="toggle" css={toggleStyle(active)} />
+      <label htmlFor="toggle" css={ToggleStyle(active)} />
     </div>
   );
 };
