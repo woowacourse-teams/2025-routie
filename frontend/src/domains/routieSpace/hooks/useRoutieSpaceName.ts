@@ -59,8 +59,8 @@ const useRoutieSpaceName = (): UseRoutieSpaceNameReturn => {
 
         setIsLoading(true);
 
-        const updatedName = await editRoutieSpaceName(name);
-        const displayName = updatedName ?? '이름 못 찾음';
+        const response = await editRoutieSpaceName(name);
+        const displayName = response.name ?? '이름 못 찾음';
 
         setName(displayName);
         setOriginalName(displayName);
@@ -90,8 +90,8 @@ const useRoutieSpaceName = (): UseRoutieSpaceNameReturn => {
   useEffect(() => {
     const fetchRoutieSpaceName = async () => {
       try {
-        const name = await getRoutieSpaceName();
-        const displayName = name ?? '이름 못 찾음';
+        const response = await getRoutieSpace();
+        const displayName = response.name ?? '이름 못 찾음';
 
         setName(displayName);
         setOriginalName(displayName);
@@ -123,4 +123,4 @@ const useRoutieSpaceName = (): UseRoutieSpaceNameReturn => {
   };
 };
 
-export default useRoutieSpaceName;
+export { useRoutieSpaceName };

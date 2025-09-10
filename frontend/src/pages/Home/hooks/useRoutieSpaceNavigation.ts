@@ -10,9 +10,9 @@ export const useRoutieSpaceNavigation = () => {
 
   const handleCreateRoutieSpace = useCallback(async () => {
     try {
-      const newUuid = await createRoutieSpace();
+      const response = await createRoutieSpace();
       const queryParams = new URLSearchParams({
-        routieSpaceIdentifier: newUuid,
+        routieSpaceIdentifier: response.routieSpaceIdentifier,
       });
 
       navigate(`/routie-spaces?${queryParams.toString()}`);
