@@ -1,10 +1,11 @@
 import { useEffect, useRef, useState } from 'react';
+
 import type { UseKakaoMapSDKReturn } from '../types/KaKaoMap.types';
 
 const MAX_ATTEMPTS = 10;
 const RETRY_DELAY = 500;
 
-export const useKakaoMapSDK = (): UseKakaoMapSDKReturn => {
+const useKakaoMapSDK = (): UseKakaoMapSDKReturn => {
   const [sdkReady, setSdkReady] = useState(false);
   const [sdkError, setSdkError] = useState<string | null>(null);
 
@@ -40,3 +41,5 @@ export const useKakaoMapSDK = (): UseKakaoMapSDKReturn => {
 
   return { sdkReady, sdkError };
 };
+
+export { useKakaoMapSDK };

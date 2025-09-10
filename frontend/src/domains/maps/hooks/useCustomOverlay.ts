@@ -45,4 +45,4 @@ const useCustomOverlay = ({ map }: { map: RefObject<KakaoMapType> }) => {
   return { openAt, close, containerEl };
 };
 
-export default useCustomOverlay;
+export { useCustomOverlay };

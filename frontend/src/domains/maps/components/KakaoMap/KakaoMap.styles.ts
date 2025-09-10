@@ -1,6 +1,6 @@
 import { css } from '@emotion/react';
 
-export const KakaoMapWrapperStyle = css`
+const KakaoMapWrapperStyle = css`
   position: relative;
 
   overflow: hidden;
@@ -10,12 +10,12 @@ export const KakaoMapWrapperStyle = css`
   margin: 0;
 `;
 
-export const KakaoMapContainerStyle = css`
+const KakaoMapContainerStyle = css`
   width: 100%;
   height: 100%;
 `;
 
-export const KakaoMapLoadingStyle = css`
+const KakaoMapLoadingStyle = css`
   position: absolute;
   inset: 0;
 
@@ -26,7 +26,7 @@ export const KakaoMapLoadingStyle = css`
   background-color: #f8f9fa;
 `;
 
-export const KakaoMapErrorStyle = css`
+const KakaoMapErrorStyle = css`
   position: absolute;
   inset: 0;
 
@@ -36,3 +36,10 @@ export const KakaoMapErrorStyle = css`
 
   background-color: #f8f9fa;
 `;
+
+export {
+  KakaoMapWrapperStyle,
+  KakaoMapContainerStyle,
+  KakaoMapLoadingStyle,
+  KakaoMapErrorStyle,
+};

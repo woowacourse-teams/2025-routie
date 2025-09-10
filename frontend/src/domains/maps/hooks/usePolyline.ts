@@ -38,4 +38,4 @@ const usePolyline = ({ map }: { map: RefObject<KakaoMapType> }) => {
   return { loadPolyline, clearPolyline };
 };
 
-export default usePolyline;
+export { usePolyline };

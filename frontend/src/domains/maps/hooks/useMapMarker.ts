@@ -1,6 +1,6 @@
 import { RefObject, useCallback, useRef } from 'react';
 
-import createCustomMarkerElement from '../utils/createCustomMarkerElement';
+import { createCustomMarkerElement } from '../utils/createCustomMarkerElement';
 
 import type { KakaoMapType } from '../types/KaKaoMap.types';
 
@@ -118,4 +118,4 @@ const useMapMarker = ({ map }: UseMapMarkerType) => {
   return { drawMarkers, fitMapToMarkers, clearMarkers, fitMapToMarker };
 };
 
-export default useMapMarker;
+export { useMapMarker };
