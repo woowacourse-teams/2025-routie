@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
 import Flex from '@/@common/components/Flex/Flex';
-import KakaoMap from '@/domains/maps/components/KakaoMap';
+import KakaoMap from '@/domains/maps/components/KakaoMap/KakaoMap';
 
 import SideSheet from '../SideSheet/SideSheet';
 
