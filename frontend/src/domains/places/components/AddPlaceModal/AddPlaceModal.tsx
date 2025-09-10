@@ -10,7 +10,7 @@ import { useAddPlaceForm } from '@/domains/places/hooks/useAddPlaceForm';
 import { usePlaceFormValidation } from '@/domains/places/hooks/usePlaceFormValidation';
 import { usePlaceListContext } from '@/layouts/PlaceList/contexts/PlaceListContext';
 
-import addPlace from '../../apis/addPlace';
+import { addPlace } from '../../apis/place';
 import { useFunnel } from '../../hooks/useFunnel';
 import { PlaceSearchType } from '../../types/place.types';
 import { getValidatedStep } from '../../utils/getValidatedStep';

@@ -2,7 +2,7 @@ import { useState } from 'react';
 
 import { useToastContext } from '@/@common/contexts/useToastContext';
 
-import searchPlace from '../apis/searchPlace';
+import { searchPlace } from '../apis/place';
 import { PlaceAddType } from '../types/place.types';
 
 const useSearchPlace = () => {

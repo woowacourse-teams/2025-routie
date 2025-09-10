@@ -11,7 +11,7 @@ import { usePlaceListContext } from '@/layouts/PlaceList/contexts/PlaceListConte
 import { useGoogleEventTrigger } from '@/libs/googleAnalytics/hooks/useGoogleEventTrigger';
 import theme from '@/styles/theme';
 
-import deletePlace from '../../apis/deletePlace';
+import { deletePlace } from '../../apis/place';
 import { PlaceFetchType } from '../../types/place.types';
 
 export interface PlaceCardProps extends PlaceFetchType {

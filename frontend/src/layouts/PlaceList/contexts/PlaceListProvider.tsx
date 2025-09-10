@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 
 import { useToastContext } from '@/@common/contexts/useToastContext';
-import getPlaceList from '@/domains/places/apis/getplaceList';
+import { getPlaceList } from '@/domains/places/apis/place';
 import { PlaceFetchType } from '@/domains/places/types/place.types';
 
 import { PlaceListContext } from './PlaceListContext';
