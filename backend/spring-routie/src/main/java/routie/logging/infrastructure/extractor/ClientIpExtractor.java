@@ -1,4 +1,4 @@
-package routie.logging.extractor;
+package routie.logging.infrastructure.extractor;
 
 import jakarta.servlet.http.HttpServletRequest;
 

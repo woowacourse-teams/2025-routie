@@ -2,7 +2,7 @@ package routie.logging.domain;
 
 import jakarta.servlet.http.HttpServletRequest;
 import java.util.List;
-import routie.logging.extractor.dto.HandlerParameter;
+import routie.logging.infrastructure.extractor.HandlerParameter;
 
 public interface LoggingContext {
     HttpServletRequest getRequest();

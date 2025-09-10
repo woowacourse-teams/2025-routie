@@ -1,4 +1,4 @@
-package routie.logging.extractor;
+package routie.logging.infrastructure.extractor;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
@@ -7,7 +7,6 @@ import java.util.stream.IntStream;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
-import routie.logging.extractor.dto.HandlerParameter;
 
 public class HandlerParametersExtractor {
 

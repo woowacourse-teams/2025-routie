@@ -6,7 +6,7 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import routie.logging.domain.LoggingContext;
-import routie.logging.extractor.dto.HandlerParameter;
+import routie.logging.infrastructure.extractor.HandlerParameter;
 
 @RequiredArgsConstructor
 public class InterceptorLoggingContext implements LoggingContext {

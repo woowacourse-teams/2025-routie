@@ -4,7 +4,7 @@ import java.util.Optional;
 import java.util.function.Function;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import routie.logging.extractor.ClientIpExtractor;
+import routie.logging.infrastructure.extractor.ClientIpExtractor;
 
 @Getter
 @RequiredArgsConstructor

@@ -6,8 +6,8 @@ import lombok.RequiredArgsConstructor;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.reflect.MethodSignature;
 import routie.logging.domain.LoggingContext;
-import routie.logging.extractor.HandlerParametersExtractor;
-import routie.logging.extractor.dto.HandlerParameter;
+import routie.logging.infrastructure.extractor.HandlerParametersExtractor;
+import routie.logging.infrastructure.extractor.HandlerParameter;
 
 @RequiredArgsConstructor
 public class AspectLoggingContext implements LoggingContext {
