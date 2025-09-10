@@ -1,15 +1,17 @@
 import { ComponentProps } from 'react';
 
-export interface TextProps extends ComponentProps<'p'> {
+interface TextProps extends ComponentProps<'p'> {
   color?: string;
-  variant: TextVariantProps;
+  variant: TextVariantType;
   ellipsis?: boolean;
 }
 
-export type TextVariantProps =
+type TextVariantType =
   | 'title'
   | 'title2'
   | 'subTitle'
   | 'caption'
   | 'label'
   | 'description';
+
+export type { TextProps, TextVariantType };

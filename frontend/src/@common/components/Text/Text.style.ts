@@ -2,9 +2,9 @@ import { css, SerializedStyles } from '@emotion/react';
 
 import theme from '@/styles/theme';
 
-import { TextProps, TextVariantProps } from './Text.types';
+import type { TextProps, TextVariantType } from './Text.types';
 
-const textVariant: Record<TextVariantProps, SerializedStyles> = {
+const textVariant: Record<TextVariantType, SerializedStyles> = {
   title: css`
     font-size: ${theme.font.size.heading};
     font-weight: ${theme.font.weight.bold};
@@ -39,7 +39,7 @@ const ellipsisStyle = css`
   white-space: nowrap;
 `;
 
-export const TextStyle = ({ color, variant, ellipsis }: TextProps) => css`
+const TextStyle = ({ color, variant, ellipsis }: TextProps) => css`
   box-sizing: border-box;
   max-width: 100%;
   color: ${color ?? theme.colors.black};
@@ -47,3 +47,5 @@ export const TextStyle = ({ color, variant, ellipsis }: TextProps) => css`
   ${variant && textVariant[variant]}
   ${ellipsis && ellipsisStyle}
 `;
+
+export { TextStyle };
