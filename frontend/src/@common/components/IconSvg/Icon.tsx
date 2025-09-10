@@ -1,6 +1,7 @@
 import { IconStyle } from './Icon.styles';
-import { IconProps } from './Icon.types';
 import allIcons from './allIcons';
+
+import type { IconProps } from './Icon.types';
 
 const Icon = ({ name, size = 14, onClick, className }: IconProps) => {
   const src = allIcons[name];
