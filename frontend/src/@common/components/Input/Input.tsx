@@ -8,7 +8,8 @@ import {
   InputIconStyle,
   InputLabelStyle,
 } from './Input.style';
-import { InputProps } from './Input.types';
+
+import type { InputProps } from './Input.types';
 
 const Input = ({
   id,
