@@ -14,7 +14,7 @@ const invalidBorder = css`
   }
 `;
 
-const routieSpaceNameInputStyle = (invalidNameLength: boolean) => css`
+const RoutieSpaceNameInputStyle = (invalidNameLength: boolean) => css`
   width: 100%;
   max-width: 38rem;
   margin: 0;
@@ -30,4 +30,4 @@ const routieSpaceNameInputStyle = (invalidNameLength: boolean) => css`
   ${invalidNameLength ? invalidBorder : defaultBorder}
 `;
 
-export default routieSpaceNameInputStyle;
+export { RoutieSpaceNameInputStyle };

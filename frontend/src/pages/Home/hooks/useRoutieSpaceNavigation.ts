@@ -2,7 +2,7 @@ import { useCallback } from 'react';
 import { useNavigate } from 'react-router';
 
 import { useToastContext } from '@/@common/contexts/useToastContext';
-import { createRoutieSpace } from '@/domains/routieSpace/apis/createRoutieSpace';
+import { createRoutieSpace } from '@/domains/routieSpace/apis/routieSpace';
 
 export const useRoutieSpaceNavigation = () => {
   const navigate = useNavigate();
