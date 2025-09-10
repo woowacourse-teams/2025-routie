@@ -29,4 +29,4 @@ const useRoutieTime = () => {
   return { routieTime, combineDateTime, handleTimeChange, emptyDate };
 };
 
-export default useRoutieTime;
+export { useRoutieTime };

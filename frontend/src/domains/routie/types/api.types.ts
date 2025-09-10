@@ -11,3 +11,4 @@ export type ValidationResultApiResponse = {
 export type ValidationApiResponse = {
   validationResultResponses: ValidationResultApiResponse[];
 };
+export type { ValidationApiResponse };

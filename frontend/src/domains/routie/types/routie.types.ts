@@ -1,3 +1,4 @@
+import { MovingStrategyType } from '../components/SelectMovingStrategy/SelectMovingStrategy.types';
 import { VALIDATION_RESULT_CODE } from '../constants/routieValidation';
 
 export type Routes = {
@@ -28,15 +29,16 @@ interface RoutieContextType {
   fetchedStrategy: MovingStrategyType;
 }
 
+type ValidationErrorCodeType = keyof typeof VALIDATION_RESULT_CODE;
 
-export type ValidationStatus =
+type ValidationStatus =
   | 'inactive'
   | 'waiting'
   | 'validating'
   | 'success'
   | 'error';
 
-export type WaitingReason = 'no_date' | 'insufficient_places' | null;
+type WaitingReason = 'no_date' | 'insufficient_places' | null;
 
 export type InvalidRoutiePlace = {
   routiePlaceId: number;
@@ -50,4 +52,15 @@ export type ValidationResultType = {
 
 export type RoutieValidationResponseType = {
   validationResultResponses: ValidationResultType[];
+
+export type {
+  RoutieType,
+  RoutesType,
+  RoutieContextType,
+  ValidationResultType,
+  ValidationErrorCodeType,
+  ValidationStatus,
+  WaitingReason,
+  InvalidRoutiePlace,
+  RoutieValidationResponseType,
 };

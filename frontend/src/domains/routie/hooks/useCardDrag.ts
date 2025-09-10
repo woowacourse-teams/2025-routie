@@ -1,9 +1,6 @@
 import { useRef } from 'react';
 
-export const useCardDrag = <T>(
-  items: T[],
-  setItems: (updated: T[]) => void,
-) => {
+const useCardDrag = <T>(items: T[], setItems: (updated: T[]) => void) => {
   const dragItem = useRef<number | null>(null);
   const dragOverItem = useRef<number | null>(null);
 
@@ -39,3 +36,5 @@ export const useCardDrag = <T>(
 
   return getDragProps;
 };
+
+export { useCardDrag };

@@ -1,14 +1,16 @@
-import { Routie } from '@/domains/routie/types/routie.types';
+import type { RoutieType } from '@/domains/routie/types/routie.types';
 
-export const addRoutiePlace = (placeId: number, routiePlaces: Routie[]) => [
+const addRoutiePlace = (placeId: number, routiePlaces: RoutieType[]) => [
   ...routiePlaces,
   { id: placeId, placeId, sequence: routiePlaces.length + 1 },
 ];
 
-export const deleteRoutiePlace = (placeId: number, routiePlaces: Routie[]) =>
+const deleteRoutiePlace = (placeId: number, routiePlaces: RoutieType[]) =>
   routiePlaces
     .filter((routiePlace) => routiePlace.placeId !== placeId)
     .map((routiePlace, index) => ({
       ...routiePlace,
       sequence: index + 1,
     }));
+
+export { addRoutiePlace, deleteRoutiePlace };

@@ -4,14 +4,17 @@ import type { MovingStrategyType } from '../components/SelectMovingStrategy/Sele
 
 const MOVING_STRATEGY_STORAGE_KEY = 'movingStrategy';
 
-export const useMovingStrategy = () => {
-  const [movingStrategy, setMovingStrategy] = useSessionStorage<MovingStrategyType>(
-    MOVING_STRATEGY_STORAGE_KEY,
-    'DRIVING',
-  );
+const useMovingStrategy = () => {
+  const [movingStrategy, setMovingStrategy] =
+    useSessionStorage<MovingStrategyType>(
+      MOVING_STRATEGY_STORAGE_KEY,
+      'DRIVING',
+    );
 
   return {
     movingStrategy,
     setMovingStrategy,
   };
 };
+
+export { useMovingStrategy };
