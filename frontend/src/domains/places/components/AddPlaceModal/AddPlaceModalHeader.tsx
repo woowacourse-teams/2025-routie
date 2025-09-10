@@ -6,7 +6,7 @@ import closeIcon from '@/assets/icons/close.svg';
 const AddPlaceModalHeader = ({ onClose }: { onClose: () => void }) => {
   return (
     <Flex justifyContent="space-between" width="100%">
-      <Text variant="subTitle">장소 추가</Text>
+      <Text variant="title2">장소 추가</Text>
       <IconButton type="button" icon={closeIcon} onClick={onClose}></IconButton>
     </Flex>
   );
