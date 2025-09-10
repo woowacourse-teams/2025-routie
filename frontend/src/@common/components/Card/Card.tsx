@@ -1,5 +1,6 @@
-import CardStyle from './Card.styles';
-import { CardProps } from './Card.types';
+import { CardStyle } from './Card.styles';
+
+import type { CardProps } from './Card.types';
 
 const Card = ({
   id,

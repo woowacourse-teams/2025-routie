@@ -1,14 +1,14 @@
 import { ComponentProps } from 'react';
 
-export interface CardProps extends ComponentProps<'div'> {
+interface CardProps extends ComponentProps<'div'> {
   id: string;
-  variant?: CardVariantProps;
+  variant?: CardVariantType;
   width?: string | undefined;
   height?: string | undefined;
   children?: React.ReactNode;
 }
 
-export type CardVariantProps =
+type CardVariantType =
   | 'default'
   | 'defaultStatic'
   | 'available'
@@ -16,3 +16,5 @@ export type CardVariantProps =
   | 'disabled'
   | 'invalid'
   | 'valid';
+
+export type { CardProps, CardVariantType };
