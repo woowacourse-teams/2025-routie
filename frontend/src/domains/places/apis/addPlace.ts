@@ -1,8 +1,8 @@
 import { apiClient } from '@/apis';
 
-import { FormState } from '../components/PlaceFormSection/PlaceForm.types';
+import { PlaceAddType } from '../types/place.types';
 
-const addPlace = async (placeInfo: FormState) => {
+const addPlace = async (placeInfo: PlaceAddType) => {
   const routieSpaceUuid = localStorage.getItem('routieSpaceUuid');
 
   if (!routieSpaceUuid) {

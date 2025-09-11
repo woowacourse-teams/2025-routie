@@ -2,11 +2,7 @@ import { css } from '@emotion/react';
 
 import theme from '@/styles/theme';
 
-export const listStyle = css`
-  position: absolute;
-  z-index: 10;
-  top: 0;
-
+const ListStyle = css`
   overflow-y: auto;
 
   width: 100%;
@@ -16,22 +12,18 @@ export const listStyle = css`
   background-color: ${theme.colors.white};
 `;
 
-export const itemButtonStyle = css`
-  cursor: pointer;
-
-  width: 100%;
-  padding: 12px 16px;
-  border: 0;
-  border-radius: 0;
-
-  &:hover {
-    background: ${theme.colors.purple[50]};
-  }
-`;
-
-export const itemEmptyStyle = css`
+const ItemButtonStyle = css`
   width: 100%;
   padding: 12px 16px;
   border: 0;
   border-radius: 0;
 `;
+
+const ItemEmptyStyle = css`
+  width: 100%;
+  padding: 12px 16px;
+  border: 0;
+  border-radius: 0;
+`;
+
+export { ListStyle, ItemButtonStyle, ItemEmptyStyle };
