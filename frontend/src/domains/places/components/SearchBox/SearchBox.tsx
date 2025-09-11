@@ -26,13 +26,7 @@ const SearchBox = ({ onClose }: SearchBoxProps) => {
   } = useSearchPlace();
 
   return (
-    <Flex
-      gap={1}
-      width="100%"
-      css={css`
-        flex-direction: column;
-      `}
-    >
+    <Flex gap={1} width="100%" direction="column">
       <Flex width="100%" justifyContent="space-between" gap={1}>
         <Input
           id="search"
@@ -59,11 +53,10 @@ const SearchBox = ({ onClose }: SearchBoxProps) => {
         </Button>
       </Flex>
       <Flex
+        direction="column"
         width="100%"
         css={css`
           top: 100%;
-          display: flex;
-          flex-direction: column;
           margin-top: 1rem;
         `}
       >
