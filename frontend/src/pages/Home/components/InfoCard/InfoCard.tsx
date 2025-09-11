@@ -4,16 +4,7 @@ import theme from '@/styles/theme';
 
 import { CardStyle, CircleStyle } from './InfoCard.styles';
 
-interface InfoCardProps {
-  circleColor: string;
-  iconSrc: string;
-  iconAlt: string;
-  title: string;
-  descriptions: string[];
-  size?: string;
-  iconSize?: string;
-  textColor?: string;
-}
+import type { InfoCardProps } from './InfoCard.types';
 
 const InfoCard = ({
   circleColor,
