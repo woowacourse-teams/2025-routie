@@ -1,10 +1,4 @@
-import {
-  createContext,
-  useCallback,
-  useContext,
-  useEffect,
-  useState,
-} from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 import { useToastContext } from '@/@common/contexts/useToastContext';
 import { useAsyncLock } from '@/@common/hooks/useAsyncLock';
@@ -16,39 +10,16 @@ import {
   editRoutieSequence,
   getRoutie,
 } from '../apis/routie';
-import { useMovingStrategy } from '../hooks/useMovingStrategy';
 
-import { useRoutieValidateContext } from './useRoutieValidateContext';
+import { RoutieContext } from './useRoutieContext';
 
-import type { MovingStrategyType } from '../components/SelectMovingStrategy/SelectMovingStrategy.types';
-import type {
-  RoutesType,
-  RoutieContextType,
-  RoutieType,
-} from '../types/routie.types';
+import type { RoutesType, RoutieType } from '../types/routie.types';
 
-const RoutieContext = createContext<RoutieContextType>({
-  routiePlaces: [],
-  handleAddRoutie: async () => {},
-  handleDeleteRoutie: async () => {},
-  routes: [],
-  handleChangeRoutie: async () => {},
-  refetchRoutieData: async () => {},
-  routieIdList: [],
-  movingStrategy: 'DRIVING',
-  setMovingStrategy: () => {},
-  fetchedStrategy: 'DRIVING',
-});
-
-export const RoutieProvider = ({ children }: { children: React.ReactNode }) => {
+const RoutieProvider = ({ children }: { children: React.ReactNode }) => {
   const [routiePlaces, setRoutiePlaces] = useState<RoutieType[]>([]);
   const [routes, setRoutes] = useState<RoutesType[]>([]);
   const routieIdList = routiePlaces.map((routie) => routie.placeId);
-  const { isValidateActive, combineDateTime, validateRoutie } =
-    useRoutieValidateContext();
-  const { movingStrategy, setMovingStrategy } = useMovingStrategy();
-  const [fetchedStrategy, setFetchedStrategy] =
-    useState<MovingStrategyType>(movingStrategy);
+
   const { showToast } = useToastContext();
 
   const { runWithLock: runAddWithLock } = useAsyncLock();
@@ -59,15 +30,10 @@ export const RoutieProvider = ({ children }: { children: React.ReactNode }) => {
 
   const refetchRoutieData = useCallback(async () => {
     try {
-      const routies = await getRoutie(
-        combineDateTime.startDateTime,
-        movingStrategy,
-      );
+      const routies = await getRoutie();
       const sortedPlaces = [...routies.routiePlaces].sort(sortBySequence);
       setRoutiePlaces(sortedPlaces);
       setRoutes(routies.routes);
-      await validateRoutie(movingStrategy, routies.routiePlaces.length);
-      setFetchedStrategy(movingStrategy);
     } catch (error) {
       console.error(error);
       if (error instanceof Error) {
@@ -77,13 +43,7 @@ export const RoutieProvider = ({ children }: { children: React.ReactNode }) => {
         });
       }
     }
-  }, [
-    isValidateActive,
-    combineDateTime.startDateTime,
-    validateRoutie,
-    movingStrategy,
-    showToast,
-  ]);
+  }, [showToast]);
 
   const debouncedRefetchRoutieData = useDebounceAsync(refetchRoutieData, 300);
 
@@ -160,13 +120,7 @@ export const RoutieProvider = ({ children }: { children: React.ReactNode }) => {
 
   useEffect(() => {
     debouncedRefetchRoutieData();
-  }, [
-    isValidateActive,
-    movingStrategy,
-    combineDateTime.startDateTime,
-    combineDateTime.endDateTime,
-    debouncedRefetchRoutieData,
-  ]);
+  }, [debouncedRefetchRoutieData]);
 
   return (
     <RoutieContext.Provider
@@ -178,9 +132,6 @@ export const RoutieProvider = ({ children }: { children: React.ReactNode }) => {
         handleAddRoutie,
         handleDeleteRoutie,
         handleChangeRoutie,
-        movingStrategy,
-        setMovingStrategy,
-        fetchedStrategy,
       }}
     >
       {children}
@@ -188,12 +139,4 @@ export const RoutieProvider = ({ children }: { children: React.ReactNode }) => {
   );
 };
 
-export const useRoutieContext = () => {
-  const context = useContext(RoutieContext);
-
-  if (!context) {
-    throw new Error('useRoutieContext must be used within a RoutieProvider');
-  }
-
-  return context;
-};
+export default RoutieProvider;
