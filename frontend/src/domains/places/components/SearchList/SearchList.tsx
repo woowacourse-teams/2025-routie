@@ -1,4 +1,5 @@
 import SearchPlace from '../SearchPlace/SearchPlace';
+
 import SearchEmptyState from './SearchEmptyState';
 import { ItemButtonStyle, ListStyle } from './SearchList.styles';
 

@@ -2,9 +2,7 @@ import Flex from '@/@common/components/Flex/Flex';
 
 import SearchBox from '../SearchBox/SearchBox';
 
-interface AddPlaceBasicInfoProps {
-  onClose: () => void;
-}
+import type { AddPlaceBasicInfoProps } from './AddPlaceBasicInfo.types';
 
 const AddPlaceBasicInfo = ({ onClose }: AddPlaceBasicInfoProps) => {
   return (

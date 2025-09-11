@@ -6,7 +6,8 @@ interface SearchEmptyStateProps {
 
 interface SearchListProps {
   searchResults: PlaceAddType[];
-  handleSelect: (item: PlaceAddType) => void;
+  onClose: () => void;
+  searchedKeyword: string;
 }
 
 export type { SearchEmptyStateProps, SearchListProps };
