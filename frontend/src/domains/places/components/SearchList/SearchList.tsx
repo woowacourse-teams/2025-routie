@@ -7,13 +7,13 @@ import { ItemButtonStyle, ListStyle } from './SearchList.styles';
 interface SearchListProps {
   searchResults: PlaceAddType[];
   onClose: () => void;
-  submittedKeyword: string;
+  searchedKeyword: string;
 }
 
 const SearchList = ({
   searchResults,
   onClose,
-  submittedKeyword,
+  searchedKeyword,
 }: SearchListProps) => {
   return (
     <ul css={ListStyle}>
@@ -37,7 +37,7 @@ const SearchList = ({
           );
         })
       ) : (
-        <SearchEmptyState keyword={submittedKeyword} />
+        <SearchEmptyState keyword={searchedKeyword} />
       )}
     </ul>
   );

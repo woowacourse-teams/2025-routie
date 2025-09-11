@@ -22,7 +22,7 @@ const SearchBox = ({ onClose }: SearchBoxProps) => {
     handleChangeKeyword,
     handleSearch,
     handleEnterSearch,
-    submittedKeyword,
+    searchedKeyword,
   } = useSearchPlace();
 
   return (
@@ -70,7 +70,7 @@ const SearchBox = ({ onClose }: SearchBoxProps) => {
           <SearchList
             searchResults={searchResults!}
             onClose={onClose}
-            submittedKeyword={submittedKeyword}
+            searchedKeyword={searchedKeyword}
           />
         )}
       </Flex>
