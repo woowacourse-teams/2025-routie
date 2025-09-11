@@ -7,11 +7,11 @@ import Text from '@/@common/components/Text/Text';
 import theme from '@/styles/theme';
 
 import { useSearchPlace } from '../../hooks/useSearchPlace';
-import { PlaceAddType } from '../../types/place.types';
 import SearchEmptyState from '../SearchList/SearchEmptyState';
 import SearchList from '../SearchList/SearchList';
 
 import type { SearchBoxProps } from './SearchBox.types';
+import type { PlaceAddType } from '../../types/place.types';
 
 const SearchBox = ({ onChange, handleSearchPlaceMap }: SearchBoxProps) => {
   const {

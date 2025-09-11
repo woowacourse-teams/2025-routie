@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router';
 import { useToastContext } from '@/@common/contexts/useToastContext';
 import { createRoutieSpace } from '@/domains/routieSpace/apis/routieSpace';
 
-export const useRoutieSpaceNavigation = () => {
+const useRoutieSpaceNavigation = () => {
   const navigate = useNavigate();
   const { showToast } = useToastContext();
 
@@ -48,3 +48,5 @@ export const useRoutieSpaceNavigation = () => {
     handleReturnToRoutieSpace,
   };
 };
+
+export { useRoutieSpaceNavigation };

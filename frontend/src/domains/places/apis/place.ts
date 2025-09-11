@@ -1,7 +1,7 @@
 import { apiClient } from '@/apis';
 
-import { FormState } from '../components/PlaceFormSection/PlaceForm.types';
-import {
+import type { FormState } from '../components/PlaceFormSection/PlaceForm.types';
+import type {
   PlaceAddType,
   PlaceBaseType,
   PlaceFetchType,

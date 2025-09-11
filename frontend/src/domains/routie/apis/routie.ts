@@ -1,6 +1,6 @@
 import { apiClient } from '@/apis';
 
-import { adaptValidationResponse } from '../adapters/routieValidationAdapter';
+import type { RoutieType } from '../types/routie.types';
 
 import type { ValidationApiResponse } from '../types/api.types';
 import type {

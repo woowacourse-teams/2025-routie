@@ -3,7 +3,8 @@ import { useState } from 'react';
 import { useToastContext } from '@/@common/contexts/useToastContext';
 
 import { searchPlace } from '../apis/place';
-import { PlaceAddType } from '../types/place.types';
+
+import type { PlaceAddType } from '../types/place.types';
 
 const useSearchPlace = () => {
   const [keyword, setKeyword] = useState('');

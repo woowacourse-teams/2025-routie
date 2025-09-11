@@ -10,15 +10,15 @@ import reload from '@/assets/icons/reload.svg';
 import theme from '@/styles/theme';
 
 import {
-  continueButtonStyle,
-  createButtonStyle,
+  ContinueButtonStyle,
+  CreateButtonStyle,
   HomepageStyle,
-  infoCardsWrapperStyle,
-  subTitleTextStyle,
-  titleTextStyle,
-  violetTextStyle,
+  InfoCardsWrapperStyle,
+  SubTitleTextStyle,
+  TitleTextStyle,
+  VioletTextStyle,
 } from './Home.styles';
-import InfoCard from './InfoCard';
+import InfoCard from './components/InfoCard/InfoCard';
 import { useRoutieSpaceNavigation } from './hooks/useRoutieSpaceNavigation';
 
 const Home = () => {
@@ -37,22 +37,22 @@ const Home = () => {
         css={HomepageStyle}
       >
         <Flex direction="column" gap={3}>
-          <Text variant="title" css={titleTextStyle} color={theme.home.text}>
+          <Text variant="title" css={TitleTextStyle} color={theme.home.text}>
             그 장소들, 정말 다 갈 수 있을까요?
           </Text>
           <Text
             variant="subTitle"
             color={theme.home.text}
-            css={subTitleTextStyle}
+            css={SubTitleTextStyle}
           >
-            루티가 당신의 동선을 <span css={violetTextStyle}>체크</span>
+            루티가 당신의 동선을 <span css={VioletTextStyle}>체크</span>
             해드릴게요!
           </Text>
           <Flex
             justifyContent="space-between"
             width="100%"
             gap={5}
-            css={infoCardsWrapperStyle}
+            css={InfoCardsWrapperStyle}
           >
             <InfoCard
               circleColor={theme.home.pink}
@@ -91,7 +91,7 @@ const Home = () => {
             />
           </Flex>
           <Flex gap={8} width="70%">
-            <Button onClick={handleCreateRoutieSpace} css={createButtonStyle}>
+            <Button onClick={handleCreateRoutieSpace} css={CreateButtonStyle}>
               <Flex direction="row" gap={1.5} padding={1}>
                 <img src={arrowWhite} width={'30rem'} />
                 <Text variant="title" color="white">
@@ -102,7 +102,7 @@ const Home = () => {
             {existingUuid && (
               <Button
                 onClick={handleReturnToRoutieSpace}
-                css={continueButtonStyle}
+                css={ContinueButtonStyle}
               >
                 <Flex gap={1.5} padding={1}>
                   <img src={reload} width={'25rem'} />
