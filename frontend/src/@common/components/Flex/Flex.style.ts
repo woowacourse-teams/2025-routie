@@ -1,6 +1,6 @@
 import { css } from '@emotion/react';
 
-import FlexProps from './Flex.types';
+import type { FlexProps } from './Flex.types';
 
 const FlexStyle = ({
   direction,
@@ -26,4 +26,4 @@ const FlexStyle = ({
   padding: ${padding ? `${padding}rem` : '0'};
 `;
 
-export default FlexStyle;
+export { FlexStyle };

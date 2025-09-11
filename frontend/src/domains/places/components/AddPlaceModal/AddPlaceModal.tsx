@@ -1,5 +1,6 @@
 import Flex from '@/@common/components/Flex/Flex';
-import Modal, { ModalProps } from '@/@common/components/Modal/Modal';
+import Modal from '@/@common/components/Modal/Modal';
+import type { ModalProps } from '@/@common/components/Modal/Modal.types';
 
 import AddPlaceBasicInfo from './AddPlaceBasicInfo';
 import AddPlaceModalHeader from './AddPlaceModalHeader';

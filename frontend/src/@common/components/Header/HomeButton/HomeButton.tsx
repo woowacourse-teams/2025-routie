@@ -3,11 +3,12 @@ import theme from '@/styles/theme';
 import Flex from '../../Flex/Flex';
 import Text from '../../Text/Text';
 
-type HomeButtonProps = {
+interface HomeButtonProps
+  extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   icon: string;
   isHome?: boolean;
   onClick: () => void;
-} & React.ButtonHTMLAttributes<HTMLButtonElement>;
+}
 
 const HomeButton = ({
   icon,

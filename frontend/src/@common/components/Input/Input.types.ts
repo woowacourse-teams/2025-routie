@@ -1,6 +1,6 @@
 import { ComponentProps } from 'react';
 
-export interface InputProps
+interface InputProps
   extends Omit<ComponentProps<'input'>, 'onChange' | 'value'> {
   id: string;
   type?: string;
@@ -8,11 +8,13 @@ export interface InputProps
   placeholder?: string;
   value: string;
   onChange: (value: string) => void;
-  variant?: InputVariantProps;
+  variant?: InputVariantType;
   icon?: 'search' | 'clock';
   error?: boolean;
 }
 
-export type InputVariantProps = 'primary' | 'disabled' | 'error';
+type InputVariantType = 'primary' | 'disabled' | 'error';
 
-export type InputStyleProps = Pick<InputProps, 'variant' | 'icon'>;
+type InputStyleProps = Pick<InputProps, 'variant' | 'icon'>;
+
+export type { InputProps, InputVariantType, InputStyleProps };

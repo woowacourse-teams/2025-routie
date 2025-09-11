@@ -1,19 +1,19 @@
 import { keyframes, css } from '@emotion/react';
 
-import { ToastInfoType } from '@/@common/types/toast.type';
+import type { ToastInfoProps } from '@/@common/components/Toast/Toast.types';
 import theme from '@/styles/theme';
 
-export const slideIn = keyframes`
+const slideIn = keyframes`
   from { transform: translateY(16px); opacity: 0; }
   to { transform: translateY(0); opacity: 1; }
 `;
 
-export const slideOut = keyframes`
+const slideOut = keyframes`
   from { transform: translateY(0); opacity: 1; }
   to { transform: translateY(16px); opacity: 0; }
 `;
 
-export const containerStyle = css`
+const ToastContainerStyle = css`
   pointer-events: none;
 
   position: fixed;
@@ -27,7 +27,7 @@ export const containerStyle = css`
   align-items: center;
 `;
 
-export const itemWrapper = (leaving?: boolean) => css`
+const ToastItemWrapperStyle = (leaving?: boolean) => css`
   pointer-events: auto;
 
   display: flex;
@@ -48,24 +48,24 @@ export const itemWrapper = (leaving?: boolean) => css`
   animation: ${leaving ? slideOut : slideIn} 0.35s ease;
 `;
 
-export const typeColor: Record<ToastInfoType['type'], string> = {
+const ToastVariantColor: Record<ToastInfoProps['type'], string> = {
   success: theme.colors.green[100],
   error: theme.colors.red[100],
   warning: theme.colors.green[100],
   info: theme.colors.gray[200],
 };
 
-export const badgeStyle = (type: ToastInfoType['type']) => css`
+const ToastBadgeStyle = (type: ToastInfoProps['type']) => css`
   flex: 0 0 8px;
 
   width: 8px;
   height: 8px;
   border-radius: 999px;
 
-  background: ${typeColor[type]};
+  background: ${ToastVariantColor[type]};
 `;
 
-export const messageStyle = css`
+const ToastMessageStyle = css`
   display: flex;
   flex: 1;
   align-items: center;
@@ -74,3 +74,10 @@ export const messageStyle = css`
   word-break: break-all;
   white-space: pre-wrap;
 `;
+
+export {
+  ToastContainerStyle,
+  ToastItemWrapperStyle,
+  ToastBadgeStyle,
+  ToastMessageStyle,
+};

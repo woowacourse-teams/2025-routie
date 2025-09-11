@@ -2,9 +2,9 @@ import { css, SerializedStyles } from '@emotion/react';
 
 import theme from '@/styles/theme';
 
-import { PillProps, PillVariantProps } from './Pill.types';
+import type { PillProps, PillVariantType } from './Pill.types';
 
-const pillVariant: Record<PillVariantProps, SerializedStyles> = {
+const pillVariant: Record<PillVariantType, SerializedStyles> = {
   default: css`
     border: 1px solid ${theme.colors.gray[100]};
     background-color: ${theme.colors.white};
@@ -19,7 +19,7 @@ const pillVariant: Record<PillVariantProps, SerializedStyles> = {
   `,
 };
 
-export const PillStyle = ({ variant = 'default' }: PillProps) => css`
+const PillStyle = ({ variant = 'default' }: PillProps) => css`
   display: flex;
   gap: 0.8rem;
   align-items: center;
@@ -32,3 +32,5 @@ export const PillStyle = ({ variant = 'default' }: PillProps) => css`
 
   ${pillVariant[variant]}
 `;
+
+export { PillStyle };

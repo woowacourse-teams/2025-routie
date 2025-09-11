@@ -1,9 +1,11 @@
 import { css } from '@emotion/react';
 
-export const dragIconStyle = css`
+const DragIconStyle = css`
   cursor: grab;
 `;
 
-export const EllipsisParentStyle = css`
+const EllipsisParentStyle = css`
   min-width: 0;
 `;
+
+export { DragIconStyle, EllipsisParentStyle };

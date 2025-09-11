@@ -2,10 +2,17 @@ import { css } from '@emotion/react';
 
 import theme from '@/styles/theme';
 
-const headerStyle = css`
+const HeaderStyle = css`
   width: 100%;
   height: 7rem;
   background-color: ${theme.home.gray};
 `;
 
-export default headerStyle;
+const HomeButtonStyle = css`
+  cursor: pointer;
+  padding: 0;
+  border: none;
+  background: none;
+`;
+
+export { HeaderStyle, HomeButtonStyle };

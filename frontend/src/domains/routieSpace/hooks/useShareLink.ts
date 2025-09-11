@@ -15,4 +15,4 @@ const useShareLink = () => {
   return shareLink;
 };
 
-export default useShareLink;
+export { useShareLink };

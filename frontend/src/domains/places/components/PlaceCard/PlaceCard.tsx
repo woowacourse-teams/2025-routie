@@ -6,19 +6,16 @@ import Icon from '@/@common/components/IconSvg/Icon';
 import Text from '@/@common/components/Text/Text';
 import { useToastContext } from '@/@common/contexts/useToastContext';
 import { useAsyncLock } from '@/@common/hooks/useAsyncLock';
+import { usePlaceListContext } from '@/domains/places/contexts/PlaceList/PlaceListContext';
 import { useRoutieContext } from '@/domains/routie/contexts/useRoutieContext';
-import { usePlaceListContext } from '@/layouts/PlaceList/contexts/PlaceListContext';
 import { useGoogleEventTrigger } from '@/libs/googleAnalytics/hooks/useGoogleEventTrigger';
 import theme from '@/styles/theme';
 
-import deletePlace from '../../apis/deletePlace';
-import { PlaceFetchType } from '../../types/place.types';
+import { deletePlace } from '../../apis/place';
 
-export interface PlaceCardProps extends PlaceFetchType {
-  selected: boolean;
-}
+import type { PlaceCardProps } from './PlaceCard.types';
 
-export const PlaceCard = ({ selected, ...props }: PlaceCardProps) => {
+const PlaceCard = ({ selected, ...props }: PlaceCardProps) => {
   const { refetchPlaceList } = usePlaceListContext();
   const { handleAddRoutie } = useRoutieContext();
   const { triggerEvent } = useGoogleEventTrigger();
@@ -145,3 +142,5 @@ export const PlaceCard = ({ selected, ...props }: PlaceCardProps) => {
     </>
   );
 };
+
+export default PlaceCard;

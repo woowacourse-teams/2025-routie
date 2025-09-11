@@ -2,6 +2,7 @@ import { RefObject, useRef } from 'react';
 
 import type { KakaoMapType } from '../types/KaKaoMap.types';
 
+// TODO: useMapMarkerProps랑 동일한 타입으로 추상화 필요해 보임
 const usePolyline = ({ map }: { map: RefObject<KakaoMapType> }) => {
   const pathPoints = useRef<any[]>([]);
   const polylineRef = useRef<any>(null);
@@ -38,4 +39,4 @@ const usePolyline = ({ map }: { map: RefObject<KakaoMapType> }) => {
   return { loadPolyline, clearPolyline };
 };
 
-export default usePolyline;
+export { usePolyline };

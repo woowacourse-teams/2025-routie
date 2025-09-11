@@ -2,10 +2,7 @@ import { useState } from 'react';
 
 import { TooltipContainerStyle, TooltipStyle } from './Tooltip.styles';
 
-interface TooltipProps {
-  content: React.ReactNode;
-  children: React.ReactNode;
-}
+import type { TooltipProps } from './Tooltip.types';
 
 const Tooltip = ({ content, children }: TooltipProps) => {
   const [visible, setVisible] = useState(false);

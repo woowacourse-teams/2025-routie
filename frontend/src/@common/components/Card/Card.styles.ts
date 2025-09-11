@@ -2,9 +2,9 @@ import { css, SerializedStyles } from '@emotion/react';
 
 import theme from '@/styles/theme';
 
-import { CardVariantProps } from './Card.types';
+import type { CardVariantType } from './Card.types';
 
-const cardVariant: Record<CardVariantProps, SerializedStyles> = {
+const cardVariant: Record<CardVariantType, SerializedStyles> = {
   default: css`
     border: 2px solid ${theme.colors.gray[50]};
     box-shadow: 2px 4px 4px 0 rgb(0 0 0 / 15%);
@@ -64,4 +64,4 @@ const CardStyle = (
   ${cardVariant[variant]}
 `;
 
-export default CardStyle;
+export { CardStyle };

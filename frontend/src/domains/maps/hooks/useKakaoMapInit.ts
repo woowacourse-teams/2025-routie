@@ -7,7 +7,7 @@ import type {
   UseKakaoMapInitReturn,
 } from '../types/KaKaoMap.types';
 
-export const useKakaoMapInit = ({
+const useKakaoMapInit = ({
   containerRef,
   sdkReady,
 }: UseKakaoMapInitProps): UseKakaoMapInitReturn => {
@@ -65,3 +65,5 @@ export const useKakaoMapInit = ({
     initializeMap,
   };
 };
+
+export { useKakaoMapInit };

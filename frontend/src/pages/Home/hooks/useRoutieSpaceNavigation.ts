@@ -2,17 +2,17 @@ import { useCallback } from 'react';
 import { useNavigate } from 'react-router';
 
 import { useToastContext } from '@/@common/contexts/useToastContext';
-import { createRoutieSpace } from '@/domains/routieSpace/apis/createRoutieSpace';
+import { createRoutieSpace } from '@/domains/routieSpace/apis/routieSpace';
 
-export const useRoutieSpaceNavigation = () => {
+const useRoutieSpaceNavigation = () => {
   const navigate = useNavigate();
   const { showToast } = useToastContext();
 
   const handleCreateRoutieSpace = useCallback(async () => {
     try {
-      const newUuid = await createRoutieSpace();
+      const response = await createRoutieSpace();
       const queryParams = new URLSearchParams({
-        routieSpaceIdentifier: newUuid,
+        routieSpaceIdentifier: response.routieSpaceIdentifier,
       });
 
       navigate(`/routie-spaces?${queryParams.toString()}`);
@@ -48,3 +48,5 @@ export const useRoutieSpaceNavigation = () => {
     handleReturnToRoutieSpace,
   };
 };
+
+export { useRoutieSpaceNavigation };

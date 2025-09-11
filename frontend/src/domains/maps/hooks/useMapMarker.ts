@@ -1,28 +1,16 @@
-import { RefObject, useCallback, useRef } from 'react';
+import { useCallback, useRef } from 'react';
 
-import createCustomMarkerElement from '../utils/createCustomMarkerElement';
+import { createCustomMarkerElement } from '../utils/createCustomMarkerElement';
 
-import type { KakaoMapType } from '../types/KaKaoMap.types';
+import type {
+  DrawMarkerProps,
+  MarkerType,
+  UseMapMarkerProps,
+} from '../types/KaKaoMap.types';
+import type { CustomOverlayType } from '../types/Overlay.types';
 
-type Marker = InstanceType<typeof window.kakao.maps.Marker>;
-type CustomOverlay = InstanceType<typeof window.kakao.maps.CustomOverlay>;
-
-interface DrawMarkerProps {
-  place: {
-    latitude: number;
-    longitude: number;
-    name: string;
-  };
-  routieSequence?: number;
-  onClick?: () => void;
-}
-
-type UseMapMarkerType = {
-  map: RefObject<KakaoMapType>;
-};
-
-const useMapMarker = ({ map }: UseMapMarkerType) => {
-  const markersRef = useRef<(Marker | CustomOverlay)[]>([]);
+const useMapMarker = ({ map }: UseMapMarkerProps) => {
+  const markersRef = useRef<(MarkerType | CustomOverlayType)[]>([]);
 
   const clearMarkers = useCallback(() => {
     markersRef.current.forEach((marker) => {
@@ -118,4 +106,4 @@ const useMapMarker = ({ map }: UseMapMarkerType) => {
   return { drawMarkers, fitMapToMarkers, clearMarkers, fitMapToMarker };
 };
 
-export default useMapMarker;
+export { useMapMarker };

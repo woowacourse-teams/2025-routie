@@ -5,9 +5,9 @@ import Flex from '@/@common/components/Flex/Flex';
 import Text from '@/@common/components/Text/Text';
 import theme from '@/styles/theme';
 
-import useRoutieSpaceName from '../../hooks/useRoutieSpaceName';
+import { useRoutieSpaceName } from '../../hooks/useRoutieSpaceName';
 
-import routieSpaceNameInputStyle from './RoutieSpaceName.style';
+import { RoutieSpaceNameInputStyle } from './RoutieSpaceName.style';
 
 const RoutieSpaceName = () => {
   const {
@@ -26,7 +26,7 @@ const RoutieSpaceName = () => {
       {isEditing ? (
         <input
           ref={inputRef}
-          css={routieSpaceNameInputStyle(errorCase === 'invalidNameLength')}
+          css={RoutieSpaceNameInputStyle(errorCase === 'invalidNameLength')}
           autoFocus
           value={name}
           onChange={handleChange}

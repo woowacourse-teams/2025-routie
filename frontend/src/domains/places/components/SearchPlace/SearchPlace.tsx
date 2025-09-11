@@ -4,12 +4,13 @@ import Text from '@/@common/components/Text/Text';
 import { useToastContext } from '@/@common/contexts/useToastContext';
 import { useAsyncLock } from '@/@common/hooks/useAsyncLock';
 import pinIcon from '@/assets/icons/pin.svg';
-import { usePlaceListContext } from '@/layouts/PlaceList/contexts/PlaceListContext';
+import { usePlaceListContext } from '@/domains/places/contexts/PlaceList/PlaceListContext';
 import theme from '@/styles/theme';
 
-import addPlace from '../../apis/addPlace';
-import { PlaceAddType } from '../../types/place.types';
+import { addPlace } from '../../apis/place';
 import SearchAddress from '../SearchAddress/SearchAddress';
+
+import type { PlaceAddType } from '../../types/place.types';
 
 interface SearchPlaceProps {
   searchResult: PlaceAddType;

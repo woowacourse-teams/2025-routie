@@ -2,29 +2,13 @@ import { useEffect, useRef, useState } from 'react';
 
 import { useToastContext } from '@/@common/contexts/useToastContext';
 
-import {
-  editRoutieSpaceName,
-  getRoutieSpaceName,
-} from '../apis/routieSpaceName';
+import { editRoutieSpaceName, getRoutieSpace } from '../apis/routieSpace';
+import { MAX_NAME_LENGTH, ERROR_MESSAGE } from '../constants/routieSpace';
 
-const MAX_NAME_LENGTH = 15;
-const ERROR_MESSAGE = {
-  noName: '루티 스페이스 이름은 비어있을 수 없습니다.',
-  invalidNameLength: `루티 스페이스 이름은 ${MAX_NAME_LENGTH}자 이하여야 합니다.`,
-} as const;
-
-type ERROR_CASE = keyof typeof ERROR_MESSAGE;
-
-interface UseRoutieSpaceNameReturn {
-  name: string;
-  isEditing: boolean;
-  isLoading: boolean;
-  errorCase: ERROR_CASE | null;
-  inputRef: React.RefObject<HTMLInputElement | null>;
-  handleEnter: (e: React.KeyboardEvent<HTMLInputElement>) => void;
-  handleClick: () => Promise<void>;
-  handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-}
+import type {
+  ERROR_CASE,
+  UseRoutieSpaceNameReturn,
+} from '../types/routieSpace.types';
 
 const useRoutieSpaceName = (): UseRoutieSpaceNameReturn => {
   const [name, setName] = useState('');
@@ -75,8 +59,8 @@ const useRoutieSpaceName = (): UseRoutieSpaceNameReturn => {
 
         setIsLoading(true);
 
-        const updatedName = await editRoutieSpaceName(name);
-        const displayName = updatedName ?? '이름 못 찾음';
+        const response = await editRoutieSpaceName(name);
+        const displayName = response.name ?? '이름 못 찾음';
 
         setName(displayName);
         setOriginalName(displayName);
@@ -106,8 +90,8 @@ const useRoutieSpaceName = (): UseRoutieSpaceNameReturn => {
   useEffect(() => {
     const fetchRoutieSpaceName = async () => {
       try {
-        const name = await getRoutieSpaceName();
-        const displayName = name ?? '이름 못 찾음';
+        const response = await getRoutieSpace();
+        const displayName = response.name ?? '이름 못 찾음';
 
         setName(displayName);
         setOriginalName(displayName);
@@ -139,4 +123,4 @@ const useRoutieSpaceName = (): UseRoutieSpaceNameReturn => {
   };
 };
 
-export default useRoutieSpaceName;
+export { useRoutieSpaceName };

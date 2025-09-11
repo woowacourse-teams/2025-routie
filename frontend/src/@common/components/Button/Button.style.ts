@@ -2,9 +2,9 @@ import { css, SerializedStyles } from '@emotion/react';
 
 import theme from '@/styles/theme';
 
-import { ButtonProps, ButtonVariantProps } from './Button.types';
+import type { ButtonProps, ButtonVariantType } from './Button.types';
 
-const buttonVariant: Record<ButtonVariantProps, SerializedStyles> = {
+const buttonVariant: Record<ButtonVariantType, SerializedStyles> = {
   primary: css`
     color: ${theme.colors.white};
     background-color: ${theme.colors.purple[400]};

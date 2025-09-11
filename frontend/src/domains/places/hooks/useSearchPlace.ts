@@ -2,8 +2,9 @@ import { useRef, useState } from 'react';
 
 import { useToastContext } from '@/@common/contexts/useToastContext';
 
-import searchPlace from '../apis/searchPlace';
-import { PlaceAddType } from '../types/place.types';
+import { searchPlace } from '../apis/place';
+
+import type { PlaceAddType } from '../types/place.types';
 
 const useSearchPlace = () => {
   const [keyword, setKeyword] = useState('');
@@ -60,4 +61,4 @@ const useSearchPlace = () => {
   };
 };
 
-export default useSearchPlace;
+export { useSearchPlace };

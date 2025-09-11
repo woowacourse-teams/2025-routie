@@ -2,9 +2,7 @@ import EmptyMessage from '@/@common/components/EmptyMessage/EmptyMessage';
 
 import { ListStyle } from './SearchList.styles';
 
-interface SearchEmptyStateProps {
-  keyword: string;
-}
+import type { SearchEmptyStateProps } from './SearchList.types';
 
 const SearchEmptyState = ({ keyword }: SearchEmptyStateProps) => {
   return (
@@ -18,4 +16,5 @@ const SearchEmptyState = ({ keyword }: SearchEmptyStateProps) => {
     </ul>
   );
 };
+
 export default SearchEmptyState;

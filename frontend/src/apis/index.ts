@@ -1,5 +1,5 @@
 import { ERROR_MESSAGES } from '@/@common/constants/message';
-import { ErrorResponseType } from '@/@common/types/apIResponse.type';
+import type { ErrorResponseType } from '@/@common/types/apIResponse.type';
 
 const createApiMethod = (method: string) => async (url: string, body?: any) => {
   const response = await fetch(`${process.env.REACT_APP_API_URL}${url}`, {

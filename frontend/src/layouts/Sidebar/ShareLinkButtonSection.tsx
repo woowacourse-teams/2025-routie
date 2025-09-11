@@ -3,7 +3,7 @@ import Flex from '@/@common/components/Flex/Flex';
 import Icon from '@/@common/components/IconSvg/Icon';
 import Text from '@/@common/components/Text/Text';
 import { useToastContext } from '@/@common/contexts/useToastContext';
-import useShareLink from '@/domains/routieSpace/hooks/useShareLink';
+import { useShareLink } from '@/domains/routieSpace/hooks/useShareLink';
 
 import { SidebarSectionStyle } from './Sidebar.styles';
 

@@ -1,9 +1,10 @@
 import { createContext, useContext } from 'react';
 
-import useToast from '../hooks/useToast';
-import { ToastContextType } from '../types/toast.type';
+import { useToast } from '../hooks/useToast';
 
-const ToastContext = createContext<ToastContextType>({
+import type { ToastContextProps } from '../components/Toast/Toast.types';
+
+const ToastContext = createContext<ToastContextProps>({
   toast: [],
   showToast: () => {},
 });

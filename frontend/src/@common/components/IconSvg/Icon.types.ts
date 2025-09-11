@@ -2,10 +2,14 @@ import allIcons from './allIcons';
 
 type IconName = keyof typeof allIcons;
 
-export interface IconProps {
+interface IconProps {
   name: IconName;
   size?: number;
   color?: string;
   onClick?: () => void;
   className?: string;
 }
+
+type IconStyleProps = Pick<IconProps, 'onClick' | 'size'>;
+
+export type { IconProps, IconStyleProps };

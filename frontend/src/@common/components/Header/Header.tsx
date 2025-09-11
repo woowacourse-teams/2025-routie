@@ -2,11 +2,10 @@ import { PropsWithChildren } from 'react';
 import { useNavigate } from 'react-router';
 
 import Flex from '@/@common/components/Flex/Flex';
+import HomeButton from '@/@common/components/Header/HomeButton/HomeButton';
 import logoIcon from '@/assets/icons/logo.svg';
 
-import headerStyle from './Header.style';
-import HomeButton from './HomeButton/HomeButton';
-import { buttonStyle } from './HomeButton/HomeButton.styles';
+import { HeaderStyle, HomeButtonStyle } from './Header.style';
 
 interface HeaderProps extends PropsWithChildren {
   isHome?: boolean;
@@ -16,7 +15,7 @@ const Header = ({ children, isHome }: HeaderProps) => {
   const navigate = useNavigate();
 
   return (
-    <div css={headerStyle}>
+    <div css={HeaderStyle}>
       <Flex
         direction="row"
         gap={1}
@@ -27,7 +26,7 @@ const Header = ({ children, isHome }: HeaderProps) => {
         <HomeButton
           icon={logoIcon}
           onClick={() => navigate('/')}
-          css={buttonStyle}
+          css={HomeButtonStyle}
           isHome={isHome}
         />
         {children}

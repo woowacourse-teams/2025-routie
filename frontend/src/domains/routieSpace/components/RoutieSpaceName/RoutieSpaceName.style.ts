@@ -2,19 +2,19 @@ import { css } from '@emotion/react';
 
 import theme from '@/styles/theme';
 
-const defaultBorder = css`
+const DefaultBorder = css`
   &:focus {
     outline: 0.3rem solid ${theme.colors.purple[300]};
   }
 `;
 
-const invalidBorder = css`
+const InvalidBorder = css`
   &:focus {
     outline: 0.3rem solid ${theme.colors.red[100]};
   }
 `;
 
-const routieSpaceNameInputStyle = (invalidNameLength: boolean) => css`
+const RoutieSpaceNameInputStyle = (invalidNameLength: boolean) => css`
   width: 100%;
   max-width: 38rem;
   margin: 0;
@@ -27,7 +27,7 @@ const routieSpaceNameInputStyle = (invalidNameLength: boolean) => css`
 
   background-color: inherit;
 
-  ${invalidNameLength ? invalidBorder : defaultBorder}
+  ${invalidNameLength ? InvalidBorder : DefaultBorder}
 `;
 
-export default routieSpaceNameInputStyle;
+export { RoutieSpaceNameInputStyle };

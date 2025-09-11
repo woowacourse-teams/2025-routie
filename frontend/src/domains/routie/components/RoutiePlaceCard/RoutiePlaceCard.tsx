@@ -7,18 +7,19 @@ import Icon from '@/@common/components/IconSvg/Icon';
 import Text from '@/@common/components/Text/Text';
 import { useToastContext } from '@/@common/contexts/useToastContext';
 import closeRed from '@/assets/icons/close-red.svg';
-import { PlaceBaseType } from '@/domains/places/types/place.types';
+import type { PlaceBaseType } from '@/domains/places/types/place.types';
 import { useGoogleEventTrigger } from '@/libs/googleAnalytics/hooks/useGoogleEventTrigger';
 import theme from '@/styles/theme';
 
 import { getDetailPlace } from '../../apis/routie';
 import { useRoutieContext } from '../../contexts/useRoutieContext';
-import { Routie } from '../../types/routie.types';
 import DraggableWrapper from '../DraggableWrapper/DraggableWrapper';
 
-import { dragIconStyle, EllipsisParentStyle } from './RoutiePlaceCard.styles';
+import { DragIconStyle, EllipsisParentStyle } from './RoutiePlaceCard.styles';
 
-const RoutiePlaceCard = ({ routie }: { routie: Routie }) => {
+import type { RoutieType } from '../../types/routie.types';
+
+const RoutiePlaceCard = ({ routie }: { routie: RoutieType }) => {
   const [place, setPlace] = useState<PlaceBaseType>({
     name: '',
     roadAddressName: '',
@@ -96,7 +97,7 @@ const RoutiePlaceCard = ({ routie }: { routie: Routie }) => {
                   variant="delete"
                   onClick={handleDelete}
                 />
-                <Icon name="drag" size={24} css={dragIconStyle} />
+                <Icon name="drag" size={24} css={DragIconStyle} />
               </Flex>
             </Flex>
           </Flex>

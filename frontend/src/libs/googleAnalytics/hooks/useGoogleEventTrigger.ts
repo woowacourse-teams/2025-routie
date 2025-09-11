@@ -1,19 +1,19 @@
 import ReactGA from 'react-ga4';
 
-type EventTriggerTypes = {
+interface EventTriggerType {
   action: string;
   category: string;
   label?: string;
   value?: number;
-};
+}
 
-export const useGoogleEventTrigger = () => {
+const useGoogleEventTrigger = () => {
   const triggerEvent = ({
     action,
     category,
     label,
     value,
-  }: EventTriggerTypes) => {
+  }: EventTriggerType) => {
     ReactGA.event({
       action,
       category,
@@ -24,3 +24,5 @@ export const useGoogleEventTrigger = () => {
 
   return { triggerEvent };
 };
+
+export { useGoogleEventTrigger };

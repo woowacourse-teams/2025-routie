@@ -15,7 +15,7 @@ declare global {
 
 const MEASUREMENT_ID = process.env.REACT_APP_GA4_MEASUREMENT_ID;
 
-export const useGoogleAnalytics = () => {
+const useGoogleAnalytics = () => {
   const location = useLocation();
 
   useEffect(() => {
@@ -33,3 +33,5 @@ export const useGoogleAnalytics = () => {
     }
   }, [location]);
 };
+
+export { useGoogleAnalytics };

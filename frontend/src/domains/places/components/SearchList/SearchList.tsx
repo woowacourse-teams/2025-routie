@@ -1,14 +1,9 @@
-import { PlaceAddType } from '../../types/place.types';
 import SearchPlace from '../SearchPlace/SearchPlace';
 
 import SearchEmptyState from './SearchEmptyState';
 import { ItemButtonStyle, ListStyle } from './SearchList.styles';
 
-interface SearchListProps {
-  searchResults: PlaceAddType[];
-  onClose: () => void;
-  searchedKeyword: string;
-}
+import type { SearchListProps } from './SearchList.types';
 
 const SearchList = ({
   searchResults,

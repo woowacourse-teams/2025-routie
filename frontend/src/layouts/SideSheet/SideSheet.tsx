@@ -8,12 +8,12 @@ import Flex from '@/@common/components/Flex/Flex';
 import Text from '@/@common/components/Text/Text';
 import CloseSheetIcon from '@/assets/icons/closeSheet.svg';
 import AddPlaceModal from '@/domains/places/components/AddPlaceModal/AddPlaceModal';
-import { PlaceCard } from '@/domains/places/components/PlaceCard/PlaceCard';
+import PlaceCard from '@/domains/places/components/PlaceCard/PlaceCard';
 import { useRoutieContext } from '@/domains/routie/contexts/useRoutieContext';
 import { useGoogleEventTrigger } from '@/libs/googleAnalytics/hooks/useGoogleEventTrigger';
 import theme from '@/styles/theme';
 
-import { usePlaceListContext } from '../PlaceList/contexts/PlaceListContext';
+import { usePlaceListContext } from '../../domains/places/contexts/PlaceList/PlaceListContext';
 
 import {
   SheetBaseStyle,
@@ -27,10 +27,7 @@ import {
   SheetScrollableAreaStyle,
 } from './SideSheet.styles';
 
-interface SideSheetProps {
-  open: boolean;
-  onToggle: () => void;
-}
+import type { SideSheetProps } from './SideSheet.types';
 
 const SideSheet = ({ open, onToggle }: SideSheetProps) => {
   const { placeList } = usePlaceListContext();
