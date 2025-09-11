@@ -31,9 +31,7 @@ interface DrawMarkerProps {
   onClick?: () => void;
 }
 
-interface UseMapMarkerProps {
-  map: RefObject<KakaoMapType>;
-}
+type MapRefType = RefObject<KakaoMapType>;
 
 export type {
   UseKakaoMapSDKReturn,
@@ -43,5 +41,5 @@ export type {
   MapStateType,
   MarkerType,
   DrawMarkerProps,
-  UseMapMarkerProps,
+  MapRefType,
 };

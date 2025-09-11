@@ -5,11 +5,11 @@ import { createCustomMarkerElement } from '../utils/createCustomMarkerElement';
 import type {
   DrawMarkerProps,
   MarkerType,
-  UseMapMarkerProps,
+  MapRefType,
 } from '../types/KaKaoMap.types';
 import type { CustomOverlayType } from '../types/Overlay.types';
 
-const useMapMarker = ({ map }: UseMapMarkerProps) => {
+const useMapMarker = (map: MapRefType) => {
   const markersRef = useRef<(MarkerType | CustomOverlayType)[]>([]);
 
   const clearMarkers = useCallback(() => {

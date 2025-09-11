@@ -43,13 +43,9 @@ const KakaoMap = () => {
     sdkReady,
   });
   const { fitMapToMarkers, drawMarkers, clearMarkers, fitMapToMarker } =
-    useMapMarker({
-      map: mapRef,
-    });
-  const { loadPolyline, clearPolyline } = usePolyline({
-    map: mapRef,
-  });
-  const { containerEl, openAt, close } = useCustomOverlay({ map: mapRef });
+    useMapMarker(mapRef);
+  const { loadPolyline, clearPolyline } = usePolyline(mapRef);
+  const { containerEl, openAt, close } = useCustomOverlay(mapRef);
   const [selectedPlace, setSelectedPlace] = useState<PlaceFetchType | null>(
     null,
   );
