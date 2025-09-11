@@ -8,7 +8,7 @@ import { useToastContext } from '@/@common/contexts/useToastContext';
 import { useAsyncLock } from '@/@common/hooks/useAsyncLock';
 import { useAddPlaceForm } from '@/domains/places/hooks/useAddPlaceForm';
 import { usePlaceFormValidation } from '@/domains/places/hooks/usePlaceFormValidation';
-import { usePlaceListContext } from '@/layouts/PlaceList/contexts/PlaceListContext';
+import { usePlaceListContext } from '@/domains/places/contexts/PlaceList/PlaceListContext';
 
 import { addPlace } from '../../apis/place';
 import { useFunnel } from '../../hooks/useFunnel';

@@ -2,8 +2,8 @@ import { useLayoutEffect } from 'react';
 import { useSearchParams } from 'react-router';
 
 import Flex from '@/@common/components/Flex/Flex';
-import { RoutieProvider } from '@/domains/routie/contexts/useRoutieContext';
-import { RoutieValidateProvider } from '@/domains/routie/contexts/useRoutieValidateContext';
+import PlaceListProvider from '@/domains/places/contexts/PlaceList/PlaceListProvider';
+import RoutieProvider from '@/domains/routie/contexts/RoutieProvider';
 import MapWithSideSheet from '@/layouts/MapWithSideSheet/MapWithSideSheet';
 import PlaceListProvider from '@/layouts/PlaceList/contexts/PlaceListProvider';
 import Sidebar from '@/layouts/Sidebar/Sidebar';

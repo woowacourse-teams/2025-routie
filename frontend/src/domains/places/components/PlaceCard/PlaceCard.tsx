@@ -6,8 +6,8 @@ import Icon from '@/@common/components/IconSvg/Icon';
 import Text from '@/@common/components/Text/Text';
 import { useToastContext } from '@/@common/contexts/useToastContext';
 import { useAsyncLock } from '@/@common/hooks/useAsyncLock';
+import { usePlaceListContext } from '@/domains/places/contexts/PlaceList/PlaceListContext';
 import { useRoutieContext } from '@/domains/routie/contexts/useRoutieContext';
-import { usePlaceListContext } from '@/layouts/PlaceList/contexts/PlaceListContext';
 import { useGoogleEventTrigger } from '@/libs/googleAnalytics/hooks/useGoogleEventTrigger';
 import theme from '@/styles/theme';
 

@@ -13,7 +13,7 @@ import { useRoutieContext } from '@/domains/routie/contexts/useRoutieContext';
 import { useGoogleEventTrigger } from '@/libs/googleAnalytics/hooks/useGoogleEventTrigger';
 import theme from '@/styles/theme';
 
-import { usePlaceListContext } from '../PlaceList/contexts/PlaceListContext';
+import { usePlaceListContext } from '../../domains/places/contexts/PlaceList/PlaceListContext';
 
 import {
   SheetBaseStyle,
