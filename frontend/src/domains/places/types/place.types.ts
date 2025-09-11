@@ -6,7 +6,7 @@ interface PlaceBaseType {
   longitude: number;
 }
 
-interface PlaceAddType extends PlaceBaseType {
+interface SearchedPlaceType extends PlaceBaseType {
   searchedPlaceId: string;
 }
 
@@ -35,7 +35,7 @@ interface PlaceListProviderProps {
 
 export type {
   PlaceBaseType,
-  PlaceAddType,
+  SearchedPlaceType,
   PlaceFetchType,
   PlaceSearchType,
   PlaceListContextType,

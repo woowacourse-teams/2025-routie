@@ -10,10 +10,10 @@ import theme from '@/styles/theme';
 import { addPlace } from '../../apis/place';
 import SearchAddress from '../SearchAddress/SearchAddress';
 
-import type { PlaceAddType } from '../../types/place.types';
+import type { SearchedPlaceType } from '../../types/place.types';
 
 interface SearchPlaceProps {
-  searchResult: PlaceAddType;
+  searchResult: SearchedPlaceType;
   addressType: '도로명' | '지번';
   address: string;
   onClose: () => void;
