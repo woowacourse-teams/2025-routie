@@ -20,7 +20,7 @@ const useSearchPlace = () => {
     searchedKeywordRef.current = keyword;
 
     try {
-      const searchedPlaces = await searchPlace(keyword);
+      const searchedPlaces = await searchPlace({ query: keyword });
       setSearchResults(searchedPlaces);
     } catch (error) {
       console.error(error);

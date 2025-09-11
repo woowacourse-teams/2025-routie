@@ -40,7 +40,7 @@ const PlaceCard = ({ selected, ...props }: PlaceCardProps) => {
   const handleDelete = async () => {
     return runDeleteWithLock(async () => {
       try {
-        await deletePlace(props.id);
+        await deletePlace({ placeId: props.id });
         await refetchPlaceList();
         triggerEvent({
           action: 'click',

@@ -1,12 +1,16 @@
 import { apiClient } from '@/apis';
 
 import type {
-  PlaceAddType,
-  PlaceBaseType,
-  PlaceFetchType,
-} from '../types/place.types';
+  AddPlaceRequestType,
+  SearchPlaceRequestType,
+  FetchPlaceRequestType,
+  FetchPlaceResponseType,
+  DeletePlaceRequestType,
+  FetchPlaceListResponseType,
+  SearchPlaceResponseType,
+} from '../types/api.types';
 
-const addPlace = async (placeInfo: PlaceAddType) => {
+const addPlace = async (placeInfo: AddPlaceRequestType) => {
   const routieSpaceUuid = localStorage.getItem('routieSpaceUuid');
 
   if (!routieSpaceUuid) {
@@ -22,18 +26,20 @@ const addPlace = async (placeInfo: PlaceAddType) => {
   return data;
 };
 
-const deletePlace = async (id: number) => {
+const deletePlace = async ({ placeId }: DeletePlaceRequestType) => {
   const routieSpaceUuid = localStorage.getItem('routieSpaceUuid');
 
   if (!routieSpaceUuid) {
     throw new Error('루티 스페이스 uuid가 없습니다.');
   }
 
-  await apiClient.delete(`/routie-spaces/${routieSpaceUuid}/places/${id}`);
+  await apiClient.delete(`/routie-spaces/${routieSpaceUuid}/places/${placeId}`);
 };
 
 // 사용 안하고 있어서 삭제 고려 필요
-const getPlace = async (placeId: number): Promise<PlaceBaseType> => {
+const getPlace = async ({
+  placeId,
+}: FetchPlaceRequestType): Promise<FetchPlaceResponseType> => {
   const routieSpaceUuid = localStorage.getItem('routieSpaceUuid');
 
   if (!routieSpaceUuid) {
@@ -49,7 +55,7 @@ const getPlace = async (placeId: number): Promise<PlaceBaseType> => {
   return data;
 };
 
-const getPlaceList = async (): Promise<PlaceFetchType[]> => {
+const getPlaceList = async (): Promise<FetchPlaceListResponseType[]> => {
   const routieSpaceUuid = localStorage.getItem('routieSpaceUuid');
 
   if (!routieSpaceUuid) {
@@ -65,14 +71,16 @@ const getPlaceList = async (): Promise<PlaceFetchType[]> => {
   return data.places;
 };
 
-const searchPlace = async (keyword: string): Promise<PlaceAddType[]> => {
+const searchPlace = async ({
+  query,
+}: SearchPlaceRequestType): Promise<SearchPlaceResponseType[]> => {
   const routieSpaceUuid = localStorage.getItem('routieSpaceUuid');
 
   if (!routieSpaceUuid) {
     throw new Error('루티 스페이스 uuid가 없습니다.');
   }
   const response = await apiClient.get(
-    `/places/search?query=${encodeURIComponent(keyword)}`,
+    `/places/search?query=${encodeURIComponent(query)}`,
   );
 
   const data = await response.json();
