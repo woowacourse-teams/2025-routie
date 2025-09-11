@@ -10,7 +10,7 @@ interface SearchedPlaceType extends PlaceBaseType {
   searchedPlaceId: string;
 }
 
-interface PlaceFetchType extends PlaceBaseType {
+interface PlaceDataType extends PlaceBaseType {
   id: number;
 }
 
@@ -22,10 +22,10 @@ interface PlaceSearchType {
 }
 
 interface PlaceListContextType {
-  placeList: PlaceFetchType[];
+  placeList: PlaceDataType[];
   refetchPlaceList: () => Promise<void>;
   handleDelete: (id: number) => void;
-  newlyAddedPlace: PlaceFetchType | null;
+  newlyAddedPlace: PlaceDataType | null;
   handlePlaceAdded: () => Promise<void>;
 }
 
@@ -36,7 +36,7 @@ interface PlaceListProviderProps {
 export type {
   PlaceBaseType,
   SearchedPlaceType,
-  PlaceFetchType,
+  PlaceDataType,
   PlaceSearchType,
   PlaceListContextType,
   PlaceListProviderProps,

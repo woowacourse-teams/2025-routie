@@ -5,7 +5,7 @@ import Flex from '@/@common/components/Flex/Flex';
 import Text from '@/@common/components/Text/Text';
 import PlaceOverlayCard from '@/domains/maps/components/PlaceOverlayCard/PlaceOverlayCard';
 import { usePlaceListContext } from '@/domains/places/contexts/PlaceList/PlaceListContext';
-import { PlaceFetchType } from '@/domains/places/types/place.types';
+import { PlaceDataType } from '@/domains/places/types/place.types';
 import { useRoutieContext } from '@/domains/routie/contexts/useRoutieContext';
 
 import { useCustomOverlay } from '../../hooks/useCustomOverlay';
@@ -46,7 +46,7 @@ const KakaoMap = () => {
     useMapMarker(mapRef);
   const { loadPolyline, clearPolyline } = usePolyline(mapRef);
   const { containerEl, openAt, close } = useCustomOverlay(mapRef);
-  const [selectedPlace, setSelectedPlace] = useState<PlaceFetchType | null>(
+  const [selectedPlace, setSelectedPlace] = useState<PlaceDataType | null>(
     null,
   );
 
