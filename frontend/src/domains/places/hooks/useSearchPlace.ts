@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 
 import { useToastContext } from '@/@common/contexts/useToastContext';
 
@@ -8,6 +8,7 @@ import type { PlaceAddType } from '../types/place.types';
 
 const useSearchPlace = () => {
   const [keyword, setKeyword] = useState('');
+  const searchedKeywordRef = useRef('');
   const [searchResults, setSearchResults] = useState<PlaceAddType[] | null>(
     null,
   );
@@ -15,6 +16,8 @@ const useSearchPlace = () => {
 
   const handleSearch = async () => {
     if (!keyword) return setSearchResults([]);
+
+    searchedKeywordRef.current = keyword;
 
     try {
       const searchedPlaces = await searchPlace(keyword);
@@ -32,7 +35,6 @@ const useSearchPlace = () => {
 
   const handleChangeKeyword = (keyword: string) => {
     setKeyword(keyword);
-    setSearchResults(null);
   };
 
   const handleReset = () => {
@@ -55,6 +57,7 @@ const useSearchPlace = () => {
     setSearchResults,
     handleSearch,
     handleReset,
+    searchedKeyword: searchedKeywordRef.current,
   };
 };
 
