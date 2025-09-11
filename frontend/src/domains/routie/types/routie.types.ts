@@ -1,6 +1,3 @@
-import { MovingStrategyType } from '../components/SelectMovingStrategy/SelectMovingStrategy.types';
-import { VALIDATION_RESULT_CODE } from '../constants/routieValidation';
-
 interface RoutesType {
   fromSequence: number;
   toSequence: number;
@@ -24,44 +21,6 @@ interface RoutieContextType {
   handleDeleteRoutie: (id: number) => Promise<void>;
   handleChangeRoutie: (sortedPlaces: RoutieType[]) => Promise<void>;
   routieIdList: number[];
-  movingStrategy: MovingStrategyType;
-  setMovingStrategy: (strategy: MovingStrategyType) => void;
-  fetchedStrategy: MovingStrategyType;
 }
 
-type ValidationErrorCodeType = keyof typeof VALIDATION_RESULT_CODE;
-
-type ValidationStatus =
-  | 'inactive'
-  | 'waiting'
-  | 'validating'
-  | 'success'
-  | 'error';
-
-type WaitingReason = 'no_date' | 'insufficient_places' | null;
-
-interface InvalidRoutiePlace {
-  routiePlaceId: number;
-}
-
-interface ValidationResultType {
-  validationCode: ValidationErrorCodeType;
-  isValid: boolean;
-  invalidRoutiePlaces: InvalidRoutiePlace[];
-}
-
-interface RoutieValidationResponseType {
-  validationResultResponses: ValidationResultType[];
-}
-
-export type {
-  RoutieType,
-  RoutesType,
-  RoutieContextType,
-  ValidationResultType,
-  ValidationErrorCodeType,
-  ValidationStatus,
-  WaitingReason,
-  InvalidRoutiePlace,
-  RoutieValidationResponseType,
-};
+export type { RoutieType, RoutesType, RoutieContextType };
