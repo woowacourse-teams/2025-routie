@@ -69,11 +69,14 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
+        with:
+          submodules: true
+          fetch-depth: 0
+          recursive: true
+          token: ${{ secrets.PAT_FOR_SUBMODULE }}
 
-      - name: Restore docker-compose.yml and Run Containers
-        run: |
-          echo '${{ secrets.DOCKER_COMPOSE_YML_PROD }}' > docker-compose.yml
-          sudo docker compose up -d
+      - name: Run Containers
+        run: sudo docker compose -f routie-backend-private/prod/docker-compose.yml up -d
 
       - name: Clean old JARs
         run: rm -f build/libs/*.jar
@@ -84,10 +87,10 @@ jobs:
           name: spring-boot-app
           path: backend/spring-routie/build/libs
 
-      - name: Restore application.yml
+      - name: Copy application.yml
         run: |
           mkdir -p config
-          echo '${{ secrets.APPLICATION_YML_PROD }}' > config/application.yml
+          cp routie-backend-private/prod/application.yml > config/application.yml
 
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
