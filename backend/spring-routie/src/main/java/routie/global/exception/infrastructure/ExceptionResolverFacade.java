@@ -32,7 +32,7 @@ public class ExceptionResolverFacade implements ExceptionResolver {
     @Override
     public ExceptionDetail resolve(final Exception exception) {
         try {
-            return Optional.ofNullable(expectedExceptionResolvers.get(exception.getClass()))
+            return findMostSpecificResolver(exception)
                     .map(expectedExceptionResolver -> expectedExceptionResolver.resolve(exception))
                     .orElseGet(() -> unexpectedExceptionResolvers.resolve(exception));
         } catch (final Exception e) {
@@ -40,6 +40,23 @@ public class ExceptionResolverFacade implements ExceptionResolver {
             return ExceptionDetail.fromErrorCode(ErrorCode.FAIL_TO_HANDLE_EXCEPTION);
         }
     }
+
+    private Optional<ExpectedExceptionResolver<? extends Exception>> findMostSpecificResolver(
+            final Exception exception
+    ) {
+        Class<?> currentExceptionClass = exception.getClass();
+
+        while (currentExceptionClass != null && Exception.class.isAssignableFrom(currentExceptionClass)) {
+            ExpectedExceptionResolver<? extends Exception> resolver = expectedExceptionResolvers.get(
+                    currentExceptionClass);
+            if (resolver != null) {
+                return Optional.of(resolver);
+            }
+            currentExceptionClass = currentExceptionClass.getSuperclass();
+        }
+        return Optional.empty();
+    }
+
 
     @Override
     public Class<? extends Exception> getResolvableException() {
