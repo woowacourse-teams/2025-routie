@@ -14,13 +14,6 @@ interface PlaceDataType extends PlaceBaseType {
   id: number;
 }
 
-// 임시 타입
-interface PlaceSearchType {
-  searchedPlaceId: string;
-  latitude: number;
-  longitude: number;
-}
-
 interface PlaceListContextType {
   placeList: PlaceDataType[];
   refetchPlaceList: () => Promise<void>;
@@ -37,7 +30,6 @@ export type {
   PlaceBaseType,
   SearchedPlaceType,
   PlaceDataType,
-  PlaceSearchType,
   PlaceListContextType,
   PlaceListProviderProps,
 };
