@@ -1,13 +1,19 @@
 import { apiClient } from '@/apis';
 
-import type {
-  CreateRoutieResponseType,
-  GetRoutieSpaceResponseType,
-  EditRoutieSpaceNameRequestType,
-  EditRoutieSpaceNameResponseType,
-} from '../types/api.types';
+import {
+  createRoutieSpaceAdapter,
+  editRoutieSpaceNameAdapter,
+  routieSpaceAdapter,
+} from '../adapters/routieSpaceAdapter';
+import {
+  CreateRoutieSpaceAdapterType,
+  EditRoutieSpaceNameAdapterType,
+  RoutieSpaceAdapterType,
+} from '../types/routieSpace.types';
 
-const createRoutieSpace = async (): Promise<CreateRoutieResponseType> => {
+import type { EditRoutieSpaceNameRequestType } from '../types/api.types';
+
+const createRoutieSpace = async (): Promise<CreateRoutieSpaceAdapterType> => {
   const response = await apiClient.post('/routie-spaces');
 
   const data = await response.json();
@@ -16,10 +22,10 @@ const createRoutieSpace = async (): Promise<CreateRoutieResponseType> => {
     throw new Error('루티 스페이스 생성에 실패했습니다.');
   }
 
-  return data;
+  return createRoutieSpaceAdapter(data);
 };
 
-const getRoutieSpace = async (): Promise<GetRoutieSpaceResponseType> => {
+const getRoutieSpace = async (): Promise<RoutieSpaceAdapterType> => {
   const routieSpaceUuid = localStorage.getItem('routieSpaceUuid');
 
   if (!routieSpaceUuid) {
@@ -30,12 +36,12 @@ const getRoutieSpace = async (): Promise<GetRoutieSpaceResponseType> => {
 
   const data = await response.json();
 
-  return data;
+  return routieSpaceAdapter(data);
 };
 
 const editRoutieSpaceName = async ({
   name,
-}: EditRoutieSpaceNameRequestType): Promise<EditRoutieSpaceNameResponseType> => {
+}: EditRoutieSpaceNameRequestType): Promise<EditRoutieSpaceNameAdapterType> => {
   const routieSpaceUuid = localStorage.getItem('routieSpaceUuid');
 
   if (!routieSpaceUuid) {
@@ -48,7 +54,7 @@ const editRoutieSpaceName = async ({
 
   const data = await response.json();
 
-  return data;
+  return editRoutieSpaceNameAdapter(data);
 };
 
 export { createRoutieSpace, getRoutieSpace, editRoutieSpaceName };

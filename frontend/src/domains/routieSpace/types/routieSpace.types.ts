@@ -13,4 +13,25 @@ interface UseRoutieSpaceNameReturn {
   handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-export type { ERROR_CASE, UseRoutieSpaceNameReturn };
+type RoutieSpaceNameType = string;
+
+interface RoutieSpaceAdapterType {
+  name: RoutieSpaceNameType;
+}
+
+interface CreateRoutieSpaceAdapterType {
+  routieSpaceUuid: string;
+}
+
+interface EditRoutieSpaceNameAdapterType {
+  name: RoutieSpaceNameType;
+}
+
+export type {
+  ERROR_CASE,
+  UseRoutieSpaceNameReturn,
+  RoutieSpaceNameType,
+  RoutieSpaceAdapterType,
+  CreateRoutieSpaceAdapterType,
+  EditRoutieSpaceNameAdapterType,
+};
