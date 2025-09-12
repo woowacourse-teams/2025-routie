@@ -12,9 +12,9 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import routie.global.exception.BusinessException;
-import routie.global.exception.ErrorCode;
 import routie.business.place.domain.Place;
+import routie.global.exception.domain.BusinessException;
+import routie.global.exception.domain.ErrorCode;
 
 @Getter
 @Embeddable

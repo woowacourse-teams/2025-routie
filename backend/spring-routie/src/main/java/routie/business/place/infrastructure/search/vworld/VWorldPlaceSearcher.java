@@ -3,13 +3,13 @@ package routie.business.place.infrastructure.search.vworld;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import routie.global.exception.BusinessException;
-import routie.global.exception.ErrorCode;
 import routie.business.place.domain.PlaceSearcher;
 import routie.business.place.domain.SearchedPlace;
 import routie.business.place.infrastructure.search.vworld.api.VWorldPlaceSearchApiClient;
 import routie.business.place.infrastructure.search.vworld.api.dto.request.VWorldPlaceSearchApiRequest;
 import routie.business.place.infrastructure.search.vworld.api.dto.response.VWorldPlaceSearchApiResponse;
+import routie.global.exception.domain.BusinessException;
+import routie.global.exception.domain.ErrorCode;
 
 @Component
 @RequiredArgsConstructor

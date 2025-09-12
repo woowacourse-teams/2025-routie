@@ -3,11 +3,11 @@ package routie.business.routie.domain.timeperiod;
 import java.time.LocalDateTime;
 import java.util.List;
 import org.springframework.stereotype.Component;
-import routie.global.exception.BusinessException;
-import routie.global.exception.ErrorCode;
 import routie.business.routie.domain.RoutiePlace;
 import routie.business.routie.domain.route.Route;
 import routie.business.routie.domain.route.Routes;
+import routie.global.exception.domain.BusinessException;
+import routie.global.exception.domain.ErrorCode;
 
 @Component
 public class TimePeriodCalculator {

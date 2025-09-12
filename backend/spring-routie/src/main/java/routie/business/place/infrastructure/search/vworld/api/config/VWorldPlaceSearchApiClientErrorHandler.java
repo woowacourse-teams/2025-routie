@@ -9,10 +9,10 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.lang.NonNull;
 import org.springframework.web.client.ResponseErrorHandler;
-import routie.global.exception.BusinessException;
-import routie.global.exception.ErrorCode;
 import routie.business.place.infrastructure.search.vworld.api.dto.response.VWorldPlaceSearchApiErrorResponse;
 import routie.business.place.infrastructure.search.vworld.api.dto.response.VWorldPlaceSearchApiStatusResponse;
+import routie.global.exception.domain.BusinessException;
+import routie.global.exception.domain.ErrorCode;
 
 @Slf4j
 @RequiredArgsConstructor

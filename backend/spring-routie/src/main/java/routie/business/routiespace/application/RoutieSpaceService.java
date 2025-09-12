@@ -3,15 +3,15 @@ package routie.business.routiespace.application;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import routie.global.exception.BusinessException;
-import routie.global.exception.ErrorCode;
+import routie.business.routiespace.domain.RoutieSpace;
+import routie.business.routiespace.domain.RoutieSpaceIdentifierProvider;
+import routie.business.routiespace.domain.RoutieSpaceRepository;
 import routie.business.routiespace.ui.dto.request.RoutieSpaceUpdateRequest;
 import routie.business.routiespace.ui.dto.response.RoutieSpaceCreateResponse;
 import routie.business.routiespace.ui.dto.response.RoutieSpaceReadResponse;
 import routie.business.routiespace.ui.dto.response.RoutieSpaceUpdateResponse;
-import routie.business.routiespace.domain.RoutieSpace;
-import routie.business.routiespace.domain.RoutieSpaceIdentifierProvider;
-import routie.business.routiespace.domain.RoutieSpaceRepository;
+import routie.global.exception.domain.BusinessException;
+import routie.global.exception.domain.ErrorCode;
 
 @Service
 @RequiredArgsConstructor

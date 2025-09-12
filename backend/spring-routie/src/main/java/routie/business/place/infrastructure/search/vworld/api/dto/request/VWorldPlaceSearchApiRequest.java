@@ -1,7 +1,7 @@
 package routie.business.place.infrastructure.search.vworld.api.dto.request;
 
-import routie.global.exception.BusinessException;
-import routie.global.exception.ErrorCode;
+import routie.global.exception.domain.BusinessException;
+import routie.global.exception.domain.ErrorCode;
 
 public record VWorldPlaceSearchApiRequest(
         String query,

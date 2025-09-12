@@ -2,12 +2,12 @@ package routie.business.routie.infrastructure.routecalculator;
 
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import routie.global.exception.BusinessException;
-import routie.global.exception.ErrorCode;
 import routie.business.routie.domain.route.MovingStrategy;
 import routie.business.routie.domain.route.RouteCalculationContext;
 import routie.business.routie.domain.route.RouteCalculator;
 import routie.business.routie.domain.route.Routes;
+import routie.global.exception.domain.BusinessException;
+import routie.global.exception.domain.ErrorCode;
 
 @RequiredArgsConstructor
 public class RouteCalculatorComposite implements RouteCalculator {

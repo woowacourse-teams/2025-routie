@@ -48,7 +48,7 @@ public class RequestLoggingAspect {
         }
     }
 
-    @After("execution(* routie.global.exception.GlobalExceptionHandler.*(..))")
+    @After("execution(* routie.global.exception.ui.ExceptionController.*(..))")
     public void cleanupAfterExceptionHandling() {
         TraceIdHolder.clearTraceId();
     }

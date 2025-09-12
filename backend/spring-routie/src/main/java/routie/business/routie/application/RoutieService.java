@@ -10,18 +10,11 @@ import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import routie.global.exception.BusinessException;
-import routie.global.exception.ErrorCode;
 import routie.business.place.domain.Place;
 import routie.business.place.domain.PlaceRepository;
-import routie.business.routie.ui.dto.request.RoutiePlaceCreateRequest;
-import routie.business.routie.ui.dto.request.RoutieUpdateRequest;
-import routie.business.routie.ui.dto.request.RoutieUpdateRequest.RoutiePlaceRequest;
-import routie.business.routie.ui.dto.response.RoutiePlaceCreateResponse;
-import routie.business.routie.ui.dto.response.RoutieReadResponse;
-import routie.business.routie.ui.dto.response.RoutieValidationResponse;
 import routie.business.routie.domain.Routie;
 import routie.business.routie.domain.RoutiePlace;
+import routie.business.routie.domain.RoutiePlaceRepository;
 import routie.business.routie.domain.route.MovingStrategy;
 import routie.business.routie.domain.route.RouteCalculationContext;
 import routie.business.routie.domain.route.RouteCalculator;
@@ -32,9 +25,16 @@ import routie.business.routie.domain.routievalidator.ValidationResult;
 import routie.business.routie.domain.routievalidator.ValidationStrategy;
 import routie.business.routie.domain.timeperiod.TimePeriodCalculator;
 import routie.business.routie.domain.timeperiod.TimePeriods;
-import routie.business.routie.domain.RoutiePlaceRepository;
+import routie.business.routie.ui.dto.request.RoutiePlaceCreateRequest;
+import routie.business.routie.ui.dto.request.RoutieUpdateRequest;
+import routie.business.routie.ui.dto.request.RoutieUpdateRequest.RoutiePlaceRequest;
+import routie.business.routie.ui.dto.response.RoutiePlaceCreateResponse;
+import routie.business.routie.ui.dto.response.RoutieReadResponse;
+import routie.business.routie.ui.dto.response.RoutieValidationResponse;
 import routie.business.routiespace.domain.RoutieSpace;
 import routie.business.routiespace.domain.RoutieSpaceRepository;
+import routie.global.exception.domain.BusinessException;
+import routie.global.exception.domain.ErrorCode;
 
 @Service
 @RequiredArgsConstructor

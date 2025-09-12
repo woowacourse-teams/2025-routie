@@ -1,8 +1,8 @@
 package routie.business.routie.domain.route;
 
-import routie.global.exception.BusinessException;
-import routie.global.exception.ErrorCode;
 import routie.business.routie.domain.RoutiePlace;
+import routie.global.exception.domain.BusinessException;
+import routie.global.exception.domain.ErrorCode;
 
 public record Route(
         RoutiePlace from,

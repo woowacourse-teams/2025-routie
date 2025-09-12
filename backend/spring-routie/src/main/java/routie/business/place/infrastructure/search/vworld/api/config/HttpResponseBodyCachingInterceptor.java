@@ -1,5 +1,8 @@
 package routie.business.place.infrastructure.search.vworld.api.config;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpRequest;
@@ -10,12 +13,8 @@ import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.lang.NonNull;
 import org.springframework.util.StreamUtils;
 import org.springframework.web.client.RestClient;
-import routie.global.exception.BusinessException;
-import routie.global.exception.ErrorCode;
-
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import routie.global.exception.domain.BusinessException;
+import routie.global.exception.domain.ErrorCode;
 
 /**
  * RestClient에 CachingClientHttpResponseWrapper 적용을 위한 Interceptor 입니다.

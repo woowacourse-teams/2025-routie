@@ -6,8 +6,6 @@ import java.util.List;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import routie.global.exception.BusinessException;
-import routie.global.exception.ErrorCode;
 import routie.business.routie.domain.RoutiePlace;
 import routie.business.routie.domain.route.MovingStrategy;
 import routie.business.routie.domain.route.Route;
@@ -18,6 +16,8 @@ import routie.business.routie.infrastructure.routecalculator.transit.googletrans
 import routie.business.routie.infrastructure.routecalculator.transit.googletransitapi.GoogleTransitRouteApiRequest;
 import routie.business.routie.infrastructure.routecalculator.transit.googletransitapi.GoogleTransitRouteApiResponse;
 import routie.business.routie.infrastructure.routecalculator.transit.googletransitapi.GoogleTransitRouteApiResponse.RouteResponse;
+import routie.global.exception.domain.BusinessException;
+import routie.global.exception.domain.ErrorCode;
 
 @Component
 @RequiredArgsConstructor

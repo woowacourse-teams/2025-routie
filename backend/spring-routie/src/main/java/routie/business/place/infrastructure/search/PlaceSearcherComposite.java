@@ -2,10 +2,10 @@ package routie.business.place.infrastructure.search;
 
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import routie.global.exception.BusinessException;
-import routie.global.exception.ErrorCode;
 import routie.business.place.domain.PlaceSearcher;
 import routie.business.place.domain.SearchedPlace;
+import routie.global.exception.domain.BusinessException;
+import routie.global.exception.domain.ErrorCode;
 
 @RequiredArgsConstructor
 public class PlaceSearcherComposite implements PlaceSearcher {
