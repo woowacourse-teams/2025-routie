@@ -9,11 +9,6 @@ interface RoutieType {
   placeId: number;
 }
 
-interface RoutieAdapterType {
-  routiePlaces: RoutieType[];
-  routes: RoutesType[];
-}
-
 interface RoutieContextType {
   routiePlaces: RoutieType[];
   routes: RoutesType[];
@@ -22,6 +17,11 @@ interface RoutieContextType {
   handleDeleteRoutie: (id: number) => Promise<void>;
   handleChangeRoutie: (sortedPlaces: RoutieType[]) => Promise<void>;
   routieIdList: number[];
+}
+
+interface RoutieAdapterType {
+  routiePlaces: RoutieType[];
+  routes: RoutesType[];
 }
 
 export type { RoutieType, RoutesType, RoutieContextType, RoutieAdapterType };
