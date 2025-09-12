@@ -41,6 +41,11 @@ public enum ErrorCode {
             "요청 바디를 읽는 데에 실패했습니다.",
             HttpStatus.BAD_REQUEST
     ),
+    NOT_FOUND(
+            "0006",
+            "요청한 리소스를 찾을 수 없습니다.",
+            HttpStatus.NOT_FOUND
+    ),
 
     /**
      * 1XXX: Place domain
