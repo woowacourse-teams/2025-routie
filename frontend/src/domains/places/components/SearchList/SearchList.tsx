@@ -1,9 +1,9 @@
+import type { SearchListProps } from '@/domains/places/types/searchPlace.types';
+
 import SearchPlace from '../SearchPlace/SearchPlace';
 
-import SearchEmptyState from './SearchEmptyState';
+import SearchEmptyList from './SearchEmptyList';
 import { ItemButtonStyle, ListStyle } from './SearchList.styles';
-
-import type { SearchListProps } from './SearchList.types';
 
 const SearchList = ({
   searchResults,
@@ -32,7 +32,7 @@ const SearchList = ({
           );
         })
       ) : (
-        <SearchEmptyState keyword={searchedKeyword} />
+        <SearchEmptyList keyword={searchedKeyword} />
       )}
     </ul>
   );

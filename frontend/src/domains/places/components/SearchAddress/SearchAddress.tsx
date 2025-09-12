@@ -3,8 +3,7 @@ import { css } from '@emotion/react';
 import Flex from '@/@common/components/Flex/Flex';
 import Pill from '@/@common/components/Pill/Pill';
 import Text from '@/@common/components/Text/Text';
-
-import type { SearchAddressProps } from './SearchAddress.types';
+import type { SearchAddressProps } from '@/domains/places/types/searchPlace.types';
 
 const SearchAddress = ({ addressType, address }: SearchAddressProps) => {
   return (

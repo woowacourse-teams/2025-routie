@@ -1,8 +1,7 @@
 import EmptyMessage from '@/@common/components/EmptyMessage/EmptyMessage';
+import type { SearchEmptyListProps } from '@/domains/places/types/searchPlace.types';
 
-import type { SearchEmptyStateProps } from './SearchList.types';
-
-const SearchEmptyState = ({ keyword }: SearchEmptyStateProps) => {
+const SearchEmptyList = ({ keyword }: SearchEmptyListProps) => {
   return (
     <EmptyMessage
       messages={[
@@ -13,4 +12,4 @@ const SearchEmptyState = ({ keyword }: SearchEmptyStateProps) => {
   );
 };
 
-export default SearchEmptyState;
+export default SearchEmptyList;
