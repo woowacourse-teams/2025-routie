@@ -1,8 +1,14 @@
 import { apiClient } from '@/apis';
 
-import type { RoutieType } from '../types/routie.types';
+import type {
+  AddRoutiePlaceRequestType,
+  AddRoutiePlaceResponseType,
+  DeleteRoutiePlaceRequestType,
+  EditRoutieRequestType,
+  FetchRoutieResponseType,
+} from '../types/api.types';
 
-const getRoutie = async () => {
+const getRoutie = async (): Promise<FetchRoutieResponseType> => {
   const routieSpaceUuid = localStorage.getItem('routieSpaceUuid');
 
   if (!routieSpaceUuid) {
@@ -22,7 +28,7 @@ const getRoutie = async () => {
   return data;
 };
 
-const editRoutieSequence = async (routiePlaces: RoutieType[]) => {
+const editRoutieSequence = async ({ routiePlaces }: EditRoutieRequestType) => {
   const routieSpaceUuid = localStorage.getItem('routieSpaceUuid');
 
   if (!routieSpaceUuid) {
@@ -37,7 +43,6 @@ const editRoutieSequence = async (routiePlaces: RoutieType[]) => {
 const addRoutiePlace = async ({
   placeId,
 }: AddRoutiePlaceRequestType): Promise<AddRoutiePlaceResponseType> => {
-const addRoutiePlace = async (placeId: number) => {
   const routieSpaceUuid = localStorage.getItem('routieSpaceUuid');
 
   if (!routieSpaceUuid) {
@@ -56,7 +61,7 @@ const addRoutiePlace = async (placeId: number) => {
   return data;
 };
 
-const deleteRoutiePlace = async (placeId: number) => {
+const deleteRoutiePlace = async ({ placeId }: DeleteRoutiePlaceRequestType) => {
   const routieSpaceUuid = localStorage.getItem('routieSpaceUuid');
 
   if (!routieSpaceUuid) {
@@ -68,10 +73,4 @@ const deleteRoutiePlace = async (placeId: number) => {
   );
 };
 
-export {
-  getRoutie,
-  editRoutieSequence,
-  getDetailPlace,
-  addRoutiePlace,
-  deleteRoutiePlace,
-};
+export { getRoutie, editRoutieSequence, addRoutiePlace, deleteRoutiePlace };

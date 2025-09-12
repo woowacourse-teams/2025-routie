@@ -51,7 +51,7 @@ const RoutieProvider = ({ children }: { children: React.ReactNode }) => {
     async (id: number) => {
       return runAddWithLock(async () => {
         try {
-          await addRoutiePlace(id);
+          await addRoutiePlace({ placeId: id });
           await refetchRoutieData();
           showToast({
             message: '내 동선에 장소가 추가되었습니다.',
@@ -75,7 +75,7 @@ const RoutieProvider = ({ children }: { children: React.ReactNode }) => {
     async (id: number) => {
       return runDeleteWithLock(async () => {
         try {
-          await deleteRoutiePlace(id);
+          await deleteRoutiePlace({ placeId: id });
           await refetchRoutieData();
           showToast({
             message: '내 동선에서 장소가 삭제되었습니다.',
@@ -103,7 +103,7 @@ const RoutieProvider = ({ children }: { children: React.ReactNode }) => {
         })
         .sort((a, b) => a.sequence - b.sequence);
       try {
-        await editRoutieSequence(sortedList);
+        await editRoutieSequence({ routiePlaces: sortedList });
         await refetchRoutieData();
       } catch (error) {
         console.error(error);
