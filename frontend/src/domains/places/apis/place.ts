@@ -36,7 +36,6 @@ const deletePlace = async ({ placeId }: DeletePlaceRequestType) => {
   await apiClient.delete(`/routie-spaces/${routieSpaceUuid}/places/${placeId}`);
 };
 
-// 사용 안하고 있어서 삭제 고려 필요
 const getPlace = async ({
   placeId,
 }: FetchPlaceRequestType): Promise<FetchPlaceResponseType> => {
