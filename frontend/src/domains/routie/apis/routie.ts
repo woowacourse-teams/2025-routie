@@ -34,22 +34,9 @@ const editRoutieSequence = async (routiePlaces: RoutieType[]) => {
   });
 };
 
-const getDetailPlace = async (id: number) => {
-  const routieSpaceUuid = localStorage.getItem('routieSpaceUuid');
-
-  if (!routieSpaceUuid) {
-    throw new Error('루티 스페이스 uuid가 없습니다.');
-  }
-
-  const response = await apiClient.get(
-    `/routie-spaces/${routieSpaceUuid}/places/${id}`,
-  );
-
-  const data = await response.json();
-
-  return data;
-};
-
+const addRoutiePlace = async ({
+  placeId,
+}: AddRoutiePlaceRequestType): Promise<AddRoutiePlaceResponseType> => {
 const addRoutiePlace = async (placeId: number) => {
   const routieSpaceUuid = localStorage.getItem('routieSpaceUuid');
 
