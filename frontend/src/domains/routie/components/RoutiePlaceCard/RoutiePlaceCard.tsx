@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 
 import Card from '@/@common/components/Card/Card';
+import DraggableWrapper from '@/@common/components/DraggableWrapper/DraggableWrapper';
 import Flex from '@/@common/components/Flex/Flex';
 import IconButton from '@/@common/components/IconButton/IconButton';
 import Icon from '@/@common/components/IconSvg/Icon';
@@ -13,7 +14,6 @@ import theme from '@/styles/theme';
 
 import { getDetailPlace } from '../../apis/routie';
 import { useRoutieContext } from '../../contexts/useRoutieContext';
-import DraggableWrapper from '../DraggableWrapper/DraggableWrapper';
 
 import { DragIconStyle, EllipsisParentStyle } from './RoutiePlaceCard.styles';
 

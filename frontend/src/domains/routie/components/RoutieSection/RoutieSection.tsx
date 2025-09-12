@@ -1,7 +1,7 @@
 import Flex from '@/@common/components/Flex/Flex';
+import { useCardDrag } from '@/@common/hooks/useCardDrag';
 
 import { useRoutieContext } from '../../contexts/useRoutieContext';
-import { useCardDrag } from '../../hooks/useCardDrag';
 import RoutiePlaceCard from '../RoutiePlaceCard/RoutiePlaceCard';
 
 const RoutieSection = () => {
