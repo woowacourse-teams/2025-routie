@@ -59,7 +59,7 @@ const useRoutieSpaceName = (): UseRoutieSpaceNameReturn => {
 
         setIsLoading(true);
 
-        const response = await editRoutieSpaceName(name);
+        const response = await editRoutieSpaceName({ name });
         const displayName = response.name ?? '이름 못 찾음';
 
         setName(displayName);

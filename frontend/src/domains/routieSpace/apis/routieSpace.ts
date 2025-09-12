@@ -3,8 +3,9 @@ import { apiClient } from '@/apis';
 import type {
   CreateRoutieResponseType,
   GetRoutieSpaceResponseType,
+  EditRoutieSpaceNameRequestType,
   EditRoutieSpaceNameResponseType,
-} from '../types/routieSpace.types';
+} from '../types/api.types';
 
 const createRoutieSpace = async (): Promise<CreateRoutieResponseType> => {
   const response = await apiClient.post('/routie-spaces');
@@ -32,9 +33,9 @@ const getRoutieSpace = async (): Promise<GetRoutieSpaceResponseType> => {
   return data;
 };
 
-const editRoutieSpaceName = async (
-  name: string,
-): Promise<EditRoutieSpaceNameResponseType> => {
+const editRoutieSpaceName = async ({
+  name,
+}: EditRoutieSpaceNameRequestType): Promise<EditRoutieSpaceNameResponseType> => {
   const routieSpaceUuid = localStorage.getItem('routieSpaceUuid');
 
   if (!routieSpaceUuid) {
