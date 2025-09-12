@@ -1,14 +1,22 @@
 import { apiClient } from '@/apis';
 
+import {
+  getPlaceAdapter,
+  getPlaceListAdapter,
+  searchPlaceAdapter,
+} from '../adapters/placeAdapter';
+
 import type {
   AddPlaceRequestType,
-  SearchPlaceRequestType,
-  FetchPlaceRequestType,
-  FetchPlaceResponseType,
   DeletePlaceRequestType,
-  FetchPlaceListResponseType,
-  SearchPlaceResponseType,
+  FetchPlaceRequestType,
+  SearchPlaceRequestType,
 } from '../types/api.types';
+import type {
+  PlaceAdapterType,
+  PlaceListAdapterType,
+  SearchPlaceAdapterType,
+} from '../types/place.types';
 
 const addPlace = async (placeInfo: AddPlaceRequestType) => {
   const routieSpaceUuid = localStorage.getItem('routieSpaceUuid');
@@ -38,7 +46,7 @@ const deletePlace = async ({ placeId }: DeletePlaceRequestType) => {
 
 const getPlace = async ({
   placeId,
-}: FetchPlaceRequestType): Promise<FetchPlaceResponseType> => {
+}: FetchPlaceRequestType): Promise<PlaceAdapterType> => {
   const routieSpaceUuid = localStorage.getItem('routieSpaceUuid');
 
   if (!routieSpaceUuid) {
@@ -51,10 +59,10 @@ const getPlace = async ({
 
   const data = await response.json();
 
-  return data;
+  return getPlaceAdapter(data);
 };
 
-const getPlaceList = async (): Promise<FetchPlaceListResponseType[]> => {
+const getPlaceList = async (): Promise<PlaceListAdapterType> => {
   const routieSpaceUuid = localStorage.getItem('routieSpaceUuid');
 
   if (!routieSpaceUuid) {
@@ -67,12 +75,12 @@ const getPlaceList = async (): Promise<FetchPlaceListResponseType[]> => {
 
   const data = await response.json();
 
-  return data.places;
+  return getPlaceListAdapter(data.places);
 };
 
 const searchPlace = async ({
   query,
-}: SearchPlaceRequestType): Promise<SearchPlaceResponseType[]> => {
+}: SearchPlaceRequestType): Promise<SearchPlaceAdapterType> => {
   const routieSpaceUuid = localStorage.getItem('routieSpaceUuid');
 
   if (!routieSpaceUuid) {
@@ -84,7 +92,7 @@ const searchPlace = async ({
 
   const data = await response.json();
 
-  return data.searchedPlaces;
+  return searchPlaceAdapter(data.searchedPlaces);
 };
 
 export { addPlace, deletePlace, getPlace, getPlaceList, searchPlace };

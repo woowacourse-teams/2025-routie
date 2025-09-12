@@ -26,10 +26,19 @@ interface PlaceListProviderProps {
   children?: React.ReactNode;
 }
 
+type PlaceAdapterType = PlaceBaseType;
+
+type PlaceListAdapterType = PlaceDataType[];
+
+type SearchPlaceAdapterType = SearchedPlaceType[];
+
 export type {
   PlaceBaseType,
   SearchedPlaceType,
   PlaceDataType,
   PlaceListContextType,
   PlaceListProviderProps,
+  PlaceAdapterType,
+  PlaceListAdapterType,
+  SearchPlaceAdapterType,
 };
