@@ -1,9 +1,10 @@
-package routie.global.exception.infrastructure.resolver.expected;
+package routie.global.exception.infrastructure.resolver.expected.http;
 
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.stereotype.Component;
 import routie.global.exception.domain.ErrorCode;
 import routie.global.exception.domain.ExceptionDetail;
+import routie.global.exception.infrastructure.resolver.expected.ExpectedExceptionResolver;
 
 /**
  * 요청 본문을 처리하는 과정에서 발생하는 예외를 처리하는 Resolver.

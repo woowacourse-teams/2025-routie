@@ -1,4 +1,4 @@
-package routie.global.exception.infrastructure;
+package routie.global.exception.infrastructure.resolver;
 
 import java.util.List;
 import org.springframework.context.annotation.Bean;
