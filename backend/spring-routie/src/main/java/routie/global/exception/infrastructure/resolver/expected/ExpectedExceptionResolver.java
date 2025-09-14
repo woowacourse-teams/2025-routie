@@ -29,7 +29,7 @@ public abstract class ExpectedExceptionResolver<T extends Exception> implements 
             log.warn("[EXPECTED] {}", exception.getMessage(), exception);
             return exceptionDetail;
         }
-        return ExceptionDetail.fromErrorCode(ErrorCode.FAIL_TO_HANDLE_EXCEPTION);
+        throw new ClassCastException("지원하지 않는 예외 타입입니다: " + exception.getClass());
     }
 
     protected abstract ExceptionDetail resolveInternal(final T exception);
