@@ -1,4 +1,4 @@
-package routie.global.exception.infrastructure.resolver.expected.hanldermethod.validation;
+package routie.global.exception.infrastructure.resolver.expected.handlermethod.validation;
 
 import org.springframework.stereotype.Component;
 import org.springframework.web.method.annotation.HandlerMethodValidationException;
