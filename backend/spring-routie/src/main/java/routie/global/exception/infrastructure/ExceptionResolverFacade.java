@@ -36,7 +36,7 @@ public class ExceptionResolverFacade implements ExceptionResolver {
                     .map(expectedExceptionResolver -> expectedExceptionResolver.resolve(exception))
                     .orElseGet(() -> unexpectedExceptionResolvers.resolve(exception));
         } catch (final Exception e) {
-            log.error("[FAIL TO RESOLVE] {}", exception.getMessage(), exception);
+            log.error("[FAIL TO RESOLVE] {}", e.getClass(), e);
             return ExceptionDetail.fromErrorCode(ErrorCode.FAIL_TO_HANDLE_EXCEPTION);
         }
     }
