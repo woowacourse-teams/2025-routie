@@ -48,7 +48,8 @@ public class ExceptionResolverFacade implements ExceptionResolver {
 
         while (currentExceptionClass != null && Exception.class.isAssignableFrom(currentExceptionClass)) {
             ExpectedExceptionResolver<? extends Exception> resolver = expectedExceptionResolvers.get(
-                    currentExceptionClass);
+                    currentExceptionClass
+            );
             if (resolver != null) {
                 return Optional.of(resolver);
             }
