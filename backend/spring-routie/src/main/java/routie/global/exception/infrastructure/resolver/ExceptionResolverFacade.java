@@ -36,7 +36,11 @@ public class ExceptionResolverFacade implements ExceptionResolver {
                     .map(expectedExceptionResolver -> expectedExceptionResolver.resolve(exception))
                     .orElseGet(() -> unexpectedExceptionResolvers.resolve(exception));
         } catch (final Exception e) {
-            log.error("[FAIL TO RESOLVE] {}", e.getClass(), e);
+            log.error("[FAIL TO RESOLVE] unexpected error occurred while resolving '{}' due to a '{}'.",
+                    exception.getClass().getSimpleName(),
+                    e.getClass().getSimpleName(),
+                    e
+            );
             return ExceptionDetail.fromErrorCode(ErrorCode.FAIL_TO_HANDLE_EXCEPTION);
         }
     }
