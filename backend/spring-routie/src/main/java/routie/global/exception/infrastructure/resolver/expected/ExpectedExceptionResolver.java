@@ -2,11 +2,13 @@ package routie.global.exception.infrastructure.resolver.expected;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.BeanInitializationException;
 import routie.global.exception.domain.ErrorCode;
 import routie.global.exception.domain.ExceptionDetail;
 import routie.global.exception.domain.ExceptionResolver;
 
+@Slf4j
 public abstract class ExpectedExceptionResolver<T extends Exception> implements ExceptionResolver {
 
     private final Class<T> exceptionClass;
@@ -25,7 +27,9 @@ public abstract class ExpectedExceptionResolver<T extends Exception> implements 
     @Override
     public final ExceptionDetail resolve(final Exception exception) {
         if (exceptionClass.isInstance(exception)) {
-            return resolveInternal(exceptionClass.cast(exception));
+            ExceptionDetail exceptionDetail = resolveInternal(exceptionClass.cast(exception));
+            log.warn("[EXPECTED] {}", exception.getMessage(), exception);
+            return exceptionDetail;
         }
         return ExceptionDetail.fromErrorCode(ErrorCode.FAIL_TO_HANDLE_EXCEPTION);
     }
