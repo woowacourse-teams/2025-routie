@@ -40,35 +40,38 @@ public class KakaoDrivingRouteApiClientConfig {
     }
 
     @Slf4j
-    private record KakaoDrivingApiResponseErrorHandler(ObjectMapper objectMapper) implements ResponseErrorHandler {
+    @RequiredArgsConstructor
+    private static class KakaoDrivingApiResponseErrorHandler implements ResponseErrorHandler {
 
-            @Override
-            public boolean hasError(final ClientHttpResponse response) {
-                try {
-                    return response.getStatusCode().is4xxClientError() || response.getStatusCode().is5xxServerError();
-                } catch (final IOException ioException) {
-                    throw new BusinessException(ErrorCode.KAKAO_DRIVING_ROUTE_API_ERROR);
-                }
-            }
+        private final ObjectMapper objectMapper;
 
-            @Override
-            public void handleError(
-                    final URI url,
-                    final HttpMethod method,
-                    final ClientHttpResponse response
-            ) throws IOException {
-                log.warn(
-                        "Kakao 길찾기 API 오류 발생: {}",
-                        objectMapper.readValue(response.getBody(), KakaoDrivingApiErrorResponse.class)
-                );
-
+        @Override
+        public boolean hasError(final ClientHttpResponse response) {
+            try {
+                return response.getStatusCode().is4xxClientError() || response.getStatusCode().is5xxServerError();
+            } catch (final IOException ioException) {
                 throw new BusinessException(ErrorCode.KAKAO_DRIVING_ROUTE_API_ERROR);
             }
-
-            private record KakaoDrivingApiErrorResponse(
-                    @JsonProperty("code") String code,
-                    @JsonProperty("msg") String message
-            ) {
-            }
         }
+
+        @Override
+        public void handleError(
+                final URI url,
+                final HttpMethod method,
+                final ClientHttpResponse response
+        ) throws IOException {
+            log.warn(
+                    "Kakao 길찾기 API 오류 발생: {}",
+                    objectMapper.readValue(response.getBody(), KakaoDrivingApiErrorResponse.class)
+            );
+
+            throw new BusinessException(ErrorCode.KAKAO_DRIVING_ROUTE_API_ERROR);
+        }
+
+        private record KakaoDrivingApiErrorResponse(
+                @JsonProperty("code") String code,
+                @JsonProperty("msg") String message
+        ) {
+        }
+    }
 }
