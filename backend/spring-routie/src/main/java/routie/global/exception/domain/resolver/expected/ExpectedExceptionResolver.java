@@ -1,4 +1,4 @@
-package routie.global.exception.infrastructure.resolver.expected;
+package routie.global.exception.domain.resolver.expected;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;

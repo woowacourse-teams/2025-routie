@@ -4,7 +4,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import routie.global.exception.domain.ErrorCode;
 import routie.global.exception.domain.ExceptionDetail;
-import routie.global.exception.infrastructure.resolver.expected.ExpectedExceptionResolver;
+import routie.global.exception.domain.resolver.expected.ExpectedExceptionResolver;
 
 /**
  * HandlerMethod 에 파라메터 바인딩 시, 타입이 일치하지 않는 경우 발생하는 예외를 처리하는 Resolver.

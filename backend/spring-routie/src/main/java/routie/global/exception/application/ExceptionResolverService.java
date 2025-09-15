@@ -1,4 +1,4 @@
-package routie.global.exception.infrastructure.resolver;
+package routie.global.exception.application;
 
 import java.util.List;
 import java.util.Map;
@@ -6,19 +6,20 @@ import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
 import routie.global.exception.domain.ErrorCode;
 import routie.global.exception.domain.ExceptionDetail;
-import routie.global.exception.domain.ExceptionResolver;
-import routie.global.exception.infrastructure.resolver.expected.ExpectedExceptionResolver;
-import routie.global.exception.infrastructure.resolver.unexpected.UnexpectedExceptionResolver;
+import routie.global.exception.domain.resolver.expected.ExpectedExceptionResolver;
+import routie.global.exception.domain.resolver.unexpected.UnexpectedExceptionResolver;
 
 @Slf4j
-public class ExceptionResolverFacade implements ExceptionResolver {
+@Service
+public class ExceptionResolverService {
 
     private final Map<Class<? extends Exception>, ExpectedExceptionResolver<? extends Exception>> expectedExceptionResolvers;
     private final UnexpectedExceptionResolver unexpectedExceptionResolvers;
 
-    public ExceptionResolverFacade(
+    public ExceptionResolverService(
             final List<ExpectedExceptionResolver<? extends Exception>> expectedExceptionResolvers,
             final UnexpectedExceptionResolver unexpectedExceptionResolvers
     ) {
@@ -30,7 +31,6 @@ public class ExceptionResolverFacade implements ExceptionResolver {
         this.unexpectedExceptionResolvers = unexpectedExceptionResolvers;
     }
 
-    @Override
     public ExceptionDetail resolve(final Exception exception) {
         try {
             return findMostSpecificResolver(exception)
@@ -61,10 +61,5 @@ public class ExceptionResolverFacade implements ExceptionResolver {
             currentExceptionClass = currentExceptionClass.getSuperclass();
         }
         return Optional.empty();
-    }
-
-    @Override
-    public Class<? extends Exception> getResolvableException() {
-        return Exception.class;
     }
 }

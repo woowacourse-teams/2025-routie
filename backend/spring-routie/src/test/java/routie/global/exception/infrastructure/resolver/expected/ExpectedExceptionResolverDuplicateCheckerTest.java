@@ -10,6 +10,7 @@ import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import routie.global.exception.domain.ExceptionDetail;
+import routie.global.exception.domain.resolver.expected.ExpectedExceptionResolver;
 
 class ExpectedExceptionResolverDuplicateCheckerTest {
 

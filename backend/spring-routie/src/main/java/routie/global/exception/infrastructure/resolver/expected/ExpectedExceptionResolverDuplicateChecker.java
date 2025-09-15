@@ -13,6 +13,7 @@ import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.beans.factory.support.BeanDefinitionRegistryPostProcessor;
 import org.springframework.stereotype.Component;
+import routie.global.exception.domain.resolver.expected.ExpectedExceptionResolver;
 
 @Component
 public class ExpectedExceptionResolverDuplicateChecker implements BeanDefinitionRegistryPostProcessor {

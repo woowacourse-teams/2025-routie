@@ -3,7 +3,7 @@ package routie.global.exception.infrastructure.resolver.expected.handlermethod.v
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import routie.global.exception.domain.ExceptionDetail;
-import routie.global.exception.infrastructure.resolver.expected.ExpectedExceptionResolver;
+import routie.global.exception.domain.resolver.expected.ExpectedExceptionResolver;
 
 /**
  * HandlerMethod 의 필수 요청 파라메터가 누락된 경우 발생하는 예외를 처리하는 Resolver.
