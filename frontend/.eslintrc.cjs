@@ -22,6 +22,7 @@ module.exports = {
     'plugin:import/typescript',
     'prettier',
     'plugin:storybook/recommended',
+    'plugin:@tanstack/eslint-plugin-query/recommended',
   ],
   settings: {
     react: {
@@ -128,5 +129,10 @@ module.exports = {
       },
     ],
   },
-  ignorePatterns: ['dist', 'webpack.common.js', 'webpack.dev.js', 'webpack.prod.js'],
+  ignorePatterns: [
+    'dist',
+    'webpack.common.js',
+    'webpack.dev.js',
+    'webpack.prod.js',
+  ],
 };
