@@ -1,0 +1,3 @@
+[submodule "backend/spring-routie/routie-backend-private"]
+	path = backend/spring-routie/routie-backend-private
+	url = https://github.com/routie-project/routie-backend-private.git
