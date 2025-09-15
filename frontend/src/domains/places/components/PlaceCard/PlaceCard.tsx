@@ -4,23 +4,18 @@ import Card from '@/@common/components/Card/Card';
 import Flex from '@/@common/components/Flex/Flex';
 import Icon from '@/@common/components/IconSvg/Icon';
 import Text from '@/@common/components/Text/Text';
-import { useToastContext } from '@/@common/contexts/useToastContext';
-import { useAsyncLock } from '@/@common/hooks/useAsyncLock';
-import { usePlaceListContext } from '@/domains/places/contexts/PlaceList/PlaceListContext';
 import { useRoutieContext } from '@/domains/routie/contexts/useRoutieContext';
 import { useGoogleEventTrigger } from '@/libs/googleAnalytics/hooks/useGoogleEventTrigger';
 import theme from '@/styles/theme';
 
-import { deletePlace } from '../../apis/place';
+import { usePlaceList } from '../../hooks/usePlaceList';
 
 import type { PlaceCardProps } from './PlaceCard.types';
 
 const PlaceCard = ({ selected, ...props }: PlaceCardProps) => {
-  const { refetchPlaceList } = usePlaceListContext();
   const { handleAddRoutie } = useRoutieContext();
   const { triggerEvent } = useGoogleEventTrigger();
-  const { showToast } = useToastContext();
-  const { runWithLock: runDeleteWithLock } = useAsyncLock();
+  const { handleDeletePlace } = usePlaceList();
 
   const handlePlaceSelect = async () => {
     if (selected) return;
@@ -35,32 +30,6 @@ const PlaceCard = ({ selected, ...props }: PlaceCardProps) => {
     } catch (error) {
       console.error(error);
     }
-  };
-
-  const handleDelete = async () => {
-    return runDeleteWithLock(async () => {
-      try {
-        await deletePlace({ placeId: props.id });
-        await refetchPlaceList();
-        triggerEvent({
-          action: 'click',
-          category: 'place',
-          label: '장소 삭제하기 버튼',
-        });
-        showToast({
-          message: '장소가 삭제되었습니다.',
-          type: 'success',
-        });
-      } catch (error) {
-        console.error(error);
-        if (error instanceof Error) {
-          showToast({
-            message: error.message,
-            type: 'error',
-          });
-        }
-      }
-    });
   };
 
   return (
@@ -121,7 +90,9 @@ const PlaceCard = ({ selected, ...props }: PlaceCardProps) => {
 
               <Icon
                 name={selected ? 'disableTrash' : 'trash'}
-                onClick={selected ? undefined : handleDelete}
+                onClick={
+                  selected ? undefined : () => handleDeletePlace(props.id)
+                }
                 size={30}
                 css={css`
                   cursor: ${selected ? 'default' : 'pointer'};
