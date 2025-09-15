@@ -20,7 +20,8 @@ public class ExceptionResolverFacade implements ExceptionResolver {
 
     public ExceptionResolverFacade(
             final List<ExpectedExceptionResolver<? extends Exception>> expectedExceptionResolvers,
-            final UnexpectedExceptionResolver unexpectedExceptionResolvers) {
+            final UnexpectedExceptionResolver unexpectedExceptionResolvers
+    ) {
         this.expectedExceptionResolvers = expectedExceptionResolvers.stream()
                 .collect(Collectors.toMap(
                         ExceptionResolver::getResolvableException,
@@ -61,7 +62,6 @@ public class ExceptionResolverFacade implements ExceptionResolver {
         }
         return Optional.empty();
     }
-
 
     @Override
     public Class<? extends Exception> getResolvableException() {
