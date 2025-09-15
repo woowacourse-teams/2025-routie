@@ -2,7 +2,7 @@ import { ERROR_MESSAGE } from '../constants/routieSpace';
 
 type ERROR_CASE = keyof typeof ERROR_MESSAGE;
 
-interface UseRoutieSpaceNameReturn {
+interface UseRoutieSpaceReturn {
   name: string;
   isEditing: boolean;
   isLoading: boolean;
@@ -29,7 +29,7 @@ interface EditRoutieSpaceNameAdapterType {
 
 export type {
   ERROR_CASE,
-  UseRoutieSpaceNameReturn,
+  UseRoutieSpaceReturn,
   RoutieSpaceNameType,
   RoutieSpaceAdapterType,
   CreateRoutieSpaceAdapterType,

@@ -10,10 +10,10 @@ import {
 
 import type {
   ERROR_CASE,
-  UseRoutieSpaceNameReturn,
+  UseRoutieSpaceReturn,
 } from '../types/routieSpace.types';
 
-const useRoutieSpaceName = (): UseRoutieSpaceNameReturn => {
+const useRoutieSpace = (): UseRoutieSpaceReturn => {
   const { data: routieSpace, isLoading } = useRoutieSpaceQuery();
   const [currentName, setCurrentName] = useState('');
   const { mutateAsync: editRoutieSpaceName } =
@@ -111,4 +111,4 @@ const useRoutieSpaceName = (): UseRoutieSpaceNameReturn => {
   };
 };
 
-export { useRoutieSpaceName };
+export { useRoutieSpace };
