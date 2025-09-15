@@ -90,7 +90,7 @@ jobs:
       - name: Copy application.yml
         run: |
           mkdir -p config
-          cp routie-backend-private/prod/application.yml > config/application.yml
+          cp routie-backend-private/prod/application.yml config/application.yml
 
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
