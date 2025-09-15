@@ -1,14 +1,11 @@
 import Button from '@/@common/components/Button/Button';
 import Flex from '@/@common/components/Flex/Flex';
 import Text from '@/@common/components/Text/Text';
-import { useToastContext } from '@/@common/contexts/useToastContext';
-import { useAsyncLock } from '@/@common/hooks/useAsyncLock';
 import pinIcon from '@/assets/icons/pin.svg';
-import { usePlaceListContext } from '@/domains/places/contexts/PlaceList/PlaceListContext';
 import type { SearchPlaceProps } from '@/domains/places/types/searchPlace.types';
 import theme from '@/styles/theme';
 
-import { addPlace } from '../../apis/place';
+import { usePlaceList } from '../../hooks/usePlaceList';
 import SearchAddress from '../SearchAddress/SearchAddress';
 
 const SearchPlace = ({
@@ -17,30 +14,12 @@ const SearchPlace = ({
   address,
   onClose,
 }: SearchPlaceProps) => {
-  const { runWithLock: runSubmitWithLock } = useAsyncLock();
-  const { handlePlaceAdded } = usePlaceListContext();
-  const { showToast } = useToastContext();
+  const { handleAddPlace } = usePlaceList();
 
   const handleSubmit = async () => {
-    return runSubmitWithLock(async () => {
-      try {
-        await addPlace(searchResult);
-        await handlePlaceAdded();
-        showToast({
-          message: '장소가 추가되었습니다.',
-          type: 'success',
-        });
-        onClose();
-      } catch (error) {
-        console.error(error);
-        if (error instanceof Error) {
-          showToast({
-            message: error.message,
-            type: 'error',
-          });
-        }
-      }
-    });
+    await handleAddPlace(searchResult);
+
+    onClose();
   };
 
   return (

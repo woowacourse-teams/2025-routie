@@ -9,6 +9,7 @@ import Text from '@/@common/components/Text/Text';
 import { useToastContext } from '@/@common/contexts/useToastContext';
 import closeRed from '@/assets/icons/close-red.svg';
 import { getPlace } from '@/domains/places/apis/place';
+import { usePlaceDetailQuery } from '@/domains/places/queries/usePlaceQuery';
 import type { PlaceBaseType } from '@/domains/places/types/place.types';
 import { useGoogleEventTrigger } from '@/libs/googleAnalytics/hooks/useGoogleEventTrigger';
 import theme from '@/styles/theme';
@@ -20,35 +21,23 @@ import { DragIconStyle, EllipsisParentStyle } from './RoutiePlaceCard.styles';
 import type { RoutieType } from '../../types/routie.types';
 
 const RoutiePlaceCard = ({ routie }: { routie: RoutieType }) => {
-  const [place, setPlace] = useState<PlaceBaseType>({
-    name: '',
-    roadAddressName: '',
-    addressName: '',
-    longitude: 0,
-    latitude: 0,
-  });
+  const { data: place, error } = usePlaceDetailQuery(routie.placeId);
 
   const { handleDeleteRoutie } = useRoutieContext();
   const { triggerEvent } = useGoogleEventTrigger();
   const { showToast } = useToastContext();
 
   useEffect(() => {
-    const fetchDetailPlace = async () => {
-      try {
-        const detailPlace = await getPlace({ placeId: routie.placeId });
-        setPlace(detailPlace);
-      } catch (error) {
-        console.error(error);
-        if (error instanceof Error) {
-          showToast({
-            message: error.message,
-            type: 'error',
-          });
-        }
+    if (error) {
+      console.error(error);
+      if (error instanceof Error) {
+        showToast({
+          message: error.message,
+          type: 'error',
+        });
       }
-    };
-    fetchDetailPlace();
-  }, [routie]);
+    }
+  }, [error]);
 
   const handleDelete = () => {
     handleDeleteRoutie(routie.placeId);

@@ -9,11 +9,10 @@ import Text from '@/@common/components/Text/Text';
 import CloseSheetIcon from '@/assets/icons/closeSheet.svg';
 import AddPlaceModal from '@/domains/places/components/AddPlaceModal/AddPlaceModal';
 import PlaceCard from '@/domains/places/components/PlaceCard/PlaceCard';
+import { usePlaceList } from '@/domains/places/hooks/usePlaceList';
 import { useRoutieContext } from '@/domains/routie/contexts/useRoutieContext';
 import { useGoogleEventTrigger } from '@/libs/googleAnalytics/hooks/useGoogleEventTrigger';
 import theme from '@/styles/theme';
-
-import { usePlaceListContext } from '../../domains/places/contexts/PlaceList/PlaceListContext';
 
 import {
   SheetBaseStyle,
@@ -30,7 +29,7 @@ import {
 import type { SideSheetProps } from './SideSheet.types';
 
 const SideSheet = ({ open, onToggle }: SideSheetProps) => {
-  const { placeList } = usePlaceListContext();
+  const { placeList } = usePlaceList();
   const { routieIdList } = useRoutieContext();
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const { triggerEvent } = useGoogleEventTrigger();
@@ -93,7 +92,7 @@ const SideSheet = ({ open, onToggle }: SideSheetProps) => {
             </Flex>
           </Button>
         </Flex>
-        {placeList.length === 0 && (
+        {placeList?.length === 0 && (
           <Flex height="100%">
             <EmptyMessage
               messages={[
@@ -115,7 +114,7 @@ const SideSheet = ({ open, onToggle }: SideSheetProps) => {
               gap={2}
               css={{ overflowY: 'visible' }}
             >
-              {placeList.map((place) => {
+              {placeList?.map((place) => {
                 const selected = routieIdList.includes(place.id);
                 return (
                   <PlaceCard {...place} key={place.id} selected={selected} />
