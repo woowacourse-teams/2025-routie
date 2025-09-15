@@ -11,16 +11,11 @@ import routie.global.exception.domain.ExceptionResolver;
  */
 @Slf4j
 @Component
-public class UnexpectedExceptionResolver implements ExceptionResolver {
+public final class UnexpectedExceptionResolver implements ExceptionResolver {
 
     @Override
     public ExceptionDetail resolve(final Exception exception) {
         log.error("[UNEXPECTED] {}", exception.getMessage(), exception);
         return ExceptionDetail.fromErrorCode(ErrorCode.UNEXPECTED_EXCEPTION);
-    }
-
-    @Override
-    public Class<? extends Exception> getResolvableException() {
-        return Exception.class;
     }
 }

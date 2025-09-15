@@ -34,7 +34,6 @@ public abstract class ExpectedExceptionResolver<T extends Exception> implements 
 
     protected abstract ExceptionDetail resolveInternal(final T exception);
 
-    @Override
     public final Class<? extends Exception> getResolvableException() {
         return exceptionClass;
     }

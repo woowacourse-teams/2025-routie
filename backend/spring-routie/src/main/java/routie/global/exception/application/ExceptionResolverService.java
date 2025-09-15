@@ -24,7 +24,7 @@ public class ExceptionResolverFacade implements ExceptionResolver {
     ) {
         this.expectedExceptionResolvers = expectedExceptionResolvers.stream()
                 .collect(Collectors.toMap(
-                        ExceptionResolver::getResolvableException,
+                        ExpectedExceptionResolver::getResolvableException,
                         Function.identity()
                 ));
         this.unexpectedExceptionResolvers = unexpectedExceptionResolvers;
