@@ -8,8 +8,8 @@ import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import routie.global.exception.domain.ErrorCode;
-import routie.global.exception.domain.ExceptionContext;
-import routie.global.exception.domain.ExceptionDetail;
+import routie.global.exception.domain.ExceptionResolvingRequest;
+import routie.global.exception.domain.ExceptionResolvingResponse;
 import routie.global.exception.domain.resolver.expected.ExpectedExceptionResolver;
 import routie.global.exception.domain.resolver.unexpected.UnexpectedExceptionResolver;
 
@@ -32,18 +32,22 @@ public class ExceptionResolverService {
         this.unexpectedExceptionResolvers = unexpectedExceptionResolvers;
     }
 
-    public <T extends Exception> ExceptionDetail resolve(final ExceptionContext<T> exceptionContext) {
+    public <T extends Exception> ExceptionResolvingResponse resolve(
+            final ExceptionResolvingRequest<T> exceptionResolvingRequest
+    ) {
         try {
-            return findMostSpecificResolver(exceptionContext.exception())
-                    .map(expectedExceptionResolver -> resolveWithCasting(expectedExceptionResolver, exceptionContext))
-                    .orElseGet(() -> unexpectedExceptionResolvers.resolve(exceptionContext));
+            return findMostSpecificResolver(exceptionResolvingRequest.exception())
+                    .map(expectedExceptionResolver ->
+                            resolveWithCasting(expectedExceptionResolver, exceptionResolvingRequest)
+                    )
+                    .orElseGet(() -> unexpectedExceptionResolvers.resolve(exceptionResolvingRequest));
         } catch (final Exception e) {
             log.error("[FAIL TO RESOLVE] unexpected error occurred while resolving '{}' due to a '{}'.",
-                    exceptionContext.exception().getClass().getSimpleName(),
+                    exceptionResolvingRequest.exception().getClass().getSimpleName(),
                     e.getClass().getSimpleName(),
                     e
             );
-            return ExceptionDetail.fromErrorCode(ErrorCode.FAIL_TO_HANDLE_EXCEPTION);
+            return ExceptionResolvingResponse.fromErrorCode(ErrorCode.FAIL_TO_HANDLE_EXCEPTION);
         }
     }
 
@@ -65,12 +69,12 @@ public class ExceptionResolverService {
     }
 
     @SuppressWarnings("unchecked")
-    private <T extends Exception> ExceptionDetail resolveWithCasting(
-            final ExpectedExceptionResolver<?> resolver,
-            final ExceptionContext<?> exceptionContext
+    private <T extends Exception> ExceptionResolvingResponse resolveWithCasting(
+            final ExpectedExceptionResolver<?> expectedExceptionResolver,
+            final ExceptionResolvingRequest<?> exceptionResolvingRequest
     ) {
-        ExpectedExceptionResolver<T> typedResolver = (ExpectedExceptionResolver<T>) resolver;
-        ExceptionContext<T> typedContext = (ExceptionContext<T>) exceptionContext;
+        ExpectedExceptionResolver<T> typedResolver = (ExpectedExceptionResolver<T>) expectedExceptionResolver;
+        ExceptionResolvingRequest<T> typedContext = (ExceptionResolvingRequest<T>) exceptionResolvingRequest;
         return typedResolver.resolve(typedContext);
     }
 }

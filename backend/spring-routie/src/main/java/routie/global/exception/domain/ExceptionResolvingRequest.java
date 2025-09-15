@@ -1,7 +1,6 @@
 package routie.global.exception.domain;
 
-public record ExceptionContext<T extends Exception>(
+public record ExceptionResolvingRequest<T extends Exception>(
         T exception
 ) {
-
 }

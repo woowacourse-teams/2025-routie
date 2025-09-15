@@ -2,8 +2,8 @@ package routie.global.exception.infrastructure.resolver.expected.business;
 
 import org.springframework.stereotype.Component;
 import routie.global.exception.domain.BusinessException;
-import routie.global.exception.domain.ExceptionContext;
-import routie.global.exception.domain.ExceptionDetail;
+import routie.global.exception.domain.ExceptionResolvingRequest;
+import routie.global.exception.domain.ExceptionResolvingResponse;
 import routie.global.exception.domain.resolver.expected.ExpectedExceptionResolver;
 
 /**
@@ -13,8 +13,10 @@ import routie.global.exception.domain.resolver.expected.ExpectedExceptionResolve
 public class BusinessExceptionResolver extends ExpectedExceptionResolver<BusinessException> {
 
     @Override
-    protected ExceptionDetail resolveInternal(final ExceptionContext<BusinessException> exceptionContext) {
-        BusinessException exception = exceptionContext.exception();
-        return ExceptionDetail.fromErrorCode(exception.getErrorCode());
+    protected ExceptionResolvingResponse resolveInternal(
+            final ExceptionResolvingRequest<BusinessException> exceptionResolvingRequest
+    ) {
+        BusinessException exception = exceptionResolvingRequest.exception();
+        return ExceptionResolvingResponse.fromErrorCode(exception.getErrorCode());
     }
 }

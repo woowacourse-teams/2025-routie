@@ -3,8 +3,8 @@ package routie.global.exception.infrastructure.resolver.expected.http;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
 import routie.global.exception.domain.ErrorCode;
-import routie.global.exception.domain.ExceptionContext;
-import routie.global.exception.domain.ExceptionDetail;
+import routie.global.exception.domain.ExceptionResolvingRequest;
+import routie.global.exception.domain.ExceptionResolvingResponse;
 import routie.global.exception.domain.resolver.expected.ExpectedExceptionResolver;
 
 /**
@@ -18,7 +18,9 @@ import routie.global.exception.domain.resolver.expected.ExpectedExceptionResolve
 public class NoResourceFoundExceptionResolver extends ExpectedExceptionResolver<NoResourceFoundException> {
 
     @Override
-    protected ExceptionDetail resolveInternal(final ExceptionContext<NoResourceFoundException> exceptionContext) {
-        return ExceptionDetail.fromErrorCode(ErrorCode.NOT_FOUND);
+    protected ExceptionResolvingResponse resolveInternal(
+            final ExceptionResolvingRequest<NoResourceFoundException> exceptionResolvingRequest
+    ) {
+        return ExceptionResolvingResponse.fromErrorCode(ErrorCode.NOT_FOUND);
     }
 }

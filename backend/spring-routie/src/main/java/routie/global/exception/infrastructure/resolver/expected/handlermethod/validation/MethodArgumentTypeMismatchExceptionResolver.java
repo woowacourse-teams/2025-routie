@@ -3,8 +3,8 @@ package routie.global.exception.infrastructure.resolver.expected.handlermethod.v
 import org.springframework.stereotype.Component;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import routie.global.exception.domain.ErrorCode;
-import routie.global.exception.domain.ExceptionContext;
-import routie.global.exception.domain.ExceptionDetail;
+import routie.global.exception.domain.ExceptionResolvingRequest;
+import routie.global.exception.domain.ExceptionResolvingResponse;
 import routie.global.exception.domain.resolver.expected.ExpectedExceptionResolver;
 
 /**
@@ -22,9 +22,9 @@ public class MethodArgumentTypeMismatchExceptionResolver extends
         ExpectedExceptionResolver<MethodArgumentTypeMismatchException> {
 
     @Override
-    protected ExceptionDetail resolveInternal(
-            final ExceptionContext<MethodArgumentTypeMismatchException> exceptionContext
+    protected ExceptionResolvingResponse resolveInternal(
+            final ExceptionResolvingRequest<MethodArgumentTypeMismatchException> exceptionResolvingRequest
     ) {
-        return ExceptionDetail.fromErrorCode(ErrorCode.INVALID_REQUEST_DATA_TYPE);
+        return ExceptionResolvingResponse.fromErrorCode(ErrorCode.INVALID_REQUEST_DATA_TYPE);
     }
 }

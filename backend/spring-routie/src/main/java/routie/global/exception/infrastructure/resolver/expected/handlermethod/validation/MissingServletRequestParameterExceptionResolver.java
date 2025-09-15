@@ -3,8 +3,8 @@ package routie.global.exception.infrastructure.resolver.expected.handlermethod.v
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import routie.global.exception.domain.ErrorCode;
-import routie.global.exception.domain.ExceptionContext;
-import routie.global.exception.domain.ExceptionDetail;
+import routie.global.exception.domain.ExceptionResolvingRequest;
+import routie.global.exception.domain.ExceptionResolvingResponse;
 import routie.global.exception.domain.resolver.expected.ExpectedExceptionResolver;
 
 /**
@@ -22,9 +22,9 @@ public class MissingServletRequestParameterExceptionResolver extends
         ExpectedExceptionResolver<MissingServletRequestParameterException> {
 
     @Override
-    protected ExceptionDetail resolveInternal(
-            final ExceptionContext<MissingServletRequestParameterException> exceptionContext
+    protected ExceptionResolvingResponse resolveInternal(
+            final ExceptionResolvingRequest<MissingServletRequestParameterException> exceptionResolvingRequest
     ) {
-        return ExceptionDetail.fromErrorCode(ErrorCode.MISSING_REQUEST_PARAMETER);
+        return ExceptionResolvingResponse.fromErrorCode(ErrorCode.MISSING_REQUEST_PARAMETER);
     }
 }

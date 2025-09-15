@@ -9,8 +9,8 @@ import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
-import routie.global.exception.domain.ExceptionContext;
-import routie.global.exception.domain.ExceptionDetail;
+import routie.global.exception.domain.ExceptionResolvingRequest;
+import routie.global.exception.domain.ExceptionResolvingResponse;
 import routie.global.exception.domain.resolver.expected.ExpectedExceptionResolver;
 
 class ExpectedExceptionResolverDuplicateCheckerTest {
@@ -59,7 +59,8 @@ class ExpectedExceptionResolverDuplicateCheckerTest {
     private static class TestResolver1 extends ExpectedExceptionResolver<IllegalArgumentException> {
 
         @Override
-        protected ExceptionDetail resolveInternal(final ExceptionContext<IllegalArgumentException> exception) {
+        protected ExceptionResolvingResponse resolveInternal(
+                final ExceptionResolvingRequest<IllegalArgumentException> exception) {
             return null;
         }
     }
@@ -67,7 +68,8 @@ class ExpectedExceptionResolverDuplicateCheckerTest {
     private static class TestResolver2 extends ExpectedExceptionResolver<IllegalStateException> {
 
         @Override
-        protected ExceptionDetail resolveInternal(final ExceptionContext<IllegalStateException> exception) {
+        protected ExceptionResolvingResponse resolveInternal(
+                final ExceptionResolvingRequest<IllegalStateException> exception) {
             return null;
         }
     }
@@ -75,7 +77,8 @@ class ExpectedExceptionResolverDuplicateCheckerTest {
     private static class TestResolver3 extends ExpectedExceptionResolver<IllegalArgumentException> {
 
         @Override
-        protected ExceptionDetail resolveInternal(final ExceptionContext<IllegalArgumentException> exception) {
+        protected ExceptionResolvingResponse resolveInternal(
+                final ExceptionResolvingRequest<IllegalArgumentException> exception) {
             return null;
         }
     }

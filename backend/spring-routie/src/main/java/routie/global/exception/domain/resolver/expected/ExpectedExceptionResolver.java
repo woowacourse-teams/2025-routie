@@ -3,8 +3,8 @@ package routie.global.exception.domain.resolver.expected;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import lombok.extern.slf4j.Slf4j;
-import routie.global.exception.domain.ExceptionContext;
-import routie.global.exception.domain.ExceptionDetail;
+import routie.global.exception.domain.ExceptionResolvingRequest;
+import routie.global.exception.domain.ExceptionResolvingResponse;
 
 @Slf4j
 public abstract class ExpectedExceptionResolver<T extends Exception> {
@@ -22,17 +22,19 @@ public abstract class ExpectedExceptionResolver<T extends Exception> {
         }
     }
 
-    public ExceptionDetail resolve(final ExceptionContext<T> exceptionContext) {
-        Exception exception = exceptionContext.exception();
+    public ExceptionResolvingResponse resolve(final ExceptionResolvingRequest<T> exceptionResolvingRequest) {
+        Exception exception = exceptionResolvingRequest.exception();
         if (exceptionClass.isInstance(exception)) {
-            ExceptionDetail exceptionDetail = resolveInternal(exceptionContext);
+            ExceptionResolvingResponse exceptionResolvingResponse = resolveInternal(exceptionResolvingRequest);
             log.warn("[EXPECTED] {}", exception.getMessage(), exception);
-            return exceptionDetail;
+            return exceptionResolvingResponse;
         }
         throw new ClassCastException("지원하지 않는 예외 타입입니다: " + exception.getClass());
     }
 
-    protected abstract ExceptionDetail resolveInternal(final ExceptionContext<T> exception);
+    protected abstract ExceptionResolvingResponse resolveInternal(
+            final ExceptionResolvingRequest<T> exceptionResolvingRequest
+    );
 
     public final Class<? extends Exception> getResolvableException() {
         return exceptionClass;
