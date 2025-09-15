@@ -50,6 +50,7 @@ const useAddPlaceQuery = () => {
         type: 'success',
       });
       queryClient.invalidateQueries({ queryKey: placesKeys.list() });
+      queryClient.setQueryData(['addedPlaceId'], data.id);
     },
     onError: (error) => {
       showToast({
@@ -83,9 +84,9 @@ const useDeletePlaceQuery = () => {
 };
 
 export {
-  usePlaceListQuery,
-  usePlaceDetailQuery,
-  usePlaceSearchQuery,
   useAddPlaceQuery,
   useDeletePlaceQuery,
+  usePlaceDetailQuery,
+  usePlaceListQuery,
+  usePlaceSearchQuery,
 };

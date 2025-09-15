@@ -1,10 +1,16 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 
+import { useQueryClient } from '@tanstack/react-query';
+
 import Flex from '@/@common/components/Flex/Flex';
 import Text from '@/@common/components/Text/Text';
 import PlaceOverlayCard from '@/domains/maps/components/PlaceOverlayCard/PlaceOverlayCard';
 import { usePlaceList } from '@/domains/places/hooks/usePlaceList';
+import {
+  useAddPlaceQuery,
+  usePlaceDetailQuery,
+} from '@/domains/places/queries/usePlaceQuery';
 import { PlaceDataType } from '@/domains/places/types/place.types';
 import { useRoutieContext } from '@/domains/routie/contexts/useRoutieContext';
 
@@ -24,6 +30,8 @@ import {
 const KakaoMap = () => {
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const { placeList } = usePlaceList();
+  const queryClient = useQueryClient();
+  const addedPlaceId = queryClient.getQueryData(['addedPlaceId']);
   const { routieIdList } = useRoutieContext();
   const [isInitialLoad, setIsInitialLoad] = useState(true);
 
@@ -102,8 +110,12 @@ const KakaoMap = () => {
       if (isInitialLoad && placeList && placeList.length > 0) {
         fitMapToMarkers(placeList);
         setIsInitialLoad(false);
-      } else if (newlyAddedPlace) {
-        fitMapToMarker(newlyAddedPlace.latitude, newlyAddedPlace.longitude);
+      } else if (addedPlaceId && placeList) {
+        const newPlace = placeList.find((place) => place.id === addedPlaceId);
+
+        if (newPlace) {
+          fitMapToMarker(newPlace.latitude, newPlace.longitude);
+        }
       }
 
       clearPolyline();
@@ -114,7 +126,7 @@ const KakaoMap = () => {
     };
 
     renderMapElements();
-  }, [mapState, placeList, routiePlaces, newlyAddedPlace]);
+  }, [mapState, placeList, routiePlaces, addedPlaceId]);
 
   return (
     <div css={KakaoMapWrapperStyle}>
