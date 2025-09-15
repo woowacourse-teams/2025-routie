@@ -1,15 +1,13 @@
-import { PropsWithChildren } from 'react';
 import { useNavigate } from 'react-router';
 
 import Flex from '@/@common/components/Flex/Flex';
-import HomeButton from '@/@common/components/Header/HomeButton/HomeButton';
 import logoIcon from '@/assets/icons/logo.svg';
+
+import HomeButton from '../HomeButton/HomeButton';
 
 import { HeaderStyle, HomeButtonStyle } from './Header.style';
 
-interface HeaderProps extends PropsWithChildren {
-  isHome?: boolean;
-}
+import type { HeaderProps } from './Header.types';
 
 const Header = ({ children, isHome }: HeaderProps) => {
   const navigate = useNavigate();

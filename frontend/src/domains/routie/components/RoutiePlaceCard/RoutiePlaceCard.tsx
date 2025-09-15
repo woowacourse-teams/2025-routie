@@ -1,19 +1,19 @@
 import { useEffect, useState } from 'react';
 
 import Card from '@/@common/components/Card/Card';
+import DraggableWrapper from '@/@common/components/DraggableWrapper/DraggableWrapper';
 import Flex from '@/@common/components/Flex/Flex';
 import IconButton from '@/@common/components/IconButton/IconButton';
 import Icon from '@/@common/components/IconSvg/Icon';
 import Text from '@/@common/components/Text/Text';
 import { useToastContext } from '@/@common/contexts/useToastContext';
 import closeRed from '@/assets/icons/close-red.svg';
+import { getPlace } from '@/domains/places/apis/place';
 import type { PlaceBaseType } from '@/domains/places/types/place.types';
 import { useGoogleEventTrigger } from '@/libs/googleAnalytics/hooks/useGoogleEventTrigger';
 import theme from '@/styles/theme';
 
-import { getDetailPlace } from '../../apis/routie';
 import { useRoutieContext } from '../../contexts/useRoutieContext';
-import DraggableWrapper from '../DraggableWrapper/DraggableWrapper';
 
 import { DragIconStyle, EllipsisParentStyle } from './RoutiePlaceCard.styles';
 
@@ -35,7 +35,7 @@ const RoutiePlaceCard = ({ routie }: { routie: RoutieType }) => {
   useEffect(() => {
     const fetchDetailPlace = async () => {
       try {
-        const detailPlace = await getDetailPlace(routie.placeId);
+        const detailPlace = await getPlace({ placeId: routie.placeId });
         setPlace(detailPlace);
       } catch (error) {
         console.error(error);

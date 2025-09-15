@@ -1,6 +1,6 @@
-import type { PlaceFetchType } from '../../types/place.types';
+import type { PlaceDataType } from '../../types/place.types';
 
-interface PlaceCardProps extends PlaceFetchType {
+interface PlaceCardProps extends PlaceDataType {
   selected: boolean;
 }
 

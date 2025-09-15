@@ -1,9 +1,9 @@
-import { RefObject, useCallback, useRef, useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 
-import type { KakaoMapType } from '../types/KaKaoMap.types';
+import type { MapRefType } from '../types/KaKaoMap.types';
 import type { CustomOverlayType } from '../types/Overlay.types';
 
-const useCustomOverlay = ({ map }: { map: RefObject<KakaoMapType> }) => {
+const useCustomOverlay = (map: MapRefType) => {
   const overlayRef = useRef<CustomOverlayType | null>(null);
   const [containerEl, setContainerEl] = useState<HTMLDivElement | null>(null);
 

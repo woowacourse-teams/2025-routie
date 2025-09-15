@@ -4,10 +4,7 @@ import {
   ToggleStyle,
 } from './ToggleSwitch.style';
 
-interface ToggleSwitchProps {
-  active: boolean;
-  onToggle: () => void;
-}
+import type { ToggleSwitchProps } from './ToggleSwitch.types';
 
 const ToggleSwitch = ({ active, onToggle }: ToggleSwitchProps) => {
   return (

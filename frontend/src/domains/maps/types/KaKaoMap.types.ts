@@ -3,7 +3,7 @@ import { RefObject } from 'react';
 type KakaoMapType = InstanceType<typeof window.kakao.maps.Map>;
 type MapStateType = 'loading' | 'ready' | 'error';
 
-interface UseKakaoMapSDKReturn {
+interface UseKakaoMapSDKReturnType {
   sdkReady: boolean;
   sdkError: string | null;
 }
@@ -12,7 +12,7 @@ interface UseKakaoMapInitProps {
   sdkReady: boolean;
 }
 
-interface UseKakaoMapInitReturn {
+interface UseKakaoMapInitReturnType {
   mapRef: React.RefObject<KakaoMapType | null>;
   mapState: MapStateType;
   errorMessage: string | null;
@@ -31,17 +31,15 @@ interface DrawMarkerProps {
   onClick?: () => void;
 }
 
-interface UseMapMarkerProps {
-  map: RefObject<KakaoMapType>;
-}
+type MapRefType = RefObject<KakaoMapType>;
 
 export type {
-  UseKakaoMapSDKReturn,
+  UseKakaoMapSDKReturnType,
   UseKakaoMapInitProps,
-  UseKakaoMapInitReturn,
+  UseKakaoMapInitReturnType,
   KakaoMapType,
   MapStateType,
   MarkerType,
   DrawMarkerProps,
-  UseMapMarkerProps,
+  MapRefType,
 };

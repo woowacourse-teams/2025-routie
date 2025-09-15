@@ -5,19 +5,11 @@ import { useToastContext } from '@/@common/contexts/useToastContext';
 import { useAsyncLock } from '@/@common/hooks/useAsyncLock';
 import pinIcon from '@/assets/icons/pin.svg';
 import { usePlaceListContext } from '@/domains/places/contexts/PlaceList/PlaceListContext';
+import type { SearchPlaceProps } from '@/domains/places/types/searchPlace.types';
 import theme from '@/styles/theme';
 
 import { addPlace } from '../../apis/place';
 import SearchAddress from '../SearchAddress/SearchAddress';
-
-import type { PlaceAddType } from '../../types/place.types';
-
-interface SearchPlaceProps {
-  searchResult: PlaceAddType;
-  addressType: '도로명' | '지번';
-  address: string;
-  onClose: () => void;
-}
 
 const SearchPlace = ({
   searchResult,

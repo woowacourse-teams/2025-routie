@@ -1,9 +1,9 @@
 import allIcons from './allIcons';
 
-type IconName = keyof typeof allIcons;
+type IconNameType = keyof typeof allIcons;
 
 interface IconProps {
-  name: IconName;
+  name: IconNameType;
   size?: number;
   color?: string;
   onClick?: () => void;

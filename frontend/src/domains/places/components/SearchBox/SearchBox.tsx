@@ -5,13 +5,12 @@ import EmptyMessage from '@/@common/components/EmptyMessage/EmptyMessage';
 import Flex from '@/@common/components/Flex/Flex';
 import Input from '@/@common/components/Input/Input';
 import Text from '@/@common/components/Text/Text';
+import type { SearchBoxProps } from '@/domains/places/types/searchPlace.types';
 import theme from '@/styles/theme';
 
 import { useSearchPlace } from '../../hooks/useSearchPlace';
 import SearchList from '../SearchList/SearchList';
 import { ListStyle } from '../SearchList/SearchList.styles';
-
-import type { SearchBoxProps } from './SearchBox.types';
 
 const SearchBox = ({ onClose }: SearchBoxProps) => {
   const {

@@ -1,7 +1,7 @@
-import type { PlaceFetchType } from '@/domains/places/types/place.types';
+import type { PlaceDataType } from '@/domains/places/types/place.types';
 
 interface PlaceOverlayCardProps {
-  place: PlaceFetchType;
+  place: PlaceDataType;
   onClose: () => void;
 }
 

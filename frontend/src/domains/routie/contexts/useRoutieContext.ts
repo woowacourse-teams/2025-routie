@@ -4,12 +4,12 @@ import type { RoutieContextType } from '../types/routie.types';
 
 const RoutieContext = createContext<RoutieContextType>({
   routiePlaces: [],
+  routes: [],
+  routieIdList: [],
   handleAddRoutie: async () => {},
   handleDeleteRoutie: async () => {},
-  routes: [],
   handleChangeRoutie: async () => {},
   refetchRoutieData: async () => {},
-  routieIdList: [],
 });
 
 const useRoutieContext = () => {

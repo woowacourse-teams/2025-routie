@@ -4,13 +4,13 @@ import type {
   KakaoMapType,
   MapStateType,
   UseKakaoMapInitProps,
-  UseKakaoMapInitReturn,
+  UseKakaoMapInitReturnType,
 } from '../types/KaKaoMap.types';
 
 const useKakaoMapInit = ({
   containerRef,
   sdkReady,
-}: UseKakaoMapInitProps): UseKakaoMapInitReturn => {
+}: UseKakaoMapInitProps): UseKakaoMapInitReturnType => {
   const mapRef = useRef<KakaoMapType | null>(null);
   const isInitializedRef = useRef(false);
   const INITIAL_LAT_LNG = { lat: 37.554, lng: 126.97 };

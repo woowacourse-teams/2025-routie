@@ -1,7 +1,7 @@
 import { createBrowserRouter, RouterProvider } from 'react-router';
 
 import Toast from '@/@common/components/Toast/Toast';
-import { ToastProvider } from '@/@common/contexts/useToastContext';
+import ToastProvider from '@/@common/contexts/ToastProvider';
 import { useGoogleAnalytics } from '@/libs/googleAnalytics/hooks/useGoogleAnalytics';
 import Home from '@/pages/Home/Home';
 import RoutieSpace from '@/pages/RoutieSpace/RoutieSpace';

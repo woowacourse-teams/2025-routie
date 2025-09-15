@@ -12,7 +12,7 @@ const useRoutieSpaceNavigation = () => {
     try {
       const response = await createRoutieSpace();
       const queryParams = new URLSearchParams({
-        routieSpaceIdentifier: response.routieSpaceIdentifier,
+        routieSpaceIdentifier: response.routieSpaceUuid,
       });
 
       navigate(`/routie-spaces?${queryParams.toString()}`);

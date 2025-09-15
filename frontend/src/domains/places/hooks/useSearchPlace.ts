@@ -4,14 +4,14 @@ import { useToastContext } from '@/@common/contexts/useToastContext';
 
 import { searchPlace } from '../apis/place';
 
-import type { PlaceAddType } from '../types/place.types';
+import type { SearchedPlaceType } from '../types/place.types';
 
 const useSearchPlace = () => {
   const [keyword, setKeyword] = useState('');
   const searchedKeywordRef = useRef('');
-  const [searchResults, setSearchResults] = useState<PlaceAddType[] | null>(
-    null,
-  );
+  const [searchResults, setSearchResults] = useState<
+    SearchedPlaceType[] | null
+  >(null);
   const { showToast } = useToastContext();
 
   const handleSearch = async () => {
@@ -20,7 +20,7 @@ const useSearchPlace = () => {
     searchedKeywordRef.current = keyword;
 
     try {
-      const searchedPlaces = await searchPlace(keyword);
+      const searchedPlaces = await searchPlace({ query: keyword });
       setSearchResults(searchedPlaces);
     } catch (error) {
       console.error(error);
