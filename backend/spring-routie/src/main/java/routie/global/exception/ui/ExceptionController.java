@@ -16,6 +16,13 @@ public class ExceptionController {
     @ExceptionHandler(Exception.class)
     public ProblemDetail handleException(final Exception exception) {
         ExceptionDetail exceptionDetail = exceptionResolver.resolve(exception);
-        return exceptionDetail.toProblemDetail();
+        return toProblemDetail(exceptionDetail);
+    }
+
+    public ProblemDetail toProblemDetail(final ExceptionDetail exceptionDetail) {
+        ProblemDetail problemDetail = ProblemDetail.forStatus(exceptionDetail.status());
+        problemDetail.setDetail(exceptionDetail.detail());
+        problemDetail.setProperty("code", exceptionDetail.code());
+        return problemDetail;
     }
 }
