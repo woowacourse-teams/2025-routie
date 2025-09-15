@@ -2,8 +2,10 @@ import { useEffect, useRef, useState } from 'react';
 
 import { useToastContext } from '@/@common/contexts/useToastContext';
 
-import { editRoutieSpaceName, getRoutieSpace } from '../apis/routieSpace';
 import { MAX_NAME_LENGTH, ERROR_MESSAGE } from '../constants/routieSpace';
+import {
+  useRoutieSpaceQuery,
+} from '../queries/useRoutieSpaceQuery';
 
 import type {
   ERROR_CASE,
@@ -11,8 +13,8 @@ import type {
 } from '../types/routieSpace.types';
 
 const useRoutieSpaceName = (): UseRoutieSpaceNameReturn => {
-  const [name, setName] = useState('');
-  const [originalName, setOriginalName] = useState('');
+  const { data: routieSpace, isLoading } = useRoutieSpaceQuery();
+  const [currentName, setCurrentName] = useState('');
   const [isEditing, setIsEditing] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const { showToast } = useToastContext();
@@ -89,9 +91,9 @@ const useRoutieSpaceName = (): UseRoutieSpaceNameReturn => {
 
   useEffect(() => {
     const fetchRoutieSpaceName = async () => {
-      try {
+      setCurrentName(routieSpace?.name ?? '');
         const response = await getRoutieSpace();
-        const displayName = response.name ?? '이름 못 찾음';
+  }, [routieSpace?.name, isEditing]);
 
         setName(displayName);
         setOriginalName(displayName);
@@ -112,7 +114,7 @@ const useRoutieSpaceName = (): UseRoutieSpaceNameReturn => {
   }, []);
 
   return {
-    name,
+    name: currentName,
     isEditing,
     isLoading,
     errorCase,
