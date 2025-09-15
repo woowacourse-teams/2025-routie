@@ -1,5 +1,7 @@
 import { createBrowserRouter, RouterProvider } from 'react-router';
 
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+
 import Toast from '@/@common/components/Toast/Toast';
 import ToastProvider from '@/@common/contexts/ToastProvider';
 import { useGoogleAnalytics } from '@/libs/googleAnalytics/hooks/useGoogleAnalytics';
@@ -11,6 +13,8 @@ const LayoutWithAnalytics = ({ children }: { children: React.ReactNode }) => {
   useGoogleAnalytics();
   return <>{children}</>;
 };
+
+const queryClient = new QueryClient();
 
 const router = createBrowserRouter([
   {
@@ -37,10 +41,12 @@ const router = createBrowserRouter([
 
 const Route = () => {
   return (
-    <ToastProvider>
-      <RouterProvider router={router} />
-      <Toast />
-    </ToastProvider>
+    <QueryClientProvider client={queryClient}>
+      <ToastProvider>
+        <RouterProvider router={router} />
+        <Toast />
+      </ToastProvider>
+    </QueryClientProvider>
   );
 };
 
