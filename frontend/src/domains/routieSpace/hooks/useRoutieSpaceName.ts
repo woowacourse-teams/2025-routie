@@ -4,6 +4,7 @@ import { useToastContext } from '@/@common/contexts/useToastContext';
 
 import { MAX_NAME_LENGTH, ERROR_MESSAGE } from '../constants/routieSpace';
 import {
+  useEditRoutieSpaceNameQuery,
   useRoutieSpaceQuery,
 } from '../queries/useRoutieSpaceQuery';
 
@@ -15,8 +16,9 @@ import type {
 const useRoutieSpaceName = (): UseRoutieSpaceNameReturn => {
   const { data: routieSpace, isLoading } = useRoutieSpaceQuery();
   const [currentName, setCurrentName] = useState('');
+  const { mutateAsync: editRoutieSpaceName } =
+    useEditRoutieSpaceNameQuery(currentName);
   const [isEditing, setIsEditing] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
   const { showToast } = useToastContext();
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -31,87 +33,71 @@ const useRoutieSpaceName = (): UseRoutieSpaceNameReturn => {
     return null;
   };
 
-  const errorCase = getErrorCase(name);
+  const errorCase = getErrorCase(currentName);
 
-  const handleEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter') {
-      handleClick();
+  const validateNameEdit = (): boolean => {
+    if (errorCase) {
+      showToast({
+        message: ERROR_MESSAGE[errorCase],
+        type: 'error',
+      });
+      inputRef.current?.focus();
+      return false;
+    }
+
+    return true;
+  };
+
+  const hasNameChanged = (): boolean => {
+    return currentName !== (routieSpace?.name ?? '');
+  };
+
+  const saveNameEdit = async (): Promise<void> => {
+    await editRoutieSpaceName();
+    setIsEditing(false);
+  };
+
+  const handleSaveNameEdit = async () => {
+    if (isLoading) return;
+
+    if (!validateNameEdit()) return;
+
+    if (!hasNameChanged()) {
+      setIsEditing(false);
+      return;
+    }
+
+    await saveNameEdit();
+  };
+
+  const handleEnter = async (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter' && !e.nativeEvent.isComposing) {
+      if (isEditing) {
+        e.preventDefault();
+
+        await handleSaveNameEdit();
+      }
     }
   };
 
   const handleClick = async () => {
     if (isEditing) {
-      if (isLoading) return;
-
-      try {
-        if (errorCase) {
-          showToast({
-            message: ERROR_MESSAGE[errorCase],
-            type: 'error',
-          });
-
-          inputRef.current?.focus();
-          return;
-        }
-
-        if (originalName === name) {
-          setIsEditing(false);
-          return;
-        }
-
-        setIsLoading(true);
-
-        const response = await editRoutieSpaceName({ name });
-        const displayName = response.name ?? '이름 못 찾음';
-
-        setName(displayName);
-        setOriginalName(displayName);
-      } catch (error) {
-        console.error('루티 스페이스 이름 수정 중 에러 발생:', error);
-        if (error instanceof Error) {
-          showToast({
-            message: error.message,
-            type: 'error',
-          });
-        }
-        setName(originalName);
-      } finally {
-        setIsLoading(false);
-      }
-      setIsEditing(false);
+      await handleSaveNameEdit();
     } else {
-      setOriginalName(name);
+      setCurrentName(routieSpace?.name ?? '');
       setIsEditing(true);
     }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setName(e.target.value);
+    setCurrentName(e.target.value);
   };
 
   useEffect(() => {
-    const fetchRoutieSpaceName = async () => {
+    if (!isEditing) {
       setCurrentName(routieSpace?.name ?? '');
-        const response = await getRoutieSpace();
+    }
   }, [routieSpace?.name, isEditing]);
-
-        setName(displayName);
-        setOriginalName(displayName);
-      } catch (error) {
-        console.error('루티 스페이스 이름 불러오기 실패:', error);
-        if (error instanceof Error) {
-          showToast({
-            message: error.message,
-            type: 'error',
-          });
-        }
-        setName('이름 못 찾음');
-        setOriginalName('이름 못 찾음');
-      }
-    };
-
-    fetchRoutieSpaceName();
-  }, []);
 
   return {
     name: currentName,
