@@ -3,6 +3,7 @@ package routie.global.exception.infrastructure.resolver.expected.handlermethod.v
 import org.springframework.stereotype.Component;
 import org.springframework.web.method.annotation.HandlerMethodValidationException;
 import routie.global.exception.domain.ErrorCode;
+import routie.global.exception.domain.ExceptionContext;
 import routie.global.exception.domain.ExceptionDetail;
 import routie.global.exception.domain.resolver.expected.ExpectedExceptionResolver;
 
@@ -21,7 +22,9 @@ public class HandlerMethodValidationExceptionResolver extends
         ExpectedExceptionResolver<HandlerMethodValidationException> {
 
     @Override
-    protected ExceptionDetail resolveInternal(final HandlerMethodValidationException exception) {
+    protected ExceptionDetail resolveInternal(
+            final ExceptionContext<HandlerMethodValidationException> exceptionContext
+    ) {
         return ExceptionDetail.fromErrorCode(ErrorCode.INVALID_REQUEST_DATA_VALUE);
     }
 }

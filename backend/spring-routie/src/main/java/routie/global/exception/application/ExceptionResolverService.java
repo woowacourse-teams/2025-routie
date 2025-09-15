@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import routie.global.exception.domain.ErrorCode;
+import routie.global.exception.domain.ExceptionContext;
 import routie.global.exception.domain.ExceptionDetail;
 import routie.global.exception.domain.resolver.expected.ExpectedExceptionResolver;
 import routie.global.exception.domain.resolver.unexpected.UnexpectedExceptionResolver;
@@ -31,14 +32,14 @@ public class ExceptionResolverService {
         this.unexpectedExceptionResolvers = unexpectedExceptionResolvers;
     }
 
-    public ExceptionDetail resolve(final Exception exception) {
+    public <T extends Exception> ExceptionDetail resolve(final ExceptionContext<T> exceptionContext) {
         try {
-            return findMostSpecificResolver(exception)
-                    .map(expectedExceptionResolver -> expectedExceptionResolver.resolve(exception))
-                    .orElseGet(() -> unexpectedExceptionResolvers.resolve(exception));
+            return findMostSpecificResolver(exceptionContext.exception())
+                    .map(expectedExceptionResolver -> resolveWithCasting(expectedExceptionResolver, exceptionContext))
+                    .orElseGet(() -> unexpectedExceptionResolvers.resolve(exceptionContext));
         } catch (final Exception e) {
             log.error("[FAIL TO RESOLVE] unexpected error occurred while resolving '{}' due to a '{}'.",
-                    exception.getClass().getSimpleName(),
+                    exceptionContext.exception().getClass().getSimpleName(),
                     e.getClass().getSimpleName(),
                     e
             );
@@ -61,5 +62,15 @@ public class ExceptionResolverService {
             currentExceptionClass = currentExceptionClass.getSuperclass();
         }
         return Optional.empty();
+    }
+
+    @SuppressWarnings("unchecked")
+    private <T extends Exception> ExceptionDetail resolveWithCasting(
+            final ExpectedExceptionResolver<?> resolver,
+            final ExceptionContext<?> exceptionContext
+    ) {
+        ExpectedExceptionResolver<T> typedResolver = (ExpectedExceptionResolver<T>) resolver;
+        ExceptionContext<T> typedContext = (ExceptionContext<T>) exceptionContext;
+        return typedResolver.resolve(typedContext);
     }
 }

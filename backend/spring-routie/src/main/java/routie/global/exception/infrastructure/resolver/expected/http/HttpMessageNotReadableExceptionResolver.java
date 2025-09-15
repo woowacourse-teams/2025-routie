@@ -3,6 +3,7 @@ package routie.global.exception.infrastructure.resolver.expected.http;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.stereotype.Component;
 import routie.global.exception.domain.ErrorCode;
+import routie.global.exception.domain.ExceptionContext;
 import routie.global.exception.domain.ExceptionDetail;
 import routie.global.exception.domain.resolver.expected.ExpectedExceptionResolver;
 
@@ -22,7 +23,9 @@ public class HttpMessageNotReadableExceptionResolver extends
         ExpectedExceptionResolver<HttpMessageNotReadableException> {
 
     @Override
-    protected ExceptionDetail resolveInternal(final HttpMessageNotReadableException exception) {
+    protected ExceptionDetail resolveInternal(
+            final ExceptionContext<HttpMessageNotReadableException> exceptionContext
+    ) {
         return ExceptionDetail.fromErrorCode(ErrorCode.FAIL_TO_READ_REQUEST_BODY);
     }
 }

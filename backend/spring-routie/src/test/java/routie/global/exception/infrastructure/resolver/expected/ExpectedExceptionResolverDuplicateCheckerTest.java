@@ -9,6 +9,7 @@ import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
+import routie.global.exception.domain.ExceptionContext;
 import routie.global.exception.domain.ExceptionDetail;
 import routie.global.exception.domain.resolver.expected.ExpectedExceptionResolver;
 
@@ -56,22 +57,25 @@ class ExpectedExceptionResolverDuplicateCheckerTest {
     }
 
     private static class TestResolver1 extends ExpectedExceptionResolver<IllegalArgumentException> {
+
         @Override
-        protected ExceptionDetail resolveInternal(final IllegalArgumentException exception) {
+        protected ExceptionDetail resolveInternal(final ExceptionContext<IllegalArgumentException> exception) {
             return null;
         }
     }
 
     private static class TestResolver2 extends ExpectedExceptionResolver<IllegalStateException> {
+
         @Override
-        protected ExceptionDetail resolveInternal(final IllegalStateException exception) {
+        protected ExceptionDetail resolveInternal(final ExceptionContext<IllegalStateException> exception) {
             return null;
         }
     }
 
     private static class TestResolver3 extends ExpectedExceptionResolver<IllegalArgumentException> {
+
         @Override
-        protected ExceptionDetail resolveInternal(final IllegalArgumentException exception) {
+        protected ExceptionDetail resolveInternal(final ExceptionContext<IllegalArgumentException> exception) {
             return null;
         }
     }
