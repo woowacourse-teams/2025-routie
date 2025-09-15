@@ -5,7 +5,7 @@ import Flex from '@/@common/components/Flex/Flex';
 import Text from '@/@common/components/Text/Text';
 import theme from '@/styles/theme';
 
-import { useRoutieSpaceName } from '../../hooks/useRoutieSpaceName';
+import { useRoutieSpace } from '../../hooks/useRoutieSpace';
 
 import { RoutieSpaceNameInputStyle } from './RoutieSpaceName.style';
 
@@ -19,7 +19,7 @@ const RoutieSpaceName = () => {
     handleEnter,
     handleClick,
     handleChange,
-  } = useRoutieSpaceName();
+  } = useRoutieSpace();
 
   return (
     <Flex justifyContent="space-between" width="100%" margin={0.4} gap={3}>
