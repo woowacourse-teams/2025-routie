@@ -7,12 +7,8 @@ import Flex from '@/@common/components/Flex/Flex';
 import Text from '@/@common/components/Text/Text';
 import PlaceOverlayCard from '@/domains/maps/components/PlaceOverlayCard/PlaceOverlayCard';
 import { usePlaceList } from '@/domains/places/hooks/usePlaceList';
-import {
-  useAddPlaceQuery,
-  usePlaceDetailQuery,
-} from '@/domains/places/queries/usePlaceQuery';
 import { PlaceDataType } from '@/domains/places/types/place.types';
-import { useRoutieContext } from '@/domains/routie/contexts/useRoutieContext';
+import { useRoutieList } from '@/domains/routie/hooks/useRoutieList';
 
 import { useCustomOverlay } from '../../hooks/useCustomOverlay';
 import { useKakaoMapInit } from '../../hooks/useKakaoMapInit';
@@ -28,11 +24,11 @@ import {
 } from './KakaoMap.styles';
 
 const KakaoMap = () => {
-  const mapContainerRef = useRef<HTMLDivElement>(null);
-  const { placeList } = usePlaceList();
   const queryClient = useQueryClient();
+  const { placeList } = usePlaceList();
+  const { routieIdList } = useRoutieList();
+  const mapContainerRef = useRef<HTMLDivElement>(null);
   const addedPlaceId = queryClient.getQueryData(['addedPlaceId']);
-  const { routieIdList } = useRoutieContext();
   const [isInitialLoad, setIsInitialLoad] = useState(true);
 
   const routiePlaces = useMemo(
