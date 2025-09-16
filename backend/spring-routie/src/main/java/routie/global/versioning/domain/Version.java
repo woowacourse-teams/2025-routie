@@ -16,7 +16,7 @@ public record Version(String value) {
     }
 
     private boolean isValidVersion(final String version) {
-        return version != null && version.matches("^\\d+(\\.\\d+)*$");
+        return version != null && version.matches("^\\d+(\\.\\d+)?(\\.\\d+)?$");
     }
 
     @Override
