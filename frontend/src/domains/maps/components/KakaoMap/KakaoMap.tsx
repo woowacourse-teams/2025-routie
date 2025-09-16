@@ -7,8 +7,8 @@ import Flex from '@/@common/components/Flex/Flex';
 import Text from '@/@common/components/Text/Text';
 import PlaceOverlayCard from '@/domains/maps/components/PlaceOverlayCard/PlaceOverlayCard';
 import { usePlaceList } from '@/domains/places/hooks/usePlaceList';
-import { PlaceDataType } from '@/domains/places/types/place.types';
 
+import { useClickedPlace } from '../../hooks/useClickedPlace';
 import { useCustomOverlay } from '../../hooks/useCustomOverlay';
 import { useMapMarker } from '../../hooks/useMapMarker';
 import { useMapState } from '../../hooks/useMapState';
@@ -37,14 +37,10 @@ const KakaoMap = () => {
     useMapMarker(mapRef);
   const { loadPolyline, clearPolyline } = usePolyline(mapRef);
   const { containerEl, openAt, close } = useCustomOverlay(mapRef);
-  const [selectedPlace, setSelectedPlace] = useState<PlaceDataType | null>(
-    null,
-  );
-
-  const handleMapClick = () => {
-    setSelectedPlace(null);
-    close();
-  };
+  const { clickedPlace, handleMapClick, handleMarkerClick } = useClickedPlace({
+    openAt,
+    close,
+  });
 
   useEffect(() => {
     if (finalMapState !== 'ready' || !mapRef.current) return;
@@ -78,10 +74,7 @@ const KakaoMap = () => {
         drawMarkers({
           place,
           routieSequence,
-          onClick: () => {
-            setSelectedPlace(place);
-            openAt(place.latitude, place.longitude);
-          },
+          onClick: () => handleMarkerClick(place),
         });
       });
 
@@ -140,9 +133,9 @@ const KakaoMap = () => {
       )}
 
       {containerEl &&
-        selectedPlace &&
+        clickedPlace &&
         createPortal(
-          <PlaceOverlayCard place={selectedPlace} onClose={handleMapClick} />,
+          <PlaceOverlayCard place={clickedPlace} onClose={handleMapClick} />,
           containerEl,
         )}
     </div>
