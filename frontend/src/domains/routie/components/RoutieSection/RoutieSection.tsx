@@ -10,8 +10,8 @@ const RoutieSection = () => {
   return (
     <Flex direction="column" width="100%" gap={2}>
       {routiePlaces.map((routiePlace, index) => (
-        <div key={routiePlace.placeId} style={{ width: '100%' }}>
-          <div {...getDragProps(index)} style={{ width: '100%' }}>
+        <div key={routiePlace.placeId} css={{ width: '100%' }}>
+          <div {...getDragProps(index)} css={{ width: '100%' }}>
             <RoutiePlaceCard routie={routiePlace} />
           </div>
         </div>
