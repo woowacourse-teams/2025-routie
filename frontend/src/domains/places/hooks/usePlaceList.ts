@@ -7,7 +7,7 @@ import {
   useDeletePlaceQuery,
   usePlaceListQuery,
 } from '@/domains/places/queries/usePlaceQuery';
-import { SearchedPlaceType } from '@/domains/places/types/place.types';
+import type { SearchedPlaceType } from '@/domains/places/types/place.types';
 import { useGoogleEventTrigger } from '@/libs/googleAnalytics/hooks/useGoogleEventTrigger';
 
 const usePlaceList = () => {

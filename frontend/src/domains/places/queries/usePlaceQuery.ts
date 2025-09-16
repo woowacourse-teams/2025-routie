@@ -8,7 +8,7 @@ import {
   getPlaceList,
   searchPlace,
 } from '@/domains/places/apis/place';
-import { AddPlaceRequestType } from '@/domains/places/types/api.types';
+import type { AddPlaceRequestType } from '@/domains/places/types/api.types';
 
 import { placesKeys } from './key';
 
