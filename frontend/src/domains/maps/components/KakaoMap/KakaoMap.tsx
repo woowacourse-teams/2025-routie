@@ -10,9 +10,8 @@ import { usePlaceList } from '@/domains/places/hooks/usePlaceList';
 import { PlaceDataType } from '@/domains/places/types/place.types';
 
 import { useCustomOverlay } from '../../hooks/useCustomOverlay';
-import { useKakaoMapInit } from '../../hooks/useKakaoMapInit';
-import { useKakaoMapSDK } from '../../hooks/useKakaoMapSDK';
 import { useMapMarker } from '../../hooks/useMapMarker';
+import { useMapState } from '../../hooks/useMapState';
 import { usePolyline } from '../../hooks/usePolyline';
 import { useRoutePlacesWithDetails } from '../../hooks/useRoutePlacesWithDetails';
 
@@ -31,10 +30,8 @@ const KakaoMap = () => {
   const addedPlaceId = queryClient.getQueryData(['addedPlaceId']);
   const [isInitialLoad, setIsInitialLoad] = useState(true);
 
-  const { sdkReady, sdkError } = useKakaoMapSDK();
-  const { mapRef, mapState, errorMessage } = useKakaoMapInit({
+  const { mapRef, finalMapState, finalError } = useMapState({
     containerRef: mapContainerRef,
-    sdkReady,
   });
   const { fitMapToMarkers, drawMarkers, clearMarkers, fitMapToMarker } =
     useMapMarker(mapRef);
@@ -44,16 +41,13 @@ const KakaoMap = () => {
     null,
   );
 
-  const finalError = sdkError || errorMessage;
-  const finalMapState = sdkError ? 'error' : mapState;
-
   const handleMapClick = () => {
     setSelectedPlace(null);
     close();
   };
 
   useEffect(() => {
-    if (mapState !== 'ready' || !mapRef.current) return;
+    if (finalMapState !== 'ready' || !mapRef.current) return;
 
     window.kakao.maps.event.addListener(
       mapRef.current,
@@ -70,10 +64,10 @@ const KakaoMap = () => {
         );
       }
     };
-  }, [mapState]);
+  }, [finalMapState]);
 
   useEffect(() => {
-    if (mapState !== 'ready' || !mapRef.current) return;
+    if (finalMapState !== 'ready' || !mapRef.current) return;
 
     const renderMapElements = () => {
       clearMarkers();
@@ -110,7 +104,7 @@ const KakaoMap = () => {
     };
 
     renderMapElements();
-  }, [mapState, placeList, routiePlacesWithDetails, addedPlaceId]);
+  }, [finalMapState, placeList, routiePlacesWithDetails, addedPlaceId]);
 
   return (
     <div css={KakaoMapWrapperStyle}>
