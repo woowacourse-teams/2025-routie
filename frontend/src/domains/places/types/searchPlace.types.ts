@@ -4,7 +4,7 @@ interface SearchBoxProps {
   onClose: () => void;
 }
 
-interface SearchEmptyListProps {
+interface SearchEmptyStateProps {
   keyword: string;
 }
 
@@ -28,7 +28,7 @@ interface SearchPlaceProps extends SearchAddressProps {
 
 export type {
   SearchBoxProps,
-  SearchEmptyListProps,
+  SearchEmptyStateProps,
   SearchListProps,
   AddressType,
   SearchAddressProps,

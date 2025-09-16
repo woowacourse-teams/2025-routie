@@ -21,7 +21,6 @@ type PlaceListAdapterType = PlaceDataType[];
 type SearchPlaceAdapterType = SearchedPlaceType[];
 
 export type {
-  PlaceBaseType,
   SearchedPlaceType,
   PlaceDataType,
   PlaceAdapterType,

@@ -1,4 +1,4 @@
-import type { PlaceDataType } from '../../types/place.types';
+import type { PlaceDataType } from '@/domains/places/types/place.types';
 
 interface PlaceCardProps extends PlaceDataType {
   selected: boolean;

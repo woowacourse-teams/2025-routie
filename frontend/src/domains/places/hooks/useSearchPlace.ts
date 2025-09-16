@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react';
 
 import { useToastContext } from '@/@common/contexts/useToastContext';
-
-import { usePlaceSearchQuery } from '../queries/usePlaceQuery';
+import { usePlaceSearchQuery } from '@/domains/places/queries/usePlaceQuery';
 
 const useSearchPlace = () => {
   const [keyword, setKeyword] = useState('');

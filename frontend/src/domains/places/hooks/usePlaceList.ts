@@ -2,14 +2,13 @@ import { useCallback, useEffect } from 'react';
 
 import { useToastContext } from '@/@common/contexts/useToastContext';
 import { useAsyncLock } from '@/@common/hooks/useAsyncLock';
-import { useGoogleEventTrigger } from '@/libs/googleAnalytics/hooks/useGoogleEventTrigger';
-
 import {
   useAddPlaceQuery,
   useDeletePlaceQuery,
   usePlaceListQuery,
-} from '../queries/usePlaceQuery';
-import { SearchedPlaceType } from '../types/place.types';
+} from '@/domains/places/queries/usePlaceQuery';
+import type { SearchedPlaceType } from '@/domains/places/types/place.types';
+import { useGoogleEventTrigger } from '@/libs/googleAnalytics/hooks/useGoogleEventTrigger';
 
 const usePlaceList = () => {
   const { data: placeList, error } = usePlaceListQuery();
