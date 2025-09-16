@@ -4,8 +4,7 @@ import Modal from '@/@common/components/Modal/Modal';
 import type { ModalProps } from '@/@common/components/Modal/Modal.types';
 import Text from '@/@common/components/Text/Text';
 import closeIcon from '@/assets/icons/close.svg';
-
-import SearchBox from '../SearchBox/SearchBox';
+import SearchBox from '@/domains/places/components/SearchBox/SearchBox';
 
 const AddPlaceModal = ({ isOpen, onClose }: Omit<ModalProps, 'children'>) => {
   return (

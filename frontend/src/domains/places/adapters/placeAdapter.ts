@@ -2,12 +2,12 @@ import type {
   FetchPlaceListResponseType,
   FetchPlaceResponseType,
   SearchPlaceResponseType,
-} from '../types/api.types';
+} from '@/domains/places/types/api.types';
 import type {
   PlaceAdapterType,
   PlaceListAdapterType,
   SearchPlaceAdapterType,
-} from '../types/place.types';
+} from '@/domains/places/types/place.types';
 
 const getPlaceAdapter = (data: FetchPlaceResponseType): PlaceAdapterType => {
   return {

@@ -1,15 +1,14 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 import { useToastContext } from '@/@common/contexts/useToastContext';
-
 import {
   addPlace,
   deletePlace,
   getPlace,
   getPlaceList,
   searchPlace,
-} from '../apis/place';
-import { AddPlaceRequestType } from '../types/api.types';
+} from '@/domains/places/apis/place';
+import { AddPlaceRequestType } from '@/domains/places/types/api.types';
 
 import { placesKeys } from './key';
 

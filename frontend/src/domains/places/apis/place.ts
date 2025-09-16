@@ -1,22 +1,20 @@
 import { apiClient } from '@/apis';
-
 import {
   getPlaceAdapter,
   getPlaceListAdapter,
   searchPlaceAdapter,
-} from '../adapters/placeAdapter';
-
+} from '@/domains/places/adapters/placeAdapter';
 import type {
   AddPlaceRequestType,
   DeletePlaceRequestType,
   FetchPlaceRequestType,
   SearchPlaceRequestType,
-} from '../types/api.types';
+} from '@/domains/places/types/api.types';
 import type {
   PlaceAdapterType,
   PlaceListAdapterType,
   SearchPlaceAdapterType,
-} from '../types/place.types';
+} from '@/domains/places/types/place.types';
 
 const addPlace = async (placeInfo: AddPlaceRequestType) => {
   const routieSpaceUuid = localStorage.getItem('routieSpaceUuid');
