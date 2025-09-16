@@ -1,5 +1,3 @@
-import { css } from '@emotion/react';
-
 import Button from '@/@common/components/Button/Button';
 import Flex from '@/@common/components/Flex/Flex';
 import Text from '@/@common/components/Text/Text';
@@ -42,15 +40,11 @@ const RoutieSpaceName = () => {
         onClick={handleClick}
         width="5rem"
         disabled={isLoading}
-        css={css`
-          padding: 0.8rem 0.6rem;
-        `}
+        padding="0.8rem 0.6rem"
       >
-        <Flex width="100%">
-          <Text variant="caption" color={theme.colors.white}>
-            {isEditing ? '저장' : '수정'}
-          </Text>
-        </Flex>
+        <Text variant="caption" color={theme.colors.white}>
+          {isEditing ? '저장' : '수정'}
+        </Text>
       </Button>
     </Flex>
   );

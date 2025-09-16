@@ -42,11 +42,9 @@ const SearchBox = ({ onClose }: SearchBoxProps) => {
           onClick={handleSearch}
           disabled={keyword ? false : true}
         >
-          <Flex width="100%">
-            <Text color={theme.colors.white} variant="label">
-              검색
-            </Text>
-          </Flex>
+          <Text color={theme.colors.white} variant="label">
+            검색
+          </Text>
         </Button>
       </Flex>
       <Flex

@@ -32,11 +32,9 @@ const SearchPlace = ({
         </Flex>
       </Flex>
       <Button onClick={() => handleSubmit()} variant="primary" width="20%">
-        <Flex width="100%" justifyContent="center">
-          <Text variant="caption" color={theme.colors.white}>
-            추가하기
-          </Text>
-        </Flex>
+        <Text variant="caption" color={theme.colors.white}>
+          추가하기
+        </Text>
       </Button>
     </Flex>
   );

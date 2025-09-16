@@ -92,7 +92,7 @@ const Home = () => {
           </Flex>
           <Flex gap={8} width="70%">
             <Button onClick={handleCreateRoutieSpace} css={CreateButtonStyle}>
-              <Flex direction="row" gap={1.5} padding={1}>
+              <Flex gap={1.5} padding={1}>
                 <img src={arrowWhite} width={'30rem'} />
                 <Text variant="title" color="white">
                   동선 만들러가기

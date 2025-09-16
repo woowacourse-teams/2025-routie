@@ -85,11 +85,9 @@ const SideSheet = ({ open, onToggle }: SideSheetProps) => {
             장소 목록
           </Text>
           <Button variant="primary" onClick={handleOpenAddModalClick}>
-            <Flex width="100%">
-              <Text variant="subTitle" color={theme.colors.white}>
-                + 장소 추가
-              </Text>
-            </Flex>
+            <Text variant="subTitle" color={theme.colors.white}>
+              + 장소 추가
+            </Text>
           </Button>
         </Flex>
         {placeList?.length === 0 && (
