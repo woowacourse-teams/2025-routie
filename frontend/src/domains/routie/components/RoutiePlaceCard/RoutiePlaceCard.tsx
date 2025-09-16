@@ -36,42 +36,36 @@ const RoutiePlaceCard = ({ routie }: { routie: RoutieType }) => {
     place && (
       <DraggableWrapper>
         <Card id={routie.placeId.toString()} variant={'defaultStatic'}>
-          <Flex justifyContent="flex-start" gap={1.5}>
-            <Flex width="100%" justifyContent="space-between" gap={1.5}>
-              <Flex padding={1}>
-                <Text variant="title" color={theme.colors.purple[300]}>
-                  {routie.sequence}
+          <Flex justifyContent="space-between" gap={1.5}>
+            <Flex padding={1} width="auto">
+              <Text variant="title" color={theme.colors.purple[300]}>
+                {routie.sequence}
+              </Text>
+            </Flex>
+            <Flex
+              direction="column"
+              alignItems="flex-start"
+              gap={1.1}
+              padding={0.5}
+              css={EllipsisParentStyle}
+            >
+              <Text variant="caption" ellipsis>
+                {place.name}
+              </Text>
+              <Flex gap={0.4} justifyContent="flex-start">
+                <Icon name="pin" size={12} />
+                <Text variant="label" color={theme.colors.gray[300]} ellipsis>
+                  {place.roadAddressName || place.addressName}
                 </Text>
               </Flex>
-              <Flex
-                direction="column"
-                alignItems="flex-start"
-                gap={1.1}
-                width="100%"
-                padding={0.5}
-                css={EllipsisParentStyle}
-              >
-                <Flex width="100%" justifyContent="space-between" gap={1}>
-                  <Text variant="caption" ellipsis>
-                    {place.name}
-                  </Text>
-                </Flex>
-
-                <Flex gap={0.4} alignItems="center">
-                  <Icon name="pin" size={12} />
-                  <Text variant="label" color={theme.colors.gray[300]} ellipsis>
-                    {place.roadAddressName || place.addressName}
-                  </Text>
-                </Flex>
-              </Flex>
-              <Flex direction="column" gap={3}>
-                <IconButton
-                  icon={closeRed}
-                  variant="delete"
-                  onClick={() => handleDeleteRoutie(routie.placeId)}
-                />
-                <Icon name="drag" size={24} css={DragIconStyle} />
-              </Flex>
+            </Flex>
+            <Flex direction="column" gap={3} width="auto">
+              <IconButton
+                icon={closeRed}
+                variant="delete"
+                onClick={() => handleDeleteRoutie(routie.placeId)}
+              />
+              <Icon name="drag" size={24} css={DragIconStyle} />
             </Flex>
           </Flex>
         </Card>

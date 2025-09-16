@@ -28,7 +28,7 @@ const PlaceOverlayCard = ({ place, onClose }: PlaceOverlayCardProps) => {
       variant={selected ? 'available' : 'default'}
     >
       <Flex direction="column" gap={1.2} alignItems="flex-start">
-        <Flex justifyContent="space-between" width="100%">
+        <Flex justifyContent="space-between">
           <Icon
             name={selected ? 'check' : 'plus'}
             size={selected ? 34 : 28}

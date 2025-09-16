@@ -9,7 +9,7 @@ const RoutieSection = () => {
   const getDragProps = useCardDrag(routiePlaces, handleChangeRoutie);
 
   return (
-    <Flex direction="column" width="100%" gap={2}>
+    <Flex direction="column" gap={2}>
       {routiePlaces.map((routiePlace, index) => (
         <div key={routiePlace.placeId} style={{ width: '100%' }}>
           <div {...getDragProps(index)} style={{ width: '100%' }}>

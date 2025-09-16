@@ -20,7 +20,7 @@ const RoutieSpaceName = () => {
   } = useRoutieSpace();
 
   return (
-    <Flex justifyContent="space-between" width="100%" margin={0.4} gap={3}>
+    <Flex justifyContent="space-between" margin={0.4} gap={3}>
       {isEditing ? (
         <input
           ref={inputRef}
@@ -31,7 +31,7 @@ const RoutieSpaceName = () => {
           onKeyDown={handleEnter}
         />
       ) : (
-        <Flex justifyContent="flex-start" padding={0.4} width="100%">
+        <Flex justifyContent="flex-start" padding={0.4}>
           <Text variant="title2">{name}</Text>
         </Flex>
       )}

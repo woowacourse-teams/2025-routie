@@ -7,7 +7,7 @@ import type { SearchAddressProps } from '@/domains/places/types/searchPlace.type
 
 const SearchAddress = ({ addressType, address }: SearchAddressProps) => {
   return (
-    <Flex width="100%" gap={0.5} justifyContent="flex-start">
+    <Flex gap={0.5} justifyContent="flex-start">
       <Pill
         type="distance"
         css={css`

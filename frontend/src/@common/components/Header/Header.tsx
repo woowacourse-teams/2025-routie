@@ -14,13 +14,7 @@ const Header = ({ children, isHome }: HeaderProps) => {
 
   return (
     <div css={HeaderStyle}>
-      <Flex
-        direction="row"
-        gap={1}
-        height="100%"
-        justifyContent="space-between"
-        padding={1}
-      >
+      <Flex gap={1} height="100%" justifyContent="space-between" padding={1}>
         <HomeButton
           icon={logoIcon}
           onClick={() => navigate('/')}

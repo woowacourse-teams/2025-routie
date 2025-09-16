@@ -33,7 +33,6 @@ const Home = () => {
         direction="column"
         height="calc(100dvh - 7.1rem)"
         padding={5}
-        width="100%"
         css={HomepageStyle}
       >
         <Flex direction="column" gap={3}>
@@ -49,8 +48,8 @@ const Home = () => {
             해드릴게요!
           </Text>
           <Flex
-            justifyContent="space-between"
-            width="100%"
+            justifyContent="space-around"
+            maxWidth="50%"
             gap={5}
             css={InfoCardsWrapperStyle}
           >
