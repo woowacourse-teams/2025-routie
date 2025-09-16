@@ -1,5 +1,12 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
+import { useToastContext } from '@/@common/contexts/useToastContext';
+import {
+  AddRoutiePlaceRequestType,
+  DeleteRoutiePlaceRequestType,
+} from '@/domains/routie/types/api.types';
+import { RoutieType } from '@/domains/routie/types/routie.types';
+
 import {
   addRoutiePlace,
   deleteRoutiePlace,
@@ -8,12 +15,6 @@ import {
 } from '../apis/routie';
 
 import { routiesKeys } from './key';
-import { useToastContext } from '@/@common/contexts/useToastContext';
-import { RoutieType } from '@/domains/routie/types/routie.types';
-import {
-  AddRoutiePlaceRequestType,
-  DeleteRoutiePlaceRequestType,
-} from '@/domains/routie/types/api.types';
 
 const useRoutieQuery = () => {
   return useQuery({
@@ -39,9 +40,9 @@ const useAddRoutieQuery = () => {
 
   return useMutation({
     mutationFn: (placeId: AddRoutiePlaceRequestType) => addRoutiePlace(placeId),
-    onSuccess: (data) => {
+    onSuccess: () => {
       showToast({
-        message: '내 동선에 장소가 추가되었습니다.',
+        message: '동선에 장소가 추가되었습니다.',
         type: 'success',
       });
       queryClient.invalidateQueries({ queryKey: routiesKeys.all });
@@ -63,9 +64,9 @@ const useChangeRoutieQuery = () => {
     mutationFn: (routiePlaces: RoutieType[]) =>
       editRoutieSequence({ routiePlaces }),
 
-    onSuccess: (data) => {
+    onSuccess: () => {
       showToast({
-        message: '내 동선에 장소가 수정되었습니다.',
+        message: '동선이 수정되었습니다.',
         type: 'success',
       });
       queryClient.invalidateQueries({ queryKey: routiesKeys.all });
@@ -86,9 +87,9 @@ const useDeleteRoutieQuery = () => {
   return useMutation({
     mutationFn: (placeId: DeleteRoutiePlaceRequestType) =>
       deleteRoutiePlace(placeId),
-    onSuccess: (data) => {
+    onSuccess: () => {
       showToast({
-        message: '내 동선에서 장소가 삭제되었습니다.',
+        message: '동선에서 장소가 삭제되었습니다.',
         type: 'success',
       });
       queryClient.invalidateQueries({ queryKey: routiesKeys.all });

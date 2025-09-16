@@ -2,7 +2,6 @@ import { useLayoutEffect } from 'react';
 import { useSearchParams } from 'react-router';
 
 import Flex from '@/@common/components/Flex/Flex';
-import RoutieProvider from '@/domains/routie/contexts/RoutieProvider';
 import MapWithSideSheet from '@/layouts/MapWithSideSheet/MapWithSideSheet';
 import Sidebar from '@/layouts/Sidebar/Sidebar';
 
@@ -17,16 +16,14 @@ const RoutieSpace = () => {
   }, [routieSpaceIdentifier]);
 
   return (
-    <RoutieProvider>
-      <Flex justifyContent="flex-start" height="100vh">
-        <Flex direction="column" justifyContent="flex-start" height="100%">
-          <Sidebar />
-        </Flex>
-        <Flex direction="column" justifyContent="flex-start" height="100%">
-          <MapWithSideSheet />
-        </Flex>
+    <Flex justifyContent="flex-start" height="100vh">
+      <Flex direction="column" justifyContent="flex-start" height="100%">
+        <Sidebar />
       </Flex>
-    </RoutieProvider>
+      <Flex direction="column" justifyContent="flex-start" height="100%">
+        <MapWithSideSheet />
+      </Flex>
+    </Flex>
   );
 };
 
