@@ -10,7 +10,7 @@ import CloseSheetIcon from '@/assets/icons/closeSheet.svg';
 import AddPlaceModal from '@/domains/places/components/AddPlaceModal/AddPlaceModal';
 import PlaceCard from '@/domains/places/components/PlaceCard/PlaceCard';
 import { usePlaceList } from '@/domains/places/hooks/usePlaceList';
-import { useRoutieContext } from '@/domains/routie/contexts/useRoutieContext';
+import { useRoutieList } from '@/domains/routie/hooks/useRoutieList';
 import { useGoogleEventTrigger } from '@/libs/googleAnalytics/hooks/useGoogleEventTrigger';
 import theme from '@/styles/theme';
 
@@ -30,7 +30,7 @@ import type { SideSheetProps } from './SideSheet.types';
 
 const SideSheet = ({ open, onToggle }: SideSheetProps) => {
   const { placeList } = usePlaceList();
-  const { routieIdList } = useRoutieContext();
+  const { routieIdList } = useRoutieList();
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const { triggerEvent } = useGoogleEventTrigger();
 

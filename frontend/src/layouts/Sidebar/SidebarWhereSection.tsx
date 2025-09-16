@@ -2,7 +2,7 @@ import EmptyMessage from '@/@common/components/EmptyMessage/EmptyMessage';
 import Flex from '@/@common/components/Flex/Flex';
 import Text from '@/@common/components/Text/Text';
 import RoutieSection from '@/domains/routie/components/RoutieSection/RoutieSection';
-import { useRoutieContext } from '@/domains/routie/contexts/useRoutieContext';
+import { useRoutieList } from '@/domains/routie/hooks/useRoutieList';
 
 import {
   RoutieSectionScrollStyle,
@@ -10,7 +10,7 @@ import {
 } from './Sidebar.styles';
 
 const SidebarWhereSection = () => {
-  const { routiePlaces } = useRoutieContext();
+  const { routiePlaces } = useRoutieList();
 
   return (
     <Flex
