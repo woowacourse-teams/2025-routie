@@ -19,11 +19,4 @@ const ItemButtonStyle = css`
   border-radius: 0;
 `;
 
-const ItemEmptyStyle = css`
-  width: 100%;
-  padding: 12px 16px;
-  border: 0;
-  border-radius: 0;
-`;
-
-export { ListStyle, ItemButtonStyle, ItemEmptyStyle };
+export { ListStyle, ItemButtonStyle };
