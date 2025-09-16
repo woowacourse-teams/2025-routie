@@ -1,5 +1,5 @@
-import type { FetchRoutieResponseType } from '../types/api.types';
-import type { RoutieAdapterType } from '../types/routie.types';
+import type { FetchRoutieResponseType } from '@/domains/routie/types/api.types';
+import type { RoutieAdapterType } from '@/domains/routie/types/routie.types';
 
 const routieAdapter = (data: FetchRoutieResponseType): RoutieAdapterType => {
   return {

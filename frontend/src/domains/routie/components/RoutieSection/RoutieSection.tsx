@@ -1,8 +1,7 @@
 import Flex from '@/@common/components/Flex/Flex';
 import { useCardDrag } from '@/@common/hooks/useCardDrag';
+import RoutiePlaceCard from '@/domains/routie/components/RoutiePlaceCard/RoutiePlaceCard';
 import { useRoutieList } from '@/domains/routie/hooks/useRoutieList';
-
-import RoutiePlaceCard from '../RoutiePlaceCard/RoutiePlaceCard';
 
 const RoutieSection = () => {
   const { routiePlaces, handleChangeRoutie } = useRoutieList();
