@@ -16,14 +16,20 @@ import type {
   SearchPlaceAdapterType,
 } from '@/domains/places/types/place.types';
 
-const requireRoutieSpaceUuid = (): string => {
-  const routieSpaceUuid = localStorage.getItem('routieSpaceUuid');
-  if (!routieSpaceUuid) throw new Error('루티 스페이스 uuid가 없습니다.');
-  return routieSpaceUuid;
+export const getSpaceUuid = (): string | null =>
+  typeof window !== 'undefined'
+    ? localStorage.getItem('routieSpaceUuid')
+    : null;
+
+export const ensureSpaceUuid = (): string => {
+  const uuid = getSpaceUuid();
+  if (!uuid) throw new Error('루티 스페이스 uuid가 없습니다.');
+  return uuid;
 };
 
 const addPlace = async (placeInfo: AddPlaceRequestType) => {
-  const routieSpaceUuid = requireRoutieSpaceUuid();
+  const routieSpaceUuid = ensureSpaceUuid();
+
   const response = await apiClient.post(
     `/routie-spaces/${routieSpaceUuid}/places`,
     placeInfo,
@@ -35,7 +41,7 @@ const addPlace = async (placeInfo: AddPlaceRequestType) => {
 };
 
 const deletePlace = async ({ placeId }: DeletePlaceRequestType) => {
-  const routieSpaceUuid = requireRoutieSpaceUuid();
+  const routieSpaceUuid = ensureSpaceUuid();
 
   await apiClient.delete(`/routie-spaces/${routieSpaceUuid}/places/${placeId}`);
 };
@@ -43,7 +49,7 @@ const deletePlace = async ({ placeId }: DeletePlaceRequestType) => {
 const getPlace = async ({
   placeId,
 }: FetchPlaceRequestType): Promise<PlaceAdapterType> => {
-  const routieSpaceUuid = requireRoutieSpaceUuid();
+  const routieSpaceUuid = ensureSpaceUuid();
 
   const response = await apiClient.get(
     `/routie-spaces/${routieSpaceUuid}/places/${placeId}`,
@@ -55,7 +61,7 @@ const getPlace = async ({
 };
 
 const getPlaceList = async (): Promise<PlaceListAdapterType> => {
-  const routieSpaceUuid = requireRoutieSpaceUuid();
+  const routieSpaceUuid = ensureSpaceUuid();
 
   const response = await apiClient.get(
     `/routie-spaces/${routieSpaceUuid}/places`,
