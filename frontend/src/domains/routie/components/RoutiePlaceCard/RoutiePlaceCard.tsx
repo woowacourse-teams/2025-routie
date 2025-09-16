@@ -8,23 +8,17 @@ import Icon from '@/@common/components/IconSvg/Icon';
 import Text from '@/@common/components/Text/Text';
 import { useToastContext } from '@/@common/contexts/useToastContext';
 import closeRed from '@/assets/icons/close-red.svg';
-import { getPlace } from '@/domains/places/apis/place';
+
 import { usePlaceDetailQuery } from '@/domains/places/queries/usePlaceQuery';
-import type { PlaceBaseType } from '@/domains/places/types/place.types';
-import { useGoogleEventTrigger } from '@/libs/googleAnalytics/hooks/useGoogleEventTrigger';
+
 import theme from '@/styles/theme';
-
-import { useRoutieContext } from '../../contexts/useRoutieContext';
-
 import { DragIconStyle, EllipsisParentStyle } from './RoutiePlaceCard.styles';
-
-import type { RoutieType } from '../../types/routie.types';
+import type { RoutieType } from '@/domains/routie/types/routie.types';
+import { useRoutieList } from '@/domains/routie/hooks/useRoutieList';
 
 const RoutiePlaceCard = ({ routie }: { routie: RoutieType }) => {
   const { data: place, error } = usePlaceDetailQuery(routie.placeId);
-
-  const { handleDeleteRoutie } = useRoutieContext();
-  const { triggerEvent } = useGoogleEventTrigger();
+  const { handleDeleteRoutie } = useRoutieList();
   const { showToast } = useToastContext();
 
   useEffect(() => {
@@ -38,15 +32,6 @@ const RoutiePlaceCard = ({ routie }: { routie: RoutieType }) => {
       }
     }
   }, [error]);
-
-  const handleDelete = () => {
-    handleDeleteRoutie(routie.placeId);
-    triggerEvent({
-      action: 'click',
-      category: 'routie',
-      label: '루티에서 장소 삭제하기 버튼',
-    });
-  };
 
   return (
     place && (
@@ -84,7 +69,7 @@ const RoutiePlaceCard = ({ routie }: { routie: RoutieType }) => {
                 <IconButton
                   icon={closeRed}
                   variant="delete"
-                  onClick={handleDelete}
+                  onClick={() => handleDeleteRoutie(routie.placeId)}
                 />
                 <Icon name="drag" size={24} css={DragIconStyle} />
               </Flex>

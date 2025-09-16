@@ -4,113 +4,88 @@ import Card from '@/@common/components/Card/Card';
 import Flex from '@/@common/components/Flex/Flex';
 import Icon from '@/@common/components/IconSvg/Icon';
 import Text from '@/@common/components/Text/Text';
-import { useRoutieContext } from '@/domains/routie/contexts/useRoutieContext';
-import { useGoogleEventTrigger } from '@/libs/googleAnalytics/hooks/useGoogleEventTrigger';
+import { usePlaceList } from '@/domains/places/hooks/usePlaceList';
+import { useRoutieList } from '@/domains/routie/hooks/useRoutieList';
 import theme from '@/styles/theme';
-
-import { usePlaceList } from '../../hooks/usePlaceList';
 
 import type { PlaceCardProps } from './PlaceCard.types';
 
 const PlaceCard = ({ selected, ...props }: PlaceCardProps) => {
-  const { handleAddRoutie } = useRoutieContext();
-  const { triggerEvent } = useGoogleEventTrigger();
+  const { handleAddRoutie } = useRoutieList();
   const { handleDeletePlace } = usePlaceList();
 
   const handlePlaceSelect = async () => {
     if (selected) return;
-
-    try {
-      await handleAddRoutie(props.id);
-      triggerEvent({
-        action: 'click',
-        category: 'routie',
-        label: '루티에 장소 추가하기 버튼',
-      });
-    } catch (error) {
-      console.error(error);
-    }
+    await handleAddRoutie(props.id);
   };
 
   return (
-    <>
-      <Card
-        id={props.id.toString()}
-        variant={selected ? 'available' : 'default'}
+    <Card id={props.id.toString()} variant={selected ? 'available' : 'default'}>
+      <Flex
+        direction="column"
+        gap={1.6}
+        justifyContent="flex-start"
+        alignItems="flex-start"
+        height="8rem"
+        css={css`
+          padding: 0.8rem 0.4rem;
+        `}
       >
-        <Flex
-          direction="column"
-          gap={1.6}
-          justifyContent="flex-start"
-          alignItems="flex-start"
-          height="8rem"
-          css={css`
-            padding: 0.8rem 0.4rem;
-          `}
-        >
+        <Flex justifyContent="space-between" width="100%" height="100%" gap={2}>
           <Flex
-            justifyContent="space-between"
-            width="100%"
-            height="100%"
-            gap={2}
+            direction="column"
+            alignItems="flex-start"
+            gap={1}
+            css={css`
+              flex: 1;
+              min-width: 0;
+            `}
           >
-            <Flex
-              direction="column"
-              alignItems="flex-start"
-              gap={1}
+            <Text variant="subTitle" ellipsis>
+              {props.name}
+            </Text>
+            <Text variant="caption" color={theme.colors.gray[200]} ellipsis>
+              {props.roadAddressName || props.addressName}
+            </Text>
+          </Flex>
+          <Flex direction="column" gap={1.6} height="100%">
+            <Icon
+              name={selected ? 'check' : 'plus'}
+              onClick={handlePlaceSelect}
+              size={selected ? 34 : 30}
               css={css`
-                flex: 1;
-                min-width: 0;
-              `}
-            >
-              <Text variant="subTitle" ellipsis>
-                {props.name}
-              </Text>
-              <Text variant="caption" color={theme.colors.gray[200]} ellipsis>
-                {props.roadAddressName || props.addressName}
-              </Text>
-            </Flex>
-            <Flex direction="column" gap={1.6} height="100%">
-              <Icon
-                name={selected ? 'check' : 'plus'}
-                onClick={handlePlaceSelect}
-                size={selected ? 34 : 30}
-                css={css`
-                  cursor: ${selected ? 'default' : 'pointer'};
-                  padding: 0.2rem;
-                  border-radius: 8px;
+                cursor: ${selected ? 'default' : 'pointer'};
+                padding: 0.2rem;
+                border-radius: 8px;
 
-                  &:hover {
-                    background-color: ${selected
-                      ? theme.colors.white
-                      : theme.colors.purple[200]};
-                  }
-                `}
-              />
-
-              <Icon
-                name={selected ? 'disableTrash' : 'trash'}
-                onClick={
-                  selected ? undefined : () => handleDeletePlace(props.id)
+                &:hover {
+                  background-color: ${selected
+                    ? theme.colors.white
+                    : theme.colors.purple[200]};
                 }
-                size={30}
-                css={css`
-                  cursor: ${selected ? 'default' : 'pointer'};
-                  padding: 0.4rem;
-                  border-radius: 8px;
+              `}
+            />
 
-                  &:hover {
-                    background-color: ${selected
-                      ? theme.colors.white
-                      : theme.colors.red[50]};
-                  }
-                `}
-              />
-            </Flex>
+            <Icon
+              name={selected ? 'disableTrash' : 'trash'}
+              onClick={selected ? undefined : () => handleDeletePlace(props.id)}
+              size={30}
+              css={css`
+                cursor: ${selected ? 'default' : 'pointer'};
+                padding: 0.4rem;
+                border-radius: 8px;
+
+                &:hover {
+                  background-color: ${selected
+                    ? theme.colors.white
+                    : theme.colors.red[50]};
+                }
+              `}
+            />
           </Flex>
         </Flex>
-      </Card>
-    </>
+      </Flex>
+    </Card>
   );
 };
 
