@@ -2,8 +2,6 @@ import { useCallback, useEffect } from 'react';
 
 import { useToastContext } from '@/@common/contexts/useToastContext';
 import { useAsyncLock } from '@/@common/hooks/useAsyncLock';
-import { useGoogleEventTrigger } from '@/libs/googleAnalytics/hooks/useGoogleEventTrigger';
-
 import {
   useAddRoutieQuery,
   useChangeRoutieQuery,
@@ -11,6 +9,7 @@ import {
   useRoutieQuery,
 } from '@/domains/routie/queries/useRoutieQuery';
 import { RoutieType } from '@/domains/routie/types/routie.types';
+import { useGoogleEventTrigger } from '@/libs/googleAnalytics/hooks/useGoogleEventTrigger';
 
 const useRoutieList = () => {
   const { data: routie, error } = useRoutieQuery();
