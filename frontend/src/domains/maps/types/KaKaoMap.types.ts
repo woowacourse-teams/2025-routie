@@ -1,5 +1,7 @@
 import { RefObject } from 'react';
 
+import type { PlaceDataType } from '@/domains/places/types/place.types';
+
 type KakaoMapType = InstanceType<typeof window.kakao.maps.Map>;
 type MapStateType = 'loading' | 'ready' | 'error';
 
@@ -31,6 +33,11 @@ interface DrawMarkerProps {
   onClick?: () => void;
 }
 
+interface RoutiePlaceWithDetails extends PlaceDataType {
+  sequence: number;
+  routieId: number;
+}
+
 type MapRefType = RefObject<KakaoMapType>;
 
 export type {
@@ -41,5 +48,6 @@ export type {
   MapStateType,
   MarkerType,
   DrawMarkerProps,
+  RoutiePlaceWithDetails,
   MapRefType,
 };

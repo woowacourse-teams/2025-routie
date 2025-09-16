@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 
 import { useQueryClient } from '@tanstack/react-query';
@@ -8,13 +8,13 @@ import Text from '@/@common/components/Text/Text';
 import PlaceOverlayCard from '@/domains/maps/components/PlaceOverlayCard/PlaceOverlayCard';
 import { usePlaceList } from '@/domains/places/hooks/usePlaceList';
 import { PlaceDataType } from '@/domains/places/types/place.types';
-import { useRoutieList } from '@/domains/routie/hooks/useRoutieList';
 
 import { useCustomOverlay } from '../../hooks/useCustomOverlay';
 import { useKakaoMapInit } from '../../hooks/useKakaoMapInit';
 import { useKakaoMapSDK } from '../../hooks/useKakaoMapSDK';
 import { useMapMarker } from '../../hooks/useMapMarker';
 import { usePolyline } from '../../hooks/usePolyline';
+import { useRoutePlacesWithDetails } from '../../hooks/useRoutePlacesWithDetails';
 
 import {
   KakaoMapContainerStyle,
@@ -26,22 +26,10 @@ import {
 const KakaoMap = () => {
   const queryClient = useQueryClient();
   const { placeList } = usePlaceList();
-  const { routieIdList } = useRoutieList();
+  const { routiePlacesWithDetails } = useRoutePlacesWithDetails();
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const addedPlaceId = queryClient.getQueryData(['addedPlaceId']);
   const [isInitialLoad, setIsInitialLoad] = useState(true);
-
-  const routiePlaces = useMemo(
-    () =>
-      placeList
-        ? [...placeList]
-            .filter((place) => routieIdList.includes(place.id))
-            .sort(
-              (a, b) => routieIdList.indexOf(a.id) - routieIdList.indexOf(b.id),
-            )
-        : [],
-    [placeList, routieIdList],
-  );
 
   const { sdkReady, sdkError } = useKakaoMapSDK();
   const { mapRef, mapState, errorMessage } = useKakaoMapInit({
@@ -90,8 +78,8 @@ const KakaoMap = () => {
     const renderMapElements = () => {
       clearMarkers();
       placeList?.forEach((place) => {
-        const routieIndex = routieIdList.indexOf(place.id);
-        const routieSequence = routieIndex !== -1 ? routieIndex + 1 : undefined;
+        const routiePlace = routiePlacesWithDetails.find(rp => rp.id === place.id);
+        const routieSequence = routiePlace?.sequence;
 
         drawMarkers({
           place,
@@ -116,13 +104,13 @@ const KakaoMap = () => {
 
       clearPolyline();
 
-      routiePlaces.forEach((place) => {
+      routiePlacesWithDetails.forEach((place) => {
         loadPolyline(place.latitude, place.longitude);
       });
     };
 
     renderMapElements();
-  }, [mapState, placeList, routiePlaces, addedPlaceId]);
+  }, [mapState, placeList, routiePlacesWithDetails, addedPlaceId]);
 
   return (
     <div css={KakaoMapWrapperStyle}>
