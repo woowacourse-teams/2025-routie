@@ -140,7 +140,6 @@ const KakaoMap = () => {
           role="status"
           aria-label="지도 로딩 중"
           direction="column"
-          alignItems="center"
         >
           <Text variant="caption" css={{ textAlign: 'center' }}>
             🗺️
@@ -152,13 +151,7 @@ const KakaoMap = () => {
       )}
 
       {finalMapState === 'error' && (
-        <Flex
-          css={KakaoMapErrorStyle}
-          direction="column"
-          alignItems="center"
-          gap={0.8}
-          width="100%"
-        >
+        <Flex css={KakaoMapErrorStyle} direction="column" gap={0.8}>
           <Text variant="caption">⚠️</Text>
           <Text variant="caption">{finalError}</Text>
         </Flex>

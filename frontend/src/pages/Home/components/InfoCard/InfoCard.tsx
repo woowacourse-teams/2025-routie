@@ -18,7 +18,7 @@ const InfoCard = ({
 }: InfoCardProps) => {
   return (
     <Flex width={size} height={size} alignItems="stretch" css={CardStyle}>
-      <Flex direction="column" justifyContent="space-between" width="100%">
+      <Flex direction="column" justifyContent="space-between">
         <Flex width="6rem" height="6rem" css={CircleStyle(circleColor)}>
           <img src={iconSrc} alt={iconAlt} width={iconSize} height={iconSize} />
         </Flex>
@@ -29,7 +29,7 @@ const InfoCard = ({
 
         <Flex direction="column" gap={0.4}>
           {descriptions.map((line, i) => (
-            <Text key={i} variant="subTitle" color={textColor}>
+            <Text key={i} variant="body" color={textColor}>
               {line}
             </Text>
           ))}

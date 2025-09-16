@@ -10,11 +10,11 @@ const AddPlaceModal = ({ isOpen, onClose }: Omit<ModalProps, 'children'>) => {
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <Flex direction="column" width="44rem" gap={2}>
-        <Flex justifyContent="space-between" width="100%">
-          <Text variant="title2">장소 추가</Text>
+        <Flex justifyContent="space-between">
+          <Text variant="subTitle">장소 추가</Text>
           <IconButton type="button" icon={closeIcon} onClick={onClose} />
         </Flex>
-        <Flex direction="column" alignItems="flex-start" width="100%" gap={2}>
+        <Flex direction="column" alignItems="flex-start" gap={2}>
           <SearchBox onClose={onClose} />
         </Flex>
       </Flex>

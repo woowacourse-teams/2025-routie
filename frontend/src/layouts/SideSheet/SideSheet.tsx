@@ -1,7 +1,5 @@
 import { useState } from 'react';
 
-import { css } from '@emotion/react';
-
 import Button from '@/@common/components/Button/Button';
 import EmptyMessage from '@/@common/components/EmptyMessage/EmptyMessage';
 import Flex from '@/@common/components/Flex/Flex';
@@ -15,15 +13,15 @@ import { useGoogleEventTrigger } from '@/libs/googleAnalytics/hooks/useGoogleEve
 import theme from '@/styles/theme';
 
 import {
-  SheetBaseStyle,
-  SheetContentContainerStyle,
-  SheetOpenStyle,
-  SheetCloseStyle,
-  TabBaseStyle,
   IconBaseStyle,
   IconFlippedStyle,
+  SheetBaseStyle,
+  SheetCloseStyle,
+  SheetContentContainerStyle,
   SheetListWrapperStyle,
+  SheetOpenStyle,
   SheetScrollableAreaStyle,
+  TabBaseStyle,
 } from './SideSheet.styles';
 
 import type { SideSheetProps } from './SideSheet.types';
@@ -68,28 +66,16 @@ const SideSheet = ({ open, onToggle }: SideSheetProps) => {
         alignItems="stretch"
         css={SheetContentContainerStyle}
       >
-        <Flex
-          alignItems="center"
-          justifyContent="space-between"
-          width="100%"
-          css={css`
-            padding: 0 1rem 2rem;
-          `}
-        >
-          <Text
-            variant="title"
-            css={css`
-              width: 100%;
-            `}
+        <Flex justifyContent="space-between" padding="0 1rem 2rem">
+          <Text variant="title">장소 목록</Text>
+          <Button
+            variant="primary"
+            onClick={handleOpenAddModalClick}
+            width="50%"
           >
-            장소 목록
-          </Text>
-          <Button variant="primary" onClick={handleOpenAddModalClick}>
-            <Flex width="100%">
-              <Text variant="subTitle" color={theme.colors.white}>
-                + 장소 추가
-              </Text>
-            </Flex>
+            <Text variant="body" color={theme.colors.white}>
+              + 장소 추가
+            </Text>
           </Button>
         </Flex>
         {placeList?.length === 0 && (

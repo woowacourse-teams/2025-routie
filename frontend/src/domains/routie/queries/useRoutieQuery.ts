@@ -1,11 +1,11 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 import { useToastContext } from '@/@common/contexts/useToastContext';
-import {
+import type {
   AddRoutiePlaceRequestType,
   DeleteRoutiePlaceRequestType,
 } from '@/domains/routie/types/api.types';
-import { RoutieType } from '@/domains/routie/types/routie.types';
+import type { RoutieType } from '@/domains/routie/types/routie.types';
 
 import {
   addRoutiePlace,

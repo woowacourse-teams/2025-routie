@@ -22,20 +22,18 @@ const SearchPlace = ({
   };
 
   return (
-    <Flex justifyContent="space-between" width="100%">
+    <Flex justifyContent="space-between">
       <Flex gap={1}>
         <img src={pinIcon} alt="pin" />
-        <Flex direction="column" alignItems="flex-start" gap={0.5} width="100%">
+        <Flex direction="column" alignItems="flex-start" gap={0.5}>
           <Text variant="caption">{searchResult.name}</Text>
           <SearchAddress addressType={addressType} address={address} />
         </Flex>
       </Flex>
       <Button onClick={() => handleSubmit()} variant="primary" width="20%">
-        <Flex width="100%" justifyContent="center">
-          <Text variant="caption" color={theme.colors.white}>
-            추가하기
-          </Text>
-        </Flex>
+        <Text variant="caption" color={theme.colors.white}>
+          추가하기
+        </Text>
       </Button>
     </Flex>
   );

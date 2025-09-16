@@ -23,17 +23,15 @@ const SidebarWhereSection = () => {
       padding={1.6}
       css={SidebarSectionStyle(true)}
     >
-      <Flex padding={0.5} justifyContent="space-between" width="100%">
-        <Flex width="100%" justifyContent="flex-start" gap={1}>
-          <Text variant="title2">내가 갈 곳</Text>
-          <Text variant="label" color="gray">
-            {routiePlaces.length}개의 장소
-          </Text>
-        </Flex>
+      <Flex padding={0.5} justifyContent="flex-start" gap={1}>
+        <Text variant="subTitle">내가 갈 곳</Text>
+        <Text variant="label" color="gray">
+          {routiePlaces.length}개의 장소
+        </Text>
       </Flex>
 
       {routiePlaces.length === 0 && (
-        <Flex width="100%" height="100%">
+        <Flex height="100%">
           <EmptyMessage
             messages={[
               '아직 동선이 없습니다.',
@@ -45,7 +43,6 @@ const SidebarWhereSection = () => {
       <Flex
         direction="column"
         justifyContent="flex-start"
-        width="100%"
         padding={1.6}
         css={RoutieSectionScrollStyle}
       >
