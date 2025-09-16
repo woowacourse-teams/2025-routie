@@ -48,7 +48,7 @@ const PlaceOverlayCard = ({ place, onClose }: PlaceOverlayCardProps) => {
           <IconButton icon={closeIcon} onClick={onClose} />
         </Flex>
 
-        <Text variant="subTitle" ellipsis>
+        <Text variant="body" ellipsis>
           {place.name}
         </Text>
         <Text variant="caption" color={theme.colors.gray[200]} ellipsis>

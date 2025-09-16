@@ -29,7 +29,7 @@ const InfoCard = ({
 
         <Flex direction="column" gap={0.4}>
           {descriptions.map((line, i) => (
-            <Text key={i} variant="subTitle" color={textColor}>
+            <Text key={i} variant="body" color={textColor}>
               {line}
             </Text>
           ))}

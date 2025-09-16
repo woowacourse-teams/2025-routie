@@ -39,11 +39,7 @@ const Home = () => {
           <Text variant="title" css={TitleTextStyle} color={theme.home.text}>
             그 장소들, 정말 다 갈 수 있을까요?
           </Text>
-          <Text
-            variant="subTitle"
-            color={theme.home.text}
-            css={SubTitleTextStyle}
-          >
+          <Text variant="body" color={theme.home.text} css={SubTitleTextStyle}>
             루티가 당신의 동선을 <span css={VioletTextStyle}>체크</span>
             해드릴게요!
           </Text>

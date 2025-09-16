@@ -24,7 +24,7 @@ const SidebarWhereSection = () => {
       css={SidebarSectionStyle(true)}
     >
       <Flex padding={0.5} justifyContent="flex-start" gap={1}>
-        <Text variant="title2">내가 갈 곳</Text>
+        <Text variant="subTitle">내가 갈 곳</Text>
         <Text variant="label" color="gray">
           {routiePlaces.length}개의 장소
         </Text>

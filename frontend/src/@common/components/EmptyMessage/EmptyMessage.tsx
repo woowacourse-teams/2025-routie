@@ -8,7 +8,7 @@ const EmptyMessage = ({ messages }: EmptyMessageProps) => {
   return (
     <Flex direction="column" gap={1} padding="8rem 0">
       {messages.map((msg, idx) => (
-        <Text key={idx} variant="subTitle" color={theme.colors.gray[200]}>
+        <Text key={idx} variant="body" color={theme.colors.gray[200]}>
           {msg}
         </Text>
       ))}

@@ -73,7 +73,7 @@ const SideSheet = ({ open, onToggle }: SideSheetProps) => {
             onClick={handleOpenAddModalClick}
             width="50%"
           >
-            <Text variant="subTitle" color={theme.colors.white}>
+            <Text variant="body" color={theme.colors.white}>
               + 장소 추가
             </Text>
           </Button>

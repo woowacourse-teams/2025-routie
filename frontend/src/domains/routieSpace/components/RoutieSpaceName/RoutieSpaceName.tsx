@@ -32,7 +32,7 @@ const RoutieSpaceName = () => {
         />
       ) : (
         <Flex justifyContent="flex-start" padding={0.4}>
-          <Text variant="title2">{name}</Text>
+          <Text variant="subTitle">{name}</Text>
         </Flex>
       )}
       <Button

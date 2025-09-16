@@ -28,7 +28,7 @@ const PlaceCard = ({ selected, ...props }: PlaceCardProps) => {
         padding="0.8rem 0.4rem"
       >
         <Flex direction="column" alignItems="flex-start" gap={1}>
-          <Text variant="subTitle" ellipsis>
+          <Text variant="body" ellipsis>
             {props.name}
           </Text>
           <Text variant="caption" color={theme.colors.gray[200]} ellipsis>
