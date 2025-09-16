@@ -1,14 +1,12 @@
 import { apiClient } from '@/apis';
-
-import { routieAdapter } from '../adapters/routieAdapter';
-
+import { routieAdapter } from '@/domains/routie/adapters/routieAdapter';
 import type {
   AddRoutiePlaceRequestType,
   AddRoutiePlaceResponseType,
   DeleteRoutiePlaceRequestType,
   EditRoutieRequestType,
-} from '../types/api.types';
-import type { RoutieAdapterType } from '../types/routie.types';
+} from '@/domains/routie/types/api.types';
+import type { RoutieAdapterType } from '@/domains/routie/types/routie.types';
 
 const getRoutie = async (): Promise<RoutieAdapterType> => {
   const routieSpaceUuid = localStorage.getItem('routieSpaceUuid');
