@@ -24,9 +24,12 @@ interface FlexProps extends ComponentProps<'div'> {
     | 'inherit';
   gap?: number;
   width?: string;
-  height?: number | string;
-  margin?: number;
-  padding?: number;
+  maxWidth?: string;
+  minWidth?: string;
+  height?: string | number;
+  margin?: string | number;
+  padding?: string | number;
+  flex?: string | number;
 }
 
 export type { FlexProps };
