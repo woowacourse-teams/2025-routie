@@ -6,15 +6,14 @@ import Flex from '@/@common/components/Flex/Flex';
 import IconButton from '@/@common/components/IconButton/IconButton';
 import Icon from '@/@common/components/IconSvg/Icon';
 import Text from '@/@common/components/Text/Text';
-import { useToastContext } from '@/@common/contexts/useToastContext';
 import closeRed from '@/assets/icons/close-red.svg';
-
 import { usePlaceDetailQuery } from '@/domains/places/queries/usePlaceQuery';
-
-import theme from '@/styles/theme';
-import { DragIconStyle, EllipsisParentStyle } from './RoutiePlaceCard.styles';
-import type { RoutieType } from '@/domains/routie/types/routie.types';
 import { useRoutieList } from '@/domains/routie/hooks/useRoutieList';
+import { useToastOnError } from '@/domains/routie/hooks/useToastOnError';
+import type { RoutieType } from '@/domains/routie/types/routie.types';
+import theme from '@/styles/theme';
+
+import { DragIconStyle, EllipsisParentStyle } from './RoutiePlaceCard.styles';
 
 const RoutiePlaceCard = ({ routie }: { routie: RoutieType }) => {
   const { data: place, error } = usePlaceDetailQuery(routie.placeId);
