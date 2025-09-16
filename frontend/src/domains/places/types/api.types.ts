@@ -33,7 +33,6 @@ interface DeletePlaceRequestType {
 }
 
 export type {
-  ApiPlaceBaseType,
   SearchPlaceRequestType,
   SearchPlaceResponseType,
   AddPlaceRequestType,

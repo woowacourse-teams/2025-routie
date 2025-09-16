@@ -2,11 +2,10 @@ import Button from '@/@common/components/Button/Button';
 import Flex from '@/@common/components/Flex/Flex';
 import Text from '@/@common/components/Text/Text';
 import pinIcon from '@/assets/icons/pin.svg';
+import SearchAddress from '@/domains/places/components/SearchAddress/SearchAddress';
+import { usePlaceList } from '@/domains/places/hooks/usePlaceList';
 import type { SearchPlaceProps } from '@/domains/places/types/searchPlace.types';
 import theme from '@/styles/theme';
-
-import { usePlaceList } from '../../hooks/usePlaceList';
-import SearchAddress from '../SearchAddress/SearchAddress';
 
 const SearchPlace = ({
   searchResult,
