@@ -23,7 +23,9 @@ export const getSpaceUuid = (): string | null =>
 
 export const ensureSpaceUuid = (): string => {
   const uuid = getSpaceUuid();
-  if (!uuid) throw new Error('루티 스페이스 uuid가 없습니다.');
+  if (!uuid) {
+    throw new Error('루티 스페이스 uuid가 없습니다.');
+  }
   return uuid;
 };
 
