@@ -6,10 +6,9 @@ import IconButton from '@/@common/components/IconButton/IconButton';
 import Icon from '@/@common/components/IconSvg/Icon';
 import Text from '@/@common/components/Text/Text';
 import closeIcon from '@/assets/icons/close.svg';
+import type { PlaceOverlayCardProps } from '@/domains/maps/types/map.types';
 import { useRoutieList } from '@/domains/routie/hooks/useRoutieList';
 import theme from '@/styles/theme';
-
-import type { PlaceOverlayCardProps } from '../../types/map.types';
 
 const PlaceOverlayCard = ({ place, onClose }: PlaceOverlayCardProps) => {
   const { routieIdList, handleAddRoutie } = useRoutieList();

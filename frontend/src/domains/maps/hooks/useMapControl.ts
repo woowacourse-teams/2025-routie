@@ -1,13 +1,12 @@
 import { useCallback, useRef } from 'react';
 
-import { createCustomMarkerElement } from '../utils/createCustomMarkerElement';
-
 import type {
   DrawMarkerProps,
   MarkerType,
   MapRefType,
   CustomOverlayType,
-} from '../types/api.types';
+} from '@/domains/maps/types/api.types';
+import { createCustomMarkerElement } from '@/domains/maps/utils/createCustomMarkerElement';
 
 const useMapControl = (map: MapRefType) => {
   const markersRef = useRef<(MarkerType | CustomOverlayType)[]>([]);

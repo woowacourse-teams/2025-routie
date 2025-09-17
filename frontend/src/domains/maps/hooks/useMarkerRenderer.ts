@@ -1,11 +1,10 @@
 import { useCallback } from 'react';
 
+import type { UseMarkerRendererProps } from '@/domains/maps/types/map.types';
 import { usePlaceList } from '@/domains/places/hooks/usePlaceList';
 
 import { useMapControl } from './useMapControl';
 import { useRoutePlacesWithDetails } from './useRoutePlacesWithDetails';
-
-import type { UseMarkerRendererProps } from '../types/map.types';
 
 const useMarkerRenderer = ({
   mapRef,

@@ -2,12 +2,11 @@ import { useCallback } from 'react';
 
 import { useQueryClient } from '@tanstack/react-query';
 
+import type { UseMapNavigationProps } from '@/domains/maps/types/map.types';
 import { usePlaceList } from '@/domains/places/hooks/usePlaceList';
 import type { PlaceDataType } from '@/domains/places/types/place.types';
 
 import { useMapControl } from './useMapControl';
-
-import type { UseMapNavigationProps } from '../types/map.types';
 
 const useMapNavigation = ({
   mapRef,

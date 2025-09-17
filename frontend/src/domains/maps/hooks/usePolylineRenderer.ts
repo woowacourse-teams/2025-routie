@@ -1,9 +1,9 @@
 import { useCallback } from 'react';
 
+import type { UsePolylineRendererProps } from '@/domains/maps/types/map.types';
+
 import { usePolyline } from './usePolyline';
 import { useRoutePlacesWithDetails } from './useRoutePlacesWithDetails';
-
-import type { UsePolylineRendererProps } from '../types/map.types';
 
 const usePolylineRenderer = ({ mapRef }: UsePolylineRendererProps) => {
   const { routiePlacesWithDetails } = useRoutePlacesWithDetails();

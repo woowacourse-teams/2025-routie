@@ -1,12 +1,11 @@
 import { useCallback } from 'react';
 
+import type { UseMapRendererProps } from '@/domains/maps/types/map.types';
 import type { PlaceDataType } from '@/domains/places/types/place.types';
 
 import { useMapNavigation } from './useMapNavigation';
 import { useMarkerRenderer } from './useMarkerRenderer';
 import { usePolylineRenderer } from './usePolylineRenderer';
-
-import type { UseMapRendererProps } from '../types/map.types';
 
 const useMapRenderer = ({
   mapRef,

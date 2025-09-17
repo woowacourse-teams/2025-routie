@@ -4,11 +4,10 @@ import { createPortal } from 'react-dom';
 import Flex from '@/@common/components/Flex/Flex';
 import Text from '@/@common/components/Text/Text';
 import PlaceOverlayCard from '@/domains/maps/components/PlaceOverlayCard/PlaceOverlayCard';
-
-import { useClickedPlace } from '../../hooks/useClickedPlace';
-import { useCustomOverlay } from '../../hooks/useCustomOverlay';
-import { useMapRenderer } from '../../hooks/useMapRenderer';
-import { useMapState } from '../../hooks/useMapState';
+import { useClickedPlace } from '@/domains/maps/hooks/useClickedPlace';
+import { useCustomOverlay } from '@/domains/maps/hooks/useCustomOverlay';
+import { useMapRenderer } from '@/domains/maps/hooks/useMapRenderer';
+import { useMapState } from '@/domains/maps/hooks/useMapState';
 
 import {
   KakaoMapContainerStyle,

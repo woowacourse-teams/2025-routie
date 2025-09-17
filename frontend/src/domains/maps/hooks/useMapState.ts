@@ -1,10 +1,13 @@
 import { useMemo } from 'react';
 
+import type { MapStateType } from '@/domains/maps/types/api.types';
+import type {
+  UseMapStateProps,
+  UseMapStateReturn,
+} from '@/domains/maps/types/map.types';
+
 import { useKakaoMapInit } from './useKakaoMapInit';
 import { useKakaoMapSDK } from './useKakaoMapSDK';
-
-import type { MapStateType } from '../types/api.types';
-import type { UseMapStateProps, UseMapStateReturn } from '../types/map.types';
 
 const useMapState = ({ containerRef }: UseMapStateProps): UseMapStateReturn => {
   const { sdkReady, sdkError } = useKakaoMapSDK();

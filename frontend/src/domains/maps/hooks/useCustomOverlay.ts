@@ -1,6 +1,6 @@
 import { useCallback, useRef, useState } from 'react';
 
-import type { MapRefType, CustomOverlayType } from '../types/api.types';
+import type { MapRefType, CustomOverlayType } from '@/domains/maps/types/api.types';
 
 const useCustomOverlay = (map: MapRefType) => {
   const overlayRef = useRef<CustomOverlayType | null>(null);

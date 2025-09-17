@@ -1,6 +1,6 @@
 import { useRef } from 'react';
 
-import type { MapRefType } from '../types/api.types';
+import type { MapRefType } from '@/domains/maps/types/api.types';
 
 const usePolyline = (map: MapRefType) => {
   const pathPoints = useRef<any[]>([]);

@@ -1,9 +1,8 @@
 import { useMemo } from 'react';
 
+import type { RoutiePlaceWithDetails } from '@/domains/maps/types/api.types';
 import { usePlaceList } from '@/domains/places/hooks/usePlaceList';
 import { useRoutieList } from '@/domains/routie/hooks/useRoutieList';
-
-import type { RoutiePlaceWithDetails } from '../types/api.types';
 
 const useRoutePlacesWithDetails = () => {
   const { placeList } = usePlaceList();

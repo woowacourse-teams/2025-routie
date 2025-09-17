@@ -1,11 +1,10 @@
 import { useCallback, useState } from 'react';
 
-import type { PlaceDataType } from '@/domains/places/types/place.types';
-
 import type {
   UseClickedPlaceProps,
   UseClickedPlaceReturn,
-} from '../types/map.types';
+} from '@/domains/maps/types/map.types';
+import type { PlaceDataType } from '@/domains/places/types/place.types';
 
 const useClickedPlace = ({
   openAt,
