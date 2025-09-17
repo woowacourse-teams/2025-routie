@@ -7,13 +7,7 @@ import type { PlaceDataType } from '@/domains/places/types/place.types';
 
 import { useMapControl } from './useMapControl';
 
-import type { MapRefType } from '../types/KaKaoMap.types';
-
-interface UseMapNavigationProps {
-  mapRef: MapRefType;
-  isInitialLoad: boolean;
-  setIsInitialLoad: (value: boolean) => void;
-}
+import type { UseMapNavigationProps } from '../types/map.types';
 
 const useMapNavigation = ({
   mapRef,
@@ -38,12 +32,23 @@ const useMapNavigation = ({
         queryClient.setQueryData(['addedPlaceId'], null);
       }
     }
-  }, [placeList, isInitialLoad, addedPlaceId, setIsInitialLoad, fitBoundsToMarkers, panToMarker, queryClient]);
+  }, [
+    placeList,
+    isInitialLoad,
+    addedPlaceId,
+    setIsInitialLoad,
+    fitBoundsToMarkers,
+    panToMarker,
+    queryClient,
+  ]);
 
   // 마커 클릭 시 해당 장소로 이동
-  const navigateToPlace = useCallback((place: PlaceDataType) => {
-    panToMarker(place.latitude, place.longitude);
-  }, [panToMarker]);
+  const navigateToPlace = useCallback(
+    (place: PlaceDataType) => {
+      panToMarker(place.latitude, place.longitude);
+    },
+    [panToMarker],
+  );
 
   return {
     handleInitialMapFitting,
@@ -52,4 +57,3 @@ const useMapNavigation = ({
 };
 
 export { useMapNavigation };
-export type { UseMapNavigationProps };

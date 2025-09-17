@@ -6,14 +6,7 @@ import { useMapNavigation } from './useMapNavigation';
 import { useMarkerRenderer } from './useMarkerRenderer';
 import { usePolylineRenderer } from './usePolylineRenderer';
 
-import type { MapRefType } from '../types/KaKaoMap.types';
-
-interface UseMapRendererProps {
-  mapRef: MapRefType;
-  isInitialLoad: boolean;
-  setIsInitialLoad: (value: boolean) => void;
-  handleMarkerClick: (place: PlaceDataType) => void;
-}
+import type { UseMapRendererProps } from '../types/map.types';
 
 const useMapRenderer = ({
   mapRef,
@@ -55,4 +48,3 @@ const useMapRenderer = ({
 };
 
 export { useMapRenderer };
-export type { UseMapRendererProps };

@@ -1,7 +1,6 @@
 import { useCallback, useRef, useState } from 'react';
 
-import type { MapRefType } from '../types/KaKaoMap.types';
-import type { CustomOverlayType } from '../types/Overlay.types';
+import type { MapRefType, CustomOverlayType } from '../types/api.types';
 
 const useCustomOverlay = (map: MapRefType) => {
   const overlayRef = useRef<CustomOverlayType | null>(null);

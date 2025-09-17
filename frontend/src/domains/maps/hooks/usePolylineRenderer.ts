@@ -3,15 +3,9 @@ import { useCallback } from 'react';
 import { usePolyline } from './usePolyline';
 import { useRoutePlacesWithDetails } from './useRoutePlacesWithDetails';
 
-import type { MapRefType } from '../types/KaKaoMap.types';
+import type { UsePolylineRendererProps } from '../types/map.types';
 
-interface UsePolylineRendererProps {
-  mapRef: MapRefType;
-}
-
-const usePolylineRenderer = ({
-  mapRef,
-}: UsePolylineRendererProps) => {
+const usePolylineRenderer = ({ mapRef }: UsePolylineRendererProps) => {
   const { routiePlacesWithDetails } = useRoutePlacesWithDetails();
   const { clearPolyline, loadPolyline } = usePolyline(mapRef);
   const renderPolylines = useCallback(() => {
@@ -25,4 +19,3 @@ const usePolylineRenderer = ({
 };
 
 export { usePolylineRenderer };
-export type { UsePolylineRendererProps };

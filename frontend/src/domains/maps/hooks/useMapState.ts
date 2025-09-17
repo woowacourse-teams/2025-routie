@@ -3,18 +3,8 @@ import { useMemo } from 'react';
 import { useKakaoMapInit } from './useKakaoMapInit';
 import { useKakaoMapSDK } from './useKakaoMapSDK';
 
-import type { MapStateType } from '../types/KaKaoMap.types';
-
-interface UseMapStateProps {
-  containerRef: React.RefObject<HTMLDivElement | null>;
-}
-
-interface UseMapStateReturn {
-  mapRef: React.RefObject<InstanceType<typeof window.kakao.maps.Map> | null>;
-  finalMapState: MapStateType;
-  finalError: string | null;
-  initializeMap: () => void;
-}
+import type { MapStateType } from '../types/api.types';
+import type { UseMapStateProps, UseMapStateReturn } from '../types/map.types';
 
 const useMapState = ({ containerRef }: UseMapStateProps): UseMapStateReturn => {
   const { sdkReady, sdkError } = useKakaoMapSDK();
@@ -38,4 +28,3 @@ const useMapState = ({ containerRef }: UseMapStateProps): UseMapStateReturn => {
 };
 
 export { useMapState };
-export type { UseMapStateReturn, UseMapStateProps };

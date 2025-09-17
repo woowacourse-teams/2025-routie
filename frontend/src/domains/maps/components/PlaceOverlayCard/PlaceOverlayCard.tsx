@@ -9,7 +9,7 @@ import closeIcon from '@/assets/icons/close.svg';
 import { useRoutieList } from '@/domains/routie/hooks/useRoutieList';
 import theme from '@/styles/theme';
 
-import type { PlaceOverlayCardProps } from '../../types/PlaceOverlayCard.types';
+import type { PlaceOverlayCardProps } from '../../types/map.types';
 
 const PlaceOverlayCard = ({ place, onClose }: PlaceOverlayCardProps) => {
   const { routieIdList, handleAddRoutie } = useRoutieList();

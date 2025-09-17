@@ -2,18 +2,15 @@ import { useCallback, useState } from 'react';
 
 import type { PlaceDataType } from '@/domains/places/types/place.types';
 
-interface UseClickedPlaceProps {
-  openAt: (lat: number, lng: number) => void;
-  close: () => void;
-}
+import type {
+  UseClickedPlaceProps,
+  UseClickedPlaceReturn,
+} from '../types/map.types';
 
-interface UseClickedPlaceReturn {
-  clickedPlace: PlaceDataType | null;
-  handleMapClick: () => void;
-  handleMarkerClick: (place: PlaceDataType) => void;
-}
-
-const useClickedPlace = ({ openAt, close }: UseClickedPlaceProps): UseClickedPlaceReturn => {
+const useClickedPlace = ({
+  openAt,
+  close,
+}: UseClickedPlaceProps): UseClickedPlaceReturn => {
   const [clickedPlace, setClickedPlace] = useState<PlaceDataType | null>(null);
 
   const handleMapClick = useCallback(() => {
@@ -37,4 +34,3 @@ const useClickedPlace = ({ openAt, close }: UseClickedPlaceProps): UseClickedPla
 };
 
 export { useClickedPlace };
-export type { UseClickedPlaceProps, UseClickedPlaceReturn };

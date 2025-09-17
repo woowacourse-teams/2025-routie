@@ -6,8 +6,8 @@ import type {
   DrawMarkerProps,
   MarkerType,
   MapRefType,
-} from '../types/KaKaoMap.types';
-import type { CustomOverlayType } from '../types/Overlay.types';
+  CustomOverlayType,
+} from '../types/api.types';
 
 const useMapControl = (map: MapRefType) => {
   const markersRef = useRef<(MarkerType | CustomOverlayType)[]>([]);

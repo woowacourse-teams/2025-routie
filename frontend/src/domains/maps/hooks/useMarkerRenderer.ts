@@ -1,17 +1,11 @@
 import { useCallback } from 'react';
 
 import { usePlaceList } from '@/domains/places/hooks/usePlaceList';
-import type { PlaceDataType } from '@/domains/places/types/place.types';
 
 import { useMapControl } from './useMapControl';
 import { useRoutePlacesWithDetails } from './useRoutePlacesWithDetails';
 
-import type { MapRefType } from '../types/KaKaoMap.types';
-
-interface UseMarkerRendererProps {
-  mapRef: MapRefType;
-  handleMarkerClick: (place: PlaceDataType) => void;
-}
+import type { UseMarkerRendererProps } from '../types/map.types';
 
 const useMarkerRenderer = ({
   mapRef,
@@ -23,7 +17,9 @@ const useMarkerRenderer = ({
   const renderMarkers = useCallback(() => {
     clearMarkers();
     placeList?.forEach((place) => {
-      const routiePlace = routiePlacesWithDetails.find(rp => rp.id === place.id);
+      const routiePlace = routiePlacesWithDetails.find(
+        (rp) => rp.id === place.id,
+      );
       const routieSequence = routiePlace?.sequence;
 
       drawMarkers({
@@ -32,10 +28,15 @@ const useMarkerRenderer = ({
         onClick: () => handleMarkerClick(place),
       });
     });
-  }, [placeList, routiePlacesWithDetails, handleMarkerClick, clearMarkers, drawMarkers]);
+  }, [
+    placeList,
+    routiePlacesWithDetails,
+    handleMarkerClick,
+    clearMarkers,
+    drawMarkers,
+  ]);
 
   return { renderMarkers };
 };
 
 export { useMarkerRenderer };
-export type { UseMarkerRendererProps };

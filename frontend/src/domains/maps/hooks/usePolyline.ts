@@ -1,6 +1,6 @@
 import { useRef } from 'react';
 
-import type { MapRefType } from '../types/KaKaoMap.types';
+import type { MapRefType } from '../types/api.types';
 
 const usePolyline = (map: MapRefType) => {
   const pathPoints = useRef<any[]>([]);
