@@ -1,4 +1,4 @@
-package routie.business.place.ui;
+package routie.business.place.ui.v1;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -11,8 +11,8 @@ import routie.business.place.application.PlaceSearchService;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/places")
-public class PlaceSearchController {
+@RequestMapping("/v1/places")
+public class PlaceSearchControllerV1 {
 
     private final PlaceSearchService placeSearchService;
 

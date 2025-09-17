@@ -1,0 +1,52 @@
+package routie.business.routiespace.ui.v1;
+
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import routie.business.routiespace.ui.dto.request.RoutieSpaceUpdateRequest;
+import routie.business.routiespace.ui.dto.response.RoutieSpaceCreateResponse;
+import routie.business.routiespace.ui.dto.response.RoutieSpaceReadResponse;
+import routie.business.routiespace.ui.dto.response.RoutieSpaceUpdateResponse;
+import routie.business.routiespace.application.RoutieSpaceService;
+
+@RestController
+@RequiredArgsConstructor
+@RequestMapping("/v1/routie-spaces")
+public class RoutieSpaceControllerV1 {
+
+    private final RoutieSpaceService routieSpaceService;
+
+    @PostMapping
+    public ResponseEntity<RoutieSpaceCreateResponse> createRoutieSpace() {
+        RoutieSpaceCreateResponse routieSpaceCreateResponse = routieSpaceService.addRoutieSpace();
+        return ResponseEntity.ok(routieSpaceCreateResponse);
+    }
+
+    @GetMapping("/{routieSpaceIdentifier}")
+    public ResponseEntity<RoutieSpaceReadResponse> readRoutieSpace(
+            @PathVariable final String routieSpaceIdentifier
+    ) {
+        RoutieSpaceReadResponse routieSpaceReadResponse = routieSpaceService.getRoutieSpace(routieSpaceIdentifier);
+        return ResponseEntity.ok(routieSpaceReadResponse);
+    }
+
+    @PatchMapping("/{routieSpaceIdentifier}")
+    public ResponseEntity<RoutieSpaceUpdateResponse> updateRoutieSpace(
+            @PathVariable final String routieSpaceIdentifier,
+            @RequestBody @Valid final RoutieSpaceUpdateRequest routieSpaceUpdateRequest
+    ) {
+        RoutieSpaceUpdateResponse routieSpaceUpdateResponse = routieSpaceService.modifyRoutieSpace(
+                routieSpaceIdentifier,
+                routieSpaceUpdateRequest
+        );
+
+        return ResponseEntity.ok(routieSpaceUpdateResponse);
+    }
+}
