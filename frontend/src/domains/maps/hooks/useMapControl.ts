@@ -9,7 +9,7 @@ import type {
 } from '../types/KaKaoMap.types';
 import type { CustomOverlayType } from '../types/Overlay.types';
 
-const useMapMarker = (map: MapRefType) => {
+const useMapControl = (map: MapRefType) => {
   const markersRef = useRef<(MarkerType | CustomOverlayType)[]>([]);
 
   const clearMarkers = useCallback(() => {
@@ -43,7 +43,6 @@ const useMapMarker = (map: MapRefType) => {
         if (onClick) {
           content.addEventListener('click', () => {
             onClick();
-            fitMapToMarker(place.latitude, place.longitude);
           });
         }
         markersRef.current.push(overlay);
@@ -59,7 +58,6 @@ const useMapMarker = (map: MapRefType) => {
         if (onClick) {
           window.kakao.maps.event.addListener(marker, 'click', () => {
             onClick();
-            fitMapToMarker(place.latitude, place.longitude);
           });
         }
 
@@ -70,7 +68,7 @@ const useMapMarker = (map: MapRefType) => {
     [map],
   );
 
-  const fitMapToMarkers = useCallback(
+  const fitBoundsToMarkers = useCallback(
     (places: Array<{ latitude: number; longitude: number }>) => {
       if (!map.current || places.length === 0) return;
 
@@ -93,7 +91,7 @@ const useMapMarker = (map: MapRefType) => {
     [],
   );
 
-  const fitMapToMarker = useCallback((lat: number, lng: number) => {
+  const panToMarker = useCallback((lat: number, lng: number) => {
     if (!map.current) return;
 
     const position = new window.kakao.maps.LatLng(lat, lng);
@@ -103,7 +101,7 @@ const useMapMarker = (map: MapRefType) => {
     }, 120);
   }, []);
 
-  return { drawMarkers, fitMapToMarkers, clearMarkers, fitMapToMarker };
+  return { drawMarkers, fitBoundsToMarkers, clearMarkers, panToMarker };
 };
 
-export { useMapMarker };
+export { useMapControl };

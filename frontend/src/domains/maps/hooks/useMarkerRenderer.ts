@@ -3,7 +3,7 @@ import { useCallback } from 'react';
 import { usePlaceList } from '@/domains/places/hooks/usePlaceList';
 import type { PlaceDataType } from '@/domains/places/types/place.types';
 
-import { useMapMarker } from './useMapMarker';
+import { useMapControl } from './useMapControl';
 import { useRoutePlacesWithDetails } from './useRoutePlacesWithDetails';
 
 import type { MapRefType } from '../types/KaKaoMap.types';
@@ -19,7 +19,7 @@ const useMarkerRenderer = ({
 }: UseMarkerRendererProps) => {
   const { placeList } = usePlaceList();
   const { routiePlacesWithDetails } = useRoutePlacesWithDetails();
-  const { clearMarkers, drawMarkers } = useMapMarker(mapRef);
+  const { clearMarkers, drawMarkers } = useMapControl(mapRef);
   const renderMarkers = useCallback(() => {
     clearMarkers();
     placeList?.forEach((place) => {
