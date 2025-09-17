@@ -1,4 +1,5 @@
 import { useToast } from '../hooks/useToast';
+
 import { ToastContext } from './useToastContext';
 
 const ToastProvider = ({ children }: { children: React.ReactNode }) => {

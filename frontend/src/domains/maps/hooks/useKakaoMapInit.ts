@@ -5,7 +5,7 @@ import type {
   MapStateType,
   UseKakaoMapInitProps,
   UseKakaoMapInitReturnType,
-} from '../types/KaKaoMap.types';
+} from '@/domains/maps/types/api.types';
 
 const useKakaoMapInit = ({
   containerRef,

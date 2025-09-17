@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 
-import type { UseKakaoMapSDKReturnType } from '../types/KaKaoMap.types';
+import type { UseKakaoMapSDKReturnType } from '@/domains/maps/types/api.types';
 
 const MAX_ATTEMPTS = 10;
 const RETRY_DELAY = 500;
