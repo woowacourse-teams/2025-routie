@@ -1,19 +1,14 @@
 import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 
-import { useQueryClient } from '@tanstack/react-query';
-
 import Flex from '@/@common/components/Flex/Flex';
 import Text from '@/@common/components/Text/Text';
 import PlaceOverlayCard from '@/domains/maps/components/PlaceOverlayCard/PlaceOverlayCard';
-import { usePlaceList } from '@/domains/places/hooks/usePlaceList';
 
 import { useClickedPlace } from '../../hooks/useClickedPlace';
 import { useCustomOverlay } from '../../hooks/useCustomOverlay';
-import { useMapMarker } from '../../hooks/useMapMarker';
+import { useMapRenderer } from '../../hooks/useMapRenderer';
 import { useMapState } from '../../hooks/useMapState';
-import { usePolyline } from '../../hooks/usePolyline';
-import { useRoutePlacesWithDetails } from '../../hooks/useRoutePlacesWithDetails';
 
 import {
   KakaoMapContainerStyle,
@@ -23,23 +18,22 @@ import {
 } from './KakaoMap.styles';
 
 const KakaoMap = () => {
-  const queryClient = useQueryClient();
-  const { placeList } = usePlaceList();
-  const { routiePlacesWithDetails } = useRoutePlacesWithDetails();
   const mapContainerRef = useRef<HTMLDivElement>(null);
-  const addedPlaceId = queryClient.getQueryData(['addedPlaceId']);
   const [isInitialLoad, setIsInitialLoad] = useState(true);
 
   const { mapRef, finalMapState, finalError } = useMapState({
     containerRef: mapContainerRef,
   });
-  const { fitMapToMarkers, drawMarkers, clearMarkers, fitMapToMarker } =
-    useMapMarker(mapRef);
-  const { loadPolyline, clearPolyline } = usePolyline(mapRef);
   const { containerEl, openAt, close } = useCustomOverlay(mapRef);
   const { clickedPlace, handleMapClick, handleMarkerClick } = useClickedPlace({
     openAt,
     close,
+  });
+  const { renderMapElements } = useMapRenderer({
+    mapRef,
+    isInitialLoad,
+    setIsInitialLoad,
+    handleMarkerClick,
   });
 
   useEffect(() => {
@@ -65,39 +59,8 @@ const KakaoMap = () => {
   useEffect(() => {
     if (finalMapState !== 'ready' || !mapRef.current) return;
 
-    const renderMapElements = () => {
-      clearMarkers();
-      placeList?.forEach((place) => {
-        const routiePlace = routiePlacesWithDetails.find(rp => rp.id === place.id);
-        const routieSequence = routiePlace?.sequence;
-
-        drawMarkers({
-          place,
-          routieSequence,
-          onClick: () => handleMarkerClick(place),
-        });
-      });
-
-      if (isInitialLoad && placeList && placeList.length > 0) {
-        fitMapToMarkers(placeList);
-        setIsInitialLoad(false);
-      } else if (addedPlaceId && placeList) {
-        const newPlace = placeList.find((place) => place.id === addedPlaceId);
-
-        if (newPlace) {
-          fitMapToMarker(newPlace.latitude, newPlace.longitude);
-        }
-      }
-
-      clearPolyline();
-
-      routiePlacesWithDetails.forEach((place) => {
-        loadPolyline(place.latitude, place.longitude);
-      });
-    };
-
     renderMapElements();
-  }, [finalMapState, placeList, routiePlacesWithDetails, addedPlaceId]);
+  }, [finalMapState, renderMapElements]);
 
   return (
     <div css={KakaoMapWrapperStyle}>
