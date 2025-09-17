@@ -8,7 +8,7 @@ import type {
 } from '@/domains/maps/types/api.types';
 import { createCustomMarkerElement } from '@/domains/maps/utils/createCustomMarkerElement';
 
-const useMapControl = (map: MapRefType) => {
+const useMapMarkerControl = (map: MapRefType) => {
   const markersRef = useRef<(MarkerType | CustomOverlayType)[]>([]);
 
   const clearMarkers = useCallback(() => {
@@ -103,4 +103,4 @@ const useMapControl = (map: MapRefType) => {
   return { drawMarkers, fitBoundsToMarkers, clearMarkers, panToMarker };
 };
 
-export { useMapControl };
+export { useMapMarkerControl };

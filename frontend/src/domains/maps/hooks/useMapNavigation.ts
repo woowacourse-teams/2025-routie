@@ -6,7 +6,7 @@ import type { UseMapNavigationProps } from '@/domains/maps/types/map.types';
 import { usePlaceList } from '@/domains/places/hooks/usePlaceList';
 import type { PlaceDataType } from '@/domains/places/types/place.types';
 
-import { useMapControl } from './useMapControl';
+import { useMapMarkerControl } from './useMapMarkerControl';
 
 const useMapNavigation = ({
   mapRef,
@@ -16,7 +16,7 @@ const useMapNavigation = ({
   const queryClient = useQueryClient();
   const { placeList } = usePlaceList();
   const addedPlaceId = queryClient.getQueryData(['addedPlaceId']);
-  const { fitBoundsToMarkers, panToMarker } = useMapControl(mapRef);
+  const { fitBoundsToMarkers, panToMarker } = useMapMarkerControl(mapRef);
 
   // 초기 로드 및 새로운 장소 추가 시 맵 피팅
   const handleInitialMapFitting = useCallback(() => {

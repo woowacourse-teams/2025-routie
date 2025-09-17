@@ -3,7 +3,7 @@ import { useCallback } from 'react';
 import type { UseMarkerRendererProps } from '@/domains/maps/types/map.types';
 import { usePlaceList } from '@/domains/places/hooks/usePlaceList';
 
-import { useMapControl } from './useMapControl';
+import { useMapMarkerControl } from './useMapMarkerControl';
 import { useRoutePlacesWithDetails } from './useRoutePlacesWithDetails';
 
 const useMarkerRenderer = ({
@@ -12,7 +12,7 @@ const useMarkerRenderer = ({
 }: UseMarkerRendererProps) => {
   const { placeList } = usePlaceList();
   const { routiePlacesWithDetails } = useRoutePlacesWithDetails();
-  const { clearMarkers, drawMarkers } = useMapControl(mapRef);
+  const { clearMarkers, drawMarkers } = useMapMarkerControl(mapRef);
   const renderMarkers = useCallback(() => {
     clearMarkers();
     placeList?.forEach((place) => {
