@@ -1,4 +1,4 @@
-package routie.business.place.ui;
+package routie.business.place.ui.v1;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

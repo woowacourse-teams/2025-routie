@@ -1,4 +1,4 @@
-package routie.business.routie.ui;
+package routie.business.routie.ui.v1;
 
 import jakarta.validation.Valid;
 import java.time.LocalDateTime;

@@ -1,4 +1,4 @@
-package routie.business.place.ui;
+package routie.business.place.ui.v1;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

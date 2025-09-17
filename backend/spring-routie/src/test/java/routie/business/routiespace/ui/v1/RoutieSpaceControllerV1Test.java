@@ -1,4 +1,4 @@
-package routie.business.routiespace.ui;
+package routie.business.routiespace.ui.v1;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
