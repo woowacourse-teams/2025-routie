@@ -13,7 +13,10 @@ const useMapState = ({ containerRef }: UseMapStateProps): UseMapStateReturn => {
     sdkReady,
   });
 
-  const finalError = useMemo(() => sdkError || errorMessage, [sdkError, errorMessage]);
+  const finalError = useMemo(
+    () => sdkError || errorMessage,
+    [sdkError, errorMessage],
+  );
   const finalMapState = useMemo<MapStateType>(
     () => (sdkError ? 'error' : mapState),
     [sdkError, mapState],
