@@ -48,7 +48,10 @@ public class RequestLoggingAspect {
         }
     }
 
-    @After("execution(* routie.global.exception.ui.ExceptionController.*(..))")
+    @After("within(routie.global.exception..*) && " +
+            "@within(org.springframework.web.bind.annotation.RestControllerAdvice) && " +
+            "@annotation(org.springframework.web.bind.annotation.ExceptionHandler)"
+    )
     public void cleanupAfterExceptionHandling() {
         TraceIdHolder.clearTraceId();
     }
