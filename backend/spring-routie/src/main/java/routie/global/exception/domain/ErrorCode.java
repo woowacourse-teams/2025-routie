@@ -3,6 +3,7 @@ package routie.global.exception.domain;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ProblemDetail;
 
 @Getter
 @RequiredArgsConstructor
@@ -358,4 +359,11 @@ public enum ErrorCode {
     private final String code;
     private final String message;
     private final HttpStatus httpStatus;
+
+    public ProblemDetail toProblemDetail() {
+        ProblemDetail problemDetail = ProblemDetail.forStatus(httpStatus);
+        problemDetail.setDetail(message);
+        problemDetail.setProperty("code", code);
+        return problemDetail;
+    }
 }
