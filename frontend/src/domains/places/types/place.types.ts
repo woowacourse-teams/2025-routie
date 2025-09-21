@@ -6,38 +6,24 @@ interface PlaceBaseType {
   longitude: number;
 }
 
-interface PlaceAddType extends PlaceBaseType {
+interface SearchedPlaceType extends PlaceBaseType {
   searchedPlaceId: string;
 }
 
-interface PlaceFetchType extends PlaceBaseType {
+interface PlaceDataType extends PlaceBaseType {
   id: number;
 }
 
-// 임시 타입
-interface PlaceSearchType {
-  searchedPlaceId: string;
-  latitude: number;
-  longitude: number;
-}
+type PlaceAdapterType = PlaceBaseType;
 
-interface PlaceListContextType {
-  placeList: PlaceFetchType[];
-  refetchPlaceList: () => Promise<void>;
-  handleDelete: (id: number) => void;
-  newlyAddedPlace: PlaceFetchType | null;
-  handlePlaceAdded: () => Promise<void>;
-}
+type PlaceListAdapterType = PlaceDataType[];
 
-interface PlaceListProviderProps {
-  children?: React.ReactNode;
-}
+type SearchPlaceAdapterType = SearchedPlaceType[];
 
 export type {
-  PlaceBaseType,
-  PlaceAddType,
-  PlaceFetchType,
-  PlaceSearchType,
-  PlaceListContextType,
-  PlaceListProviderProps,
+  SearchedPlaceType,
+  PlaceDataType,
+  PlaceAdapterType,
+  PlaceListAdapterType,
+  SearchPlaceAdapterType,
 };

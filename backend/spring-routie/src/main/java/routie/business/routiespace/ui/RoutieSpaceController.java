@@ -10,11 +10,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import routie.business.routiespace.application.RoutieSpaceService;
 import routie.business.routiespace.ui.dto.request.RoutieSpaceUpdateRequest;
 import routie.business.routiespace.ui.dto.response.RoutieSpaceCreateResponse;
 import routie.business.routiespace.ui.dto.response.RoutieSpaceReadResponse;
 import routie.business.routiespace.ui.dto.response.RoutieSpaceUpdateResponse;
-import routie.business.routiespace.application.RoutieSpaceService;
 
 @RestController
 @RequiredArgsConstructor
@@ -24,7 +24,7 @@ public class RoutieSpaceController {
     private final RoutieSpaceService routieSpaceService;
 
     @PostMapping
-    public ResponseEntity<RoutieSpaceCreateResponse> createRoutieSpace() {
+    private ResponseEntity<RoutieSpaceCreateResponse> createRoutieSpace() {
         RoutieSpaceCreateResponse routieSpaceCreateResponse = routieSpaceService.addRoutieSpace();
         return ResponseEntity.ok(routieSpaceCreateResponse);
     }

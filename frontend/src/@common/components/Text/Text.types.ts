@@ -8,8 +8,8 @@ interface TextProps extends ComponentProps<'p'> {
 
 type TextVariantType =
   | 'title'
-  | 'title2'
   | 'subTitle'
+  | 'body'
   | 'caption'
   | 'label'
   | 'description';

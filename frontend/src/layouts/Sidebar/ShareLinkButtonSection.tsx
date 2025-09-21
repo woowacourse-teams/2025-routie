@@ -26,17 +26,14 @@ const ShareLinkButtonSection = () => {
       gap={2}
       padding={1.6}
       width="90%"
-      justifyContent="flex-start"
       css={SidebarSectionStyle(false)}
     >
-      <Flex width="100%" justifyContent="flex-start" gap={10}>
-        <Button variant="secondary" onClick={handleCopy}>
-          <Flex gap={1}>
-            <Icon name="copy" size={20} />
-            <Text variant="caption">링크 공유</Text>
-          </Flex>
-        </Button>
-      </Flex>
+      <Button variant="secondary" onClick={handleCopy}>
+        <Flex gap={1} justifyContent="flex-start">
+          <Icon name="copy" size={20} />
+          <Text variant="caption">링크 공유</Text>
+        </Flex>
+      </Button>
     </Flex>
   );
 };

@@ -1,8 +1,14 @@
 import { apiClient } from '@/apis';
+import { routieAdapter } from '@/domains/routie/adapters/routieAdapter';
+import type {
+  AddRoutiePlaceRequestType,
+  AddRoutiePlaceResponseType,
+  DeleteRoutiePlaceRequestType,
+  EditRoutieRequestType,
+} from '@/domains/routie/types/api.types';
+import type { RoutieAdapterType } from '@/domains/routie/types/routie.types';
 
-import type { RoutieType } from '../types/routie.types';
-
-const getRoutie = async () => {
+const getRoutie = async (): Promise<RoutieAdapterType> => {
   const routieSpaceUuid = localStorage.getItem('routieSpaceUuid');
 
   if (!routieSpaceUuid) {
@@ -19,10 +25,10 @@ const getRoutie = async () => {
 
   const data = await response.json();
 
-  return data;
+  return routieAdapter(data);
 };
 
-const editRoutieSequence = async (routiePlaces: RoutieType[]) => {
+const editRoutieSequence = async ({ routiePlaces }: EditRoutieRequestType) => {
   const routieSpaceUuid = localStorage.getItem('routieSpaceUuid');
 
   if (!routieSpaceUuid) {
@@ -34,23 +40,9 @@ const editRoutieSequence = async (routiePlaces: RoutieType[]) => {
   });
 };
 
-const getDetailPlace = async (id: number) => {
-  const routieSpaceUuid = localStorage.getItem('routieSpaceUuid');
-
-  if (!routieSpaceUuid) {
-    throw new Error('루티 스페이스 uuid가 없습니다.');
-  }
-
-  const response = await apiClient.get(
-    `/routie-spaces/${routieSpaceUuid}/places/${id}`,
-  );
-
-  const data = await response.json();
-
-  return data;
-};
-
-const addRoutiePlace = async (placeId: number) => {
+const addRoutiePlace = async ({
+  placeId,
+}: AddRoutiePlaceRequestType): Promise<AddRoutiePlaceResponseType> => {
   const routieSpaceUuid = localStorage.getItem('routieSpaceUuid');
 
   if (!routieSpaceUuid) {
@@ -69,7 +61,7 @@ const addRoutiePlace = async (placeId: number) => {
   return data;
 };
 
-const deleteRoutiePlace = async (placeId: number) => {
+const deleteRoutiePlace = async ({ placeId }: DeleteRoutiePlaceRequestType) => {
   const routieSpaceUuid = localStorage.getItem('routieSpaceUuid');
 
   if (!routieSpaceUuid) {
@@ -81,10 +73,4 @@ const deleteRoutiePlace = async (placeId: number) => {
   );
 };
 
-export {
-  getRoutie,
-  editRoutieSequence,
-  getDetailPlace,
-  addRoutiePlace,
-  deleteRoutiePlace,
-};
+export { getRoutie, editRoutieSequence, addRoutiePlace, deleteRoutiePlace };

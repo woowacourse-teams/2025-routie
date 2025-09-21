@@ -25,18 +25,17 @@ const buttonVariant: Record<ButtonVariantType, SerializedStyles> = {
   `,
 };
 
-export const ButtonStyle = ({ variant, width }: ButtonProps) => css`
+export const ButtonStyle = ({ variant, width, padding }: ButtonProps) => css`
   cursor: pointer;
 
   display: flex;
-  gap: 0.8rem;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
 
   box-sizing: border-box;
-  width: ${width};
+  width: ${width ? width : '100%'};
   max-width: 100%;
-  padding: 1rem 0.8rem;
+  padding: ${padding ? padding : '1rem 0.8rem'};
   border: none;
   border-radius: 8px;
 

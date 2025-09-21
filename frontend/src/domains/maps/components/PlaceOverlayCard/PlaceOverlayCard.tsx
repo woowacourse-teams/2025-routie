@@ -6,13 +6,12 @@ import IconButton from '@/@common/components/IconButton/IconButton';
 import Icon from '@/@common/components/IconSvg/Icon';
 import Text from '@/@common/components/Text/Text';
 import closeIcon from '@/assets/icons/close.svg';
-import { useRoutieContext } from '@/domains/routie/contexts/useRoutieContext';
+import type { PlaceOverlayCardProps } from '@/domains/maps/types/map.types';
+import { useRoutieList } from '@/domains/routie/hooks/useRoutieList';
 import theme from '@/styles/theme';
 
-import type { PlaceOverlayCardProps } from '../../types/PlaceOverlayCard.types';
-
 const PlaceOverlayCard = ({ place, onClose }: PlaceOverlayCardProps) => {
-  const { routieIdList, handleAddRoutie } = useRoutieContext();
+  const { routieIdList, handleAddRoutie } = useRoutieList();
   const selected = routieIdList.includes(place.id);
 
   const handleSelect = async () => {
@@ -28,7 +27,7 @@ const PlaceOverlayCard = ({ place, onClose }: PlaceOverlayCardProps) => {
       variant={selected ? 'available' : 'default'}
     >
       <Flex direction="column" gap={1.2} alignItems="flex-start">
-        <Flex justifyContent="space-between" width="100%">
+        <Flex justifyContent="space-between">
           <Icon
             name={selected ? 'check' : 'plus'}
             size={selected ? 34 : 28}
@@ -48,7 +47,7 @@ const PlaceOverlayCard = ({ place, onClose }: PlaceOverlayCardProps) => {
           <IconButton icon={closeIcon} onClick={onClose} />
         </Flex>
 
-        <Text variant="subTitle" ellipsis>
+        <Text variant="body" ellipsis>
           {place.name}
         </Text>
         <Text variant="caption" color={theme.colors.gray[200]} ellipsis>

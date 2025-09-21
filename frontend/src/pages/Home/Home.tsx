@@ -33,24 +33,19 @@ const Home = () => {
         direction="column"
         height="calc(100dvh - 7.1rem)"
         padding={5}
-        width="100%"
         css={HomepageStyle}
       >
         <Flex direction="column" gap={3}>
           <Text variant="title" css={TitleTextStyle} color={theme.home.text}>
             그 장소들, 정말 다 갈 수 있을까요?
           </Text>
-          <Text
-            variant="subTitle"
-            color={theme.home.text}
-            css={SubTitleTextStyle}
-          >
+          <Text variant="body" color={theme.home.text} css={SubTitleTextStyle}>
             루티가 당신의 동선을 <span css={VioletTextStyle}>체크</span>
             해드릴게요!
           </Text>
           <Flex
-            justifyContent="space-between"
-            width="100%"
+            justifyContent="space-around"
+            maxWidth="50%"
             gap={5}
             css={InfoCardsWrapperStyle}
           >
@@ -92,7 +87,7 @@ const Home = () => {
           </Flex>
           <Flex gap={8} width="70%">
             <Button onClick={handleCreateRoutieSpace} css={CreateButtonStyle}>
-              <Flex direction="row" gap={1.5} padding={1}>
+              <Flex gap={1.5} padding={1}>
                 <img src={arrowWhite} width={'30rem'} />
                 <Text variant="title" color="white">
                   동선 만들러가기

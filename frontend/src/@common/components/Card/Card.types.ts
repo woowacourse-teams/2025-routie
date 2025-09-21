@@ -2,10 +2,10 @@ import { ComponentProps } from 'react';
 
 interface CardProps extends ComponentProps<'div'> {
   id: string;
+  children: React.ReactNode;
   variant?: CardVariantType;
-  width?: string | undefined;
-  height?: string | undefined;
-  children?: React.ReactNode;
+  width?: string;
+  height?: string;
 }
 
 type CardVariantType =

@@ -1,16 +1,12 @@
 interface RoutesType {
   fromSequence: number;
   toSequence: number;
-  duration: number;
-  distance: number;
 }
 
 interface RoutieType {
   id: number;
   sequence: number;
   placeId: number;
-  arriveDateTime?: string;
-  departureDateTime?: string;
 }
 
 interface RoutieContextType {
@@ -23,4 +19,9 @@ interface RoutieContextType {
   routieIdList: number[];
 }
 
-export type { RoutieType, RoutesType, RoutieContextType };
+interface RoutieAdapterType {
+  routiePlaces: RoutieType[];
+  routes: RoutesType[];
+}
+
+export type { RoutieType, RoutesType, RoutieContextType, RoutieAdapterType };

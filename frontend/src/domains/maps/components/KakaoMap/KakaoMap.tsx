@@ -1,18 +1,13 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 
 import Flex from '@/@common/components/Flex/Flex';
 import Text from '@/@common/components/Text/Text';
 import PlaceOverlayCard from '@/domains/maps/components/PlaceOverlayCard/PlaceOverlayCard';
-import { usePlaceListContext } from '@/domains/places/contexts/PlaceList/PlaceListContext';
-import { PlaceFetchType } from '@/domains/places/types/place.types';
-import { useRoutieContext } from '@/domains/routie/contexts/useRoutieContext';
-
-import { useCustomOverlay } from '../../hooks/useCustomOverlay';
-import { useKakaoMapInit } from '../../hooks/useKakaoMapInit';
-import { useKakaoMapSDK } from '../../hooks/useKakaoMapSDK';
-import { useMapMarker } from '../../hooks/useMapMarker';
-import { usePolyline } from '../../hooks/usePolyline';
+import { useClickedPlace } from '@/domains/maps/hooks/useClickedPlace';
+import { useCustomOverlay } from '@/domains/maps/hooks/useCustomOverlay';
+import { useMapRenderer } from '@/domains/maps/hooks/useMapRenderer';
+import { useMapState } from '@/domains/maps/hooks/useMapState';
 
 import {
   KakaoMapContainerStyle,
@@ -23,47 +18,25 @@ import {
 
 const KakaoMap = () => {
   const mapContainerRef = useRef<HTMLDivElement>(null);
-  const { placeList, newlyAddedPlace } = usePlaceListContext();
-  const { routieIdList } = useRoutieContext();
   const [isInitialLoad, setIsInitialLoad] = useState(true);
 
-  const routiePlaces = useMemo(
-    () =>
-      [...placeList]
-        .filter((place) => routieIdList.includes(place.id))
-        .sort(
-          (a, b) => routieIdList.indexOf(a.id) - routieIdList.indexOf(b.id),
-        ),
-    [placeList, routieIdList],
-  );
-
-  const { sdkReady, sdkError } = useKakaoMapSDK();
-  const { mapRef, mapState, errorMessage } = useKakaoMapInit({
+  const { mapRef, finalMapState, finalError } = useMapState({
     containerRef: mapContainerRef,
-    sdkReady,
   });
-  const { fitMapToMarkers, drawMarkers, clearMarkers, fitMapToMarker } =
-    useMapMarker({
-      map: mapRef,
-    });
-  const { loadPolyline, clearPolyline } = usePolyline({
-    map: mapRef,
+  const { containerEl, openAt, close } = useCustomOverlay(mapRef);
+  const { clickedPlace, handleMapClick, handleMarkerClick } = useClickedPlace({
+    openAt,
+    close,
   });
-  const { containerEl, openAt, close } = useCustomOverlay({ map: mapRef });
-  const [selectedPlace, setSelectedPlace] = useState<PlaceFetchType | null>(
-    null,
-  );
-
-  const finalError = sdkError || errorMessage;
-  const finalMapState = sdkError ? 'error' : mapState;
-
-  const handleMapClick = () => {
-    setSelectedPlace(null);
-    close();
-  };
+  const { renderMapElements } = useMapRenderer({
+    mapRef,
+    isInitialLoad,
+    setIsInitialLoad,
+    handleMarkerClick,
+  });
 
   useEffect(() => {
-    if (mapState !== 'ready' || !mapRef.current) return;
+    if (finalMapState !== 'ready' || !mapRef.current) return;
 
     window.kakao.maps.event.addListener(
       mapRef.current,
@@ -80,43 +53,13 @@ const KakaoMap = () => {
         );
       }
     };
-  }, [mapState]);
+  }, [finalMapState]);
 
   useEffect(() => {
-    if (mapState !== 'ready' || !mapRef.current) return;
-
-    const renderMapElements = () => {
-      clearMarkers();
-      placeList.forEach((place) => {
-        const routieIndex = routieIdList.indexOf(place.id);
-        const routieSequence = routieIndex !== -1 ? routieIndex + 1 : undefined;
-
-        drawMarkers({
-          place,
-          routieSequence,
-          onClick: () => {
-            setSelectedPlace(place);
-            openAt(place.latitude, place.longitude);
-          },
-        });
-      });
-
-      if (isInitialLoad && placeList.length > 0) {
-        fitMapToMarkers(placeList);
-        setIsInitialLoad(false);
-      } else if (newlyAddedPlace) {
-        fitMapToMarker(newlyAddedPlace.latitude, newlyAddedPlace.longitude);
-      }
-
-      clearPolyline();
-
-      routiePlaces.forEach((place) => {
-        loadPolyline(place.latitude, place.longitude);
-      });
-    };
+    if (finalMapState !== 'ready' || !mapRef.current) return;
 
     renderMapElements();
-  }, [mapState, placeList, routiePlaces, newlyAddedPlace]);
+  }, [finalMapState, renderMapElements]);
 
   return (
     <div css={KakaoMapWrapperStyle}>
@@ -134,7 +77,6 @@ const KakaoMap = () => {
           role="status"
           aria-label="지도 로딩 중"
           direction="column"
-          alignItems="center"
         >
           <Text variant="caption" css={{ textAlign: 'center' }}>
             🗺️
@@ -146,22 +88,16 @@ const KakaoMap = () => {
       )}
 
       {finalMapState === 'error' && (
-        <Flex
-          css={KakaoMapErrorStyle}
-          direction="column"
-          alignItems="center"
-          gap={0.8}
-          width="100%"
-        >
+        <Flex css={KakaoMapErrorStyle} direction="column" gap={0.8}>
           <Text variant="caption">⚠️</Text>
           <Text variant="caption">{finalError}</Text>
         </Flex>
       )}
 
       {containerEl &&
-        selectedPlace &&
+        clickedPlace &&
         createPortal(
-          <PlaceOverlayCard place={selectedPlace} onClose={handleMapClick} />,
+          <PlaceOverlayCard place={clickedPlace} onClose={handleMapClick} />,
           containerEl,
         )}
     </div>

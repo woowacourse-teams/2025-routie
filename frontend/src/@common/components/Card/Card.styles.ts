@@ -2,7 +2,7 @@ import { css, SerializedStyles } from '@emotion/react';
 
 import theme from '@/styles/theme';
 
-import type { CardVariantType } from './Card.types';
+import type { CardProps, CardVariantType } from './Card.types';
 
 const cardVariant: Record<CardVariantType, SerializedStyles> = {
   default: css`
@@ -49,11 +49,11 @@ const cardVariant: Record<CardVariantType, SerializedStyles> = {
   `,
 };
 
-const CardStyle = (
-  variant: keyof typeof cardVariant,
-  width: string | undefined,
-  height: string | undefined,
-) => css`
+const CardStyle = ({
+  variant,
+  width,
+  height,
+}: Pick<CardProps, 'variant' | 'width' | 'height'>) => css`
   box-sizing: border-box;
   width: ${width ? width : '100%'};
   height: ${height ? height : 'auto'};
@@ -61,7 +61,7 @@ const CardStyle = (
   border-radius: 12px;
 
   background-color: ${theme.colors.white};
-  ${cardVariant[variant]}
+  ${variant && cardVariant[variant]}
 `;
 
 export { CardStyle };

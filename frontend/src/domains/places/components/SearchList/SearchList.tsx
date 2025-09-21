@@ -1,9 +1,8 @@
-import SearchPlace from '../SearchPlace/SearchPlace';
+import SearchPlace from '@/domains/places/components/SearchPlace/SearchPlace';
+import type { SearchListProps } from '@/domains/places/types/searchPlace.types';
 
 import SearchEmptyState from './SearchEmptyState';
 import { ItemButtonStyle, ListStyle } from './SearchList.styles';
-
-import type { SearchListProps } from './SearchList.types';
 
 const SearchList = ({
   searchResults,

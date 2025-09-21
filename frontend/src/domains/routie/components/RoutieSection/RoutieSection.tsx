@@ -1,19 +1,18 @@
 import Flex from '@/@common/components/Flex/Flex';
-
-import { useRoutieContext } from '../../contexts/useRoutieContext';
-import { useCardDrag } from '../../hooks/useCardDrag';
-import RoutiePlaceCard from '../RoutiePlaceCard/RoutiePlaceCard';
+import { useCardDrag } from '@/@common/hooks/useCardDrag';
+import RoutiePlaceCard from '@/domains/routie/components/RoutiePlaceCard/RoutiePlaceCard';
+import { useRoutieList } from '@/domains/routie/hooks/useRoutieList';
 
 const RoutieSection = () => {
-  const { routiePlaces, handleChangeRoutie } = useRoutieContext();
+  const { routiePlaces, handleChangeRoutie } = useRoutieList();
   const getDragProps = useCardDrag(routiePlaces, handleChangeRoutie);
 
   return (
-    <Flex direction="column" width="100%" gap={2}>
-      {routiePlaces.map((routie, index) => (
-        <div key={routie.placeId} style={{ width: '100%' }}>
-          <div {...getDragProps(index)} style={{ width: '100%' }}>
-            <RoutiePlaceCard routie={routie} />
+    <Flex direction="column" gap={2}>
+      {routiePlaces.map((routiePlace, index) => (
+        <div key={routiePlace.placeId} css={{ width: '100%' }}>
+          <div {...getDragProps(index)} css={{ width: '100%' }}>
+            <RoutiePlaceCard routie={routiePlace} />
           </div>
         </div>
       ))}

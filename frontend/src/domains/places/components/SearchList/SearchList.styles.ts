@@ -12,6 +12,10 @@ const ListStyle = css`
   background-color: ${theme.colors.white};
 `;
 
+/**
+ * 이름 수정 필요 -> listItem
+ * padding px -> rem 수정
+ */
 const ItemButtonStyle = css`
   width: 100%;
   padding: 12px 16px;
@@ -19,11 +23,4 @@ const ItemButtonStyle = css`
   border-radius: 0;
 `;
 
-const ItemEmptyStyle = css`
-  width: 100%;
-  padding: 12px 16px;
-  border: 0;
-  border-radius: 0;
-`;
-
-export { ListStyle, ItemButtonStyle, ItemEmptyStyle };
+export { ListStyle, ItemButtonStyle };

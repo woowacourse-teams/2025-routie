@@ -9,12 +9,11 @@ const textVariant: Record<TextVariantType, SerializedStyles> = {
     font-size: ${theme.font.size.heading};
     font-weight: ${theme.font.weight.bold};
   `,
-
-  title2: css`
+  subTitle: css`
     font-size: ${theme.font.size.subHeading};
     font-weight: ${theme.font.weight.semibold};
   `,
-  subTitle: css`
+  body: css`
     font-size: ${theme.font.size.body};
     font-weight: ${theme.font.weight.semibold};
   `,

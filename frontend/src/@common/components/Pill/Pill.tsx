@@ -1,13 +1,10 @@
-import clockIcon from '@/assets/icons/clock.svg';
-
 import { PillStyle } from './Pill.style';
 
 import type { PillProps } from './Pill.types';
 
-const Pill = ({ children, variant = 'default', type, ...props }: PillProps) => {
+const Pill = ({ children, ...props }: PillProps) => {
   return (
-    <div css={PillStyle({ variant, type })} {...props}>
-      {type === 'time' && <img src={clockIcon} />}
+    <div css={PillStyle} {...props}>
       {children}
     </div>
   );

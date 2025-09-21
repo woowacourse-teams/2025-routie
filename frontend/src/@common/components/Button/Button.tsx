@@ -5,11 +5,12 @@ import type { ButtonProps } from './Button.types';
 const Button = ({
   children,
   variant,
-  width = '100%',
+  width,
+  padding,
   ...props
 }: ButtonProps) => {
   return (
-    <button css={ButtonStyle({ variant, width })} {...props}>
+    <button css={ButtonStyle({ variant, width, padding })} {...props}>
       {children}
     </button>
   );

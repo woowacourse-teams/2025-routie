@@ -25,4 +25,3 @@ public class PlaceSearchController {
         return ResponseEntity.ok(searchedPlacesResponse);
     }
 }
-

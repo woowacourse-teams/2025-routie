@@ -28,7 +28,7 @@ const ToastItem = ({ item }: { item: ToastInfoProps }) => {
   return (
     <div css={ToastItemWrapperStyle(item.leaving)}>
       <span css={ToastBadgeStyle(item.type)} />
-      <Text variant="subTitle" css={ToastMessageStyle}>
+      <Text variant="body" css={ToastMessageStyle}>
         {item.message}
       </Text>
     </div>
