@@ -4,9 +4,9 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
-import routie.global.exception.BusinessException;
-import routie.global.exception.ErrorCode;
 import routie.business.routie.domain.RoutiePlace;
+import routie.global.exception.domain.BusinessException;
+import routie.global.exception.domain.ErrorCode;
 
 public class TimePeriods {
 

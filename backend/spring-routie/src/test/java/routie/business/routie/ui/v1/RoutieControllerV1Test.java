@@ -23,12 +23,12 @@ import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import routie.business.place.domain.Place;
 import routie.business.place.domain.PlaceBuilder;
 import routie.business.place.domain.PlaceRepository;
-import routie.business.routie.ui.dto.response.RoutieReadResponse;
-import routie.business.routie.ui.dto.response.RoutieReadResponse.RouteResponse;
-import routie.business.routie.ui.dto.response.RoutieReadResponse.RoutiePlaceResponse;
 import routie.business.routie.domain.Routie;
 import routie.business.routie.domain.route.MovingStrategy;
 import routie.business.routie.infrastructure.routecalculator.driving.kakaodrivingapi.TestRouteApiConfig;
+import routie.business.routie.ui.dto.response.RoutieReadResponse;
+import routie.business.routie.ui.dto.response.RoutieReadResponse.RouteResponse;
+import routie.business.routie.ui.dto.response.RoutieReadResponse.RoutiePlaceResponse;
 import routie.business.routiespace.domain.RoutieSpace;
 import routie.business.routiespace.domain.RoutieSpaceFixture;
 import routie.business.routiespace.domain.RoutieSpaceRepository;
@@ -277,8 +277,8 @@ class RoutieControllerV1Test {
     }
 
     @Test
-    @DisplayName("V1 API로 잘못된 형식의 시간 파라미터로 요청 시 500 Internal Server Error를 반환한다")
-    void validateRoutie_WithInvalidTimeFormat_ReturnsInternalServerError() {
+    @DisplayName("V1 API로 잘못된 형식의 시간 파라미터로 요청 시 400 Bad Request를 반환한다")
+    void validateRoutie_WithInvalidTimeFormat_ReturnsBadRequestError() {
         // given
         // invalidStartTime이 ISO_DATE_TIME 형식이 아님
         String invalidStartTime = "2025-07-29 10:00:00";
@@ -295,7 +295,7 @@ class RoutieControllerV1Test {
                 .extract().response();
 
         // then
-        assertThat(response.statusCode()).isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR.value());
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
     }
 
     @Test

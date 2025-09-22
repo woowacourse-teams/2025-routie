@@ -88,18 +88,18 @@
     </appender>
 
 
-    <logger name="routie" level="INFO" additivity="false">
+    <logger name="routie.business" level="INFO" additivity="false">
         <appender-ref ref="ROUTIE_LOG_FILE"/>
         <appender-ref ref="CONSOLE"/>
     </logger>
 
-    <logger name="routie.exception" level="WARN" additivity="false">
+    <logger name="routie.global.exception" level="WARN" additivity="false">
         <appender-ref ref="ROUTIE_EXCEPTION_FILE"/>
         <appender-ref ref="CONSOLE"/>
     </logger>
 
 
-    <logger name="routie.logging" level="INFO" additivity="false">
+    <logger name="routie.global.logging" level="INFO" additivity="false">
         <appender-ref ref="ROUTIE_REQUEST_FILE"/>
         <appender-ref ref="CONSOLE"/>
     </logger>

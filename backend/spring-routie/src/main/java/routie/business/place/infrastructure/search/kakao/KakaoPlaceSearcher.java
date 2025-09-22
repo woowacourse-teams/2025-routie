@@ -4,14 +4,14 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
-import routie.global.exception.BusinessException;
-import routie.global.exception.ErrorCode;
 import routie.business.place.domain.PlaceSearcher;
 import routie.business.place.domain.SearchedPlace;
 import routie.business.place.infrastructure.search.kakao.api.KakaoPlaceSearchApiClient;
 import routie.business.place.infrastructure.search.kakao.api.dto.request.KakaoPlaceSearchApiRequest;
 import routie.business.place.infrastructure.search.kakao.api.dto.response.KakaoPlaceSearchApiResponse;
 import routie.business.place.infrastructure.search.kakao.api.dto.response.KakaoPlaceSearchApiResponse.Document;
+import routie.global.exception.domain.BusinessException;
+import routie.global.exception.domain.ErrorCode;
 
 @Slf4j
 @Component

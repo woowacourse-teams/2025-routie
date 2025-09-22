@@ -16,8 +16,8 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.web.client.ResponseErrorHandler;
 import org.springframework.web.client.RestClient;
-import routie.global.exception.BusinessException;
-import routie.global.exception.ErrorCode;
+import routie.global.exception.domain.BusinessException;
+import routie.global.exception.domain.ErrorCode;
 
 @Configuration
 @RequiredArgsConstructor

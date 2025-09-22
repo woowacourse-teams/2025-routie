@@ -2,12 +2,12 @@ package routie.business.routie.infrastructure.routievalidator;
 
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import routie.global.exception.BusinessException;
-import routie.global.exception.ErrorCode;
 import routie.business.routie.domain.routievalidator.RoutieValidator;
 import routie.business.routie.domain.routievalidator.ValidationContext;
 import routie.business.routie.domain.routievalidator.ValidationResult;
 import routie.business.routie.domain.routievalidator.ValidationStrategy;
+import routie.global.exception.domain.BusinessException;
+import routie.global.exception.domain.ErrorCode;
 
 @RequiredArgsConstructor
 public class RoutieValidatorComposite implements RoutieValidator {

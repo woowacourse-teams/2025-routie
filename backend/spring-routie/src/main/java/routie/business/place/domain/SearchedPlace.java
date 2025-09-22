@@ -1,7 +1,7 @@
 package routie.business.place.domain;
 
-import routie.global.exception.BusinessException;
-import routie.global.exception.ErrorCode;
+import routie.global.exception.domain.BusinessException;
+import routie.global.exception.domain.ErrorCode;
 
 public record SearchedPlace(
         String searchedPlaceId,

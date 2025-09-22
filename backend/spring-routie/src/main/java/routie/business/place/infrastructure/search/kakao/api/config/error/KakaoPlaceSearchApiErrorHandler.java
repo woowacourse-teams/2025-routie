@@ -1,6 +1,9 @@
 package routie.business.place.infrastructure.search.kakao.api.config.error;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.io.IOException;
+import java.net.URI;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpMethod;
@@ -9,13 +12,9 @@ import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.ResponseErrorHandler;
-import routie.global.exception.BusinessException;
-import routie.global.exception.ErrorCode;
 import routie.business.place.infrastructure.search.kakao.api.dto.response.KakaoPlaceSearchApiErrorResponse;
-
-import java.io.IOException;
-import java.net.URI;
-import java.util.List;
+import routie.global.exception.domain.BusinessException;
+import routie.global.exception.domain.ErrorCode;
 
 @Slf4j
 @Component

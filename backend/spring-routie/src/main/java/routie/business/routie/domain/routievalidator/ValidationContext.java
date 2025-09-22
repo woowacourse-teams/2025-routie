@@ -1,9 +1,9 @@
 package routie.business.routie.domain.routievalidator;
 
 import java.time.LocalDateTime;
-import routie.global.exception.BusinessException;
-import routie.global.exception.ErrorCode;
 import routie.business.routie.domain.timeperiod.TimePeriods;
+import routie.global.exception.domain.BusinessException;
+import routie.global.exception.domain.ErrorCode;
 
 public record ValidationContext(
         LocalDateTime startDateTime,

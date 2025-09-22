@@ -1,8 +1,9 @@
-package routie.global.exception;
+package routie.global.exception.domain;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ProblemDetail;
 
 @Getter
 @RequiredArgsConstructor
@@ -11,10 +12,40 @@ public enum ErrorCode {
     /**
      * 0XXX: COMMON
      */
-    BAD_REQUEST(
+    UNEXPECTED_EXCEPTION(
             "0000",
-            "잘못된 요청입니다.",
+            "서버에서 문제가 발생했습니다.",
+            HttpStatus.INTERNAL_SERVER_ERROR
+    ),
+    FAIL_TO_HANDLE_EXCEPTION(
+            "0001",
+            "서버에서 예외가 발생했지만, 예외 처리 중 문제가 발생했습니다.",
+            HttpStatus.INTERNAL_SERVER_ERROR
+    ),
+    INVALID_REQUEST_DATA_VALUE(
+            "0002",
+            "요청에 필요한 데이터의 값이 유효하지 않습니다.",
             HttpStatus.BAD_REQUEST
+    ),
+    INVALID_REQUEST_DATA_TYPE(
+            "0003",
+            "요청에 필요한 데이터 타입이 일치하지 않습니다.",
+            HttpStatus.BAD_REQUEST
+    ),
+    MISSING_REQUEST_PARAMETER(
+            "0004",
+            "필수 요청 파라미터가 누락되었습니다.",
+            HttpStatus.BAD_REQUEST
+    ),
+    FAIL_TO_READ_REQUEST_BODY(
+            "0005",
+            "요청 바디를 읽는 데에 실패했습니다.",
+            HttpStatus.BAD_REQUEST
+    ),
+    NOT_FOUND(
+            "0006",
+            "요청한 리소스를 찾을 수 없습니다.",
+            HttpStatus.NOT_FOUND
     ),
 
     /**
@@ -328,4 +359,11 @@ public enum ErrorCode {
     private final String code;
     private final String message;
     private final HttpStatus httpStatus;
+
+    public ProblemDetail toProblemDetail() {
+        ProblemDetail problemDetail = ProblemDetail.forStatus(httpStatus);
+        problemDetail.setDetail(message);
+        problemDetail.setProperty("code", code);
+        return problemDetail;
+    }
 }

@@ -1,4 +1,4 @@
-package routie.global.exception;
+package routie.global.exception.domain;
 
 import lombok.Getter;
 

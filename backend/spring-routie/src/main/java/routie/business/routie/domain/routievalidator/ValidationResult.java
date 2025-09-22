@@ -1,9 +1,9 @@
 package routie.business.routie.domain.routievalidator;
 
 import java.util.List;
-import routie.global.exception.BusinessException;
-import routie.global.exception.ErrorCode;
 import routie.business.routie.domain.RoutiePlace;
+import routie.global.exception.domain.BusinessException;
+import routie.global.exception.domain.ErrorCode;
 
 public record ValidationResult(
         boolean isValid,

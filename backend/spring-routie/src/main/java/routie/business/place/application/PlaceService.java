@@ -4,17 +4,17 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import routie.global.exception.BusinessException;
-import routie.global.exception.ErrorCode;
+import routie.business.place.domain.Place;
+import routie.business.place.domain.PlaceRepository;
 import routie.business.place.ui.dto.request.PlaceCreateRequest;
 import routie.business.place.ui.dto.response.PlaceCreateResponse;
 import routie.business.place.ui.dto.response.PlaceListResponse;
 import routie.business.place.ui.dto.response.PlaceReadResponse;
-import routie.business.place.domain.Place;
-import routie.business.place.domain.PlaceRepository;
 import routie.business.routie.domain.RoutiePlaceRepository;
 import routie.business.routiespace.domain.RoutieSpace;
 import routie.business.routiespace.domain.RoutieSpaceRepository;
+import routie.global.exception.domain.BusinessException;
+import routie.global.exception.domain.ErrorCode;
 
 @Service
 @RequiredArgsConstructor

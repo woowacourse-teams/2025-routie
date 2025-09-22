@@ -19,18 +19,18 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.TransactionTemplate;
-import routie.global.exception.BusinessException;
 import routie.business.place.domain.Place;
 import routie.business.place.domain.PlaceBuilder;
 import routie.business.place.domain.PlaceRepository;
+import routie.business.routie.domain.RoutiePlace;
+import routie.business.routie.domain.RoutiePlaceRepository;
 import routie.business.routie.ui.dto.request.RoutiePlaceCreateRequest;
 import routie.business.routie.ui.dto.request.RoutieUpdateRequest;
 import routie.business.routie.ui.dto.request.RoutieUpdateRequest.RoutiePlaceRequest;
-import routie.business.routie.domain.RoutiePlace;
-import routie.business.routie.domain.RoutiePlaceRepository;
 import routie.business.routiespace.domain.RoutieSpace;
 import routie.business.routiespace.domain.RoutieSpaceFixture;
 import routie.business.routiespace.domain.RoutieSpaceRepository;
+import routie.global.exception.domain.BusinessException;
 
 @SpringBootTest
 @ActiveProfiles("test")
