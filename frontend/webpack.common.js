@@ -12,7 +12,8 @@ module.exports = () => {
       chunkFilename: '[name].[contenthash].js',
       path: path.resolve(__dirname, 'dist'),
       clean: true,
-      assetModuleFilename: 'assets/[name].[contenthash][ext][query]'
+      assetModuleFilename: 'assets/[name].[contenthash][ext][query]',
+      publicPath: '/',
     },
     resolve: {
       extensions: ['.ts', '.tsx', '.js'],
@@ -46,5 +47,18 @@ module.exports = () => {
         __BUILD_DATE__: JSON.stringify(buildDate),
       }),
     ],
+    optimization: {
+      splitChunks: {
+        chunks: 'all',
+        cacheGroups: {
+          vendor: {
+            test: /[\\/]node_modules[\\/]/,
+            name: 'vendors',
+            chunks: 'all',
+          },
+        },
+      },
+      runtimeChunk: 'single',
+    },
   };
 };

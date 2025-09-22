@@ -1,3 +1,4 @@
+import { lazy, Suspense } from 'react';
 import { createBrowserRouter, RouterProvider } from 'react-router';
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
@@ -6,8 +7,9 @@ import Toast from '@/@common/components/Toast/Toast';
 import ToastProvider from '@/@common/contexts/ToastProvider';
 import { useGoogleAnalytics } from '@/libs/googleAnalytics/hooks/useGoogleAnalytics';
 import Home from '@/pages/Home/Home';
-import RoutieSpace from '@/pages/RoutieSpace/RoutieSpace';
 import VersionInfo from '@/pages/VersionInfo/VersionInfo';
+
+const RoutieSpace = lazy(() => import('@/pages/RoutieSpace/RoutieSpace'));
 
 const LayoutWithAnalytics = ({ children }: { children: React.ReactNode }) => {
   useGoogleAnalytics();
@@ -29,13 +31,19 @@ const router = createBrowserRouter([
     path: '/routie-spaces',
     element: (
       <LayoutWithAnalytics>
-        <RoutieSpace />
+        <Suspense fallback={<div>Loading...</div>}>
+          <RoutieSpace />
+        </Suspense>
       </LayoutWithAnalytics>
     ),
   },
   {
     path: '/version',
-    element: <VersionInfo />,
+    element: (
+      <LayoutWithAnalytics>
+        <VersionInfo />
+      </LayoutWithAnalytics>
+    ),
   },
 ]);
 
