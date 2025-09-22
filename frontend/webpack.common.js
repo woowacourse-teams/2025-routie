@@ -12,7 +12,8 @@ module.exports = () => {
       chunkFilename: '[name].[contenthash].js',
       path: path.resolve(__dirname, 'dist'),
       clean: true,
-      assetModuleFilename: 'assets/[name].[contenthash][ext][query]'
+      assetModuleFilename: 'assets/[name].[contenthash][ext][query]',
+      publicPath: '/',
     },
     resolve: {
       extensions: ['.ts', '.tsx', '.js'],
