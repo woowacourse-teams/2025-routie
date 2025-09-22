@@ -1,6 +1,7 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { DefinePlugin } = require('webpack');
+const ImageMinimizerPlugin = require('image-minimizer-webpack-plugin');
 
 const buildDate = new Date().toISOString();
 
@@ -12,7 +13,7 @@ module.exports = () => {
       chunkFilename: '[name].[contenthash].js',
       path: path.resolve(__dirname, 'dist'),
       clean: true,
-      assetModuleFilename: 'assets/[name].[contenthash][ext][query]'
+      assetModuleFilename: 'assets/[name].[contenthash][ext][query]',
     },
     resolve: {
       extensions: ['.ts', '.tsx', '.js'],
@@ -44,6 +45,18 @@ module.exports = () => {
       new DefinePlugin({
         __BUILD_VERSION__: JSON.stringify(require('./package.json').version),
         __BUILD_DATE__: JSON.stringify(buildDate),
+      }),
+      new ImageMinimizerPlugin({
+        minimizer: {
+          implementation: ImageMinimizerPlugin.sharpMinify,
+          options: {
+            encodeOptions: {
+              png: {
+                quality: 80,
+              },
+            },
+          },
+        },
       }),
     ],
   };
