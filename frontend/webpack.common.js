@@ -14,6 +14,7 @@ module.exports = () => {
       path: path.resolve(__dirname, 'dist'),
       clean: true,
       assetModuleFilename: 'assets/[name].[contenthash][ext][query]',
+      publicPath: '/',
     },
     resolve: {
       extensions: ['.ts', '.tsx', '.js'],
@@ -59,5 +60,18 @@ module.exports = () => {
         },
       }),
     ],
+    optimization: {
+      splitChunks: {
+        chunks: 'all',
+        cacheGroups: {
+          vendor: {
+            test: /[\\/]node_modules[\\/]/,
+            name: 'vendors',
+            chunks: 'all',
+          },
+        },
+      },
+      runtimeChunk: 'single',
+    },
   };
 };
