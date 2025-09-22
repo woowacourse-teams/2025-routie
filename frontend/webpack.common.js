@@ -47,5 +47,18 @@ module.exports = () => {
         __BUILD_DATE__: JSON.stringify(buildDate),
       }),
     ],
+    optimization: {
+      splitChunks: {
+        chunks: 'all',
+        cacheGroups: {
+          vendor: {
+            test: /[\\/]node_modules[\\/]/,
+            name: 'vendors',
+            chunks: 'all',
+          },
+        },
+      },
+      runtimeChunk: 'single',
+    },
   };
 };
