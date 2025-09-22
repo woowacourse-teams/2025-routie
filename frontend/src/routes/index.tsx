@@ -6,10 +6,10 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import Toast from '@/@common/components/Toast/Toast';
 import ToastProvider from '@/@common/contexts/ToastProvider';
 import { useGoogleAnalytics } from '@/libs/googleAnalytics/hooks/useGoogleAnalytics';
+import Home from '@/pages/Home/Home';
+import VersionInfo from '@/pages/VersionInfo/VersionInfo';
 
-const Home = lazy(() => import('@/pages/Home/Home'));
 const RoutieSpace = lazy(() => import('@/pages/RoutieSpace/RoutieSpace'));
-const VersionInfo = lazy(() => import('@/pages/VersionInfo/VersionInfo'));
 
 const LayoutWithAnalytics = ({ children }: { children: React.ReactNode }) => {
   useGoogleAnalytics();
@@ -23,9 +23,7 @@ const router = createBrowserRouter([
     path: '/',
     element: (
       <LayoutWithAnalytics>
-        <Suspense fallback={<div>Loading...</div>}>
-          <Home />
-        </Suspense>
+        <Home />
       </LayoutWithAnalytics>
     ),
   },
@@ -42,9 +40,9 @@ const router = createBrowserRouter([
   {
     path: '/version',
     element: (
-      <Suspense fallback={<div>Loading...</div>}>
+      <LayoutWithAnalytics>
         <VersionInfo />
-      </Suspense>
+      </LayoutWithAnalytics>
     ),
   },
 ]);
