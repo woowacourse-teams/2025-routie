@@ -323,6 +323,20 @@ public enum ErrorCode {
     ),
 
     /**
+     * 4XXX: Word domain
+     */
+    ADJECTIVE_NOT_FOUND(
+            "4000",
+            "닉네임을 생성하기 위한 형용사가 존재하지 않습니다.",
+            HttpStatus.NOT_FOUND
+    ),
+    NOUN_NOT_FOUND(
+            "4001",
+            "닉네임을 생성하기 위한 명사가 존재하지 않습니다.",
+            HttpStatus.NOT_FOUND
+    ),
+
+    /**
      * 9XXX: External API
      */
     KAKAO_DRIVING_ROUTE_API_ERROR(
