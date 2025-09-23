@@ -29,7 +29,10 @@ public class RoutieSpaceService {
 
     @Transactional
     public RoutieSpaceCreateResponse addRoutieSpace() {
-        RoutieSpace routieSpace = RoutieSpace.from(routieSpaceIdentifierProvider);
+        RoutieSpace routieSpace = RoutieSpace.withIdentifierProvider(
+                null,
+                routieSpaceIdentifierProvider
+        );
         routieSpaceRepository.save(routieSpace);
         return RoutieSpaceCreateResponse.from(routieSpace);
     }

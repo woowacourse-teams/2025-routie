@@ -323,6 +323,31 @@ public enum ErrorCode {
     ),
 
     /**
+     * 4XXX: User domain
+     */
+    // User
+    USER_NICKNAME_EMPTY(
+            "4000",
+            "사용자 닉네임은 비어있을 수 없습니다.",
+            HttpStatus.BAD_REQUEST
+    ),
+    USER_NICKNAME_LENGTH_INVALID(
+            "4001",
+            "사용자 닉네임은 10자 이하여야 합니다.",
+            HttpStatus.BAD_REQUEST
+    ),
+    USER_OAUTH_IDENTIFIER_EMPTY(
+            "4002",
+            "사용자 인증 제공 식별자는 비어있을 수 없습니다.",
+            HttpStatus.BAD_REQUEST
+    ),
+    USER_OAUTH_PROVIDER_EMPTY(
+            "4002",
+            "사용자 인증 제공자는 비어있을 수 없습니다.",
+            HttpStatus.BAD_REQUEST
+    ),
+
+    /**
      * 9XXX: External API
      */
     KAKAO_DRIVING_ROUTE_API_ERROR(
