@@ -13,4 +13,4 @@ interface IconProps {
 
 type IconStyleProps = Pick<IconProps, 'onClick' | 'size'>;
 
-export type { IconProps, IconStyleProps };
+export type { IconNameType, IconProps, IconStyleProps };

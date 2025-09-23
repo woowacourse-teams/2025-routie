@@ -1,8 +1,10 @@
 import { ComponentProps } from 'react';
 
+import { IconNameType } from '../IconSvg/Icon.types';
+
 interface IconButtonProps extends ComponentProps<'button'> {
   variant?: IconButtonVariantType;
-  icon: string;
+  icon: IconNameType;
   onClick?: () => void;
 }
 
