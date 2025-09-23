@@ -10,6 +10,7 @@ import reload from '@/assets/icons/reload.svg';
 import theme from '@/styles/theme';
 
 import {
+  ButtonWrapperStyle,
   ContinueButtonStyle,
   CreateButtonStyle,
   HomepageStyle,
@@ -80,7 +81,7 @@ const Home = () => {
               ]}
             />
           </Flex>
-          <Flex gap={8} width="70%">
+          <Flex gap={8} width="70%" css={ButtonWrapperStyle}>
             <Button onClick={handleCreateRoutieSpace} css={CreateButtonStyle}>
               <Flex gap={1.5} padding={1}>
                 <img src={arrowWhite} width={'30rem'} />

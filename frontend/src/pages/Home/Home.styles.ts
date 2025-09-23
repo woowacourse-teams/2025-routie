@@ -4,6 +4,10 @@ import theme from '@/styles/theme';
 
 const HomepageStyle = css`
   background-color: ${theme.home.gray};
+
+  @media (width <= 970px) {
+    height: auto;
+  }
 `;
 
 const TitleTextStyle = css`
@@ -21,17 +25,32 @@ const VioletTextStyle = css`
 
 const InfoCardsWrapperStyle = css`
   padding: 5rem 0;
+
+  @media (width <= 970px) {
+    flex-direction: column;
+    gap: 3rem;
+  }
+`;
+
+const ButtonWrapperStyle = css`
+  @media (width <= 970px) {
+    flex-direction: column;
+    gap: 2rem;
+    max-width: 40rem;
+  }
 `;
 
 const CreateButtonStyle = css`
   justify-content: center;
+  max-width: 31rem;
   background-color: ${theme.home.violet};
   box-shadow: 0 8px 16px rgb(0 0 0 / 16%);
 `;
 
 const ContinueButtonStyle = css`
   justify-content: center;
-  background-color: white;
+  max-width: 31rem;
+  background-color: ${theme.colors.white};
   box-shadow: 0 8px 16px rgb(0 0 0 / 16%);
 `;
 
@@ -41,6 +60,7 @@ export {
   SubTitleTextStyle,
   VioletTextStyle,
   InfoCardsWrapperStyle,
+  ButtonWrapperStyle,
   CreateButtonStyle,
   ContinueButtonStyle,
 };
