@@ -1,5 +1,6 @@
 package routie.business.word.ui.v1;
 
+import jakarta.validation.Valid;
 import java.net.URI;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -15,16 +16,24 @@ import org.springframework.web.bind.annotation.RestController;
 import routie.business.word.application.WordService;
 import routie.business.word.domain.Word;
 import routie.business.word.domain.WordType;
+import routie.business.word.ui.dto.NicknameResponse;
 import routie.business.word.ui.dto.WordCreateRequest;
 import routie.business.word.ui.dto.WordReplaceRequest;
 import routie.business.word.ui.dto.WordResponse;
 
 @RestController
-@RequestMapping("/words")
+@RequestMapping("v1/words")
 @RequiredArgsConstructor
 public class WordControllerV1 {
 
     private final WordService wordService;
+
+    @GetMapping("/nickname")
+    public ResponseEntity<NicknameResponse> getNickname() {
+        final String nickname = wordService.getNickname();
+        final NicknameResponse response = NicknameResponse.from(nickname);
+        return ResponseEntity.ok(response);
+    }
 
     @GetMapping("/{wordType}")
     public ResponseEntity<List<WordResponse>> getWords(@PathVariable final WordType wordType) {
@@ -38,10 +47,10 @@ public class WordControllerV1 {
     @PostMapping("/{wordType}")
     public ResponseEntity<Void> addWord(
             @PathVariable final WordType wordType,
-            @RequestBody final WordCreateRequest request
+            @Valid @RequestBody final WordCreateRequest request
     ) {
-        final Word savedWord = wordService.addWord(wordType, request.getContent());
-        final URI location = URI.create(String.format("/words/%s/%d", wordType.name(), savedWord.getId()));
+        final Word savedWord = wordService.addWord(wordType, request.content());
+        final URI location = URI.create(String.format("/v1/words/%s/%d", wordType.name(), savedWord.getId()));
         return ResponseEntity.created(location).build();
     }
 
@@ -57,9 +66,9 @@ public class WordControllerV1 {
     @PutMapping("/{wordType}")
     public ResponseEntity<List<WordResponse>> replaceAllWords(
             @PathVariable final WordType wordType,
-            @RequestBody final WordReplaceRequest request
+            @Valid @RequestBody final WordReplaceRequest request
     ) {
-        final List<Word> words = wordService.replaceAllWords(wordType, request.getContents());
+        final List<Word> words = wordService.replaceAllWords(wordType, request.contents());
         final List<WordResponse> responses = words.stream()
                 .map(WordResponse::from)
                 .toList();

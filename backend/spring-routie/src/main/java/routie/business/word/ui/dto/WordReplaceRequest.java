@@ -1,12 +1,10 @@
 package routie.business.word.ui.dto;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import java.util.List;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
 
-@Getter
-@NoArgsConstructor
-public class WordReplaceRequest {
-
-    private List<String> contents;
+public record WordReplaceRequest(
+        @NotNull List<@NotBlank String> contents
+) {
 }

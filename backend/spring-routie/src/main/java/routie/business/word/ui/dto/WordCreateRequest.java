@@ -1,11 +1,8 @@
 package routie.business.word.ui.dto;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import jakarta.validation.constraints.NotBlank;
 
-@Getter
-@NoArgsConstructor
-public class WordCreateRequest {
-
-    private String content;
+public record WordCreateRequest(
+        @NotBlank String content
+) {
 }
