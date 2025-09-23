@@ -2,35 +2,65 @@ import { css } from '@emotion/react';
 
 import theme from '@/styles/theme';
 
-export const HomepageStyle = css`
+const HomepageStyle = css`
   background-color: ${theme.home.gray};
+
+  @media (width <= 970px) {
+    height: auto;
+  }
 `;
 
-export const titleTextStyle = css`
+const TitleTextStyle = css`
   font-size: 4rem;
 `;
 
-export const subTitleTextStyle = css`
+const SubTitleTextStyle = css`
   font-size: 2.5rem;
 `;
 
-export const violetTextStyle = css`
+const VioletTextStyle = css`
   font-size: 2.5rem;
   color: ${theme.home.violet};
 `;
 
-export const infoCardsWrapperStyle = css`
+const InfoCardsWrapperStyle = css`
   padding: 5rem 0;
+
+  @media (width <= 970px) {
+    flex-direction: column;
+    gap: 3rem;
+  }
 `;
 
-export const createButtonStyle = css`
+const ButtonWrapperStyle = css`
+  @media (width <= 970px) {
+    flex-direction: column;
+    gap: 2rem;
+    max-width: 40rem;
+  }
+`;
+
+const CreateButtonStyle = css`
   justify-content: center;
+  max-width: 31rem;
   background-color: ${theme.home.violet};
   box-shadow: 0 8px 16px rgb(0 0 0 / 16%);
 `;
 
-export const continueButtonStyle = css`
+const ContinueButtonStyle = css`
   justify-content: center;
-  background-color: white;
+  max-width: 31rem;
+  background-color: ${theme.colors.white};
   box-shadow: 0 8px 16px rgb(0 0 0 / 16%);
 `;
+
+export {
+  HomepageStyle,
+  TitleTextStyle,
+  SubTitleTextStyle,
+  VioletTextStyle,
+  InfoCardsWrapperStyle,
+  ButtonWrapperStyle,
+  CreateButtonStyle,
+  ContinueButtonStyle,
+};

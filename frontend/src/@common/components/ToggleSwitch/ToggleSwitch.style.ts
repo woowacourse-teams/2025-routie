@@ -2,15 +2,15 @@ import { css } from '@emotion/react';
 
 import theme from '@/styles/theme';
 
-export const toggleSwitchContainer = css`
+const ToggleContainer = css`
   display: inline-block;
 `;
 
-export const hiddenCheckbox = css`
+const ToggleHiddenCheckbox = css`
   display: none;
 `;
 
-export const toggleStyle = (checked: boolean) => css`
+const ToggleStyle = (checked: boolean) => css`
   cursor: pointer;
 
   position: relative;
@@ -43,3 +43,5 @@ export const toggleStyle = (checked: boolean) => css`
     transition: left 0.2s ease;
   }
 `;
+
+export { ToggleContainer, ToggleHiddenCheckbox, ToggleStyle };

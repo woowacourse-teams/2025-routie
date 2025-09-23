@@ -1,145 +1,23 @@
-import { useState } from 'react';
-
 import Flex from '@/@common/components/Flex/Flex';
-import Modal, { ModalProps } from '@/@common/components/Modal/Modal';
+import IconButton from '@/@common/components/IconButton/IconButton';
+import Modal from '@/@common/components/Modal/Modal';
+import type { ModalProps } from '@/@common/components/Modal/Modal.types';
 import Text from '@/@common/components/Text/Text';
-import { useToastContext } from '@/@common/contexts/useToastContext';
-import { useAsyncLock } from '@/@common/hooks/useAsyncLock';
-import { useAddPlaceForm } from '@/domains/places/hooks/useAddPlaceForm';
-import { usePlaceFormValidation } from '@/domains/places/hooks/usePlaceFormValidation';
-import { usePlaceListContext } from '@/layouts/PlaceList/contexts/PlaceListContext';
-
-import addPlace from '../../apis/addPlace';
-import { useFunnel } from '../../hooks/useFunnel';
-import { PlaceLocationType } from '../../types/place.types';
-import { getValidatedStep } from '../../utils/getValidatedStep';
-
-import AddPlaceBasicInfo from './AddPlaceBasicInfo';
-import { ModalInputContainerStyle } from './AddPlaceModal.styles';
-import AddPlaceModalButtons from './AddPlaceModalButtons';
-import AddPlaceModalHeader from './AddPlaceModalHeader';
-import AddPlaceValidation from './AddPlaceValidation';
+import closeIcon from '@/assets/icons/close.svg';
+import SearchBox from '@/domains/places/components/SearchBox/SearchBox';
 
 const AddPlaceModal = ({ isOpen, onClose }: Omit<ModalProps, 'children'>) => {
-  const { form, handleInputChange, handleToggleDay, resetForm } =
-    useAddPlaceForm();
-  const { isEmpty, isValid } = usePlaceFormValidation(form);
-  const { step, nextStep, prevStep, resetFunnel, isStep1, isStep2 } =
-    useFunnel();
-  const { handlePlaceAdded } = usePlaceListContext();
-
-  const [showErrors, setShowErrors] = useState(false);
-  const [placeLocationInfo, setPlaceLocationInfo] =
-    useState<PlaceLocationType>();
-  const isStep1Valid = getValidatedStep(1, isEmpty);
-  const { showToast } = useToastContext();
-
-  const handleClose = () => {
-    resetForm();
-    resetFunnel();
-    setShowErrors(false);
-    onClose();
-  };
-
-  const handleSearchPlaceMap = (placeLocation: PlaceLocationType) => {
-    setPlaceLocationInfo(placeLocation);
-  };
-
-  const handleNext = () => {
-    if (!isStep1Valid) {
-      setShowErrors(true);
-      return;
-    }
-    setShowErrors(false);
-    nextStep();
-  };
-
-  const handlePrev = () => {
-    setShowErrors(false);
-    prevStep();
-  };
-
-  const { runWithLock: runSubmitWithLock } = useAsyncLock();
-
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const addPlaceForm = { ...form, ...placeLocationInfo };
-
-    if (!isValid) {
-      setShowErrors(true);
-      return;
-    }
-
-    return runSubmitWithLock(async () => {
-      try {
-        await addPlace(addPlaceForm);
-        await handlePlaceAdded();
-        showToast({
-          message: '장소가 추가되었습니다.',
-          type: 'success',
-        });
-        handleClose();
-      } catch (error) {
-        console.error(error);
-        if (error instanceof Error) {
-          showToast({
-            message: error.message,
-            type: 'error',
-          });
-        }
-      }
-    });
-  };
-
-  const renderContent = () => {
-    switch (step) {
-      case 1:
-        return (
-          <AddPlaceBasicInfo
-            form={form}
-            isEmpty={isEmpty}
-            showErrors={showErrors}
-            handleInputChange={handleInputChange}
-            handleSearchPlaceMap={handleSearchPlaceMap}
-          />
-        );
-      case 2:
-        return (
-          <AddPlaceValidation
-            form={form}
-            isEmpty={isEmpty}
-            showErrors={showErrors}
-            handleInputChange={handleInputChange}
-            handleToggleDay={handleToggleDay}
-          />
-        );
-      default:
-        return <></>;
-    }
-  };
-
   return (
-    <Modal isOpen={isOpen} onClose={handleClose}>
-      <form onSubmit={handleSubmit}>
-        <Flex direction="column" width="44rem" gap={2}>
-          <AddPlaceModalHeader onClose={handleClose} />
-          <Flex justifyContent="flex-start" gap={1.6} width="100%">
-            <Text variant="caption" css={isStep1 && { fontWeight: 700 }}>
-              1. 기본 정보
-            </Text>
-            <Text variant="caption" css={isStep2 && { fontWeight: 700 }}>
-              2. 검증 정보
-            </Text>
-          </Flex>
-          <div css={ModalInputContainerStyle}>{renderContent()}</div>
-          <AddPlaceModalButtons
-            step={step}
-            isStep1Valid={isStep1Valid}
-            onNext={handleNext}
-            onPrev={handlePrev}
-          />
+    <Modal isOpen={isOpen} onClose={onClose}>
+      <Flex direction="column" width="44rem" gap={2}>
+        <Flex justifyContent="space-between">
+          <Text variant="subTitle">장소 추가</Text>
+          <IconButton type="button" icon={closeIcon} onClick={onClose} />
         </Flex>
-      </form>
+        <Flex direction="column" alignItems="flex-start" gap={2}>
+          <SearchBox onClose={onClose} />
+        </Flex>
+      </Flex>
     </Modal>
   );
 };

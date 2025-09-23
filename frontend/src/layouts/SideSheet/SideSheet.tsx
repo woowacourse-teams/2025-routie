@@ -1,40 +1,34 @@
-import { useState } from 'react';
-
-import { css } from '@emotion/react';
+import { useState, useCallback } from 'react';
 
 import Button from '@/@common/components/Button/Button';
 import EmptyMessage from '@/@common/components/EmptyMessage/EmptyMessage';
 import Flex from '@/@common/components/Flex/Flex';
+import Icon from '@/@common/components/IconSvg/Icon';
 import Text from '@/@common/components/Text/Text';
-import CloseSheetIcon from '@/assets/icons/closeSheet.svg';
 import AddPlaceModal from '@/domains/places/components/AddPlaceModal/AddPlaceModal';
-import { PlaceCard } from '@/domains/places/components/PlaceCard/PlaceCard';
-import { useRoutieContext } from '@/domains/routie/contexts/useRoutieContext';
+import PlaceCard from '@/domains/places/components/PlaceCard/PlaceCard';
+import { usePlaceList } from '@/domains/places/hooks/usePlaceList';
+import { useRoutieList } from '@/domains/routie/hooks/useRoutieList';
 import { useGoogleEventTrigger } from '@/libs/googleAnalytics/hooks/useGoogleEventTrigger';
 import theme from '@/styles/theme';
 
-import { usePlaceListContext } from '../PlaceList/contexts/PlaceListContext';
-
 import {
-  SheetBaseStyle,
-  SheetContentContainerStyle,
-  SheetOpenStyle,
-  SheetCloseStyle,
-  TabBaseStyle,
   IconBaseStyle,
   IconFlippedStyle,
+  SheetBaseStyle,
+  SheetCloseStyle,
+  SheetContentContainerStyle,
   SheetListWrapperStyle,
+  SheetOpenStyle,
   SheetScrollableAreaStyle,
+  TabBaseStyle,
 } from './SideSheet.styles';
 
-interface SideSheetProps {
-  open: boolean;
-  onToggle: () => void;
-}
+import type { SideSheetProps } from './SideSheet.types';
 
 const SideSheet = ({ open, onToggle }: SideSheetProps) => {
-  const { placeList } = usePlaceListContext();
-  const { routieIdList } = useRoutieContext();
+  const { placeList, handleDeletePlace } = usePlaceList();
+  const { routieIdList, handleAddRoutie } = useRoutieList();
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const { triggerEvent } = useGoogleEventTrigger();
 
@@ -51,6 +45,21 @@ const SideSheet = ({ open, onToggle }: SideSheetProps) => {
     setIsAddModalOpen(false);
   };
 
+  const handlePlaceSelect = useCallback(
+    async (placeId: number, selected: boolean) => {
+      if (selected) return;
+      await handleAddRoutie(placeId);
+    },
+    [handleAddRoutie],
+  );
+
+  const handlePlaceDelete = useCallback(
+    async (placeId: number) => {
+      await handleDeletePlace(placeId);
+    },
+    [handleDeletePlace],
+  );
+
   return (
     <aside
       css={[SheetBaseStyle, open ? SheetOpenStyle : SheetCloseStyle]}
@@ -61,10 +70,10 @@ const SideSheet = ({ open, onToggle }: SideSheetProps) => {
         aria-label={open ? '사이드 시트 접기' : '사이드 시트 펼치기'}
         onClick={onToggle}
       >
-        <img
-          css={[IconBaseStyle, !open && IconFlippedStyle]}
-          src={CloseSheetIcon}
+        <Icon
+          name="closeSheetIcon"
           alt={open ? '사이드 시트 닫기 버튼' : '사이드 시트 열기 버튼'}
+          css={[IconBaseStyle, !open && IconFlippedStyle]}
         />
       </button>
       <Flex
@@ -72,31 +81,19 @@ const SideSheet = ({ open, onToggle }: SideSheetProps) => {
         alignItems="stretch"
         css={SheetContentContainerStyle}
       >
-        <Flex
-          alignItems="center"
-          justifyContent="space-between"
-          width="100%"
-          css={css`
-            padding: 0 1rem 2rem;
-          `}
-        >
-          <Text
-            variant="title"
-            css={css`
-              width: 100%;
-            `}
+        <Flex justifyContent="space-between" padding="0 1rem 2rem">
+          <Text variant="title">장소 목록</Text>
+          <Button
+            variant="primary"
+            onClick={handleOpenAddModalClick}
+            width="50%"
           >
-            장소 목록
-          </Text>
-          <Button variant="primary" onClick={handleOpenAddModalClick}>
-            <Flex width="100%">
-              <Text variant="subTitle" color={theme.colors.white}>
-                + 장소 추가
-              </Text>
-            </Flex>
+            <Text variant="body" color={theme.colors.white}>
+              + 장소 추가
+            </Text>
           </Button>
         </Flex>
-        {placeList.length === 0 && (
+        {placeList?.length === 0 && (
           <Flex height="100%">
             <EmptyMessage
               messages={[
@@ -118,10 +115,16 @@ const SideSheet = ({ open, onToggle }: SideSheetProps) => {
               gap={2}
               css={{ overflowY: 'visible' }}
             >
-              {placeList.map((place) => {
+              {placeList?.map((place) => {
                 const selected = routieIdList.includes(place.id);
                 return (
-                  <PlaceCard {...place} key={place.id} selected={selected} />
+                  <PlaceCard
+                    {...place}
+                    key={place.id}
+                    selected={selected}
+                    onSelect={handlePlaceSelect}
+                    onDelete={handlePlaceDelete}
+                  />
                 );
               })}
             </Flex>

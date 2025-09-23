@@ -1,8 +1,11 @@
 import { ComponentProps } from 'react';
 
-export interface ButtonProps extends ComponentProps<'button'> {
-  variant?: ButtonVariantProps;
+interface ButtonProps extends ComponentProps<'button'> {
+  variant?: ButtonVariantType;
   width?: string;
+  padding?: string;
 }
 
-export type ButtonVariantProps = 'primary' | 'secondary';
+type ButtonVariantType = 'primary' | 'secondary';
+
+export type { ButtonProps, ButtonVariantType };

@@ -1,10 +1,14 @@
 import { apiClient } from '@/apis';
+import { routieAdapter } from '@/domains/routie/adapters/routieAdapter';
+import type {
+  AddRoutiePlaceRequestType,
+  AddRoutiePlaceResponseType,
+  DeleteRoutiePlaceRequestType,
+  EditRoutieRequestType,
+} from '@/domains/routie/types/api.types';
+import type { RoutieAdapterType } from '@/domains/routie/types/routie.types';
 
-import { adaptValidationResponse } from '../adapters/routieValidationAdapter';
-import { ValidationApiResponse } from '../types/api.types';
-import { Routie, RoutieValidationResponseType } from '../types/routie.types';
-
-export const getRoutie = async (routieTime: string, movingStrategy: string) => {
+const getRoutie = async (): Promise<RoutieAdapterType> => {
   const routieSpaceUuid = localStorage.getItem('routieSpaceUuid');
 
   if (!routieSpaceUuid) {
@@ -12,14 +16,6 @@ export const getRoutie = async (routieTime: string, movingStrategy: string) => {
   }
 
   const queryParams = new URLSearchParams();
-
-  if (routieTime) {
-    queryParams.append('startDateTime', routieTime);
-  }
-
-  if (movingStrategy) {
-    queryParams.append('movingStrategy', movingStrategy);
-  }
 
   const query = queryParams.toString() ? `?${queryParams.toString()}` : '';
 
@@ -29,10 +25,10 @@ export const getRoutie = async (routieTime: string, movingStrategy: string) => {
 
   const data = await response.json();
 
-  return data;
+  return routieAdapter(data);
 };
 
-export const editRoutieSequence = async (routiePlaces: Routie[]) => {
+const editRoutieSequence = async ({ routiePlaces }: EditRoutieRequestType) => {
   const routieSpaceUuid = localStorage.getItem('routieSpaceUuid');
 
   if (!routieSpaceUuid) {
@@ -44,45 +40,9 @@ export const editRoutieSequence = async (routiePlaces: Routie[]) => {
   });
 };
 
-export const getDetailPlace = async (id: number) => {
-  const routieSpaceUuid = localStorage.getItem('routieSpaceUuid');
-
-  if (!routieSpaceUuid) {
-    throw new Error('루티 스페이스 uuid가 없습니다.');
-  }
-
-  const response = await apiClient.get(
-    `/routie-spaces/${routieSpaceUuid}/places/${id}`,
-  );
-
-  const data = await response.json();
-
-  return data;
-};
-
-export const getRoutieValidation = async (
-  time: {
-    startDateTime: string;
-    endDateTime: string;
-  },
-  movingStrategy: string,
-): Promise<RoutieValidationResponseType> => {
-  const routieSpaceUuid = localStorage.getItem('routieSpaceUuid');
-
-  if (!routieSpaceUuid) {
-    throw new Error('루티 스페이스 uuid가 없습니다.');
-  }
-
-  const response = await apiClient.get(
-    `/routie-spaces/${routieSpaceUuid}/routie/validation?startDateTime=${time.startDateTime}&endDateTime=${time.endDateTime}&movingStrategy=${movingStrategy}`,
-  );
-
-  const data: ValidationApiResponse = await response.json();
-
-  return adaptValidationResponse(data);
-};
-
-export const addRoutiePlace = async (placeId: number) => {
+const addRoutiePlace = async ({
+  placeId,
+}: AddRoutiePlaceRequestType): Promise<AddRoutiePlaceResponseType> => {
   const routieSpaceUuid = localStorage.getItem('routieSpaceUuid');
 
   if (!routieSpaceUuid) {
@@ -101,14 +61,16 @@ export const addRoutiePlace = async (placeId: number) => {
   return data;
 };
 
-export const deleteRoutiePlace = async (placeId: number) => {
+const deleteRoutiePlace = async ({ placeId }: DeleteRoutiePlaceRequestType) => {
   const routieSpaceUuid = localStorage.getItem('routieSpaceUuid');
 
   if (!routieSpaceUuid) {
     throw new Error('루티 스페이스 uuid가 없습니다.');
   }
 
-  const response = await apiClient.delete(
+  return await apiClient.delete(
     `/routie-spaces/${routieSpaceUuid}/routie/places/${placeId}`,
   );
 };
+
+export { getRoutie, editRoutieSequence, addRoutiePlace, deleteRoutiePlace };

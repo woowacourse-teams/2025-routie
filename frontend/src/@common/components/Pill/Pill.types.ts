@@ -1,10 +1,5 @@
 import { ComponentProps } from 'react';
 
-export interface PillProps extends ComponentProps<'div'> {
-  variant?: PillVariantProps;
-  type: PillType;
-}
+type PillProps = ComponentProps<'div'>;
 
-export type PillVariantProps = 'default' | 'filled' | 'invalid';
-
-type PillType = 'time' | 'distance' | 'default';
+export type { PillProps };

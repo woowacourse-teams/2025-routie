@@ -2,12 +2,12 @@ import { css } from '@emotion/react';
 
 import theme from '@/styles/theme';
 
-export const TooltipContainerStyle = css`
+const TooltipContainerStyle = css`
   position: relative;
   display: inline-block;
 `;
 
-export const TooltipStyle = css`
+const TooltipStyle = css`
   position: absolute;
   z-index: 10;
   top: calc(100% + 0.8rem);
@@ -22,3 +22,5 @@ export const TooltipStyle = css`
 
   background-color: ${theme.colors.white};
 `;
+
+export { TooltipContainerStyle, TooltipStyle };

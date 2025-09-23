@@ -2,7 +2,7 @@ import { css } from '@emotion/react';
 
 import theme from '@/styles/theme';
 
-export const SheetBaseStyle = css`
+const SheetBaseStyle = css`
   position: absolute;
   z-index: 1000;
   top: 1rem;
@@ -23,26 +23,26 @@ export const SheetBaseStyle = css`
     box-shadow 300ms ease, opacity 300ms ease;
 `;
 
-export const SheetContentContainerStyle = css`
+const SheetContentContainerStyle = css`
   flex: 1;
   min-height: 0;
   padding: 2.4rem 1.6rem;
 `;
 
-export const SheetOpenStyle = css`
+const SheetOpenStyle = css`
   pointer-events: auto;
   transform: translateX(0);
   opacity: 1;
   box-shadow: 0 4px 20px rgb(0 0 0 / 15%);
 `;
 
-export const SheetCloseStyle = css`
+const SheetCloseStyle = css`
   transform: translateX(calc(-100% + 3rem - 20px));
   opacity: 0.96;
   box-shadow: none;
 `;
 
-export const TabBaseStyle = css`
+const TabBaseStyle = css`
   pointer-events: auto;
   cursor: pointer;
 
@@ -73,25 +73,37 @@ export const TabBaseStyle = css`
   }
 `;
 
-export const IconBaseStyle = css`
+const IconBaseStyle = css`
   transform-origin: center;
   width: 1.4rem;
   height: 1.4rem;
   transition: transform 300ms ease;
 `;
 
-export const IconFlippedStyle = css`
+const IconFlippedStyle = css`
   transform: scaleX(-1);
 `;
 
-export const SheetListWrapperStyle = css`
+const SheetListWrapperStyle = css`
   position: relative;
   flex: 1;
   min-height: 0;
 `;
 
-export const SheetScrollableAreaStyle = css`
+const SheetScrollableAreaStyle = css`
   overflow-y: auto;
   height: 100%;
   padding-right: 0.5rem;
 `;
+
+export {
+  SheetBaseStyle,
+  SheetOpenStyle,
+  SheetCloseStyle,
+  TabBaseStyle,
+  IconBaseStyle,
+  IconFlippedStyle,
+  SheetContentContainerStyle,
+  SheetListWrapperStyle,
+  SheetScrollableAreaStyle,
+};

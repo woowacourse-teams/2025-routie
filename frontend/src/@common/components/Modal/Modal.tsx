@@ -3,11 +3,7 @@ import { createPortal } from 'react-dom';
 
 import { ModalStyle, ModalOverlayStyle } from './Modal.style';
 
-export interface ModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-  children: React.ReactNode;
-}
+import type { ModalProps } from './Modal.types';
 
 const Modal = ({ isOpen, onClose, children }: ModalProps) => {
   useEffect(() => {

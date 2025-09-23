@@ -2,7 +2,7 @@ import { css, SerializedStyles } from '@emotion/react';
 
 import theme from '@/styles/theme';
 
-import { InputStyleProps, InputVariantProps } from './Input.types';
+import type { InputStyleProps, InputVariantType } from './Input.types';
 
 const blinkBackground = css`
   @keyframes blink-background {
@@ -19,7 +19,7 @@ const blinkBackground = css`
   animation: blink-background 0.3s ease-in-out 1;
 `;
 
-const inputVariant: Record<InputVariantProps, SerializedStyles> = {
+const inputVariant: Record<InputVariantType, SerializedStyles> = {
   primary: css`
     border-color: ${theme.colors.purple[400]};
 
@@ -45,7 +45,7 @@ const inputVariant: Record<InputVariantProps, SerializedStyles> = {
   `,
 };
 
-export const InputStyle = ({ variant, icon }: InputStyleProps) => css`
+const InputStyle = ({ variant, icon }: InputStyleProps) => css`
   width: 100%;
   height: 3.5rem;
   padding: 0.4rem 0.8rem;
@@ -73,13 +73,13 @@ export const InputStyle = ({ variant, icon }: InputStyleProps) => css`
   ${variant && inputVariant[variant]};
 `;
 
-export const InputLabelStyle = css`
+const InputLabelStyle = css`
   font-size: ${theme.font.size.label};
   font-weight: ${theme.font.weight.medium};
   color: ${theme.colors.black};
 `;
 
-export const InputIconStyle = css`
+const InputIconStyle = css`
   pointer-events: none;
 
   position: absolute;
@@ -91,7 +91,9 @@ export const InputIconStyle = css`
   height: 1.4rem;
 `;
 
-export const InputContainerStyle = css`
+const InputContainerStyle = css`
   position: relative;
   width: 100%;
 `;
+
+export { InputStyle, InputLabelStyle, InputIconStyle, InputContainerStyle };

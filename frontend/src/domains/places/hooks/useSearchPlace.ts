@@ -1,24 +1,18 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { useToastContext } from '@/@common/contexts/useToastContext';
-
-import searchPlace from '../apis/searchPlace';
-import { PlaceSearchType } from '../types/place.types';
+import { usePlaceSearchQuery } from '@/domains/places/queries/usePlaceQuery';
 
 const useSearchPlace = () => {
   const [keyword, setKeyword] = useState('');
-  const [searchResults, setSearchResults] = useState<PlaceSearchType[] | null>(
-    null,
-  );
+  const [searchedKeyword, setSearchedKeyword] = useState('');
+
+  const { data: searchResults, error } = usePlaceSearchQuery(searchedKeyword);
+
   const { showToast } = useToastContext();
 
-  const handleSearch = async () => {
-    if (!keyword) return setSearchResults([]);
-
-    try {
-      const searchedPlaces = await searchPlace(keyword);
-      setSearchResults(searchedPlaces);
-    } catch (error) {
+  useEffect(() => {
+    if (error) {
       console.error(error);
       if (error instanceof Error) {
         showToast({
@@ -27,16 +21,20 @@ const useSearchPlace = () => {
         });
       }
     }
+  }, [error]);
+
+  const handleSearch = async () => {
+    if (!keyword.trim()) return;
+
+    setSearchedKeyword(keyword);
   };
 
   const handleChangeKeyword = (keyword: string) => {
     setKeyword(keyword);
-    setSearchResults(null);
   };
 
   const handleReset = () => {
     setKeyword('');
-    setSearchResults(null);
   };
 
   const handleEnterSearch = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -51,10 +49,10 @@ const useSearchPlace = () => {
     handleChangeKeyword,
     handleEnterSearch,
     searchResults,
-    setSearchResults,
     handleSearch,
     handleReset,
+    searchedKeyword,
   };
 };
 
-export default useSearchPlace;
+export { useSearchPlace };
