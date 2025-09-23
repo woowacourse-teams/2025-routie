@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import routie.business.word.domain.Word;
 import routie.business.word.domain.WordRepository;
 import routie.business.word.domain.WordType;
-import routie.global.exception.BusinessException;
+import routie.global.exception.domain.BusinessException;
 import routie.global.exception.domain.ErrorCode;
 
 @SpringBootTest
