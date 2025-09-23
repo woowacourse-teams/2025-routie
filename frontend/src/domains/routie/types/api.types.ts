@@ -1,13 +1,42 @@
-import type { validationErrorCodeType } from './routie.types';
+interface ApiRoutiePlacesBaseType {
+  sequence: number;
+  placeId: number;
+}
 
-export type ValidationResultApiResponse = {
-  validationCode: validationErrorCodeType;
-  isValid: boolean;
-  invalidRoutiePlaces: {
-    routiePlaceId: number;
-  }[];
-};
+interface ApiRoutiePlaceType extends ApiRoutiePlacesBaseType {
+  id: number;
+}
 
-export type ValidationApiResponse = {
-  validationResultResponses: ValidationResultApiResponse[];
+interface ApiRouteDataType {
+  fromSequence: number;
+  toSequence: number;
+  duration: number;
+  distance: number;
+}
+
+interface FetchRoutieResponseType {
+  routiePlaces: ApiRoutiePlaceType[];
+  routes: ApiRouteDataType[];
+}
+
+interface EditRoutieRequestType {
+  routiePlaces: ApiRoutiePlacesBaseType[];
+}
+
+interface AddRoutiePlaceRequestType {
+  placeId: number;
+}
+
+type AddRoutiePlaceResponseType = ApiRoutiePlaceType;
+
+interface DeleteRoutiePlaceRequestType {
+  placeId: number;
+}
+
+export type {
+  FetchRoutieResponseType,
+  EditRoutieRequestType,
+  AddRoutiePlaceRequestType,
+  AddRoutiePlaceResponseType,
+  DeleteRoutiePlaceRequestType,
 };

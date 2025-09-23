@@ -1,5 +1,6 @@
 import { TextStyle } from './Text.style';
-import { TextProps } from './Text.types';
+
+import type { TextProps } from './Text.types';
 
 const Text = ({ children, ...props }: TextProps) => {
   return (

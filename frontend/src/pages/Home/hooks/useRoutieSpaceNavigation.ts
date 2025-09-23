@@ -2,34 +2,20 @@ import { useCallback } from 'react';
 import { useNavigate } from 'react-router';
 
 import { useToastContext } from '@/@common/contexts/useToastContext';
-import { createRoutieSpace } from '@/domains/routieSpace/apis/createRoutieSpace';
+import { useCreateRoutieSpaceQuery } from '@/domains/routieSpace/queries/useRoutieSpaceQuery';
 
-export const useRoutieSpaceNavigation = () => {
+const useRoutieSpaceNavigation = () => {
+  const { mutateAsync: createRoutieSpace } = useCreateRoutieSpaceQuery();
   const navigate = useNavigate();
   const { showToast } = useToastContext();
 
   const handleCreateRoutieSpace = useCallback(async () => {
-    try {
-      const newUuid = await createRoutieSpace();
-      const queryParams = new URLSearchParams({
-        routieSpaceIdentifier: newUuid,
-      });
+    const response = await createRoutieSpace();
+    const queryParams = new URLSearchParams({
+      routieSpaceIdentifier: response.routieSpaceUuid,
+    });
 
-      navigate(`/routie-spaces?${queryParams.toString()}`);
-
-      showToast({
-        message: '새 루티 스페이스가 생성되었습니다',
-        type: 'success',
-      });
-    } catch (error) {
-      console.error(error);
-      if (error instanceof Error) {
-        showToast({
-          message: error.message,
-          type: 'error',
-        });
-      }
-    }
+    navigate(`/routie-spaces?${queryParams.toString()}`);
   }, [navigate]);
 
   const handleReturnToRoutieSpace = useCallback(() => {
@@ -48,3 +34,5 @@ export const useRoutieSpaceNavigation = () => {
     handleReturnToRoutieSpace,
   };
 };
+
+export { useRoutieSpaceNavigation };

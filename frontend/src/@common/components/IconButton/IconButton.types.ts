@@ -1,15 +1,14 @@
 import { ComponentProps } from 'react';
 
-export interface IconButtonProps extends ComponentProps<'button'> {
-  variant?: IconButtonVariantProps;
-  icon: string;
+import type { IconNameType } from '@/@common/components/IconSvg/Icon.types';
+interface IconButtonProps extends ComponentProps<'button'> {
+  variant?: IconButtonVariantType;
+  icon: IconNameType;
   onClick?: () => void;
 }
 
-export type IconButtonVariantProps =
-  | 'delete'
-  | 'select'
-  | 'selected'
-  | 'disable';
+type IconButtonVariantType = 'delete' | 'select' | 'selected' | 'disable';
 
-export type IconButtonStyleProps = Pick<IconButtonProps, 'variant'>;
+type IconButtonStyleProps = Pick<IconButtonProps, 'variant'>;
+
+export type { IconButtonProps, IconButtonVariantType, IconButtonStyleProps };

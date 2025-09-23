@@ -1,23 +1,47 @@
-import { useRoutieContext } from '../../contexts/useRoutieContext';
-import { useCardDrag } from '../../hooks/useCardDrag';
-import RoutieRoutes from '../Route/RoutieRoutes';
-import RoutiePlaceCard from '../RoutiePlaceCard/RoutiePlaceCard';
+import { useCallback } from 'react';
+
+import Flex from '@/@common/components/Flex/Flex';
+import { useCardDrag } from '@/@common/hooks/useCardDrag';
+import { usePlaceList } from '@/domains/places/hooks/usePlaceList';
+import RoutiePlaceCard from '@/domains/routie/components/RoutiePlaceCard/RoutiePlaceCard';
+import { useRoutieList } from '@/domains/routie/hooks/useRoutieList';
 
 const RoutieSection = () => {
-  const { routiePlaces, routes, handleChangeRoutie } = useRoutieContext();
+  const { routiePlaces, handleChangeRoutie, handleDeleteRoutie } =
+    useRoutieList();
+  const { placeList } = usePlaceList();
   const getDragProps = useCardDrag(routiePlaces, handleChangeRoutie);
 
-  return routiePlaces.map((routie, index) => (
-    <div key={routie.placeId} style={{ width: '100%' }}>
-      <div {...getDragProps(index)} style={{ width: '100%' }}>
-        <RoutiePlaceCard routie={routie} />
-      </div>
+  const handleDeleteRoutieClick = useCallback(
+    (placeId: number) => {
+      handleDeleteRoutie(placeId);
+    },
+    [handleDeleteRoutie],
+  );
 
-      {routiePlaces.length - 1 !== index && routes[index] && (
-        <RoutieRoutes routieId={routie.id} routes={routes[index]} />
-      )}
-    </div>
-  ));
+  return (
+    <Flex direction="column" gap={2}>
+      {routiePlaces.map((routiePlace, index) => {
+        const place = placeList?.find(
+          (place) => place.id === routiePlace.placeId,
+        );
+        if (!place) return null;
+        return (
+          <div
+            key={routiePlace.placeId}
+            {...getDragProps(index)}
+            css={{ width: '100%' }}
+          >
+            <RoutiePlaceCard
+              routie={routiePlace}
+              place={place!}
+              onDelete={handleDeleteRoutieClick}
+            />
+          </div>
+        );
+      })}
+    </Flex>
+  );
 };
 
 export default RoutieSection;

@@ -1,5 +1,6 @@
-import FlexStyle from './Flex.style';
-import FlexProps from './Flex.types';
+import { FlexStyle } from './Flex.style';
+
+import type { FlexProps } from './Flex.types';
 
 const Flex = ({ children, ...props }: FlexProps) => {
   return (

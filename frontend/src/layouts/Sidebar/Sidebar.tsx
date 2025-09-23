@@ -2,8 +2,8 @@ import Flex from '@/@common/components/Flex/Flex';
 import Header from '@/@common/components/Header/Header';
 import RoutieSpaceName from '@/domains/routieSpace/components/RoutieSpaceName/RoutieSpaceName';
 
+import ShareLinkButtonSection from './ShareLinkButtonSection';
 import { SidebarContainerStyle } from './Sidebar.styles';
-import SidebarWhenHowSection from './SidebarWhenHowSection';
 import SidebarWhereSection from './SidebarWhereSection';
 
 const Sidebar = () => {
@@ -19,7 +19,7 @@ const Sidebar = () => {
       <Header isHome={false}>
         <RoutieSpaceName />
       </Header>
-      <SidebarWhenHowSection />
+      <ShareLinkButtonSection />
       <SidebarWhereSection />
     </Flex>
   );

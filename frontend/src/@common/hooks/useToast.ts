@@ -1,13 +1,16 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
-import { ShowToastPayload, ToastInfoType } from '../types/toast.type';
+import type {
+  ShowToastPayloadProps,
+  ToastInfoProps,
+} from '../components/Toast/Toast.types';
 
 const DEFAULT_DURATION_MS = 3000;
 const MAX_TOASTS = 5;
 const EXIT_ANIMATION_DURATION = 350;
 
 const useToast = () => {
-  const [toast, setToast] = useState<ToastInfoType[]>([]);
+  const [toast, setToast] = useState<ToastInfoProps[]>([]);
   const timersRef = useRef<Map<string, number>>(new Map());
 
   const scheduleRemoval = useCallback((id: string, duration: number) => {
@@ -33,10 +36,10 @@ const useToast = () => {
   }, []);
 
   const showToast = useCallback(
-    (payload: ShowToastPayload) => {
+    (payload: ShowToastPayloadProps) => {
       const id = `${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
       const duration = payload.duration ?? DEFAULT_DURATION_MS;
-      const next: ToastInfoType = {
+      const next: ToastInfoProps = {
         id,
         message: payload.message,
         type: payload.type,
@@ -77,4 +80,4 @@ const useToast = () => {
   return { toast, showToast };
 };
 
-export default useToast;
+export { useToast };
