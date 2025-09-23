@@ -1,11 +1,12 @@
+import type { IconNameType } from '@/@common/components/IconSvg/Icon.types';
+
 interface InfoCardProps {
   circleColor: string;
-  iconSrc: string;
-  iconAlt: string;
+  iconName: IconNameType;
+  iconAlt?: string;
   title: string;
   descriptions: string[];
   size?: string;
-  iconSize?: string;
   textColor?: string;
 }
 

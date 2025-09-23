@@ -1,12 +1,8 @@
 import Button from '@/@common/components/Button/Button';
 import Flex from '@/@common/components/Flex/Flex';
 import Header from '@/@common/components/Header/Header';
+import Icon from '@/@common/components/IconSvg/Icon';
 import Text from '@/@common/components/Text/Text';
-import arrowWhite from '@/assets/icons/arrow-white.svg';
-import check from '@/assets/icons/check-home.svg';
-import clock from '@/assets/icons/clock-home.svg';
-import collectPlace from '@/assets/icons/place-home.svg';
-import reload from '@/assets/icons/reload.svg';
 import theme from '@/styles/theme';
 
 import {
@@ -47,7 +43,7 @@ const Home = () => {
           <Flex gap={5} css={InfoCardsWrapperStyle}>
             <InfoCard
               circleColor={theme.home.pink}
-              iconSrc={collectPlace}
+              iconName="collectPlace"
               iconAlt="장소 수집 아이콘"
               title="가고 싶은 곳 모으기"
               textColor={theme.home.text}
@@ -59,7 +55,7 @@ const Home = () => {
 
             <InfoCard
               circleColor={theme.home.orange}
-              iconSrc={check}
+              iconName="checkHome"
               iconAlt="체크 아이콘"
               title="가능한 동선인지 즉시 확인"
               textColor={theme.home.text}
@@ -71,7 +67,7 @@ const Home = () => {
 
             <InfoCard
               circleColor={theme.home.yellow}
-              iconSrc={clock}
+              iconName="clockHome"
               iconAlt="시계 아이콘"
               title="이동시간, 거리까지 딱!"
               textColor={theme.home.text}
@@ -84,7 +80,7 @@ const Home = () => {
           <Flex gap={8} width="70%" css={ButtonWrapperStyle}>
             <Button onClick={handleCreateRoutieSpace} css={CreateButtonStyle}>
               <Flex gap={1.5} padding={1}>
-                <img src={arrowWhite} width={'30rem'} />
+                <Icon name="arrowWhite" size={30} />
                 <Text variant="title" color="white">
                   동선 만들러가기
                 </Text>
@@ -96,7 +92,7 @@ const Home = () => {
                 css={ContinueButtonStyle}
               >
                 <Flex gap={1.5} padding={1}>
-                  <img src={reload} width={'25rem'} />
+                  <Icon name="reload" size={25} />
                   <Text variant="title" color={theme.home.violet}>
                     이어서 만들기
                   </Text>

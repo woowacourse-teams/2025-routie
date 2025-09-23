@@ -5,6 +5,7 @@ type IconNameType = keyof typeof allIcons;
 interface IconProps {
   name: IconNameType;
   size?: number;
+  alt?: string;
   color?: string;
   onClick?: () => void;
   className?: string;
@@ -12,4 +13,4 @@ interface IconProps {
 
 type IconStyleProps = Pick<IconProps, 'onClick' | 'size'>;
 
-export type { IconProps, IconStyleProps };
+export type { IconNameType, IconProps, IconStyleProps };
