@@ -3,6 +3,7 @@ import Flex from '@/@common/components/Flex/Flex';
 import Header from '@/@common/components/Header/Header';
 import Icon from '@/@common/components/IconSvg/Icon';
 import Text from '@/@common/components/Text/Text';
+import LoginButton from '@/domains/auth/components/LoginButton/LoginButton';
 import theme from '@/styles/theme';
 
 import {
@@ -77,7 +78,7 @@ const Home = () => {
               ]}
             />
           </Flex>
-          <Flex gap={8} width="70%" css={ButtonWrapperStyle}>
+          <Flex gap={8} width="80%" css={ButtonWrapperStyle}>
             <Button onClick={handleCreateRoutieSpace} css={CreateButtonStyle}>
               <Flex gap={1.5} padding={1}>
                 <Icon name="arrowWhite" size={30} />
@@ -99,6 +100,7 @@ const Home = () => {
                 </Flex>
               </Button>
             )}
+            <LoginButton onClick={() => alert('로그인 버튼 클릭됨!')} />
           </Flex>
         </Flex>
       </Flex>
