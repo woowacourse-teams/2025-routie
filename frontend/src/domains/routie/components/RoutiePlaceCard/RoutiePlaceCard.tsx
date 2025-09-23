@@ -5,7 +5,6 @@ import IconButton from '@/@common/components/IconButton/IconButton';
 import Icon from '@/@common/components/IconSvg/Icon';
 import Text from '@/@common/components/Text/Text';
 import { useToastOnError } from '@/@common/hooks/useToastOnError';
-import closeRed from '@/assets/icons/close-red.svg';
 import { usePlaceDetailQuery } from '@/domains/places/queries/usePlaceQuery';
 import { useRoutieList } from '@/domains/routie/hooks/useRoutieList';
 import type { RoutieType } from '@/domains/routie/types/routie.types';
@@ -51,7 +50,7 @@ const RoutiePlaceCard = ({ routie }: { routie: RoutieType }) => {
             </Flex>
             <Flex direction="column" gap={3} width="auto">
               <IconButton
-                icon={closeRed}
+                icon="closeRed"
                 variant="delete"
                 onClick={() => handleDeleteRoutie(routie.placeId)}
               />
