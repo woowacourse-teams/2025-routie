@@ -10,6 +10,7 @@ import reload from '@/assets/icons/reload.svg';
 import theme from '@/styles/theme';
 
 import {
+  ButtonWrapperStyle,
   ContinueButtonStyle,
   CreateButtonStyle,
   HomepageStyle,
@@ -43,12 +44,7 @@ const Home = () => {
             루티가 당신의 동선을 <span css={VioletTextStyle}>체크</span>
             해드릴게요!
           </Text>
-          <Flex
-            justifyContent="space-around"
-            maxWidth="50%"
-            gap={5}
-            css={InfoCardsWrapperStyle}
-          >
+          <Flex gap={5} css={InfoCardsWrapperStyle}>
             <InfoCard
               circleColor={theme.home.pink}
               iconSrc={collectPlace}
@@ -85,7 +81,7 @@ const Home = () => {
               ]}
             />
           </Flex>
-          <Flex gap={8} width="70%">
+          <Flex gap={8} width="70%" css={ButtonWrapperStyle}>
             <Button onClick={handleCreateRoutieSpace} css={CreateButtonStyle}>
               <Flex gap={1.5} padding={1}>
                 <img src={arrowWhite} width={'30rem'} />
