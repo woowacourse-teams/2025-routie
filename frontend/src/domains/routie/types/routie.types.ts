@@ -4,7 +4,6 @@ interface RoutesType {
 }
 
 interface RoutieType {
-  id: number;
   sequence: number;
   placeId: number;
 }

@@ -5,7 +5,6 @@ const routieAdapter = (data: FetchRoutieResponseType): RoutieAdapterType => {
   return {
     routiePlaces: data.routiePlaces.map((routie) => {
       return {
-        id: routie.id,
         sequence: routie.sequence,
         placeId: routie.placeId,
       };
