@@ -20,7 +20,7 @@ const useRoutePlacesWithDetails = () => {
         return {
           ...placeDetail,
           sequence: routiePlace.sequence,
-          routieId: routiePlace.id,
+          routieId: routiePlace.placeId,
         };
       })
       .sort((a, b) => a.sequence - b.sequence);
