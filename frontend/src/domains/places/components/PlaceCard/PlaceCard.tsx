@@ -1,22 +1,23 @@
+import { memo } from 'react';
+
 import { css } from '@emotion/react';
 
 import Card from '@/@common/components/Card/Card';
 import Flex from '@/@common/components/Flex/Flex';
 import Icon from '@/@common/components/IconSvg/Icon';
 import Text from '@/@common/components/Text/Text';
-import { usePlaceList } from '@/domains/places/hooks/usePlaceList';
-import { useRoutieList } from '@/domains/routie/hooks/useRoutieList';
 import theme from '@/styles/theme';
 
 import type { PlaceCardProps } from './PlaceCard.types';
 
-const PlaceCard = ({ selected, ...props }: PlaceCardProps) => {
-  const { handleAddRoutie } = useRoutieList();
-  const { handleDeletePlace } = usePlaceList();
-
+const PlaceCard = ({
+  selected,
+  onSelect,
+  onDelete,
+  ...props
+}: PlaceCardProps) => {
   const handlePlaceSelect = async () => {
-    if (selected) return;
-    await handleAddRoutie(props.id);
+    await onSelect(props.id, selected);
   };
 
   return (
@@ -55,7 +56,7 @@ const PlaceCard = ({ selected, ...props }: PlaceCardProps) => {
 
           <Icon
             name={selected ? 'disableTrash' : 'trash'}
-            onClick={selected ? undefined : () => handleDeletePlace(props.id)}
+            onClick={selected ? undefined : () => onDelete(props.id)}
             size={30}
             css={css`
               cursor: ${selected ? 'default' : 'pointer'};
@@ -75,4 +76,4 @@ const PlaceCard = ({ selected, ...props }: PlaceCardProps) => {
   );
 };
 
-export default PlaceCard;
+export default memo(PlaceCard);

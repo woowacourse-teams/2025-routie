@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useMemo } from 'react';
 
 import { useToastContext } from '@/@common/contexts/useToastContext';
 import { useAsyncLock } from '@/@common/hooks/useAsyncLock';
@@ -21,8 +21,9 @@ const useRoutieList = () => {
   const { runWithLock: runChangeWithLock } = useAsyncLock();
   const { showToast } = useToastContext();
   const { triggerEvent } = useGoogleEventTrigger();
-  const routieIdList = routie.routiePlaces.map(
-    (routiePlace) => routiePlace.placeId,
+  const routieIdList = useMemo(
+    () => routie.routiePlaces.map((routiePlace) => routiePlace.placeId),
+    [routie.routiePlaces],
   );
 
   const handleAddRoutie = useCallback(
