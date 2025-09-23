@@ -9,7 +9,7 @@ interface InputProps
   value: string;
   onChange: (value: string) => void;
   variant?: InputVariantType;
-  icon?: 'search' | 'clock';
+  icon?: 'search';
   error?: boolean;
 }
 

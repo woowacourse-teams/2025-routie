@@ -1,5 +1,4 @@
 import Text from '@/@common/components/Text/Text';
-import clockIcon from '@/assets/icons/clock.svg';
 import searchIcon from '@/assets/icons/search.svg';
 
 import {
@@ -23,7 +22,7 @@ const Input = ({
   ...props
 }: InputProps) => {
   const iconSrc =
-    icon === 'search' ? searchIcon : icon === 'clock' ? clockIcon : null;
+    icon === 'search' ? searchIcon : null;
 
   return (
     <>
