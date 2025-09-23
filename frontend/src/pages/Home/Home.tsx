@@ -3,7 +3,7 @@ import Flex from '@/@common/components/Flex/Flex';
 import Header from '@/@common/components/Header/Header';
 import Icon from '@/@common/components/IconSvg/Icon';
 import Text from '@/@common/components/Text/Text';
-import LoginButton from '@/domains/auth/components/LoginButton/LoginButton';
+import LoginButton from '@/domains/auth/components/GoToLoginButton/GoToLoginButton';
 import theme from '@/styles/theme';
 
 import {
