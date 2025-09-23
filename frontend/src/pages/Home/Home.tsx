@@ -4,6 +4,7 @@ import Header from '@/@common/components/Header/Header';
 import Icon from '@/@common/components/IconSvg/Icon';
 import Text from '@/@common/components/Text/Text';
 import LoginButton from '@/domains/auth/components/GoToLoginButton/GoToLoginButton';
+import ProfileButton from '@/domains/auth/components/ProfileButton/ProfileButton';
 import theme from '@/styles/theme';
 
 import {
@@ -27,6 +28,14 @@ const Home = () => {
   return (
     <>
       <Header />
+      <ProfileButton
+        text="로그인"
+        onClick={() => alert('사용자 로그인 버튼 클릭됨!')}
+      />
+      <ProfileButton
+        text="로그아웃"
+        onClick={() => alert('사용자 로그아웃 버튼 클릭됨!')}
+      />
       <Flex
         direction="column"
         height="calc(100dvh - 7.1rem)"
