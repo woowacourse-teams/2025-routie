@@ -31,7 +31,7 @@ public class WordControllerV1 {
     @GetMapping("/nickname")
     public ResponseEntity<NicknameResponse> getNickname() {
         final String nickname = wordService.getNickname();
-        final NicknameResponse response = NicknameResponse.from(nickname);
+        final NicknameResponse response = new NicknameResponse(nickname);
         return ResponseEntity.ok(response);
     }
 
