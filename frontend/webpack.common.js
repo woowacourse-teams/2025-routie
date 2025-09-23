@@ -1,6 +1,7 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { DefinePlugin } = require('webpack');
+const ImageMinimizerPlugin = require('image-minimizer-webpack-plugin');
 
 const buildDate = new Date().toISOString();
 
@@ -45,6 +46,18 @@ module.exports = () => {
       new DefinePlugin({
         __BUILD_VERSION__: JSON.stringify(require('./package.json').version),
         __BUILD_DATE__: JSON.stringify(buildDate),
+      }),
+      new ImageMinimizerPlugin({
+        minimizer: {
+          implementation: ImageMinimizerPlugin.sharpMinify,
+          options: {
+            encodeOptions: {
+              png: {
+                quality: 80,
+              },
+            },
+          },
+        },
       }),
     ],
     optimization: {

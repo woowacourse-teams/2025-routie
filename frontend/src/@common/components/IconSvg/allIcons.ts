@@ -10,7 +10,7 @@ import edit from '@/assets/icons/edit.svg';
 import fail from '@/assets/icons/fail.svg';
 import info from '@/assets/icons/info.svg';
 import loading from '@/assets/icons/loading.svg';
-import logo from '@/assets/icons/logo.svg';
+import logo from '@/assets/icons/logo.png';
 import minus from '@/assets/icons/minus.svg';
 import pin from '@/assets/icons/pin.svg';
 import plus from '@/assets/icons/plus.svg';

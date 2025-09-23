@@ -1,7 +1,6 @@
 import { useNavigate } from 'react-router';
 
 import Flex from '@/@common/components/Flex/Flex';
-import logoIcon from '@/assets/icons/logo.svg';
 
 import HomeButton from '../HomeButton/HomeButton';
 
@@ -16,7 +15,6 @@ const Header = ({ children, isHome }: HeaderProps) => {
     <div css={HeaderStyle}>
       <Flex gap={1} height="100%" justifyContent="space-between" padding={1}>
         <HomeButton
-          icon={logoIcon}
           onClick={() => navigate('/')}
           css={HomeButtonStyle}
           isHome={isHome}
