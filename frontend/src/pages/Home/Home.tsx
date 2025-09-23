@@ -43,12 +43,7 @@ const Home = () => {
             루티가 당신의 동선을 <span css={VioletTextStyle}>체크</span>
             해드릴게요!
           </Text>
-          <Flex
-            justifyContent="space-around"
-            maxWidth="50%"
-            gap={5}
-            css={InfoCardsWrapperStyle}
-          >
+          <Flex gap={5} css={InfoCardsWrapperStyle}>
             <InfoCard
               circleColor={theme.home.pink}
               iconSrc={collectPlace}
