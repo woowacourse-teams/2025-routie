@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 
 import Button from '@/@common/components/Button/Button';
 import EmptyMessage from '@/@common/components/EmptyMessage/EmptyMessage';
@@ -27,8 +27,8 @@ import {
 import type { SideSheetProps } from './SideSheet.types';
 
 const SideSheet = ({ open, onToggle }: SideSheetProps) => {
-  const { placeList } = usePlaceList();
-  const { routieIdList } = useRoutieList();
+  const { placeList, handleDeletePlace } = usePlaceList();
+  const { routieIdList, handleAddRoutie } = useRoutieList();
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const { triggerEvent } = useGoogleEventTrigger();
 
@@ -44,6 +44,21 @@ const SideSheet = ({ open, onToggle }: SideSheetProps) => {
   const handleCloseAddModalClick = () => {
     setIsAddModalOpen(false);
   };
+
+  const handlePlaceSelect = useCallback(
+    async (placeId: number, selected: boolean) => {
+      if (selected) return;
+      await handleAddRoutie(placeId);
+    },
+    [handleAddRoutie],
+  );
+
+  const handlePlaceDelete = useCallback(
+    async (placeId: number) => {
+      await handleDeletePlace(placeId);
+    },
+    [handleDeletePlace],
+  );
 
   return (
     <aside
@@ -103,7 +118,13 @@ const SideSheet = ({ open, onToggle }: SideSheetProps) => {
               {placeList?.map((place) => {
                 const selected = routieIdList.includes(place.id);
                 return (
-                  <PlaceCard {...place} key={place.id} selected={selected} />
+                  <PlaceCard
+                    {...place}
+                    key={place.id}
+                    selected={selected}
+                    onSelect={handlePlaceSelect}
+                    onDelete={handlePlaceDelete}
+                  />
                 );
               })}
             </Flex>
