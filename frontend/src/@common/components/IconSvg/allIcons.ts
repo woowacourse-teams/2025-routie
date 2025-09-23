@@ -1,18 +1,29 @@
+import arrowWhite from '@/assets/icons/arrow-white.svg';
+import checkHome from '@/assets/icons/check-home.svg';
 import check from '@/assets/icons/check.svg';
+import clockHome from '@/assets/icons/clock-home.svg';
 import closeRed from '@/assets/icons/close-red.svg';
 import close from '@/assets/icons/close.svg';
+import closeSheetIcon from '@/assets/icons/closeSheet.svg';
 import copy from '@/assets/icons/copy.svg';
 import drag from '@/assets/icons/drag.svg';
 import logo from '@/assets/icons/logo.png';
 import pin from '@/assets/icons/pin.svg';
+import collectPlace from '@/assets/icons/place-home.svg';
 import plus from '@/assets/icons/plus.svg';
+import reload from '@/assets/icons/reload.svg';
 import search from '@/assets/icons/search.svg';
 import disableTrash from '@/assets/icons/trash-disable.svg';
 import trash from '@/assets/icons/trash.svg';
 
 const allIcons = {
+  arrowWhite,
   check,
+  checkHome,
+  clockHome,
   close,
+  closeSheetIcon,
+  collectPlace,
   copy,
   drag,
   logo,
@@ -22,6 +33,7 @@ const allIcons = {
   trash,
   closeRed,
   disableTrash,
+  reload,
 } as const;
 
 export default allIcons;

@@ -1,5 +1,7 @@
 import { ComponentProps } from 'react';
 
+import type { IconNameType } from '@/@common/components/IconSvg/Icon.types';
+
 interface InputProps
   extends Omit<ComponentProps<'input'>, 'onChange' | 'value'> {
   id: string;
@@ -9,7 +11,7 @@ interface InputProps
   value: string;
   onChange: (value: string) => void;
   variant?: InputVariantType;
-  icon?: 'search';
+  icon?: IconNameType;
   error?: boolean;
 }
 

@@ -3,8 +3,8 @@ import { useState } from 'react';
 import Button from '@/@common/components/Button/Button';
 import EmptyMessage from '@/@common/components/EmptyMessage/EmptyMessage';
 import Flex from '@/@common/components/Flex/Flex';
+import Icon from '@/@common/components/IconSvg/Icon';
 import Text from '@/@common/components/Text/Text';
-import CloseSheetIcon from '@/assets/icons/closeSheet.svg';
 import AddPlaceModal from '@/domains/places/components/AddPlaceModal/AddPlaceModal';
 import PlaceCard from '@/domains/places/components/PlaceCard/PlaceCard';
 import { usePlaceList } from '@/domains/places/hooks/usePlaceList';
@@ -55,10 +55,10 @@ const SideSheet = ({ open, onToggle }: SideSheetProps) => {
         aria-label={open ? '사이드 시트 접기' : '사이드 시트 펼치기'}
         onClick={onToggle}
       >
-        <img
-          css={[IconBaseStyle, !open && IconFlippedStyle]}
-          src={CloseSheetIcon}
+        <Icon
+          name="closeSheetIcon"
           alt={open ? '사이드 시트 닫기 버튼' : '사이드 시트 열기 버튼'}
+          css={[IconBaseStyle, !open && IconFlippedStyle]}
         />
       </button>
       <Flex
