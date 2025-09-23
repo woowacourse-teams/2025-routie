@@ -3,6 +3,8 @@ import { createPortal } from 'react-dom';
 
 import Flex from '@/@common/components/Flex/Flex';
 import Text from '@/@common/components/Text/Text';
+import Profile from '@/domains/auth/components/Profile/Profile';
+import UserInfoCard from '@/domains/auth/components/UserInfoCard/UserInfoCard';
 import PlaceOverlayCard from '@/domains/maps/components/PlaceOverlayCard/PlaceOverlayCard';
 import { useClickedPlace } from '@/domains/maps/hooks/useClickedPlace';
 import { useCustomOverlay } from '@/domains/maps/hooks/useCustomOverlay';
@@ -14,11 +16,14 @@ import {
   KakaoMapErrorStyle,
   KakaoMapLoadingStyle,
   KakaoMapWrapperStyle,
+  kakaoMapProfileStyle,
+  kakaoMapUserInfoStyle,
 } from './KakaoMap.styles';
 
 const KakaoMap = () => {
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const [isInitialLoad, setIsInitialLoad] = useState(true);
+  const [isUserInfoOpen, setIsUserInfoOpen] = useState(false);
 
   const { mapRef, finalMapState, finalError } = useMapState({
     containerRef: mapContainerRef,
@@ -70,7 +75,17 @@ const KakaoMap = () => {
         aria-label="카카오 지도"
         tabIndex={0}
       />
-
+      <div css={kakaoMapProfileStyle}>
+        <Profile onClick={() => setIsUserInfoOpen((prev) => !prev)} />
+      </div>
+      {isUserInfoOpen && (
+        <div css={kakaoMapUserInfoStyle}>
+          <UserInfoCard
+            userName="랜덤한 사자"
+            onClick={() => alert('로그아웃 버튼 클릭됨!')}
+          />
+        </div>
+      )}
       {finalMapState === 'loading' && (
         <Flex
           css={KakaoMapLoadingStyle}
@@ -86,14 +101,12 @@ const KakaoMap = () => {
           </Text>
         </Flex>
       )}
-
       {finalMapState === 'error' && (
         <Flex css={KakaoMapErrorStyle} direction="column" gap={0.8}>
           <Text variant="caption">⚠️</Text>
           <Text variant="caption">{finalError}</Text>
         </Flex>
       )}
-
       {containerEl &&
         clickedPlace &&
         createPortal(
