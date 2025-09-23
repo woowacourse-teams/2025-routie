@@ -56,7 +56,7 @@ const SideSheet = ({ open, onToggle }: SideSheetProps) => {
         onClick={onToggle}
       >
         <Icon
-          name="CloseSheetIcon"
+          name="closeSheetIcon"
           alt={open ? '사이드 시트 닫기 버튼' : '사이드 시트 열기 버튼'}
           css={[IconBaseStyle, !open && IconFlippedStyle]}
         />
