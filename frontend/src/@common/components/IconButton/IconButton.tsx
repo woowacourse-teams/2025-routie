@@ -1,4 +1,4 @@
-import Icon from '../IconSvg/Icon';
+import Icon from '@/@common/components/IconSvg/Icon';
 
 import { IconButtonStyle } from './IconButton.style';
 

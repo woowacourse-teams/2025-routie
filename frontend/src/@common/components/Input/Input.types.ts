@@ -1,6 +1,6 @@
 import { ComponentProps } from 'react';
 
-import type { IconNameType } from '../IconSvg/Icon.types';
+import type { IconNameType } from '@/@common/components/IconSvg/Icon.types';
 
 interface InputProps
   extends Omit<ComponentProps<'input'>, 'onChange' | 'value'> {

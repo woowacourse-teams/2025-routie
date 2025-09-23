@@ -1,6 +1,5 @@
+import Icon from '@/@common/components/IconSvg/Icon';
 import Text from '@/@common/components/Text/Text';
-
-import Icon from '../IconSvg/Icon';
 
 import {
   InputStyle,
