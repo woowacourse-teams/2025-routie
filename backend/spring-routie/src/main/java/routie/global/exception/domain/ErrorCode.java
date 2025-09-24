@@ -342,7 +342,7 @@ public enum ErrorCode {
             HttpStatus.BAD_REQUEST
     ),
     USER_OAUTH_PROVIDER_EMPTY(
-            "4002",
+            "4003",
             "사용자 인증 제공자는 비어있을 수 없습니다.",
             HttpStatus.BAD_REQUEST
     ),
