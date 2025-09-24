@@ -3,6 +3,7 @@ import Flex from '@/@common/components/Flex/Flex';
 import Header from '@/@common/components/Header/Header';
 import Icon from '@/@common/components/IconSvg/Icon';
 import Text from '@/@common/components/Text/Text';
+import { useModal } from '@/@common/contexts/ModalContext';
 import GoToLoginButton from '@/domains/auth/components/GoToLoginButton/GoToLoginButton';
 import theme from '@/styles/theme';
 
@@ -22,14 +23,19 @@ import { useRoutieSpaceNavigation } from './hooks/useRoutieSpaceNavigation';
 const Home = () => {
   const { handleCreateRoutieSpace, handleReturnToRoutieSpace } =
     useRoutieSpaceNavigation();
+  const { openModal } = useModal();
   const existingUuid = localStorage.getItem('routieSpaceUuid');
+
+  const handleLoginClick = () => {
+    openModal('login');
+  };
 
   return (
     <>
       <Header>
         <Button
           width="fit-content"
-          onClick={() => alert('사용자 로그인 버튼 클릭됨!')}
+          onClick={handleLoginClick}
         >
           <Text variant="body">로그인</Text>
         </Button>
@@ -107,7 +113,7 @@ const Home = () => {
                 </Flex>
               </Button>
             )}
-            <GoToLoginButton onClick={() => alert('로그인 버튼 클릭됨!')} />
+            <GoToLoginButton onClick={handleLoginClick} />
           </Flex>
         </Flex>
       </Flex>
