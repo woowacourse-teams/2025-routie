@@ -2,7 +2,7 @@ import { css } from '@emotion/react';
 
 import theme from '@/styles/theme';
 
-const ProfileIconStyle = css`
+const UserMenuIconStyle = css`
   cursor: pointer;
 
   padding: 0.4rem;
@@ -12,27 +12,20 @@ const ProfileIconStyle = css`
   box-shadow: 0 4px 8px rgb(0 0 0 / 25%);
 `;
 
-const ProfileButtonWrapperStyle = css`
+const UserMenuButtonWrapperStyle = css`
   position: relative;
   display: inline-block;
 `;
 
-const ProfileButtonAbsoluteStyle = css`
+const UserMenuButtonAbsoluteStyle = css`
   position: absolute;
   z-index: 10;
   top: 16px;
   right: 20px;
 `;
 
-const ProfileButtonStyle = css`
-  cursor: pointer;
-  width: fit-content;
-  background-color: ${theme.colors.white};
-`;
-
 export {
-  ProfileIconStyle,
-  ProfileButtonWrapperStyle,
-  ProfileButtonAbsoluteStyle,
-  ProfileButtonStyle,
+  UserMenuIconStyle,
+  UserMenuButtonWrapperStyle,
+  UserMenuButtonAbsoluteStyle,
 };

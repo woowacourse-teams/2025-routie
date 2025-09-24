@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
 import Flex from '@/@common/components/Flex/Flex';
-import ProfileButton from '@/domains/auth/components/ProfileButton/ProfileButton';
+import UserMenuButton from '@/domains/auth/components/UserMenuButton/UserMenuButton';
 import KakaoMap from '@/domains/maps/components/KakaoMap/KakaoMap';
 
 import SideSheet from '../SideSheet/SideSheet';
@@ -15,7 +15,7 @@ const MapWithSideSheet = () => {
     <Flex>
       <div css={ContainerStyle}>
         <KakaoMap />
-        <ProfileButton userName="바보기린" />
+        <UserMenuButton userName="바보기린" />
         <SideSheet open={open} onToggle={() => setOpen((prev) => !prev)} />
       </div>
     </Flex>

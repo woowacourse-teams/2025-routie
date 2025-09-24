@@ -4,18 +4,18 @@ import Icon from '@/@common/components/IconSvg/Icon';
 import UserMenu from '@/domains/auth/components/UserMenu/UserMenu';
 
 import {
-  ProfileIconStyle,
-  ProfileButtonWrapperStyle,
-  ProfileButtonAbsoluteStyle,
-} from './ProfileButton.styles';
+  UserMenuIconStyle,
+  UserMenuButtonWrapperStyle,
+  UserMenuButtonAbsoluteStyle,
+} from './UserMenuButton.styles';
 
-import type { ProfileButtonProps } from './ProfileButton.types';
+import type { UserMenuButtonProps } from './UserMenuButton.types';
 
-const ProfileButton = ({
+const UserMenuButton = ({
   onClick,
   userName,
   positioning = 'absolute',
-}: ProfileButtonProps) => {
+}: UserMenuButtonProps) => {
   const [isUserInfoOpen, setIsUserInfoOpen] = useState(false);
 
   const handleProfileClick = () => {
@@ -32,15 +32,15 @@ const ProfileButton = ({
 
   const wrapperStyle =
     positioning === 'absolute'
-      ? ProfileButtonAbsoluteStyle
-      : ProfileButtonWrapperStyle;
+      ? UserMenuButtonAbsoluteStyle
+      : UserMenuButtonWrapperStyle;
 
   return (
     <div css={wrapperStyle}>
       <Icon
         name="user"
         size={40}
-        css={ProfileIconStyle}
+        css={UserMenuIconStyle}
         onClick={handleProfileClick}
       />
       {isUserInfoOpen && userName && (
@@ -50,4 +50,4 @@ const ProfileButton = ({
   );
 };
 
-export default ProfileButton;
+export default UserMenuButton;
