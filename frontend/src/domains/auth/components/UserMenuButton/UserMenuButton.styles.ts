@@ -9,7 +9,7 @@ const UserMenuIconStyle = css`
   border-radius: 50%;
 
   background-color: ${theme.colors.white};
-  box-shadow: 0 4px 8px rgb(0 0 0 / 25%);
+  box-shadow: 0 0.4rem 0.8rem rgb(0 0 0 / 25%);
 `;
 
 const UserMenuButtonWrapperStyle = css`
@@ -20,8 +20,8 @@ const UserMenuButtonWrapperStyle = css`
 const UserMenuButtonAbsoluteStyle = css`
   position: absolute;
   z-index: 10;
-  top: 16px;
-  right: 20px;
+  top: 1.6rem;
+  right: 2rem;
 `;
 
 export {
