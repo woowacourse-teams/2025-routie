@@ -7,6 +7,7 @@ import Toast from '@/@common/components/Toast/Toast';
 import ToastProvider from '@/@common/contexts/ToastProvider';
 import { useGoogleAnalytics } from '@/libs/googleAnalytics/hooks/useGoogleAnalytics';
 import Home from '@/pages/Home/Home';
+import Test from '@/pages/Home/Test';
 import VersionInfo from '@/pages/VersionInfo/VersionInfo';
 
 const RoutieSpace = lazy(() => import('@/pages/RoutieSpace/RoutieSpace'));
@@ -33,6 +34,16 @@ const router = createBrowserRouter([
       <LayoutWithAnalytics>
         <Suspense fallback={<div>Loading...</div>}>
           <RoutieSpace />
+        </Suspense>
+      </LayoutWithAnalytics>
+    ),
+  },
+  {
+    path: '/login/test',
+    element: (
+      <LayoutWithAnalytics>
+        <Suspense fallback={<div>Loading...</div>}>
+          <Test />
         </Suspense>
       </LayoutWithAnalytics>
     ),
