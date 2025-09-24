@@ -2,6 +2,7 @@ package routie.business.authentication.infrastructure.external.kakao;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import org.springframework.web.util.UriComponentsBuilder;
 import routie.business.authentication.domain.external.ExternalAuthenticationProcessor;
 import routie.business.authentication.domain.external.ExternalAuthenticationProvider;
 import routie.business.authentication.infrastructure.external.kakao.api.auth.KakaoExternalAuthenticationApiClient;
@@ -15,7 +16,7 @@ public class KakaoExternalAuthenticationProcessor implements ExternalAuthenticat
     private final String redirectUri;
     private final KakaoExternalAuthenticationApiClient kakaoExternalAuthenticationApiClient;
     private final KakaoUserApiClient kakaoUserApiClient;
-    
+
     public KakaoExternalAuthenticationProcessor(
             @Value("${authentication.external.kakao.client-id}") final String clientId,
             @Value("${authentication.external.kakao.redirect-uri}") final String redirectUri,
@@ -30,10 +31,12 @@ public class KakaoExternalAuthenticationProcessor implements ExternalAuthenticat
 
     @Override
     public String getAuthorizationUri() {
-        return "https://kauth.kakao.com/oauth/authorize?"
-                + "response_type=code"
-                + "&client_id=" + clientId
-                + "&redirect_uri=" + redirectUri;
+        return UriComponentsBuilder.fromUriString("https://kauth.kakao.com/oauth/authorize")
+                .queryParam("response_type", "code")
+                .queryParam("client_id", clientId)
+                .queryParam("redirect_uri", redirectUri)
+                .build()
+                .toUriString();
     }
 
     @Override
