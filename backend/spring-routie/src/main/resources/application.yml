@@ -21,7 +21,7 @@ spring:
   flyway:
     enabled: true
     locations: classpath:db/migration
-    
+
 management:
   endpoints:
     web:
@@ -43,3 +43,13 @@ google:
 v-world:
   api:
     key: ${V_WORLD_API_KEY}
+
+
+authentication:
+  jwt:
+    secret: 02ff097348d559b2d5df6cdb91e7fd05f19b1ded7dbefeed1e6209db9a63987a
+    expiration: 604800000 # 7 days
+  external:
+    kakao:
+      client-id: ${KAKAO_AUTH_CLIENT_ID}
+      redirect-uri: ${KAKAO_AUTH_REDIRECT_URI}
