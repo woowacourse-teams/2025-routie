@@ -14,7 +14,7 @@ import type { ProfileButtonProps } from './ProfileButton.types';
 const ProfileButton = ({
   onClick,
   userName,
-  positioning = 'relative',
+  positioning = 'absolute',
 }: ProfileButtonProps) => {
   const [isUserInfoOpen, setIsUserInfoOpen] = useState(false);
 
