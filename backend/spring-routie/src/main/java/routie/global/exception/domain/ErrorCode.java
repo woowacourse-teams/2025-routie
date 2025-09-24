@@ -322,6 +322,30 @@ public enum ErrorCode {
             HttpStatus.BAD_REQUEST
     ),
 
+     * 4XXX: User domain
+     */
+    // User
+    USER_NICKNAME_EMPTY(
+            "4000",
+            "사용자 닉네임은 비어있을 수 없습니다.",
+            HttpStatus.BAD_REQUEST
+    ),
+    USER_NICKNAME_LENGTH_INVALID(
+            "4001",
+            "사용자 닉네임은 10자 이하여야 합니다.",
+            HttpStatus.BAD_REQUEST
+    ),
+    USER_OAUTH_IDENTIFIER_EMPTY(
+            "4002",
+            "사용자 인증 제공 식별자는 비어있을 수 없습니다.",
+            HttpStatus.BAD_REQUEST
+    ),
+    USER_OAUTH_PROVIDER_EMPTY(
+            "4003",
+            "사용자 인증 제공자는 비어있을 수 없습니다.",
+            HttpStatus.BAD_REQUEST
+    ),
+  
     /**
      * 5XXX: Word domain
      */
@@ -334,7 +358,6 @@ public enum ErrorCode {
             "5001",
             "닉네임을 생성하기 위한 명사가 존재하지 않습니다.",
             HttpStatus.NOT_FOUND
-    ),
 
     /**
      * 9XXX: External API
