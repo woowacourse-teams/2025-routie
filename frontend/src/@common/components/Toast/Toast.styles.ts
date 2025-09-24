@@ -18,8 +18,8 @@ const ToastContainerStyle = css`
 
   position: fixed;
   z-index: 10000;
-  top: 16px;
   right: 5rem;
+  bottom: 16px;
 
   display: flex;
   flex-direction: column;

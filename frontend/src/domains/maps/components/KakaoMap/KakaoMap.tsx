@@ -70,7 +70,6 @@ const KakaoMap = () => {
         aria-label="카카오 지도"
         tabIndex={0}
       />
-
       {finalMapState === 'loading' && (
         <Flex
           css={KakaoMapLoadingStyle}
@@ -86,14 +85,12 @@ const KakaoMap = () => {
           </Text>
         </Flex>
       )}
-
       {finalMapState === 'error' && (
         <Flex css={KakaoMapErrorStyle} direction="column" gap={0.8}>
           <Text variant="caption">⚠️</Text>
           <Text variant="caption">{finalError}</Text>
         </Flex>
       )}
-
       {containerEl &&
         clickedPlace &&
         createPortal(
