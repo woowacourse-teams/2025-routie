@@ -45,7 +45,9 @@ public class PlaceControllerV1Test {
     void setUp() {
         RestAssured.port = port;
 
-        testRoutieSpace = routieSpaceRepository.save(RoutieSpace.from(routieSpaceIdentifierProvider));
+        testRoutieSpace = routieSpaceRepository.save(RoutieSpace.withIdentifierProvider(
+                null, routieSpaceIdentifierProvider
+        ));
         testPlace = new PlaceBuilder()
                 .name("테스트 카페")
                 .roadAddressName("서울시 강남구 테스트로 123")
