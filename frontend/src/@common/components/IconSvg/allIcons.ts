@@ -8,6 +8,7 @@ import closeSheetIcon from '@/assets/icons/closeSheet.svg';
 import copy from '@/assets/icons/copy.svg';
 import drag from '@/assets/icons/drag.svg';
 import logo from '@/assets/icons/logo.png';
+import logout from '@/assets/icons/logout.svg';
 import pin from '@/assets/icons/pin.svg';
 import collectPlace from '@/assets/icons/place-home.svg';
 import plus from '@/assets/icons/plus.svg';
@@ -15,6 +16,7 @@ import reload from '@/assets/icons/reload.svg';
 import search from '@/assets/icons/search.svg';
 import disableTrash from '@/assets/icons/trash-disable.svg';
 import trash from '@/assets/icons/trash.svg';
+import user from '@/assets/icons/user.svg';
 
 const allIcons = {
   arrowWhite,
@@ -27,6 +29,7 @@ const allIcons = {
   copy,
   drag,
   logo,
+  logout,
   pin,
   plus,
   search,
@@ -34,6 +37,7 @@ const allIcons = {
   closeRed,
   disableTrash,
   reload,
+  user,
 } as const;
 
 export default allIcons;

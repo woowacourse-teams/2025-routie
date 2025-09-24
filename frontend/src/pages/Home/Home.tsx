@@ -3,6 +3,7 @@ import Flex from '@/@common/components/Flex/Flex';
 import Header from '@/@common/components/Header/Header';
 import Icon from '@/@common/components/IconSvg/Icon';
 import Text from '@/@common/components/Text/Text';
+import GoToLoginButton from '@/domains/auth/components/GoToLoginButton/GoToLoginButton';
 import theme from '@/styles/theme';
 
 import {
@@ -25,7 +26,14 @@ const Home = () => {
 
   return (
     <>
-      <Header />
+      <Header>
+        <Button
+          width="fit-content"
+          onClick={() => alert('사용자 로그인 버튼 클릭됨!')}
+        >
+          <Text variant="body">로그인</Text>
+        </Button>
+      </Header>
       <Flex
         direction="column"
         height="calc(100dvh - 7.1rem)"
@@ -77,7 +85,7 @@ const Home = () => {
               ]}
             />
           </Flex>
-          <Flex gap={8} width="70%" css={ButtonWrapperStyle}>
+          <Flex gap={8} width="80%" css={ButtonWrapperStyle}>
             <Button onClick={handleCreateRoutieSpace} css={CreateButtonStyle}>
               <Flex gap={1.5} padding={1}>
                 <Icon name="arrowWhite" size={30} />
@@ -99,6 +107,7 @@ const Home = () => {
                 </Flex>
               </Button>
             )}
+            <GoToLoginButton onClick={() => alert('로그인 버튼 클릭됨!')} />
           </Flex>
         </Flex>
       </Flex>
