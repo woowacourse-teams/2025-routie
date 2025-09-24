@@ -22,7 +22,7 @@ import routie.business.word.ui.dto.WordReplaceRequest;
 import routie.business.word.ui.dto.WordResponse;
 
 @RestController
-@RequestMapping("v1/words")
+@RequestMapping("/v1/words")
 @RequiredArgsConstructor
 public class WordControllerV1 {
 
