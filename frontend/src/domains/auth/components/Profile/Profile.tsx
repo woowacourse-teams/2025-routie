@@ -2,9 +2,7 @@ import Icon from '@/@common/components/IconSvg/Icon';
 
 import { ProfileIconStyle } from './Profile.styles';
 
-interface ProfileProps {
-  onClick?: () => void;
-}
+import type { ProfileProps } from './Profile.types';
 
 const Profile = ({ onClick }: ProfileProps) => {
   return (

@@ -5,10 +5,7 @@ import Profile from '@/domains/auth/components/Profile/Profile';
 
 import { ProfileButtonStyle } from './ProfileButton.styles';
 
-interface ProfileButtonProps {
-  onClick: () => void;
-  text: string;
-}
+import type { ProfileButtonProps } from './ProfileButton.types';
 
 const ProfileButton = ({ onClick, text }: ProfileButtonProps) => {
   return (
@@ -20,4 +17,5 @@ const ProfileButton = ({ onClick, text }: ProfileButtonProps) => {
     </Button>
   );
 };
+
 export default ProfileButton;

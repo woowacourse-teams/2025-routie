@@ -6,10 +6,7 @@ import Text from '@/@common/components/Text/Text';
 
 import { DividerStyle } from './UserInfoCard.styles';
 
-interface UserInfoCardProps {
-  onClick: () => void;
-  userName: string;
-}
+import type { UserInfoCardProps } from './UserInfoCard.types';
 
 const UserInfoCard = ({ onClick, userName }: UserInfoCardProps) => {
   return (
