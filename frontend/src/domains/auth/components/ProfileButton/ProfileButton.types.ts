@@ -1,6 +1,7 @@
 interface ProfileButtonProps {
-  onClick: () => void;
-  text: string;
+  onClick?: () => void;
+  userName: string;
+  positioning?: 'relative' | 'absolute';
 }
 
 export type { ProfileButtonProps };
