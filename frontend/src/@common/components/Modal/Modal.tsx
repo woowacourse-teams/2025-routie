@@ -8,7 +8,6 @@ import type { ModalProps } from './Modal.types';
 const Modal = ({ isOpen, onClose, children }: ModalProps) => {
   useEffect(() => {
     if (isOpen) {
-      document.body.style.position = 'fixed';
       document.body.style.overflow = 'hidden';
 
       const handleEsc = (event: KeyboardEvent) => {
@@ -20,7 +19,6 @@ const Modal = ({ isOpen, onClose, children }: ModalProps) => {
       document.addEventListener('keydown', handleEsc);
 
       return () => {
-        document.body.style.position = '';
         document.body.style.overflow = '';
         document.removeEventListener('keydown', handleEsc);
       };
