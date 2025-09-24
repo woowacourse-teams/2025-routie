@@ -10,10 +10,8 @@ interface LoginButtonProps {
 
 const GoToLoginButton = ({ onClick }: LoginButtonProps) => {
   return (
-    <Button css={GoToLoginButtonStyle} onClick={onClick}>
-      <Flex gap={1.5} padding={1}>
-        <Text variant="title">로그인하고 동선 만들러 가기</Text>
-      </Flex>
+    <Button css={GoToLoginButtonStyle} onClick={onClick} padding="2rem">
+      <Text variant="title">로그인하고 동선 만들러 가기</Text>
     </Button>
   );
 };

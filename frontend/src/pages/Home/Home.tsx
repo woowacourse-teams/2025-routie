@@ -3,7 +3,7 @@ import Flex from '@/@common/components/Flex/Flex';
 import Header from '@/@common/components/Header/Header';
 import Icon from '@/@common/components/IconSvg/Icon';
 import Text from '@/@common/components/Text/Text';
-import LoginButton from '@/domains/auth/components/GoToLoginButton/GoToLoginButton';
+import GoToLoginButton from '@/domains/auth/components/GoToLoginButton/GoToLoginButton';
 import ProfileButton from '@/domains/auth/components/ProfileButton/ProfileButton';
 import theme from '@/styles/theme';
 
@@ -109,7 +109,7 @@ const Home = () => {
                 </Flex>
               </Button>
             )}
-            <LoginButton onClick={() => alert('로그인 버튼 클릭됨!')} />
+            <GoToLoginButton onClick={() => alert('로그인 버튼 클릭됨!')} />
           </Flex>
         </Flex>
       </Flex>
