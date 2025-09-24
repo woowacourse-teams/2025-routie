@@ -1,20 +1,55 @@
-import Button from '@/@common/components/Button/Button';
-import Flex from '@/@common/components/Flex/Flex';
-import Text from '@/@common/components/Text/Text';
-import Profile from '@/domains/auth/components/Profile/Profile';
+import { useState } from 'react';
 
-import { ProfileButtonStyle } from './ProfileButton.styles';
+import Icon from '@/@common/components/IconSvg/Icon';
+import UserInfoCard from '@/domains/auth/components/UserInfoCard/UserInfoCard';
+
+import {
+  ProfileIconStyle,
+  ProfileButtonWrapperStyle,
+  ProfileButtonAbsoluteStyle,
+  UserInfoCardStyle,
+} from './ProfileButton.styles';
 
 import type { ProfileButtonProps } from './ProfileButton.types';
 
-const ProfileButton = ({ onClick, text }: ProfileButtonProps) => {
+const ProfileButton = ({
+  onClick,
+  userName,
+  positioning = 'relative',
+}: ProfileButtonProps) => {
+  const [isUserInfoOpen, setIsUserInfoOpen] = useState(false);
+
+  const handleProfileClick = () => {
+    if (onClick) {
+      onClick();
+    } else {
+      setIsUserInfoOpen((prev) => !prev);
+    }
+  };
+
+  const handleLogout = () => {
+    alert('로그아웃 버튼 클릭됨!');
+  };
+
+  const wrapperStyle =
+    positioning === 'absolute'
+      ? ProfileButtonAbsoluteStyle
+      : ProfileButtonWrapperStyle;
+
   return (
-    <Button css={ProfileButtonStyle} onClick={onClick}>
-      <Flex gap={1} width="1">
-        <Profile />
-        <Text variant="body">{text}</Text>
-      </Flex>
-    </Button>
+    <div css={wrapperStyle}>
+      <Icon
+        name="user"
+        size={40}
+        css={ProfileIconStyle}
+        onClick={handleProfileClick}
+      />
+      {isUserInfoOpen && userName && (
+        <div css={UserInfoCardStyle}>
+          <UserInfoCard userName={userName} onClick={handleLogout} />
+        </div>
+      )}
+    </div>
   );
 };
 

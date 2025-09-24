@@ -27,15 +27,12 @@ const Home = () => {
 
   return (
     <>
-      <Header />
-      <ProfileButton
-        text="로그인"
-        onClick={() => alert('사용자 로그인 버튼 클릭됨!')}
-      />
-      <ProfileButton
-        text="로그아웃"
-        onClick={() => alert('사용자 로그아웃 버튼 클릭됨!')}
-      />
+      <Header>
+        <Button onClick={() => alert('사용자 로그인 버튼 클릭됨!')}>
+          <Text variant="body">로그인</Text>
+        </Button>
+        <ProfileButton userName="랜덤한 사자" positioning="absolute" />
+      </Header>
       <Flex
         direction="column"
         height="calc(100dvh - 7.1rem)"

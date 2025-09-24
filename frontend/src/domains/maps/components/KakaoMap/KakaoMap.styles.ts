@@ -37,24 +37,9 @@ const KakaoMapErrorStyle = css`
   background-color: #f8f9fa;
 `;
 
-const KakaoMapProfileStyle = css`
-  position: absolute;
-  z-index: 10;
-  top: 16px;
-  right: 20px;
-`;
-const KakaoMapUserInfoStyle = css`
-  position: absolute;
-  z-index: 10;
-  top: 60px;
-  right: 20px;
-`;
-
 export {
   KakaoMapWrapperStyle,
   KakaoMapContainerStyle,
   KakaoMapLoadingStyle,
   KakaoMapErrorStyle,
-  KakaoMapProfileStyle,
-  KakaoMapUserInfoStyle,
 };
