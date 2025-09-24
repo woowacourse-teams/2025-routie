@@ -1,8 +1,9 @@
 package routie.business.authentication.infrastructure.external.kakao.api.auth;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestClient;
 import routie.business.authentication.infrastructure.external.kakao.api.auth.dto.response.KakaoExternalAuthenticationTokenApiResponse;
 
@@ -14,10 +15,16 @@ public class KakaoExternalAuthenticationApiClient {
     private final RestClient restClient;
 
     public KakaoExternalAuthenticationTokenApiResponse getToken(final String code) {
+        MultiValueMap<String, String> requestBody = new LinkedMultiValueMap<>();
+        requestBody.add("grant_type", "authorization_code");
+        requestBody.add("client_id", clientId);
+        requestBody.add("code", code);
+        requestBody.add("redirect_uri", redirect_uri);
+
         return restClient.post()
-                .uri("/token?grant_type={grantType}&client_id={clientId}&code={code}&redirect_uri={redirectUri}",
-                        "authorization_code", clientId, code, redirect_uri)
-                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+                .uri("/token")
+                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                .body(requestBody)
                 .retrieve()
                 .body(KakaoExternalAuthenticationTokenApiResponse.class);
     }
