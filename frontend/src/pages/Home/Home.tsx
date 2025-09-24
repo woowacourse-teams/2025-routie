@@ -4,7 +4,6 @@ import Header from '@/@common/components/Header/Header';
 import Icon from '@/@common/components/IconSvg/Icon';
 import Text from '@/@common/components/Text/Text';
 import GoToLoginButton from '@/domains/auth/components/GoToLoginButton/GoToLoginButton';
-import ProfileButton from '@/domains/auth/components/ProfileButton/ProfileButton';
 import theme from '@/styles/theme';
 
 import {
@@ -34,7 +33,6 @@ const Home = () => {
         >
           <Text variant="body">로그인</Text>
         </Button>
-        <ProfileButton userName="랜덤한 사자" positioning="absolute" />
       </Header>
       <Flex
         direction="column"
