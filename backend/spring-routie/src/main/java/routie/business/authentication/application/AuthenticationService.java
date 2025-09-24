@@ -44,7 +44,10 @@ public class AuthenticationService {
         String externalAuthenticationIdentifier = externalAuthenticationProcessor.getAuthenticationIdentifier(
                 request.code()
         );
-        User user = userRepository.findByExternalAuthenticationIdentifier(externalAuthenticationIdentifier)
+        User user = userRepository.findByExternalAuthenticationIdentifierAndExternalAuthenticationProvider(
+                        externalAuthenticationIdentifier,
+                        externalAuthenticationProvider
+                )
                 .orElseGet(() -> createUser(externalAuthenticationIdentifier, externalAuthenticationProvider));
 
         return new ExternalAuthenticationResponse(jwtProcessor.createJwt(user));
