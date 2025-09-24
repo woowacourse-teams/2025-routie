@@ -1,6 +1,6 @@
 import { css, keyframes } from '@emotion/react';
 
-import { SpinnerProps } from './Spinner.types';
+import type { SpinnerProps } from './Spinner.types';
 
 const spin = keyframes`
   0% { transform: rotate(0deg); }
