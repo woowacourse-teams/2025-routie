@@ -1,0 +1,63 @@
+package routie.business.authentication.domain.jwt;
+
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtException;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.security.Keys;
+import java.nio.charset.StandardCharsets;
+import java.util.Date;
+import javax.crypto.SecretKey;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+import routie.business.user.domain.User;
+import routie.business.user.domain.UserRepository;
+
+@Component
+public class JwtProcessor {
+
+    private final SecretKey secretKey;
+    private final long validityInMilliseconds;
+    private final UserRepository userRepository;
+
+    public JwtProcessor(
+            @Value("${authentication.jwt.secret}") final String secret,
+            @Value("${authentication.jwt.expiration}") final long validityInMilliseconds,
+            final UserRepository userRepository
+    ) {
+        this.secretKey = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
+        this.validityInMilliseconds = validityInMilliseconds;
+        this.userRepository = userRepository;
+    }
+
+    public String createJwt(final User user) {
+        Claims claims = Jwts.claims()
+                .subject(user.getId().toString())
+                .build();
+
+        Date now = new Date();
+        Date expiration = new Date(now.getTime() + validityInMilliseconds);
+
+        return Jwts.builder()
+                .claims(claims)
+                .issuedAt(now)
+                .expiration(expiration)
+                .signWith(secretKey)
+                .compact();
+    }
+
+    public User getUser(final String token) {
+        try {
+            Claims claims = Jwts.parser()
+                    .verifyWith(secretKey)
+                    .build()
+                    .parseSignedClaims(token)
+                    .getPayload();
+
+            String userId = claims.getSubject();
+            return userRepository.findById(Long.parseLong(userId))
+                    .orElseThrow(() -> new JwtException("Invalid token: user not found"));
+        } catch (final Exception e) {
+            throw new JwtException(e.getMessage());
+        }
+    }
+}
