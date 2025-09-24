@@ -28,7 +28,10 @@ const Home = () => {
   return (
     <>
       <Header>
-        <Button onClick={() => alert('사용자 로그인 버튼 클릭됨!')}>
+        <Button
+          width="fit-content"
+          onClick={() => alert('사용자 로그인 버튼 클릭됨!')}
+        >
           <Text variant="body">로그인</Text>
         </Button>
         <ProfileButton userName="랜덤한 사자" positioning="absolute" />
