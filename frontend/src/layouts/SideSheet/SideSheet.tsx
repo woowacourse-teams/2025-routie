@@ -99,10 +99,6 @@ const SideSheet = ({ open, onToggle }: SideSheetProps) => {
             />
           </Flex>
         )}
-        <AddPlaceModal
-          isOpen={isAddModalOpen}
-          onClose={handleCloseAddModalClick}
-        />
         <div css={SheetListWrapperStyle}>
           <div css={SheetScrollableAreaStyle}>
             <Flex

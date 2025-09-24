@@ -3,6 +3,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router';
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
+import ModalManager from '@/@common/components/ModalManager/ModalManager';
 import Toast from '@/@common/components/Toast/Toast';
 import ModalProvider from '@/@common/contexts/ModalProvider';
 import ToastProvider from '@/@common/contexts/ToastProvider';
@@ -55,6 +56,7 @@ const Route = () => {
         <ToastProvider>
           <RouterProvider router={router} />
           <Toast />
+          <ModalManager />
         </ToastProvider>
       </ModalProvider>
     </QueryClientProvider>
