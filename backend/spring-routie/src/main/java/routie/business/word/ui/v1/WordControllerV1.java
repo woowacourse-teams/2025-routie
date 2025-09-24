@@ -54,9 +54,8 @@ public class WordControllerV1 {
         return ResponseEntity.created(location).build();
     }
 
-    @DeleteMapping("/{wordType}/{wordId}")
+    @DeleteMapping("/{wordId}")
     public ResponseEntity<Void> deleteWord(
-            @PathVariable final WordType wordType,
             @PathVariable final Long wordId
     ) {
         wordService.deleteWord(wordId);
