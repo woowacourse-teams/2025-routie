@@ -3,7 +3,6 @@ import { createPortal } from 'react-dom';
 
 import Flex from '@/@common/components/Flex/Flex';
 import Text from '@/@common/components/Text/Text';
-import ProfileButton from '@/domains/auth/components/ProfileButton/ProfileButton';
 import PlaceOverlayCard from '@/domains/maps/components/PlaceOverlayCard/PlaceOverlayCard';
 import { useClickedPlace } from '@/domains/maps/hooks/useClickedPlace';
 import { useCustomOverlay } from '@/domains/maps/hooks/useCustomOverlay';
@@ -71,7 +70,6 @@ const KakaoMap = () => {
         aria-label="카카오 지도"
         tabIndex={0}
       />
-      <ProfileButton userName="랜덤한 사자" positioning="absolute" />
       {finalMapState === 'loading' && (
         <Flex
           css={KakaoMapLoadingStyle}
