@@ -16,8 +16,8 @@ import {
   KakaoMapErrorStyle,
   KakaoMapLoadingStyle,
   KakaoMapWrapperStyle,
-  kakaoMapProfileStyle,
-  kakaoMapUserInfoStyle,
+  KakaoMapProfileStyle,
+  KakaoMapUserInfoStyle,
 } from './KakaoMap.styles';
 
 const KakaoMap = () => {
@@ -75,11 +75,11 @@ const KakaoMap = () => {
         aria-label="카카오 지도"
         tabIndex={0}
       />
-      <div css={kakaoMapProfileStyle}>
+      <div css={KakaoMapProfileStyle}>
         <Profile onClick={() => setIsUserInfoOpen((prev) => !prev)} />
       </div>
       {isUserInfoOpen && (
-        <div css={kakaoMapUserInfoStyle}>
+        <div css={KakaoMapUserInfoStyle}>
           <UserInfoCard
             userName="랜덤한 사자"
             onClick={() => alert('로그아웃 버튼 클릭됨!')}
