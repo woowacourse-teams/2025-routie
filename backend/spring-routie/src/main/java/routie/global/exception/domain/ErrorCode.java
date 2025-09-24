@@ -322,6 +322,7 @@ public enum ErrorCode {
             HttpStatus.BAD_REQUEST
     ),
 
+    /**
      * 4XXX: User domain
      */
     // User
@@ -345,7 +346,7 @@ public enum ErrorCode {
             "사용자 인증 제공자는 비어있을 수 없습니다.",
             HttpStatus.BAD_REQUEST
     ),
-  
+
     /**
      * 5XXX: Word domain
      */
@@ -358,6 +359,7 @@ public enum ErrorCode {
             "5001",
             "닉네임을 생성하기 위한 명사가 존재하지 않습니다.",
             HttpStatus.NOT_FOUND
+    ),
 
     /**
      * 9XXX: External API
