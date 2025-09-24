@@ -11,7 +11,7 @@ import routie.global.exception.domain.ErrorCode;
 
 class PlaceTest {
 
-    private final RoutieSpace routieSpace = RoutieSpace.from(() -> "test-identifier");
+    private final RoutieSpace routieSpace = RoutieSpace.withIdentifierProvider(null, () -> "test-identifier");
 
     @Test
     @DisplayName("장소 생성 성공")

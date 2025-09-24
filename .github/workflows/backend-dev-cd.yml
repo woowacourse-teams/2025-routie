@@ -93,9 +93,9 @@ jobs:
       - name: Execute Flyway Migration
         run: ./gradlew flywayMigrate
         env:
-          MYSQL_URL: ${{ secrets.MYSQL_URL_DEV }}
-          MYSQL_USERNAME: ${{ secrets.MYSQL_USERNAME_DEV }}
-          MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD_DEV }}
+          MYSQL_URL: ${{ secrets.FLYWAY_URL_DEV }}
+          MYSQL_USERNAME: ${{ secrets.FLYWAY_USERNAME_DEV }}
+          MYSQL_PASSWORD: ${{ secrets.FLYWAY_PASSWORD_DEV }}
 
       - name: Setup Deploy Environment
         run: |

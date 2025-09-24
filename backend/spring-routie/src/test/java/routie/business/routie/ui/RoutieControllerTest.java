@@ -30,8 +30,11 @@ import routie.business.routie.ui.dto.response.RoutieReadResponse;
 import routie.business.routie.ui.dto.response.RoutieReadResponse.RouteResponse;
 import routie.business.routie.ui.dto.response.RoutieReadResponse.RoutiePlaceResponse;
 import routie.business.routiespace.domain.RoutieSpace;
-import routie.business.routiespace.domain.RoutieSpaceFixture;
+import routie.business.routiespace.domain.RoutieSpaceBuilder;
 import routie.business.routiespace.domain.RoutieSpaceRepository;
+import routie.business.user.domain.User;
+import routie.business.user.domain.UserFixture;
+import routie.business.user.domain.UserRepository;
 
 @Import(TestRouteApiConfig.class)
 @DirtiesContext(classMode = ClassMode.AFTER_CLASS)
@@ -47,6 +50,9 @@ class RoutieControllerTest {
     @Autowired
     private PlaceRepository placeRepository;
 
+    @Autowired
+    private UserRepository userRepository;
+
     private Routie routie;
 
     private RoutieSpace routieSpace;
@@ -57,8 +63,13 @@ class RoutieControllerTest {
     void setUp() {
         RestAssured.port = port;
 
-        routieSpace = RoutieSpaceFixture.emptyRoutieSpace();
-        routieSpaceWithOneRoutiePlace = RoutieSpaceFixture.emptyRoutieSpace();
+        User user = UserFixture.emptyUser();
+        routieSpace = new RoutieSpaceBuilder()
+                .owner(user)
+                .build();
+        routieSpaceWithOneRoutiePlace = new RoutieSpaceBuilder()
+                .owner(user)
+                .build();
 
         Place placeA = new PlaceBuilder()
                 .name("장소 A")
@@ -95,6 +106,7 @@ class RoutieControllerTest {
         routieSpaceWithOneRoutiePlace.getPlaces().add(placeC);
         routieSpaceWithOneRoutiePlace.getRoutie().createLastRoutiePlace(placeC);
 
+        userRepository.save(user);
         routieSpaceRepository.save(routieSpace);
         routieSpaceRepository.save(routieSpaceWithOneRoutiePlace);
 

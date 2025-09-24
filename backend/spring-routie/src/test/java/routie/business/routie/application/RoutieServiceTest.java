@@ -16,6 +16,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.TransactionTemplate;
@@ -28,12 +30,17 @@ import routie.business.routie.ui.dto.request.RoutiePlaceCreateRequest;
 import routie.business.routie.ui.dto.request.RoutieUpdateRequest;
 import routie.business.routie.ui.dto.request.RoutieUpdateRequest.RoutiePlaceRequest;
 import routie.business.routiespace.domain.RoutieSpace;
+import routie.business.routiespace.domain.RoutieSpaceBuilder;
 import routie.business.routiespace.domain.RoutieSpaceFixture;
 import routie.business.routiespace.domain.RoutieSpaceRepository;
+import routie.business.user.domain.User;
+import routie.business.user.domain.UserBuilder;
+import routie.business.user.domain.UserRepository;
 import routie.global.exception.domain.BusinessException;
 
 @SpringBootTest
 @ActiveProfiles("test")
+@DirtiesContext(classMode = ClassMode.AFTER_CLASS)
 class RoutieServiceTest {
 
     @Autowired
@@ -51,6 +58,10 @@ class RoutieServiceTest {
     @Autowired
     private TransactionTemplate transactionTemplate;
 
+    @Autowired
+    private UserRepository userRepository;
+
+    private User user;
     private RoutieSpace testRoutieSpace;
     private Place testPlace1;
     private Place testPlace2;
@@ -61,8 +72,14 @@ class RoutieServiceTest {
         routiePlaceRepository.deleteAll();
         placeRepository.deleteAll();
         routieSpaceRepository.deleteAll();
+        userRepository.deleteAll();
 
-        testRoutieSpace = RoutieSpaceFixture.emptyRoutieSpace();
+        user = new UserBuilder().build();
+        testRoutieSpace = new RoutieSpaceBuilder()
+                .owner(user)
+                .places(RoutieSpaceFixture.emptyPlaces())
+                .build();
+        user.getRoutieSpaces().add(testRoutieSpace);
 
         testPlace1 = new PlaceBuilder()
                 .routieSpace(testRoutieSpace)
@@ -78,6 +95,7 @@ class RoutieServiceTest {
 
         testRoutieSpace.getPlaces().addAll(List.of(testPlace1, testPlace2, testPlace3));
 
+        userRepository.save(user);
         routieSpaceRepository.save(testRoutieSpace);
     }
 

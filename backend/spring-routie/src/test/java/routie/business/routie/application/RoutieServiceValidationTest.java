@@ -22,16 +22,19 @@ import org.springframework.transaction.annotation.Transactional;
 import routie.business.place.domain.Place;
 import routie.business.place.domain.PlaceBuilder;
 import routie.business.place.domain.PlaceRepository;
-import routie.business.routie.ui.dto.response.RoutieValidationResponse;
-import routie.business.routie.ui.dto.response.RoutieValidationResponse.ValidationResultResponse;
 import routie.business.routie.domain.Routie;
 import routie.business.routie.domain.RoutiePlace;
 import routie.business.routie.domain.route.MovingStrategy;
 import routie.business.routie.domain.routievalidator.ValidationStrategy;
 import routie.business.routie.infrastructure.routecalculator.driving.kakaodrivingapi.TestRouteApiConfig;
+import routie.business.routie.ui.dto.response.RoutieValidationResponse;
+import routie.business.routie.ui.dto.response.RoutieValidationResponse.ValidationResultResponse;
 import routie.business.routiespace.domain.RoutieSpace;
 import routie.business.routiespace.domain.RoutieSpaceBuilder;
 import routie.business.routiespace.domain.RoutieSpaceRepository;
+import routie.business.user.domain.User;
+import routie.business.user.domain.UserBuilder;
+import routie.business.user.domain.UserRepository;
 
 @Disabled("검증 기능 제거에 따른 비활성화")
 @Transactional
@@ -56,10 +59,13 @@ class RoutieServiceValidationTest {
     private Place placeA;
     private Place placeB;
     private RoutieSpace routieSpace;
+    @Autowired
+    private UserRepository userRepository;
 
     @BeforeEach
     void setUp() {
         RestAssured.port = port;
+        User user = new UserBuilder().build();
 
         PlaceBuilder placeBuilder = new PlaceBuilder();
 
@@ -83,11 +89,13 @@ class RoutieServiceValidationTest {
 
         placeRepository.saveAll(List.of(placeA, placeB));
 
+        userRepository.save(user);
         RoutiePlace routiePlace1 = new RoutiePlace(1, placeA);
         RoutiePlace routiePlace2 = new RoutiePlace(2, placeB);
         routie = Routie.create(new ArrayList<>(List.of(routiePlace1, routiePlace2)));
 
         routieSpace = new RoutieSpaceBuilder()
+                .owner(user)
                 .places(List.of())
                 .routie(routie)
                 .build();
