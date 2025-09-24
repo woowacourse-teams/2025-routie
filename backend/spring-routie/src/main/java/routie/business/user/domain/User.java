@@ -77,7 +77,7 @@ public class User {
             throw new BusinessException(ErrorCode.USER_NICKNAME_EMPTY);
         }
         if (nickName.length() > 10) {
-            throw new BusinessException(ErrorCode.ROUTIE_SPACE_NAME_LENGTH_INVALID);
+            throw new BusinessException(ErrorCode.USER_NICKNAME_LENGTH_INVALID);
         }
     }
 
