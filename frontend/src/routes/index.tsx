@@ -4,6 +4,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 import Toast from '@/@common/components/Toast/Toast';
+import ModalProvider from '@/@common/contexts/ModalProvider';
 import ToastProvider from '@/@common/contexts/ToastProvider';
 import { useGoogleAnalytics } from '@/libs/googleAnalytics/hooks/useGoogleAnalytics';
 import Home from '@/pages/Home/Home';
@@ -50,10 +51,12 @@ const router = createBrowserRouter([
 const Route = () => {
   return (
     <QueryClientProvider client={queryClient}>
-      <ToastProvider>
-        <RouterProvider router={router} />
-        <Toast />
-      </ToastProvider>
+      <ModalProvider>
+        <ToastProvider>
+          <RouterProvider router={router} />
+          <Toast />
+        </ToastProvider>
+      </ModalProvider>
     </QueryClientProvider>
   );
 };
