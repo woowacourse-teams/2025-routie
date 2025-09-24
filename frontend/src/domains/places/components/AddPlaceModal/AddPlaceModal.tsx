@@ -1,24 +1,12 @@
-import Flex from '@/@common/components/Flex/Flex';
-import IconButton from '@/@common/components/IconButton/IconButton';
-import Modal from '@/@common/components/Modal/Modal';
 import type { ModalProps } from '@/@common/components/Modal/Modal.types';
-import Text from '@/@common/components/Text/Text';
-import closeIcon from '@/assets/icons/close.svg';
+import ModalLayout from '@/@common/components/ModalLayout/ModalLayout';
 import SearchBox from '@/domains/places/components/SearchBox/SearchBox';
 
-const AddPlaceModal = ({ isOpen, onClose }: Omit<ModalProps, 'children'>) => {
+const AddPlaceModal = ({ onClose }: Pick<ModalProps, 'onClose'>) => {
   return (
-    <Modal isOpen={isOpen} onClose={onClose}>
-      <Flex direction="column" width="44rem" gap={2}>
-        <Flex justifyContent="space-between">
-          <Text variant="subTitle">장소 추가</Text>
-          <IconButton type="button" icon={closeIcon} onClick={onClose} />
-        </Flex>
-        <Flex direction="column" alignItems="flex-start" gap={2}>
-          <SearchBox onClose={onClose} />
-        </Flex>
-      </Flex>
-    </Modal>
+    <ModalLayout title="장소 추가" onClose={onClose}>
+      <SearchBox onClose={onClose} />
+    </ModalLayout>
   );
 };
 
