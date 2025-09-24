@@ -1,13 +1,12 @@
 import { useState } from 'react';
 
 import Icon from '@/@common/components/IconSvg/Icon';
-import UserInfoCard from '@/domains/auth/components/UserInfoCard/UserInfoCard';
+import UserMenu from '@/domains/auth/components/UserMenu/UserMenu';
 
 import {
   ProfileIconStyle,
   ProfileButtonWrapperStyle,
   ProfileButtonAbsoluteStyle,
-  UserInfoCardStyle,
 } from './ProfileButton.styles';
 
 import type { ProfileButtonProps } from './ProfileButton.types';
@@ -45,9 +44,7 @@ const ProfileButton = ({
         onClick={handleProfileClick}
       />
       {isUserInfoOpen && userName && (
-        <div css={UserInfoCardStyle}>
-          <UserInfoCard userName={userName} onClick={handleLogout} />
-        </div>
+        <UserMenu userName={userName} onClick={handleLogout} />
       )}
     </div>
   );

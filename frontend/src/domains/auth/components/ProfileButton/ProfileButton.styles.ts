@@ -24,17 +24,15 @@ const ProfileButtonAbsoluteStyle = css`
   right: 20px;
 `;
 
-const UserInfoCardStyle = css`
-  position: absolute;
-  z-index: 10;
-  top: 44px;
-  right: 0;
-`;
-
 const ProfileButtonStyle = css`
   cursor: pointer;
   width: fit-content;
   background-color: ${theme.colors.white};
 `;
 
-export { ProfileIconStyle, ProfileButtonWrapperStyle, ProfileButtonAbsoluteStyle, UserInfoCardStyle, ProfileButtonStyle };
+export {
+  ProfileIconStyle,
+  ProfileButtonWrapperStyle,
+  ProfileButtonAbsoluteStyle,
+  ProfileButtonStyle,
+};
