@@ -1,23 +1,23 @@
 import type {
-  kakaoAccessTokenResponseType,
-  kakaoLoginUriResponseType,
+  KakaoAccessTokenResponseType,
+  KakaoLoginUriResponseType,
 } from '../types/api.types';
 import type {
-  kakaoAccessTokenType,
-  kakaoLoginUriType,
+  KakaoAccessTokenType,
+  KakaoLoginUriType,
 } from '../types/auth.types';
 
 const getKakaoLoginUriAdapter = (
-  data: kakaoLoginUriResponseType,
-): kakaoLoginUriType => {
+  data: KakaoLoginUriResponseType,
+): KakaoLoginUriType => {
   return {
     uri: data.uri,
   };
 };
 
 const getKakaoAccessTokenAdapter = (
-  data: kakaoAccessTokenResponseType,
-): kakaoAccessTokenType => {
+  data: KakaoAccessTokenResponseType,
+): KakaoAccessTokenType => {
   return {
     accessToken: data.accessToken,
   };

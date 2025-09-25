@@ -1,9 +1,9 @@
-interface kakaoLoginUriType {
+interface KakaoLoginUriType {
   uri: string;
 }
 
-interface kakaoAccessTokenType {
+interface KakaoAccessTokenType {
   accessToken: string;
 }
 
-export type { kakaoLoginUriType, kakaoAccessTokenType };
+export type { KakaoLoginUriType, KakaoAccessTokenType };

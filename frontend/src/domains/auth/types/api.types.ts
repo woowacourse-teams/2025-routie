@@ -1,18 +1,18 @@
-interface kakaoLoginUriResponseType {
+interface KakaoLoginUriResponseType {
   uri: string;
 }
 
-interface kakaoAccessTokenRequestType {
+interface KakaoAccessTokenRequestType {
   code: string;
   provider: string;
 }
 
-interface kakaoAccessTokenResponseType {
+interface KakaoAccessTokenResponseType {
   accessToken: string;
 }
 
 export type {
-  kakaoLoginUriResponseType,
-  kakaoAccessTokenRequestType,
-  kakaoAccessTokenResponseType,
+  KakaoLoginUriResponseType,
+  KakaoAccessTokenRequestType,
+  KakaoAccessTokenResponseType,
 };
