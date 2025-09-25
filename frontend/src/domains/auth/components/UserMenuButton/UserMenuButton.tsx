@@ -4,6 +4,8 @@ import { useNavigate } from 'react-router';
 import Icon from '@/@common/components/IconSvg/Icon';
 import UserMenu from '@/domains/auth/components/UserMenu/UserMenu';
 
+import { useLogout } from '../../hooks/useLogout';
+
 import {
   UserMenuIconStyle,
   UserMenuButtonWrapperStyle,
@@ -18,7 +20,7 @@ const UserMenuButton = ({
   positioning = 'absolute',
 }: UserMenuButtonProps) => {
   const [isUserInfoOpen, setIsUserInfoOpen] = useState(false);
-  const navigate = useNavigate();
+  const { handleLogout } = useLogout();
 
   const handleProfileClick = () => {
     if (onClick) {
@@ -26,12 +28,6 @@ const UserMenuButton = ({
     } else {
       setIsUserInfoOpen((prev) => !prev);
     }
-  };
-
-  const handleLogout = () => {
-    localStorage.removeItem('accessToken');
-    navigate('/', { replace: true });
-    return;
   };
 
   const wrapperStyle =
