@@ -346,6 +346,11 @@ public enum ErrorCode {
             "사용자 인증 제공자는 비어있을 수 없습니다.",
             HttpStatus.BAD_REQUEST
     ),
+    USER_NOT_FOUND(
+            "4100",
+            "해당 사용자를 찾을 수 없습니다.",
+            HttpStatus.NOT_FOUND
+    ),
 
     /**
      * 5XXX: Word domain
@@ -375,6 +380,13 @@ public enum ErrorCode {
     INVALID_JWT(
             "6001",
             "인증 정보가 유효하지 않습니다.",
+            HttpStatus.UNAUTHORIZED
+    ),
+
+    // Authentication
+    AUTHENTICATION_REQUIRED(
+            "6002",
+            "인증이 필요합니다.",
             HttpStatus.UNAUTHORIZED
     ),
 
