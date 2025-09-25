@@ -2,7 +2,10 @@ import Flex from '@/@common/components/Flex/Flex';
 import type { ModalProps } from '@/@common/components/Modal/Modal.types';
 import ModalLayout from '@/@common/components/ModalLayout/ModalLayout';
 import Text from '@/@common/components/Text/Text';
+import { useToastContext } from '@/@common/contexts/useToastContext';
 import kakaoImage from '@/assets/images/kakao.png';
+
+import { useKakaoLoginUriQuery } from '../../queries/useAuthQuery';
 
 import {
   LoginModalStyle,
@@ -11,9 +14,26 @@ import {
 } from './LoginModal.styles';
 
 const LoginModal = ({ onClose }: Pick<ModalProps, 'onClose'>) => {
-  const handleKakaoLogin = () => {
-    alert('카카오 로그인이 성공적으로 완료되었습니다!');
-    onClose();
+  const { data: kakaoLoginUri } = useKakaoLoginUriQuery();
+  const { showToast } = useToastContext();
+
+  const redirectToKakaoLogin = async () => {
+    try {
+      if (kakaoLoginUri?.uri) {
+        window.open(kakaoLoginUri.uri, '_self');
+      }
+      onClose();
+    } catch (err: any) {
+      showToast({
+        message: err?.message,
+        type: 'error',
+      });
+    }
+  };
+
+  const handleKakaoLinkClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
+    redirectToKakaoLogin();
   };
 
   return (
@@ -30,9 +50,9 @@ const LoginModal = ({ onClose }: Pick<ModalProps, 'onClose'>) => {
               <Text variant="caption">SNS 계정으로 간편로그인</Text>
               <div css={DividerStyle} />
             </Flex>
-            <button css={KakaoButtonStyle} onClick={handleKakaoLogin}>
+            <a href="#" onClick={handleKakaoLinkClick} css={KakaoButtonStyle}>
               <img src={kakaoImage} alt="카카오 로그인" />
-            </button>
+            </a>
           </Flex>
         </Flex>
       </div>

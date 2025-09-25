@@ -1,7 +1,10 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router';
 
 import Icon from '@/@common/components/IconSvg/Icon';
 import UserMenu from '@/domains/auth/components/UserMenu/UserMenu';
+
+import { useLogout } from '../../hooks/useLogout';
 
 import {
   UserMenuIconStyle,
@@ -17,6 +20,7 @@ const UserMenuButton = ({
   positioning = 'absolute',
 }: UserMenuButtonProps) => {
   const [isUserInfoOpen, setIsUserInfoOpen] = useState(false);
+  const { handleLogout } = useLogout();
 
   const handleProfileClick = () => {
     if (onClick) {
@@ -24,10 +28,6 @@ const UserMenuButton = ({
     } else {
       setIsUserInfoOpen((prev) => !prev);
     }
-  };
-
-  const handleLogout = () => {
-    alert('로그아웃 버튼 클릭됨!');
   };
 
   const wrapperStyle =
