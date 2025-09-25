@@ -16,7 +16,7 @@ const MapWithSideSheet = () => {
     <Flex>
       <div css={ContainerStyle}>
         <KakaoMap />
-        {accessToken && <UserMenuButton userName="바보기린" />}
+        {accessToken && <UserMenuButton />}
         <SideSheet open={open} onToggle={() => setOpen((prev) => !prev)} />
       </div>
     </Flex>

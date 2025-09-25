@@ -3,4 +3,8 @@ const loginKey = {
   kakaoLoginUri: ['kakaoLoginUri'],
 };
 
-export { loginKey };
+const userKey = {
+  all: ['user'],
+};
+
+export { loginKey, userKey };

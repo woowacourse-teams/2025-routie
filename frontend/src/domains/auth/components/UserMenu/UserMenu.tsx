@@ -1,17 +1,34 @@
+import { useEffect } from 'react';
+
 import Button from '@/@common/components/Button/Button';
 import Flex from '@/@common/components/Flex/Flex';
 import Icon from '@/@common/components/IconSvg/Icon';
 import Text from '@/@common/components/Text/Text';
+import { useToastContext } from '@/@common/contexts/useToastContext';
+import { useUserQuery } from '@/domains/auth/queries/useAuthQuery';
 
 import { DividerStyle, UserMenuStyle } from './UserMenu.styles';
 
 import type { UserMenuProps } from './UserMenu.types';
 
-const UserMenu = ({ onClick, userName }: UserMenuProps) => {
+const UserMenu = ({ onClick }: UserMenuProps) => {
+  const { data: user, error } = useUserQuery();
+  const { showToast } = useToastContext();
+
+  useEffect(() => {
+    if (error) {
+      showToast({
+        message: error.message,
+        type: 'error',
+      });
+      console.error(error);
+    }
+  }, [error]);
+
   return (
     <div id="userMenu" css={UserMenuStyle}>
       <Flex direction="column" width="10" gap={1}>
-        <Text variant="body">{userName}</Text>
+        <Text variant="body">{user?.nickName ?? '닉네임 불러오기 오류'}</Text>
         <div css={DividerStyle} />
         <Button onClick={onClick}>
           <Flex gap={1}>
