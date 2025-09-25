@@ -205,7 +205,7 @@ public enum ErrorCode {
     ROUTIE_SPACE_NO_PERMISSION_TO_MODIFY(
             "2200",
             "루티 스페이스를 수정할 권한이 없습니다.",
-            HttpStatus.NOT_FOUND
+            HttpStatus.FORBIDDEN
     ),
 
     /**
