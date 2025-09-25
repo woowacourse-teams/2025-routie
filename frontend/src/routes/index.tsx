@@ -9,6 +9,7 @@ import ModalProvider from '@/@common/contexts/ModalProvider';
 import ToastProvider from '@/@common/contexts/ToastProvider';
 import { useGoogleAnalytics } from '@/libs/googleAnalytics/hooks/useGoogleAnalytics';
 import Home from '@/pages/Home/Home';
+import KakaoAuthCallback from '@/pages/KakaoAuthCallback/KakaoAuthCallback';
 import VersionInfo from '@/pages/VersionInfo/VersionInfo';
 
 const RoutieSpace = lazy(() => import('@/pages/RoutieSpace/RoutieSpace'));
@@ -36,6 +37,14 @@ const router = createBrowserRouter([
         <Suspense fallback={<div>Loading...</div>}>
           <RoutieSpace />
         </Suspense>
+      </LayoutWithAnalytics>
+    ),
+  },
+  {
+    path: '/auth/kakao/callback',
+    element: (
+      <LayoutWithAnalytics>
+        <KakaoAuthCallback />
       </LayoutWithAnalytics>
     ),
   },
