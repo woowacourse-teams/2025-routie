@@ -11,8 +11,13 @@ interface KakaoAccessTokenResponseType {
   accessToken: string;
 }
 
+interface UserNameResponseType {
+  nickName: string;
+}
+
 export type {
   KakaoLoginUriResponseType,
   KakaoAccessTokenRequestType,
   KakaoAccessTokenResponseType,
+  UserNameResponseType,
 };
