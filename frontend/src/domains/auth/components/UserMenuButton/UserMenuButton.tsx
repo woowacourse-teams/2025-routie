@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router';
 
 import Icon from '@/@common/components/IconSvg/Icon';
 import UserMenu from '@/domains/auth/components/UserMenu/UserMenu';
@@ -17,6 +18,7 @@ const UserMenuButton = ({
   positioning = 'absolute',
 }: UserMenuButtonProps) => {
   const [isUserInfoOpen, setIsUserInfoOpen] = useState(false);
+  const navigate = useNavigate();
 
   const handleProfileClick = () => {
     if (onClick) {
@@ -27,7 +29,9 @@ const UserMenuButton = ({
   };
 
   const handleLogout = () => {
-    alert('로그아웃 버튼 클릭됨!');
+    localStorage.removeItem('accessToken');
+    navigate('/', { replace: true });
+    return;
   };
 
   const wrapperStyle =
