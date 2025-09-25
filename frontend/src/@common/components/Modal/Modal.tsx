@@ -8,15 +8,22 @@ import type { ModalProps } from './Modal.types';
 const Modal = ({ isOpen, onClose, children }: ModalProps) => {
   useEffect(() => {
     if (isOpen) {
-      document.body.style.position = 'fixed';
       document.body.style.overflow = 'hidden';
 
+      const handleEsc = (event: KeyboardEvent) => {
+        if (event.key === 'Escape') {
+          onClose();
+        }
+      };
+
+      document.addEventListener('keydown', handleEsc);
+
       return () => {
-        document.body.style.position = '';
         document.body.style.overflow = '';
+        document.removeEventListener('keydown', handleEsc);
       };
     }
-  }, [isOpen]);
+  }, [isOpen, onClose]);
 
   if (!isOpen) return null;
 

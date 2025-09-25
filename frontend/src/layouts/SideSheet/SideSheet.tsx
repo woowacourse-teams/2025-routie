@@ -1,11 +1,11 @@
-import { useState, useCallback } from 'react';
+import { useCallback } from 'react';
 
 import Button from '@/@common/components/Button/Button';
 import EmptyMessage from '@/@common/components/EmptyMessage/EmptyMessage';
 import Flex from '@/@common/components/Flex/Flex';
 import Icon from '@/@common/components/IconSvg/Icon';
 import Text from '@/@common/components/Text/Text';
-import AddPlaceModal from '@/domains/places/components/AddPlaceModal/AddPlaceModal';
+import { useModal } from '@/@common/contexts/ModalContext';
 import PlaceCard from '@/domains/places/components/PlaceCard/PlaceCard';
 import { usePlaceList } from '@/domains/places/hooks/usePlaceList';
 import { useRoutieList } from '@/domains/routie/hooks/useRoutieList';
@@ -29,21 +29,17 @@ import type { SideSheetProps } from './SideSheet.types';
 const SideSheet = ({ open, onToggle }: SideSheetProps) => {
   const { placeList, handleDeletePlace } = usePlaceList();
   const { routieIdList, handleAddRoutie } = useRoutieList();
-  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const { openModal } = useModal();
   const { triggerEvent } = useGoogleEventTrigger();
 
-  const handleOpenAddModalClick = () => {
+  const handleOpenAddModalClick = useCallback(() => {
     triggerEvent({
       action: 'click',
       category: 'place',
       label: '장소 추가하기 모달 열기 버튼',
     });
-    setIsAddModalOpen((prev) => !prev);
-  };
-
-  const handleCloseAddModalClick = () => {
-    setIsAddModalOpen(false);
-  };
+    openModal('addPlace');
+  }, [openModal, triggerEvent]);
 
   const handlePlaceSelect = useCallback(
     async (placeId: number, selected: boolean) => {
@@ -103,10 +99,6 @@ const SideSheet = ({ open, onToggle }: SideSheetProps) => {
             />
           </Flex>
         )}
-        <AddPlaceModal
-          isOpen={isAddModalOpen}
-          onClose={handleCloseAddModalClick}
-        />
         <div css={SheetListWrapperStyle}>
           <div css={SheetScrollableAreaStyle}>
             <Flex
