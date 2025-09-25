@@ -36,7 +36,7 @@ const RoutieSpaceName = () => {
           <Text variant="subTitle">{name}</Text>
         </Flex>
       )}
-      {accessToken !== null && (
+      {accessToken && (
         <Button
           variant="primary"
           onClick={handleClick}
