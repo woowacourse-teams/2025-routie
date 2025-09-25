@@ -10,6 +10,7 @@ import routie.business.routiespace.ui.dto.request.RoutieSpaceUpdateRequest;
 import routie.business.routiespace.ui.dto.response.RoutieSpaceCreateResponse;
 import routie.business.routiespace.ui.dto.response.RoutieSpaceReadResponse;
 import routie.business.routiespace.ui.dto.response.RoutieSpaceUpdateResponse;
+import routie.business.user.domain.User;
 import routie.global.exception.domain.BusinessException;
 import routie.global.exception.domain.ErrorCode;
 
@@ -38,6 +39,16 @@ public class RoutieSpaceService {
     }
 
     @Transactional
+    public RoutieSpaceCreateResponse addRoutieSpaceV2(final User user) {
+        RoutieSpace routieSpace = RoutieSpace.withIdentifierProvider(
+                user,
+                routieSpaceIdentifierProvider
+        );
+        routieSpaceRepository.save(routieSpace);
+        return RoutieSpaceCreateResponse.from(routieSpace);
+    }
+
+    @Transactional
     public RoutieSpaceUpdateResponse modifyRoutieSpace(
             final String routieSpaceIdentifier,
             final RoutieSpaceUpdateRequest routieSpaceUpdateRequest
@@ -49,8 +60,28 @@ public class RoutieSpaceService {
         return new RoutieSpaceUpdateResponse(routieSpace.getName());
     }
 
+    @Transactional
+    public RoutieSpaceUpdateResponse modifyRoutieSpaceV2(
+            final String routieSpaceIdentifier,
+            final RoutieSpaceUpdateRequest routieSpaceUpdateRequest,
+            final User user
+    ) {
+        // TODO: 예외처리 구조 개선 예정
+        RoutieSpace routieSpace = getRoutieSpaceByRoutieSpaceIdentifier(routieSpaceIdentifier);
+        validateOwner(user, routieSpace);
+        routieSpace.updateName(routieSpaceUpdateRequest.name());
+
+        return new RoutieSpaceUpdateResponse(routieSpace.getName());
+    }
+
     private RoutieSpace getRoutieSpaceByRoutieSpaceIdentifier(final String routieSpaceIdentifier) {
         return routieSpaceRepository.findByIdentifier(routieSpaceIdentifier)
                 .orElseThrow(() -> new BusinessException(ErrorCode.ROUTIE_SPACE_NOT_EXISTS));
+    }
+
+    private void validateOwner(final User user, final RoutieSpace routieSpace) {
+        if (!user.getId().equals(routieSpace.getOwner().getId())) {
+            throw new BusinessException(ErrorCode.ROUTIE_SPACE_NO_PERMISSION_TO_MODIFY);
+        }
     }
 }
