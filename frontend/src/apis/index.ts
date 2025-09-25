@@ -1,21 +1,24 @@
 import { ERROR_MESSAGES } from '@/@common/constants/message';
 import type { ErrorResponseType } from '@/apis/types/apIResponse.types';
 
-const createApiMethod = (method: string) => async (url: string, body?: any) => {
-  const response = await fetch(`${process.env.REACT_APP_API_URL}${url}`, {
-    method,
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: body ? JSON.stringify(body) : undefined,
-  });
+const createApiMethod =
+  (method: string) =>
+  async (url: string, body?: any, headers?: Record<string, string>) => {
+    const response = await fetch(`${process.env.REACT_APP_API_URL}${url}`, {
+      method,
+      headers: {
+        'Content-Type': 'application/json',
+        ...headers,
+      },
+      body: body ? JSON.stringify(body) : undefined,
+    });
 
-  if (!response.ok) {
-    await handleApiError(response);
-  }
+    if (!response.ok) {
+      await handleApiError(response);
+    }
 
-  return response;
-};
+    return response;
+  };
 
 const handleApiError = async (response: Response) => {
   const errorData = (await response.json()) as ErrorResponseType;
