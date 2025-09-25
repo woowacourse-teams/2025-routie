@@ -31,8 +31,8 @@ const KakaoAuthCallback = () => {
   return (
     <Flex direction="column" height="100vh" gap={2}>
       {isError ? (
-        <Flex direction="column" alignItems="center" gap={2}>
-          <Text variant="title">로그인 실패</Text>{' '}
+        <Flex direction="column" gap={2}>
+          <Text variant="title">로그인 실패</Text>
           <button onClick={handleGoHome}>홈으로 가기</button>
         </Flex>
       ) : (
