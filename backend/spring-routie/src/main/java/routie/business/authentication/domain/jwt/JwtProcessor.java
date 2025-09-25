@@ -15,17 +15,17 @@ import routie.business.user.domain.UserRepository;
 @Component
 public class JwtProcessor {
 
+    private final long expiration;
     private final SecretKey secretKey;
-    private final long validityInMilliseconds;
     private final UserRepository userRepository;
 
     public JwtProcessor(
+            @Value("${authentication.jwt.expiration}") final long expiration,
             @Value("${authentication.jwt.secret}") final String secret,
-            @Value("${authentication.jwt.expiration}") final long validityInMilliseconds,
             final UserRepository userRepository
     ) {
+        this.expiration = expiration;
         this.secretKey = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
-        this.validityInMilliseconds = validityInMilliseconds;
         this.userRepository = userRepository;
     }
 
@@ -35,7 +35,7 @@ public class JwtProcessor {
                 .build();
 
         Date now = new Date();
-        Date expiration = new Date(now.getTime() + validityInMilliseconds);
+        Date expiration = new Date(now.getTime() + this.expiration);
 
         return Jwts.builder()
                 .claims(claims)
