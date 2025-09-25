@@ -10,12 +10,13 @@ import { ContainerStyle } from './MapWithSideSheet.styles';
 
 const MapWithSideSheet = () => {
   const [open, setOpen] = useState(true);
+  const accessToken = localStorage.getItem('accessToken');
 
   return (
     <Flex>
       <div css={ContainerStyle}>
         <KakaoMap />
-        <UserMenuButton userName="바보기린" />
+        {accessToken && <UserMenuButton userName="바보기린" />}
         <SideSheet open={open} onToggle={() => setOpen((prev) => !prev)} />
       </div>
     </Flex>
