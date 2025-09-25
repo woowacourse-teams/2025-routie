@@ -2,14 +2,14 @@ import { useNavigate } from 'react-router';
 
 import { useMutation, useQuery } from '@tanstack/react-query';
 
-import { getKakaoAccessToken, getKakaoLoginUrI } from '../apis/login';
+import { getKakaoAccessToken, getKakaoLoginUri } from '../apis/login';
 
 import { loginKey } from './key';
 
 const useKakaoLoginUriQuery = () => {
   return useQuery({
     queryKey: loginKey.kakaoLoginUri,
-    queryFn: () => getKakaoLoginUrI(),
+    queryFn: () => getKakaoLoginUri(),
   });
 };
 

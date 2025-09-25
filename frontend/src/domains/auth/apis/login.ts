@@ -5,7 +5,7 @@ import {
   getKakaoLoginUriAdapter,
 } from '../adapters/authAdapter';
 
-const getKakaoLoginUrI = async () => {
+const getKakaoLoginUri = async () => {
   const response = await apiClient.get(
     '/v1/authentication/external/uri?provider=kakao',
   );
@@ -24,4 +24,4 @@ const getKakaoAccessToken = async (code: string) => {
   return getKakaoAccessTokenAdapter(data);
 };
 
-export { getKakaoLoginUrI, getKakaoAccessToken };
+export { getKakaoLoginUri, getKakaoAccessToken };
