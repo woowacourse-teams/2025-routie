@@ -1,7 +1,7 @@
 import { apiClient } from '@/apis';
 import { getUserNameAdapter } from '@/domains/auth/adapters/getUserNameAdapter';
 
-const getUserName = async () => {
+const getUser = async () => {
   const token = localStorage.getItem('accessToken');
 
   if (!token) {
@@ -13,7 +13,8 @@ const getUserName = async () => {
   });
 
   const data = await response.json();
+
   return getUserNameAdapter(data);
 };
 
-export { getUserName };
+export { getUser };
