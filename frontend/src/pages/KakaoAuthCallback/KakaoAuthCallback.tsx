@@ -9,10 +9,9 @@ import { useKakaoLoginMutation } from '@/domains/auth/queries/useAuthQuery';
 const KakaoAuthCallback = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
+  const { mutate: kakaoAccessTokenMutate, isError } = useKakaoLoginMutation();
 
   const code = searchParams.get('code');
-
-  const { mutate: kakaoAccessTokenMutate, isError } = useKakaoLoginMutation();
 
   const handleGoHome = () => {
     navigate('/', { replace: true });
