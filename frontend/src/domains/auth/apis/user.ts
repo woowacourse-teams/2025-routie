@@ -5,7 +5,7 @@ const getUserName = async () => {
   const token = localStorage.getItem('accessToken');
 
   if (!token) {
-    throw new Error('Access token is missing');
+    throw new Error('접근 권한이 없습니다. 로그인 후 이용해주세요.');
   }
 
   const response = await apiClient.get('/v1/users/me', undefined, {
