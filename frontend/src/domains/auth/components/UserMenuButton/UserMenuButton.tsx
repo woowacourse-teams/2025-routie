@@ -1,10 +1,8 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router';
 
 import Icon from '@/@common/components/IconSvg/Icon';
 import UserMenu from '@/domains/auth/components/UserMenu/UserMenu';
-
-import { useLogout } from '../../hooks/useLogout';
+import { useLogout } from '@/domains/auth/hooks/useLogout';
 
 import {
   UserMenuIconStyle,
@@ -16,7 +14,6 @@ import type { UserMenuButtonProps } from './UserMenuButton.types';
 
 const UserMenuButton = ({
   onClick,
-  userName,
   positioning = 'absolute',
 }: UserMenuButtonProps) => {
   const [isUserInfoOpen, setIsUserInfoOpen] = useState(false);
@@ -43,9 +40,7 @@ const UserMenuButton = ({
         css={UserMenuIconStyle}
         onClick={handleProfileClick}
       />
-      {isUserInfoOpen && userName && (
-        <UserMenu userName={userName} onClick={handleLogout} />
-      )}
+      {isUserInfoOpen && <UserMenu onClick={handleLogout} />}
     </div>
   );
 };
