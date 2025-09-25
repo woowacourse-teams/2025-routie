@@ -4,7 +4,7 @@ const loginKey = {
 };
 
 const userKey = {
-  userName: ['userName'],
+  all: ['user'],
 };
 
 export { loginKey, userKey };
