@@ -14,7 +14,15 @@ import {
 import type { EditRoutieSpaceNameRequestType } from '../types/api.types';
 
 const createRoutieSpace = async (): Promise<CreateRoutieSpaceAdapterType> => {
-  const response = await apiClient.post('/routie-spaces');
+  const accessToken = localStorage.getItem('accessToken');
+
+  if (!accessToken) {
+    throw new Error('로그인이 필요합니다.');
+  }
+
+  const response = await apiClient.post('/v2/routie-spaces', null, {
+    Authorization: `Bearer ${accessToken}`,
+  });
 
   const data = await response.json();
 
@@ -43,18 +51,29 @@ const editRoutieSpaceName = async ({
   name,
 }: EditRoutieSpaceNameRequestType): Promise<EditRoutieSpaceNameAdapterType> => {
   const routieSpaceUuid = localStorage.getItem('routieSpaceUuid');
+  const accessToken = localStorage.getItem('accessToken');
 
   if (!routieSpaceUuid) {
     throw new Error('루티 스페이스 uuid가 없습니다.');
   }
 
-  const response = await apiClient.patch(`/routie-spaces/${routieSpaceUuid}`, {
-    name,
-  });
+  if (!accessToken) {
+    throw new Error('올바르게 로그인되지 않았습니다.');
+  }
+
+  const response = await apiClient.patch(
+    `/v2/routie-spaces/${routieSpaceUuid}`,
+    {
+      name,
+    },
+    {
+      Authorization: `Bearer ${accessToken}`,
+    },
+  );
 
   const data = await response.json();
 
   return editRoutieSpaceNameAdapter(data);
 };
 
-export { createRoutieSpace, getRoutieSpace, editRoutieSpaceName };
+export { createRoutieSpace, editRoutieSpaceName, getRoutieSpace };

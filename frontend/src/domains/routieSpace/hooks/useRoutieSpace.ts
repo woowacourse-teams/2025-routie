@@ -16,7 +16,7 @@ import type {
 const useRoutieSpace = (): UseRoutieSpaceReturn => {
   const { data: routieSpace, isLoading } = useRoutieSpaceQuery();
   const [currentName, setCurrentName] = useState('');
-  const { mutateAsync: editRoutieSpaceName } =
+  const { mutate: editRoutieSpaceName } =
     useEditRoutieSpaceNameQuery(currentName);
   const [isEditing, setIsEditing] = useState(false);
   const { showToast } = useToastContext();
@@ -53,7 +53,7 @@ const useRoutieSpace = (): UseRoutieSpaceReturn => {
   };
 
   const saveNameEdit = async (): Promise<void> => {
-    await editRoutieSpaceName();
+    editRoutieSpaceName();
     setIsEditing(false);
   };
 
