@@ -362,6 +362,23 @@ public enum ErrorCode {
     ),
 
     /**
+     * 6XXXX: Authentication domain
+     */
+    // ExternalAuthentication
+    OAUTH_PROVIDER_NOT_SUPPORTED(
+            "6000",
+            "지원하지 않는 ExternalAuthentication 제공자입니다.",
+            HttpStatus.BAD_REQUEST
+    ),
+
+    // JWT
+    INVALID_JWT(
+            "6001",
+            "인증 정보가 유효하지 않습니다.",
+            HttpStatus.UNAUTHORIZED
+    ),
+
+    /**
      * 9XXX: External API
      */
     KAKAO_DRIVING_ROUTE_API_ERROR(
@@ -392,6 +409,16 @@ public enum ErrorCode {
     V_WORLD_API_ERROR(
             "9012",
             "외부 장소 검색 서비스에 문제가 발생했습니다.",
+            HttpStatus.BAD_GATEWAY
+    ),
+    KAKAO_OAUTH_API_ERROR(
+            "9013",
+            "카카오 로그인 처리 중 오류가 발생했습니다.",
+            HttpStatus.BAD_GATEWAY
+    ),
+    KAKAO_USER_API_ERROR(
+            "9014",
+            "카카오에서 사용자 정보를 읽어오는 중 오류가 발생했습니다.",
             HttpStatus.BAD_GATEWAY
     );
 

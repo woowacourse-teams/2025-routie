@@ -1,13 +1,14 @@
 package routie.business.user.domain;
 
 import java.util.List;
+import routie.business.authentication.domain.external.ExternalAuthenticationProvider;
 import routie.business.routiespace.domain.RoutieSpace;
 
 public class UserBuilder {
 
     private String nickName = UserFixture.anyNickName();
-    private String oAuthIdentifier = UserFixture.anyOAuthIdentifier();
-    private OAuthProvider oAuthProvider = UserFixture.anyOAuthProvider();
+    private String externalAuthenticationIdentifier = UserFixture.anyExternalAuthenticationIdentifier();
+    private ExternalAuthenticationProvider externalAuthenticationProvider = UserFixture.anyExternalAuthenticationProvider();
     private List<RoutieSpace> routieSpaces = UserFixture.emptyRoutieSpaces();
 
     public UserBuilder nickName(final String nickName) {
@@ -15,13 +16,14 @@ public class UserBuilder {
         return this;
     }
 
-    public UserBuilder oAuthIdentifier(final String oAuthIdentifier) {
-        this.oAuthIdentifier = oAuthIdentifier;
+    public UserBuilder externalAuthenticationIdentifier(final String externalAuthenticationIdentifier) {
+        this.externalAuthenticationIdentifier = externalAuthenticationIdentifier;
         return this;
     }
 
-    public UserBuilder oAuthProvider(final OAuthProvider oAuthProvider) {
-        this.oAuthProvider = oAuthProvider;
+    public UserBuilder externalAuthenticationProvider(
+            final ExternalAuthenticationProvider externalAuthenticationProvider) {
+        this.externalAuthenticationProvider = externalAuthenticationProvider;
         return this;
     }
 
@@ -34,8 +36,8 @@ public class UserBuilder {
         return new User(
                 null,
                 nickName,
-                oAuthIdentifier,
-                oAuthProvider,
+                externalAuthenticationIdentifier,
+                externalAuthenticationProvider,
                 routieSpaces,
                 null,
                 null

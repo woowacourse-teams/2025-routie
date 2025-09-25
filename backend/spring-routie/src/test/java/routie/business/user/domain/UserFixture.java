@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicLong;
+import routie.business.authentication.domain.external.ExternalAuthenticationProvider;
 import routie.business.routiespace.domain.RoutieSpace;
 
 public class UserFixture {
@@ -14,12 +15,12 @@ public class UserFixture {
         return UUID.randomUUID().toString().substring(0, 7);
     }
 
-    public static String anyOAuthIdentifier() {
+    public static String anyExternalAuthenticationIdentifier() {
         return UUID.randomUUID().toString().substring(0, 7);
     }
 
-    public static OAuthProvider anyOAuthProvider() {
-        return OAuthProvider.KAKAO;
+    public static ExternalAuthenticationProvider anyExternalAuthenticationProvider() {
+        return ExternalAuthenticationProvider.KAKAO;
     }
 
     public static List<RoutieSpace> emptyRoutieSpaces() {
@@ -29,8 +30,8 @@ public class UserFixture {
     public static User emptyUser() {
         return new UserBuilder()
                 .nickName(anyNickName())
-                .oAuthIdentifier(anyOAuthIdentifier())
-                .oAuthProvider(anyOAuthProvider())
+                .externalAuthenticationIdentifier(anyExternalAuthenticationIdentifier())
+                .externalAuthenticationProvider(anyExternalAuthenticationProvider())
                 .routieSpaces(emptyRoutieSpaces())
                 .build();
     }

@@ -11,6 +11,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,13 +22,23 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import routie.business.authentication.domain.external.ExternalAuthenticationProvider;
 import routie.business.routiespace.domain.RoutieSpace;
 import routie.global.exception.domain.BusinessException;
 import routie.global.exception.domain.ErrorCode;
 
 @Getter
 @Entity
-@Table(name = "users")
+@Table(
+        name = "users",
+        uniqueConstraints = {
+                @UniqueConstraint(
+                        name = "uk_external_authentication_identifier_provider",
+                        columnNames = {"external_authentication_identifier", "external_authentication_provider"}
+                )
+        }
+
+)
 @EntityListeners(AuditingEntityListener.class)
 @AllArgsConstructor(access = AccessLevel.PACKAGE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -40,12 +51,12 @@ public class User {
     @Column(name = "nick_name", nullable = false)
     private String nickName;
 
-    @Column(name = "oauth_identifier", nullable = false)
-    private String oAuthIdentifier;
+    @Column(name = "external_authentication_identifier", nullable = false)
+    private String externalAuthenticationIdentifier;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "oauth_provider", nullable = false)
-    private OAuthProvider oAuthProvider;
+    @Column(name = "external_authentication_provider", nullable = false)
+    private ExternalAuthenticationProvider externalAuthenticationProvider;
 
     @OneToMany(mappedBy = "owner", cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true)
     private List<RoutieSpace> routieSpaces = new ArrayList<>();
@@ -60,16 +71,16 @@ public class User {
 
     public User(
             final String nickName,
-            final String oAuthIdentifier,
-            final OAuthProvider oAuthProvider
+            final String externalAuthenticationIdentifier,
+            final ExternalAuthenticationProvider externalAuthenticationProvider
     ) {
         validateName(nickName);
-        validateOAuthIdentifier(oAuthIdentifier);
-        validateOAuthProvider(oAuthProvider);
+        validateExternalAuthenticationIdentifier(externalAuthenticationIdentifier);
+        validateExternalAuthenticationProvider(externalAuthenticationProvider);
 
         this.nickName = nickName;
-        this.oAuthIdentifier = oAuthIdentifier;
-        this.oAuthProvider = oAuthProvider;
+        this.externalAuthenticationIdentifier = externalAuthenticationIdentifier;
+        this.externalAuthenticationProvider = externalAuthenticationProvider;
     }
 
     public void validateName(final String nickName) {
@@ -81,14 +92,15 @@ public class User {
         }
     }
 
-    public void validateOAuthIdentifier(final String oAuthIdentifier) {
-        if (oAuthIdentifier == null || oAuthIdentifier.isBlank()) {
+    public void validateExternalAuthenticationIdentifier(final String externalAuthenticationIdentifier) {
+        if (externalAuthenticationIdentifier == null || externalAuthenticationIdentifier.isBlank()) {
             throw new BusinessException(ErrorCode.USER_OAUTH_IDENTIFIER_EMPTY);
         }
     }
 
-    public void validateOAuthProvider(final OAuthProvider oAuthProvider) {
-        if (oAuthProvider == null) {
+    public void validateExternalAuthenticationProvider(
+            final ExternalAuthenticationProvider externalAuthenticationProvider) {
+        if (externalAuthenticationProvider == null) {
             throw new BusinessException(ErrorCode.USER_OAUTH_PROVIDER_EMPTY);
         }
     }
