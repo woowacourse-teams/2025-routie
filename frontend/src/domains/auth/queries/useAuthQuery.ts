@@ -2,9 +2,11 @@ import { useNavigate } from 'react-router';
 
 import { useMutation, useQuery } from '@tanstack/react-query';
 
+import { getUserName } from '@/domains/auth/apis/user';
+
 import { getKakaoAccessToken, getKakaoLoginUri } from '../apis/login';
 
-import { loginKey } from './key';
+import { loginKey, userKey } from './key';
 
 const useKakaoLoginUriQuery = () => {
   return useQuery({
@@ -29,4 +31,11 @@ const useKakaoLoginMutation = () => {
   });
 };
 
-export { useKakaoLoginMutation, useKakaoLoginUriQuery };
+const useUserNickNameQuery = () => {
+  return useQuery({
+    queryKey: userKey.userName,
+    queryFn: () => getUserName(),
+  });
+};
+
+export { useKakaoLoginMutation, useKakaoLoginUriQuery, useUserNickNameQuery };
