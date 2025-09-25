@@ -6,6 +6,7 @@ import org.springframework.http.ProblemDetail;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import routie.global.exception.domain.ErrorCode;
+import routie.global.exception.infrastructure.logger.ExceptionLogger;
 
 /**
  * JWT 처리 과정에서 발생하는 예외를 처리하는 예외 핸들러.
@@ -22,7 +23,8 @@ import routie.global.exception.domain.ErrorCode;
 public class JwtExceptionHandler {
 
     @ExceptionHandler(JwtException.class)
-    public ProblemDetail handle() {
+    public ProblemDetail handle(final JwtException exception) {
+        ExceptionLogger.logExpectedException(exception);
         return ErrorCode.INVALID_JWT.toProblemDetail();
     }
 }
