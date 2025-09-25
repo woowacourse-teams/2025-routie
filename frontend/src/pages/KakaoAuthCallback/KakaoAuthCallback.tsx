@@ -20,7 +20,7 @@ const KakaoAuthCallback = () => {
   useEffect(() => {
     const handleKakaoLogin = async () => {
       if (!code) {
-        navigate('/', { replace: true });
+        handleGoHome();
         return;
       }
       kakaoAccessTokenMutate(code);
