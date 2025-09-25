@@ -17,7 +17,7 @@ const LoginModal = ({ onClose }: Pick<ModalProps, 'onClose'>) => {
   const { data: kakaoLoginUri } = useKakaoLoginUriQuery();
   const { showToast } = useToastContext();
 
-  const handleLoginButtonClick = async () => {
+  const redirectToKakaoLogin = async () => {
     try {
       if (kakaoLoginUri?.uri) {
         window.open(kakaoLoginUri.uri, '_self');
@@ -29,6 +29,11 @@ const LoginModal = ({ onClose }: Pick<ModalProps, 'onClose'>) => {
         type: 'error',
       });
     }
+  };
+
+  const handleKakaoLinkClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
+    redirectToKakaoLogin();
   };
 
   return (
@@ -45,9 +50,9 @@ const LoginModal = ({ onClose }: Pick<ModalProps, 'onClose'>) => {
               <Text variant="caption">SNS 계정으로 간편로그인</Text>
               <div css={DividerStyle} />
             </Flex>
-            <button css={KakaoButtonStyle} onClick={handleLoginButtonClick}>
+            <a href="#" onClick={handleKakaoLinkClick} css={KakaoButtonStyle}>
               <img src={kakaoImage} alt="카카오 로그인" />
-            </button>
+            </a>
           </Flex>
         </Flex>
       </div>
