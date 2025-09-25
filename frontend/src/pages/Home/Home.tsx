@@ -5,6 +5,7 @@ import Icon from '@/@common/components/IconSvg/Icon';
 import Text from '@/@common/components/Text/Text';
 import { useModal } from '@/@common/contexts/ModalContext';
 import GoToLoginButton from '@/domains/auth/components/GoToLoginButton/GoToLoginButton';
+import UserMenuButton from '@/domains/auth/components/UserMenuButton/UserMenuButton';
 import theme from '@/styles/theme';
 
 import {
@@ -25,6 +26,7 @@ const Home = () => {
     useRoutieSpaceNavigation();
   const { openModal } = useModal();
   const existingUuid = localStorage.getItem('routieSpaceUuid');
+  const kakaoAccessToken = localStorage.getItem('accessToken');
 
   const handleLoginClick = () => {
     openModal('login');
@@ -33,12 +35,13 @@ const Home = () => {
   return (
     <>
       <Header>
-        <Button
-          width="fit-content"
-          onClick={handleLoginClick}
-        >
-          <Text variant="body">로그인</Text>
-        </Button>
+        {kakaoAccessToken ? (
+          <UserMenuButton userName="바보기린" />
+        ) : (
+          <Button width="fit-content" onClick={handleLoginClick}>
+            <Text variant="body">로그인</Text>
+          </Button>
+        )}
       </Header>
       <Flex
         direction="column"
@@ -92,15 +95,19 @@ const Home = () => {
             />
           </Flex>
           <Flex gap={8} width="80%" css={ButtonWrapperStyle}>
-            <Button onClick={handleCreateRoutieSpace} css={CreateButtonStyle}>
-              <Flex gap={1.5} padding={1}>
-                <Icon name="arrowWhite" size={30} />
-                <Text variant="title" color="white">
-                  동선 만들러가기
-                </Text>
-              </Flex>
-            </Button>
-            {existingUuid && (
+            {kakaoAccessToken ? (
+              <Button onClick={handleCreateRoutieSpace} css={CreateButtonStyle}>
+                <Flex gap={1.5} padding={1}>
+                  <Icon name="arrowWhite" size={30} />
+                  <Text variant="title" color="white">
+                    동선 만들러가기
+                  </Text>
+                </Flex>
+              </Button>
+            ) : (
+              <GoToLoginButton onClick={handleLoginClick} />
+            )}
+            {existingUuid && kakaoAccessToken && (
               <Button
                 onClick={handleReturnToRoutieSpace}
                 css={ContinueButtonStyle}
@@ -113,7 +120,6 @@ const Home = () => {
                 </Flex>
               </Button>
             )}
-            <GoToLoginButton onClick={handleLoginClick} />
           </Flex>
         </Flex>
       </Flex>
