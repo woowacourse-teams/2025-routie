@@ -61,7 +61,7 @@ public class AuthenticationService {
         return userRepository.save(user);
     }
 
-    public String getRandomNickName() {
+    private String getRandomNickName() {
         final List<Word> adjectives = wordRepository.findAllByWordType(WordType.ADJECTIVE);
         if (adjectives.isEmpty()) {
             throw new BusinessException(ErrorCode.ADJECTIVE_NOT_FOUND);
