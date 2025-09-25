@@ -20,7 +20,6 @@ const useKakaoLoginMutation = () => {
     mutationKey: loginKey.kakaoAccessToken,
     mutationFn: (code: string) => getKakaoAccessToken(code),
     onSuccess: (data) => {
-      console.log(data);
       localStorage.setItem('accessToken', data.accessToken);
       navigate('/', { replace: true });
     },
