@@ -18,6 +18,7 @@ const RoutieSpaceName = () => {
     handleClick,
     handleChange,
   } = useRoutieSpace();
+  const accessToken = localStorage.getItem('accessToken');
 
   return (
     <Flex justifyContent="space-between" margin={0.4} gap={3}>
@@ -35,17 +36,19 @@ const RoutieSpaceName = () => {
           <Text variant="subTitle">{name}</Text>
         </Flex>
       )}
-      <Button
-        variant="primary"
-        onClick={handleClick}
-        width="5rem"
-        disabled={isLoading}
-        padding="0.8rem 0.6rem"
-      >
-        <Text variant="caption" color={theme.colors.white}>
-          {isEditing ? '저장' : '수정'}
-        </Text>
-      </Button>
+      {accessToken !== null && (
+        <Button
+          variant="primary"
+          onClick={handleClick}
+          width="5rem"
+          disabled={isLoading}
+          padding="0.8rem 0.6rem"
+        >
+          <Text variant="caption" color={theme.colors.white}>
+            {isEditing ? '저장' : '수정'}
+          </Text>
+        </Button>
+      )}
     </Flex>
   );
 };
