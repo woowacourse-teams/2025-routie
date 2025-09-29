@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import routie.business.place.domain.Place;
 import routie.business.place.domain.PlaceRepository;
-import routie.business.placelike.PlaceLikeRepository;
+import routie.business.placelike.domain.PlaceLikeRepository;
 import routie.business.placelike.domain.PlaceLike;
 import routie.business.routiespace.domain.RoutieSpace;
 import routie.business.routiespace.domain.RoutieSpaceRepository;
