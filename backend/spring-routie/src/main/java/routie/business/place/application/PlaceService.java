@@ -9,7 +9,10 @@ import routie.business.place.domain.PlaceRepository;
 import routie.business.place.ui.dto.request.PlaceCreateRequest;
 import routie.business.place.ui.dto.response.PlaceCreateResponse;
 import routie.business.place.ui.dto.response.PlaceListResponse;
+import routie.business.place.ui.dto.response.PlaceListResponseV2;
+import routie.business.place.ui.dto.response.PlaceListResponseV2.PlaceCardResponseV2;
 import routie.business.place.ui.dto.response.PlaceReadResponse;
+import routie.business.placelike.domain.PlaceLikeRepository;
 import routie.business.routie.domain.RoutiePlaceRepository;
 import routie.business.routiespace.domain.RoutieSpace;
 import routie.business.routiespace.domain.RoutieSpaceRepository;
@@ -24,6 +27,7 @@ public class PlaceService {
     private final PlaceRepository placeRepository;
     private final RoutieSpaceRepository routieSpaceRepository;
     private final RoutiePlaceRepository routiePlaceRepository;
+    private final PlaceLikeRepository placeLikeRepository;
 
     public PlaceReadResponse getPlace(final String routieSpaceIdentifier, final long placeId) {
         final RoutieSpace routieSpace = getRoutieSpaceByIdentifier(routieSpaceIdentifier);
@@ -55,6 +59,21 @@ public class PlaceService {
                 .orElseThrow(() -> new BusinessException(ErrorCode.ROUTIE_SPACE_NOT_FOUND));
         final List<Place> places = routieSpace.getPlaces();
         return PlaceListResponse.from(places);
+    }
+
+    public PlaceListResponseV2 readPlacesV2(final String routieSpaceIdentifier) {
+        RoutieSpace routieSpace = routieSpaceRepository.findByIdentifier(routieSpaceIdentifier)
+                .orElseThrow(() -> new BusinessException(ErrorCode.ROUTIE_SPACE_NOT_FOUND));
+        final List<Place> places = routieSpace.getPlaces();
+
+        final List<PlaceCardResponseV2> placeCardResponses = places.stream()
+                .map(place -> PlaceCardResponseV2.createPlaceWithLikeCount(
+                        place,
+                        placeLikeRepository.countByPlace(place)
+                ))
+                .toList();
+
+        return new PlaceListResponseV2(placeCardResponses);
     }
 
     @Transactional
