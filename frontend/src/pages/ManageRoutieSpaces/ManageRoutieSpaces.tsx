@@ -18,7 +18,7 @@ import ManageRoutieSpacesLayout from './layouts/ManageRoutieSpacesLayout';
 const ManageRoutieSpaces = () => {
   const kakaoAccessToken = localStorage.getItem('accessToken');
   const navigate = useNavigate();
-  const { data: routieSpaces } = useGetRoutieSpaceListQuery();
+  const { data: routieSpaces, isLoading } = useGetRoutieSpaceListQuery();
 
   useEffect(() => {
     if (!kakaoAccessToken) {
@@ -39,20 +39,28 @@ const ManageRoutieSpaces = () => {
         <UserMenuButton />
       </Header>
       <ManageRoutieSpacesLayout>
-        <Flex gap={3} justifyContent="space-between">
-          <Text variant="title">관리할 루티 공간 목록</Text>
-          <Button
-            width="14rem"
-            css={css`
-              &:hover {
-                background-color: ${theme.colors.purple[50]};
-              }
-            `}
-          >
-            <Text variant="body">동선 만들기</Text>
-          </Button>
-        </Flex>
-        <RoutieSpaceList routieSpaces={routieSpaces || []} />
+        {isLoading ? (
+          <Flex>
+            <Text variant="title">로딩중...</Text>
+          </Flex>
+        ) : (
+          <>
+            <Flex gap={3} justifyContent="space-between">
+              <Text variant="title">관리할 루티 공간 목록</Text>
+              <Button
+                width="14rem"
+                css={css`
+                  &:hover {
+                    background-color: ${theme.colors.purple[50]};
+                  }
+                `}
+              >
+                <Text variant="body">동선 만들기</Text>
+              </Button>
+            </Flex>
+            <RoutieSpaceList routieSpaces={routieSpaces || []} />
+          </>
+        )}
       </ManageRoutieSpacesLayout>
     </div>
   );
