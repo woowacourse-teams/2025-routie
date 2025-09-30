@@ -1,17 +1,17 @@
 import { apiClient } from '@/apis';
-
 import {
   createRoutieSpaceAdapter,
   editRoutieSpaceNameAdapter,
+  getRoutieSpaceListAdapter,
   routieSpaceAdapter,
-} from '../adapters/routieSpaceAdapter';
-import {
+} from '@/domains/routieSpace/adapters/routieSpaceAdapter';
+import type { EditRoutieSpaceNameRequestType } from '@/domains/routieSpace/types/api.types';
+import type {
   CreateRoutieSpaceAdapterType,
   EditRoutieSpaceNameAdapterType,
+  GetRoutieSpaceListAdapterType,
   RoutieSpaceAdapterType,
-} from '../types/routieSpace.types';
-
-import type { EditRoutieSpaceNameRequestType } from '../types/api.types';
+} from '@/domains/routieSpace/types/routieSpace.types';
 
 const createRoutieSpace = async (): Promise<CreateRoutieSpaceAdapterType> => {
   const accessToken = localStorage.getItem('accessToken');
@@ -76,4 +76,27 @@ const editRoutieSpaceName = async ({
   return editRoutieSpaceNameAdapter(data);
 };
 
-export { createRoutieSpace, editRoutieSpaceName, getRoutieSpace };
+const getRoutieSpaceList = async (): Promise<
+  GetRoutieSpaceListAdapterType[]
+> => {
+  const accessToken = localStorage.getItem('accessToken');
+
+  if (!accessToken) {
+    throw new Error('올바르게 로그인되지 않았습니다.');
+  }
+
+  const response = await apiClient.get('/v1/my-routie-spaces', undefined, {
+    Authorization: `Bearer ${accessToken}`,
+  });
+
+  const data = await response.json();
+
+  return getRoutieSpaceListAdapter(data);
+};
+
+export {
+  createRoutieSpace,
+  editRoutieSpaceName,
+  getRoutieSpace,
+  getRoutieSpaceList,
+};

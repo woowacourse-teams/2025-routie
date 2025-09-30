@@ -27,6 +27,12 @@ interface EditRoutieSpaceNameAdapterType {
   name: RoutieSpaceNameType;
 }
 
+interface GetRoutieSpaceListAdapterType {
+  routieSpaceUuid: string;
+  name: RoutieSpaceNameType;
+  date: Date;
+}
+
 export type {
   ERROR_CASE,
   UseRoutieSpaceReturn,
@@ -34,4 +40,5 @@ export type {
   RoutieSpaceAdapterType,
   CreateRoutieSpaceAdapterType,
   EditRoutieSpaceNameAdapterType,
+  GetRoutieSpaceListAdapterType,
 };
