@@ -1,5 +1,6 @@
 package routie.business.routiespace.application;
 
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -8,6 +9,7 @@ import routie.business.routiespace.domain.RoutieSpaceIdentifierProvider;
 import routie.business.routiespace.domain.RoutieSpaceRepository;
 import routie.business.routiespace.ui.dto.request.RoutieSpaceUpdateRequest;
 import routie.business.routiespace.ui.dto.response.RoutieSpaceCreateResponse;
+import routie.business.routiespace.ui.dto.response.RoutieSpaceListResponse;
 import routie.business.routiespace.ui.dto.response.RoutieSpaceReadResponse;
 import routie.business.routiespace.ui.dto.response.RoutieSpaceUpdateResponse;
 import routie.business.user.domain.User;
@@ -26,6 +28,12 @@ public class RoutieSpaceService {
         RoutieSpace routieSpace = getRoutieSpaceByRoutieSpaceIdentifier(routieSpaceIdentifier);
 
         return RoutieSpaceReadResponse.from(routieSpace);
+    }
+
+    public RoutieSpaceListResponse getRoutieSpaces(final User user) {
+        List<RoutieSpace> routieSpaces = routieSpaceRepository.findByOwner(user);
+
+        return RoutieSpaceListResponse.from(routieSpaces);
     }
 
     @Transactional
