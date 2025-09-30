@@ -7,7 +7,6 @@ import Button from '@/@common/components/Button/Button';
 import Flex from '@/@common/components/Flex/Flex';
 import Header from '@/@common/components/Header/Header';
 import Text from '@/@common/components/Text/Text';
-import { useModal } from '@/@common/contexts/ModalContext';
 import UserMenuButton from '@/domains/auth/components/UserMenuButton/UserMenuButton';
 import { useGetRoutieSpaceListQuery } from '@/domains/routieSpace/queries/useRoutieSpaceQuery';
 import RoutieSpaceList from '@/pages/ManageRoutieSpaces/components/RoutieSpaceList/RoutieSpaceList';
@@ -18,7 +17,6 @@ import ManageRoutieSpacesLayout from './layouts/ManageRoutieSpacesLayout';
 
 const ManageRoutieSpaces = () => {
   const kakaoAccessToken = localStorage.getItem('accessToken');
-  const { openModal } = useModal();
   const navigate = useNavigate();
   const { data: routieSpaces } = useGetRoutieSpaceListQuery();
 
@@ -35,20 +33,10 @@ const ManageRoutieSpaces = () => {
     return null;
   }
 
-  const handleLoginClick = () => {
-    openModal('login');
-  };
-
   return (
     <div css={ManageRoutieSpacesStyle}>
       <Header>
-        {kakaoAccessToken ? (
-          <UserMenuButton />
-        ) : (
-          <Button width="fit-content" onClick={handleLoginClick}>
-            <Text variant="body">로그인</Text>
-          </Button>
-        )}
+        <UserMenuButton />
       </Header>
       <ManageRoutieSpacesLayout>
         <Flex gap={3} justifyContent="space-between">
