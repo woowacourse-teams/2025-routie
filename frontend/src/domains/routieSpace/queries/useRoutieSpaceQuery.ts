@@ -1,12 +1,12 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 import { useToastContext } from '@/@common/contexts/useToastContext';
-
 import {
   createRoutieSpace,
   editRoutieSpaceName,
   getRoutieSpace,
-} from '../apis/routieSpace';
+  getRoutieSpaceList,
+} from '@/domains/routieSpace/apis/routieSpace';
 
 import { routieSpaceKeys } from './key';
 
@@ -63,8 +63,16 @@ const useEditRoutieSpaceNameQuery = (name: string) => {
   });
 };
 
+const useGetRoutieSpaceListQuery = () => {
+  return useQuery({
+    queryKey: routieSpaceKeys.list(),
+    queryFn: getRoutieSpaceList,
+  });
+};
+
 export {
   useRoutieSpaceQuery,
   useCreateRoutieSpaceQuery,
   useEditRoutieSpaceNameQuery,
+  useGetRoutieSpaceListQuery,
 };

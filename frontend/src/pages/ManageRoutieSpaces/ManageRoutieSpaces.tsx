@@ -9,40 +9,18 @@ import Header from '@/@common/components/Header/Header';
 import Text from '@/@common/components/Text/Text';
 import { useModal } from '@/@common/contexts/ModalContext';
 import UserMenuButton from '@/domains/auth/components/UserMenuButton/UserMenuButton';
+import { useGetRoutieSpaceListQuery } from '@/domains/routieSpace/queries/useRoutieSpaceQuery';
 import RoutieSpaceList from '@/pages/ManageRoutieSpaces/components/RoutieSpaceList/RoutieSpaceList';
 import theme from '@/styles/theme';
 
 import { ManageRoutieSpacesStyle } from './MavageRoutieSpaces.styles';
 import ManageRoutieSpacesLayout from './layouts/ManageRoutieSpacesLayout';
 
-const routieSpaces = [
-  {
-    routieSpaceUuid: '1',
-    name: 'Routie Space 1',
-    date: new Date(),
-  },
-  {
-    routieSpaceUuid: '2',
-    name: 'Routie Space 2',
-    date: new Date(),
-  },
-
-  {
-    routieSpaceUuid: '3',
-    name: 'Routie Space 3',
-    date: new Date(),
-  },
-  {
-    routieSpaceUuid: '4',
-    name: 'Routie Space 4',
-    date: new Date(),
-  },
-];
-
 const ManageRoutieSpaces = () => {
   const kakaoAccessToken = localStorage.getItem('accessToken');
   const { openModal } = useModal();
   const navigate = useNavigate();
+  const { data: routieSpaces } = useGetRoutieSpaceListQuery();
 
   useEffect(() => {
     if (!kakaoAccessToken) {
@@ -86,7 +64,7 @@ const ManageRoutieSpaces = () => {
             <Text variant="body">동선 만들기</Text>
           </Button>
         </Flex>
-        <RoutieSpaceList routieSpaces={routieSpaces} />
+        <RoutieSpaceList routieSpaces={routieSpaces || []} />
       </ManageRoutieSpacesLayout>
     </div>
   );
