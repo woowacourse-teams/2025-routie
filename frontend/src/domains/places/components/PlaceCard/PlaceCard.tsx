@@ -8,12 +8,15 @@ import Icon from '@/@common/components/IconSvg/Icon';
 import Text from '@/@common/components/Text/Text';
 import theme from '@/styles/theme';
 
+import LikeButton from '../LikeButton/LikeButton';
+
 import type { PlaceCardProps } from './PlaceCard.types';
 
 const PlaceCard = ({
   selected,
   onSelect,
   onDelete,
+  onLike,
   ...props
 }: PlaceCardProps) => {
   const handlePlaceSelect = async () => {
@@ -35,6 +38,10 @@ const PlaceCard = ({
           <Text variant="caption" color={theme.colors.gray[200]} ellipsis>
             {props.roadAddressName || props.addressName}
           </Text>
+          <LikeButton
+            count={props.likeCount}
+            onClick={() => onLike(props.id)}
+          />
         </Flex>
         <Flex direction="column" gap={1.6} height="100%" width="auto">
           <Icon

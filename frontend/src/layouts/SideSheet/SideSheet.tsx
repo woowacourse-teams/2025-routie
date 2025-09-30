@@ -123,6 +123,7 @@ const SideSheet = ({ open, onToggle }: SideSheetProps) => {
                     selected={selected}
                     onSelect={handlePlaceSelect}
                     onDelete={handlePlaceDelete}
+                    onLike={handleLikeButtonClick}
                   />
                 );
               })}
