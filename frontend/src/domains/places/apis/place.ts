@@ -61,7 +61,7 @@ const getPlaceList = async (): Promise<PlaceListAdapterType> => {
   ensureRoutieSpaceUuid(routieSpaceUuid);
 
   const response = await apiClient.get(
-    `/routie-spaces/${routieSpaceUuid}/places`,
+    `/v2/routie-spaces/${routieSpaceUuid}/places`,
   );
 
   const data = await response.json();
@@ -81,4 +81,26 @@ const searchPlace = async ({
   return searchPlaceAdapter(data.searchedPlaces);
 };
 
-export { addPlace, deletePlace, getPlace, getPlaceList, searchPlace };
+const postLikePlace = async (placeId: number) => {
+  const routieSpaceUuid = getRoutieSpaceUuid();
+  ensureRoutieSpaceUuid(routieSpaceUuid);
+
+  const response = await apiClient.post(
+    `/v1/routie-spaces/${routieSpaceUuid}/places/${placeId}/likes`, // ← 오타도 수정 (like → likes)
+  );
+
+  if (!response.ok) {
+    throw new Error('좋아요 요청 실패');
+  }
+
+  return;
+};
+
+export {
+  addPlace,
+  deletePlace,
+  getPlace,
+  getPlaceList,
+  searchPlace,
+  postLikePlace,
+};
