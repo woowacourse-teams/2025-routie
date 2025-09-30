@@ -10,6 +10,7 @@ import Text from '@/@common/components/Text/Text';
 import { useToastContext } from '@/@common/contexts/useToastContext';
 import UserMenuButton from '@/domains/auth/components/UserMenuButton/UserMenuButton';
 import { useGetRoutieSpaceListQuery } from '@/domains/routieSpace/queries/useRoutieSpaceQuery';
+import { useRoutieSpaceNavigation } from '@/pages/Home/hooks/useRoutieSpaceNavigation';
 import RoutieSpaceList from '@/pages/ManageRoutieSpaces/components/RoutieSpaceList/RoutieSpaceList';
 import theme from '@/styles/theme';
 
@@ -21,6 +22,7 @@ const ManageRoutieSpaces = () => {
   const navigate = useNavigate();
   const { data: routieSpaces, isLoading, error } = useGetRoutieSpaceListQuery();
   const { showToast } = useToastContext();
+  const { handleCreateRoutieSpace } = useRoutieSpaceNavigation();
 
   useEffect(() => {
     if (!kakaoAccessToken) {
@@ -77,6 +79,7 @@ const ManageRoutieSpaces = () => {
                     background-color: ${theme.colors.purple[50]};
                   }
                 `}
+                onClick={() => handleCreateRoutieSpace()}
               >
                 <Text variant="body">동선 만들기</Text>
               </Button>
