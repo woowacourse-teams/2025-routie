@@ -18,7 +18,7 @@ public record RoutieSpaceListResponse(
     }
 
     public record RoutieSpaceResponse(
-            String id,
+            String identifier,
             String name,
             @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
             LocalDateTime createdTime
