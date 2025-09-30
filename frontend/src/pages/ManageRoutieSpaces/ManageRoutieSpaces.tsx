@@ -7,6 +7,7 @@ import Button from '@/@common/components/Button/Button';
 import Flex from '@/@common/components/Flex/Flex';
 import Header from '@/@common/components/Header/Header';
 import Text from '@/@common/components/Text/Text';
+import { useToastContext } from '@/@common/contexts/useToastContext';
 import UserMenuButton from '@/domains/auth/components/UserMenuButton/UserMenuButton';
 import { useGetRoutieSpaceListQuery } from '@/domains/routieSpace/queries/useRoutieSpaceQuery';
 import RoutieSpaceList from '@/pages/ManageRoutieSpaces/components/RoutieSpaceList/RoutieSpaceList';
@@ -18,7 +19,8 @@ import ManageRoutieSpacesLayout from './layouts/ManageRoutieSpacesLayout';
 const ManageRoutieSpaces = () => {
   const kakaoAccessToken = localStorage.getItem('accessToken');
   const navigate = useNavigate();
-  const { data: routieSpaces, isLoading } = useGetRoutieSpaceListQuery();
+  const { data: routieSpaces, isLoading, error } = useGetRoutieSpaceListQuery();
+  const { showToast } = useToastContext();
 
   useEffect(() => {
     if (!kakaoAccessToken) {
@@ -29,8 +31,29 @@ const ManageRoutieSpaces = () => {
     }
   }, [kakaoAccessToken, navigate]);
 
+  useEffect(() => {
+    if (error) {
+      showToast({
+        message: error.message,
+        type: 'error',
+      });
+    }
+  }, [error, showToast]);
+
   if (!kakaoAccessToken) {
     return null;
+  }
+
+  if (error) {
+    return (
+      <Flex gap={1} direction="column" height="100dvh">
+        <Text variant="title">일시적인 오류가 발생했습니다.</Text>
+        <Text variant="body">잠시 후 다시 시도해주세요.</Text>
+        <Button width="14rem" onClick={() => navigate('/')}>
+          <Text variant="body">홈으로 돌아가기</Text>
+        </Button>
+      </Flex>
+    );
   }
 
   return (
@@ -40,7 +63,7 @@ const ManageRoutieSpaces = () => {
       </Header>
       <ManageRoutieSpacesLayout>
         {isLoading ? (
-          <Flex>
+          <Flex height="calc(100dvh - 7.1rem)">
             <Text variant="title">로딩중...</Text>
           </Flex>
         ) : (
