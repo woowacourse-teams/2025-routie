@@ -12,7 +12,7 @@ import routie.business.place.ui.dto.response.PlaceListResponse;
 import routie.business.place.ui.dto.response.PlaceListResponseV2;
 import routie.business.place.ui.dto.response.PlaceListResponseV2.PlaceCardResponseV2;
 import routie.business.place.ui.dto.response.PlaceReadResponse;
-import routie.business.placelike.domain.PlaceLikeRepository;
+import routie.business.like.domain.PlaceLikeRepository;
 import routie.business.routie.domain.RoutiePlaceRepository;
 import routie.business.routiespace.domain.RoutieSpace;
 import routie.business.routiespace.domain.RoutieSpaceRepository;

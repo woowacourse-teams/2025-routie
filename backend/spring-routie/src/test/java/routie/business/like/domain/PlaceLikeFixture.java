@@ -1,4 +1,4 @@
-package routie.business.placelike.domain;
+package routie.business.like.domain;
 
 import routie.business.place.domain.Place;
 import routie.business.place.domain.PlaceFixture;

@@ -1,4 +1,4 @@
-package routie.business.placelike.domain;
+package routie.business.like.domain;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

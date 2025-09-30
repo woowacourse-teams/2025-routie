@@ -1,4 +1,4 @@
-package routie.business.placelike.ui.v1;
+package routie.business.like.ui.v1;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -17,9 +17,8 @@ import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import routie.business.place.domain.Place;
 import routie.business.place.domain.PlaceBuilder;
 import routie.business.place.domain.PlaceRepository;
-import routie.business.placelike.domain.PlaceLikeRepository;
+import routie.business.like.domain.PlaceLikeRepository;
 import routie.business.routiespace.domain.RoutieSpace;
-import routie.business.routiespace.domain.RoutieSpaceFixture;
 import routie.business.routiespace.domain.RoutieSpaceIdentifierProvider;
 import routie.business.routiespace.domain.RoutieSpaceRepository;
 

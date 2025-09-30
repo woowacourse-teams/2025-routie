@@ -1,12 +1,12 @@
-package routie.business.placelike.application;
+package routie.business.like.application;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import routie.business.place.domain.Place;
 import routie.business.place.domain.PlaceRepository;
-import routie.business.placelike.domain.PlaceLikeRepository;
-import routie.business.placelike.domain.PlaceLike;
+import routie.business.like.domain.PlaceLikeRepository;
+import routie.business.like.domain.PlaceLike;
 import routie.business.routiespace.domain.RoutieSpace;
 import routie.business.routiespace.domain.RoutieSpaceRepository;
 import routie.global.exception.domain.BusinessException;
