@@ -27,9 +27,7 @@ public class RoutieSpaceControllerV1 {
     private final RoutieSpaceService routieSpaceService;
 
     @PostMapping("/routie-spaces")
-    public ResponseEntity<RoutieSpaceCreateResponse> createRoutieSpace(
-            @AuthenticatedUser final User user
-    ) {
+    public ResponseEntity<RoutieSpaceCreateResponse> createRoutieSpace() {
         RoutieSpaceCreateResponse routieSpaceCreateResponse = routieSpaceService.addRoutieSpace();
 
         return ResponseEntity.ok(routieSpaceCreateResponse);
