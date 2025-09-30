@@ -6,6 +6,7 @@ import Icon from '@/@common/components/IconSvg/Icon';
 import Text from '@/@common/components/Text/Text';
 import { useToastContext } from '@/@common/contexts/useToastContext';
 import { useUserQuery } from '@/domains/auth/queries/useAuthQuery';
+import { useRoutieSpaceNavigation } from '@/pages/Home/hooks/useRoutieSpaceNavigation';
 
 import { DividerStyle, UserMenuStyle } from './UserMenu.styles';
 
@@ -14,6 +15,7 @@ import type { UserMenuProps } from './UserMenu.types';
 const UserMenu = ({ onClick }: UserMenuProps) => {
   const { data: user, error } = useUserQuery();
   const { showToast } = useToastContext();
+  const { handleMoveToManageRoutieSpace } = useRoutieSpaceNavigation();
 
   useEffect(() => {
     if (error) {
@@ -30,6 +32,9 @@ const UserMenu = ({ onClick }: UserMenuProps) => {
       <Flex direction="column" width="10" gap={1}>
         <Text variant="body">{user?.nickName ?? '닉네임 불러오기 오류'}</Text>
         <div css={DividerStyle} />
+        <Button onClick={handleMoveToManageRoutieSpace}>
+          <Text variant="caption">내 동선 목록</Text>
+        </Button>
         <Button onClick={onClick}>
           <Flex gap={1}>
             <Icon name="logout" size={20} />
