@@ -12,7 +12,6 @@ import logout from '@/assets/icons/logout.svg';
 import pin from '@/assets/icons/pin.svg';
 import collectPlace from '@/assets/icons/place-home.svg';
 import plus from '@/assets/icons/plus.svg';
-import reload from '@/assets/icons/reload.svg';
 import search from '@/assets/icons/search.svg';
 import disableTrash from '@/assets/icons/trash-disable.svg';
 import trash from '@/assets/icons/trash.svg';
@@ -36,7 +35,6 @@ const allIcons = {
   trash,
   closeRed,
   disableTrash,
-  reload,
   user,
 } as const;
 
