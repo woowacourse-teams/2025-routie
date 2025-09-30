@@ -26,9 +26,14 @@ type FetchPlaceResponseType = ApiPlaceBaseType;
 
 interface FetchPlaceListResponseType extends ApiPlaceBaseType {
   id: number;
+  likeCount: number;
 }
 
 interface DeletePlaceRequestType {
+  placeId: number;
+}
+
+interface LikePlaceRequestType {
   placeId: number;
 }
 
@@ -40,4 +45,5 @@ export type {
   FetchPlaceResponseType,
   FetchPlaceListResponseType,
   DeletePlaceRequestType,
+  LikePlaceRequestType,
 };

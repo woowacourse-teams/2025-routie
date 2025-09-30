@@ -30,6 +30,7 @@ const getPlaceListAdapter = (
       addressName: item.addressName,
       latitude: item.latitude,
       longitude: item.longitude,
+      likeCount: item.likeCount,
     };
   });
 };
