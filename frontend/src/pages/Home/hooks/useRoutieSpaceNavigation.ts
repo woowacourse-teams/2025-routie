@@ -23,9 +23,20 @@ const useRoutieSpaceNavigation = () => {
     navigate(`/manage-routie-spaces`);
   }, [navigate]);
 
+  const handleMoveToRoutieSpace = useCallback(
+    (routieSpaceUuid: string) => {
+      const queryParams = new URLSearchParams({
+        routieSpaceIdentifier: routieSpaceUuid,
+      });
+      navigate(`/routie-spaces?${queryParams.toString()}`);
+    },
+    [navigate],
+  );
+
   return {
     handleCreateRoutieSpace,
     handleMoveToManageRoutieSpace,
+    handleMoveToRoutieSpace,
   };
 };
 
