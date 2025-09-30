@@ -1,6 +1,6 @@
 import Flex from '@/@common/components/Flex/Flex';
 
-import { ManageRoutieSpacesLayoutStyle } from './ManageRoutiSpacesLayout.styles';
+import { ManageRoutieSpacesLayoutStyle } from './ManageRoutieSpacesLayout.styles';
 
 const ManageRoutieSpacesLayout = ({
   children,

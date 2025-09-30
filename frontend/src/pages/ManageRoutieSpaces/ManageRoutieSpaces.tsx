@@ -13,7 +13,7 @@ import { useGetRoutieSpaceListQuery } from '@/domains/routieSpace/queries/useRou
 import RoutieSpaceList from '@/pages/ManageRoutieSpaces/components/RoutieSpaceList/RoutieSpaceList';
 import theme from '@/styles/theme';
 
-import { ManageRoutieSpacesStyle } from './MavageRoutieSpaces.styles';
+import { ManageRoutieSpacesStyle } from './ManageRoutieSpaces.styles';
 import ManageRoutieSpacesLayout from './layouts/ManageRoutieSpacesLayout';
 
 const ManageRoutieSpaces = () => {
