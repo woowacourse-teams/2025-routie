@@ -5,6 +5,7 @@ import { useAsyncLock } from '@/@common/hooks/useAsyncLock';
 import {
   useAddPlaceQuery,
   useDeletePlaceQuery,
+  useLikePlaceMutation,
   usePlaceListQuery,
 } from '@/domains/places/queries/usePlaceQuery';
 import type { SearchedPlaceType } from '@/domains/places/types/place.types';
@@ -14,6 +15,7 @@ const usePlaceList = () => {
   const { data: placeList, error } = usePlaceListQuery();
   const { mutateAsync: addPlace, data: addedPlaceId } = useAddPlaceQuery();
   const { mutateAsync: deletePlace } = useDeletePlaceQuery();
+  const { mutate: postLikePlace } = useLikePlaceMutation();
   const { showToast } = useToastContext();
   const { runWithLock: runDeleteWithLock } = useAsyncLock();
   const { runWithLock: runAddWithLock } = useAsyncLock();
@@ -43,6 +45,13 @@ const usePlaceList = () => {
     [deletePlace],
   );
 
+  const handleLikePlace = useCallback(
+    async (placeId: number) => {
+      postLikePlace({ placeId });
+    },
+    [postLikePlace],
+  );
+
   useEffect(() => {
     if (error) {
       console.error(error);
@@ -58,6 +67,7 @@ const usePlaceList = () => {
     handleAddPlace,
     addedPlaceId,
     handleDeletePlace,
+    handleLikePlace,
   };
 };
 
