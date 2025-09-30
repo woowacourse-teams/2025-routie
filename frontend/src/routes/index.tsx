@@ -10,6 +10,7 @@ import ToastProvider from '@/@common/contexts/ToastProvider';
 import { useGoogleAnalytics } from '@/libs/googleAnalytics/hooks/useGoogleAnalytics';
 import Home from '@/pages/Home/Home';
 import KakaoAuthCallback from '@/pages/KakaoAuthCallback/KakaoAuthCallback';
+import ManageRoutieSpaces from '@/pages/ManageRoutieSpaces/ManageRoutieSpaces';
 import VersionInfo from '@/pages/VersionInfo/VersionInfo';
 
 const RoutieSpace = lazy(() => import('@/pages/RoutieSpace/RoutieSpace'));
@@ -53,6 +54,14 @@ const router = createBrowserRouter([
     element: (
       <LayoutWithAnalytics>
         <VersionInfo />
+      </LayoutWithAnalytics>
+    ),
+  },
+  {
+    path: '/manage-routie-spaces',
+    element: (
+      <LayoutWithAnalytics>
+        <ManageRoutieSpaces />
       </LayoutWithAnalytics>
     ),
   },
