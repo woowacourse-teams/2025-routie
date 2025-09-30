@@ -2,6 +2,7 @@ package routie.business.placelike.application;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import routie.business.place.domain.Place;
 import routie.business.place.domain.PlaceRepository;
 import routie.business.placelike.domain.PlaceLikeRepository;
@@ -13,12 +14,14 @@ import routie.global.exception.domain.ErrorCode;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class PlaceLikeService {
 
     private final PlaceLikeRepository placeLikeRepository;
     private final RoutieSpaceRepository routieSpaceRepository;
     private final PlaceRepository placeRepository;
 
+    @Transactional
     public void likePlace(final Long placeId, final String routieSpaceIdentifier) {
         final RoutieSpace routieSpace = routieSpaceRepository.findByIdentifier(routieSpaceIdentifier)
                 .orElseThrow(() -> new BusinessException(ErrorCode.ROUTIE_SPACE_NOT_FOUND_BY_IDENTIFIER));
