@@ -14,7 +14,16 @@ const RoutieSpaceListItem = ({ name, date }: RoutieSpaceListItemProps) => {
     <li css={RoutieSpaceListItemStyle}>
       <Flex flex={1} direction="column" alignItems="flex-start" gap={0.5}>
         <Text variant="subTitle">이름: {name}</Text>
-        <Text variant="caption">생성 날짜: {date.toLocaleDateString()}</Text>
+        <Text variant="caption">
+          생성 날짜:{' '}
+          {date.toLocaleString('ko-KR', {
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit',
+            hour: '2-digit',
+            minute: '2-digit',
+          })}
+        </Text>
       </Flex>
       <Button
         width="5rem"
