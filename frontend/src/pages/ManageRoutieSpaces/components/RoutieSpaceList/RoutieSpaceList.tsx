@@ -1,3 +1,5 @@
+import Flex from '@/@common/components/Flex/Flex';
+import Text from '@/@common/components/Text/Text';
 import RoutieSpaceListItem from '@/pages/ManageRoutieSpaces/components/RoutieSpaceListItem/RoutieSpaceListItem';
 import type { RoutieSpaceListItemProps } from '@/pages/ManageRoutieSpaces/components/RoutieSpaceListItem/RoutieSpaceListItem.types';
 
@@ -8,7 +10,7 @@ interface RoutieSpaceListProps {
 }
 
 const RoutieSpaceList = ({ routieSpaces }: RoutieSpaceListProps) => {
-  return (
+  return routieSpaces.length > 0 ? (
     <ul css={RoutieSpaceListStyle}>
       {routieSpaces.map((routieSpace) => (
         <RoutieSpaceListItem
@@ -17,6 +19,10 @@ const RoutieSpaceList = ({ routieSpaces }: RoutieSpaceListProps) => {
         />
       ))}
     </ul>
+  ) : (
+    <Flex height="50dvh">
+      <Text variant="body">아직 생성한 동선이 없습니다...😅</Text>
+    </Flex>
   );
 };
 
