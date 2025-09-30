@@ -10,26 +10,32 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import routie.business.authentication.ui.argument.AuthenticatedUser;
+import routie.business.routiespace.application.RoutieSpaceService;
 import routie.business.routiespace.ui.dto.request.RoutieSpaceUpdateRequest;
 import routie.business.routiespace.ui.dto.response.RoutieSpaceCreateResponse;
+import routie.business.routiespace.ui.dto.response.RoutieSpaceListResponse;
 import routie.business.routiespace.ui.dto.response.RoutieSpaceReadResponse;
 import routie.business.routiespace.ui.dto.response.RoutieSpaceUpdateResponse;
-import routie.business.routiespace.application.RoutieSpaceService;
+import routie.business.user.domain.User;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/v1/routie-spaces")
+@RequestMapping("/v1")
 public class RoutieSpaceControllerV1 {
 
     private final RoutieSpaceService routieSpaceService;
 
-    @PostMapping
-    public ResponseEntity<RoutieSpaceCreateResponse> createRoutieSpace() {
+    @PostMapping("/routie-spaces")
+    public ResponseEntity<RoutieSpaceCreateResponse> createRoutieSpace(
+            @AuthenticatedUser final User user
+    ) {
         RoutieSpaceCreateResponse routieSpaceCreateResponse = routieSpaceService.addRoutieSpace();
+
         return ResponseEntity.ok(routieSpaceCreateResponse);
     }
 
-    @GetMapping("/{routieSpaceIdentifier}")
+    @GetMapping("/routie-spaces/{routieSpaceIdentifier}")
     public ResponseEntity<RoutieSpaceReadResponse> readRoutieSpace(
             @PathVariable final String routieSpaceIdentifier
     ) {
@@ -37,7 +43,16 @@ public class RoutieSpaceControllerV1 {
         return ResponseEntity.ok(routieSpaceReadResponse);
     }
 
-    @PatchMapping("/{routieSpaceIdentifier}")
+    @GetMapping("/my-routie-spaces")
+    public ResponseEntity<RoutieSpaceListResponse> readRoutieSpaces(
+            @AuthenticatedUser final User user
+    ) {
+        RoutieSpaceListResponse routieSpaceListResponse = routieSpaceService.getRoutieSpaces(user);
+
+        return ResponseEntity.ok(routieSpaceListResponse);
+    }
+
+    @PatchMapping("/routie-spaces/{routieSpaceIdentifier}")
     public ResponseEntity<RoutieSpaceUpdateResponse> updateRoutieSpace(
             @PathVariable final String routieSpaceIdentifier,
             @RequestBody @Valid final RoutieSpaceUpdateRequest routieSpaceUpdateRequest
