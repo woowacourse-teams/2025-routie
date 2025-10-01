@@ -17,9 +17,13 @@ const RoutieSpaceListItem = ({
 }: RoutieSpaceListItemProps) => {
   const { handleMoveToRoutieSpace } = useRoutieSpaceNavigation();
 
-  const handleClickRoutieSpace = () => {
-    handleMoveToRoutieSpace(routieSpaceUuid);
-  };
+  const handleDelete = useCallback(
+    (e: React.MouseEvent<HTMLButtonElement>) => {
+      e.stopPropagation();
+      onDeleteRoutieSpace(routieSpaceUuid);
+    },
+    [onDeleteRoutieSpace, routieSpaceUuid],
+  );
 
   return (
     <li css={RoutieSpaceListItemStyle} onClick={handleClickRoutieSpace}>
@@ -38,6 +42,7 @@ const RoutieSpaceListItem = ({
       </Flex>
       <Button
         width="5rem"
+        onClick={handleDelete}
         css={css`
           &:hover {
             background-color: ${theme.colors.red[50]};

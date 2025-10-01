@@ -22,10 +22,15 @@ interface GetRoutieSpaceListResponseType {
   }[];
 }
 
+interface DeleteRoutieSpaceRequestType {
+  routieSpaceUuid: string;
+}
+
 export type {
   CreateRoutieResponseType,
   GetRoutieSpaceResponseType,
   EditRoutieSpaceNameRequestType,
   EditRoutieSpaceNameResponseType,
   GetRoutieSpaceListResponseType,
+  DeleteRoutieSpaceRequestType,
 };
