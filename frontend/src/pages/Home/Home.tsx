@@ -22,7 +22,7 @@ import InfoCard from './components/InfoCard/InfoCard';
 import { useRoutieSpaceNavigation } from './hooks/useRoutieSpaceNavigation';
 
 const Home = () => {
-  const { handleCreateRoutieSpace, handleReturnToRoutieSpace } =
+  const { handleCreateRoutieSpace, handleMoveToManageRoutieSpace } =
     useRoutieSpaceNavigation();
   const { openModal } = useModal();
   const existingUuid = localStorage.getItem('routieSpaceUuid');
@@ -96,29 +96,32 @@ const Home = () => {
           </Flex>
           <Flex gap={8} width="80%" css={ButtonWrapperStyle}>
             {kakaoAccessToken ? (
-              <Button onClick={handleCreateRoutieSpace} css={CreateButtonStyle}>
-                <Flex gap={1.5} padding={1}>
-                  <Icon name="arrowWhite" size={30} />
-                  <Text variant="title" color="white">
-                    동선 만들러가기
-                  </Text>
-                </Flex>
-              </Button>
+              <>
+                <Button
+                  onClick={handleCreateRoutieSpace}
+                  css={CreateButtonStyle}
+                >
+                  <Flex gap={1.5} padding={1}>
+                    <Icon name="arrowWhite" size={30} />
+                    <Text variant="title" color="white">
+                      동선 만들러가기
+                    </Text>
+                  </Flex>
+                </Button>
+                <Button
+                  onClick={handleMoveToManageRoutieSpace}
+                  css={ContinueButtonStyle}
+                >
+                  <Flex gap={1.5} padding={1}>
+                    <Icon name="list" size={34} />
+                    <Text variant="title" color={theme.home.violet}>
+                      내 동선 목록 보러가기
+                    </Text>
+                  </Flex>
+                </Button>
+              </>
             ) : (
               <GoToLoginButton onClick={handleLoginClick} />
-            )}
-            {existingUuid && kakaoAccessToken && (
-              <Button
-                onClick={handleReturnToRoutieSpace}
-                css={ContinueButtonStyle}
-              >
-                <Flex gap={1.5} padding={1}>
-                  <Icon name="reload" size={25} />
-                  <Text variant="title" color={theme.home.violet}>
-                    이어서 만들기
-                  </Text>
-                </Flex>
-              </Button>
             )}
           </Flex>
         </Flex>

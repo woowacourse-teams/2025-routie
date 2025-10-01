@@ -39,6 +39,10 @@ export const ButtonStyle = ({ variant, width, padding }: ButtonProps) => css`
   border: none;
   border-radius: 8px;
 
+  &:hover {
+    background-color: ${theme.colors.gray[25]};
+  }
+
   ${variant && buttonVariant[variant]}
 
   :disabled {
