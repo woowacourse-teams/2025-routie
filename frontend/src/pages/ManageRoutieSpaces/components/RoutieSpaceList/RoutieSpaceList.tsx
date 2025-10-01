@@ -2,7 +2,7 @@ import Flex from '@/@common/components/Flex/Flex';
 import Text from '@/@common/components/Text/Text';
 import RoutieSpaceListItem from '@/pages/ManageRoutieSpaces/components/RoutieSpaceListItem/RoutieSpaceListItem';
 
-import { RoutieSpaceListStyle } from './RotieSpaceList.styles';
+import { RoutieSpaceListStyle } from './RoutieSpaceList.styles';
 
 import type { RoutieSpaceListProps } from './RoutieSpaceList.types';
 
