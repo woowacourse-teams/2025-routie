@@ -6,9 +6,8 @@ import Card from '@/@common/components/Card/Card';
 import Flex from '@/@common/components/Flex/Flex';
 import Icon from '@/@common/components/IconSvg/Icon';
 import Text from '@/@common/components/Text/Text';
+import LikeButton from '@/domains/places/components/LikeButton/LikeButton';
 import theme from '@/styles/theme';
-
-import LikeButton from '../LikeButton/LikeButton';
 
 import type { PlaceCardProps } from './PlaceCard.types';
 
