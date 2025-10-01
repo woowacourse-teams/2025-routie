@@ -75,7 +75,7 @@ const ManageRoutieSpaces = () => {
                     background-color: ${theme.colors.purple[50]};
                   }
                 `}
-                onClick={() => handleCreateRoutieSpace()}
+                onClick={handleCreateRoutieSpace}
               >
                 <Text variant="body">동선 만들기</Text>
               </Button>
