@@ -16,7 +16,11 @@ interface PlaceDataType extends PlaceBaseType {
 
 type PlaceAdapterType = PlaceBaseType;
 
-type PlaceListAdapterType = PlaceDataType[];
+interface PlaceWithLikeType extends PlaceDataType {
+  likeCount: number;
+}
+
+type PlaceListAdapterType = PlaceWithLikeType[];
 
 type SearchPlaceAdapterType = SearchedPlaceType[];
 
@@ -24,6 +28,7 @@ export type {
   SearchedPlaceType,
   PlaceDataType,
   PlaceAdapterType,
+  PlaceWithLikeType,
   PlaceListAdapterType,
   SearchPlaceAdapterType,
 };

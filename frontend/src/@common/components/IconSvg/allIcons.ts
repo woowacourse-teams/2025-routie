@@ -14,6 +14,7 @@ import pin from '@/assets/icons/pin.svg';
 import collectPlace from '@/assets/icons/place-home.svg';
 import plus from '@/assets/icons/plus.svg';
 import search from '@/assets/icons/search.svg';
+import thumbsUp from '@/assets/icons/thumbs-up.svg';
 import disableTrash from '@/assets/icons/trash-disable.svg';
 import trash from '@/assets/icons/trash.svg';
 import user from '@/assets/icons/user.svg';
@@ -35,6 +36,7 @@ const allIcons = {
   search,
   trash,
   closeRed,
+  thumbsUp,
   disableTrash,
   user,
   list,

@@ -27,7 +27,7 @@ import {
 import type { SideSheetProps } from './SideSheet.types';
 
 const SideSheet = ({ open, onToggle }: SideSheetProps) => {
-  const { placeList, handleDeletePlace } = usePlaceList();
+  const { placeList, handleDeletePlace, handleLikePlace } = usePlaceList();
   const { routieIdList, handleAddRoutie } = useRoutieList();
   const { openModal } = useModal();
   const { triggerEvent } = useGoogleEventTrigger();
@@ -54,6 +54,13 @@ const SideSheet = ({ open, onToggle }: SideSheetProps) => {
       await handleDeletePlace(placeId);
     },
     [handleDeletePlace],
+  );
+
+  const handleLikeButtonClick = useCallback(
+    (placeId: number) => {
+      handleLikePlace(placeId);
+    },
+    [handleLikePlace],
   );
 
   return (
@@ -116,6 +123,7 @@ const SideSheet = ({ open, onToggle }: SideSheetProps) => {
                     selected={selected}
                     onSelect={handlePlaceSelect}
                     onDelete={handlePlaceDelete}
+                    onLike={handleLikeButtonClick}
                   />
                 );
               })}

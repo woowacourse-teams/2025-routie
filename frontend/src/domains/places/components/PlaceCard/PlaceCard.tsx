@@ -6,6 +6,7 @@ import Card from '@/@common/components/Card/Card';
 import Flex from '@/@common/components/Flex/Flex';
 import Icon from '@/@common/components/IconSvg/Icon';
 import Text from '@/@common/components/Text/Text';
+import LikeButton from '@/domains/places/components/LikeButton/LikeButton';
 import theme from '@/styles/theme';
 
 import type { PlaceCardProps } from './PlaceCard.types';
@@ -14,6 +15,7 @@ const PlaceCard = ({
   selected,
   onSelect,
   onDelete,
+  onLike,
   ...props
 }: PlaceCardProps) => {
   const handlePlaceSelect = async () => {
@@ -35,6 +37,10 @@ const PlaceCard = ({
           <Text variant="caption" color={theme.colors.gray[200]} ellipsis>
             {props.roadAddressName || props.addressName}
           </Text>
+          <LikeButton
+            count={props.likeCount}
+            onClick={() => onLike(props.id)}
+          />
         </Flex>
         <Flex direction="column" gap={1.6} height="100%" width="auto">
           <Icon

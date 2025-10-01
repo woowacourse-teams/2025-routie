@@ -6,9 +6,13 @@ import {
   deletePlace,
   getPlace,
   getPlaceList,
+  postLikePlace,
   searchPlace,
 } from '@/domains/places/apis/place';
-import type { AddPlaceRequestType } from '@/domains/places/types/api.types';
+import type {
+  AddPlaceRequestType,
+  LikePlaceRequestType,
+} from '@/domains/places/types/api.types';
 
 import { placesKeys } from './key';
 
@@ -82,10 +86,33 @@ const useDeletePlaceQuery = () => {
   });
 };
 
+const useLikePlaceMutation = () => {
+  const { showToast } = useToastContext();
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ placeId }: LikePlaceRequestType) => postLikePlace(placeId),
+    onSuccess: () => {
+      showToast({
+        message: '좋아요가 추가되었습니다.',
+        type: 'success',
+      });
+      queryClient.invalidateQueries({ queryKey: placesKeys.list() });
+    },
+    onError: (error) => {
+      showToast({
+        message: error.message,
+        type: 'error',
+      });
+    },
+  });
+};
+
 export {
   useAddPlaceQuery,
   useDeletePlaceQuery,
   usePlaceDetailQuery,
   usePlaceListQuery,
   usePlaceSearchQuery,
+  useLikePlaceMutation,
 };
