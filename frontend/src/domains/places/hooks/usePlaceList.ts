@@ -46,7 +46,7 @@ const usePlaceList = () => {
   );
 
   const handleLikePlace = useCallback(
-    async (placeId: number) => {
+    (placeId: number) => {
       postLikePlace({ placeId });
     },
     [postLikePlace],

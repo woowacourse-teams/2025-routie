@@ -57,8 +57,8 @@ const SideSheet = ({ open, onToggle }: SideSheetProps) => {
   );
 
   const handleLikeButtonClick = useCallback(
-    async (placeId: number) => {
-      await handleLikePlace(placeId);
+    (placeId: number) => {
+      handleLikePlace(placeId);
     },
     [handleLikePlace],
   );
