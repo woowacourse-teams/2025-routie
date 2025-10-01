@@ -16,7 +16,9 @@ interface PlaceDataType extends PlaceBaseType {
 
 type PlaceAdapterType = PlaceBaseType;
 
-type PlaceWithLikeType = PlaceDataType & { likeCount: number };
+interface PlaceWithLikeType extends PlaceDataType {
+  likeCount: number;
+}
 
 type PlaceListAdapterType = PlaceWithLikeType[];
 
