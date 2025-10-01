@@ -33,20 +33,12 @@ const ManageRoutieSpaces = () => {
     }
   }, [kakaoAccessToken, navigate]);
 
-  useEffect(() => {
-    if (error) {
-      showToast({
-        message: error.message,
-        type: 'error',
-      });
-    }
-  }, [error, showToast]);
-
   if (error) {
     return (
       <Flex gap={1} direction="column" height="100dvh">
         <Text variant="title">일시적인 오류가 발생했습니다.</Text>
         <Text variant="body">잠시 후 다시 시도해주세요.</Text>
+        <Text variant="caption">{error.message}</Text>
         <Button width="14rem" onClick={() => navigate('/')}>
           <Text variant="body">홈으로 돌아가기</Text>
         </Button>
