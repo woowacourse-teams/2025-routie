@@ -1,13 +1,10 @@
 import Flex from '@/@common/components/Flex/Flex';
 import Text from '@/@common/components/Text/Text';
 import RoutieSpaceListItem from '@/pages/ManageRoutieSpaces/components/RoutieSpaceListItem/RoutieSpaceListItem';
-import type { RoutieSpaceListItemProps } from '@/pages/ManageRoutieSpaces/components/RoutieSpaceListItem/RoutieSpaceListItem.types';
 
 import { RoutieSpaceListStyle } from './RotieSpaceList.styles';
 
-interface RoutieSpaceListProps {
-  routieSpaces: RoutieSpaceListItemProps[];
-}
+import type { RoutieSpaceListProps } from './RoutieSpaceList.types';
 
 const RoutieSpaceList = ({ routieSpaces }: RoutieSpaceListProps) => {
   return routieSpaces.length > 0 ? (
