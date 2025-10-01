@@ -208,4 +208,43 @@ public class RoutieSpaceControllerV1Test {
         // then
         assertThat(routieSpaceListResponse.routieSpaces()).hasSize(2);
     }
+
+    @Test
+    @DisplayName("V1 API로 루티 스페이스 삭제에 성공한다")
+    public void deleteRoutieSpace() {
+        // 테스트용 사용자 생성 및 토큰 발급
+        User user = UserFixture.emptyUser();
+        userRepository.save(user);
+        String accessToken = jwtProcessor.createJwt(user);
+
+        // given
+        Response createSpaceResponse = RestAssured
+                .given().log().all()
+                .header("Authorization", "Bearer " + accessToken)
+                .when().log().all()
+                .post("/v2/routie-spaces")
+                .then().log().all()
+                .statusCode(HttpStatus.OK.value())
+                .extract().response();
+
+        String newRoutieSpaceIdentifier = createSpaceResponse.jsonPath().getString("routieSpaceIdentifier");
+
+        // when
+        RestAssured
+                .given().log().all()
+                .header("Authorization", "Bearer " + accessToken)
+                .when().log().all()
+                .delete("/v1/routie-spaces/{routieSpaceIdentifier}", newRoutieSpaceIdentifier)
+                .then().log().all()
+                .statusCode(HttpStatus.NO_CONTENT.value());
+
+        // then
+        // 삭제된 루티 스페이스 조회 시 404 응답 확인
+        RestAssured
+                .given().log().all()
+                .when().log().all()
+                .get("/v1/routie-spaces/{routieSpaceIdentifier}", newRoutieSpaceIdentifier)
+                .then().log().all()
+                .statusCode(HttpStatus.NOT_FOUND.value());
+    }
 }

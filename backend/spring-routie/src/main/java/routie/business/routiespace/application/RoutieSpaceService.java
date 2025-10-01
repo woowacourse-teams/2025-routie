@@ -82,6 +82,17 @@ public class RoutieSpaceService {
         return new RoutieSpaceUpdateResponse(routieSpace.getName());
     }
 
+    @Transactional
+    public void deleteRoutieSpace(
+            final String routieSpaceIdentifier,
+            final User user
+    ) {
+        RoutieSpace routieSpace = getRoutieSpaceByRoutieSpaceIdentifier(routieSpaceIdentifier);
+        validateOwner(user, routieSpace);
+
+        routieSpaceRepository.delete(routieSpace);
+    }
+
     private RoutieSpace getRoutieSpaceByRoutieSpaceIdentifier(final String routieSpaceIdentifier) {
         return routieSpaceRepository.findByIdentifier(routieSpaceIdentifier)
                 .orElseThrow(() -> new BusinessException(ErrorCode.ROUTIE_SPACE_NOT_EXISTS));
