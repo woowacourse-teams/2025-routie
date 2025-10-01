@@ -92,8 +92,6 @@ const postLikePlace = async (placeId: number) => {
   if (!response.ok) {
     throw new Error('좋아요 요청 실패');
   }
-
-  return;
 };
 
 export {
