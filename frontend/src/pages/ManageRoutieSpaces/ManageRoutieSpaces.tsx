@@ -1,13 +1,11 @@
-import { useEffect } from 'react';
-import { useNavigate } from 'react-router';
-
+import { useCallback } from 'react';
 import { css } from '@emotion/react';
 
 import Button from '@/@common/components/Button/Button';
 import Flex from '@/@common/components/Flex/Flex';
 import Header from '@/@common/components/Header/Header';
 import Text from '@/@common/components/Text/Text';
-import { useToastContext } from '@/@common/contexts/useToastContext';
+import { useCheckLogin } from '@/@common/hooks/useCheckLogin';
 import UserMenuButton from '@/domains/auth/components/UserMenuButton/UserMenuButton';
 import {
   useDeleteRoutieSpaceMutation,
@@ -24,11 +22,10 @@ import {
 import ManageRoutieSpacesLayout from './layouts/ManageRoutieSpacesLayout';
 
 const ManageRoutieSpaces = () => {
-  const kakaoAccessToken = localStorage.getItem('accessToken');
-  const navigate = useNavigate();
+  useCheckLogin();
   const { data: routieSpaces, isLoading, error } = useGetRoutieSpaceListQuery();
-  const { showToast } = useToastContext();
-  const { handleCreateRoutieSpace } = useRoutieSpaceNavigation();
+  const { handleCreateRoutieSpace, handleMoveToRoutieSpace, handleMoveToHome } =
+    useRoutieSpaceNavigation();
   const { mutate: deleteRoutieSpace } = useDeleteRoutieSpaceMutation();
 
   const handleClickRoutieSpace = useCallback(

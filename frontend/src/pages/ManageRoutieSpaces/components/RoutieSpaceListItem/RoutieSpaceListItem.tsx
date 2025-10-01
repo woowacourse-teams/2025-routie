@@ -5,7 +5,6 @@ import { css } from '@emotion/react';
 import Button from '@/@common/components/Button/Button';
 import Flex from '@/@common/components/Flex/Flex';
 import Text from '@/@common/components/Text/Text';
-import { useRoutieSpaceNavigation } from '@/pages/Home/hooks/useRoutieSpaceNavigation';
 import theme from '@/styles/theme';
 
 import { RoutieSpaceListItemStyle } from './RoutieSpaceListItem.styles';
