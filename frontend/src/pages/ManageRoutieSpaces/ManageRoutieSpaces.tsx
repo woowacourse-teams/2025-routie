@@ -1,5 +1,4 @@
 import { useCallback } from 'react';
-import { css } from '@emotion/react';
 
 import Button from '@/@common/components/Button/Button';
 import Flex from '@/@common/components/Flex/Flex';
@@ -13,7 +12,6 @@ import {
 } from '@/domains/routieSpace/queries/useRoutieSpaceQuery';
 import { useRoutieSpaceNavigation } from '@/pages/Home/hooks/useRoutieSpaceNavigation';
 import RoutieSpaceListItem from '@/pages/ManageRoutieSpaces/components/RoutieSpaceListItem/RoutieSpaceListItem';
-import theme from '@/styles/theme';
 
 import {
   ManageRoutieSpacesStyle,
@@ -48,7 +46,7 @@ const ManageRoutieSpaces = () => {
         <Text variant="title">일시적인 오류가 발생했습니다.</Text>
         <Text variant="body">잠시 후 다시 시도해주세요.</Text>
         <Text variant="caption">{error.message}</Text>
-        <Button width="14rem" onClick={() => navigate('/')}>
+        <Button width="14rem" onClick={handleMoveToHome}>
           <Text variant="body">홈으로 돌아가기</Text>
         </Button>
       </Flex>
@@ -69,15 +67,7 @@ const ManageRoutieSpaces = () => {
           <>
             <Flex gap={3} justifyContent="space-between">
               <Text variant="title">관리할 루티 공간 목록</Text>
-              <Button
-                width="14rem"
-                css={css`
-                  &:hover {
-                    background-color: ${theme.colors.purple[50]};
-                  }
-                `}
-                onClick={handleCreateRoutieSpace}
-              >
+              <Button width="14rem" onClick={handleCreateRoutieSpace}>
                 <Text variant="body">동선 만들기</Text>
               </Button>
             </Flex>

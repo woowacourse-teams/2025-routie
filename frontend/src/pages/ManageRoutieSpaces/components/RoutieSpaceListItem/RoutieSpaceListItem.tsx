@@ -33,9 +33,8 @@ const RoutieSpaceListItem = ({
   return (
     <li css={RoutieSpaceListItemStyle} onClick={handleClick}>
       <Flex flex={1} direction="column" alignItems="flex-start" gap={0.5}>
-        <Text variant="subTitle">이름: {name}</Text>
+        <Text variant="subTitle">{name}</Text>
         <Text variant="caption">
-          생성 날짜:{' '}
           {date.toLocaleString('ko-KR', {
             year: 'numeric',
             month: '2-digit',
