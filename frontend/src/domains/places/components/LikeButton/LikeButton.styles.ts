@@ -12,7 +12,7 @@ const LikeButtonStyle = css`
   border-radius: 8px;
 
   &:hover {
-    background-color: #f5f5f5;
+    background-color: ${theme.colors.gray[25]};
   }
 `;
 
