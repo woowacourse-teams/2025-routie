@@ -86,7 +86,7 @@ const postLikePlace = async (placeId: number) => {
   ensureRoutieSpaceUuid(routieSpaceUuid);
 
   const response = await apiClient.post(
-    `/v1/routie-spaces/${routieSpaceUuid}/places/${placeId}/likes`, // ← 오타도 수정 (like → likes)
+    `/v1/routie-spaces/${routieSpaceUuid}/places/${placeId}/likes`,
   );
 
   if (!response.ok) {
