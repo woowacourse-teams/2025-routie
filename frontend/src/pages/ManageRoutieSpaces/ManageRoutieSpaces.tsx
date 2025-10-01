@@ -42,10 +42,6 @@ const ManageRoutieSpaces = () => {
     }
   }, [error, showToast]);
 
-  if (!kakaoAccessToken) {
-    return null;
-  }
-
   if (error) {
     return (
       <Flex gap={1} direction="column" height="100dvh">
