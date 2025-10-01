@@ -1,3 +1,5 @@
+import { memo, useCallback } from 'react';
+
 import { css } from '@emotion/react';
 
 import Button from '@/@common/components/Button/Button';
@@ -14,8 +16,12 @@ const RoutieSpaceListItem = ({
   name,
   date,
   routieSpaceUuid,
+  onClickRoutieSpace,
+  onDeleteRoutieSpace,
 }: RoutieSpaceListItemProps) => {
-  const { handleMoveToRoutieSpace } = useRoutieSpaceNavigation();
+  const handleClick = useCallback(() => {
+    onClickRoutieSpace(routieSpaceUuid);
+  }, [onClickRoutieSpace, routieSpaceUuid]);
 
   const handleDelete = useCallback(
     (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -26,7 +32,7 @@ const RoutieSpaceListItem = ({
   );
 
   return (
-    <li css={RoutieSpaceListItemStyle} onClick={handleClickRoutieSpace}>
+    <li css={RoutieSpaceListItemStyle} onClick={handleClick}>
       <Flex flex={1} direction="column" alignItems="flex-start" gap={0.5}>
         <Text variant="subTitle">이름: {name}</Text>
         <Text variant="caption">
@@ -55,4 +61,4 @@ const RoutieSpaceListItem = ({
   );
 };
 
-export default RoutieSpaceListItem;
+export default memo(RoutieSpaceListItem);

@@ -9,12 +9,18 @@ import Header from '@/@common/components/Header/Header';
 import Text from '@/@common/components/Text/Text';
 import { useToastContext } from '@/@common/contexts/useToastContext';
 import UserMenuButton from '@/domains/auth/components/UserMenuButton/UserMenuButton';
-import { useGetRoutieSpaceListQuery } from '@/domains/routieSpace/queries/useRoutieSpaceQuery';
+import {
+  useDeleteRoutieSpaceMutation,
+  useGetRoutieSpaceListQuery,
+} from '@/domains/routieSpace/queries/useRoutieSpaceQuery';
 import { useRoutieSpaceNavigation } from '@/pages/Home/hooks/useRoutieSpaceNavigation';
-import RoutieSpaceList from '@/pages/ManageRoutieSpaces/components/RoutieSpaceList/RoutieSpaceList';
+import RoutieSpaceListItem from '@/pages/ManageRoutieSpaces/components/RoutieSpaceListItem/RoutieSpaceListItem';
 import theme from '@/styles/theme';
 
-import { ManageRoutieSpacesStyle } from './ManageRoutieSpaces.styles';
+import {
+  ManageRoutieSpacesStyle,
+  RoutieSpaceListStyle,
+} from './ManageRoutieSpaces.styles';
 import ManageRoutieSpacesLayout from './layouts/ManageRoutieSpacesLayout';
 
 const ManageRoutieSpaces = () => {
@@ -23,15 +29,21 @@ const ManageRoutieSpaces = () => {
   const { data: routieSpaces, isLoading, error } = useGetRoutieSpaceListQuery();
   const { showToast } = useToastContext();
   const { handleCreateRoutieSpace } = useRoutieSpaceNavigation();
+  const { mutate: deleteRoutieSpace } = useDeleteRoutieSpaceMutation();
 
-  useEffect(() => {
-    if (!kakaoAccessToken) {
-      alert('로그인이 필요합니다.');
-      navigate('/', { replace: true });
+  const handleClickRoutieSpace = useCallback(
+    (routieSpaceUuid: string) => {
+      handleMoveToRoutieSpace(routieSpaceUuid);
+    },
+    [handleMoveToRoutieSpace],
+  );
 
-      return;
-    }
-  }, [kakaoAccessToken, navigate]);
+  const handleDeleteRoutieSpace = useCallback(
+    (routieSpaceUuid: string) => {
+      deleteRoutieSpace(routieSpaceUuid);
+    },
+    [deleteRoutieSpace],
+  );
 
   if (error) {
     return (
@@ -72,7 +84,22 @@ const ManageRoutieSpaces = () => {
                 <Text variant="body">동선 만들기</Text>
               </Button>
             </Flex>
-            <RoutieSpaceList routieSpaces={routieSpaces || []} />
+            {routieSpaces && routieSpaces.length > 0 ? (
+              <ul css={RoutieSpaceListStyle}>
+                {routieSpaces.map((routieSpace) => (
+                  <RoutieSpaceListItem
+                    key={routieSpace.routieSpaceUuid}
+                    {...routieSpace}
+                    onClickRoutieSpace={handleClickRoutieSpace}
+                    onDeleteRoutieSpace={handleDeleteRoutieSpace}
+                  />
+                ))}
+              </ul>
+            ) : (
+              <Flex height="50dvh">
+                <Text variant="body">아직 생성한 동선이 없습니다...😅</Text>
+              </Flex>
+            )}
           </>
         )}
       </ManageRoutieSpacesLayout>
