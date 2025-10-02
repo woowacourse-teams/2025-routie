@@ -57,11 +57,11 @@ public class AuthenticationService {
             final String externalAuthenticationIdentifier,
             final ExternalAuthenticationProvider externalAuthenticationProvider
     ) {
-        User user = new User(getRandomNickName(), externalAuthenticationIdentifier, externalAuthenticationProvider);
+        User user = new User(getRandomNickname(), externalAuthenticationIdentifier, externalAuthenticationProvider);
         return userRepository.save(user);
     }
 
-    private String getRandomNickName() {
+    private String getRandomNickname() {
         final List<Word> adjectives = wordRepository.findAllByWordType(WordType.ADJECTIVE);
         if (adjectives.isEmpty()) {
             throw new BusinessException(ErrorCode.ADJECTIVE_NOT_FOUND);

@@ -11,7 +11,7 @@ public class UserFixture {
 
     private static final AtomicLong sequence = new AtomicLong(0L);
 
-    public static String anyNickName() {
+    public static String anyNickname() {
         return UUID.randomUUID().toString().substring(0, 7);
     }
 
@@ -29,7 +29,7 @@ public class UserFixture {
 
     public static User emptyUser() {
         return new UserBuilder()
-                .nickName(anyNickName())
+                .nickname(anyNickname())
                 .externalAuthenticationIdentifier(anyExternalAuthenticationIdentifier())
                 .externalAuthenticationProvider(anyExternalAuthenticationProvider())
                 .routieSpaces(emptyRoutieSpaces())
