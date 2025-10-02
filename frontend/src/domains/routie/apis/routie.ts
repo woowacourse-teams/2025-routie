@@ -20,7 +20,7 @@ const getRoutie = async (): Promise<RoutieAdapterType> => {
   const query = queryParams.toString() ? `?${queryParams.toString()}` : '';
 
   const response = await apiClient.get(
-    `/routie-spaces/${routieSpaceUuid}/routie${query}`,
+    `/v1/routie-spaces/${routieSpaceUuid}/routie${query}`,
   );
 
   const data = await response.json();
@@ -35,7 +35,7 @@ const editRoutieSequence = async ({ routiePlaces }: EditRoutieRequestType) => {
     throw new Error('루티 스페이스 uuid가 없습니다.');
   }
 
-  await apiClient.patch(`/routie-spaces/${routieSpaceUuid}/routie`, {
+  await apiClient.patch(`/v1/routie-spaces/${routieSpaceUuid}/routie`, {
     routiePlaces,
   });
 };
@@ -50,7 +50,7 @@ const addRoutiePlace = async ({
   }
 
   const response = await apiClient.post(
-    `/routie-spaces/${routieSpaceUuid}/routie/places`,
+    `/v1/routie-spaces/${routieSpaceUuid}/routie/places`,
     {
       placeId,
     },
@@ -69,7 +69,7 @@ const deleteRoutiePlace = async ({ placeId }: DeleteRoutiePlaceRequestType) => {
   }
 
   return await apiClient.delete(
-    `/routie-spaces/${routieSpaceUuid}/routie/places/${placeId}`,
+    `/v1/routie-spaces/${routieSpaceUuid}/routie/places/${placeId}`,
   );
 };
 
