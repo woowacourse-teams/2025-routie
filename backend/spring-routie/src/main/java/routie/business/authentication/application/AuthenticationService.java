@@ -3,6 +3,7 @@ package routie.business.authentication.application;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import routie.business.authentication.domain.external.ExternalAuthenticationProcessor;
@@ -33,6 +34,7 @@ public class AuthenticationService {
     private final WordRepository wordRepository;
     private final ExternalAuthenticationProcessorRegistry externalAuthenticationProcessorRegistry;
     private final GuestRepository guestRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Transactional
     public ExternalAuthenticationResponse authenticateByExternalAuthenticationProvider(
@@ -70,7 +72,8 @@ public class AuthenticationService {
             final String password,
             final RoutieSpace routieSpace
     ) {
-        final Guest guest = new Guest(nickname, password, routieSpace);
+        final String encodedPassword = passwordEncoder.encode(password);
+        final Guest guest = new Guest(nickname, encodedPassword, routieSpace);
         return guestRepository.save(guest);
     }
 
