@@ -25,7 +25,7 @@ const addPlace = async (placeInfo: AddPlaceRequestType) => {
   ensureRoutieSpaceUuid(routieSpaceUuid);
 
   const response = await apiClient.post(
-    `/routie-spaces/${routieSpaceUuid}/places`,
+    `/v1/routie-spaces/${routieSpaceUuid}/places`,
     placeInfo,
   );
 
@@ -38,7 +38,9 @@ const deletePlace = async ({ placeId }: DeletePlaceRequestType) => {
   const routieSpaceUuid = getRoutieSpaceUuid();
   ensureRoutieSpaceUuid(routieSpaceUuid);
 
-  await apiClient.delete(`/routie-spaces/${routieSpaceUuid}/places/${placeId}`);
+  await apiClient.delete(
+    `/v1/routie-spaces/${routieSpaceUuid}/places/${placeId}`,
+  );
 };
 
 const getPlace = async ({
@@ -48,7 +50,7 @@ const getPlace = async ({
   ensureRoutieSpaceUuid(routieSpaceUuid);
 
   const response = await apiClient.get(
-    `/routie-spaces/${routieSpaceUuid}/places/${placeId}`,
+    `/v1/routie-spaces/${routieSpaceUuid}/places/${placeId}`,
   );
 
   const data = await response.json();
@@ -73,7 +75,7 @@ const searchPlace = async ({
   query,
 }: SearchPlaceRequestType): Promise<SearchPlaceAdapterType> => {
   const response = await apiClient.get(
-    `/places/search?query=${encodeURIComponent(query)}`,
+    `/v1/places/search?query=${encodeURIComponent(query)}`,
   );
 
   const data = await response.json();
