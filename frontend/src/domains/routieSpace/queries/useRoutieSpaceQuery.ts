@@ -3,6 +3,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useToastContext } from '@/@common/contexts/useToastContext';
 import {
   createRoutieSpace,
+  deleteRoutieSpace,
   editRoutieSpaceName,
   getRoutieSpace,
   getRoutieSpaceList,
@@ -16,7 +17,7 @@ const useCreateRoutieSpaceQuery = () => {
   return useMutation({
     mutationKey: routieSpaceKeys.all,
     mutationFn: createRoutieSpace,
-    onSuccess: (data) => {
+    onSuccess: () => {
       showToast({
         message: '루티 스페이스가 생성되었습니다.',
         type: 'success',
@@ -70,9 +71,34 @@ const useGetRoutieSpaceListQuery = () => {
   });
 };
 
+const useDeleteRoutieSpaceMutation = () => {
+  const { showToast } = useToastContext();
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationKey: routieSpaceKeys.all,
+    mutationFn: (routieSpaceUuid: string) =>
+      deleteRoutieSpace({ routieSpaceUuid }),
+    onSuccess: () => {
+      showToast({
+        message: '루티 스페이스가 삭제되었습니다.',
+        type: 'success',
+      });
+      queryClient.invalidateQueries({ queryKey: routieSpaceKeys.all });
+    },
+    onError: (error) => {
+      showToast({
+        message: error.message,
+        type: 'error',
+      });
+    },
+  });
+};
+
 export {
   useRoutieSpaceQuery,
   useCreateRoutieSpaceQuery,
   useEditRoutieSpaceNameQuery,
   useGetRoutieSpaceListQuery,
+  useDeleteRoutieSpaceMutation,
 };

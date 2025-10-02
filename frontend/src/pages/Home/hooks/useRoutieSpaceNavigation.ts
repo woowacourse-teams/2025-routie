@@ -7,6 +7,10 @@ const useRoutieSpaceNavigation = () => {
   const { mutateAsync: createRoutieSpace } = useCreateRoutieSpaceQuery();
   const navigate = useNavigate();
 
+  const handleMoveToHome = useCallback(() => {
+    navigate('/');
+  }, [navigate]);
+
   const handleCreateRoutieSpace = useCallback(async () => {
     const response = await createRoutieSpace();
     const queryParams = new URLSearchParams({
@@ -37,6 +41,7 @@ const useRoutieSpaceNavigation = () => {
     handleCreateRoutieSpace,
     handleMoveToManageRoutieSpace,
     handleMoveToRoutieSpace,
+    handleMoveToHome,
   };
 };
 

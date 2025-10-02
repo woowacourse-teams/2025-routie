@@ -5,7 +5,10 @@ import {
   getRoutieSpaceListAdapter,
   routieSpaceAdapter,
 } from '@/domains/routieSpace/adapters/routieSpaceAdapter';
-import type { EditRoutieSpaceNameRequestType } from '@/domains/routieSpace/types/api.types';
+import type {
+  DeleteRoutieSpaceRequestType,
+  EditRoutieSpaceNameRequestType,
+} from '@/domains/routieSpace/types/api.types';
 import type {
   CreateRoutieSpaceAdapterType,
   EditRoutieSpaceNameAdapterType,
@@ -94,8 +97,23 @@ const getRoutieSpaceList = async (): Promise<
   return getRoutieSpaceListAdapter(data);
 };
 
+const deleteRoutieSpace = async ({
+  routieSpaceUuid,
+}: DeleteRoutieSpaceRequestType): Promise<void> => {
+  const accessToken = localStorage.getItem('accessToken');
+
+  if (!accessToken) {
+    throw new Error('올바르게 로그인되지 않았습니다.');
+  }
+
+  await apiClient.delete(`/v1/routie-spaces/${routieSpaceUuid}`, undefined, {
+    Authorization: `Bearer ${accessToken}`,
+  });
+};
+
 export {
   createRoutieSpace,
+  deleteRoutieSpace,
   editRoutieSpaceName,
   getRoutieSpace,
   getRoutieSpaceList,
