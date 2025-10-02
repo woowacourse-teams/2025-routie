@@ -398,6 +398,15 @@ public enum ErrorCode {
     ),
 
     /**
+     * 7XXX: Guest API
+     */
+    GUEST_NICKNAME_DUPLICATED(
+            "7000",
+            "게스트의 닉네임이 이미 존재합니다.",
+            HttpStatus.CONFLICT
+    ),
+
+    /**
      * 9XXX: External API
      */
     KAKAO_DRIVING_ROUTE_API_ERROR(
