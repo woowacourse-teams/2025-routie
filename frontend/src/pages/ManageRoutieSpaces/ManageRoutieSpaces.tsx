@@ -21,7 +21,11 @@ import ManageRoutieSpacesLayout from './layouts/ManageRoutieSpacesLayout';
 
 const ManageRoutieSpaces = () => {
   useCheckLogin();
-  const { data: routieSpaces, isLoading, error } = useGetRoutieSpaceListQuery();
+  const {
+    data: routieSpaces = [],
+    isLoading,
+    error,
+  } = useGetRoutieSpaceListQuery();
   const { handleCreateRoutieSpace, handleMoveToRoutieSpace, handleMoveToHome } =
     useRoutieSpaceNavigation();
   const { mutate: deleteRoutieSpace } = useDeleteRoutieSpaceMutation();
@@ -71,7 +75,7 @@ const ManageRoutieSpaces = () => {
                 <Text variant="body">동선 만들기</Text>
               </Button>
             </Flex>
-            {routieSpaces && routieSpaces.length > 0 ? (
+            {routieSpaces.length > 0 ? (
               <ul css={RoutieSpaceListStyle}>
                 {routieSpaces.map((routieSpace) => (
                   <RoutieSpaceListItem
