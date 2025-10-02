@@ -22,6 +22,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import routie.business.authentication.domain.Role;
 import routie.business.authentication.domain.external.ExternalAuthenticationProvider;
 import routie.business.routiespace.domain.RoutieSpace;
 import routie.global.exception.domain.BusinessException;
@@ -42,7 +43,7 @@ import routie.global.exception.domain.ErrorCode;
 @EntityListeners(AuditingEntityListener.class)
 @AllArgsConstructor(access = AccessLevel.PACKAGE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class User {
+public class User implements Participant {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -103,5 +104,15 @@ public class User {
         if (externalAuthenticationProvider == null) {
             throw new BusinessException(ErrorCode.USER_OAUTH_PROVIDER_EMPTY);
         }
+    }
+
+    @Override
+    public String getNickname() {
+        return nickName;
+    }
+
+    @Override
+    public Role getRole() {
+        return Role.USER;
     }
 }
