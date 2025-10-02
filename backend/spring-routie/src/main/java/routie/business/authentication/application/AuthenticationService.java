@@ -12,8 +12,11 @@ import routie.business.authentication.domain.jwt.JwtProcessor;
 import routie.business.authentication.ui.v1.dto.request.ExternalAuthenticationRequest;
 import routie.business.authentication.ui.v1.dto.response.ExternalAuthenticationResponse;
 import routie.business.authentication.ui.v1.dto.response.ExternalAuthenticationUriResponse;
+import routie.business.participant.domain.Guest;
+import routie.business.participant.domain.GuestRepository;
 import routie.business.participant.domain.User;
 import routie.business.participant.domain.UserRepository;
+import routie.business.routiespace.domain.RoutieSpace;
 import routie.business.word.domain.Word;
 import routie.business.word.domain.WordRepository;
 import routie.business.word.domain.WordType;
@@ -29,6 +32,7 @@ public class AuthenticationService {
     private final UserRepository userRepository;
     private final WordRepository wordRepository;
     private final ExternalAuthenticationProcessorRegistry externalAuthenticationProcessorRegistry;
+    private final GuestRepository guestRepository;
 
     @Transactional
     public ExternalAuthenticationResponse authenticateByExternalAuthenticationProvider(
@@ -59,6 +63,15 @@ public class AuthenticationService {
     ) {
         User user = new User(getRandomNickname(), externalAuthenticationIdentifier, externalAuthenticationProvider);
         return userRepository.save(user);
+    }
+
+    private Guest createGuest(
+            final String nickname,
+            final String password,
+            final RoutieSpace routieSpace
+    ) {
+        final Guest guest = new Guest(nickname, password, routieSpace);
+        return guestRepository.save(guest);
     }
 
     private String getRandomNickname() {

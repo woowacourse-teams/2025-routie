@@ -52,6 +52,7 @@ public class Guest implements Participant {
 
     public Guest(
             final String nickname,
+            final String password,
             final RoutieSpace routieSpace
     ) {
         validateNickname(nickname);
