@@ -13,9 +13,20 @@ import { DividerStyle, UserMenuStyle } from './UserMenu.styles';
 import type { UserMenuProps } from './UserMenu.types';
 
 const UserMenu = ({ onClick }: UserMenuProps) => {
-  const { data: user, error } = useUserQuery();
+  const { data: user, error, isLoading } = useUserQuery();
   const { showToast } = useToastContext();
   const { handleMoveToManageRoutieSpace } = useRoutieSpaceNavigation();
+
+  const renderUserName = () => {
+    if (isLoading) {
+      return <Text variant="body">로딩중...</Text>;
+    }
+    if (error) {
+      return <Text variant="body">닉네임 불러오기 오류</Text>;
+    }
+
+    return <Text variant="body">{user?.nickName}</Text>;
+  };
 
   useEffect(() => {
     if (error) {
@@ -25,12 +36,12 @@ const UserMenu = ({ onClick }: UserMenuProps) => {
       });
       console.error(error);
     }
-  }, [error]);
+  }, [error, showToast]);
 
   return (
     <div id="userMenu" css={UserMenuStyle}>
       <Flex direction="column" width="10" gap={1}>
-        <Text variant="body">{user?.nickName ?? '닉네임 불러오기 오류'}</Text>
+        {renderUserName()}
         <div css={DividerStyle} />
         <Button onClick={handleMoveToManageRoutieSpace}>
           <Text variant="caption">내 동선 목록</Text>
