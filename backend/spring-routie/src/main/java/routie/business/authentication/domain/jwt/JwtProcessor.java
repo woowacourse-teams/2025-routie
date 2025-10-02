@@ -9,6 +9,7 @@ import java.util.Date;
 import javax.crypto.SecretKey;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import routie.business.participant.domain.Participant;
 import routie.business.participant.domain.User;
 import routie.business.participant.domain.UserRepository;
 import routie.global.exception.domain.BusinessException;
@@ -16,6 +17,8 @@ import routie.global.exception.domain.ErrorCode;
 
 @Component
 public class JwtProcessor {
+
+    private static final String CLAIM_KEY_ROLE = "role";
 
     private final long expiration;
     private final SecretKey secretKey;
@@ -31,9 +34,10 @@ public class JwtProcessor {
         this.userRepository = userRepository;
     }
 
-    public String createJwt(final User user) {
+    public String createJwt(final Participant participant) {
         Claims claims = Jwts.claims()
-                .subject(user.getId().toString())
+                .subject(participant.getId().toString())
+                .add(CLAIM_KEY_ROLE, participant.getRole().getKey())
                 .build();
 
         Date now = new Date();

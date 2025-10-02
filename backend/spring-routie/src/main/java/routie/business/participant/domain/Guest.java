@@ -69,11 +69,6 @@ public class Guest implements Participant {
     }
 
     @Override
-    public String getNickname() {
-        return nickname;
-    }
-
-    @Override
     public Role getRole() {
         return Role.GUEST;
     }
