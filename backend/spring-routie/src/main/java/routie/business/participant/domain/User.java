@@ -50,7 +50,7 @@ public class User implements Participant {
     private Long id;
 
     @Column(name = "nick_name", nullable = false)
-    private String nickName;
+    private String nickname;
 
     @Column(name = "external_authentication_identifier", nullable = false)
     private String externalAuthenticationIdentifier;
@@ -71,24 +71,24 @@ public class User implements Participant {
     private LocalDateTime updatedAt;
 
     public User(
-            final String nickName,
+            final String nickname,
             final String externalAuthenticationIdentifier,
             final ExternalAuthenticationProvider externalAuthenticationProvider
     ) {
-        validateName(nickName);
+        validateNickname(nickname);
         validateExternalAuthenticationIdentifier(externalAuthenticationIdentifier);
         validateExternalAuthenticationProvider(externalAuthenticationProvider);
 
-        this.nickName = nickName;
+        this.nickname = nickname;
         this.externalAuthenticationIdentifier = externalAuthenticationIdentifier;
         this.externalAuthenticationProvider = externalAuthenticationProvider;
     }
 
-    public void validateName(final String nickName) {
-        if (nickName == null || nickName.isBlank()) {
+    public void validateNickname(final String nickname) {
+        if (nickname == null || nickname.isBlank()) {
             throw new BusinessException(ErrorCode.USER_NICKNAME_EMPTY);
         }
-        if (nickName.length() > 10) {
+        if (nickname.length() > 10) {
             throw new BusinessException(ErrorCode.USER_NICKNAME_LENGTH_INVALID);
         }
     }
@@ -108,7 +108,7 @@ public class User implements Participant {
 
     @Override
     public String getNickname() {
-        return nickName;
+        return nickname;
     }
 
     @Override

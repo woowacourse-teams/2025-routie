@@ -7,6 +7,6 @@ public record UserInformationResponse(
 ) {
 
     public static UserInformationResponse from(final User user) {
-        return new UserInformationResponse(user.getNickName());
+        return new UserInformationResponse(user.getNickname());
     }
 }
