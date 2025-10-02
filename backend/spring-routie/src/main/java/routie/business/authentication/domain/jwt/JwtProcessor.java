@@ -9,8 +9,8 @@ import java.util.Date;
 import javax.crypto.SecretKey;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import routie.business.user.domain.User;
-import routie.business.user.domain.UserRepository;
+import routie.business.participant.domain.User;
+import routie.business.participant.domain.UserRepository;
 import routie.global.exception.domain.BusinessException;
 import routie.global.exception.domain.ErrorCode;
 

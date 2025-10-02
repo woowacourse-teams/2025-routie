@@ -1,6 +1,6 @@
-package routie.business.user.ui.dto.response;
+package routie.business.participant.ui.dto.response;
 
-import routie.business.user.domain.User;
+import routie.business.participant.domain.User;
 
 public record UserInformationResponse(
         String nickName

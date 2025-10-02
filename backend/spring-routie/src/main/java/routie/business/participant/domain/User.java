@@ -1,4 +1,4 @@
-package routie.business.user.domain;
+package routie.business.participant.domain;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;

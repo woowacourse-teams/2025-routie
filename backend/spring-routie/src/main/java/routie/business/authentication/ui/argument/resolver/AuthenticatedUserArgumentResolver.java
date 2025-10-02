@@ -11,7 +11,7 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 import routie.business.authentication.domain.jwt.JwtProcessor;
 import routie.business.authentication.ui.argument.AuthenticatedUser;
-import routie.business.user.domain.User;
+import routie.business.participant.domain.User;
 import routie.global.exception.domain.BusinessException;
 import routie.global.exception.domain.ErrorCode;
 

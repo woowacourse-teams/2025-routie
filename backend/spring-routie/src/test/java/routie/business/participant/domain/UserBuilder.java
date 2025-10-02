@@ -1,4 +1,4 @@
-package routie.business.user.domain;
+package routie.business.participant.domain;
 
 import java.util.List;
 import routie.business.authentication.domain.external.ExternalAuthenticationProvider;
