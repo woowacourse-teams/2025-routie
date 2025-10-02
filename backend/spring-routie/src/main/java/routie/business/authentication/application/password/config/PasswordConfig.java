@@ -1,4 +1,4 @@
-package routie.global.auth.config;
+package routie.business.authentication.application.password.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
