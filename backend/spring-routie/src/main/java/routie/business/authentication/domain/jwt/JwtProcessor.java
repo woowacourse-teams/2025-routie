@@ -56,7 +56,20 @@ public class JwtProcessor {
                 .compact();
     }
 
-    public User parseUser(final String jwt) {
+    public Participant parseParticipant(final String jwt) {
+        final Role role = parseRole(jwt);
+
+        // 확장성을 위해 Map 고려할 수 있으나, 가능성이 낮다고 판단하여 아래와 같이 구현
+        if (role == Role.GUEST) {
+            return parseGuest(jwt);
+        }
+        if (role == Role.USER) {
+            return parseUser(jwt);
+        }
+        throw new BusinessException(ErrorCode.INVALID_ROLE);
+    }
+
+    private User parseUser(final String jwt) {
         try {
             final Claims claims = getPayload(jwt);
             final String userId = claims.getSubject();
@@ -84,7 +97,7 @@ public class JwtProcessor {
                 .getPayload();
     }
 
-    public Role parseRole(final String jwt) {
+    private Role parseRole(final String jwt) {
         try {
             final Claims claims = getPayload(jwt);
             return Role.of(claims.get(CLAIM_KEY_ROLE, String.class));
@@ -94,7 +107,7 @@ public class JwtProcessor {
         }
     }
 
-    public Guest parseGuest(final String jwt) {
+    private Guest parseGuest(final String jwt) {
         try {
             Claims claims = getPayload(jwt);
             String userId = claims.getSubject();
@@ -106,18 +119,5 @@ public class JwtProcessor {
         } catch (final Exception e) {
             throw new JwtException(e.getMessage(), e);
         }
-    }
-
-    public Participant parseParticipant(final String jwt) {
-        final Role role = parseRole(jwt);
-
-        // 확장성을 위해 Map 고려할 수 있으나, 가능성이 낮다고 판단하여 아래와 같이 구현
-        if (role == Role.GUEST) {
-            return parseGuest(jwt);
-        }
-        if (role == Role.USER) {
-            return parseUser(jwt);
-        }
-        throw new BusinessException(ErrorCode.INVALID_ROLE);
     }
 }
