@@ -38,6 +38,9 @@ public class Guest implements Participant {
     @Column(name = "nick_name", nullable = false)
     private String nickname;
 
+    @Column(name = "password")
+    private String password;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "routie_space_id", nullable = false)
     private RoutieSpace routieSpace;
@@ -57,6 +60,7 @@ public class Guest implements Participant {
     ) {
         validateNickname(nickname);
         this.nickname = nickname;
+        this.password = password;
         this.routieSpace = routieSpace;
     }
 

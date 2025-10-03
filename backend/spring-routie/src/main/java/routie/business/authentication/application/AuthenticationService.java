@@ -116,6 +116,10 @@ public class AuthenticationService {
                         routieSpace
                 ));
 
+        if (!passwordEncoder.matches(guestAuthenticationRequest.password(), guest.getPassword())) {
+            throw new BusinessException(ErrorCode.LOGIN_FAILED);
+        }
+
         return new GuestAuthenticationResponse(jwtProcessor.createJwt(guest));
     }
 

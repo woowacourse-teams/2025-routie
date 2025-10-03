@@ -402,8 +402,13 @@ public enum ErrorCode {
             "유효하지 않은 Role입니다.",
             HttpStatus.BAD_REQUEST
     ),
+    LOGIN_FAILED(
+            "6004",
+            "아이디 또는 비밀번호가 일치하지 않습니다.",
+            HttpStatus.UNAUTHORIZED
+    ),
     FORBIDDEN(
-            "6004444",
+            "6004",
             "접근할 권한이 없습니다.",
             HttpStatus.FORBIDDEN
     ),
