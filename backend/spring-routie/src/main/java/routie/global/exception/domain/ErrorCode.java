@@ -397,6 +397,12 @@ public enum ErrorCode {
             HttpStatus.UNAUTHORIZED
     ),
 
+    INVALID_ROLE(
+            "6003",
+            "유효하지 않은 Role입니다.",
+            HttpStatus.BAD_REQUEST
+    ),
+
     /**
      * 7XXX: Guest API
      */
@@ -404,6 +410,11 @@ public enum ErrorCode {
             "7000",
             "게스트의 닉네임이 이미 존재합니다.",
             HttpStatus.CONFLICT
+    ),
+    GUEST_NOT_FOUND(
+            "7001",
+            "해당 비회원 사용자를 찾을 수 없습니다.",
+            HttpStatus.NOT_FOUND
     ),
 
     /**
@@ -448,7 +459,8 @@ public enum ErrorCode {
             "9014",
             "카카오에서 사용자 정보를 읽어오는 중 오류가 발생했습니다.",
             HttpStatus.BAD_GATEWAY
-    );
+    ),
+    ;
 
     private final String code;
     private final String message;
