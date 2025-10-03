@@ -6,7 +6,7 @@ public class GuestBuilder {
 
     private String nickname = GuestFixture.anyNickname();
     private String password = GuestFixture.anyPassword();
-    private RoutieSpace routieSpace = GuestFixture.anyRoutieSpace();
+    private RoutieSpace routieSpace = GuestFixture.emptyRoutieSpace();
 
     public GuestBuilder nickname(final String nickname) {
         this.nickname = nickname;

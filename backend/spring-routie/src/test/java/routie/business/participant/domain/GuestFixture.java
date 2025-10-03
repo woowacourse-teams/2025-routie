@@ -17,7 +17,7 @@ public class GuestFixture {
         return UUID.randomUUID().toString().substring(0, 7);
     }
 
-    public static RoutieSpace anyRoutieSpace() {
+    public static RoutieSpace emptyRoutieSpace() {
         return RoutieSpaceFixture.emptyRoutieSpace();
     }
 
@@ -25,7 +25,7 @@ public class GuestFixture {
         return new GuestBuilder()
                 .nickname(anyNickname())
                 .password(anyPassword())
-                .routieSpace(anyRoutieSpace())
+                .routieSpace(emptyRoutieSpace())
                 .build();
     }
 }

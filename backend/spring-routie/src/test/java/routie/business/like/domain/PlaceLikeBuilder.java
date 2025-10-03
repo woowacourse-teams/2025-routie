@@ -23,7 +23,7 @@ public class PlaceLikeBuilder {
         return this;
     }
 
-    public PlaceLikeBuilder place(final Guest guest) {
+    public PlaceLikeBuilder guest(final Guest guest) {
         this.guest = guest;
         return this;
     }

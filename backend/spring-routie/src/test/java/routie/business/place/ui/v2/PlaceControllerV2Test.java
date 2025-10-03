@@ -14,14 +14,14 @@ import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
+import routie.business.like.domain.PlaceLike;
+import routie.business.like.domain.PlaceLikeBuilder;
+import routie.business.like.domain.PlaceLikeRepository;
 import routie.business.place.domain.Place;
 import routie.business.place.domain.PlaceBuilder;
 import routie.business.place.domain.PlaceRepository;
 import routie.business.place.ui.dto.response.PlaceListResponseV2;
 import routie.business.place.ui.dto.response.PlaceListResponseV2.PlaceCardResponseV2;
-import routie.business.like.domain.PlaceLike;
-import routie.business.like.domain.PlaceLikeBuilder;
-import routie.business.like.domain.PlaceLikeRepository;
 import routie.business.routiespace.domain.RoutieSpace;
 import routie.business.routiespace.domain.RoutieSpaceIdentifierProvider;
 import routie.business.routiespace.domain.RoutieSpaceRepository;
@@ -112,6 +112,7 @@ public class PlaceControllerV2Test {
     @DisplayName("V2 API로 조회 시 좋아요 수가 정확히 반환된다")
     public void readPlacesV2WithCorrectLikeCount() {
         // given
+
         for (int i = 0; i < 3; i++) {
             PlaceLike placeLike = new PlaceLikeBuilder()
                     .place(place1)
