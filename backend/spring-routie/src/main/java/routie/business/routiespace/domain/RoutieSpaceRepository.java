@@ -11,5 +11,5 @@ public interface RoutieSpaceRepository extends JpaRepository<RoutieSpace, Long> 
 
     Optional<RoutieSpace> findByIdentifier(String identifier);
 
-    List<RoutieSpace> findByOwner(User owner);
+    List<RoutieSpace> findByOwnerOrderByCreatedAtDesc(User owner);
 }

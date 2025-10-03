@@ -33,7 +33,7 @@ public class RoutieSpaceService {
     }
 
     public RoutieSpaceListResponse getRoutieSpaces(final User user) {
-        List<RoutieSpace> routieSpaces = routieSpaceRepository.findByOwner(user);
+        List<RoutieSpace> routieSpaces = routieSpaceRepository.findByOwnerOrderByCreatedAtDesc(user);
 
         return RoutieSpaceListResponse.from(routieSpaces);
     }
