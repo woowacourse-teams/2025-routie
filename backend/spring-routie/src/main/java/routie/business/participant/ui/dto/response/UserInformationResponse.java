@@ -2,6 +2,7 @@ package routie.business.participant.ui.dto.response;
 
 import routie.business.participant.domain.User;
 
+@Deprecated
 public record UserInformationResponse(
         String nickname
 ) {

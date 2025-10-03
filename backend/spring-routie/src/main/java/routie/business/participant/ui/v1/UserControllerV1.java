@@ -15,6 +15,7 @@ import routie.business.participant.ui.dto.response.UserInformationResponse;
 @RequestMapping("/v1/users")
 public class UserControllerV1 {
 
+    @Deprecated
     @GetMapping("/me")
     public ResponseEntity<UserInformationResponse> getMyInformation(
             @AuthenticatedParticipant(roles = Role.USER) final User user
