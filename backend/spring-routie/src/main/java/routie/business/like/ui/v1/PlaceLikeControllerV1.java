@@ -18,6 +18,7 @@ public class PlaceLikeControllerV1 {
 
     private final UserPlaceLikeService userPlaceLikeService;
 
+    @Deprecated
     @PostMapping("/likes")
     public ResponseEntity<Void> like(
             @PathVariable final Long placeId,

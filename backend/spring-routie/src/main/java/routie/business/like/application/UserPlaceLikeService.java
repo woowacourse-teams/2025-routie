@@ -22,6 +22,7 @@ public class UserPlaceLikeService {
     private final RoutieSpaceRepository routieSpaceRepository;
     private final PlaceRepository placeRepository;
 
+    @Deprecated
     @Transactional
     public void likePlace(final Long placeId, final String routieSpaceIdentifier, final User user) {
         final RoutieSpace routieSpace = routieSpaceRepository.findByIdentifier(routieSpaceIdentifier)
