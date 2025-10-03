@@ -8,4 +8,6 @@ import routie.business.place.domain.Place;
 public interface PlaceLikeRepository extends JpaRepository<PlaceLike, Long> {
 
     long countByPlace(Place place);
+
+    boolean findByPlaceIdAndUserId(Long placeId, Long id);
 }

@@ -207,6 +207,11 @@ public enum ErrorCode {
             "루티 스페이스를 수정할 권한이 없습니다.",
             HttpStatus.FORBIDDEN
     ),
+    ROUTIE_SPACE_FORBIDDEN_GUEST(
+            "2201",
+            "해당 루티 스페이스에 접근할 권한이 없는 게스트 사용자입니다.",
+            HttpStatus.FORBIDDEN
+    ),
 
     /**
      * 3XXX: Routie domain
