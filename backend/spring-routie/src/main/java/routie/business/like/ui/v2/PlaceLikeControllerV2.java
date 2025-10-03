@@ -2,6 +2,7 @@ package routie.business.like.ui.v2;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,7 +13,7 @@ import routie.business.participant.domain.Participant;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/v1/routie-spaces/{routieSpaceIdentifier}/places/{placeId}")
+@RequestMapping("/v2/routie-spaces/{routieSpaceIdentifier}/places/{placeId}")
 public class PlaceLikeControllerV2 {
 
     private final ParticipantPlaceLikeService participantPlaceLikeService;
@@ -24,6 +25,16 @@ public class PlaceLikeControllerV2 {
             @AuthenticatedParticipant final Participant participant
     ) {
         participantPlaceLikeService.likePlace(placeId, routieSpaceIdentifier, participant);
+        return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping("/likes")
+    public ResponseEntity<Void> deleteLike(
+            @PathVariable final Long placeId,
+            @PathVariable final String routieSpaceIdentifier,
+            @AuthenticatedParticipant final Participant participant
+    ) {
+        participantPlaceLikeService.removePlaceLike(placeId, routieSpaceIdentifier, participant);
         return ResponseEntity.ok().build();
     }
 }

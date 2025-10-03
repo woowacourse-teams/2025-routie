@@ -47,10 +47,27 @@ public class UserPlaceLikeService {
                         "루티 스페이스 내에서 해당하는 장소를 찾을 수 없습니다: " + placeId
                 ));
 
-        if (placeLikeRepository.findByPlaceIdAndUserId(placeId, user.getId())) {
+        if (placeLikeRepository.findByPlaceIdAndUserId(placeId, user.getId()).isPresent()) {
             throw new BusinessException(ErrorCode.PLACE_LIKE_DUPLICATED);
         }
 
         placeLikeRepository.save(PlaceLike.of(place, user));
+    }
+
+    @Transactional
+    public void removePlaceLike(final Long placeId, final String routieSpaceIdentifier, final User user) {
+        final RoutieSpace routieSpace = routieSpaceRepository.findByIdentifier(routieSpaceIdentifier)
+                .orElseThrow(() -> new BusinessException(ErrorCode.ROUTIE_SPACE_NOT_FOUND_BY_IDENTIFIER));
+
+        placeRepository.findByIdAndRoutieSpace(placeId, routieSpace)
+                .orElseThrow(() -> new BusinessException(
+                        ErrorCode.PLACE_NOT_FOUND_IN_ROUTIE_SPACE,
+                        "루티 스페이스 내에서 해당하는 장소를 찾을 수 없습니다: " + placeId
+                ));
+
+        final PlaceLike placeLike = placeLikeRepository.findByPlaceIdAndUserId(placeId, user.getId())
+                .orElseThrow(() -> new BusinessException(ErrorCode.PLACE_LIKE_NOT_FOUND));
+
+        placeLikeRepository.delete(placeLike);
     }
 }

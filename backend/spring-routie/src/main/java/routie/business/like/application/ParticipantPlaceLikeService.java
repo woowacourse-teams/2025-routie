@@ -22,4 +22,13 @@ public class ParticipantPlaceLikeService {
             guestPlaceLikeService.likePlace(placeId, routieSpaceIdentifier, (Guest) participant);
         }
     }
+
+    public void removePlaceLike(final Long placeId, final String routieSpaceIdentifier, final Participant participant) {
+        if (participant.getRole() == Role.USER) {
+            userPlaceLikeService.removePlaceLike(placeId, routieSpaceIdentifier, (User) participant);
+        }
+        if (participant.getRole() == Role.GUEST) {
+            guestPlaceLikeService.removePlaceLike(placeId, routieSpaceIdentifier, (Guest) participant);
+        }
+    }
 }
