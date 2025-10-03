@@ -418,6 +418,20 @@ public enum ErrorCode {
     ),
 
     /**
+     * 8XXX: Place Like API
+     */
+    PLACE_LIKE_DUPLICATED(
+            "8000",
+            "해당 사용자와 장소에 대한 좋아요가 이미 존재합니다.",
+            HttpStatus.CONFLICT
+    ),
+    PLACE_LIKE_NOT_FOUND(
+            "8001",
+            "해당 사용자와 장소에 대한 좋아요를 찾을 수 없습니다.",
+            HttpStatus.NOT_FOUND
+    ),
+
+    /**
      * 9XXX: External API
      */
     KAKAO_DRIVING_ROUTE_API_ERROR(
