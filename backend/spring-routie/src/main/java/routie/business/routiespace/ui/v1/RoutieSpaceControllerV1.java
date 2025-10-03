@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import routie.business.authentication.ui.argument.AuthenticatedUser;
+import routie.business.authentication.ui.argument.annotation.AuthenticatedUser;
 import routie.business.participant.domain.User;
 import routie.business.routiespace.application.RoutieSpaceService;
 import routie.business.routiespace.ui.dto.request.RoutieSpaceUpdateRequest;
