@@ -11,13 +11,16 @@ import routie.business.authentication.domain.external.ExternalAuthenticationProc
 import routie.business.authentication.domain.external.ExternalAuthenticationProvider;
 import routie.business.authentication.domain.jwt.JwtProcessor;
 import routie.business.authentication.ui.v1.dto.request.ExternalAuthenticationRequest;
+import routie.business.authentication.ui.v1.dto.request.GuestAuthenticationRequest;
 import routie.business.authentication.ui.v1.dto.response.ExternalAuthenticationResponse;
 import routie.business.authentication.ui.v1.dto.response.ExternalAuthenticationUriResponse;
+import routie.business.authentication.ui.v1.dto.response.GuestAuthenticationResponse;
 import routie.business.participant.domain.Guest;
 import routie.business.participant.domain.GuestRepository;
 import routie.business.participant.domain.User;
 import routie.business.participant.domain.UserRepository;
 import routie.business.routiespace.domain.RoutieSpace;
+import routie.business.routiespace.domain.RoutieSpaceRepository;
 import routie.business.word.domain.Word;
 import routie.business.word.domain.WordRepository;
 import routie.business.word.domain.WordType;
@@ -35,6 +38,7 @@ public class AuthenticationService {
     private final ExternalAuthenticationProcessorRegistry externalAuthenticationProcessorRegistry;
     private final GuestRepository guestRepository;
     private final PasswordEncoder passwordEncoder;
+    private final RoutieSpaceRepository routieSpaceRepository;
 
     @Transactional
     public ExternalAuthenticationResponse authenticateByExternalAuthenticationProvider(
@@ -67,16 +71,6 @@ public class AuthenticationService {
         return userRepository.save(user);
     }
 
-    private Guest createGuest(
-            final String nickname,
-            final String password,
-            final RoutieSpace routieSpace
-    ) {
-        final String encodedPassword = passwordEncoder.encode(password);
-        final Guest guest = new Guest(nickname, encodedPassword, routieSpace);
-        return guestRepository.save(guest);
-    }
-
     private String getRandomNickname() {
         final List<Word> adjectives = wordRepository.findAllByWordType(WordType.ADJECTIVE);
         if (adjectives.isEmpty()) {
@@ -106,5 +100,36 @@ public class AuthenticationService {
                 );
         String uri = externalAuthenticationProcessor.getAuthorizationUri();
         return new ExternalAuthenticationUriResponse(uri);
+    }
+
+    @Transactional
+    public GuestAuthenticationResponse authenticateGuest(
+            final GuestAuthenticationRequest guestAuthenticationRequest
+    ) {
+        final RoutieSpace routieSpace = routieSpaceRepository.findById(guestAuthenticationRequest.routieSpaceId())
+                .orElseThrow(() -> new BusinessException(ErrorCode.ROUTIE_SPACE_NOT_FOUND));
+
+        final Guest guest = guestRepository.findByNickname(guestAuthenticationRequest.nickname())
+                .orElseGet(() -> createGuest(
+                        guestAuthenticationRequest.nickname(),
+                        guestAuthenticationRequest.password(),
+                        routieSpace
+                ));
+
+        return new GuestAuthenticationResponse(jwtProcessor.createJwt(guest));
+    }
+
+    private Guest createGuest(
+            final String nickname,
+            final String password,
+            final RoutieSpace routieSpace
+    ) {
+        if (guestRepository.existsByNicknameAndRoutieSpaceId(nickname, routieSpace.getId())) {
+            throw new BusinessException(ErrorCode.GUEST_NICKNAME_DUPLICATED);
+        }
+
+        final String encodedPassword = passwordEncoder.encode(password);
+        final Guest guest = new Guest(nickname, encodedPassword, routieSpace);
+        return guestRepository.save(guest);
     }
 }
