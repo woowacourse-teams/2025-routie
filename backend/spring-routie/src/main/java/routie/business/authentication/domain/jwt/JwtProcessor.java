@@ -10,6 +10,7 @@ import javax.crypto.SecretKey;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import routie.business.authentication.domain.Role;
+import routie.business.participant.domain.Guest;
 import routie.business.participant.domain.GuestRepository;
 import routie.business.participant.domain.Participant;
 import routie.business.participant.domain.User;
@@ -57,13 +58,21 @@ public class JwtProcessor {
 
     public User parseUser(final String jwt) {
         try {
-            Claims claims = getPayload(jwt);
-            String userId = claims.getSubject();
+            final Claims claims = getPayload(jwt);
+            final String userId = claims.getSubject();
+            final Role role = parseRole(jwt);
+            assertRole(role, Role.USER);
 
             return userRepository.findById(Long.parseLong(userId))
                     .orElseThrow(() -> new BusinessException(ErrorCode.USER_NOT_FOUND));
         } catch (final Exception e) {
             throw new JwtException(e.getMessage(), e);
+        }
+    }
+
+    private void assertRole(final Role role, final Role expectedRole) {
+        if (role != expectedRole) {
+            throw new IllegalArgumentException("요청과 role이 일치하지 않습니다");
         }
     }
 
@@ -85,15 +94,30 @@ public class JwtProcessor {
         }
     }
 
-    public Participant parseGuest(final String jwt) {
+    public Guest parseGuest(final String jwt) {
         try {
             Claims claims = getPayload(jwt);
             String userId = claims.getSubject();
+            final Role role = parseRole(jwt);
+            assertRole(role, Role.GUEST);
 
             return guestRepository.findById(Long.parseLong(userId))
                     .orElseThrow(() -> new BusinessException(ErrorCode.GUEST_NOT_FOUND));
         } catch (final Exception e) {
             throw new JwtException(e.getMessage(), e);
         }
+    }
+
+    public Participant parseParticipant(final String jwt) {
+        final Role role = parseRole(jwt);
+
+        // 확장성을 위해 Map 고려할 수 있으나, 가능성이 낮다고 판단하여 아래와 같이 구현
+        if (role == Role.GUEST) {
+            return parseGuest(jwt);
+        }
+        if (role == Role.USER) {
+            return parseUser(jwt);
+        }
+        throw new BusinessException(ErrorCode.INVALID_ROLE);
     }
 }
