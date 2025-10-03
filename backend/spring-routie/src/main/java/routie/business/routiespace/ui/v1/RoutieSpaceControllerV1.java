@@ -11,7 +11,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import routie.business.authentication.ui.argument.annotation.AuthenticatedUser;
+import routie.business.authentication.domain.Role;
+import routie.business.authentication.ui.argument.annotation.AuthenticatedParticipant;
 import routie.business.participant.domain.User;
 import routie.business.routiespace.application.RoutieSpaceService;
 import routie.business.routiespace.ui.dto.request.RoutieSpaceUpdateRequest;
@@ -44,7 +45,7 @@ public class RoutieSpaceControllerV1 {
 
     @GetMapping("/my-routie-spaces")
     public ResponseEntity<RoutieSpaceListResponse> readRoutieSpaces(
-            @AuthenticatedUser final User user
+            @AuthenticatedParticipant(roles = Role.USER) final User user
     ) {
         RoutieSpaceListResponse routieSpaceListResponse = routieSpaceService.getRoutieSpaces(user);
 
@@ -67,7 +68,7 @@ public class RoutieSpaceControllerV1 {
     @DeleteMapping("/routie-spaces/{routieSpaceIdentifier}")
     public ResponseEntity<Void> deleteRoutieSpace(
             @PathVariable final String routieSpaceIdentifier,
-            @AuthenticatedUser final User user
+            @AuthenticatedParticipant(roles = Role.USER) final User user
     ) {
         routieSpaceService.deleteRoutieSpace(routieSpaceIdentifier, user);
 

@@ -10,7 +10,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import routie.business.authentication.ui.argument.annotation.AuthenticatedUser;
+import routie.business.authentication.domain.Role;
+import routie.business.authentication.ui.argument.annotation.AuthenticatedParticipant;
 import routie.business.participant.domain.User;
 import routie.business.routiespace.application.RoutieSpaceService;
 import routie.business.routiespace.ui.dto.request.RoutieSpaceUpdateRequest;
@@ -27,7 +28,7 @@ public class RoutieSpaceControllerV2 {
 
     @PostMapping
     public ResponseEntity<RoutieSpaceCreateResponse> createRoutieSpace(
-            @AuthenticatedUser final User user
+            @AuthenticatedParticipant(roles = Role.USER) final User user
     ) {
         RoutieSpaceCreateResponse routieSpaceCreateResponse = routieSpaceService.addRoutieSpaceV2(user);
         return ResponseEntity.ok(routieSpaceCreateResponse);
@@ -45,7 +46,7 @@ public class RoutieSpaceControllerV2 {
     public ResponseEntity<RoutieSpaceUpdateResponse> updateRoutieSpace(
             @PathVariable final String routieSpaceIdentifier,
             @RequestBody @Valid final RoutieSpaceUpdateRequest routieSpaceUpdateRequest,
-            @AuthenticatedUser final User user
+            @AuthenticatedParticipant(roles = Role.USER) final User user
     ) {
         RoutieSpaceUpdateResponse routieSpaceUpdateResponse = routieSpaceService.modifyRoutieSpaceV2(
                 routieSpaceIdentifier,

@@ -382,25 +382,25 @@ public enum ErrorCode {
             "지원하지 않는 ExternalAuthentication 제공자입니다.",
             HttpStatus.BAD_REQUEST
     ),
-
-    // JWT
     INVALID_JWT(
             "6001",
             "인증 정보가 유효하지 않습니다.",
             HttpStatus.UNAUTHORIZED
     ),
-
-    // Authentication
     AUTHENTICATION_REQUIRED(
             "6002",
             "인증이 필요합니다.",
             HttpStatus.UNAUTHORIZED
     ),
-
     INVALID_ROLE(
             "6003",
             "유효하지 않은 Role입니다.",
             HttpStatus.BAD_REQUEST
+    ),
+    FORBIDDEN(
+            "6004444",
+            "접근할 권한이 없습니다.",
+            HttpStatus.FORBIDDEN
     ),
 
     /**

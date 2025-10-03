@@ -1,6 +1,7 @@
 package routie.business.authentication.ui.argument.resolver;
 
 import jakarta.servlet.http.HttpServletRequest;
+import java.util.Arrays;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.MethodParameter;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
+import routie.business.authentication.domain.Role;
 import routie.business.authentication.domain.jwt.JwtProcessor;
 import routie.business.authentication.ui.argument.annotation.AuthenticatedParticipant;
 import routie.business.participant.domain.Participant;
@@ -33,13 +35,32 @@ public class AuthenticatedParticipantArgumentResolver implements HandlerMethodAr
             final NativeWebRequest webRequest,
             final WebDataBinderFactory binderFactory
     ) {
-        HttpServletRequest request = Optional.ofNullable(webRequest.getNativeRequest(HttpServletRequest.class))
-                .orElseThrow(() -> new BusinessException(ErrorCode.UNEXPECTED_EXCEPTION));
+        final HttpServletRequest request = getRequest(webRequest);
+        final String jwt = getJwt(request);
+        final Participant participant = jwtProcessor.parseParticipant(jwt);
+        final AuthenticatedParticipant annotation = parameter.getParameterAnnotation(AuthenticatedParticipant.class);
+        final Role[] requiredRoles = annotation.roles();
 
-        String jwt = Optional.ofNullable(request.getAttribute("jwt"))
+        if (requiredRoles.length > 0) {
+            final Role participantRole = participant.getRole();
+            final boolean isAuthorized = Arrays.asList(requiredRoles).contains(participantRole);
+
+            if (!isAuthorized) {
+                throw new BusinessException(ErrorCode.FORBIDDEN);
+            }
+        }
+
+        return participant;
+    }
+
+    private HttpServletRequest getRequest(final NativeWebRequest webRequest) {
+        return Optional.ofNullable(webRequest.getNativeRequest(HttpServletRequest.class))
+                .orElseThrow(() -> new BusinessException(ErrorCode.UNEXPECTED_EXCEPTION));
+    }
+
+    private String getJwt(final HttpServletRequest request) {
+        return Optional.ofNullable(request.getAttribute("jwt"))
                 .map(Object::toString)
                 .orElseThrow(() -> new BusinessException(ErrorCode.AUTHENTICATION_REQUIRED));
-
-        return jwtProcessor.parseParticipant(jwt);
     }
 }
