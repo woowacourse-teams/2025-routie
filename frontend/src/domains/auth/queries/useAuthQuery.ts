@@ -2,6 +2,8 @@ import { useNavigate } from 'react-router';
 
 import { useMutation, useQuery } from '@tanstack/react-query';
 
+import { useToastContext } from '@/@common/contexts/useToastContext';
+
 import {
   getKakaoAccessToken,
   getKakaoLoginUri,
@@ -44,15 +46,22 @@ const useUserQuery = () => {
 };
 
 const useGuestLoginMutation = () => {
-
+  const { showToast } = useToastContext();
   return useMutation({
     mutationKey: loginKey.guestAccessToken,
     mutationFn: (payload: GuestLoginRequestType) => postGuestLogin(payload),
     onSuccess: (data) => {
       localStorage.setItem('accessToken', data.accessToken);
+      showToast({
+        message: '비회원 로그인에 성공했습니다.',
+        type: 'success',
+      });
     },
-    onError: () => {
-      console.error('비회원 로그인 실패');
+    onError: (error) => {
+      showToast({
+        message: error.message,
+        type: 'error',
+      });
     },
   });
 };
@@ -61,6 +70,5 @@ export {
   useGuestLoginMutation,
   useKakaoLoginMutation,
   useKakaoLoginUriQuery,
-  useUserQuery
+  useUserQuery,
 };
-

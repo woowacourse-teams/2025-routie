@@ -4,6 +4,9 @@ import Button from '@/@common/components/Button/Button';
 import Flex from '@/@common/components/Flex/Flex';
 import Input from '@/@common/components/Input/Input';
 import Text from '@/@common/components/Text/Text';
+import { useToastContext } from '@/@common/contexts/useToastContext';
+import { useGuestLoginMutation } from '@/domains/auth/queries/useAuthQuery';
+import theme from '@/styles/theme';
 
 interface GuestLoginSectionProps {
   onClose: () => void;
@@ -12,6 +15,44 @@ interface GuestLoginSectionProps {
 const GuestLoginSection = ({ onClose }: GuestLoginSectionProps) => {
   const [nickname, setNickname] = useState('');
   const [password, setPassword] = useState('');
+  const { showToast } = useToastContext();
+  const { mutate: guestLogin, isPending } = useGuestLoginMutation();
+
+  const handleGuestLogin = () => {
+    const trimmedNickname = nickname.trim();
+
+    if (!trimmedNickname) {
+      showToast({
+        message: '닉네임을 입력해주세요.',
+        type: 'error',
+      });
+      return;
+    }
+
+    const routieSpaceIdentifier = localStorage.getItem('routieSpaceUuid');
+
+    if (!routieSpaceIdentifier) {
+      showToast({
+        message: '잘못된 주소입니다. 링크를 다시 확인해주세요.',
+        type: 'error',
+      });
+      return;
+    }
+
+    guestLogin(
+      {
+        nickname: trimmedNickname,
+        password: password ? password : undefined,
+        routieSpaceIdentifier,
+      },
+      {
+        onSuccess: () => {
+          onClose();
+        },
+      },
+    );
+  };
+
   return (
     <Flex direction="column" alignItems="flex-start" gap={3}>
       <Flex direction="column" alignItems="flex-start" gap={1}>
@@ -25,7 +66,7 @@ const GuestLoginSection = ({ onClose }: GuestLoginSectionProps) => {
         />
 
         <Input
-          id="nickname"
+          id="password"
           type="text"
           label="비밀번호 (선택)"
           placeholder="사용할 비밀번호를 입력해주세요."
@@ -34,10 +75,10 @@ const GuestLoginSection = ({ onClose }: GuestLoginSectionProps) => {
         />
       </Flex>
       <Flex direction="column" gap={1}>
-        <Text variant="description">
+        <Text variant="label" color={theme.colors.gray[300]}>
           닉네임과 비밀번호는 다음 입장 시 사용해야 하니 꼭 기억해주세요!
         </Text>
-        <Button onClick={onClose}>
+        <Button type="button" onClick={handleGuestLogin} disabled={isPending}>
           <Text variant="caption">비회원으로 계속하기</Text>
         </Button>
       </Flex>
