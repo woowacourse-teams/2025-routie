@@ -3,7 +3,11 @@ import { apiClient } from '@/apis';
 import {
   getKakaoAccessTokenAdapter,
   getKakaoLoginUriAdapter,
+  getGuestLoginAdapter,
 } from '../adapters/authAdapter';
+
+import type { GuestLoginRequestType } from '../types/api.types';
+import type { AccessTokenType } from '../types/auth.types';
 
 const getKakaoLoginUri = async () => {
   const response = await apiClient.get(
@@ -24,4 +28,13 @@ const getKakaoAccessToken = async (code: string) => {
   return getKakaoAccessTokenAdapter(data);
 };
 
-export { getKakaoLoginUri, getKakaoAccessToken };
+const postGuestLogin = async (
+  payload: GuestLoginRequestType,
+): Promise<AccessTokenType> => {
+  const response = await apiClient.post('/v1/authentication/guest', payload);
+  const data = await response.json();
+
+  return getGuestLoginAdapter(data);
+};
+
+export { getKakaoLoginUri, getKakaoAccessToken, postGuestLogin };

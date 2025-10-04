@@ -2,10 +2,16 @@ import { useNavigate } from 'react-router';
 
 import { useMutation, useQuery } from '@tanstack/react-query';
 
-import { getKakaoAccessToken, getKakaoLoginUri } from '../apis/login';
+import {
+  getKakaoAccessToken,
+  getKakaoLoginUri,
+  postGuestLogin,
+} from '../apis/login';
 import { getUser } from '../apis/user';
 
 import { loginKey, userKey } from './key';
+
+import type { GuestLoginRequestType } from '../types/api.types';
 
 const useKakaoLoginUriQuery = () => {
   return useQuery({
@@ -37,4 +43,24 @@ const useUserQuery = () => {
   });
 };
 
-export { useKakaoLoginMutation, useKakaoLoginUriQuery, useUserQuery };
+const useGuestLoginMutation = () => {
+
+  return useMutation({
+    mutationKey: loginKey.guestAccessToken,
+    mutationFn: (payload: GuestLoginRequestType) => postGuestLogin(payload),
+    onSuccess: (data) => {
+      localStorage.setItem('accessToken', data.accessToken);
+    },
+    onError: () => {
+      console.error('비회원 로그인 실패');
+    },
+  });
+};
+
+export {
+  useGuestLoginMutation,
+  useKakaoLoginMutation,
+  useKakaoLoginUriQuery,
+  useUserQuery
+};
+
