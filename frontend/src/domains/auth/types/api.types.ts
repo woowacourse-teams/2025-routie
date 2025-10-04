@@ -15,9 +15,21 @@ interface UserNameResponseType {
   nickName: string;
 }
 
+interface GuestLoginRequestType {
+  nickname: string;
+  password?: string;
+  routieSpaceIdentifier: string;
+}
+
+interface GuestLoginResponseType {
+  accessToken: string;
+}
+
 export type {
   KakaoLoginUriResponseType,
   KakaoAccessTokenRequestType,
   KakaoAccessTokenResponseType,
   UserNameResponseType,
+  GuestLoginRequestType,
+  GuestLoginResponseType,
 };
