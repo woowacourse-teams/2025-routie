@@ -408,7 +408,7 @@ public enum ErrorCode {
             HttpStatus.UNAUTHORIZED
     ),
     FORBIDDEN(
-            "6004",
+            "6005",
             "접근할 권한이 없습니다.",
             HttpStatus.FORBIDDEN
     ),
