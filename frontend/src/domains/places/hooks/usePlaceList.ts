@@ -2,6 +2,7 @@ import { useCallback, useEffect } from 'react';
 
 import { useToastContext } from '@/@common/contexts/useToastContext';
 import { useAsyncLock } from '@/@common/hooks/useAsyncLock';
+import { useRequireAccessToken } from '@/@common/hooks/useRequireAccessToken';
 import {
   useAddPlaceQuery,
   useDeletePlaceQuery,
@@ -18,6 +19,7 @@ const usePlaceList = () => {
   const { mutateAsync: deletePlace } = useDeletePlaceQuery();
   const { mutate: postLikePlace } = useLikePlaceMutation();
   const { mutate: deleteLikePlace } = useUnlikePlaceMutation();
+  const requireAccessToken = useRequireAccessToken();
   const { showToast } = useToastContext();
   const { runWithLock: runDeleteWithLock } = useAsyncLock();
   const { runWithLock: runAddWithLock } = useAsyncLock();
@@ -49,36 +51,24 @@ const usePlaceList = () => {
 
   const handleLikePlace = useCallback(
     (placeId: number) => {
-      const accessToken = localStorage.getItem('accessToken');
+      const accessToken = requireAccessToken();
 
-      if (!accessToken) {
-        showToast({
-          message: '로그인이 필요합니다.',
-          type: 'error',
-        });
-        return;
-      }
+      if (!accessToken) return;
 
       postLikePlace({ placeId });
     },
-    [postLikePlace, showToast],
+    [postLikePlace, requireAccessToken],
   );
 
   const handleUnlikePlace = useCallback(
     (placeId: number) => {
-      const accessToken = localStorage.getItem('accessToken');
+      const accessToken = requireAccessToken();
 
-      if (!accessToken) {
-        showToast({
-          message: '로그인이 필요합니다.',
-          type: 'error',
-        });
-        return;
-      }
+      if (!accessToken) return;
 
       deleteLikePlace({ placeId });
     },
-    [deleteLikePlace, showToast],
+    [deleteLikePlace, requireAccessToken],
   );
 
   useEffect(() => {
@@ -89,7 +79,7 @@ const usePlaceList = () => {
         type: 'error',
       });
     }
-  }, [error]);
+  }, [error, showToast]);
 
   return {
     placeList,
