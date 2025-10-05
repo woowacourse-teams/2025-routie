@@ -106,21 +106,32 @@ public class AuthenticationService {
     public GuestAuthenticationResponse authenticateGuest(
             final GuestAuthenticationRequest guestAuthenticationRequest
     ) {
+        final String requestedPassword = guestAuthenticationRequest.password();
+
         final RoutieSpace routieSpace = routieSpaceRepository.findById(guestAuthenticationRequest.routieSpaceId())
                 .orElseThrow(() -> new BusinessException(ErrorCode.ROUTIE_SPACE_NOT_FOUND));
 
         final Guest guest = guestRepository.findByNickname(guestAuthenticationRequest.nickname())
                 .orElseGet(() -> createGuest(
                         guestAuthenticationRequest.nickname(),
-                        guestAuthenticationRequest.password(),
+                        requestedPassword,
                         routieSpace
                 ));
 
-        if (!passwordEncoder.matches(guestAuthenticationRequest.password(), guest.getPassword())) {
+        final String savedPassword = guest.getPassword();
+
+        if (savedPassword == null) {
+            if (requestedPassword == null) {
+                return new GuestAuthenticationResponse(jwtProcessor.createJwt(guest));
+            }
             throw new BusinessException(ErrorCode.LOGIN_FAILED);
         }
 
-        return new GuestAuthenticationResponse(jwtProcessor.createJwt(guest));
+        if (requestedPassword != null && passwordEncoder.matches(requestedPassword, savedPassword)) {
+            return new GuestAuthenticationResponse(jwtProcessor.createJwt(guest));
+        }
+
+        throw new BusinessException(ErrorCode.LOGIN_FAILED);
     }
 
     private Guest createGuest(
@@ -132,8 +143,13 @@ public class AuthenticationService {
             throw new BusinessException(ErrorCode.GUEST_NICKNAME_DUPLICATED);
         }
 
-        final String encodedPassword = passwordEncoder.encode(password);
-        final Guest guest = new Guest(nickname, encodedPassword, routieSpace);
-        return guestRepository.save(guest);
+        if (password != null) {
+            final String encodedPassword = passwordEncoder.encode(password);
+            final Guest guest = new Guest(nickname, encodedPassword, routieSpace);
+            return guestRepository.save(guest);
+        }
+
+        final Guest guestWithNoPassword = new Guest(nickname, null, routieSpace);
+        return guestRepository.save(guestWithNoPassword);
     }
 }
