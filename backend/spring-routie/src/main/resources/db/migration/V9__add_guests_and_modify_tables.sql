@@ -2,7 +2,7 @@
 
 -- 1. users 테이블의 nick_name 컬럼을 nickname으로 변경합니다.
 ALTER TABLE users
-    CHANGE COLUMN nick_name nickname VARCHAR (255) NOT NULL;
+    RENAME COLUMN nick_name TO nickname;
 
 
 -- 2. guests 테이블을 새로 생성합니다.
@@ -50,16 +50,20 @@ ALTER TABLE place_likes
 
 -- 3.2. 기존 created_at 컬럼 타입 변경
 ALTER TABLE place_likes
-    MODIFY COLUMN created_at DATETIME(6);
+ALTER
+COLUMN created_at DATETIME(6);
 
 -- 3.3. 외래 키 제약조건 추가
 ALTER TABLE place_likes
     ADD CONSTRAINT FK_place_likes_user_id FOREIGN KEY (user_id) REFERENCES users (id),
     ADD CONSTRAINT FK_place_likes_guest_id FOREIGN KEY (guest_id) REFERENCES guests (id);
 
+
+-- 4. words 테이블의 timestamp 컨벤션을 수정합니다.
 -- 4.1. created_at 컬럼 타입 변경 및 DEFAULT 제거
 ALTER TABLE words
-    MODIFY COLUMN created_at DATETIME(6);
+ALTER
+COLUMN created_at DATETIME(6);
 
 -- 4.2. updated_at 컬럼 추가
 ALTER TABLE words
