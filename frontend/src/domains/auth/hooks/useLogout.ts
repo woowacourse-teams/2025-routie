@@ -5,6 +5,7 @@ const useLogout = () => {
 
   const handleLogout = () => {
     localStorage.removeItem('accessToken');
+    localStorage.removeItem('role');
     navigate('/', { replace: true });
     return;
   };

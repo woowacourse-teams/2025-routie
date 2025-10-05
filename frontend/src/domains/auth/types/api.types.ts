@@ -11,8 +11,11 @@ interface KakaoAccessTokenResponseType {
   accessToken: string;
 }
 
-interface UserNameResponseType {
-  nickName: string;
+type UserRole = 'USER' | 'GUEST';
+
+interface UserResponseType {
+  role: UserRole;
+  nickname: string;
 }
 
 interface GuestLoginRequestType {
@@ -29,7 +32,8 @@ export type {
   KakaoLoginUriResponseType,
   KakaoAccessTokenRequestType,
   KakaoAccessTokenResponseType,
-  UserNameResponseType,
+  UserResponseType,
+  UserRole,
   GuestLoginRequestType,
   GuestLoginResponseType,
 };
