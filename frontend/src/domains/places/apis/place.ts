@@ -9,7 +9,9 @@ import type {
   AddPlaceRequestType,
   DeletePlaceRequestType,
   FetchPlaceRequestType,
+  LikePlaceRequestType,
   SearchPlaceRequestType,
+  UnlikePlaceRequestType,
 } from '@/domains/places/types/api.types';
 import type {
   PlaceAdapterType,
@@ -84,7 +86,7 @@ const searchPlace = async ({
   return searchPlaceAdapter(data.searchedPlaces);
 };
 
-const postLikePlace = async (placeId: number) => {
+const postLikePlace = async ({ placeId }: LikePlaceRequestType) => {
   const routieSpaceUuid = getRoutieSpaceUuid();
   ensureRoutieSpaceUuid(routieSpaceUuid);
 
@@ -103,7 +105,7 @@ const postLikePlace = async (placeId: number) => {
   }
 };
 
-const deleteLikePlace = async (placeId: number) => {
+const deleteLikePlace = async ({ placeId }: UnlikePlaceRequestType) => {
   const routieSpaceUuid = getRoutieSpaceUuid();
   ensureRoutieSpaceUuid(routieSpaceUuid);
 

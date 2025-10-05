@@ -37,6 +37,14 @@ interface LikePlaceRequestType {
   placeId: number;
 }
 
+interface UnlikePlaceRequestType {
+  placeId: number;
+}
+
+interface LikedPlacesResponseType extends ApiPlaceBaseType {
+  likedPlaceIds: number[];
+}
+
 export type {
   SearchPlaceRequestType,
   SearchPlaceResponseType,
@@ -46,4 +54,6 @@ export type {
   FetchPlaceListResponseType,
   DeletePlaceRequestType,
   LikePlaceRequestType,
+  UnlikePlaceRequestType,
+  LikedPlacesResponseType,
 };

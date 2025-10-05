@@ -13,6 +13,7 @@ import {
 import type {
   AddPlaceRequestType,
   LikePlaceRequestType,
+  UnlikePlaceRequestType,
 } from '@/domains/places/types/api.types';
 
 import { placesKeys } from './key';
@@ -92,7 +93,8 @@ const useLikePlaceMutation = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ placeId }: LikePlaceRequestType) => postLikePlace(placeId),
+    mutationFn: ({ placeId }: LikePlaceRequestType) =>
+      postLikePlace({ placeId }),
     onSuccess: () => {
       showToast({
         message: '좋아요가 추가되었습니다.',
@@ -111,10 +113,11 @@ const useLikePlaceMutation = () => {
 
 const useUnlikePlaceMutation = () => {
   const { showToast } = useToastContext();
-  const queryClient = useQueryClient(); 
+  const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ placeId }: LikePlaceRequestType) => deleteLikePlace(placeId),
+    mutationFn: ({ placeId }: UnlikePlaceRequestType) =>
+      deleteLikePlace({ placeId }),
     onSuccess: () => {
       showToast({
         message: '좋아요가 취소되었습니다.',
