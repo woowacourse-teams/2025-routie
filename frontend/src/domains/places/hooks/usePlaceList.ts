@@ -6,6 +6,7 @@ import { useRequireAccessToken } from '@/@common/hooks/useRequireAccessToken';
 import {
   useAddPlaceQuery,
   useDeletePlaceQuery,
+  useLikedPlacesQuery,
   useLikePlaceMutation,
   usePlaceListQuery,
   useUnlikePlaceMutation,
@@ -19,6 +20,7 @@ const usePlaceList = () => {
   const { mutateAsync: deletePlace } = useDeletePlaceQuery();
   const { mutate: postLikePlace } = useLikePlaceMutation();
   const { mutate: deleteLikePlace } = useUnlikePlaceMutation();
+  const { data: likedPlacesIds } = useLikedPlacesQuery();
   const requireAccessToken = useRequireAccessToken();
   const { showToast } = useToastContext();
   const { runWithLock: runDeleteWithLock } = useAsyncLock();
@@ -88,6 +90,7 @@ const usePlaceList = () => {
     handleDeletePlace,
     handleLikePlace,
     handleUnlikePlace,
+    likedPlacesIds,
   };
 };
 

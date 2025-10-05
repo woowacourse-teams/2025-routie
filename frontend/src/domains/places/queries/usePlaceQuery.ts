@@ -5,6 +5,7 @@ import {
   addPlace,
   deleteLikePlace,
   deletePlace,
+  getLikedPlaces,
   getPlace,
   getPlaceList,
   postLikePlace,
@@ -134,6 +135,13 @@ const useUnlikePlaceMutation = () => {
   });
 };
 
+const useLikedPlacesQuery = () => {
+  return useQuery({
+    queryKey: placesKeys.liked(),
+    queryFn: getLikedPlaces,
+  });
+};
+
 export {
   useAddPlaceQuery,
   useDeletePlaceQuery,
@@ -142,4 +150,5 @@ export {
   usePlaceSearchQuery,
   useLikePlaceMutation,
   useUnlikePlaceMutation,
+  useLikedPlacesQuery,
 };

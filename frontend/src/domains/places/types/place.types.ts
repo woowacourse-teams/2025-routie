@@ -24,6 +24,10 @@ type PlaceListAdapterType = PlaceWithLikeType[];
 
 type SearchPlaceAdapterType = SearchedPlaceType[];
 
+interface LikedPlacesResponseAdapterType {
+  likedPlaceIds: number[];
+}
+
 export type {
   SearchedPlaceType,
   PlaceDataType,
@@ -31,4 +35,5 @@ export type {
   PlaceWithLikeType,
   PlaceListAdapterType,
   SearchPlaceAdapterType,
+  LikedPlacesResponseAdapterType,
 };

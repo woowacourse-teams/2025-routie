@@ -3,6 +3,7 @@ import { apiClient } from '@/apis';
 import {
   getPlaceAdapter,
   getPlaceListAdapter,
+  likedPlacesAdapter,
   searchPlaceAdapter,
 } from '@/domains/places/adapters/placeAdapter';
 import type {
@@ -14,6 +15,7 @@ import type {
   UnlikePlaceRequestType,
 } from '@/domains/places/types/api.types';
 import type {
+  LikedPlacesResponseAdapterType,
   PlaceAdapterType,
   PlaceListAdapterType,
   SearchPlaceAdapterType,
@@ -124,6 +126,25 @@ const deleteLikePlace = async ({ placeId }: UnlikePlaceRequestType) => {
   }
 };
 
+const getLikedPlaces = async (): Promise<LikedPlacesResponseAdapterType> => {
+  const routieSpaceUuid = getRoutieSpaceUuid();
+  ensureRoutieSpaceUuid(routieSpaceUuid);
+
+  const accessToken = getAccessTokenOrThrow();
+
+  const response = await apiClient.get(
+    `/v1/routie-spaces/${routieSpaceUuid}/places/likes`,
+    undefined,
+    {
+      Authorization: `Bearer ${accessToken}`,
+    },
+  );
+
+  const data = await response.json();
+
+  return likedPlacesAdapter(data);
+};
+
 export {
   addPlace,
   deletePlace,
@@ -132,4 +153,5 @@ export {
   searchPlace,
   postLikePlace,
   deleteLikePlace,
+  getLikedPlaces,
 };

@@ -41,7 +41,7 @@ interface UnlikePlaceRequestType {
   placeId: number;
 }
 
-interface LikedPlacesResponseType extends ApiPlaceBaseType {
+interface LikedPlacesResponseType {
   likedPlaceIds: number[];
 }
 
