@@ -19,7 +19,7 @@ import routie.business.authentication.ui.v1.dto.response.GuestAuthenticationResp
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/v1/authentication")
-public class AuthenticationController {
+public class AuthenticationControllerV1 {
 
     private final AuthenticationService authenticationService;
 
