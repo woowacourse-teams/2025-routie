@@ -7,6 +7,7 @@ import {
   useDeletePlaceQuery,
   useLikePlaceMutation,
   usePlaceListQuery,
+  useUnlikePlaceMutation,
 } from '@/domains/places/queries/usePlaceQuery';
 import type { SearchedPlaceType } from '@/domains/places/types/place.types';
 import { useGoogleEventTrigger } from '@/libs/googleAnalytics/hooks/useGoogleEventTrigger';
@@ -16,6 +17,7 @@ const usePlaceList = () => {
   const { mutateAsync: addPlace, data: addedPlaceId } = useAddPlaceQuery();
   const { mutateAsync: deletePlace } = useDeletePlaceQuery();
   const { mutate: postLikePlace } = useLikePlaceMutation();
+  const { mutate: deleteLikePlace } = useUnlikePlaceMutation();
   const { showToast } = useToastContext();
   const { runWithLock: runDeleteWithLock } = useAsyncLock();
   const { runWithLock: runAddWithLock } = useAsyncLock();
@@ -47,9 +49,36 @@ const usePlaceList = () => {
 
   const handleLikePlace = useCallback(
     (placeId: number) => {
+      const accessToken = localStorage.getItem('accessToken');
+
+      if (!accessToken) {
+        showToast({
+          message: '로그인이 필요합니다.',
+          type: 'error',
+        });
+        return;
+      }
+
       postLikePlace({ placeId });
     },
-    [postLikePlace],
+    [postLikePlace, showToast],
+  );
+
+  const handleUnlikePlace = useCallback(
+    (placeId: number) => {
+      const accessToken = localStorage.getItem('accessToken');
+
+      if (!accessToken) {
+        showToast({
+          message: '로그인이 필요합니다.',
+          type: 'error',
+        });
+        return;
+      }
+
+      deleteLikePlace({ placeId });
+    },
+    [deleteLikePlace, showToast],
   );
 
   useEffect(() => {
@@ -68,6 +97,7 @@ const usePlaceList = () => {
     addedPlaceId,
     handleDeletePlace,
     handleLikePlace,
+    handleUnlikePlace,
   };
 };
 

@@ -3,6 +3,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useToastContext } from '@/@common/contexts/useToastContext';
 import {
   addPlace,
+  deleteLikePlace,
   deletePlace,
   getPlace,
   getPlaceList,
@@ -108,6 +109,28 @@ const useLikePlaceMutation = () => {
   });
 };
 
+const useUnlikePlaceMutation = () => {
+  const { showToast } = useToastContext();
+  const queryClient = useQueryClient(); 
+
+  return useMutation({
+    mutationFn: ({ placeId }: LikePlaceRequestType) => deleteLikePlace(placeId),
+    onSuccess: () => {
+      showToast({
+        message: '좋아요가 취소되었습니다.',
+        type: 'success',
+      });
+      queryClient.invalidateQueries({ queryKey: placesKeys.list() });
+    },
+    onError: (error) => {
+      showToast({
+        message: error.message,
+        type: 'error',
+      });
+    },
+  });
+};
+
 export {
   useAddPlaceQuery,
   useDeletePlaceQuery,
@@ -115,4 +138,5 @@ export {
   usePlaceListQuery,
   usePlaceSearchQuery,
   useLikePlaceMutation,
+  useUnlikePlaceMutation,
 };

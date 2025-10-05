@@ -5,6 +5,7 @@ interface PlaceCardProps extends PlaceWithLikeType {
   onSelect: (placeId: number, selected: boolean) => Promise<void>;
   onDelete: (placeId: number) => Promise<void>;
   onLike: (placeId: number) => void | Promise<void>;
+  onUnLike: (placeId: number) => void | Promise<void>;
 }
 
 export type { PlaceCardProps };

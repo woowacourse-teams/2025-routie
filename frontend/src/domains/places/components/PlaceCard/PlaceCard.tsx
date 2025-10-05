@@ -16,6 +16,7 @@ const PlaceCard = ({
   onSelect,
   onDelete,
   onLike,
+  onUnLike,
   ...props
 }: PlaceCardProps) => {
   const handlePlaceSelect = async () => {
