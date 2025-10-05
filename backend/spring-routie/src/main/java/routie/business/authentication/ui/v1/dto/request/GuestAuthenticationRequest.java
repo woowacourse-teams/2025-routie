@@ -7,6 +7,6 @@ import jakarta.validation.constraints.NotNull;
 public record GuestAuthenticationRequest(
         @JsonProperty("nickname") @NotBlank String nickname,
         @JsonProperty("password") String password,
-        @JsonProperty("routieSpaceId") @NotNull Long routieSpaceId
+        @JsonProperty("routieSpaceIdentifier") @NotNull String routieSpaceIdentifier
 ) {
 }

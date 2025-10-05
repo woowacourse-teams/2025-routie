@@ -108,8 +108,9 @@ public class AuthenticationService {
     ) {
         final String requestedPassword = guestAuthenticationRequest.password();
 
-        final RoutieSpace routieSpace = routieSpaceRepository.findById(guestAuthenticationRequest.routieSpaceId())
-                .orElseThrow(() -> new BusinessException(ErrorCode.ROUTIE_SPACE_NOT_FOUND));
+        final RoutieSpace routieSpace = routieSpaceRepository.findByIdentifier(
+                guestAuthenticationRequest.routieSpaceIdentifier()
+        ).orElseThrow(() -> new BusinessException(ErrorCode.ROUTIE_SPACE_NOT_FOUND));
 
         final Guest guest = guestRepository.findByNicknameAndRoutieSpaceId(
                 guestAuthenticationRequest.nickname(),
