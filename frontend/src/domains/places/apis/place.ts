@@ -1,3 +1,4 @@
+import { getAccessTokenOrThrow } from '@/@common/utils/getAccessTokenOrThrow';
 import { apiClient } from '@/apis';
 import {
   getPlaceAdapter,
@@ -87,11 +88,7 @@ const postLikePlace = async (placeId: number) => {
   const routieSpaceUuid = getRoutieSpaceUuid();
   ensureRoutieSpaceUuid(routieSpaceUuid);
 
-  const accessToken = localStorage.getItem('accessToken');
-
-  if (!accessToken) {
-    throw new Error('로그인이 필요합니다.');
-  }
+  const accessToken = getAccessTokenOrThrow();
 
   const response = await apiClient.post(
     `/v1/routie-spaces/${routieSpaceUuid}/places/${placeId}/likes`,
@@ -110,11 +107,7 @@ const deleteLikePlace = async (placeId: number) => {
   const routieSpaceUuid = getRoutieSpaceUuid();
   ensureRoutieSpaceUuid(routieSpaceUuid);
 
-  const accessToken = localStorage.getItem('accessToken');
-
-  if (!accessToken) {
-    throw new Error('로그인이 필요합니다.');
-  }
+  const accessToken = getAccessTokenOrThrow();
 
   const response = await apiClient.delete(
     `/v1/routie-spaces/${routieSpaceUuid}/places/${placeId}/likes`,
