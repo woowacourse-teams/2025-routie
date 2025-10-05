@@ -2,7 +2,6 @@ package routie.business.routie.domain;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Embeddable;
-import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -22,8 +21,11 @@ import routie.global.exception.domain.ErrorCode;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Routie {
 
-    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE}, orphanRemoval = true)
-    @JoinColumn(name = "routie_space_id", nullable = false)
+    @OneToMany(
+            mappedBy = "routieSpace",
+            cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE},
+            orphanRemoval = true
+    )
     private List<RoutiePlace> routiePlaces = new ArrayList<>();
 
     public static Routie empty() {
