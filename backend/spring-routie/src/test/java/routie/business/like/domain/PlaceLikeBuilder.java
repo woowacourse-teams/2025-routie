@@ -1,17 +1,15 @@
 package routie.business.like.domain;
 
 import routie.business.participant.domain.Guest;
-import routie.business.participant.domain.GuestFixture;
 import routie.business.participant.domain.User;
-import routie.business.participant.domain.UserFixture;
 import routie.business.place.domain.Place;
 import routie.business.place.domain.PlaceFixture;
 
 public class PlaceLikeBuilder {
 
     private Place place = PlaceFixture.anyPlace();
-    private User user = UserFixture.emptyUser();
-    private Guest guest = GuestFixture.emptyGuest();
+    private User user = null;
+    private Guest guest = null;
 
     public PlaceLikeBuilder place(final Place place) {
         this.place = place;

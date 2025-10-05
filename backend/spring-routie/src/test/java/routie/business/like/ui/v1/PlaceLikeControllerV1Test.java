@@ -175,6 +175,6 @@ public class PlaceLikeControllerV1Test {
 
         // then
         assertThat(actualHttpStatus).isEqualTo(expectedHttpStatus);
-        assertThat(response.jsonPath().getList("likedPlaceIds").contains(1)).isTrue();
+        assertThat(response.jsonPath().getList("likedPlaceIds", Long.class).contains(testPlace.getId())).isTrue();
     }
 }

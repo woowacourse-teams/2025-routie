@@ -12,8 +12,8 @@ public class PlaceLikeFixture {
     public static PlaceLike anyPlaceLike() {
         return new PlaceLikeBuilder()
                 .place(PlaceFixture.anyPlace())
-                .user(UserFixture.emptyUser())
-                .guest(GuestFixture.emptyGuest())
+                .user(null)
+                .guest(null)
                 .build();
     }
 
@@ -29,15 +29,23 @@ public class PlaceLikeFixture {
         return new PlaceLikeBuilder()
                 .place(place)
                 .user(user)
-                .guest(emptyGuest())
+                .guest(null)
                 .build();
     }
 
     public static PlaceLike placeLikeForPlaceAndGuest(final Place place, final Guest guest) {
         return new PlaceLikeBuilder()
                 .place(place)
-                .user(emptyUser())
+                .user(null)
                 .guest(guest)
+                .build();
+    }
+
+    public static PlaceLike placeLikeForPlace(final Place testPlace) {
+        return new PlaceLikeBuilder()
+                .place(testPlace)
+                .guest(null)
+                .user(null)
                 .build();
     }
 }
