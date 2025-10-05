@@ -43,7 +43,7 @@ const getRoutieSpace = async (): Promise<RoutieSpaceAdapterType> => {
     throw new Error('루티 스페이스 uuid가 없습니다.');
   }
 
-  const response = await apiClient.get(`/routie-spaces/${routieSpaceUuid}`);
+  const response = await apiClient.get(`/v1/routie-spaces/${routieSpaceUuid}`);
 
   const data = await response.json();
 

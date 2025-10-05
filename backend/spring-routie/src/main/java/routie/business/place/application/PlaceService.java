@@ -85,6 +85,7 @@ public class PlaceService {
         if (routiePlaceRepository.existsRoutiePlaceByPlaceId(placeId)) {
             throw new BusinessException(ErrorCode.ROUTIE_PLACE_EXIST);
         }
+        placeLikeRepository.deleteByPlaceId(placeId);
         placeRepository.deleteById(placeId);
     }
 

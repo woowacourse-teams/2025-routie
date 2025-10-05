@@ -15,6 +15,8 @@ import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
+import routie.business.like.domain.PlaceLikeFixture;
+import routie.business.like.domain.PlaceLikeRepository;
 import routie.business.place.domain.Place;
 import routie.business.place.domain.PlaceBuilder;
 import routie.business.place.domain.PlaceRepository;
@@ -38,6 +40,9 @@ public class PlaceControllerV1Test {
     @Autowired
     private RoutieSpaceIdentifierProvider routieSpaceIdentifierProvider;
 
+    @Autowired
+    private PlaceLikeRepository placeLikeRepository;
+
     private Place testPlace;
     private RoutieSpace testRoutieSpace;
 
@@ -56,6 +61,7 @@ public class PlaceControllerV1Test {
                 .routieSpace(testRoutieSpace)
                 .build();
         placeRepository.save(testPlace);
+        placeLikeRepository.save(PlaceLikeFixture.placeLikeForPlace(testPlace));
     }
 
     @Test

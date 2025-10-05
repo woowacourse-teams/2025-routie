@@ -21,6 +21,7 @@ import routie.business.authentication.domain.jwt.JwtProcessor;
 import routie.business.participant.domain.User;
 import routie.business.participant.domain.UserFixture;
 import routie.business.participant.domain.UserRepository;
+import routie.business.place.domain.PlaceFixture;
 import routie.business.place.ui.dto.request.PlaceCreateRequest;
 import routie.business.place.ui.dto.response.PlaceCreateResponse;
 import routie.business.routiespace.ui.dto.response.RoutieSpaceListResponse;
@@ -228,6 +229,35 @@ public class RoutieSpaceControllerV1Test {
                 .extract().response();
 
         String newRoutieSpaceIdentifier = createSpaceResponse.jsonPath().getString("routieSpaceIdentifier");
+
+        final PlaceCreateRequest placeCreateRequest = new PlaceCreateRequest(
+                "testPlaceId",
+                PlaceFixture.anyName(),
+                PlaceFixture.anyRoadAddressName(),
+                PlaceFixture.anyAddressName(),
+                PlaceFixture.anyLongitude(),
+                PlaceFixture.anyLatitude()
+        );
+        final PlaceCreateResponse placeCreateResponse = RestAssured
+                .given()
+                .contentType(ContentType.JSON)
+                .body(placeCreateRequest)
+                .when()
+                .post("/v1/routie-spaces/{routieSpaceIdentifier}/places", newRoutieSpaceIdentifier)
+                .then().log().all()
+                .log().all()
+                .statusCode(HttpStatus.OK.value())
+                .extract()
+                .as(PlaceCreateResponse.class);
+        RestAssured
+                .given()
+                .contentType(ContentType.JSON)
+                .when()
+                .post(
+                        "/v1/routie-spaces/{routieSpaceIdentifier}/places/{placeId}/likes",
+                        newRoutieSpaceIdentifier,
+                        placeCreateResponse.id()
+                );
 
         // when
         RestAssured
