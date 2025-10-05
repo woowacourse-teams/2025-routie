@@ -4,7 +4,6 @@
 ALTER TABLE users
     RENAME COLUMN nick_name TO nickname;
 
-
 -- 2. guests 테이블을 새로 생성합니다.
 CREATE TABLE IF NOT EXISTS guests
 (
@@ -40,12 +39,13 @@ CREATE TABLE IF NOT EXISTS guests
 )
     );
 
-
 -- 3. place_likes 테이블을 수정합니다.
 -- 3.1. 컬럼 추가
 ALTER TABLE place_likes
-    ADD COLUMN user_id BIGINT NULL,
-    ADD COLUMN guest_id BIGINT NULL,
+    ADD COLUMN user_id BIGINT NULL;
+ALTER TABLE place_likes
+    ADD COLUMN guest_id BIGINT NULL;
+ALTER TABLE place_likes
     ADD COLUMN updated_at DATETIME(6);
 
 -- 3.2. 기존 created_at 컬럼 타입 변경
@@ -55,7 +55,8 @@ COLUMN created_at DATETIME(6);
 
 -- 3.3. 외래 키 제약조건 추가
 ALTER TABLE place_likes
-    ADD CONSTRAINT FK_place_likes_user_id FOREIGN KEY (user_id) REFERENCES users (id),
+    ADD CONSTRAINT FK_place_likes_user_id FOREIGN KEY (user_id) REFERENCES users (id);
+ALTER TABLE place_likes
     ADD CONSTRAINT FK_place_likes_guest_id FOREIGN KEY (guest_id) REFERENCES guests (id);
 
 
