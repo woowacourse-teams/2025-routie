@@ -87,8 +87,18 @@ const postLikePlace = async (placeId: number) => {
   const routieSpaceUuid = getRoutieSpaceUuid();
   ensureRoutieSpaceUuid(routieSpaceUuid);
 
+  const accessToken = localStorage.getItem('accessToken');
+
+  if (!accessToken) {
+    throw new Error('로그인이 필요합니다.');
+  }
+
   const response = await apiClient.post(
     `/v1/routie-spaces/${routieSpaceUuid}/places/${placeId}/likes`,
+    null,
+    {
+      Authorization: `Bearer ${accessToken}`,
+    },
   );
 
   if (!response.ok) {
