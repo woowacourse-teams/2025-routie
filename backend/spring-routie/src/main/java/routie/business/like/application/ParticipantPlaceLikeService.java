@@ -1,8 +1,10 @@
 package routie.business.like.application;
 
+import java.util.Collections;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import routie.business.authentication.domain.Role;
+import routie.business.like.ui.dto.response.LikedPlacesResponse;
 import routie.business.participant.domain.Guest;
 import routie.business.participant.domain.Participant;
 import routie.business.participant.domain.User;
@@ -30,5 +32,15 @@ public class ParticipantPlaceLikeService {
         if (participant.getRole() == Role.GUEST) {
             guestPlaceLikeService.removePlaceLike(placeId, routieSpaceIdentifier, (Guest) participant);
         }
+    }
+
+    public LikedPlacesResponse getLikedPlaces(final String routieSpaceIdentifier, final Participant participant) {
+        if (participant.getRole() == Role.USER) {
+            return userPlaceLikeService.getLikedPlaces(routieSpaceIdentifier, (User) participant);
+        }
+        if (participant.getRole() == Role.GUEST) {
+            return guestPlaceLikeService.getLikedPlaces(routieSpaceIdentifier, (Guest) participant);
+        }
+        return new LikedPlacesResponse(Collections.emptyList());
     }
 }

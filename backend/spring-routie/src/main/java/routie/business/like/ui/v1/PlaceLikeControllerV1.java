@@ -11,18 +11,19 @@ import org.springframework.web.bind.annotation.RestController;
 import routie.business.authentication.ui.argument.annotation.AuthenticatedParticipant;
 import routie.business.like.application.ParticipantPlaceLikeService;
 import routie.business.like.application.UserPlaceLikeService;
+import routie.business.like.ui.dto.response.LikedPlacesResponse;
 import routie.business.participant.domain.Participant;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/v1/routie-spaces/{routieSpaceIdentifier}/places/{placeId}")
+@RequestMapping("/v1/routie-spaces/{routieSpaceIdentifier}/places")
 public class PlaceLikeControllerV1 {
 
     private final UserPlaceLikeService userPlaceLikeService;
     private final ParticipantPlaceLikeService participantPlaceLikeService;
 
     @Deprecated
-    @PostMapping("/likes")
+    @PostMapping("/{placeId}/likes")
     public ResponseEntity<Void> like(
             @PathVariable final Long placeId,
             @PathVariable final String routieSpaceIdentifier
@@ -31,7 +32,7 @@ public class PlaceLikeControllerV1 {
         return ResponseEntity.ok().build();
     }
 
-    @DeleteMapping("/likes")
+    @DeleteMapping("/{placeId}/likes")
     public ResponseEntity<Void> deletePlaceLike(
             @PathVariable final Long placeId,
             @PathVariable final String routieSpaceIdentifier,
@@ -42,11 +43,10 @@ public class PlaceLikeControllerV1 {
     }
 
     @GetMapping("/likes")
-    public ResponseEntity<Void> readPlaceLike(
+    public ResponseEntity<LikedPlacesResponse> readLikedPlaces(
             @PathVariable final String routieSpaceIdentifier,
             @AuthenticatedParticipant final Participant participant
     ) {
-        participantPlaceLikeService.getPlaceLike(routieSpaceIdentifier, participant);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok().body(participantPlaceLikeService.getLikedPlaces(routieSpaceIdentifier, participant));
     }
 }

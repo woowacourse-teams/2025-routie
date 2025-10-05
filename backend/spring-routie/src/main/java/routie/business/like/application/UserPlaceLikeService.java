@@ -1,10 +1,12 @@
 package routie.business.like.application;
 
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import routie.business.like.domain.PlaceLike;
 import routie.business.like.domain.PlaceLikeRepository;
+import routie.business.like.ui.dto.response.LikedPlacesResponse;
 import routie.business.participant.domain.User;
 import routie.business.place.domain.Place;
 import routie.business.place.domain.PlaceRepository;
@@ -70,5 +72,16 @@ public class UserPlaceLikeService {
                 .orElseThrow(() -> new BusinessException(ErrorCode.PLACE_LIKE_NOT_FOUND));
 
         placeLikeRepository.delete(placeLike);
+    }
+
+    public LikedPlacesResponse getLikedPlaces(final String routieSpaceIdentifier, final User user) {
+        final RoutieSpace routieSpace = routieSpaceRepository.findByIdentifier(routieSpaceIdentifier)
+                .orElseThrow(() -> new BusinessException(ErrorCode.ROUTIE_SPACE_NOT_FOUND_BY_IDENTIFIER));
+
+        final List<PlaceLike> placeLikes = placeLikeRepository.findByRoutieSpaceIdAndUserId(routieSpace.getId(),
+                        user.getId())
+                .orElseThrow(() -> new BusinessException(ErrorCode.PLACE_LIKE_NOT_FOUND));
+
+        return LikedPlacesResponse.from(placeLikes);
     }
 }
