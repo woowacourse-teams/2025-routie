@@ -72,6 +72,10 @@ public class GuestPlaceLikeService implements PlaceLikeService<Guest> {
         final RoutieSpace routieSpace = routieSpaceRepository.findByIdentifier(routieSpaceIdentifier)
                 .orElseThrow(() -> new BusinessException(ErrorCode.ROUTIE_SPACE_NOT_FOUND_BY_IDENTIFIER));
 
+        if (!guest.getRoutieSpace().getId().equals(routieSpace.getId())) {
+            throw new BusinessException(ErrorCode.ROUTIE_SPACE_FORBIDDEN_GUEST);
+        }
+
         final List<PlaceLike> placeLikes = placeLikeRepository.findByRoutieSpaceIdAndGuestId(
                 routieSpace.getId(),
                 guest.getId()
