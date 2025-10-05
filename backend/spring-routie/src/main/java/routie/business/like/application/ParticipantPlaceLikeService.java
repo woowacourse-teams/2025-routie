@@ -14,7 +14,7 @@ public class ParticipantPlaceLikeService {
     private final UserPlaceLikeService userPlaceLikeService;
     private final GuestPlaceLikeService guestPlaceLikeService;
 
-    public void likePlace(final Long placeId, final String routieSpaceIdentifier, final Participant participant) {
+    public void addPlaceLike(final Long placeId, final String routieSpaceIdentifier, final Participant participant) {
         if (participant.getRole() == Role.USER) {
             userPlaceLikeService.likePlaceV2(placeId, routieSpaceIdentifier, (User) participant);
         }

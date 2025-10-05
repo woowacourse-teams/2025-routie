@@ -18,12 +18,12 @@ public class PlaceLikeControllerV2 {
     private final ParticipantPlaceLikeService participantPlaceLikeService;
 
     @PostMapping("/likes")
-    public ResponseEntity<Void> like(
+    public ResponseEntity<Void> createPlaceLike(
             @PathVariable final Long placeId,
             @PathVariable final String routieSpaceIdentifier,
             @AuthenticatedParticipant final Participant participant
     ) {
-        participantPlaceLikeService.likePlace(placeId, routieSpaceIdentifier, participant);
+        participantPlaceLikeService.addPlaceLike(placeId, routieSpaceIdentifier, participant);
         return ResponseEntity.ok().build();
     }
 }
