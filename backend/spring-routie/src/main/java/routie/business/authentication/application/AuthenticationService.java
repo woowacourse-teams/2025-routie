@@ -111,12 +111,14 @@ public class AuthenticationService {
         final RoutieSpace routieSpace = routieSpaceRepository.findById(guestAuthenticationRequest.routieSpaceId())
                 .orElseThrow(() -> new BusinessException(ErrorCode.ROUTIE_SPACE_NOT_FOUND));
 
-        final Guest guest = guestRepository.findByNickname(guestAuthenticationRequest.nickname())
-                .orElseGet(() -> createGuest(
-                        guestAuthenticationRequest.nickname(),
-                        requestedPassword,
-                        routieSpace
-                ));
+        final Guest guest = guestRepository.findByNicknameAndRoutieSpaceId(
+                guestAuthenticationRequest.nickname(),
+                routieSpace.getId()
+        ).orElseGet(() -> createGuest(
+                guestAuthenticationRequest.nickname(),
+                requestedPassword,
+                routieSpace
+        ));
 
         final String savedPassword = guest.getPassword();
 
