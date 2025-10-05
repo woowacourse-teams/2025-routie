@@ -59,13 +59,16 @@ ALTER TABLE place_likes
 ALTER TABLE place_likes
     ADD CONSTRAINT FK_place_likes_guest_id FOREIGN KEY (guest_id) REFERENCES guests (id);
 
--- 3.4. CHECK 제약조건 추가: user_id와 guest_id 중 정확히 하나만 NOT NULL
+-- 3.4. 기존 place_likes 레코드 삭제 (user_id, guest_id 컬럼 추가 후 모두 NULL이므로 CHECK 제약 위반)
+DELETE
+FROM place_likes;
 
+-- 3.5. CHECK 제약조건 추가: user_id와 guest_id 중 정확히 하나만 NOT NULL
 ALTER TABLE place_likes
     ADD CONSTRAINT CHK_place_likes_participant
         CHECK ((user_id IS NOT NULL AND guest_id IS NULL) OR (user_id IS NULL AND guest_id IS NOT NULL));
 
--- 3.5. UNIQUE 제약조건 추가: 중복 좋아요 방지
+-- 3.6. UNIQUE 제약조건 추가: 중복 좋아요 방지
 
 ALTER TABLE place_likes
     ADD CONSTRAINT UQ_place_likes_user UNIQUE (place_id, user_id);
