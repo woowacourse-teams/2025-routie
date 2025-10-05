@@ -9,6 +9,7 @@ import routie.business.like.domain.PlaceLike;
 import routie.business.like.domain.PlaceLikeRepository;
 import routie.business.like.ui.dto.response.LikedPlacesResponse;
 import routie.business.participant.domain.User;
+import routie.business.participant.domain.UserRepository;
 import routie.business.place.domain.Place;
 import routie.business.place.domain.PlaceRepository;
 import routie.business.routiespace.domain.RoutieSpace;
@@ -24,6 +25,7 @@ public class UserPlaceLikeService implements PlaceLikeService<User> {
     private final PlaceLikeRepository placeLikeRepository;
     private final RoutieSpaceRepository routieSpaceRepository;
     private final PlaceRepository placeRepository;
+    private final UserRepository userRepository;
 
     @Deprecated
     @Transactional
@@ -37,7 +39,11 @@ public class UserPlaceLikeService implements PlaceLikeService<User> {
                         "루티 스페이스 내에서 해당하는 장소를 찾을 수 없습니다: " + placeId
                 ));
 
-        placeLikeRepository.save(new PlaceLike(place, null, null));
+        // 삭제될 메서드 및 로직, 엔티티 변경에 따라 하위호환성 보장을 위해 삽입
+        final User user = userRepository.findAll()
+                .getFirst();
+
+        placeLikeRepository.save(new PlaceLike(place, user, null));
     }
 
     @Transactional

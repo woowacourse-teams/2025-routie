@@ -17,7 +17,6 @@ import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import routie.business.authentication.domain.jwt.JwtProcessor;
 import routie.business.like.domain.PlaceLike;
 import routie.business.like.domain.PlaceLikeRepository;
-import routie.business.participant.domain.GuestRepository;
 import routie.business.participant.domain.User;
 import routie.business.participant.domain.UserFixture;
 import routie.business.participant.domain.UserRepository;
@@ -51,9 +50,6 @@ public class PlaceLikeControllerV1Test {
     private UserRepository userRepository;
 
     @Autowired
-    private GuestRepository guestRepository;
-
-    @Autowired
     private JwtProcessor jwtProcessor;
 
     private Place testPlace;
@@ -74,6 +70,9 @@ public class PlaceLikeControllerV1Test {
                 .routieSpace(testRoutieSpace)
                 .build();
         placeRepository.save(testPlace);
+
+        // UserPlaceLikeService.likePlaceV0 제거 시 같이 제거해도 됨
+        userRepository.save(UserFixture.emptyUser());
     }
 
     @Test

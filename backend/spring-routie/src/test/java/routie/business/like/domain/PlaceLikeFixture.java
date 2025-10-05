@@ -40,12 +40,4 @@ public class PlaceLikeFixture {
                 .guest(guest)
                 .build();
     }
-
-    public static PlaceLike placeLikeForPlace(final Place testPlace) {
-        return new PlaceLikeBuilder()
-                .place(testPlace)
-                .guest(null)
-                .user(null)
-                .build();
-    }
 }
