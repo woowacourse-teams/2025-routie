@@ -24,7 +24,7 @@ public class UserPlaceLikeService {
 
     @Deprecated
     @Transactional
-    public void likePlace(final Long placeId, final String routieSpaceIdentifier, final User user) {
+    public void likePlace(final Long placeId, final String routieSpaceIdentifier) {
         final RoutieSpace routieSpace = routieSpaceRepository.findByIdentifier(routieSpaceIdentifier)
                 .orElseThrow(() -> new BusinessException(ErrorCode.ROUTIE_SPACE_NOT_FOUND_BY_IDENTIFIER));
 
@@ -34,7 +34,7 @@ public class UserPlaceLikeService {
                         "루티 스페이스 내에서 해당하는 장소를 찾을 수 없습니다: " + placeId
                 ));
 
-        placeLikeRepository.save(PlaceLike.of(place, user));
+        placeLikeRepository.save(new PlaceLike(place, null, null));
     }
 
     @Transactional
