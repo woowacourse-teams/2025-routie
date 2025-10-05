@@ -4,6 +4,7 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import routie.business.authentication.domain.Role;
 import routie.business.like.domain.PlaceLike;
 import routie.business.like.domain.PlaceLikeRepository;
 import routie.business.like.ui.dto.response.LikedPlacesResponse;
@@ -18,7 +19,7 @@ import routie.global.exception.domain.ErrorCode;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class GuestPlaceLikeService {
+public class GuestPlaceLikeService implements PlaceLikeService<Guest> {
 
     private final PlaceLikeRepository placeLikeRepository;
     private final RoutieSpaceRepository routieSpaceRepository;
@@ -61,7 +62,7 @@ public class GuestPlaceLikeService {
                         "루티 스페이스 내에서 해당하는 장소를 찾을 수 없습니다: " + placeId
                 ));
 
-        final PlaceLike placeLike = placeLikeRepository.findByPlaceIdAndUserId(placeId, guest.getId())
+        final PlaceLike placeLike = placeLikeRepository.findByPlaceIdAndGuestId(placeId, guest.getId())
                 .orElseThrow(() -> new BusinessException(ErrorCode.PLACE_LIKE_NOT_FOUND));
 
         placeLikeRepository.delete(placeLike);
@@ -71,10 +72,16 @@ public class GuestPlaceLikeService {
         final RoutieSpace routieSpace = routieSpaceRepository.findByIdentifier(routieSpaceIdentifier)
                 .orElseThrow(() -> new BusinessException(ErrorCode.ROUTIE_SPACE_NOT_FOUND_BY_IDENTIFIER));
 
-        final List<PlaceLike> placeLikes = placeLikeRepository.findByRoutieSpaceIdAndGuestId(routieSpace.getId(),
-                        guest.getId())
-                .orElseThrow(() -> new BusinessException(ErrorCode.PLACE_LIKE_NOT_FOUND));
+        final List<PlaceLike> placeLikes = placeLikeRepository.findByRoutieSpaceIdAndGuestId(
+                routieSpace.getId(),
+                guest.getId()
+        ).orElseThrow(() -> new BusinessException(ErrorCode.PLACE_LIKE_NOT_FOUND));
 
         return LikedPlacesResponse.from(placeLikes);
+    }
+
+    @Override
+    public Role getRole() {
+        return Role.GUEST;
     }
 }

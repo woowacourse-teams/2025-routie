@@ -28,7 +28,7 @@ public class PlaceLikeControllerV1 {
             @PathVariable final Long placeId,
             @PathVariable final String routieSpaceIdentifier
     ) {
-        userPlaceLikeService.likePlace(placeId, routieSpaceIdentifier);
+        userPlaceLikeService.likePlaceV0(placeId, routieSpaceIdentifier);
         return ResponseEntity.ok().build();
     }
 

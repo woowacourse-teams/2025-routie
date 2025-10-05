@@ -1,46 +1,43 @@
+// ParticipantPlaceLikeService.java (Refactored)
 package routie.business.like.application;
 
-import java.util.Collections;
+import jakarta.annotation.PostConstruct;
+import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import routie.business.authentication.domain.Role;
 import routie.business.like.ui.dto.response.LikedPlacesResponse;
-import routie.business.participant.domain.Guest;
 import routie.business.participant.domain.Participant;
-import routie.business.participant.domain.User;
 
 @Service
 @RequiredArgsConstructor
 public class ParticipantPlaceLikeService {
 
-    private final UserPlaceLikeService userPlaceLikeService;
-    private final GuestPlaceLikeService guestPlaceLikeService;
+    private final List<PlaceLikeService<? extends Participant>> services;
+    private Map<Role, PlaceLikeService<? extends Participant>> serviceMap;
+
+    @PostConstruct
+    void init() {
+        serviceMap = services.stream().collect(Collectors.toMap(PlaceLikeService::getRole, Function.identity()));
+    }
 
     public void addPlaceLike(final Long placeId, final String routieSpaceIdentifier, final Participant participant) {
-        if (participant.getRole() == Role.USER) {
-            userPlaceLikeService.likePlaceV2(placeId, routieSpaceIdentifier, (User) participant);
-        }
-        if (participant.getRole() == Role.GUEST) {
-            guestPlaceLikeService.likePlace(placeId, routieSpaceIdentifier, (Guest) participant);
-        }
+        findService(participant).likePlace(placeId, routieSpaceIdentifier, participant);
     }
 
     public void removePlaceLike(final Long placeId, final String routieSpaceIdentifier, final Participant participant) {
-        if (participant.getRole() == Role.USER) {
-            userPlaceLikeService.removePlaceLike(placeId, routieSpaceIdentifier, (User) participant);
-        }
-        if (participant.getRole() == Role.GUEST) {
-            guestPlaceLikeService.removePlaceLike(placeId, routieSpaceIdentifier, (Guest) participant);
-        }
+        findService(participant).removePlaceLike(placeId, routieSpaceIdentifier, participant);
     }
 
     public LikedPlacesResponse getLikedPlaces(final String routieSpaceIdentifier, final Participant participant) {
-        if (participant.getRole() == Role.USER) {
-            return userPlaceLikeService.getLikedPlaces(routieSpaceIdentifier, (User) participant);
-        }
-        if (participant.getRole() == Role.GUEST) {
-            return guestPlaceLikeService.getLikedPlaces(routieSpaceIdentifier, (Guest) participant);
-        }
-        return new LikedPlacesResponse(Collections.emptyList());
+        return findService(participant).getLikedPlaces(routieSpaceIdentifier, participant);
+    }
+
+    @SuppressWarnings("unchecked")
+    private PlaceLikeService<Participant> findService(final Participant participant) {
+        return (PlaceLikeService<Participant>) serviceMap.get(participant.getRole());
     }
 }

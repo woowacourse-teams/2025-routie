@@ -4,6 +4,7 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import routie.business.authentication.domain.Role;
 import routie.business.like.domain.PlaceLike;
 import routie.business.like.domain.PlaceLikeRepository;
 import routie.business.like.ui.dto.response.LikedPlacesResponse;
@@ -18,7 +19,7 @@ import routie.global.exception.domain.ErrorCode;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class UserPlaceLikeService {
+public class UserPlaceLikeService implements PlaceLikeService<User> {
 
     private final PlaceLikeRepository placeLikeRepository;
     private final RoutieSpaceRepository routieSpaceRepository;
@@ -26,7 +27,7 @@ public class UserPlaceLikeService {
 
     @Deprecated
     @Transactional
-    public void likePlace(final Long placeId, final String routieSpaceIdentifier) {
+    public void likePlaceV0(final Long placeId, final String routieSpaceIdentifier) {
         final RoutieSpace routieSpace = routieSpaceRepository.findByIdentifier(routieSpaceIdentifier)
                 .orElseThrow(() -> new BusinessException(ErrorCode.ROUTIE_SPACE_NOT_FOUND_BY_IDENTIFIER));
 
@@ -40,7 +41,7 @@ public class UserPlaceLikeService {
     }
 
     @Transactional
-    public void likePlaceV2(final Long placeId, final String routieSpaceIdentifier, final User user) {
+    public void likePlace(final Long placeId, final String routieSpaceIdentifier, final User user) {
         final RoutieSpace routieSpace = routieSpaceRepository.findByIdentifier(routieSpaceIdentifier)
                 .orElseThrow(() -> new BusinessException(ErrorCode.ROUTIE_SPACE_NOT_FOUND_BY_IDENTIFIER));
 
@@ -78,10 +79,16 @@ public class UserPlaceLikeService {
         final RoutieSpace routieSpace = routieSpaceRepository.findByIdentifier(routieSpaceIdentifier)
                 .orElseThrow(() -> new BusinessException(ErrorCode.ROUTIE_SPACE_NOT_FOUND_BY_IDENTIFIER));
 
-        final List<PlaceLike> placeLikes = placeLikeRepository.findByRoutieSpaceIdAndUserId(routieSpace.getId(),
-                        user.getId())
-                .orElseThrow(() -> new BusinessException(ErrorCode.PLACE_LIKE_NOT_FOUND));
+        final List<PlaceLike> placeLikes = placeLikeRepository.findByRoutieSpaceIdAndUserId(
+                routieSpace.getId(),
+                user.getId()
+        ).orElseThrow(() -> new BusinessException(ErrorCode.PLACE_LIKE_NOT_FOUND));
 
         return LikedPlacesResponse.from(placeLikes);
+    }
+
+    @Override
+    public Role getRole() {
+        return Role.USER;
     }
 }

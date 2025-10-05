@@ -89,7 +89,7 @@ public class AuthenticationControllerV1Test {
         final GuestAuthenticationRequest request = new GuestAuthenticationRequest(
                 "피곤한 차니",
                 "channy",
-                testRoutieSpace.getId()
+                testRoutieSpace.getIdentifier()
         );
 
         // when
@@ -112,7 +112,7 @@ public class AuthenticationControllerV1Test {
         final GuestAuthenticationRequest request = new GuestAuthenticationRequest(
                 testGuest.getNickname(),
                 testGuestPassword,
-                testRoutieSpace.getId()
+                testRoutieSpace.getIdentifier()
         );
 
         // when
@@ -135,7 +135,7 @@ public class AuthenticationControllerV1Test {
         final GuestAuthenticationRequest request = new GuestAuthenticationRequest(
                 testGuest.getNickname(),
                 testGuestPassword + "wrong",
-                testRoutieSpace.getId()
+                testRoutieSpace.getIdentifier()
         );
 
         // when
@@ -157,7 +157,7 @@ public class AuthenticationControllerV1Test {
         final GuestAuthenticationRequest request = new GuestAuthenticationRequest(
                 testGuestWithNoPassword.getNickname(),
                 null,
-                testRoutieSpace.getId()
+                testRoutieSpace.getIdentifier()
         );
 
         // when
@@ -179,7 +179,7 @@ public class AuthenticationControllerV1Test {
         final GuestAuthenticationRequest request = new GuestAuthenticationRequest(
                 testGuest.getNickname(),
                 null,
-                testRoutieSpace.getId()
+                testRoutieSpace.getIdentifier()
         );
 
         // when
@@ -201,7 +201,7 @@ public class AuthenticationControllerV1Test {
         final GuestAuthenticationRequest request = new GuestAuthenticationRequest(
                 testGuestWithNoPassword.getNickname(),
                 "any-password",
-                testRoutieSpace.getId()
+                testRoutieSpace.getIdentifier()
         );
 
         // when
@@ -220,11 +220,11 @@ public class AuthenticationControllerV1Test {
     @DisplayName("존재하지 않는 routieSpaceId로 요청하면 실패한다.")
     void signIn_withNonExistentRoutieSpaceId() {
         // given
-        final long nonExistentRoutieSpaceId = -1L;
+        final String nonExistentRoutieSpaceIdentifier = "non-existent";
         final GuestAuthenticationRequest request = new GuestAuthenticationRequest(
                 "아무 닉네임",
                 "any-password",
-                nonExistentRoutieSpaceId
+                nonExistentRoutieSpaceIdentifier
         );
 
         // when
@@ -246,7 +246,7 @@ public class AuthenticationControllerV1Test {
         final GuestAuthenticationRequest request = new GuestAuthenticationRequest(
                 null,
                 "any-password",
-                testRoutieSpace.getId()
+                testRoutieSpace.getIdentifier()
         );
 
         // when

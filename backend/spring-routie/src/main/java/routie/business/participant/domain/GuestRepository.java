@@ -6,5 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface GuestRepository extends JpaRepository<Guest, Long> {
     boolean existsByNicknameAndRoutieSpaceId(String nickname, Long id);
 
-    Optional<Guest> findByNickname(String nickname);
+    Optional<Guest> findByNicknameAndRoutieSpaceId(String nickname, Long RoutieSpaceId);
 }
