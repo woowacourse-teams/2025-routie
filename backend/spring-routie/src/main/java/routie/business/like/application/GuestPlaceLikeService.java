@@ -75,7 +75,7 @@ public class GuestPlaceLikeService implements PlaceLikeService<Guest> {
         final List<PlaceLike> placeLikes = placeLikeRepository.findByRoutieSpaceIdAndGuestId(
                 routieSpace.getId(),
                 guest.getId()
-        ).orElseThrow(() -> new BusinessException(ErrorCode.PLACE_LIKE_NOT_FOUND));
+        );
 
         return LikedPlacesResponse.from(placeLikes);
     }

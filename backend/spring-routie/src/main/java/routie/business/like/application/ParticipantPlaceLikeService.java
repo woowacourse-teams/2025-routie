@@ -21,7 +21,8 @@ public class ParticipantPlaceLikeService {
 
     @PostConstruct
     void init() {
-        serviceMap = services.stream().collect(Collectors.toMap(PlaceLikeService::getRole, Function.identity()));
+        serviceMap = services.stream()
+                .collect(Collectors.toMap(PlaceLikeService::getRole, Function.identity()));
     }
 
     public void addPlaceLike(final Long placeId, final String routieSpaceIdentifier, final Participant participant) {

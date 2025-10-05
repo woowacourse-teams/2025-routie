@@ -82,7 +82,7 @@ public class UserPlaceLikeService implements PlaceLikeService<User> {
         final List<PlaceLike> placeLikes = placeLikeRepository.findByRoutieSpaceIdAndUserId(
                 routieSpace.getId(),
                 user.getId()
-        ).orElseThrow(() -> new BusinessException(ErrorCode.PLACE_LIKE_NOT_FOUND));
+        );
 
         return LikedPlacesResponse.from(placeLikes);
     }
