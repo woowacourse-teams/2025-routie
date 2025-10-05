@@ -440,7 +440,7 @@ public enum ErrorCode {
             "해당 사용자와 장소에 대한 좋아요를 찾을 수 없습니다.",
             HttpStatus.NOT_FOUND
     ),
-    INVALID_PLACE_LIKE_OWNER(
+    PLACE_LIKE_INVALID_OWNER(
             "8003",
             "좋아요는 사용자와 게스트 중 하나에만 연결될 수 있습니다.",
             HttpStatus.BAD_REQUEST

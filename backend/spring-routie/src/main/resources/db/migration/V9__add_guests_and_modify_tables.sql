@@ -59,6 +59,20 @@ ALTER TABLE place_likes
 ALTER TABLE place_likes
     ADD CONSTRAINT FK_place_likes_guest_id FOREIGN KEY (guest_id) REFERENCES guests (id);
 
+-- 3.4. CHECK 제약조건 추가: user_id와 guest_id 중 정확히 하나만 NOT NULL
+
+ALTER TABLE place_likes
+    ADD CONSTRAINT CHK_place_likes_participant
+        CHECK ((user_id IS NOT NULL AND guest_id IS NULL) OR (user_id IS NULL AND guest_id IS NOT NULL));
+
+-- 3.5. UNIQUE 제약조건 추가: 중복 좋아요 방지
+
+ALTER TABLE place_likes
+    ADD CONSTRAINT UQ_place_likes_user UNIQUE (place_id, user_id);
+
+ALTER TABLE place_likes
+    ADD CONSTRAINT UQ_place_likes_guest UNIQUE (place_id, guest_id);
+
 
 -- 4. words 테이블의 timestamp 컨벤션을 수정합니다.
 -- 4.1. created_at 컬럼 타입 변경 및 DEFAULT 제거

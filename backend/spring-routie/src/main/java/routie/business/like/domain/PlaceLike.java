@@ -67,7 +67,7 @@ public class PlaceLike {
 
     private void validateExclusiveLiker(final User user, final Guest guest) {
         if ((user == null) == (guest == null)) {
-            throw new BusinessException(ErrorCode.PLACE_LIKE_DUPLICATED);
+            throw new BusinessException(ErrorCode.PLACE_LIKE_INVALID_OWNER);
         }
     }
 }
