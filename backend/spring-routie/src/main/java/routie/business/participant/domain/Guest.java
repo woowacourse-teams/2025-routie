@@ -35,7 +35,7 @@ public class Guest implements Participant {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "nick_name", nullable = false)
+    @Column(name = "nickname", nullable = false)
     private String nickname;
 
     @Column(name = "password")
