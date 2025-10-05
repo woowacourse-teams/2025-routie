@@ -19,7 +19,6 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import routie.business.place.domain.Place;
-import routie.business.routiespace.domain.RoutieSpace;
 import routie.global.exception.domain.BusinessException;
 import routie.global.exception.domain.ErrorCode;
 
@@ -47,11 +46,8 @@ public class RoutiePlace {
     private int sequence;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "place_id", nullable = false)
+    @JoinColumn(name = "place_id")
     private Place place;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    private RoutieSpace routieSpace;
 
     @CreatedDate
     @Column(name = "created_at")
@@ -63,7 +59,6 @@ public class RoutiePlace {
         this.id = null;
         this.sequence = sequence;
         this.place = place;
-        this.routieSpace = place.getRoutieSpace();
         this.createdAt = null;
     }
 
