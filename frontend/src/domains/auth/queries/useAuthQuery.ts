@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router';
 
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 import { useToastContext } from '@/@common/contexts/useToastContext';
 
@@ -24,12 +24,17 @@ const useKakaoLoginUriQuery = () => {
 
 const useKakaoLoginMutation = () => {
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
   return useMutation({
     mutationKey: loginKey.kakaoAccessToken,
     mutationFn: (code: string) => getKakaoAccessToken(code),
-    onSuccess: (data) => {
+    onSuccess: async (data) => {
       localStorage.setItem('accessToken', data.accessToken);
+      await queryClient.fetchQuery({
+        queryKey: userKey.all,
+        queryFn: () => getUser(),
+      });
       navigate('/', { replace: true });
     },
     onError: () => {
@@ -39,19 +44,27 @@ const useKakaoLoginMutation = () => {
 };
 
 const useUserQuery = () => {
+  const accessToken = localStorage.getItem('accessToken');
+
   return useQuery({
     queryKey: userKey.all,
     queryFn: () => getUser(),
+    enabled: Boolean(accessToken),
   });
 };
 
 const useGuestLoginMutation = () => {
   const { showToast } = useToastContext();
+  const queryClient = useQueryClient();
   return useMutation({
     mutationKey: loginKey.guestAccessToken,
     mutationFn: (payload: GuestLoginRequestType) => postGuestLogin(payload),
-    onSuccess: (data) => {
+    onSuccess: async (data) => {
       localStorage.setItem('accessToken', data.accessToken);
+      await queryClient.fetchQuery({
+        queryKey: userKey.all,
+        queryFn: () => getUser(),
+      });
       showToast({
         message: '비회원 로그인에 성공했습니다.',
         type: 'success',
