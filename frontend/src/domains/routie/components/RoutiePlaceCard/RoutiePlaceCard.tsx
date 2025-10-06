@@ -29,7 +29,7 @@ const RoutiePlaceCard = ({
       <Card id={routie.placeId.toString()} variant="defaultStatic">
         <Flex justifyContent="space-between" gap={1.5}>
           <Flex padding={1} width="auto">
-            <Text variant="title" color={theme.colors.purple[300]}>
+            <Text variant="title" color={theme.colors.blue[300]}>
               {routie.sequence}
             </Text>
           </Flex>

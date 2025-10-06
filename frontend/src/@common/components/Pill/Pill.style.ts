@@ -12,7 +12,7 @@ const PillStyle = css`
   border: 1px solid ${theme.colors.gray[100]};
   border-radius: 0.8rem;
 
-  color: ${theme.colors.purple[400]};
+  color: ${theme.colors.blue[450]};
 
   background-color: ${theme.colors.white};
 `;

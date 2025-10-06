@@ -18,7 +18,7 @@ const iconButtonVariant: Record<IconButtonVariantType, SerializedStyles> = {
     width: 3rem;
     height: 3rem;
     padding: 0.4rem;
-    border: 1px solid ${theme.colors.purple[400]};
+    border: 1px solid ${theme.colors.blue[450]};
   `,
 
   selected: css`
@@ -61,7 +61,7 @@ const IconButtonStyle = ({ variant }: IconButtonStyleProps) => css`
   background-color: transparent;
 
   &:hover {
-    background-color: ${theme.colors.purple[200]};
+    background-color: ${theme.colors.blue[200]};
   }
 
   ${variant && iconButtonVariant[variant]}

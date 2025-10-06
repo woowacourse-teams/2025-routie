@@ -40,7 +40,7 @@ const PlaceOverlayCard = ({ place, onClose }: PlaceOverlayCardProps) => {
               &:hover {
                 background-color: ${selected
                   ? theme.colors.white
-                  : theme.colors.purple[200]};
+                  : theme.colors.blue[200]};
               }
             `}
           />

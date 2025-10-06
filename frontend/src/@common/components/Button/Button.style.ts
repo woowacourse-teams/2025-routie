@@ -7,11 +7,7 @@ import type { ButtonProps, ButtonVariantType } from './Button.types';
 const buttonVariant: Record<ButtonVariantType, SerializedStyles> = {
   primary: css`
     color: ${theme.colors.white};
-    background-color: ${theme.colors.purple[400]};
-
-    :hover {
-      background-color: ${theme.colors.purple[300]};
-    }
+    background-color: ${theme.colors.blue[450]};
   `,
 
   secondary: css`
@@ -20,12 +16,12 @@ const buttonVariant: Record<ButtonVariantType, SerializedStyles> = {
     background-color: ${theme.colors.white};
 
     :hover {
-      background-color: ${theme.colors.purple[200]};
+      background-color: ${theme.colors.red[50]};
     }
   `,
 };
 
-export const ButtonStyle = ({ variant, width, padding }: ButtonProps) => css`
+const ButtonStyle = ({ variant, width, padding, radius }: ButtonProps) => css`
   cursor: pointer;
 
   display: flex;
@@ -41,6 +37,7 @@ export const ButtonStyle = ({ variant, width, padding }: ButtonProps) => css`
 
   &:hover {
     background-color: ${theme.colors.gray[25]};
+    background-color: ${theme.colors.blue[200]};
   }
 
   ${variant && buttonVariant[variant]}
@@ -52,3 +49,5 @@ export const ButtonStyle = ({ variant, width, padding }: ButtonProps) => css`
     background-color: ${theme.colors.gray[100]};
   }
 `;
+
+export { ButtonStyle };

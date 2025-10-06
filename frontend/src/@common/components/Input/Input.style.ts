@@ -21,10 +21,10 @@ const blinkBackground = css`
 
 const inputVariant: Record<InputVariantType, SerializedStyles> = {
   primary: css`
-    border-color: ${theme.colors.purple[400]};
+    border-color: ${theme.colors.blue[450]};
 
     &:focus {
-      border-color: ${theme.colors.purple[400]};
+      border-color: ${theme.colors.blue[450]};
     }
   `,
   disabled: css`

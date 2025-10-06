@@ -4,7 +4,7 @@ import theme from '@/styles/theme';
 
 const DefaultBorder = css`
   &:focus {
-    outline: 0.3rem solid ${theme.colors.purple[300]};
+    outline: 0.3rem solid ${theme.colors.blue[450]};
   }
 `;
 
