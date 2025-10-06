@@ -2,14 +2,11 @@ import { useCallback, useEffect } from 'react';
 
 import { useToastContext } from '@/@common/contexts/useToastContext';
 import { useAsyncLock } from '@/@common/hooks/useAsyncLock';
-import { useRequireAccessToken } from '@/@common/hooks/useRequireAccessToken';
+import { usePlaceLikes } from '@/domains/places/hooks/usePlaceLikes';
 import {
   useAddPlaceQuery,
   useDeletePlaceQuery,
-  useLikedPlacesQuery,
-  useLikePlaceMutation,
   usePlaceListQuery,
-  useUnlikePlaceMutation,
 } from '@/domains/places/queries/usePlaceQuery';
 import type { SearchedPlaceType } from '@/domains/places/types/place.types';
 import { useGoogleEventTrigger } from '@/libs/googleAnalytics/hooks/useGoogleEventTrigger';
@@ -18,10 +15,6 @@ const usePlaceList = () => {
   const { data: placeList, error } = usePlaceListQuery();
   const { mutateAsync: addPlace, data: addedPlaceId } = useAddPlaceQuery();
   const { mutateAsync: deletePlace } = useDeletePlaceQuery();
-  const { mutate: postLikePlace } = useLikePlaceMutation();
-  const { mutate: deleteLikePlace } = useUnlikePlaceMutation();
-  const { data: likedPlacesIds } = useLikedPlacesQuery();
-  const requireAccessToken = useRequireAccessToken();
   const { showToast } = useToastContext();
   const { runWithLock: runDeleteWithLock } = useAsyncLock();
   const { runWithLock: runAddWithLock } = useAsyncLock();
@@ -51,28 +44,6 @@ const usePlaceList = () => {
     [deletePlace],
   );
 
-  const handleLikePlace = useCallback(
-    (placeId: number) => {
-      const accessToken = requireAccessToken();
-
-      if (!accessToken) return;
-
-      postLikePlace({ placeId });
-    },
-    [postLikePlace, requireAccessToken],
-  );
-
-  const handleUnlikePlace = useCallback(
-    (placeId: number) => {
-      const accessToken = requireAccessToken();
-
-      if (!accessToken) return;
-
-      deleteLikePlace({ placeId });
-    },
-    [deleteLikePlace, requireAccessToken],
-  );
-
   useEffect(() => {
     if (error) {
       console.error(error);
@@ -88,9 +59,6 @@ const usePlaceList = () => {
     handleAddPlace,
     addedPlaceId,
     handleDeletePlace,
-    handleLikePlace,
-    handleUnlikePlace,
-    likedPlacesIds,
   };
 };
 

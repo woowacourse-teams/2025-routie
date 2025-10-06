@@ -7,6 +7,7 @@ import Icon from '@/@common/components/IconSvg/Icon';
 import Text from '@/@common/components/Text/Text';
 import { useModal } from '@/@common/contexts/ModalContext';
 import PlaceCard from '@/domains/places/components/PlaceCard/PlaceCard';
+import { usePlaceLikes } from '@/domains/places/hooks/usePlaceLikes';
 import { usePlaceList } from '@/domains/places/hooks/usePlaceList';
 import { useRoutieList } from '@/domains/routie/hooks/useRoutieList';
 import { useGoogleEventTrigger } from '@/libs/googleAnalytics/hooks/useGoogleEventTrigger';
@@ -27,8 +28,8 @@ import {
 import type { SideSheetProps } from './SideSheet.types';
 
 const SideSheet = ({ open, onToggle }: SideSheetProps) => {
-  const { placeList, handleDeletePlace, handleLikePlace, handleUnlikePlace } =
-    usePlaceList();
+  const { placeList, handleDeletePlace } = usePlaceList();
+  const { handleLikePlace, handleUnlikePlace } = usePlaceLikes();
   const { routieIdList, handleAddRoutie } = useRoutieList();
   const { openModal } = useModal();
   const { triggerEvent } = useGoogleEventTrigger();
