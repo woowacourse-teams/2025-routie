@@ -19,6 +19,8 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import routie.business.authentication.domain.Role;
+import routie.business.like.domain.PlaceLike;
+import routie.business.place.domain.Place;
 import routie.business.routiespace.domain.RoutieSpace;
 import routie.global.exception.domain.BusinessException;
 import routie.global.exception.domain.ErrorCode;
@@ -76,5 +78,10 @@ public class Guest implements Participant {
     @Override
     public Role getRole() {
         return Role.GUEST;
+    }
+
+    @Override
+    public PlaceLike likePlace(final Place place) {
+        return new PlaceLike(place, null, this);
     }
 }

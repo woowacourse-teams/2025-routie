@@ -57,14 +57,6 @@ public class PlaceLike {
         this.guest = guest;
     }
 
-    public static PlaceLike of(final Place place, final User user) {
-        return new PlaceLike(place, user, null);
-    }
-
-    public static PlaceLike of(final Place place, final Guest guest) {
-        return new PlaceLike(place, null, guest);
-    }
-
     private void validateExclusiveLiker(final User user, final Guest guest) {
         if ((user == null) == (guest == null)) {
             throw new BusinessException(ErrorCode.PLACE_LIKE_INVALID_OWNER);

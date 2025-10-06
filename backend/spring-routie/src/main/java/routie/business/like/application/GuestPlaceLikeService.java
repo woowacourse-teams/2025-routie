@@ -44,7 +44,7 @@ public class GuestPlaceLikeService implements PlaceLikeService<Guest> {
             throw new BusinessException(ErrorCode.PLACE_LIKE_DUPLICATED);
         }
 
-        placeLikeRepository.save(PlaceLike.of(place, guest));
+        placeLikeRepository.save(guest.likePlace(place));
     }
 
     @Transactional

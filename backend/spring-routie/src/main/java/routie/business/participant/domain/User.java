@@ -24,6 +24,8 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import routie.business.authentication.domain.Role;
 import routie.business.authentication.domain.external.ExternalAuthenticationProvider;
+import routie.business.like.domain.PlaceLike;
+import routie.business.place.domain.Place;
 import routie.business.routiespace.domain.RoutieSpace;
 import routie.global.exception.domain.BusinessException;
 import routie.global.exception.domain.ErrorCode;
@@ -114,5 +116,10 @@ public class User implements Participant {
     @Override
     public Role getRole() {
         return Role.USER;
+    }
+
+    @Override
+    public PlaceLike likePlace(final Place place) {
+        return new PlaceLike(place, this, null);
     }
 }

@@ -61,7 +61,7 @@ public class UserPlaceLikeService implements PlaceLikeService<User> {
             throw new BusinessException(ErrorCode.PLACE_LIKE_DUPLICATED);
         }
 
-        placeLikeRepository.save(PlaceLike.of(place, user));
+        placeLikeRepository.save(user.likePlace(place));
     }
 
     @Transactional
