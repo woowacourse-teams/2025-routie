@@ -1,4 +1,3 @@
-// ParticipantPlaceLikeService.java (Refactored)
 package routie.business.like.application;
 
 import java.util.List;
