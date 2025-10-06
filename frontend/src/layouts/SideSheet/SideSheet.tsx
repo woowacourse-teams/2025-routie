@@ -29,13 +29,19 @@ import type { SideSheetProps } from './SideSheet.types';
 
 const SideSheet = ({ open, onToggle }: SideSheetProps) => {
   const { placeList, handleDeletePlace } = usePlaceList();
-  const { handleLikePlace, handleUnlikePlace } = usePlaceLikes();
+  const { handleLikePlace, handleUnlikePlace, likedPlaceIds } = usePlaceLikes();
   const { routieIdList, handleAddRoutie } = useRoutieList();
   const { openModal } = useModal();
   const { triggerEvent } = useGoogleEventTrigger();
-  const { likedPlaceIds } = usePlaceLikes();
 
   const handleOpenAddModalClick = useCallback(() => {
+    const accessToken = localStorage.getItem('accessToken');
+
+    if (!accessToken) {
+      openModal('login');
+      return;
+    }
+
     triggerEvent({
       action: 'click',
       category: 'place',
@@ -46,31 +52,59 @@ const SideSheet = ({ open, onToggle }: SideSheetProps) => {
 
   const handlePlaceSelect = useCallback(
     async (placeId: number, selected: boolean) => {
+      const accessToken = localStorage.getItem('accessToken');
+
+      if (!accessToken) {
+        openModal('login');
+        return;
+      }
+
       if (selected) return;
       await handleAddRoutie(placeId);
     },
-    [handleAddRoutie],
+    [handleAddRoutie, openModal],
   );
 
   const handlePlaceDelete = useCallback(
     async (placeId: number) => {
+      const accessToken = localStorage.getItem('accessToken');
+
+      if (!accessToken) {
+        openModal('login');
+        return;
+      }
+
       await handleDeletePlace(placeId);
     },
-    [handleDeletePlace],
+    [handleDeletePlace, openModal],
   );
 
   const handleLikeButtonClick = useCallback(
     (placeId: number) => {
+      const accessToken = localStorage.getItem('accessToken');
+
+      if (!accessToken) {
+        openModal('login');
+        return;
+      }
+
       handleLikePlace(placeId);
     },
-    [handleLikePlace],
+    [handleLikePlace, openModal],
   );
 
   const handleUnlikeButtonClick = useCallback(
     (placeId: number) => {
+      const accessToken = localStorage.getItem('accessToken');
+
+      if (!accessToken) {
+        openModal('login');
+        return;
+      }
+
       handleUnlikePlace(placeId);
     },
-    [handleUnlikePlace],
+    [handleUnlikePlace, openModal],
   );
 
   return (

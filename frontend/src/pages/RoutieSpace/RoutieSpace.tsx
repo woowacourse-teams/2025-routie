@@ -1,12 +1,14 @@
-import { useLayoutEffect } from 'react';
+import { useEffect, useLayoutEffect } from 'react';
 import { useSearchParams } from 'react-router';
 
 import Flex from '@/@common/components/Flex/Flex';
+import { useModal } from '@/@common/contexts/ModalContext';
 import MapWithSideSheet from '@/layouts/MapWithSideSheet/MapWithSideSheet';
 import Sidebar from '@/layouts/Sidebar/Sidebar';
 
 const RoutieSpace = () => {
   const [searchParams] = useSearchParams();
+  const { openModal } = useModal();
   const routieSpaceIdentifier = searchParams.get('routieSpaceIdentifier');
 
   useLayoutEffect(() => {
@@ -14,6 +16,13 @@ const RoutieSpace = () => {
       localStorage.setItem('routieSpaceUuid', routieSpaceIdentifier);
     }
   }, [routieSpaceIdentifier]);
+
+  useEffect(() => {
+    const accessToken = localStorage.getItem('accessToken');
+    if (!accessToken) {
+      openModal('login');
+    }
+  }, []);
 
   return (
     <Flex justifyContent="flex-start" height="100vh">
