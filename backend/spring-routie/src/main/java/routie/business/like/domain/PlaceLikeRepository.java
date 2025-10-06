@@ -24,6 +24,10 @@ public interface PlaceLikeRepository extends JpaRepository<PlaceLike, Long> {
 
     Optional<PlaceLike> findByPlaceIdAndGuestId(Long placeId, Long guestId);
 
+    boolean existsByPlaceIdAndUserId(Long placeId, Long userId);
+
+    boolean existsByPlaceIdAndGuestId(Long placeId, Long guestId);
+
     @Query("SELECT pl FROM PlaceLike pl JOIN pl.place p WHERE p.routieSpace.id = :routieSpaceId AND pl.user.id = :userId")
     List<PlaceLike> findByRoutieSpaceIdAndUserId(@Param("routieSpaceId") Long routieSpaceId,
                                                  @Param("userId") Long userId);

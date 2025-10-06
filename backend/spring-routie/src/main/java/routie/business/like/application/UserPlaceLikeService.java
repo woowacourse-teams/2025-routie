@@ -57,7 +57,7 @@ public class UserPlaceLikeService implements PlaceLikeService<User> {
                         "루티 스페이스 내에서 해당하는 장소를 찾을 수 없습니다: " + placeId
                 ));
 
-        if (placeLikeRepository.findByPlaceIdAndUserId(placeId, user.getId()).isPresent()) {
+        if (placeLikeRepository.existsByPlaceIdAndUserId(placeId, user.getId())) {
             throw new BusinessException(ErrorCode.PLACE_LIKE_DUPLICATED);
         }
 
