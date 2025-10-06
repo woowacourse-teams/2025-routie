@@ -11,8 +11,13 @@ const buttonVariant: Record<ButtonVariantType, SerializedStyles> = {
   `,
 
   secondary: css`
-    border: 1px solid ${theme.colors.purple[400]};
-    color: ${theme.colors.purple[400]};
+    border: 1px solid ${theme.colors.gray[100]};
+    color: ${theme.colors.gray[300]};
+    background-color: ${theme.colors.white};
+  `,
+
+  danger: css`
+    color: ${theme.colors.gray[300]};
     background-color: ${theme.colors.white};
 
     :hover {
@@ -36,7 +41,7 @@ const ButtonStyle = ({ variant, width, padding, radius }: ButtonProps) => css`
   border-radius: ${radius ? theme.radius[radius] : theme.radius.sm};
 
   &:hover {
-    background-color: ${theme.colors.gray[25]};
+    color: ${theme.colors.white};
     background-color: ${theme.colors.blue[200]};
   }
 
