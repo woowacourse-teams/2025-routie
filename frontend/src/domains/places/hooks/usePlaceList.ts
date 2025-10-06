@@ -2,7 +2,6 @@ import { useCallback, useEffect } from 'react';
 
 import { useToastContext } from '@/@common/contexts/useToastContext';
 import { useAsyncLock } from '@/@common/hooks/useAsyncLock';
-import { usePlaceLikes } from '@/domains/places/hooks/usePlaceLikes';
 import {
   useAddPlaceQuery,
   useDeletePlaceQuery,
