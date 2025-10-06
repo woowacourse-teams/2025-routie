@@ -100,7 +100,7 @@ public class JwtProcessor {
     private Role parseRole(final String jwt) {
         try {
             final Claims claims = getPayload(jwt);
-            return Role.of(claims.get(CLAIM_KEY_ROLE, String.class));
+            return Role.from(claims.get(CLAIM_KEY_ROLE, String.class));
 
         } catch (final Exception e) {
             throw new JwtException(e.getMessage(), e);
