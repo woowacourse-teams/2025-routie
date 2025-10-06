@@ -10,7 +10,7 @@ const ModalStyle = css`
   transform: translate(-50%, -50%);
 
   padding: 1.6rem;
-  border-radius: 8px;
+  border-radius: ${theme.radius.sm};
 
   background-color: ${theme.colors.white};
 `;

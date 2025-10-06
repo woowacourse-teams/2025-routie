@@ -9,7 +9,7 @@ const LikeButtonStyle = css`
 
   padding: 0.2rem 0.5rem;
   border: 1px solid ${theme.colors.gray[100]};
-  border-radius: 8px;
+  border-radius: ${theme.radius.sm};
 
   &:hover {
     background-color: ${theme.colors.gray[25]};

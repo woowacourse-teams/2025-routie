@@ -17,7 +17,7 @@ const UserMenuStyle = css`
 
   width: 18rem;
   padding: 1rem;
-  border-radius: 8px;
+  border-radius: ${theme.radius.sm};
 
   background-color: ${theme.colors.white};
 `;

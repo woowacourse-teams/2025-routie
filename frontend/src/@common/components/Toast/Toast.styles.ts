@@ -38,7 +38,7 @@ const ToastItemWrapperStyle = (leaving?: boolean) => css`
   max-width: min(94vw, 48rem);
   height: 4rem;
   padding: 1.6rem 2rem;
-  border-radius: 12px;
+  border-radius: ${theme.radius.sm};
 
   color: ${theme.colors.white};
 

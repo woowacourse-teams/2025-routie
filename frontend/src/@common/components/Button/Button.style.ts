@@ -33,7 +33,7 @@ const ButtonStyle = ({ variant, width, padding, radius }: ButtonProps) => css`
   max-width: 100%;
   padding: ${padding ? padding : '1rem 0.8rem'};
   border: none;
-  border-radius: 8px;
+  border-radius: ${radius ? theme.radius[radius] : theme.radius.sm};
 
   &:hover {
     background-color: ${theme.colors.gray[25]};

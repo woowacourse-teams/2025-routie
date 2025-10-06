@@ -51,6 +51,11 @@ const theme = {
       thin: 200,
     },
   },
+  radius: {
+    sm: '12px',
+    md: '14px',
+    lg: '20px',
+  },
   home: {
     gray: '#F9FAFB',
     violet: '#8b5cf6',

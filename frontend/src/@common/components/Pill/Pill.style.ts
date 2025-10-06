@@ -10,7 +10,7 @@ const PillStyle = css`
   width: max-content;
   padding: 0.3rem;
   border: 1px solid ${theme.colors.gray[100]};
-  border-radius: 0.8rem;
+  border-radius: ${theme.radius.sm};
 
   color: ${theme.colors.blue[450]};
 

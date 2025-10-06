@@ -5,7 +5,6 @@ import Flex from '@/@common/components/Flex/Flex';
 import IconButton from '@/@common/components/IconButton/IconButton';
 import Icon from '@/@common/components/IconSvg/Icon';
 import Text from '@/@common/components/Text/Text';
-import closeIcon from '@/assets/icons/close.svg';
 import type { PlaceOverlayCardProps } from '@/domains/maps/types/map.types';
 import { useRoutieList } from '@/domains/routie/hooks/useRoutieList';
 import theme from '@/styles/theme';
@@ -35,7 +34,7 @@ const PlaceOverlayCard = ({ place, onClose }: PlaceOverlayCardProps) => {
             css={css`
               cursor: ${selected ? 'default' : 'pointer'};
               padding: 0.2rem;
-              border-radius: 8px;
+              border-radius: ${theme.radius.sm};
 
               &:hover {
                 background-color: ${selected

@@ -4,6 +4,7 @@ interface ButtonProps extends ComponentProps<'button'> {
   variant?: ButtonVariantType;
   width?: string;
   padding?: string;
+  radius?: 'sm' | 'md' | 'lg';
 }
 
 type ButtonVariantType = 'primary' | 'secondary';

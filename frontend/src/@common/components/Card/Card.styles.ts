@@ -58,7 +58,7 @@ const CardStyle = ({
   width: ${width ? width : '100%'};
   height: ${height ? height : 'auto'};
   padding: 1rem;
-  border-radius: 12px;
+  border-radius: ${theme.radius.sm};
 
   background-color: ${theme.colors.white};
   ${variant && cardVariant[variant]}

@@ -56,7 +56,7 @@ const IconButtonStyle = ({ variant }: IconButtonStyleProps) => css`
   height: 2.8rem;
   padding: 0.5rem;
   border: none;
-  border-radius: 8px;
+  border-radius: ${theme.radius.sm};
 
   background-color: transparent;
 
