@@ -7,6 +7,7 @@ interface TextProps extends ComponentProps<'p'> {
 }
 
 type TextVariantType =
+  | 'logo'
   | 'title'
   | 'subTitle'
   | 'body'

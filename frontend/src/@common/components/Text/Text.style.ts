@@ -5,6 +5,10 @@ import theme from '@/styles/theme';
 import type { TextProps, TextVariantType } from './Text.types';
 
 const textVariant: Record<TextVariantType, SerializedStyles> = {
+  logo: css`
+    font-size: ${theme.font.size.logo};
+    font-weight: ${theme.font.weight.bold};
+  `,
   title: css`
     font-size: ${theme.font.size.heading};
     font-weight: ${theme.font.weight.bold};

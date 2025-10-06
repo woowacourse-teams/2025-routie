@@ -34,6 +34,7 @@ const theme = {
   },
   font: {
     size: {
+      logo: '2.8rem',
       heading: '2.4rem',
       subHeading: '2rem',
       body: '1.6rem',
