@@ -33,6 +33,7 @@ const SideSheet = ({ open, onToggle }: SideSheetProps) => {
   const { routieIdList, handleAddRoutie } = useRoutieList();
   const { openModal } = useModal();
   const { triggerEvent } = useGoogleEventTrigger();
+  const { likedPlaceIds } = usePlaceLikes();
 
   const handleOpenAddModalClick = useCallback(() => {
     triggerEvent({
@@ -125,15 +126,18 @@ const SideSheet = ({ open, onToggle }: SideSheetProps) => {
             >
               {placeList?.map((place) => {
                 const selected = routieIdList.includes(place.id);
+                const liked = likedPlaceIds.includes(place.id);
                 return (
                   <PlaceCard
                     {...place}
                     key={place.id}
                     selected={selected}
+                    liked={liked}
                     onSelect={handlePlaceSelect}
                     onDelete={handlePlaceDelete}
-                    onLike={handleLikeButtonClick}
-                    onUnLike={handleUnlikeButtonClick}
+                    onLike={
+                      liked ? handleUnlikeButtonClick : handleLikeButtonClick
+                    }
                   />
                 );
               })}
