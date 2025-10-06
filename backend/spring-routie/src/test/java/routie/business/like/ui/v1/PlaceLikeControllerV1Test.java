@@ -15,7 +15,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import routie.business.authentication.domain.jwt.JwtProcessor;
-import routie.business.like.domain.PlaceLike;
 import routie.business.like.domain.PlaceLikeRepository;
 import routie.business.participant.domain.User;
 import routie.business.participant.domain.UserFixture;
@@ -157,7 +156,7 @@ public class PlaceLikeControllerV1Test {
         userRepository.save(user);
         String accessToken = jwtProcessor.createJwt(user);
 
-        placeLikeRepository.save(PlaceLike.of(testPlace, user));
+        placeLikeRepository.save(user.likePlace(testPlace));
 
         // when
         Response response = RestAssured
