@@ -135,10 +135,11 @@ const useUnlikePlaceMutation = () => {
   });
 };
 
-const useLikedPlacesQuery = () => {
+const useLikedPlacesQuery = (enabled: boolean) => {
   return useQuery({
     queryKey: placesKeys.liked(),
     queryFn: getLikedPlaces,
+    enabled,
   });
 };
 

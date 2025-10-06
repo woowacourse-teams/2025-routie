@@ -11,8 +11,13 @@ import {
 const usePlaceLikes = () => {
   const { mutate: postLikePlace } = useLikePlaceMutation();
   const { mutate: deleteLikePlace } = useUnlikePlaceMutation();
-  const { data: likedPlacesId, error } = useLikedPlacesQuery();
   const { showToast } = useToastContext();
+
+  const isAccessToken = Boolean(localStorage.getItem('accessToken'));
+  const { data = { likedPlaceIds: [] }, error } =
+    useLikedPlacesQuery(isAccessToken);
+
+  const likedPlaceIds = data.likedPlaceIds;
 
   const requireAccessToken = useRequireAccessToken();
 
@@ -51,7 +56,7 @@ const usePlaceLikes = () => {
   return {
     handleLikePlace,
     handleUnlikePlace,
-    likedPlacesId,
+    likedPlaceIds,
   };
 };
 
