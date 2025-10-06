@@ -6,10 +6,7 @@ import Flex from '@/@common/components/Flex/Flex';
 import IconButton from '@/@common/components/IconButton/IconButton';
 import Icon from '@/@common/components/IconSvg/Icon';
 import Text from '@/@common/components/Text/Text';
-import { useToastOnError } from '@/@common/hooks/useToastOnError';
-import { usePlaceDetailQuery } from '@/domains/places/queries/usePlaceQuery';
 import { PlaceDataType } from '@/domains/places/types/place.types';
-import { useRoutieList } from '@/domains/routie/hooks/useRoutieList';
 import type { RoutieType } from '@/domains/routie/types/routie.types';
 import theme from '@/styles/theme';
 
