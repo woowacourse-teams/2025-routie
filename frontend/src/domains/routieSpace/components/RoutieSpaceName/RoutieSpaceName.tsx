@@ -19,6 +19,7 @@ const RoutieSpaceName = () => {
     handleChange,
   } = useRoutieSpace();
   const accessToken = localStorage.getItem('accessToken');
+  const role = localStorage.getItem('role');
 
   return (
     <Flex justifyContent="space-between" margin={0.4} gap={3}>
@@ -36,7 +37,7 @@ const RoutieSpaceName = () => {
           <Text variant="subTitle">{name}</Text>
         </Flex>
       )}
-      {accessToken && (
+      {accessToken && role === 'USER' && (
         <Button
           variant="primary"
           onClick={handleClick}

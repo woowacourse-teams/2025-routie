@@ -17,6 +17,8 @@ const UserMenu = ({ onClick }: UserMenuProps) => {
   const { showToast } = useToastContext();
   const { handleMoveToManageRoutieSpace } = useRoutieSpaceNavigation();
 
+  const role = localStorage.getItem('role');
+
   const renderUserName = () => {
     if (isLoading) {
       return <Text variant="body">로딩중...</Text>;
@@ -43,9 +45,11 @@ const UserMenu = ({ onClick }: UserMenuProps) => {
       <Flex direction="column" width="10" gap={1}>
         {renderUserName()}
         <div css={DividerStyle} />
-        <Button onClick={handleMoveToManageRoutieSpace}>
-          <Text variant="caption">내 동선 목록</Text>
-        </Button>
+        {role === 'USER' && (
+          <Button onClick={handleMoveToManageRoutieSpace}>
+            <Text variant="caption">내 동선 목록</Text>
+          </Button>
+        )}
         <Button onClick={onClick}>
           <Flex gap={1}>
             <Icon name="logout" size={20} />
