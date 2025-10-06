@@ -14,9 +14,15 @@ const SocialLoginSection = ({ onClose }: SocialLoginSectionProps) => {
   const { data: kakaoLoginUri } = useKakaoLoginUriQuery();
   const { showToast } = useToastContext();
 
+  const saveRedirectPath = () => {
+    const currentPath = window.location.pathname + window.location.search;
+    localStorage.setItem('redirectAfterLogin', currentPath);
+  };
+
   const redirectToKakaoLogin = async () => {
     try {
       if (kakaoLoginUri?.uri) {
+        saveRedirectPath();
         window.open(kakaoLoginUri.uri, '_self');
       }
       onClose();

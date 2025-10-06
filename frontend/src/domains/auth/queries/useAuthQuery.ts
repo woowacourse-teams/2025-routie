@@ -1,5 +1,3 @@
-import { useNavigate } from 'react-router';
-
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 import { useToastContext } from '@/@common/contexts/useToastContext';
@@ -23,7 +21,6 @@ const useKakaoLoginUriQuery = () => {
 };
 
 const useKakaoLoginMutation = () => {
-  const navigate = useNavigate();
   const queryClient = useQueryClient();
 
   return useMutation({
@@ -35,7 +32,6 @@ const useKakaoLoginMutation = () => {
         queryKey: userKey.all,
         queryFn: () => getUser(),
       });
-      navigate('/', { replace: true });
     },
     onError: () => {
       console.error('카카오 로그인 실패');

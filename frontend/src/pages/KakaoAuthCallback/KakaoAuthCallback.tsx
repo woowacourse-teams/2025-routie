@@ -9,9 +9,16 @@ import { useKakaoLoginMutation } from '@/domains/auth/queries/useAuthQuery';
 const KakaoAuthCallback = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
-  const { mutate: kakaoAccessTokenMutate, isError } = useKakaoLoginMutation();
+  const { mutateAsync: kakaoAccessTokenMutate, isError } =
+    useKakaoLoginMutation();
 
   const code = searchParams.get('code');
+
+  const redirectAfterLogin = () => {
+    const redirectPath = localStorage.getItem('redirectAfterLogin') || '/';
+    localStorage.removeItem('redirectAfterLogin');
+    navigate(redirectPath, { replace: true });
+  };
 
   const handleGoHome = () => {
     navigate('/', { replace: true });
@@ -23,7 +30,14 @@ const KakaoAuthCallback = () => {
         handleGoHome();
         return;
       }
-      kakaoAccessTokenMutate(code);
+      (async () => {
+        try {
+          await kakaoAccessTokenMutate(code);
+          redirectAfterLogin();
+        } catch {
+          handleGoHome();
+        }
+      })();
     };
     handleKakaoLogin();
   }, []);
