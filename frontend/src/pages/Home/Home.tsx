@@ -25,11 +25,10 @@ const Home = () => {
   const { handleCreateRoutieSpace, handleMoveToManageRoutieSpace } =
     useRoutieSpaceNavigation();
   const { openModal } = useModal();
-  const existingUuid = localStorage.getItem('routieSpaceUuid');
   const kakaoAccessToken = localStorage.getItem('accessToken');
 
   const handleLoginClick = () => {
-    openModal('login');
+    openModal('socialLogin');
   };
 
   return (
