@@ -102,6 +102,7 @@ const useLikePlaceMutation = () => {
         type: 'success',
       });
       queryClient.invalidateQueries({ queryKey: placesKeys.list() });
+      queryClient.invalidateQueries({ queryKey: placesKeys.liked() });
     },
     onError: (error) => {
       showToast({
@@ -125,6 +126,7 @@ const useUnlikePlaceMutation = () => {
         type: 'success',
       });
       queryClient.invalidateQueries({ queryKey: placesKeys.list() });
+      queryClient.invalidateQueries({ queryKey: placesKeys.liked() });
     },
     onError: (error) => {
       showToast({
