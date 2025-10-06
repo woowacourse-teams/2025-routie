@@ -37,7 +37,11 @@ const Home = () => {
         {kakaoAccessToken ? (
           <UserMenuButton />
         ) : (
-          <Button width="fit-content" onClick={handleLoginClick}>
+          <Button
+            variant="primary"
+            width="fit-content"
+            onClick={handleLoginClick}
+          >
             <Text variant="body">로그인</Text>
           </Button>
         )}
