@@ -40,6 +40,8 @@ const ButtonStyle = ({ variant, width, padding, radius }: ButtonProps) => css`
   border: none;
   border-radius: ${radius ? theme.radius[radius] : theme.radius.sm};
 
+  background-color: ${theme.colors.white};
+
   &:hover {
     color: ${theme.colors.white};
     background-color: ${theme.colors.blue[200]};
