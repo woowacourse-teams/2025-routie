@@ -13,12 +13,10 @@ const buttonVariant: Record<ButtonVariantType, SerializedStyles> = {
   secondary: css`
     border: 1px solid ${theme.colors.gray[100]};
     color: ${theme.colors.gray[300]};
-    background-color: ${theme.colors.white};
   `,
 
   danger: css`
     color: ${theme.colors.gray[300]};
-    background-color: ${theme.colors.white};
 
     :hover {
       background-color: ${theme.colors.red[50]};
