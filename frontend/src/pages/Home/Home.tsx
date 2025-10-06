@@ -42,7 +42,9 @@ const Home = () => {
             width="fit-content"
             onClick={handleLoginClick}
           >
-            <Text variant="body">로그인</Text>
+            <Text color={theme.colors.white} variant="body">
+              로그인
+            </Text>
           </Button>
         )}
       </Header>
