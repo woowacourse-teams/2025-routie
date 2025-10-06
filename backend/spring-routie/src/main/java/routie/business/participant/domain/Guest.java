@@ -68,10 +68,10 @@ public class Guest implements Participant {
 
     public void validateNickname(final String nickname) {
         if (nickname == null || nickname.isBlank()) {
-            throw new BusinessException(ErrorCode.USER_NICKNAME_EMPTY);
+            throw new BusinessException(ErrorCode.GUEST_NICKNAME_EMPTY);
         }
         if (nickname.length() > 10) {
-            throw new BusinessException(ErrorCode.USER_NICKNAME_LENGTH_INVALID);
+            throw new BusinessException(ErrorCode.GUEST_NICKNAME_LENGTH_INVALID);
         }
     }
 

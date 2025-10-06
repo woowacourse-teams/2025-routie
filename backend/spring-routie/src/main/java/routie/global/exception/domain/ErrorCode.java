@@ -209,7 +209,7 @@ public enum ErrorCode {
     ),
     ROUTIE_SPACE_FORBIDDEN_GUEST(
             "2201",
-            "해당 루티 스페이스에 접근할 권한이 없는 게스트 사용자입니다.",
+            "해당 루티 스페이스에 접근할 권한이 없는 게스트입니다.",
             HttpStatus.FORBIDDEN
     ),
 
@@ -340,27 +340,27 @@ public enum ErrorCode {
     // User
     USER_NICKNAME_EMPTY(
             "4000",
-            "사용자 닉네임은 비어있을 수 없습니다.",
+            "유저 닉네임은 비어있을 수 없습니다.",
             HttpStatus.BAD_REQUEST
     ),
     USER_NICKNAME_LENGTH_INVALID(
             "4001",
-            "사용자 닉네임은 10자 이하여야 합니다.",
+            "유저 닉네임은 10자 이하여야 합니다.",
             HttpStatus.BAD_REQUEST
     ),
     USER_OAUTH_IDENTIFIER_EMPTY(
             "4002",
-            "사용자 인증 제공 식별자는 비어있을 수 없습니다.",
+            "유저 인증 제공 식별자는 비어있을 수 없습니다.",
             HttpStatus.BAD_REQUEST
     ),
     USER_OAUTH_PROVIDER_EMPTY(
             "4003",
-            "사용자 인증 제공자는 비어있을 수 없습니다.",
+            "유저 인증 제공자는 비어있을 수 없습니다.",
             HttpStatus.BAD_REQUEST
     ),
     USER_NOT_FOUND(
             "4100",
-            "해당 사용자를 찾을 수 없습니다.",
+            "해당 유저를 찾을 수 없습니다.",
             HttpStatus.NOT_FOUND
     ),
 
@@ -423,8 +423,18 @@ public enum ErrorCode {
     ),
     GUEST_NOT_FOUND(
             "7001",
-            "해당 비회원 사용자를 찾을 수 없습니다.",
+            "해당 게스트를 찾을 수 없습니다.",
             HttpStatus.NOT_FOUND
+    ),
+    GUEST_NICKNAME_EMPTY(
+            "7002",
+            "게스트 닉네임은 비어있을 수 없습니다.",
+            HttpStatus.BAD_REQUEST
+    ),
+    GUEST_NICKNAME_LENGTH_INVALID(
+            "7003",
+            "게스트 닉네임은 10자 이하여야 합니다.",
+            HttpStatus.BAD_REQUEST
     ),
 
     /**
@@ -486,7 +496,7 @@ public enum ErrorCode {
     ),
     KAKAO_USER_API_ERROR(
             "9014",
-            "카카오에서 사용자 정보를 읽어오는 중 오류가 발생했습니다.",
+            "카카오에서 유저 정보를 읽어오는 중 오류가 발생했습니다.",
             HttpStatus.BAD_GATEWAY
     ),
     ;
