@@ -45,7 +45,7 @@ const ellipsisStyle = css`
 const TextStyle = ({ color, variant, ellipsis }: TextProps) => css`
   box-sizing: border-box;
   max-width: 100%;
-  color: ${color ?? theme.colors.black};
+  color: ${color ?? 'inherit'};
 
   ${variant && textVariant[variant]}
   ${ellipsis && ellipsisStyle}
