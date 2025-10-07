@@ -23,15 +23,6 @@ const VioletTextStyle = css`
   color: ${theme.home.violet};
 `;
 
-const InfoCardsWrapperStyle = css`
-  padding: 5rem 0;
-
-  @media (width <= 970px) {
-    flex-direction: column;
-    gap: 3rem;
-  }
-`;
-
 const ButtonWrapperStyle = css`
   @media (width <= 970px) {
     flex-direction: column;
@@ -59,7 +50,6 @@ export {
   TitleTextStyle,
   SubTitleTextStyle,
   VioletTextStyle,
-  InfoCardsWrapperStyle,
   ButtonWrapperStyle,
   CreateButtonStyle,
   ContinueButtonStyle,

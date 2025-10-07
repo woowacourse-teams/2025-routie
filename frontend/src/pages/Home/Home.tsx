@@ -13,12 +13,10 @@ import {
   ContinueButtonStyle,
   CreateButtonStyle,
   HomepageStyle,
-  InfoCardsWrapperStyle,
   SubTitleTextStyle,
   TitleTextStyle,
   VioletTextStyle,
 } from './Home.styles';
-import InfoCard from './components/InfoCard/InfoCard';
 import { useRoutieSpaceNavigation } from './hooks/useRoutieSpaceNavigation';
 
 const Home = () => {
@@ -62,43 +60,6 @@ const Home = () => {
             루티가 당신의 동선을 <span css={VioletTextStyle}>체크</span>
             해드릴게요!
           </Text>
-          <Flex gap={5} css={InfoCardsWrapperStyle}>
-            <InfoCard
-              circleColor={theme.home.pink}
-              iconName="collectPlace"
-              iconAlt="장소 수집 아이콘"
-              title="가고 싶은 곳 모으기"
-              textColor={theme.home.text}
-              descriptions={[
-                '가고 싶은 곳들을 하나씩 모아보세요.',
-                '카페, 맛집, 쇼핑몰까지!',
-              ]}
-            />
-
-            <InfoCard
-              circleColor={theme.home.orange}
-              iconName="checkHome"
-              iconAlt="체크 아이콘"
-              title="가능한 동선인지 즉시 확인"
-              textColor={theme.home.text}
-              descriptions={[
-                '소화할 수 있는 동선인지',
-                '자동으로 판단해드려요!',
-              ]}
-            />
-
-            <InfoCard
-              circleColor={theme.home.yellow}
-              iconName="clockHome"
-              iconAlt="시계 아이콘"
-              title="이동시간, 거리까지 딱!"
-              textColor={theme.home.text}
-              descriptions={[
-                '각 장소별 이동시간과 거리를',
-                '자동으로 계산해요!',
-              ]}
-            />
-          </Flex>
           <Flex gap={8} width="80%" css={ButtonWrapperStyle}>
             {kakaoAccessToken ? (
               <>
