@@ -2,7 +2,12 @@ import { css } from '@emotion/react';
 
 import theme from '@/styles/theme';
 
-const HomepageStyle = css`
+const HomeScrollContainerStyle = css`
+  overflow-y: auto;
+  height: calc(100dvh - 7.1rem);
+`;
+
+const HomeContentStyle = css`
   background-color: ${theme.home.gray};
 
   @media (width <= 970px) {
@@ -40,10 +45,18 @@ const ContinueButtonStyle = css`
   box-shadow: 0 8px 16px rgb(0 0 0 / 16%);
 `;
 
+const FeedbackButtonStyle = css`
+  width: 30rem;
+  padding: 2rem;
+  box-shadow: 0 0.8rem 1.6rem rgb(0 0 0 / 26%);
+`;
+
 export {
-  HomepageStyle,
+  HomeScrollContainerStyle,
+  HomeContentStyle,
   BlueTextStyle,
   ButtonWrapperStyle,
   CreateButtonStyle,
   ContinueButtonStyle,
+  FeedbackButtonStyle,
 };
