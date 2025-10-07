@@ -36,8 +36,7 @@ public class GuestPlaceLikeService implements PlaceLikeService<Guest> {
 
         final Place place = placeRepository.findByIdAndRoutieSpace(placeId, routieSpace)
                 .orElseThrow(() -> new BusinessException(
-                        ErrorCode.PLACE_NOT_FOUND_IN_ROUTIE_SPACE,
-                        "루티 스페이스 내에서 해당하는 장소를 찾을 수 없습니다: " + placeId
+                        ErrorCode.PLACE_NOT_FOUND_IN_ROUTIE_SPACE
                 ));
 
         if (placeLikeRepository.existsByPlaceIdAndGuestId(placeId, guest.getId())) {
@@ -58,8 +57,7 @@ public class GuestPlaceLikeService implements PlaceLikeService<Guest> {
 
         placeRepository.findByIdAndRoutieSpace(placeId, routieSpace)
                 .orElseThrow(() -> new BusinessException(
-                        ErrorCode.PLACE_NOT_FOUND_IN_ROUTIE_SPACE,
-                        "루티 스페이스 내에서 해당하는 장소를 찾을 수 없습니다: " + placeId
+                        ErrorCode.PLACE_NOT_FOUND_IN_ROUTIE_SPACE
                 ));
 
         final PlaceLike placeLike = placeLikeRepository.findByPlaceIdAndGuestId(placeId, guest.getId())
