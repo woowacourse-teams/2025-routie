@@ -39,7 +39,7 @@ public class GuestPlaceLikeService implements PlaceLikeService<Guest> {
                         ErrorCode.PLACE_NOT_FOUND_IN_ROUTIE_SPACE
                 ));
 
-        if (placeLikeRepository.existsByPlaceIdAndGuestId(placeId, guest.getId())) {
+        if (placeLikeRepository.existsByPlaceIdAndGuest(placeId, guest)) {
             throw new BusinessException(ErrorCode.PLACE_LIKE_DUPLICATED);
         }
 
@@ -60,7 +60,7 @@ public class GuestPlaceLikeService implements PlaceLikeService<Guest> {
                         ErrorCode.PLACE_NOT_FOUND_IN_ROUTIE_SPACE
                 ));
 
-        final PlaceLike placeLike = placeLikeRepository.findByPlaceIdAndGuestId(placeId, guest.getId())
+        final PlaceLike placeLike = placeLikeRepository.findByPlaceIdAndGuest(placeId, guest)
                 .orElseThrow(() -> new BusinessException(ErrorCode.PLACE_LIKE_NOT_FOUND));
 
         placeLikeRepository.delete(placeLike);
@@ -74,9 +74,9 @@ public class GuestPlaceLikeService implements PlaceLikeService<Guest> {
             throw new BusinessException(ErrorCode.ROUTIE_SPACE_FORBIDDEN_GUEST);
         }
 
-        final List<PlaceLike> placeLikes = placeLikeRepository.findByRoutieSpaceIdAndGuestId(
-                routieSpace.getId(),
-                guest.getId()
+        final List<PlaceLike> placeLikes = placeLikeRepository.findByRoutieSpaceAndGuest(
+                routieSpace,
+                guest
         );
 
         return LikedPlacesResponse.from(placeLikes);

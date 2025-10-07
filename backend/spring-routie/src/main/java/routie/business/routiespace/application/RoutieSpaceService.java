@@ -4,8 +4,8 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import routie.business.participant.domain.User;
 import routie.business.like.domain.PlaceLikeRepository;
+import routie.business.participant.domain.User;
 import routie.business.routiespace.domain.RoutieSpace;
 import routie.business.routiespace.domain.RoutieSpaceIdentifierProvider;
 import routie.business.routiespace.domain.RoutieSpaceRepository;
@@ -92,7 +92,7 @@ public class RoutieSpaceService {
         RoutieSpace routieSpace = getRoutieSpaceByRoutieSpaceIdentifier(routieSpaceIdentifier);
         validateOwner(user, routieSpace);
 
-        placeLikeRepository.deleteByRoutieSpaceId(routieSpace.getId());
+        placeLikeRepository.deleteByRoutieSpace(routieSpace);
         routieSpaceRepository.delete(routieSpace);
     }
 

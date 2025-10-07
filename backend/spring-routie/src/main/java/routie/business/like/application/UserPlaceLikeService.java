@@ -55,7 +55,7 @@ public class UserPlaceLikeService implements PlaceLikeService<User> {
                         ErrorCode.PLACE_NOT_FOUND_IN_ROUTIE_SPACE
                 ));
 
-        if (placeLikeRepository.existsByPlaceIdAndUserId(placeId, user.getId())) {
+        if (placeLikeRepository.existsByPlaceIdAndUser(placeId, user)) {
             throw new BusinessException(ErrorCode.PLACE_LIKE_DUPLICATED);
         }
 
@@ -72,7 +72,7 @@ public class UserPlaceLikeService implements PlaceLikeService<User> {
                         ErrorCode.PLACE_NOT_FOUND_IN_ROUTIE_SPACE
                 ));
 
-        final PlaceLike placeLike = placeLikeRepository.findByPlaceIdAndUserId(placeId, user.getId())
+        final PlaceLike placeLike = placeLikeRepository.findByPlaceIdAndUser(placeId, user)
                 .orElseThrow(() -> new BusinessException(ErrorCode.PLACE_LIKE_NOT_FOUND));
 
         placeLikeRepository.delete(placeLike);
@@ -82,9 +82,9 @@ public class UserPlaceLikeService implements PlaceLikeService<User> {
         final RoutieSpace routieSpace = routieSpaceRepository.findByIdentifier(routieSpaceIdentifier)
                 .orElseThrow(() -> new BusinessException(ErrorCode.ROUTIE_SPACE_NOT_FOUND_BY_IDENTIFIER));
 
-        final List<PlaceLike> placeLikes = placeLikeRepository.findByRoutieSpaceIdAndUserId(
-                routieSpace.getId(),
-                user.getId()
+        final List<PlaceLike> placeLikes = placeLikeRepository.findByRoutieSpaceAndUser(
+                routieSpace,
+                user
         );
 
         return LikedPlacesResponse.from(placeLikes);
