@@ -86,7 +86,7 @@ public class User implements Participant {
         this.externalAuthenticationProvider = externalAuthenticationProvider;
     }
 
-    public void validateNickname(final String nickname) {
+    private void validateNickname(final String nickname) {
         if (nickname == null || nickname.isBlank()) {
             throw new BusinessException(ErrorCode.USER_NICKNAME_EMPTY);
         }

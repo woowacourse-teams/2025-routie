@@ -77,17 +77,17 @@ public class Guest implements Participant {
         return new Guest(nickname, encodedPassword, routieSpace);
     }
 
-    public boolean matchesPassword(final String rawPassword, final PasswordEncoder passwordEncoder) {
-        return passwordEncoder.matches(rawPassword, this.password);
-    }
-
-    public void validateNickname(final String nickname) {
+    private void validateNickname(final String nickname) {
         if (nickname == null || nickname.isBlank()) {
             throw new BusinessException(ErrorCode.GUEST_NICKNAME_EMPTY);
         }
         if (nickname.length() > 10) {
             throw new BusinessException(ErrorCode.GUEST_NICKNAME_LENGTH_INVALID);
         }
+    }
+
+    public boolean matchesPassword(final String rawPassword, final PasswordEncoder passwordEncoder) {
+        return passwordEncoder.matches(rawPassword, this.password);
     }
 
     @Override
