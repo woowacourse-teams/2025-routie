@@ -130,7 +130,7 @@ public class AuthenticationService {
             throw new BusinessException(ErrorCode.LOGIN_FAILED);
         }
 
-        if (requestedPassword != null && passwordEncoder.matches(requestedPassword, savedPassword)) {
+        if (requestedPassword != null && guest.matchesPassword(requestedPassword, passwordEncoder)) {
             return new GuestAuthenticationResponse(jwtProcessor.createJwt(guest));
         }
 
@@ -147,8 +147,7 @@ public class AuthenticationService {
         }
 
         if (password != null) {
-            final String encodedPassword = passwordEncoder.encode(password);
-            final Guest guest = new Guest(nickname, encodedPassword, routieSpace);
+            final Guest guest = Guest.createEncoded(nickname, password, routieSpace, passwordEncoder);
             return guestRepository.save(guest);
         }
 

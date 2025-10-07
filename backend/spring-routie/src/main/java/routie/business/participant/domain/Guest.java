@@ -18,6 +18,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import routie.business.authentication.domain.Role;
 import routie.business.like.domain.PlaceLike;
 import routie.business.place.domain.Place;
@@ -64,6 +65,20 @@ public class Guest implements Participant {
         this.nickname = nickname;
         this.password = password;
         this.routieSpace = routieSpace;
+    }
+
+    public static Guest createEncoded(
+            final String nickname,
+            final String rawPassword,
+            final RoutieSpace routieSpace,
+            final PasswordEncoder passwordEncoder
+    ) {
+        final String encodedPassword = passwordEncoder.encode(rawPassword);
+        return new Guest(nickname, encodedPassword, routieSpace);
+    }
+
+    public boolean matchesPassword(final String rawPassword, final PasswordEncoder passwordEncoder) {
+        return passwordEncoder.matches(rawPassword, this.password);
     }
 
     public void validateNickname(final String nickname) {
