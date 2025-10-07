@@ -175,4 +175,46 @@ public class PlaceLikeControllerV1Test {
         assertThat(actualHttpStatus).isEqualTo(expectedHttpStatus);
         assertThat(response.jsonPath().getList("likedPlaceIds", Long.class).contains(testPlace.getId())).isTrue();
     }
+
+    @Test
+    @Deprecated
+    @DisplayName("장소에 좋아요를 성공적으로 삭제한다")
+    public void deletePlaceLike() {
+        // given
+        long placeId = testPlace.getId();
+        long initialLikeCount = placeLikeRepository.countByPlace(testPlace);
+
+        // 테스트용 사용자 생성 및 토큰 발급
+        User user = UserFixture.emptyUser();
+        userRepository.save(user);
+        String accessToken = jwtProcessor.createJwt(user);
+
+        RestAssured
+                .given().log().all()
+                .header("Authorization", "Bearer " + accessToken)
+                .when()
+                .post("/v2/routie-spaces/" + testRoutieSpace.getIdentifier() + "/places/" + placeId + "/likes")
+                .then()
+                .log().all()
+                .extract().response();
+
+        // when
+        Response response = RestAssured
+                .given().log().all()
+                .header("Authorization", "Bearer " + accessToken)
+                .when()
+                .delete("/v1/routie-spaces/" + testRoutieSpace.getIdentifier() + "/places/" + placeId + "/likes")
+                .then()
+                .log().all()
+                .extract().response();
+
+        HttpStatus actualHttpStatus = HttpStatus.valueOf(response.getStatusCode());
+        HttpStatus expectedHttpStatus = HttpStatus.OK;
+
+        // then
+        assertThat(expectedHttpStatus).isEqualTo(actualHttpStatus);
+
+        long finalLikeCount = placeLikeRepository.countByPlace(testPlace);
+        assertThat(finalLikeCount).isEqualTo(initialLikeCount);
+    }
 }

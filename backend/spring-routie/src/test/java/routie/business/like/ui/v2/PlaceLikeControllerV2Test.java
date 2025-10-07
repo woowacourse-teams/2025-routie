@@ -16,6 +16,9 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import routie.business.authentication.domain.jwt.JwtProcessor;
 import routie.business.like.domain.PlaceLikeRepository;
+import routie.business.participant.domain.Guest;
+import routie.business.participant.domain.GuestBuilder;
+import routie.business.participant.domain.GuestRepository;
 import routie.business.participant.domain.User;
 import routie.business.participant.domain.UserFixture;
 import routie.business.participant.domain.UserRepository;
@@ -53,6 +56,8 @@ public class PlaceLikeControllerV2Test {
 
     private Place testPlace;
     private RoutieSpace testRoutieSpace;
+    @Autowired
+    private GuestRepository guestRepository;
 
     @BeforeEach
     void setUp() {
@@ -72,8 +77,8 @@ public class PlaceLikeControllerV2Test {
     }
 
     @Test
-    @DisplayName("V2 API로 장소에 좋아요를 성공적으로 추가한다")
-    public void likePlace() {
+    @DisplayName("V2 API로 장소에 유저의 좋아요를 성공적으로 추가한다")
+    public void likePlaceWithUserToken() {
         // given
         long placeId = testPlace.getId();
         long initialLikeCount = placeLikeRepository.countByPlace(testPlace);
@@ -82,6 +87,41 @@ public class PlaceLikeControllerV2Test {
         User user = UserFixture.emptyUser();
         userRepository.save(user);
         String accessToken = jwtProcessor.createJwt(user);
+
+        // when
+        Response response = RestAssured
+                .given().log().all()
+                .header("Authorization", "Bearer " + accessToken)
+                .when()
+                .post("/v2/routie-spaces/" + testRoutieSpace.getIdentifier() + "/places/" + placeId + "/likes")
+                .then()
+                .log().all()
+                .extract().response();
+
+        HttpStatus actualHttpStatus = HttpStatus.valueOf(response.getStatusCode());
+        HttpStatus expectedHttpStatus = HttpStatus.OK;
+
+        // then
+        assertThat(expectedHttpStatus).isEqualTo(actualHttpStatus);
+
+        long finalLikeCount = placeLikeRepository.countByPlace(testPlace);
+        assertThat(finalLikeCount).isEqualTo(initialLikeCount + 1);
+    }
+
+    @Test
+    @DisplayName("V2 API로 장소에 게스트의 좋아요를 성공적으로 추가한다")
+    public void likePlaceWithGuestToken() {
+        // given
+        long placeId = testPlace.getId();
+        long initialLikeCount = placeLikeRepository.countByPlace(testPlace);
+
+        // 테스트용 사용자 생성 및 토큰 발급
+        Guest guest = new GuestBuilder()
+                .routieSpace(testRoutieSpace)
+                .build();
+
+        guestRepository.save(guest);
+        String accessToken = jwtProcessor.createJwt(guest);
 
         // when
         Response response = RestAssured
