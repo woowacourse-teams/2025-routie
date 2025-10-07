@@ -10,38 +10,61 @@ const HomeScrollContainerStyle = css`
 const HomeContentStyle = css`
   background-color: ${theme.home.gray};
 
-  @media (width <= 970px) {
+  @media (width <= 1200px) {
     height: auto;
+  }
+`;
+
+const MainContentWrapperStyle = css`
+  position: relative;
+  z-index: 10;
+  flex-direction: row;
+  height: 75vh;
+
+  @media (width <= 970px) {
+    flex-direction: column;
+    height: auto;
+    padding: 4rem 0;
   }
 `;
 
 const CircleStyle = css`
   pointer-events: none;
 
-  position: absolute;
+  position: fixed;
   z-index: 0;
-  top: 340px;
-  left: 600px;
+  top: 57%;
+  left: 40%;
+  transform: translate(-50%, -50%);
 
-  width: 45rem;
-  height: 45rem;
+  width: 50vw;
+  min-width: 20rem;
+  max-width: 50rem;
+  height: 50vw;
+  min-height: 20rem;
+  max-height: 50rem;
   border-radius: 50%;
 
-  background: ${theme.colors.blue[250]}40;
+  background: ${theme.colors.blue[200]}50;
 `;
 
 const RectangleStyle = css`
   pointer-events: none;
 
-  position: absolute;
+  position: fixed;
   z-index: 0;
-  top: 120px;
-  left: 860px;
+  top: 37%;
+  left: 48%;
+  transform: translate(-30%, -50%);
 
-  width: 35rem;
-  height: 50rem;
+  width: 40vw;
+  min-width: 18rem;
+  max-width: 40rem;
+  height: 55vw;
+  min-height: 25rem;
+  max-height: 55rem;
 
-  background: ${theme.colors.blue[450]}70;
+  background: ${theme.colors.blue[450]}60;
 `;
 
 const BlueTextStyle = css`
@@ -54,7 +77,7 @@ const ButtonWrapperStyle = css`
   justify-content: flex-start;
   width: auto;
 
-  @media (width <= 970px) {
+  @media (width <= 1200px) {
     flex-direction: column;
     gap: 2rem;
     max-width: 40rem;
@@ -75,15 +98,24 @@ const ContinueButtonStyle = css`
 `;
 
 const FeedbackButtonStyle = css`
-  z-index: 2;
+  position: relative;
+  z-index: 10;
+
   width: 30rem;
   padding: 2rem;
+
   box-shadow: 0 0.8rem 1.6rem rgb(0 0 0 / 26%);
+
+  @media (width <= 800px) {
+    width: 100%;
+    max-width: 28rem;
+  }
 `;
 
 export {
   HomeScrollContainerStyle,
   HomeContentStyle,
+  MainContentWrapperStyle,
   CircleStyle,
   RectangleStyle,
   BlueTextStyle,

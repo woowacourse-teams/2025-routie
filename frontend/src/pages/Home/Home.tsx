@@ -11,6 +11,7 @@ import theme from '@/styles/theme';
 import {
   HomeScrollContainerStyle,
   HomeContentStyle,
+  MainContentWrapperStyle,
   CircleStyle,
   RectangleStyle,
   BlueTextStyle,
@@ -53,7 +54,12 @@ const Home = () => {
         <div css={CircleStyle} />
         <div css={RectangleStyle} />
         <Flex direction="column" padding={10} gap={10} css={HomeContentStyle}>
-          <Flex direction="row" alignItems="center" gap={20} height="75vh">
+          <Flex
+            direction="column"
+            alignItems="center"
+            gap={20}
+            css={MainContentWrapperStyle}
+          >
             <Flex
               direction="column"
               alignItems="flex-start"
