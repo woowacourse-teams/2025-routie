@@ -57,36 +57,34 @@ public class JwtProcessor {
     }
 
     public Participant parseParticipant(final String jwt) {
-        final Role role = parseRole(jwt);
-
-        // 확장성을 위해 Map 고려할 수 있으나, 가능성이 낮다고 판단하여 아래와 같이 구현
-        if (role == Role.GUEST) {
-            return parseGuest(jwt);
-        }
-        if (role == Role.USER) {
-            return parseUser(jwt);
-        }
-        throw new BusinessException(ErrorCode.INVALID_ROLE);
-    }
-
-    private User parseUser(final String jwt) {
         try {
             final Claims claims = getPayload(jwt);
-            final String userId = claims.getSubject();
-            final Role role = parseRole(jwt);
-            assertRole(role, Role.USER);
+            final Role role = parseRole(claims);
+            final String participantId = claims.getSubject();
 
-            return userRepository.findById(Long.parseLong(userId))
-                    .orElseThrow(() -> new BusinessException(ErrorCode.USER_NOT_FOUND));
+            if (role == Role.GUEST) {
+                return findGuestById(participantId);
+            }
+            if (role == Role.USER) {
+                return findUserById(participantId);
+            }
+            throw new BusinessException(ErrorCode.INVALID_ROLE);
+
+        } catch (final BusinessException e) {
+            throw e;
         } catch (final Exception e) {
             throw new JwtException(e.getMessage(), e);
         }
     }
 
-    private void assertRole(final Role role, final Role expectedRole) {
-        if (role != expectedRole) {
-            throw new IllegalArgumentException("요청과 role이 일치하지 않습니다");
-        }
+    private User findUserById(final String userId) {
+        return userRepository.findById(Long.parseLong(userId))
+                .orElseThrow(() -> new BusinessException(ErrorCode.USER_NOT_FOUND));
+    }
+
+    private Guest findGuestById(final String guestId) {
+        return guestRepository.findById(Long.parseLong(guestId))
+                .orElseThrow(() -> new BusinessException(ErrorCode.GUEST_NOT_FOUND));
     }
 
     private Claims getPayload(final String jwt) {
@@ -97,27 +95,7 @@ public class JwtProcessor {
                 .getPayload();
     }
 
-    private Role parseRole(final String jwt) {
-        try {
-            final Claims claims = getPayload(jwt);
-            return Role.from(claims.get(CLAIM_KEY_ROLE, String.class));
-
-        } catch (final Exception e) {
-            throw new JwtException(e.getMessage(), e);
-        }
-    }
-
-    private Guest parseGuest(final String jwt) {
-        try {
-            Claims claims = getPayload(jwt);
-            String userId = claims.getSubject();
-            final Role role = parseRole(jwt);
-            assertRole(role, Role.GUEST);
-
-            return guestRepository.findById(Long.parseLong(userId))
-                    .orElseThrow(() -> new BusinessException(ErrorCode.GUEST_NOT_FOUND));
-        } catch (final Exception e) {
-            throw new JwtException(e.getMessage(), e);
-        }
+    private Role parseRole(final Claims claims) {
+        return Role.from(claims.get(CLAIM_KEY_ROLE, String.class));
     }
 }
