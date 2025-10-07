@@ -13,9 +13,7 @@ import {
   ContinueButtonStyle,
   CreateButtonStyle,
   HomepageStyle,
-  SubTitleTextStyle,
-  TitleTextStyle,
-  VioletTextStyle,
+  BlueTextStyle,
 } from './Home.styles';
 import { useRoutieSpaceNavigation } from './hooks/useRoutieSpaceNavigation';
 
@@ -49,18 +47,45 @@ const Home = () => {
       <Flex
         direction="column"
         height="calc(100dvh - 7.1rem)"
-        padding={5}
+        padding={40}
         css={HomepageStyle}
       >
-        <Flex direction="column" gap={3}>
-          <Text variant="title" css={TitleTextStyle} color={theme.home.text}>
-            그 장소들, 정말 다 갈 수 있을까요?
-          </Text>
-          <Text variant="body" color={theme.home.text} css={SubTitleTextStyle}>
-            루티가 당신의 동선을 <span css={VioletTextStyle}>체크</span>
-            해드릴게요!
-          </Text>
-          <Flex gap={8} width="80%" css={ButtonWrapperStyle}>
+        <Flex direction="column" alignItems="flex-start" gap={3}>
+          <Flex direction="column" gap={16}>
+            <Flex direction="column" alignItems="flex-start" gap={6}>
+              <Text variant="logo" color={theme.colors.gray[300]}>
+                더 이상 카톡은 그만!
+              </Text>
+              <Text variant="logo" color={theme.colors.gray[300]}>
+                <span css={BlueTextStyle}>루티</span>로 모여!
+              </Text>
+            </Flex>
+
+            <Flex direction="column" alignItems="flex-start" gap={3}>
+              <Text variant="subTitle" color={theme.colors.gray[300]}>
+                친구들과 당일치기 여행 계획 중
+              </Text>
+
+              <Flex direction="column" alignItems="flex-start" gap={1}>
+                <Text variant="subTitle" color={theme.colors.gray[300]}>
+                  대화가 계속 올라가 불편했다면?
+                </Text>
+                <Text variant="subTitle" color={theme.colors.gray[300]}>
+                  흐름 파악이 힘들었다면?
+                </Text>
+              </Flex>
+              <Text
+                variant="subTitle"
+                color={theme.colors.gray[300]}
+                css={{ marginTop: '5rem' }}
+              >
+                <span css={BlueTextStyle}>루티</span>에서 함께 동선을
+                만들어보세요!
+              </Text>
+            </Flex>
+          </Flex>
+
+          <Flex css={ButtonWrapperStyle}>
             {kakaoAccessToken ? (
               <>
                 <Button
