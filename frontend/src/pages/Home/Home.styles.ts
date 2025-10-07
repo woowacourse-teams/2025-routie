@@ -15,6 +15,35 @@ const HomeContentStyle = css`
   }
 `;
 
+const CircleStyle = css`
+  pointer-events: none;
+
+  position: absolute;
+  z-index: 0;
+  top: 340px;
+  left: 600px;
+
+  width: 45rem;
+  height: 45rem;
+  border-radius: 50%;
+
+  background: ${theme.colors.blue[250]}40;
+`;
+
+const RectangleStyle = css`
+  pointer-events: none;
+
+  position: absolute;
+  z-index: 0;
+  top: 120px;
+  left: 860px;
+
+  width: 35rem;
+  height: 50rem;
+
+  background: ${theme.colors.blue[450]}70;
+`;
+
 const BlueTextStyle = css`
   font-size: inherit;
   color: ${theme.colors.blue[450]};
@@ -46,6 +75,7 @@ const ContinueButtonStyle = css`
 `;
 
 const FeedbackButtonStyle = css`
+  z-index: 2;
   width: 30rem;
   padding: 2rem;
   box-shadow: 0 0.8rem 1.6rem rgb(0 0 0 / 26%);
@@ -54,6 +84,8 @@ const FeedbackButtonStyle = css`
 export {
   HomeScrollContainerStyle,
   HomeContentStyle,
+  CircleStyle,
+  RectangleStyle,
   BlueTextStyle,
   ButtonWrapperStyle,
   CreateButtonStyle,
