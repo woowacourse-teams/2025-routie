@@ -13,7 +13,7 @@ const RoutieSpaceListItemStyle = css`
   width: 100%;
   padding: 1rem;
   border: 1px solid ${theme.colors.gray[50]};
-  border-radius: 12px;
+  border-radius: ${theme.radius.sm};
 
   background-color: ${theme.colors.white};
   box-shadow: 2px 4px 4px 0 rgb(0 0 0 / 15%);

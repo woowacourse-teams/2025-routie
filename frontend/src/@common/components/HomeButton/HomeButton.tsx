@@ -12,7 +12,7 @@ const HomeButton = ({ isHome = true, onClick, ...props }: HomeButtonProps) => {
       <Flex gap={1}>
         <Icon name="logo" size={34} />
         {isHome && (
-          <Text variant="title" color={theme.colors.purple[400]}>
+          <Text variant="logo" color={theme.colors.blue[450]}>
             Routie
           </Text>
         )}

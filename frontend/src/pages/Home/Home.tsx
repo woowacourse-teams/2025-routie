@@ -25,7 +25,6 @@ const Home = () => {
   const { handleCreateRoutieSpace, handleMoveToManageRoutieSpace } =
     useRoutieSpaceNavigation();
   const { openModal } = useModal();
-  const existingUuid = localStorage.getItem('routieSpaceUuid');
   const kakaoAccessToken = localStorage.getItem('accessToken');
 
   const handleLoginClick = () => {
@@ -38,8 +37,14 @@ const Home = () => {
         {kakaoAccessToken ? (
           <UserMenuButton />
         ) : (
-          <Button width="fit-content" onClick={handleLoginClick}>
-            <Text variant="body">로그인</Text>
+          <Button
+            variant="primary"
+            width="fit-content"
+            onClick={handleLoginClick}
+          >
+            <Text color={theme.colors.white} variant="body">
+              로그인
+            </Text>
           </Button>
         )}
       </Header>

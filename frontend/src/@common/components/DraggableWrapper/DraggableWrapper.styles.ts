@@ -1,8 +1,10 @@
 import { css } from '@emotion/react';
 
+import theme from '@/styles/theme';
+
 const DraggableWrapperStyle = css`
   cursor: grab;
-  border-radius: 1.2rem;
+  border-radius: ${theme.radius.sm};
   transition: transform 120ms ease, box-shadow 120ms ease, opacity 120ms ease;
 
   &:hover {

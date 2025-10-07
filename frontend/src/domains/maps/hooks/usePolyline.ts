@@ -19,7 +19,7 @@ const usePolyline = (map: MapRefType) => {
       map: map.current,
       path: pathPoints.current,
       strokeWeight: 3,
-      strokeColor: 'purple',
+      strokeColor: 'blue',
       strokeOpacity: 0.7,
       strokeStyle: 'solid',
     });
