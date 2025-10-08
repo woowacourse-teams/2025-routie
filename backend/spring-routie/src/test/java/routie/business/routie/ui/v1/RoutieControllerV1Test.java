@@ -20,6 +20,9 @@ import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
+import routie.business.participant.domain.User;
+import routie.business.participant.domain.UserFixture;
+import routie.business.participant.domain.UserRepository;
 import routie.business.place.domain.Place;
 import routie.business.place.domain.PlaceBuilder;
 import routie.business.place.domain.PlaceRepository;
@@ -32,9 +35,6 @@ import routie.business.routie.ui.dto.response.RoutieReadResponse.RoutiePlaceResp
 import routie.business.routiespace.domain.RoutieSpace;
 import routie.business.routiespace.domain.RoutieSpaceBuilder;
 import routie.business.routiespace.domain.RoutieSpaceRepository;
-import routie.business.user.domain.User;
-import routie.business.user.domain.UserFixture;
-import routie.business.user.domain.UserRepository;
 
 @Import(TestRouteApiConfig.class)
 @DirtiesContext(classMode = ClassMode.AFTER_CLASS)

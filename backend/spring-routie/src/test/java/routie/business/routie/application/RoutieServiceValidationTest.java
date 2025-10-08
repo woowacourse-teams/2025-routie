@@ -19,6 +19,9 @@ import org.springframework.context.annotation.Import;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.transaction.annotation.Transactional;
+import routie.business.participant.domain.User;
+import routie.business.participant.domain.UserBuilder;
+import routie.business.participant.domain.UserRepository;
 import routie.business.place.domain.Place;
 import routie.business.place.domain.PlaceBuilder;
 import routie.business.place.domain.PlaceRepository;
@@ -32,9 +35,6 @@ import routie.business.routie.ui.dto.response.RoutieValidationResponse.Validatio
 import routie.business.routiespace.domain.RoutieSpace;
 import routie.business.routiespace.domain.RoutieSpaceBuilder;
 import routie.business.routiespace.domain.RoutieSpaceRepository;
-import routie.business.user.domain.User;
-import routie.business.user.domain.UserBuilder;
-import routie.business.user.domain.UserRepository;
 
 @Disabled("검증 기능 제거에 따른 비활성화")
 @Transactional

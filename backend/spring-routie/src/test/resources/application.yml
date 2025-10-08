@@ -20,6 +20,9 @@ spring:
         dialect: org.hibernate.dialect.H2Dialect
     show-sql: true
 
+  flyway:
+    enabled: true
+
 kakao:
   api:
     key: test-api-key

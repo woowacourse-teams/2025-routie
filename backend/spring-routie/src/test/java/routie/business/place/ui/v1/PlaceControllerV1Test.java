@@ -15,8 +15,11 @@ import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
-import routie.business.like.domain.PlaceLikeFixture;
+import routie.business.like.domain.PlaceLikeBuilder;
 import routie.business.like.domain.PlaceLikeRepository;
+import routie.business.participant.domain.User;
+import routie.business.participant.domain.UserFixture;
+import routie.business.participant.domain.UserRepository;
 import routie.business.place.domain.Place;
 import routie.business.place.domain.PlaceBuilder;
 import routie.business.place.domain.PlaceRepository;
@@ -43,6 +46,9 @@ public class PlaceControllerV1Test {
     @Autowired
     private PlaceLikeRepository placeLikeRepository;
 
+    @Autowired
+    private UserRepository userRepository;
+
     private Place testPlace;
     private RoutieSpace testRoutieSpace;
 
@@ -61,7 +67,14 @@ public class PlaceControllerV1Test {
                 .routieSpace(testRoutieSpace)
                 .build();
         placeRepository.save(testPlace);
-        placeLikeRepository.save(PlaceLikeFixture.placeLikeForPlace(testPlace));
+
+        final User user = userRepository.save(UserFixture.emptyUser());
+
+        placeLikeRepository.save(new PlaceLikeBuilder()
+                .place(testPlace)
+                .user(user)
+                .build()
+        );
     }
 
     @Test

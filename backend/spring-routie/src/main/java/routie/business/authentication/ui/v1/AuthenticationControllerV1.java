@@ -11,13 +11,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import routie.business.authentication.application.AuthenticationService;
 import routie.business.authentication.ui.v1.dto.request.ExternalAuthenticationRequest;
+import routie.business.authentication.ui.v1.dto.request.GuestAuthenticationRequest;
 import routie.business.authentication.ui.v1.dto.response.ExternalAuthenticationResponse;
 import routie.business.authentication.ui.v1.dto.response.ExternalAuthenticationUriResponse;
+import routie.business.authentication.ui.v1.dto.response.GuestAuthenticationResponse;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/v1/authentication")
-public class AuthenticationController {
+public class AuthenticationControllerV1 {
 
     private final AuthenticationService authenticationService;
 
@@ -39,6 +41,15 @@ public class AuthenticationController {
                         externalAuthenticationRequest
                 );
         return ResponseEntity.ok(externalAuthenticationResponse);
+    }
+
+    @PostMapping("/guest")
+    public ResponseEntity<GuestAuthenticationResponse> authenticateGuest(
+            @Valid @RequestBody final GuestAuthenticationRequest guestAuthenticationRequest
+    ) {
+        GuestAuthenticationResponse guestAuthenticationResponse =
+                authenticationService.authenticateGuest(guestAuthenticationRequest);
+        return ResponseEntity.ok(guestAuthenticationResponse);
     }
 }
 

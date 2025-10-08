@@ -21,6 +21,9 @@ import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.TransactionTemplate;
+import routie.business.participant.domain.User;
+import routie.business.participant.domain.UserBuilder;
+import routie.business.participant.domain.UserRepository;
 import routie.business.place.domain.Place;
 import routie.business.place.domain.PlaceBuilder;
 import routie.business.place.domain.PlaceRepository;
@@ -33,9 +36,6 @@ import routie.business.routiespace.domain.RoutieSpace;
 import routie.business.routiespace.domain.RoutieSpaceBuilder;
 import routie.business.routiespace.domain.RoutieSpaceFixture;
 import routie.business.routiespace.domain.RoutieSpaceRepository;
-import routie.business.user.domain.User;
-import routie.business.user.domain.UserBuilder;
-import routie.business.user.domain.UserRepository;
 import routie.global.exception.domain.BusinessException;
 
 @SpringBootTest

@@ -1,4 +1,4 @@
-package routie.business.user.domain;
+package routie.business.participant.domain;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -22,7 +22,10 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import routie.business.authentication.domain.Role;
 import routie.business.authentication.domain.external.ExternalAuthenticationProvider;
+import routie.business.like.domain.PlaceLike;
+import routie.business.place.domain.Place;
 import routie.business.routiespace.domain.RoutieSpace;
 import routie.global.exception.domain.BusinessException;
 import routie.global.exception.domain.ErrorCode;
@@ -42,14 +45,14 @@ import routie.global.exception.domain.ErrorCode;
 @EntityListeners(AuditingEntityListener.class)
 @AllArgsConstructor(access = AccessLevel.PACKAGE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class User {
+public class User implements Participant {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "nick_name", nullable = false)
-    private String nickName;
+    @Column(name = "nickname", nullable = false)
+    private String nickname;
 
     @Column(name = "external_authentication_identifier", nullable = false)
     private String externalAuthenticationIdentifier;
@@ -70,24 +73,24 @@ public class User {
     private LocalDateTime updatedAt;
 
     public User(
-            final String nickName,
+            final String nickname,
             final String externalAuthenticationIdentifier,
             final ExternalAuthenticationProvider externalAuthenticationProvider
     ) {
-        validateName(nickName);
+        validateNickname(nickname);
         validateExternalAuthenticationIdentifier(externalAuthenticationIdentifier);
         validateExternalAuthenticationProvider(externalAuthenticationProvider);
 
-        this.nickName = nickName;
+        this.nickname = nickname;
         this.externalAuthenticationIdentifier = externalAuthenticationIdentifier;
         this.externalAuthenticationProvider = externalAuthenticationProvider;
     }
 
-    public void validateName(final String nickName) {
-        if (nickName == null || nickName.isBlank()) {
+    private void validateNickname(final String nickname) {
+        if (nickname == null || nickname.isBlank()) {
             throw new BusinessException(ErrorCode.USER_NICKNAME_EMPTY);
         }
-        if (nickName.length() > 10) {
+        if (nickname.length() > 10) {
             throw new BusinessException(ErrorCode.USER_NICKNAME_LENGTH_INVALID);
         }
     }
@@ -103,5 +106,20 @@ public class User {
         if (externalAuthenticationProvider == null) {
             throw new BusinessException(ErrorCode.USER_OAUTH_PROVIDER_EMPTY);
         }
+    }
+
+    @Override
+    public String getNickname() {
+        return nickname;
+    }
+
+    @Override
+    public Role getRole() {
+        return Role.USER;
+    }
+
+    @Override
+    public PlaceLike likePlace(final Place place) {
+        return new PlaceLike(place, this, null);
     }
 }
