@@ -8,9 +8,7 @@ import { useToastContext } from '@/@common/contexts/useToastContext';
 import { useGuestLoginMutation } from '@/domains/auth/queries/useAuthQuery';
 import theme from '@/styles/theme';
 
-interface GuestLoginSectionProps {
-  onClose: () => void;
-}
+import type { GuestLoginSectionProps } from './GuestLoginSection.types';
 
 const GuestLoginSection = ({ onClose }: GuestLoginSectionProps) => {
   const [nickname, setNickname] = useState('');

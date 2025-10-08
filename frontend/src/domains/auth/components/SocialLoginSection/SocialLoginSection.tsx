@@ -6,9 +6,7 @@ import { useKakaoLoginUriQuery } from '@/domains/auth/queries/useAuthQuery';
 
 import { DividerStyle, KakaoButtonStyle } from './SocialLoginSection.styles';
 
-interface SocialLoginSectionProps {
-  onClose: () => void;
-}
+import type { SocialLoginSectionProps } from './SocialLoginSection.types';
 
 const SocialLoginSection = ({ onClose }: SocialLoginSectionProps) => {
   const { data: kakaoLoginUri } = useKakaoLoginUriQuery();
