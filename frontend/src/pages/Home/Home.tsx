@@ -19,6 +19,7 @@ import {
   CreateButtonStyle,
   ContinueButtonStyle,
   FeedbackButtonStyle,
+  linkStyle,
 } from './Home.styles';
 import PhoneFrame from './PhoneChatFrame/PhoneChatFrame';
 import { useRoutieSpaceNavigation } from './hooks/useRoutieSpaceNavigation';
@@ -32,6 +33,9 @@ const Home = () => {
   const handleLoginClick = () => {
     openModal('login');
   };
+
+  const FEEDBACK_URL =
+    'https://docs.google.com/forms/d/e/1FAIpQLSfixG5-LD4kYYC3T0XueS7Ud7XHXbA53gJGxb60x4qwLl_4qA/viewform';
 
   return (
     <>
@@ -146,11 +150,18 @@ const Home = () => {
                 <Text variant="title">루티가 불편하다면?</Text>
                 <Text variant="subTitle">개발자에게 피드백을 주세요!</Text>
               </Flex>
-              <Button variant="primary" css={FeedbackButtonStyle}>
-                <Text variant="subTitle" color="white">
-                  피드백 작성하러 가기
-                </Text>
-              </Button>
+              <a
+                href={FEEDBACK_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                css={linkStyle}
+              >
+                <Button variant="primary" css={FeedbackButtonStyle}>
+                  <Text variant="subTitle" color="white">
+                    피드백 작성하러 가기
+                  </Text>
+                </Button>
+              </a>
             </Flex>
           </Flex>
         </Flex>

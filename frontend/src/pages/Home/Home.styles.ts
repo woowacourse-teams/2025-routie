@@ -112,6 +112,16 @@ const FeedbackButtonStyle = css`
   }
 `;
 
+const linkStyle = css`
+  color: inherit;
+  text-decoration: none;
+
+  &:focus-visible {
+    outline: 2px solid ${theme.colors.blue[450]};
+    outline-offset: 2px;
+  }
+`;
+
 export {
   HomeScrollContainerStyle,
   HomeContentStyle,
@@ -123,4 +133,5 @@ export {
   CreateButtonStyle,
   ContinueButtonStyle,
   FeedbackButtonStyle,
+  linkStyle,
 };
