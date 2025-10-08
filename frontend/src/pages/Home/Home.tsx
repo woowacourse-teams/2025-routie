@@ -25,7 +25,9 @@ const Home = () => {
   const { handleCreateRoutieSpace, handleMoveToManageRoutieSpace } =
     useRoutieSpaceNavigation();
   const { openModal } = useModal();
-  const kakaoAccessToken = localStorage.getItem('accessToken');
+  const accessToken = localStorage.getItem('accessToken');
+  const role = localStorage.getItem('role');
+  const isAuthenticatedUser = Boolean(accessToken) && role === 'USER';
 
   const handleLoginClick = () => {
     openModal('socialLogin');
@@ -34,7 +36,7 @@ const Home = () => {
   return (
     <>
       <Header>
-        {kakaoAccessToken ? (
+        {isAuthenticatedUser ? (
           <UserMenuButton />
         ) : (
           <Button width="fit-content" onClick={handleLoginClick}>
@@ -94,7 +96,7 @@ const Home = () => {
             />
           </Flex>
           <Flex gap={8} width="80%" css={ButtonWrapperStyle}>
-            {kakaoAccessToken ? (
+            {isAuthenticatedUser ? (
               <>
                 <Button
                   onClick={handleCreateRoutieSpace}
