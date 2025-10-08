@@ -101,10 +101,24 @@ const FeedbackButtonStyle = css`
   position: relative;
   z-index: 10;
 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  box-sizing: border-box;
   width: 30rem;
   padding: 2rem;
+  border-radius: ${theme.radius.sm};
 
+  color: ${theme.colors.white};
+
+  background-color: ${theme.colors.blue[450]};
   box-shadow: 0 0.8rem 1.6rem rgb(0 0 0 / 26%);
+
+  &:hover {
+    color: ${theme.colors.white};
+    background-color: ${theme.colors.blue[200]};
+  }
 
   @media (width <= 800px) {
     width: 100%;

@@ -154,13 +154,11 @@ const Home = () => {
                 href={FEEDBACK_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                css={linkStyle}
+                css={[linkStyle, FeedbackButtonStyle]}
               >
-                <Button variant="primary" css={FeedbackButtonStyle}>
-                  <Text variant="subTitle" color="white">
-                    피드백 작성하러 가기
-                  </Text>
-                </Button>
+                <Text variant="subTitle" color="white">
+                  피드백 작성하러 가기
+                </Text>
               </a>
             </Flex>
           </Flex>
