@@ -95,7 +95,7 @@ const postLikePlace = async ({ placeId }: LikePlaceRequestType) => {
   const accessToken = getAccessTokenOrThrow();
 
   const response = await apiClient.post(
-    `/v1/routie-spaces/${routieSpaceUuid}/places/${placeId}/likes`,
+    `/v2/routie-spaces/${routieSpaceUuid}/places/${placeId}/likes`,
     null,
     {
       Authorization: `Bearer ${accessToken}`,
