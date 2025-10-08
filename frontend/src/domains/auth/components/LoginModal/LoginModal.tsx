@@ -2,9 +2,8 @@ import Flex from '@/@common/components/Flex/Flex';
 import type { ModalProps } from '@/@common/components/Modal/Modal.types';
 import ModalLayout from '@/@common/components/ModalLayout/ModalLayout';
 import Text from '@/@common/components/Text/Text';
-
-import GuestLoginSection from '../GuestLoginSection/GuestLoginSection';
-import SocialLoginSection from '../SocialLoginSection/SocialLoginSection';
+import GuestLoginSection from '@/domains/auth/components/GuestLoginSection/GuestLoginSection';
+import SocialLoginSection from '@/domains/auth/components/SocialLoginSection/SocialLoginSection';
 
 import { LoginModalStyle } from './LoginModal.styles';
 

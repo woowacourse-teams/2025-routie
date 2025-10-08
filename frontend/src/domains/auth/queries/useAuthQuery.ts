@@ -1,17 +1,14 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 import { useToastContext } from '@/@common/contexts/useToastContext';
-
 import {
   getKakaoAccessToken,
   getKakaoLoginUri,
   postGuestLogin,
-} from '../apis/login';
-import { getUser } from '../apis/user';
-
-import { loginKey, userKey } from './key';
-
-import type { GuestLoginRequestType } from '../types/api.types';
+} from '@/domains/auth/apis/login';
+import { getUser } from '@/domains/auth/apis/user';
+import { loginKey, userKey } from '@/domains/auth/queries/key';
+import type { GuestLoginRequestType } from '@/domains/auth/types/api.types';
 
 const useKakaoLoginUriQuery = () => {
   return useQuery({

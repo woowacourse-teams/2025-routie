@@ -1,13 +1,11 @@
 import { apiClient } from '@/apis';
-
+import type { AccessTokenType } from '@/domains/auth//types/auth.types';
 import {
   getKakaoAccessTokenAdapter,
   getKakaoLoginUriAdapter,
   getGuestLoginAdapter,
-} from '../adapters/authAdapter';
-
-import type { GuestLoginRequestType } from '../types/api.types';
-import type { AccessTokenType } from '../types/auth.types';
+} from '@/domains/auth/adapters/authAdapter';
+import type { GuestLoginRequestType } from '@/domains/auth/types/api.types';
 
 const getKakaoLoginUri = async () => {
   const response = await apiClient.get(
