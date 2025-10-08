@@ -13,17 +13,20 @@ import type { GuestLoginSectionProps } from './GuestLoginSection.types';
 const GuestLoginSection = ({ onClose }: GuestLoginSectionProps) => {
   const [nickname, setNickname] = useState('');
   const [password, setPassword] = useState('');
+  const [errorMessage, setErrorMessage] = useState<string>('');
   const { showToast } = useToastContext();
   const { mutate: guestLogin, isPending } = useGuestLoginMutation();
+
+  const handleNicknameChange = (value: string) => {
+    if (errorMessage) setErrorMessage('');
+    setNickname(value);
+  };
 
   const handleGuestLogin = () => {
     const trimmedNickname = nickname.trim();
 
     if (!trimmedNickname) {
-      showToast({
-        message: '닉네임을 입력해주세요.',
-        type: 'error',
-      });
+      setErrorMessage('닉네임을 입력해주세요.');
       return;
     }
 
@@ -45,7 +48,11 @@ const GuestLoginSection = ({ onClose }: GuestLoginSectionProps) => {
       },
       {
         onSuccess: () => {
+          setErrorMessage('');
           onClose();
+        },
+        onError: () => {
+          setErrorMessage('닉네임 또는 비밀번호가 틀렸습니다.');
         },
       },
     );
@@ -60,7 +67,7 @@ const GuestLoginSection = ({ onClose }: GuestLoginSectionProps) => {
           label="닉네임"
           placeholder="사용할 닉네임을 입력해주세요."
           value={nickname}
-          onChange={setNickname}
+          onChange={handleNicknameChange}
         />
 
         <Input
@@ -71,6 +78,11 @@ const GuestLoginSection = ({ onClose }: GuestLoginSectionProps) => {
           value={password}
           onChange={setPassword}
         />
+        {errorMessage && (
+          <Text variant="label" color={theme.colors.red[100]}>
+            {errorMessage}
+          </Text>
+        )}
       </Flex>
       <Flex direction="column" gap={1}>
         <Text variant="label" color={theme.colors.gray[300]}>
