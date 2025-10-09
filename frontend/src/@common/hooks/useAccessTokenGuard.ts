@@ -1,20 +1,16 @@
 import { useCallback } from 'react';
 
 import { useToastContext } from '@/@common/contexts/useToastContext';
-import {
-  ACCESS_TOKEN_REQUIRED_MESSAGE,
-  getAccessToken,
-} from '@/@common/utils/getAccessTokenOrThrow';
 
 const useAccessTokenGuard = () => {
   const { showToast } = useToastContext();
 
   return useCallback(() => {
-    const accessToken = getAccessToken();
+    const accessToken = localStorage.getItem('accessToken');
 
     if (!accessToken) {
       showToast({
-        message: ACCESS_TOKEN_REQUIRED_MESSAGE,
+        message: '로그인이 필요합니다.',
         type: 'error',
       });
       return null;

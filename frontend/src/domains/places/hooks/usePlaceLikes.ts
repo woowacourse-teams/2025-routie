@@ -2,11 +2,10 @@ import { useCallback, useEffect } from 'react';
 
 import { useToastContext } from '@/@common/contexts/useToastContext';
 import { useAccessTokenGuard } from '@/@common/hooks/useAccessTokenGuard';
-import { getAccessToken } from '@/@common/utils/getAccessTokenOrThrow';
 import {
+  useDeleteLikePlaceMutation,
   useLikePlaceMutation,
   useLikedPlacesQuery,
-  useDeleteLikePlaceMutation,
 } from '@/domains/places/queries/usePlaceQuery';
 
 const usePlaceLikes = () => {
