@@ -4,7 +4,7 @@ import theme from '@/styles/theme';
 
 const HomeScrollContainerStyle = css`
   overflow-y: auto;
-  height: calc(100dvh - 7.1rem);
+  height: calc(100dvh - 8.1rem);
 `;
 
 const HomeContentStyle = css`
