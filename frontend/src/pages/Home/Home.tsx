@@ -26,6 +26,7 @@ const Home = () => {
   const { handleCreateRoutieSpace, handleMoveToManageRoutieSpace } =
     useRoutieSpaceNavigation();
   const { openModal } = useModal();
+  
   const accessToken = getAccessToken();
   const role = localStorage.getItem('role');
   const isAuthenticatedUser = Boolean(accessToken) && role === 'USER';
@@ -40,8 +41,14 @@ const Home = () => {
         {isAuthenticatedUser ? (
           <UserMenuButton />
         ) : (
-          <Button width="fit-content" onClick={handleLoginClick}>
-            <Text variant="body">로그인</Text>
+          <Button
+            variant="primary"
+            width="fit-content"
+            onClick={handleLoginClick}
+          >
+            <Text color={theme.colors.white} variant="body">
+              로그인
+            </Text>
           </Button>
         )}
       </Header>

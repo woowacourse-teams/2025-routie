@@ -4,7 +4,7 @@ import theme from '@/styles/theme';
 
 const SidebarSectionStyle = (overflow: boolean) => css`
   overflow: ${overflow ? 'hidden' : ''};
-  border-radius: 8px;
+  border-radius: ${theme.radius.sm};
   background-color: ${theme.home.gray};
   box-shadow: 0 0 1rem 0 rgb(0 0 0 / 20%);
 `;

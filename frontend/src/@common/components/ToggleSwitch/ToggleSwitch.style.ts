@@ -21,9 +21,7 @@ const ToggleStyle = (checked: boolean) => css`
   height: 2.4rem;
   border-radius: 34px;
 
-  background-color: ${checked
-    ? theme.colors.purple[400]
-    : theme.colors.gray[50]};
+  background-color: ${checked ? theme.colors.blue[450] : theme.colors.gray[50]};
 
   transition: background-color 0.2s ease;
 

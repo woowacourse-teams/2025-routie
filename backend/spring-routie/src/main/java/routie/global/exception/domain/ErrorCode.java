@@ -207,6 +207,11 @@ public enum ErrorCode {
             "루티 스페이스를 수정할 권한이 없습니다.",
             HttpStatus.FORBIDDEN
     ),
+    ROUTIE_SPACE_FORBIDDEN_GUEST(
+            "2201",
+            "해당 루티 스페이스에 접근할 권한이 없는 게스트입니다.",
+            HttpStatus.FORBIDDEN
+    ),
 
     /**
      * 3XXX: Routie domain
@@ -335,27 +340,27 @@ public enum ErrorCode {
     // User
     USER_NICKNAME_EMPTY(
             "4000",
-            "사용자 닉네임은 비어있을 수 없습니다.",
+            "유저 닉네임은 비어있을 수 없습니다.",
             HttpStatus.BAD_REQUEST
     ),
     USER_NICKNAME_LENGTH_INVALID(
             "4001",
-            "사용자 닉네임은 10자 이하여야 합니다.",
+            "유저 닉네임은 10자 이하여야 합니다.",
             HttpStatus.BAD_REQUEST
     ),
     USER_OAUTH_IDENTIFIER_EMPTY(
             "4002",
-            "사용자 인증 제공 식별자는 비어있을 수 없습니다.",
+            "유저 인증 제공 식별자는 비어있을 수 없습니다.",
             HttpStatus.BAD_REQUEST
     ),
     USER_OAUTH_PROVIDER_EMPTY(
             "4003",
-            "사용자 인증 제공자는 비어있을 수 없습니다.",
+            "유저 인증 제공자는 비어있을 수 없습니다.",
             HttpStatus.BAD_REQUEST
     ),
     USER_NOT_FOUND(
             "4100",
-            "해당 사용자를 찾을 수 없습니다.",
+            "해당 유저를 찾을 수 없습니다.",
             HttpStatus.NOT_FOUND
     ),
 
@@ -382,19 +387,73 @@ public enum ErrorCode {
             "지원하지 않는 ExternalAuthentication 제공자입니다.",
             HttpStatus.BAD_REQUEST
     ),
-
-    // JWT
     INVALID_JWT(
             "6001",
             "인증 정보가 유효하지 않습니다.",
             HttpStatus.UNAUTHORIZED
     ),
-
-    // Authentication
     AUTHENTICATION_REQUIRED(
             "6002",
             "인증이 필요합니다.",
             HttpStatus.UNAUTHORIZED
+    ),
+    INVALID_ROLE(
+            "6003",
+            "유효하지 않은 Role입니다.",
+            HttpStatus.BAD_REQUEST
+    ),
+    LOGIN_FAILED(
+            "6004",
+            "아이디 또는 비밀번호가 일치하지 않습니다.",
+            HttpStatus.UNAUTHORIZED
+    ),
+    FORBIDDEN(
+            "6005",
+            "접근할 권한이 없습니다.",
+            HttpStatus.FORBIDDEN
+    ),
+
+    /**
+     * 7XXX: Guest API
+     */
+    GUEST_NICKNAME_DUPLICATED(
+            "7000",
+            "게스트의 닉네임이 이미 존재합니다.",
+            HttpStatus.CONFLICT
+    ),
+    GUEST_NOT_FOUND(
+            "7001",
+            "해당 게스트를 찾을 수 없습니다.",
+            HttpStatus.NOT_FOUND
+    ),
+    GUEST_NICKNAME_EMPTY(
+            "7002",
+            "게스트 닉네임은 비어있을 수 없습니다.",
+            HttpStatus.BAD_REQUEST
+    ),
+    GUEST_NICKNAME_LENGTH_INVALID(
+            "7003",
+            "게스트 닉네임은 10자 이하여야 합니다.",
+            HttpStatus.BAD_REQUEST
+    ),
+
+    /**
+     * 8XXX: Place Like API
+     */
+    PLACE_LIKE_DUPLICATED(
+            "8000",
+            "해당 사용자와 장소에 대한 좋아요가 이미 존재합니다.",
+            HttpStatus.CONFLICT
+    ),
+    PLACE_LIKE_NOT_FOUND(
+            "8001",
+            "해당 사용자와 장소에 대한 좋아요를 찾을 수 없습니다.",
+            HttpStatus.NOT_FOUND
+    ),
+    PLACE_LIKE_INVALID_OWNER(
+            "8003",
+            "좋아요는 사용자와 게스트 중 하나에만 연결될 수 있습니다.",
+            HttpStatus.BAD_REQUEST
     ),
 
     /**
@@ -437,9 +496,10 @@ public enum ErrorCode {
     ),
     KAKAO_USER_API_ERROR(
             "9014",
-            "카카오에서 사용자 정보를 읽어오는 중 오류가 발생했습니다.",
+            "카카오에서 유저 정보를 읽어오는 중 오류가 발생했습니다.",
             HttpStatus.BAD_GATEWAY
-    );
+    ),
+    ;
 
     private final String code;
     private final String message;

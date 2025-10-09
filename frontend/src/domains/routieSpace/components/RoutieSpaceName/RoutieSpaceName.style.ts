@@ -4,7 +4,7 @@ import theme from '@/styles/theme';
 
 const DefaultBorder = css`
   &:focus {
-    outline: 0.3rem solid ${theme.colors.purple[300]};
+    outline: 0.3rem solid ${theme.colors.blue[450]};
   }
 `;
 
@@ -20,7 +20,7 @@ const RoutieSpaceNameInputStyle = (invalidNameLength: boolean) => css`
   margin: 0;
   padding: 0.4rem;
   border: none;
-  border-radius: 8px;
+  border-radius: ${theme.radius.sm};
 
   font-size: ${theme.font.size.subHeading};
   font-weight: ${theme.font.weight.semibold};
