@@ -72,7 +72,10 @@ const ManageRoutieSpaces = () => {
           </Flex>
         ) : (
           <>
-            <Text variant="title">관리할 루티 공간 목록</Text>
+            <Flex justifyContent="space-between" margin="1.2rem 0 0 0">
+              <Text variant="subTitle">동선 목록</Text>
+              <Text variant="subTitle">총 {routieSpaces.length}개</Text>
+            </Flex>
             <ul css={RoutieSpaceListStyle}>
               <li>
                 <CreateRoutieSpaceButton />
