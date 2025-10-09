@@ -4,7 +4,7 @@ import theme from '@/styles/theme';
 
 const ManageRoutieSpacesStyle = css`
   height: 100dvh;
-  background-color: ${theme.home.gray};
+  background-color: ${theme.colors.white};
 `;
 
 const RoutieSpaceListStyle = css`
