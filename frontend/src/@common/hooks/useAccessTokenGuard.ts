@@ -1,12 +1,13 @@
 import { useCallback } from 'react';
 
 import { useToastContext } from '@/@common/contexts/useToastContext';
+import { getAccessToken } from '@/@common/utils/getAccessToken';
 
 const useAccessTokenGuard = () => {
   const { showToast } = useToastContext();
 
   return useCallback(() => {
-    const accessToken = localStorage.getItem('accessToken');
+    const accessToken = getAccessToken();
 
     if (!accessToken) {
       showToast({

@@ -2,6 +2,7 @@ import { useCallback, useEffect } from 'react';
 
 import { useToastContext } from '@/@common/contexts/useToastContext';
 import { useAccessTokenGuard } from '@/@common/hooks/useAccessTokenGuard';
+import { getAccessToken } from '@/@common/utils/getAccessToken';
 import {
   useDeleteLikePlaceMutation,
   useLikePlaceMutation,
@@ -13,7 +14,7 @@ const usePlaceLikes = () => {
   const { mutate: deleteLikePlace } = useDeleteLikePlaceMutation();
   const { showToast } = useToastContext();
 
-  const isAccessToken = Boolean(localStorage.getItem('accessToken'));
+  const isAccessToken = Boolean(getAccessToken());
   const { data = { likedPlaceIds: [] }, error } =
     useLikedPlacesQuery(isAccessToken);
 

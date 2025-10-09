@@ -3,6 +3,7 @@ import { useSearchParams } from 'react-router';
 
 import Flex from '@/@common/components/Flex/Flex';
 import { useModal } from '@/@common/contexts/ModalContext';
+import { getAccessToken } from '@/@common/utils/getAccessToken';
 import MapWithSideSheet from '@/layouts/MapWithSideSheet/MapWithSideSheet';
 import Sidebar from '@/layouts/Sidebar/Sidebar';
 
@@ -18,7 +19,7 @@ const RoutieSpace = () => {
   }, [routieSpaceIdentifier]);
 
   useEffect(() => {
-    const accessToken = localStorage.getItem('accessToken');
+    const accessToken = getAccessToken();
     if (!accessToken) {
       openModal('login');
     }

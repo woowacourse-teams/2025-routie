@@ -6,6 +6,7 @@ import Flex from '@/@common/components/Flex/Flex';
 import Icon from '@/@common/components/IconSvg/Icon';
 import Text from '@/@common/components/Text/Text';
 import { useModal } from '@/@common/contexts/ModalContext';
+import { getAccessToken } from '@/@common/utils/getAccessToken';
 import PlaceCard from '@/domains/places/components/PlaceCard/PlaceCard';
 import { usePlaceLikes } from '@/domains/places/hooks/usePlaceLikes';
 import { usePlaceList } from '@/domains/places/hooks/usePlaceList';
@@ -36,7 +37,7 @@ const SideSheet = ({ open, onToggle }: SideSheetProps) => {
   const { triggerEvent } = useGoogleEventTrigger();
 
   const handleOpenAddModalClick = useCallback(() => {
-    const accessToken = localStorage.getItem('accessToken');
+    const accessToken = getAccessToken();
 
     if (!accessToken) {
       openModal('login');
@@ -53,7 +54,7 @@ const SideSheet = ({ open, onToggle }: SideSheetProps) => {
 
   const handlePlaceSelect = useCallback(
     async (placeId: number, selected: boolean) => {
-      const accessToken = localStorage.getItem('accessToken');
+      const accessToken = getAccessToken();
 
       if (!accessToken) {
         openModal('login');
@@ -68,7 +69,7 @@ const SideSheet = ({ open, onToggle }: SideSheetProps) => {
 
   const handlePlaceDelete = useCallback(
     async (placeId: number) => {
-      const accessToken = localStorage.getItem('accessToken');
+      const accessToken = getAccessToken();
 
       if (!accessToken) {
         openModal('login');
@@ -82,7 +83,7 @@ const SideSheet = ({ open, onToggle }: SideSheetProps) => {
 
   const handleLikeButtonClick = useCallback(
     (placeId: number) => {
-      const accessToken = localStorage.getItem('accessToken');
+      const accessToken = getAccessToken();
 
       if (!accessToken) {
         openModal('login');
@@ -96,7 +97,7 @@ const SideSheet = ({ open, onToggle }: SideSheetProps) => {
 
   const handleUnlikeButtonClick = useCallback(
     (placeId: number) => {
-      const accessToken = localStorage.getItem('accessToken');
+      const accessToken = getAccessToken();
 
       if (!accessToken) {
         openModal('login');

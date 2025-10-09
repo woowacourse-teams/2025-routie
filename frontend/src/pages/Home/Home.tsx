@@ -4,6 +4,7 @@ import Header from '@/@common/components/Header/Header';
 import Icon from '@/@common/components/IconSvg/Icon';
 import Text from '@/@common/components/Text/Text';
 import { useModal } from '@/@common/contexts/ModalContext';
+import { getAccessToken } from '@/@common/utils/getAccessToken';
 import GoToLoginButton from '@/domains/auth/components/GoToLoginButton/GoToLoginButton';
 import UserMenuButton from '@/domains/auth/components/UserMenuButton/UserMenuButton';
 import theme from '@/styles/theme';
@@ -25,7 +26,7 @@ const Home = () => {
   const { handleCreateRoutieSpace, handleMoveToManageRoutieSpace } =
     useRoutieSpaceNavigation();
   const { openModal } = useModal();
-  const accessToken = localStorage.getItem('accessToken');
+  const accessToken = getAccessToken();
   const role = localStorage.getItem('role');
   const isAuthenticatedUser = Boolean(accessToken) && role === 'USER';
 

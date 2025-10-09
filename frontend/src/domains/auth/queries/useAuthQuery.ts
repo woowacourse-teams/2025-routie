@@ -1,6 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 import { useToastContext } from '@/@common/contexts/useToastContext';
+import { getAccessToken } from '@/@common/utils/getAccessToken';
 import {
   getKakaoAccessToken,
   getKakaoLoginUri,
@@ -37,7 +38,7 @@ const useKakaoLoginMutation = () => {
 };
 
 const useUserQuery = () => {
-  const accessToken = localStorage.getItem('accessToken');
+  const accessToken = getAccessToken();
 
   return useQuery({
     queryKey: userKey.all,

@@ -1,4 +1,5 @@
 import Flex from '@/@common/components/Flex/Flex';
+import { getAccessToken } from '@/@common/utils/getAccessToken';
 import { useRoutieSpaceNavigation } from '@/pages/Home/hooks/useRoutieSpaceNavigation';
 
 import HomeButton from '../HomeButton/HomeButton';
@@ -11,7 +12,7 @@ const Header = ({ children, isHome }: HeaderProps) => {
   const { handleMoveToHome } = useRoutieSpaceNavigation();
 
   const moveToHome = () => {
-    const accessToken = localStorage.getItem('accessToken');
+    const accessToken = getAccessToken();
     const role = localStorage.getItem('role');
 
     if (!accessToken || role === 'GUEST') {
