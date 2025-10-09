@@ -69,8 +69,6 @@ const RectangleStyle = css`
 
 const ButtonContainerStyle = css`
   align-self: flex-start;
-  justify-content: flex-start;
-  width: auto;
 `;
 
 const LoggedInButtonsStyle = css`

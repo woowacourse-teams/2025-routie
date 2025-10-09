@@ -110,7 +110,11 @@ const Home = () => {
                 </Flex>
               </Flex>
 
-              <Flex css={ButtonContainerStyle}>
+              <Flex
+                css={ButtonContainerStyle}
+                justifyContent="flex-start"
+                width="auto"
+              >
                 {kakaoAccessToken ? (
                   <Flex gap={2} css={LoggedInButtonsStyle}>
                     <Button
