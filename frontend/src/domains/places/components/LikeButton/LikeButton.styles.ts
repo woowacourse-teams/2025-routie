@@ -8,15 +8,13 @@ const LikeButtonStyle = (liked: boolean) => css`
   cursor: pointer;
 
   padding: 0.2rem 0.5rem;
-  border: 1px solid ${liked ? theme.colors.bule[300] : theme.colors.gray[100]};
+  border: 1px solid ${liked ? theme.colors.blue[300] : theme.colors.gray[100]};
   border-radius: ${theme.radius.sm};
 
-  background-color: ${liked ? theme.colors.purple[50] : theme.colors.white};
+  background-color: ${liked ? theme.colors.blue[50] : theme.colors.white};
 
   &:hover {
-    background-color: ${liked
-      ? theme.colors.purple[100]
-      : theme.colors.gray[25]};
+    background-color: ${liked ? theme.colors.blue[100] : theme.colors.gray[25]};
   }
 `;
 
