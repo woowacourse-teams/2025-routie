@@ -27,8 +27,6 @@ const MainContentWrapperStyle = css`
 `;
 
 const CircleStyle = css`
-  pointer-events: none;
-
   position: fixed;
   z-index: 0;
   top: 57%;
@@ -47,8 +45,6 @@ const CircleStyle = css`
 `;
 
 const RectangleStyle = css`
-  pointer-events: none;
-
   position: fixed;
   z-index: 0;
   top: 37%;
