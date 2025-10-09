@@ -7,10 +7,11 @@ const Button = ({
   variant,
   width,
   padding,
+  radius,
   ...props
 }: ButtonProps) => {
   return (
-    <button css={ButtonStyle({ variant, width, padding })} {...props}>
+    <button css={ButtonStyle({ variant, width, padding, radius })} {...props}>
       {children}
     </button>
   );
