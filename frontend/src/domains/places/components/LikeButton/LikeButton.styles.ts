@@ -8,8 +8,8 @@ const LikeButtonStyle = (liked: boolean) => css`
   cursor: pointer;
 
   padding: 0.2rem 0.5rem;
-  border: 1px solid ${liked ? theme.colors.purple[300] : theme.colors.gray[100]};
-  border-radius: 8px;
+  border: 1px solid ${liked ? theme.colors.bule[300] : theme.colors.gray[100]};
+  border-radius: ${theme.radius.sm};
 
   background-color: ${liked ? theme.colors.purple[50] : theme.colors.white};
 

@@ -52,12 +52,12 @@ const PlaceCard = ({
             css={css`
               cursor: ${selected ? 'default' : 'pointer'};
               padding: 0.2rem;
-              border-radius: 8px;
+              border-radius: ${theme.radius.sm};
 
               &:hover {
                 background-color: ${selected
                   ? theme.colors.white
-                  : theme.colors.purple[200]};
+                  : theme.colors.blue[200]};
               }
             `}
           />
@@ -69,7 +69,7 @@ const PlaceCard = ({
             css={css`
               cursor: ${selected ? 'default' : 'pointer'};
               padding: 0.4rem;
-              border-radius: 8px;
+              border-radius: ${theme.radius.sm};
 
               &:hover {
                 background-color: ${selected

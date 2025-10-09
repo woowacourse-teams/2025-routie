@@ -21,10 +21,10 @@ const blinkBackground = css`
 
 const inputVariant: Record<InputVariantType, SerializedStyles> = {
   primary: css`
-    border-color: ${theme.colors.purple[400]};
+    border-color: ${theme.colors.blue[450]};
 
     &:focus {
-      border-color: ${theme.colors.purple[400]};
+      border-color: ${theme.colors.blue[450]};
     }
   `,
   disabled: css`
@@ -50,7 +50,7 @@ const InputStyle = ({ variant, icon }: InputStyleProps) => css`
   height: 3.5rem;
   padding: 0.4rem 0.8rem;
   border: 1px solid;
-  border-radius: 8px;
+  border-radius: ${theme.radius.sm};
   ${icon ? 'padding-left: 2.5rem;' : ''}
 
   &::placeholder {
@@ -64,7 +64,7 @@ const InputStyle = ({ variant, icon }: InputStyleProps) => css`
     height: 3.5rem;
     padding: 0.4rem 0.8rem;
     border: 3px solid;
-    border-radius: 8px;
+    border-radius: ${theme.radius.sm};
     ${icon ? 'padding-left: 2.5rem;' : ''}
 
     outline: none;

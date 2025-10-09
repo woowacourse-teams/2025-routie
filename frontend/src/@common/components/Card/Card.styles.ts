@@ -14,8 +14,8 @@ const cardVariant: Record<CardVariantType, SerializedStyles> = {
     position: relative;
 
     padding: 0.8rem;
-    border: 1px solid ${theme.colors.purple[50]};
-    border-left: 4px solid ${theme.colors.purple[100]};
+    border: 1px solid ${theme.colors.blue[50]};
+    border-left: 4px solid ${theme.colors.blue[100]};
 
     box-shadow: 2px 4px 4px 0 rgb(0 0 0 / 25%);
   `,
@@ -58,7 +58,7 @@ const CardStyle = ({
   width: ${width ? width : '100%'};
   height: ${height ? height : 'auto'};
   padding: 1rem;
-  border-radius: 12px;
+  border-radius: ${theme.radius.sm};
 
   background-color: ${theme.colors.white};
   ${variant && cardVariant[variant]}

@@ -15,7 +15,7 @@ const SheetBaseStyle = css`
   width: 40rem;
   min-height: 0;
   border: 1px solid ${theme.colors.black};
-  border-radius: 12px;
+  border-radius: ${theme.radius.sm};
 
   background-color: ${theme.home.gray};
 
@@ -58,7 +58,7 @@ const TabBaseStyle = css`
   width: 2.4rem;
   height: 5rem;
   border: none;
-  border-radius: 0 8px 8px 0;
+  border-radius: 0 ${theme.radius.sm} ${theme.radius.sm} 0;
 
   background: ${theme.colors.white};
   box-shadow: 0 2px 8px rgb(0 0 0 / 15%);

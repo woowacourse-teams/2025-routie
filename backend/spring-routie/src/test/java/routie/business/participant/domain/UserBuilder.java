@@ -1,4 +1,4 @@
-package routie.business.user.domain;
+package routie.business.participant.domain;
 
 import java.util.List;
 import routie.business.authentication.domain.external.ExternalAuthenticationProvider;
@@ -6,13 +6,13 @@ import routie.business.routiespace.domain.RoutieSpace;
 
 public class UserBuilder {
 
-    private String nickName = UserFixture.anyNickName();
+    private String nickname = UserFixture.anyNickname();
     private String externalAuthenticationIdentifier = UserFixture.anyExternalAuthenticationIdentifier();
     private ExternalAuthenticationProvider externalAuthenticationProvider = UserFixture.anyExternalAuthenticationProvider();
     private List<RoutieSpace> routieSpaces = UserFixture.emptyRoutieSpaces();
 
-    public UserBuilder nickName(final String nickName) {
-        this.nickName = nickName;
+    public UserBuilder nickname(final String nickname) {
+        this.nickname = nickname;
         return this;
     }
 
@@ -35,7 +35,7 @@ public class UserBuilder {
     public User build() {
         return new User(
                 null,
-                nickName,
+                nickname,
                 externalAuthenticationIdentifier,
                 externalAuthenticationProvider,
                 routieSpaces,

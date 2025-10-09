@@ -5,6 +5,10 @@ import theme from '@/styles/theme';
 import type { TextProps, TextVariantType } from './Text.types';
 
 const textVariant: Record<TextVariantType, SerializedStyles> = {
+  logo: css`
+    font-size: ${theme.font.size.logo};
+    font-weight: ${theme.font.weight.bold};
+  `,
   title: css`
     font-size: ${theme.font.size.heading};
     font-weight: ${theme.font.weight.bold};
@@ -41,7 +45,7 @@ const ellipsisStyle = css`
 const TextStyle = ({ color, variant, ellipsis }: TextProps) => css`
   box-sizing: border-box;
   max-width: 100%;
-  color: ${color ?? theme.colors.black};
+  color: ${color ? color : theme.colors.gray[300]};
 
   ${variant && textVariant[variant]}
   ${ellipsis && ellipsisStyle}
