@@ -164,7 +164,7 @@ const Home = () => {
                 rel="noopener noreferrer"
                 css={[linkStyle, FeedbackButtonStyle]}
               >
-                <Text variant="subTitle" color="white">
+                <Text variant="subTitle" color="{theme.colors.white}">
                   피드백 작성하러 가기
                 </Text>
               </a>
