@@ -65,32 +65,6 @@ const RectangleStyle = css`
   background: ${theme.colors.blue[450]}60;
 `;
 
-const ButtonContainerStyle = css`
-  align-self: flex-start;
-`;
-
-const LoggedInButtonsStyle = css`
-  @media (width <= 800px) {
-    flex-direction: column;
-    height: auto;
-    padding: 4rem 0;
-  }
-`;
-
-const CreateButtonStyle = css`
-  box-shadow: 0 8px 16px rgb(0 0 0 / 16%);
-`;
-
-const ContinueButtonStyle = css`
-  background-color: ${theme.colors.white};
-  box-shadow: 0 8px 16px rgb(0 0 0 / 16%);
-
-  &:hover {
-    color: ${theme.colors.white};
-    background-color: ${theme.colors.blue[150]};
-  }
-`;
-
 const FeedbackTextStyle = css`
   z-index: 10;
 `;
@@ -140,10 +114,6 @@ export {
   MainContentWrapperStyle,
   CircleStyle,
   RectangleStyle,
-  ButtonContainerStyle,
-  LoggedInButtonsStyle,
-  CreateButtonStyle,
-  ContinueButtonStyle,
   FeedbackTextStyle,
   FeedbackButtonStyle,
   linkStyle,
