@@ -17,6 +17,7 @@ import {
   ManageRoutieSpacesStyle,
   RoutieSpaceListStyle,
 } from './ManageRoutieSpaces.styles';
+import ManageRoutieSpaceBanner from './components/ManageRoutieSpaceBanner/ManageRoutieSpaceBanner';
 import ManageRoutieSpacesLayout from './layouts/ManageRoutieSpacesLayout';
 
 const ManageRoutieSpaces = () => {
@@ -62,6 +63,7 @@ const ManageRoutieSpaces = () => {
       <Header>
         <UserMenuButton />
       </Header>
+      <ManageRoutieSpaceBanner />
       <ManageRoutieSpacesLayout>
         {isLoading ? (
           <Flex height="calc(100dvh - 7.1rem)">
