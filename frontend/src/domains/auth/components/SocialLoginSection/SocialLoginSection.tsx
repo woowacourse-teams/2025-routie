@@ -1,6 +1,5 @@
 import Flex from '@/@common/components/Flex/Flex';
 import Text from '@/@common/components/Text/Text';
-import { useToastContext } from '@/@common/contexts/useToastContext';
 import kakaoImage from '@/assets/images/kakao.png';
 import { useKakaoLoginUriQuery } from '@/domains/auth/queries/useAuthQuery';
 
@@ -10,25 +9,17 @@ import type { SocialLoginSectionProps } from './SocialLoginSection.types';
 
 const SocialLoginSection = ({ onClose }: SocialLoginSectionProps) => {
   const { data: kakaoLoginUri } = useKakaoLoginUriQuery();
-  const { showToast } = useToastContext();
 
   const saveRedirectPath = () => {
     const currentPath = window.location.pathname + window.location.search;
     localStorage.setItem('redirectAfterLogin', currentPath);
   };
 
-  const redirectToKakaoLogin = async () => {
-    try {
-      if (kakaoLoginUri?.uri) {
-        saveRedirectPath();
-        window.open(kakaoLoginUri.uri, '_self');
-      }
+  const redirectToKakaoLogin = () => {
+    if (kakaoLoginUri?.uri) {
+      saveRedirectPath();
       onClose();
-    } catch (err: any) {
-      showToast({
-        message: err?.message,
-        type: 'error',
-      });
+      window.open(kakaoLoginUri.uri, '_self');
     }
   };
 
