@@ -28,7 +28,7 @@ const ManageRoutieSpaces = () => {
     isLoading,
     error,
   } = useGetRoutieSpaceListQuery();
-  const { handleCreateRoutieSpace, handleMoveToRoutieSpace, handleMoveToHome } =
+  const { handleMoveToRoutieSpace, handleMoveToHome } =
     useRoutieSpaceNavigation();
   const { mutate: deleteRoutieSpace } = useDeleteRoutieSpaceMutation();
 
