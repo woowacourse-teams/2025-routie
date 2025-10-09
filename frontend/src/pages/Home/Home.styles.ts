@@ -21,7 +21,7 @@ const MainContentWrapperStyle = css`
   flex-direction: row;
   height: 75vh;
 
-  @media (width <= 970px) {
+  @media (width <= 1200px) {
     flex-direction: column;
     height: auto;
     padding: 4rem 0;
@@ -72,29 +72,40 @@ const BlueTextStyle = css`
   color: ${theme.colors.blue[450]};
 `;
 
-const ButtonWrapperStyle = css`
+const ButtonContainerStyle = css`
   align-self: flex-start;
   justify-content: flex-start;
   width: auto;
+`;
 
-  @media (width <= 1200px) {
+const LoggedInButtonsStyle = css`
+  @media (width <= 800px) {
     flex-direction: column;
-    gap: 2rem;
-    max-width: 40rem;
+    height: auto;
+    padding: 4rem 0;
   }
 `;
 
 const CreateButtonStyle = css`
   justify-content: center;
-  max-width: 31rem;
+  width: 26rem;
   box-shadow: 0 8px 16px rgb(0 0 0 / 16%);
 `;
 
 const ContinueButtonStyle = css`
   justify-content: center;
-  max-width: 31rem;
+  width: 26rem;
   background-color: ${theme.colors.white};
   box-shadow: 0 8px 16px rgb(0 0 0 / 16%);
+
+  &:hover {
+    color: ${theme.colors.white};
+    background-color: ${theme.colors.blue[150]};
+  }
+`;
+
+const FeedbackTextStyle = css`
+  z-index: 10;
 `;
 
 const FeedbackButtonStyle = css`
@@ -143,9 +154,11 @@ export {
   CircleStyle,
   RectangleStyle,
   BlueTextStyle,
-  ButtonWrapperStyle,
+  ButtonContainerStyle,
+  LoggedInButtonsStyle,
   CreateButtonStyle,
   ContinueButtonStyle,
+  FeedbackTextStyle,
   FeedbackButtonStyle,
   linkStyle,
 };

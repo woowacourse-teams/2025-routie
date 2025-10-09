@@ -15,9 +15,11 @@ import {
   CircleStyle,
   RectangleStyle,
   BlueTextStyle,
-  ButtonWrapperStyle,
+  ButtonContainerStyle,
+  LoggedInButtonsStyle,
   CreateButtonStyle,
   ContinueButtonStyle,
+  FeedbackTextStyle,
   FeedbackButtonStyle,
   linkStyle,
 } from './Home.styles';
@@ -104,32 +106,34 @@ const Home = () => {
                 </Flex>
               </Flex>
 
-              <Flex css={ButtonWrapperStyle}>
+              <Flex css={ButtonContainerStyle}>
                 {kakaoAccessToken ? (
-                  <>
+                  <Flex gap={2} css={LoggedInButtonsStyle}>
                     <Button
+                      variant="primary"
                       onClick={handleCreateRoutieSpace}
                       css={CreateButtonStyle}
                     >
                       <Flex gap={1.5} padding={1}>
                         <Icon name="arrowWhite" size={30} />
-                        <Text variant="title" color="white">
+                        <Text color={theme.colors.white} variant="subTitle">
                           동선 만들러가기
                         </Text>
                       </Flex>
                     </Button>
                     <Button
+                      variant="primary"
                       onClick={handleMoveToManageRoutieSpace}
                       css={ContinueButtonStyle}
                     >
                       <Flex gap={1.5} padding={1}>
                         <Icon name="list" size={34} />
-                        <Text variant="title" color={theme.home.violet}>
+                        <Text color={theme.colors.blue[400]} variant="subTitle">
                           내 동선 목록 보러가기
                         </Text>
                       </Flex>
                     </Button>
-                  </>
+                  </Flex>
                 ) : (
                   <GoToLoginButton onClick={handleLoginClick} />
                 )}
@@ -139,12 +143,7 @@ const Home = () => {
               <PhoneFrame />
             </Flex>
           </Flex>
-          <Flex
-            height="25vh"
-            direction="column"
-            justifyContent="center"
-            alignItems="center"
-          >
+          <Flex height="25vh" direction="column" css={FeedbackTextStyle}>
             <Flex direction="column" gap={3}>
               <Flex direction="column" gap={2}>
                 <Text variant="title">루티가 불편하다면?</Text>
