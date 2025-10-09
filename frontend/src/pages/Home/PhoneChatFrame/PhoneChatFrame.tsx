@@ -1,4 +1,5 @@
 import Flex from '@/@common/components/Flex/Flex';
+import Icon from '@/@common/components/IconSvg/Icon';
 import Text from '@/@common/components/Text/Text';
 import phoneFrame from '@/assets/images/iphone-frame.png';
 import kakaoChatImage from '@/assets/images/kakao-chat.svg';
@@ -14,7 +15,10 @@ import {
 const PhoneFrame = () => {
   return (
     <Flex direction="column">
-      <Text variant="subTitle">↕️ 스크롤해 보세요!</Text>
+      <Flex>
+        <Icon name="scroll" size={26} />
+        <Text variant="subTitle">스크롤해 보세요!</Text>
+      </Flex>
       <div css={PhoneContainerStyle}>
         <div css={ScreenBoxStyle}>
           <div css={ChatScrollStyle}>

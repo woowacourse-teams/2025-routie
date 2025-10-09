@@ -12,6 +12,7 @@ import logout from '@/assets/icons/logout.svg';
 import pin from '@/assets/icons/pin.svg';
 import collectPlace from '@/assets/icons/place-home.svg';
 import plus from '@/assets/icons/plus.svg';
+import scroll from '@/assets/icons/scroll.svg';
 import search from '@/assets/icons/search.svg';
 import thumbsUp from '@/assets/icons/thumbs-up.svg';
 import disableTrash from '@/assets/icons/trash-disable.svg';
@@ -32,6 +33,7 @@ const allIcons = {
   logout,
   pin,
   plus,
+  scroll,
   search,
   trash,
   closeRed,
