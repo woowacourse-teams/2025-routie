@@ -28,7 +28,7 @@ const SocialLoginSection = ({ onClose }: SocialLoginSectionProps) => {
     redirectToKakaoLogin();
   };
   return (
-    <>
+    <Flex direction="column" gap={3}>
       <Flex gap={1}>
         <div css={DividerStyle} />
         <Text variant="caption">SNS 계정으로 간편로그인</Text>
@@ -37,7 +37,7 @@ const SocialLoginSection = ({ onClose }: SocialLoginSectionProps) => {
       <a href="#" onClick={handleKakaoLinkClick} css={KakaoButtonStyle}>
         <img src={kakaoImage} alt="카카오 로그인" />
       </a>
-    </>
+    </Flex>
   );
 };
 

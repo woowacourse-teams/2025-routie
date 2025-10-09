@@ -16,12 +16,8 @@ const LoginModal = ({ onClose }: Pick<ModalProps, 'onClose'>) => {
             <Text variant="subTitle">루티와 함께</Text>
             <Text variant="subTitle">동선을 손쉽게 완성하세요!</Text>
           </Flex>
-          <Flex direction="column" gap={1}>
-            <GuestLoginSection onClose={onClose} />
-          </Flex>
-          <Flex direction="column" gap={3}>
-            <SocialLoginSection onClose={onClose} />
-          </Flex>
+          <GuestLoginSection onClose={onClose} />
+          <SocialLoginSection onClose={onClose} />
         </Flex>
       </div>
     </ModalLayout>
