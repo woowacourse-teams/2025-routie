@@ -113,6 +113,7 @@ const Home = () => {
                       variant="primary"
                       onClick={handleCreateRoutieSpace}
                       css={CreateButtonStyle}
+                      width="26rem"
                     >
                       <Flex gap={1.5} padding={1}>
                         <Icon name="arrowWhite" size={30} />
@@ -125,6 +126,7 @@ const Home = () => {
                       variant="primary"
                       onClick={handleMoveToManageRoutieSpace}
                       css={ContinueButtonStyle}
+                      width="26rem"
                     >
                       <Flex gap={1.5} padding={1}>
                         <Icon name="list" size={34} />

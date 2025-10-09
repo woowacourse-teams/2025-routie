@@ -8,7 +8,13 @@ import type { GoToLoginButtonProps } from './GoToLoginButton.types';
 
 const GoToLoginButton = ({ onClick }: GoToLoginButtonProps) => {
   return (
-    <Button variant="primary" css={GoToLoginButtonStyle} onClick={onClick}>
+    <Button
+      variant="primary"
+      onClick={onClick}
+      css={GoToLoginButtonStyle}
+      width="54rem"
+      padding="2rem"
+    >
       <Text color={theme.colors.white} variant="subTitle">
         친구들과 동선 만들러 가기
       </Text>

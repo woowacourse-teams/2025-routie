@@ -87,14 +87,10 @@ const LoggedInButtonsStyle = css`
 `;
 
 const CreateButtonStyle = css`
-  justify-content: center;
-  width: 26rem;
   box-shadow: 0 8px 16px rgb(0 0 0 / 16%);
 `;
 
 const ContinueButtonStyle = css`
-  justify-content: center;
-  width: 26rem;
   background-color: ${theme.colors.white};
   box-shadow: 0 8px 16px rgb(0 0 0 / 16%);
 
