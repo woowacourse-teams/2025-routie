@@ -26,10 +26,7 @@ const useKakaoLoginMutation = () => {
     mutationFn: (code: string) => getKakaoAccessToken(code),
     onSuccess: async (data) => {
       localStorage.setItem('accessToken', data.accessToken);
-      await queryClient.fetchQuery({
-        queryKey: userKey.all,
-        queryFn: () => getUser(),
-      });
+      await queryClient.invalidateQueries({ queryKey: userKey.all });
     },
     onError: () => {
       console.error('카카오 로그인 실패');
@@ -56,10 +53,7 @@ const useGuestLoginMutation = () => {
     mutationFn: (payload: GuestLoginRequestType) => postGuestLogin(payload),
     onSuccess: async (data) => {
       localStorage.setItem('accessToken', data.accessToken);
-      await queryClient.fetchQuery({
-        queryKey: userKey.all,
-        queryFn: () => getUser(),
-      });
+      await queryClient.invalidateQueries({ queryKey: userKey.all });
       showToast({
         message: '비회원 로그인에 성공했습니다.',
         type: 'success',

@@ -14,7 +14,6 @@ import type { UserMenuProps } from './UserMenu.types';
 
 const UserMenu = ({ onClick }: UserMenuProps) => {
   const { data: user, error, isLoading } = useUserQuery();
-  const { showToast } = useToastContext();
   const { handleMoveToManageRoutieSpace } = useRoutieSpaceNavigation();
 
   const role = localStorage.getItem('role');
@@ -23,22 +22,13 @@ const UserMenu = ({ onClick }: UserMenuProps) => {
     if (isLoading) {
       return <Text variant="body">로딩중...</Text>;
     }
+
     if (error) {
       return <Text variant="body">닉네임 불러오기 오류</Text>;
     }
 
     return <Text variant="body">{user?.nickName}</Text>;
   };
-
-  useEffect(() => {
-    if (error) {
-      showToast({
-        message: error.message,
-        type: 'error',
-      });
-      console.error(error);
-    }
-  }, [error, showToast]);
 
   return (
     <div id="userMenu" css={UserMenuStyle}>
