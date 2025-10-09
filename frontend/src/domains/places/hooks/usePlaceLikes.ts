@@ -5,12 +5,12 @@ import { useRequireAccessToken } from '@/@common/hooks/useRequireAccessToken';
 import {
   useLikePlaceMutation,
   useLikedPlacesQuery,
-  useUnlikePlaceMutation,
+  useDeleteLikePlaceMutation,
 } from '@/domains/places/queries/usePlaceQuery';
 
 const usePlaceLikes = () => {
   const { mutate: postLikePlace } = useLikePlaceMutation();
-  const { mutate: deleteLikePlace } = useUnlikePlaceMutation();
+  const { mutate: deleteLikePlace } = useDeleteLikePlaceMutation();
   const { showToast } = useToastContext();
 
   const isAccessToken = Boolean(localStorage.getItem('accessToken'));

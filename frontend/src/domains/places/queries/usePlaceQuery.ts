@@ -113,7 +113,7 @@ const useLikePlaceMutation = () => {
   });
 };
 
-const useUnlikePlaceMutation = () => {
+const useDeleteLikePlaceMutation = () => {
   const { showToast } = useToastContext();
   const queryClient = useQueryClient();
 
@@ -152,6 +152,6 @@ export {
   usePlaceListQuery,
   usePlaceSearchQuery,
   useLikePlaceMutation,
-  useUnlikePlaceMutation,
+  useDeleteLikePlaceMutation,
   useLikedPlacesQuery,
 };
