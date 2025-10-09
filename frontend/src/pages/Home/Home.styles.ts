@@ -8,7 +8,7 @@ const HomeScrollContainerStyle = css`
 `;
 
 const HomeContentStyle = css`
-  background-color: ${theme.home.gray};
+  background-color: ${theme.colors.white};
 
   @media (width <= 1200px) {
     height: auto;

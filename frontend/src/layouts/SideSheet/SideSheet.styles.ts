@@ -17,7 +17,7 @@ const SheetBaseStyle = css`
   border: 1px solid ${theme.colors.black};
   border-radius: ${theme.radius.sm};
 
-  background-color: ${theme.home.gray};
+  background-color: ${theme.colors.white};
 
   transition: transform 300ms cubic-bezier(0.25, 0.8, 0.25, 1),
     box-shadow 300ms ease, opacity 300ms ease;
