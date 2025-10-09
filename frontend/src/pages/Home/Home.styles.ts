@@ -67,11 +67,6 @@ const RectangleStyle = css`
   background: ${theme.colors.blue[450]}60;
 `;
 
-const BlueTextStyle = css`
-  font-size: inherit;
-  color: ${theme.colors.blue[450]};
-`;
-
 const ButtonContainerStyle = css`
   align-self: flex-start;
   justify-content: flex-start;
@@ -149,7 +144,6 @@ export {
   MainContentWrapperStyle,
   CircleStyle,
   RectangleStyle,
-  BlueTextStyle,
   ButtonContainerStyle,
   LoggedInButtonsStyle,
   CreateButtonStyle,

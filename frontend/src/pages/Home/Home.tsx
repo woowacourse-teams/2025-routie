@@ -14,7 +14,6 @@ import {
   MainContentWrapperStyle,
   CircleStyle,
   RectangleStyle,
-  BlueTextStyle,
   ButtonContainerStyle,
   LoggedInButtonsStyle,
   CreateButtonStyle,
@@ -78,9 +77,14 @@ const Home = () => {
                   <Text variant="logo" color={theme.colors.gray[300]}>
                     더 이상 카톡은 그만!
                   </Text>
-                  <Text variant="logo" color={theme.colors.gray[300]}>
-                    <span css={BlueTextStyle}>루티</span>로 모여!
-                  </Text>
+                  <Flex justifyContent="flex-start">
+                    <Text variant="logo" color={theme.colors.blue[450]}>
+                      루티
+                    </Text>
+                    <Text variant="logo" color={theme.colors.gray[300]}>
+                      로 모여!
+                    </Text>
+                  </Flex>
                 </Flex>
                 <Flex direction="column" alignItems="flex-start" gap={3}>
                   <Text variant="subTitle" color={theme.colors.gray[300]}>
@@ -95,14 +99,14 @@ const Home = () => {
                       흐름 파악이 힘들었다면?
                     </Text>
                   </Flex>
-                  <Text
-                    variant="subTitle"
-                    color={theme.colors.gray[300]}
-                    css={{ marginTop: '5rem' }}
-                  >
-                    <span css={BlueTextStyle}>루티</span>에서 함께 동선을
-                    만들어보세요!
-                  </Text>
+                  <Flex justifyContent="flex-start" css={{ marginTop: '5rem' }}>
+                    <Text variant="subTitle" color={theme.colors.blue[450]}>
+                      루티
+                    </Text>
+                    <Text variant="subTitle" color={theme.colors.gray[300]}>
+                      에서 함께 동선을 만들어보세요!
+                    </Text>
+                  </Flex>
                 </Flex>
               </Flex>
 
