@@ -18,8 +18,6 @@ const HomeContentStyle = css`
 const MainContentWrapperStyle = css`
   position: relative;
   z-index: 10;
-  flex-direction: row;
-  height: 75vh;
 
   @media (width <= 1200px) {
     flex-direction: column;

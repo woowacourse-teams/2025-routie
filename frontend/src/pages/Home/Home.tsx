@@ -61,14 +61,13 @@ const Home = () => {
         <Flex direction="column" padding={10} gap={10} css={HomeContentStyle}>
           <Flex
             direction="column"
-            alignItems="center"
             gap={20}
+            height="75vh"
             css={MainContentWrapperStyle}
           >
             <Flex
               direction="column"
               alignItems="flex-start"
-              justifyContent="center"
               gap={4}
               width="auto"
             >
