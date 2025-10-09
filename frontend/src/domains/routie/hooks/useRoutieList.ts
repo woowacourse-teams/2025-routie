@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useMemo } from 'react';
 
 import { useToastContext } from '@/@common/contexts/useToastContext';
+import { useAccessTokenGuard } from '@/@common/hooks/useAccessTokenGuard';
 import { useAsyncLock } from '@/@common/hooks/useAsyncLock';
-import { useRequireAccessToken } from '@/@common/hooks/useRequireAccessToken';
 import {
   useAddRoutieQuery,
   useChangeRoutieQuery,
@@ -22,7 +22,7 @@ const useRoutieList = () => {
   const { runWithLock: runChangeWithLock } = useAsyncLock();
   const { showToast } = useToastContext();
   const { triggerEvent } = useGoogleEventTrigger();
-  const requireAccessToken = useRequireAccessToken();
+  const requireAccessToken = useAccessTokenGuard();
   const routieIdList = useMemo(
     () => routie.routiePlaces.map((routiePlace) => routiePlace.placeId),
     [routie.routiePlaces],

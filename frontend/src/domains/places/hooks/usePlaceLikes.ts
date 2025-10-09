@@ -1,7 +1,8 @@
 import { useCallback, useEffect } from 'react';
 
 import { useToastContext } from '@/@common/contexts/useToastContext';
-import { useRequireAccessToken } from '@/@common/hooks/useRequireAccessToken';
+import { useAccessTokenGuard } from '@/@common/hooks/useAccessTokenGuard';
+import { getAccessToken } from '@/@common/utils/getAccessTokenOrThrow';
 import {
   useLikePlaceMutation,
   useLikedPlacesQuery,
@@ -19,7 +20,7 @@ const usePlaceLikes = () => {
 
   const likedPlaceIds = data.likedPlaceIds;
 
-  const requireAccessToken = useRequireAccessToken();
+  const requireAccessToken = useAccessTokenGuard();
 
   const handleLikePlace = useCallback(
     (placeId: number) => {
