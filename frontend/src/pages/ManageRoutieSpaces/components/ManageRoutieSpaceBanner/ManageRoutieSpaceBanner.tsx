@@ -19,7 +19,7 @@ const ManageRoutieSpaceBanner = () => {
         alignItems="flex-end"
       >
         <Text variant="title" color={theme.colors.white}>
-          {isLoading ? '닉네임 로딩중...' : user?.nickName}
+          {isLoading ? '닉네임 로딩중...' : user?.nickname}
         </Text>
       </Flex>
     </div>
