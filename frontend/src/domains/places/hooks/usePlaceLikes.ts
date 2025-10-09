@@ -32,7 +32,7 @@ const usePlaceLikes = () => {
     [postLikePlace, requireAccessToken],
   );
 
-  const handleUnlikePlace = useCallback(
+  const handleDeleteLikePlace = useCallback(
     (placeId: number) => {
       const accessToken = requireAccessToken();
 
@@ -55,7 +55,7 @@ const usePlaceLikes = () => {
 
   return {
     handleLikePlace,
-    handleUnlikePlace,
+    handleDeleteLikePlace,
     likedPlaceIds,
   };
 };
