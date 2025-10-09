@@ -1,5 +1,6 @@
 package routie.business.place.domain;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
@@ -8,8 +9,11 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -60,6 +64,9 @@ public class Place {
     @LastModifiedDate
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
+
+    @OneToMany(mappedBy = "place", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<PlaceHashtag> placeHashtags = new ArrayList<>();
 
     public Place(
             final String name,
@@ -144,5 +151,19 @@ public class Place {
     public boolean hasSameCoordinate(final Place otherPlace) {
         return Objects.equals(otherPlace.getLatitude(), latitude)
                 && Objects.equals(otherPlace.getLongitude(), longitude);
+    }
+
+    public void updateHashtags(final List<Hashtag> hashtags) {
+        this.placeHashtags.clear();
+        hashtags.forEach(hashtag -> {
+            PlaceHashtag placeHashtag = new PlaceHashtag(this, hashtag);
+            this.placeHashtags.add(placeHashtag);
+        });
+    }
+
+    public List<String> getHashtagNames() {
+        return placeHashtags.stream()
+                .map(ph -> ph.getHashtag().getName())
+                .toList();
     }
 }
