@@ -27,6 +27,7 @@ const SocialLoginSection = ({ onClose }: SocialLoginSectionProps) => {
     e.preventDefault();
     redirectToKakaoLogin();
   };
+
   return (
     <Flex direction="column" gap={3}>
       <Flex gap={1}>

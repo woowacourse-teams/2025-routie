@@ -50,6 +50,7 @@ const useUserQuery = () => {
 const useGuestLoginMutation = () => {
   const { showToast } = useToastContext();
   const queryClient = useQueryClient();
+
   return useMutation({
     mutationKey: loginKey.guestAccessToken,
     mutationFn: (payload: GuestLoginRequestType) => postGuestLogin(payload),
