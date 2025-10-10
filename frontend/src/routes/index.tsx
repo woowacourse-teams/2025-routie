@@ -1,5 +1,5 @@
 import { lazy, Suspense } from 'react';
-import { createBrowserRouter, RouterProvider } from 'react-router';
+import { createBrowserRouter, Navigate, RouterProvider } from 'react-router';
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
@@ -7,6 +7,7 @@ import ModalManager from '@/@common/components/ModalManager/ModalManager';
 import Toast from '@/@common/components/Toast/Toast';
 import ModalProvider from '@/@common/contexts/ModalProvider';
 import ToastProvider from '@/@common/contexts/ToastProvider';
+import { getAccessToken } from '@/@common/utils/getAccessToken';
 import { useGoogleAnalytics } from '@/libs/googleAnalytics/hooks/useGoogleAnalytics';
 import Home from '@/pages/Home/Home';
 import KakaoAuthCallback from '@/pages/KakaoAuthCallback/KakaoAuthCallback';
@@ -17,6 +18,16 @@ const RoutieSpace = lazy(() => import('@/pages/RoutieSpace/RoutieSpace'));
 
 const LayoutWithAnalytics = ({ children }: { children: React.ReactNode }) => {
   useGoogleAnalytics();
+  return <>{children}</>;
+};
+
+const RequireAccessToken = ({ children }: { children: React.ReactNode }) => {
+  const accessToken = getAccessToken();
+
+  if (!accessToken) {
+    return <Navigate to="/" replace />;
+  }
+
   return <>{children}</>;
 };
 
@@ -61,7 +72,9 @@ const router = createBrowserRouter([
     path: '/manage-routie-spaces',
     element: (
       <LayoutWithAnalytics>
-        <ManageRoutieSpaces />
+        <RequireAccessToken>
+          <ManageRoutieSpaces />
+        </RequireAccessToken>
       </LayoutWithAnalytics>
     ),
   },
