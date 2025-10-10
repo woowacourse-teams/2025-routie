@@ -64,7 +64,7 @@ const ManageRoutieSpaces = () => {
       <ManageRoutieSpaceBanner />
       <ManageRoutieSpacesLayout>
         {isLoading ? (
-          <Flex height="calc(100dvh - 7.1rem)">
+          <Flex height="calc(100dvh - 8rem)">
             <Text variant="title">로딩중...</Text>
           </Flex>
         ) : (
