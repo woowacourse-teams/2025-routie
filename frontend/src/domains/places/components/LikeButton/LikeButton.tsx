@@ -8,9 +8,9 @@ import { LikeButtonStyle } from './LikeButton.styles';
 
 import type { LikeButtonProps } from './LikeButton.types';
 
-const LikeButton = ({ count = 0, onClick }: LikeButtonProps) => {
+const LikeButton = ({ count = 0, liked, onClick }: LikeButtonProps) => {
   return (
-    <button css={LikeButtonStyle} onClick={onClick} aria-label="좋아요">
+    <button css={LikeButtonStyle(liked)} onClick={onClick} aria-label="좋아요">
       <Flex gap={1}>
         <Icon name="thumbsUp" size={20} />
         <Text variant="caption" color={theme.colors.gray[300]}>

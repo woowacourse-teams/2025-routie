@@ -1,7 +1,6 @@
 import { useState } from 'react';
 
 import Flex from '@/@common/components/Flex/Flex';
-import Header from '@/@common/components/Header/Header';
 import RoutieSpaceName from '@/domains/routieSpace/components/RoutieSpaceName/RoutieSpaceName';
 import SideSheet from '@/layouts/SideSheet/SideSheet';
 import theme from '@/styles/theme';
@@ -31,9 +30,7 @@ const Sidebar = () => {
           overflow: 'hidden',
         }}
       >
-        <Header isHome={false}>
-          <RoutieSpaceName />
-        </Header>
+        <RoutieSpaceName />
         <ShareLinkButtonSection />
         <SidebarWhereSection />
       </Flex>

@@ -1,11 +1,15 @@
-import { useNavigate } from 'react-router';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
-import { useMutation, useQuery } from '@tanstack/react-query';
-
-import { getKakaoAccessToken, getKakaoLoginUri } from '../apis/login';
-import { getUser } from '../apis/user';
-
-import { loginKey, userKey } from './key';
+import { useToastContext } from '@/@common/contexts/useToastContext';
+import { getAccessToken } from '@/@common/utils/getAccessToken';
+import {
+  getKakaoAccessToken,
+  getKakaoLoginUri,
+  postGuestLogin,
+} from '@/domains/auth/apis/login';
+import { getUser } from '@/domains/auth/apis/user';
+import { loginKey, userKey } from '@/domains/auth/queries/key';
+import type { GuestLoginRequestType } from '@/domains/auth/types/api.types';
 
 const useKakaoLoginUriQuery = () => {
   return useQuery({
@@ -15,14 +19,14 @@ const useKakaoLoginUriQuery = () => {
 };
 
 const useKakaoLoginMutation = () => {
-  const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
   return useMutation({
     mutationKey: loginKey.kakaoAccessToken,
     mutationFn: (code: string) => getKakaoAccessToken(code),
-    onSuccess: (data) => {
+    onSuccess: async (data) => {
       localStorage.setItem('accessToken', data.accessToken);
-      navigate('/', { replace: true });
+      await queryClient.invalidateQueries({ queryKey: userKey.all });
     },
     onError: () => {
       console.error('카카오 로그인 실패');
@@ -31,10 +35,42 @@ const useKakaoLoginMutation = () => {
 };
 
 const useUserQuery = () => {
+  const accessToken = getAccessToken();
+
   return useQuery({
     queryKey: userKey.all,
     queryFn: () => getUser(),
+    enabled: Boolean(accessToken),
   });
 };
 
-export { useKakaoLoginMutation, useKakaoLoginUriQuery, useUserQuery };
+const useGuestLoginMutation = () => {
+  const { showToast } = useToastContext();
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationKey: loginKey.guestAccessToken,
+    mutationFn: (payload: GuestLoginRequestType) => postGuestLogin(payload),
+    onSuccess: async (data) => {
+      localStorage.setItem('accessToken', data.accessToken);
+      await queryClient.invalidateQueries({ queryKey: userKey.all });
+      showToast({
+        message: '비회원 로그인에 성공했습니다.',
+        type: 'success',
+      });
+    },
+    onError: (error) => {
+      showToast({
+        message: error.message,
+        type: 'error',
+      });
+    },
+  });
+};
+
+export {
+  useGuestLoginMutation,
+  useKakaoLoginMutation,
+  useKakaoLoginUriQuery,
+  useUserQuery,
+};

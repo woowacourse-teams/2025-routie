@@ -1,11 +1,15 @@
+import { useEffect } from 'react';
+
 import Button from '@/@common/components/Button/Button';
 import Flex from '@/@common/components/Flex/Flex';
 import Header from '@/@common/components/Header/Header';
 import Icon from '@/@common/components/IconSvg/Icon';
 import Text from '@/@common/components/Text/Text';
 import { useModal } from '@/@common/contexts/ModalContext';
+import { useToastContext } from '@/@common/contexts/useToastContext';
+import { getAccessToken } from '@/@common/utils/getAccessToken';
 import GoToLoginButton from '@/domains/auth/components/GoToLoginButton/GoToLoginButton';
-import UserMenuButton from '@/domains/auth/components/UserMenuButton/UserMenuButton';
+import { useUserQuery } from '@/domains/auth/queries/useAuthQuery';
 import theme from '@/styles/theme';
 
 import {
@@ -22,35 +26,43 @@ import InfoCard from './components/InfoCard/InfoCard';
 import { useRoutieSpaceNavigation } from './hooks/useRoutieSpaceNavigation';
 
 const Home = () => {
-  const { handleCreateRoutieSpace, handleMoveToManageRoutieSpace } =
-    useRoutieSpaceNavigation();
+  const {
+    handleMoveToHome,
+    handleCreateRoutieSpace,
+    handleMoveToManageRoutieSpace,
+  } = useRoutieSpaceNavigation();
   const { openModal } = useModal();
-  const kakaoAccessToken = localStorage.getItem('accessToken');
+  const { showToast } = useToastContext();
+  const { error } = useUserQuery();
+
+  const accessToken = getAccessToken();
+  const role = localStorage.getItem('role');
+  const isAuthenticatedUser = Boolean(accessToken) && role === 'USER';
 
   const handleLoginClick = () => {
-    openModal('login');
+    openModal('socialLogin');
   };
+
+  useEffect(() => {
+    if (error) {
+      showToast({
+        message: '사용자 정보를 불러오는 중 에러가 발생했습니다.',
+        type: 'error',
+      });
+      console.error(error);
+    }
+  }, [error, showToast]);
 
   return (
     <>
-      <Header>
-        {kakaoAccessToken ? (
-          <UserMenuButton />
-        ) : (
-          <Button
-            variant="primary"
-            width="fit-content"
-            onClick={handleLoginClick}
-          >
-            <Text color={theme.colors.white} variant="body">
-              로그인
-            </Text>
-          </Button>
-        )}
-      </Header>
+      <Header
+        isLoggedIn={!!isAuthenticatedUser}
+        onLoginClick={handleLoginClick}
+        onLogoClick={handleMoveToHome}
+      />
       <Flex
         direction="column"
-        height="calc(100dvh - 7.1rem)"
+        height="calc(100dvh - 8rem)"
         padding={5}
         css={HomepageStyle}
       >
@@ -100,7 +112,7 @@ const Home = () => {
             />
           </Flex>
           <Flex gap={8} width="80%" css={ButtonWrapperStyle}>
-            {kakaoAccessToken ? (
+            {isAuthenticatedUser ? (
               <>
                 <Button
                   onClick={handleCreateRoutieSpace}
