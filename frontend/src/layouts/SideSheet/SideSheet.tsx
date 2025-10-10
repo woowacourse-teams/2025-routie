@@ -36,13 +36,19 @@ const SideSheet = ({ open, onToggle }: SideSheetProps) => {
   const { openModal } = useModal();
   const { triggerEvent } = useGoogleEventTrigger();
 
-  const handleOpenAddModalClick = useCallback(() => {
+  const ensureAuthenticated = useCallback(() => {
     const accessToken = getAccessToken();
 
     if (!accessToken) {
       openModal('login');
-      return;
+      return false;
     }
+
+    return true;
+  }, [openModal]);
+
+  const handleOpenAddModalClick = useCallback(() => {
+    if (!ensureAuthenticated()) return;
 
     triggerEvent({
       action: 'click',
@@ -50,63 +56,43 @@ const SideSheet = ({ open, onToggle }: SideSheetProps) => {
       label: '장소 추가하기 모달 열기 버튼',
     });
     openModal('addPlace');
-  }, [openModal, triggerEvent]);
+  }, [ensureAuthenticated, openModal, triggerEvent]);
 
   const handlePlaceSelect = useCallback(
     async (placeId: number, selected: boolean) => {
-      const accessToken = getAccessToken();
-
-      if (!accessToken) {
-        openModal('login');
-        return;
-      }
+      if (!ensureAuthenticated()) return;
 
       if (selected) return;
       await handleAddRoutie(placeId);
     },
-    [handleAddRoutie, openModal],
+    [ensureAuthenticated, handleAddRoutie],
   );
 
   const handlePlaceDelete = useCallback(
     async (placeId: number) => {
-      const accessToken = getAccessToken();
-
-      if (!accessToken) {
-        openModal('login');
-        return;
-      }
+      if (!ensureAuthenticated()) return;
 
       await handleDeletePlace(placeId);
     },
-    [handleDeletePlace, openModal],
+    [ensureAuthenticated, handleDeletePlace],
   );
 
   const handleLikeButtonClick = useCallback(
     (placeId: number) => {
-      const accessToken = getAccessToken();
-
-      if (!accessToken) {
-        openModal('login');
-        return;
-      }
+      if (!ensureAuthenticated()) return;
 
       handleLikePlace(placeId);
     },
-    [handleLikePlace, openModal],
+    [ensureAuthenticated, handleLikePlace],
   );
 
   const handleUnlikeButtonClick = useCallback(
     (placeId: number) => {
-      const accessToken = getAccessToken();
-
-      if (!accessToken) {
-        openModal('login');
-        return;
-      }
+      if (!ensureAuthenticated()) return;
 
       handleDeleteLikePlace(placeId);
     },
-    [handleDeleteLikePlace, openModal],
+    [ensureAuthenticated, handleDeleteLikePlace],
   );
 
   return (
