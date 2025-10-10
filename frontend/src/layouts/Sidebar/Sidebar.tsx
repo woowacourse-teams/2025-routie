@@ -3,9 +3,8 @@ import { useState } from 'react';
 import Flex from '@/@common/components/Flex/Flex';
 import Header from '@/@common/components/Header/Header';
 import RoutieSpaceName from '@/domains/routieSpace/components/RoutieSpaceName/RoutieSpaceName';
+import SideSheet from '@/layouts/SideSheet/SideSheet';
 import theme from '@/styles/theme';
-
-import SideSheet from '../SideSheet/SideSheet';
 
 import ShareLinkButtonSection from './ShareLinkButtonSection';
 import { SidebarContainerStyle } from './Sidebar.styles';
