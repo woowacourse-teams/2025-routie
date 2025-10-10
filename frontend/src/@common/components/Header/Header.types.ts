@@ -1,7 +1,7 @@
 import { PropsWithChildren } from 'react';
 
 interface HeaderProps extends PropsWithChildren {
-  isHome?: boolean;
+  onLogoClick: () => void;
 }
 
 export type { HeaderProps };

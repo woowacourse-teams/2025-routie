@@ -7,16 +7,14 @@ import Text from '../Text/Text';
 
 import type { HomeButtonProps } from './HomeButton.types';
 
-const HomeButton = ({ isHome = true, onClick, ...props }: HomeButtonProps) => {
+const HomeButton = ({ onClick, ...props }: HomeButtonProps) => {
   return (
     <button onClick={onClick} {...props}>
       <Flex gap={1}>
         <Icon name="logo" size={34} />
-        {isHome && (
-          <Text variant="logo" color={theme.colors.blue[450]}>
-            Routie
-          </Text>
-        )}
+        <Text variant="logo" color={theme.colors.blue[450]}>
+          Routie
+        </Text>
       </Flex>
     </button>
   );
