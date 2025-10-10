@@ -5,7 +5,6 @@ import Flex from '@/@common/components/Flex/Flex';
 import Header from '@/@common/components/Header/Header';
 import Text from '@/@common/components/Text/Text';
 import { useCheckLogin } from '@/@common/hooks/useCheckLogin';
-import UserMenuButton from '@/domains/auth/components/UserMenuButton/UserMenuButton';
 import {
   useDeleteRoutieSpaceMutation,
   useGetRoutieSpaceListQuery,
@@ -61,9 +60,7 @@ const ManageRoutieSpaces = () => {
 
   return (
     <div css={ManageRoutieSpacesStyle}>
-      <Header>
-        <UserMenuButton />
-      </Header>
+      <Header isLoggedIn={true} onLogoClick={handleMoveToHome} />
       <ManageRoutieSpaceBanner />
       <ManageRoutieSpacesLayout>
         {isLoading ? (
