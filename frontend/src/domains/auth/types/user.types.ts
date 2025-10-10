@@ -1,7 +1,7 @@
 import type { UserRole } from './api.types';
 
 interface UserType {
-  nickName: string;
+  nickname: string;
   role: UserRole;
 }
 

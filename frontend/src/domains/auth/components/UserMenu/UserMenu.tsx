@@ -1,10 +1,7 @@
-import { useEffect } from 'react';
-
 import Button from '@/@common/components/Button/Button';
 import Flex from '@/@common/components/Flex/Flex';
 import Icon from '@/@common/components/IconSvg/Icon';
 import Text from '@/@common/components/Text/Text';
-import { useToastContext } from '@/@common/contexts/useToastContext';
 import { useUserQuery } from '@/domains/auth/queries/useAuthQuery';
 import { useRoutieSpaceNavigation } from '@/pages/Home/hooks/useRoutieSpaceNavigation';
 
@@ -27,7 +24,7 @@ const UserMenu = ({ onClick }: UserMenuProps) => {
       return <Text variant="body">닉네임 불러오기 오류</Text>;
     }
 
-    return <Text variant="body">{user?.nickName}</Text>;
+    return <Text variant="body">{user?.nickname}</Text>;
   };
 
   return (
