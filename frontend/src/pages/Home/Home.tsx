@@ -1,12 +1,16 @@
+import { useEffect } from 'react';
+
 import Button from '@/@common/components/Button/Button';
 import Flex from '@/@common/components/Flex/Flex';
 import Header from '@/@common/components/Header/Header';
 import Icon from '@/@common/components/IconSvg/Icon';
 import Text from '@/@common/components/Text/Text';
 import { useModal } from '@/@common/contexts/ModalContext';
+import { useToastContext } from '@/@common/contexts/useToastContext';
 import { getAccessToken } from '@/@common/utils/getAccessToken';
 import GoToLoginButton from '@/domains/auth/components/GoToLoginButton/GoToLoginButton';
 import UserMenuButton from '@/domains/auth/components/UserMenuButton/UserMenuButton';
+import { useUserQuery } from '@/domains/auth/queries/useAuthQuery';
 import theme from '@/styles/theme';
 
 import {
@@ -26,7 +30,9 @@ const Home = () => {
   const { handleCreateRoutieSpace, handleMoveToManageRoutieSpace } =
     useRoutieSpaceNavigation();
   const { openModal } = useModal();
-  
+  const { showToast } = useToastContext();
+  const { error } = useUserQuery();
+
   const accessToken = getAccessToken();
   const role = localStorage.getItem('role');
   const isAuthenticatedUser = Boolean(accessToken) && role === 'USER';
@@ -34,6 +40,16 @@ const Home = () => {
   const handleLoginClick = () => {
     openModal('socialLogin');
   };
+
+  useEffect(() => {
+    if (error) {
+      showToast({
+        message: '사용자 정보를 불러오는 중 에러가 발생했습니다.',
+        type: 'error',
+      });
+      console.error(error);
+    }
+  }, [error, showToast]);
 
   return (
     <>
