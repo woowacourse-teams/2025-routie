@@ -1,3 +1,4 @@
+/** @jsxImportSource @emotion/react */
 import { ButtonStyle } from './Button.style';
 
 import type { ButtonProps } from './Button.types';

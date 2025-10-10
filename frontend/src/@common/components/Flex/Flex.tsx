@@ -1,3 +1,4 @@
+/** @jsxImportSource @emotion/react */
 import { FlexStyle } from './Flex.style';
 
 import type { FlexProps } from './Flex.types';
