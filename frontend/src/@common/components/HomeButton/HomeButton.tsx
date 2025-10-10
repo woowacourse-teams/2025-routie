@@ -1,9 +1,8 @@
 /** @jsxImportSource @emotion/react */
+import Flex from '@/@common/components/Flex/Flex';
+import Icon from '@/@common/components/IconSvg/Icon';
+import Text from '@/@common/components/Text/Text';
 import theme from '@/styles/theme';
-
-import Flex from '../Flex/Flex';
-import Icon from '../IconSvg/Icon';
-import Text from '../Text/Text';
 
 import type { HomeButtonProps } from './HomeButton.types';
 

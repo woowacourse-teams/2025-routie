@@ -1,11 +1,10 @@
 /** @jsxImportSource @emotion/react */
 import Button from '@/@common/components/Button/Button';
 import Flex from '@/@common/components/Flex/Flex';
+import HomeButton from '@/@common/components/HomeButton/HomeButton';
 import Text from '@/@common/components/Text/Text';
 import UserMenuButton from '@/domains/auth/components/UserMenuButton/UserMenuButton';
 import theme from '@/styles/theme';
-
-import HomeButton from '../HomeButton/HomeButton';
 
 import { HeaderStyle, HomeButtonStyle } from './Header.style';
 
