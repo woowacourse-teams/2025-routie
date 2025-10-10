@@ -1,3 +1,4 @@
+/** @jsxImportSource @emotion/react */
 import theme from '@/styles/theme';
 
 import Flex from '../Flex/Flex';
