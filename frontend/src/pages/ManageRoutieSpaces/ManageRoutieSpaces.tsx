@@ -28,7 +28,7 @@ const ManageRoutieSpaces = () => {
     isLoading,
     error,
   } = useGetRoutieSpaceListQuery();
-  const { handleMoveToRoutieSpace, handleMoveToHome } =
+  const { handleMoveToRoutieSpace, handleMoveToHome, handleCreateRoutieSpace } =
     useRoutieSpaceNavigation();
   const { mutate: deleteRoutieSpace } = useDeleteRoutieSpaceMutation();
 
@@ -78,7 +78,7 @@ const ManageRoutieSpaces = () => {
             </Flex>
             <ul css={RoutieSpaceListStyle}>
               <li>
-                <CreateRoutieSpaceButton />
+                <CreateRoutieSpaceButton onClick={handleCreateRoutieSpace} />
               </li>
               {routieSpaces.map((routieSpace) => (
                 <RoutieSpaceListItem
