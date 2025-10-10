@@ -16,6 +16,15 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   args: {
     count: 10,
+    liked: false,
     onClick: () => alert('좋아요 클릭!'),
+  },
+};
+
+export const Liked: Story = {
+  args: {
+    count: 10,
+    liked: true,
+    onClick: () => alert('좋아요 취소 클릭!'),
   },
 };

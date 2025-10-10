@@ -3,7 +3,9 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useToastContext } from '@/@common/contexts/useToastContext';
 import {
   addPlace,
+  deleteLikePlace,
   deletePlace,
+  getLikedPlaces,
   getPlace,
   getPlaceList,
   postLikePlace,
@@ -12,6 +14,7 @@ import {
 import type {
   AddPlaceRequestType,
   LikePlaceRequestType,
+  UnlikePlaceRequestType,
 } from '@/domains/places/types/api.types';
 
 import { placesKeys } from './key';
@@ -91,13 +94,15 @@ const useLikePlaceMutation = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ placeId }: LikePlaceRequestType) => postLikePlace(placeId),
+    mutationFn: ({ placeId }: LikePlaceRequestType) =>
+      postLikePlace({ placeId }),
     onSuccess: () => {
       showToast({
         message: '좋아요가 추가되었습니다.',
         type: 'success',
       });
       queryClient.invalidateQueries({ queryKey: placesKeys.list() });
+      queryClient.invalidateQueries({ queryKey: placesKeys.liked() });
     },
     onError: (error) => {
       showToast({
@@ -108,6 +113,38 @@ const useLikePlaceMutation = () => {
   });
 };
 
+const useDeleteLikePlaceMutation = () => {
+  const { showToast } = useToastContext();
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ placeId }: UnlikePlaceRequestType) =>
+      deleteLikePlace({ placeId }),
+    onSuccess: () => {
+      showToast({
+        message: '좋아요가 취소되었습니다.',
+        type: 'success',
+      });
+      queryClient.invalidateQueries({ queryKey: placesKeys.list() });
+      queryClient.invalidateQueries({ queryKey: placesKeys.liked() });
+    },
+    onError: (error) => {
+      showToast({
+        message: error.message,
+        type: 'error',
+      });
+    },
+  });
+};
+
+const useLikedPlacesQuery = (enabled: boolean) => {
+  return useQuery({
+    queryKey: placesKeys.liked(),
+    queryFn: getLikedPlaces,
+    enabled,
+  });
+};
+
 export {
   useAddPlaceQuery,
   useDeletePlaceQuery,
@@ -115,4 +152,6 @@ export {
   usePlaceListQuery,
   usePlaceSearchQuery,
   useLikePlaceMutation,
+  useDeleteLikePlaceMutation,
+  useLikedPlacesQuery,
 };

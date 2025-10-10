@@ -2,12 +2,11 @@ import Flex from '@/@common/components/Flex/Flex';
 import type { ModalProps } from '@/@common/components/Modal/Modal.types';
 import ModalLayout from '@/@common/components/ModalLayout/ModalLayout';
 import Text from '@/@common/components/Text/Text';
-import GuestLoginSection from '@/domains/auth/components/GuestLoginSection/GuestLoginSection';
 import SocialLoginSection from '@/domains/auth/components/SocialLoginSection/SocialLoginSection';
 
 import { LoginModalStyle } from './LoginModal.styles';
 
-const LoginModal = ({ onClose }: Pick<ModalProps, 'onClose'>) => {
+const SocialLoginModal = ({ onClose }: Pick<ModalProps, 'onClose'>) => {
   return (
     <ModalLayout onClose={onClose} showCloseButton={true} width="36rem">
       <div css={LoginModalStyle}>
@@ -16,7 +15,6 @@ const LoginModal = ({ onClose }: Pick<ModalProps, 'onClose'>) => {
             <Text variant="subTitle">루티와 함께</Text>
             <Text variant="subTitle">동선을 손쉽게 완성하세요!</Text>
           </Flex>
-          <GuestLoginSection onClose={onClose} />
           <SocialLoginSection onClose={onClose} />
         </Flex>
       </div>
@@ -24,4 +22,4 @@ const LoginModal = ({ onClose }: Pick<ModalProps, 'onClose'>) => {
   );
 };
 
-export default LoginModal;
+export default SocialLoginModal;

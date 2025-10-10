@@ -1,16 +1,21 @@
+import { getAccessTokenOrThrow } from '@/@common/utils/getAccessTokenOrThrow';
 import { apiClient } from '@/apis';
 import {
   getPlaceAdapter,
   getPlaceListAdapter,
+  likedPlacesAdapter,
   searchPlaceAdapter,
 } from '@/domains/places/adapters/placeAdapter';
 import type {
   AddPlaceRequestType,
   DeletePlaceRequestType,
   FetchPlaceRequestType,
+  LikePlaceRequestType,
   SearchPlaceRequestType,
+  UnlikePlaceRequestType,
 } from '@/domains/places/types/api.types';
 import type {
+  LikedPlacesResponseAdapterType,
   PlaceAdapterType,
   PlaceListAdapterType,
   SearchPlaceAdapterType,
@@ -83,17 +88,61 @@ const searchPlace = async ({
   return searchPlaceAdapter(data.searchedPlaces);
 };
 
-const postLikePlace = async (placeId: number) => {
+const postLikePlace = async ({ placeId }: LikePlaceRequestType) => {
   const routieSpaceUuid = getRoutieSpaceUuid();
   ensureRoutieSpaceUuid(routieSpaceUuid);
 
+  const accessToken = getAccessTokenOrThrow();
+
   const response = await apiClient.post(
-    `/v1/routie-spaces/${routieSpaceUuid}/places/${placeId}/likes`,
+    `/v2/routie-spaces/${routieSpaceUuid}/places/${placeId}/likes`,
+    null,
+    {
+      Authorization: `Bearer ${accessToken}`,
+    },
   );
 
   if (!response.ok) {
     throw new Error('좋아요 요청 실패');
   }
+};
+
+const deleteLikePlace = async ({ placeId }: UnlikePlaceRequestType) => {
+  const routieSpaceUuid = getRoutieSpaceUuid();
+  ensureRoutieSpaceUuid(routieSpaceUuid);
+
+  const accessToken = getAccessTokenOrThrow();
+
+  const response = await apiClient.delete(
+    `/v1/routie-spaces/${routieSpaceUuid}/places/${placeId}/likes`,
+    null,
+    {
+      Authorization: `Bearer ${accessToken}`,
+    },
+  );
+
+  if (!response.ok) {
+    throw new Error('좋아요 취소 실패');
+  }
+};
+
+const getLikedPlaces = async (): Promise<LikedPlacesResponseAdapterType> => {
+  const routieSpaceUuid = getRoutieSpaceUuid();
+  ensureRoutieSpaceUuid(routieSpaceUuid);
+
+  const accessToken = getAccessTokenOrThrow();
+
+  const response = await apiClient.get(
+    `/v1/routie-spaces/${routieSpaceUuid}/places/likes`,
+    undefined,
+    {
+      Authorization: `Bearer ${accessToken}`,
+    },
+  );
+
+  const data = await response.json();
+
+  return likedPlacesAdapter(data);
 };
 
 export {
@@ -103,4 +152,6 @@ export {
   getPlaceList,
   searchPlace,
   postLikePlace,
+  deleteLikePlace,
+  getLikedPlaces,
 };

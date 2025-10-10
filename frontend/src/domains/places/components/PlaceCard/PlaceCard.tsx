@@ -13,6 +13,7 @@ import type { PlaceCardProps } from './PlaceCard.types';
 
 const PlaceCard = ({
   selected,
+  liked,
   onSelect,
   onDelete,
   onLike,
@@ -39,6 +40,7 @@ const PlaceCard = ({
           </Text>
           <LikeButton
             count={props.likeCount}
+            liked={liked}
             onClick={() => onLike(props.id)}
           />
         </Flex>

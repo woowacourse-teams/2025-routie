@@ -1,9 +1,11 @@
 import type {
   FetchPlaceListResponseType,
   FetchPlaceResponseType,
+  LikedPlacesResponseType,
   SearchPlaceResponseType,
 } from '@/domains/places/types/api.types';
 import type {
+  LikedPlacesResponseAdapterType,
   PlaceAdapterType,
   PlaceListAdapterType,
   SearchPlaceAdapterType,
@@ -50,4 +52,15 @@ const searchPlaceAdapter = (
   });
 };
 
-export { getPlaceAdapter, getPlaceListAdapter, searchPlaceAdapter };
+const likedPlacesAdapter = (
+  data: LikedPlacesResponseType,
+): LikedPlacesResponseAdapterType => {
+  return { likedPlaceIds: data.likedPlaceIds };
+};
+
+export {
+  getPlaceAdapter,
+  getPlaceListAdapter,
+  searchPlaceAdapter,
+  likedPlacesAdapter,
+};

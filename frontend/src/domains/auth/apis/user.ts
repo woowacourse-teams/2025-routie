@@ -1,20 +1,20 @@
+import { getAccessTokenOrThrow } from '@/@common/utils/getAccessTokenOrThrow';
 import { apiClient } from '@/apis';
-import { getUserNameAdapter } from '@/domains/auth/adapters/getUserNameAdapter';
+import { getUserAdapter } from '@/domains/auth/adapters/getUserAdapter';
 
 const getUser = async () => {
-  const token = localStorage.getItem('accessToken');
+  const accessToken = getAccessTokenOrThrow();
 
-  if (!token) {
-    throw new Error('접근 권한이 없습니다. 로그인 후 이용해주세요.');
-  }
-
-  const response = await apiClient.get('/v1/users/me', undefined, {
-    Authorization: `Bearer ${token}`,
+  const response = await apiClient.get('/v1/participants/me', undefined, {
+    Authorization: `Bearer ${accessToken}`,
   });
 
   const data = await response.json();
+  const adaptedUser = getUserAdapter(data);
 
-  return getUserNameAdapter(data);
+  localStorage.setItem('role', adaptedUser.role);
+
+  return adaptedUser;
 };
 
 export { getUser };
