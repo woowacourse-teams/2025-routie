@@ -6,6 +6,7 @@ const UserMenuIconStyle = css`
   cursor: pointer;
   padding: 0.8rem;
   border-radius: ${theme.radius.sm};
+  background-color: ${theme.colors.white};
 
   &:hover {
     background-color: ${theme.colors.blue[200]};
