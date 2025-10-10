@@ -1,3 +1,4 @@
+/** @jsxImportSource @emotion/react */
 import { TextStyle } from './Text.style';
 
 import type { TextProps } from './Text.types';

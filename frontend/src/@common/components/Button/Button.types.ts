@@ -7,6 +7,6 @@ interface ButtonProps extends ComponentProps<'button'> {
   radius?: 'sm' | 'md' | 'lg';
 }
 
-type ButtonVariantType = 'primary' | 'secondary' | 'danger';
+type ButtonVariantType = 'primary' | 'secondary' | 'danger' | 'dangerSecondary';
 
 export type { ButtonProps, ButtonVariantType };

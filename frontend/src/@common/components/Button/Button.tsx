@@ -1,3 +1,4 @@
+/** @jsxImportSource @emotion/react */
 import { ButtonStyle } from './Button.style';
 
 import type { ButtonProps } from './Button.types';
@@ -7,10 +8,11 @@ const Button = ({
   variant,
   width,
   padding,
+  radius,
   ...props
 }: ButtonProps) => {
   return (
-    <button css={ButtonStyle({ variant, width, padding })} {...props}>
+    <button css={ButtonStyle({ variant, width, padding, radius })} {...props}>
       {children}
     </button>
   );
