@@ -1,5 +1,5 @@
 interface UserType {
-  nickName: string;
+  nickname: string;
 }
 
 export type { UserType };

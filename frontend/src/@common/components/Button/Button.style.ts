@@ -22,6 +22,14 @@ const buttonVariant: Record<ButtonVariantType, SerializedStyles> = {
       background-color: ${theme.colors.red[50]};
     }
   `,
+
+  dangerSecondary: css`
+    background-color: ${theme.colors.gray[100]};
+
+    &:hover {
+      background-color: ${theme.colors.red[100]};
+    }
+  `,
 };
 
 const ButtonStyle = ({ variant, width, padding, radius }: ButtonProps) => css`

@@ -17,6 +17,8 @@ import {
   ManageRoutieSpacesStyle,
   RoutieSpaceListStyle,
 } from './ManageRoutieSpaces.styles';
+import CreateRoutieSpaceButton from './components/CreateRoutieSpaceButton/CreateRoutieSpaceButton';
+import ManageRoutieSpaceBanner from './components/ManageRoutieSpaceBanner/ManageRoutieSpaceBanner';
 import ManageRoutieSpacesLayout from './layouts/ManageRoutieSpacesLayout';
 
 const ManageRoutieSpaces = () => {
@@ -26,7 +28,7 @@ const ManageRoutieSpaces = () => {
     isLoading,
     error,
   } = useGetRoutieSpaceListQuery();
-  const { handleCreateRoutieSpace, handleMoveToRoutieSpace, handleMoveToHome } =
+  const { handleMoveToRoutieSpace, handleMoveToHome, handleCreateRoutieSpace } =
     useRoutieSpaceNavigation();
   const { mutate: deleteRoutieSpace } = useDeleteRoutieSpaceMutation();
 
@@ -62,6 +64,7 @@ const ManageRoutieSpaces = () => {
       <Header>
         <UserMenuButton />
       </Header>
+      <ManageRoutieSpaceBanner />
       <ManageRoutieSpacesLayout>
         {isLoading ? (
           <Flex height="calc(100dvh - 7.1rem)">
@@ -69,28 +72,23 @@ const ManageRoutieSpaces = () => {
           </Flex>
         ) : (
           <>
-            <Flex gap={3} justifyContent="space-between">
-              <Text variant="title">관리할 루티 공간 목록</Text>
-              <Button width="14rem" onClick={handleCreateRoutieSpace}>
-                <Text variant="body">동선 만들기</Text>
-              </Button>
+            <Flex justifyContent="space-between" margin="1.2rem 0 0 0">
+              <Text variant="subTitle">동선 목록</Text>
+              <Text variant="subTitle">총 {routieSpaces.length}개</Text>
             </Flex>
-            {routieSpaces.length > 0 ? (
-              <ul css={RoutieSpaceListStyle}>
-                {routieSpaces.map((routieSpace) => (
-                  <RoutieSpaceListItem
-                    key={routieSpace.routieSpaceUuid}
-                    {...routieSpace}
-                    onClickRoutieSpace={handleClickRoutieSpace}
-                    onDeleteRoutieSpace={handleDeleteRoutieSpace}
-                  />
-                ))}
-              </ul>
-            ) : (
-              <Flex height="50dvh">
-                <Text variant="body">아직 생성한 동선이 없습니다...😅</Text>
-              </Flex>
-            )}
+            <ul css={RoutieSpaceListStyle}>
+              <li>
+                <CreateRoutieSpaceButton onClick={handleCreateRoutieSpace} />
+              </li>
+              {routieSpaces.map((routieSpace) => (
+                <RoutieSpaceListItem
+                  key={routieSpace.routieSpaceUuid}
+                  {...routieSpace}
+                  onClickRoutieSpace={handleClickRoutieSpace}
+                  onDeleteRoutieSpace={handleDeleteRoutieSpace}
+                />
+              ))}
+            </ul>
           </>
         )}
       </ManageRoutieSpacesLayout>

@@ -25,7 +25,7 @@ const UserMenu = ({ onClick }: UserMenuProps) => {
       return <Text variant="body">닉네임 불러오기 오류</Text>;
     }
 
-    return <Text variant="body">{user?.nickName}</Text>;
+    return <Text variant="body">{user?.nickname}</Text>;
   };
 
   useEffect(() => {

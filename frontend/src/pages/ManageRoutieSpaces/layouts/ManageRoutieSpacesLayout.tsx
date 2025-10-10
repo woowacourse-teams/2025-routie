@@ -12,6 +12,7 @@ const ManageRoutieSpacesLayout = ({
       direction="column"
       gap={3}
       width="70%"
+      maxWidth="1580px"
       alignItems="flex-start"
       padding="1rem 0"
       margin="0 auto"
