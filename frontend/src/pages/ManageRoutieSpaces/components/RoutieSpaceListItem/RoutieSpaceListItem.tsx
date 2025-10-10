@@ -1,6 +1,6 @@
-import { memo, useCallback } from 'react';
+/** @jsxImportSource @emotion/react */
 
-import { css } from '@emotion/react';
+import { memo, useCallback } from 'react';
 
 import Button from '@/@common/components/Button/Button';
 import Flex from '@/@common/components/Flex/Flex';
