@@ -1,13 +1,16 @@
 import { useLayoutEffect } from 'react';
 import { useSearchParams } from 'react-router';
 
-import Flex from '@/@common/components/Flex/Flex';
-import MapWithSideSheet from '@/layouts/MapWithSideSheet/MapWithSideSheet';
+import UserMenuButton from '@/domains/auth/components/UserMenuButton/UserMenuButton';
+import KakaoMap from '@/domains/maps/components/KakaoMap/KakaoMap';
 import Sidebar from '@/layouts/Sidebar/Sidebar';
+
+import { RoutieSpaceContainerStyle } from './RoutieSpace.styles';
 
 const RoutieSpace = () => {
   const [searchParams] = useSearchParams();
   const routieSpaceIdentifier = searchParams.get('routieSpaceIdentifier');
+  const accessToken = localStorage.getItem('accessToken');
 
   useLayoutEffect(() => {
     if (routieSpaceIdentifier) {
@@ -16,14 +19,11 @@ const RoutieSpace = () => {
   }, [routieSpaceIdentifier]);
 
   return (
-    <Flex justifyContent="flex-start" height="100vh">
-      <Flex direction="column" justifyContent="flex-start" height="100%">
-        <Sidebar />
-      </Flex>
-      <Flex direction="column" justifyContent="flex-start" height="100%">
-        <MapWithSideSheet />
-      </Flex>
-    </Flex>
+    <div css={RoutieSpaceContainerStyle}>
+      <KakaoMap />
+      {accessToken && <UserMenuButton />}
+      <Sidebar />
+    </div>
   );
 };
 
