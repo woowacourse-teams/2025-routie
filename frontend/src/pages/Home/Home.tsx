@@ -37,8 +37,7 @@ const Home = () => {
 
   const hasAccessToken = Boolean(getAccessToken());
   const isAuthenticatedUser = user?.role === 'USER';
-  const isUserMenuVisible =
-    isAuthenticatedUser || (hasAccessToken && isFetching);
+  const shouldShowUserUI = isAuthenticatedUser || (hasAccessToken && isFetching);
 
   const handleLoginClick = () => {
     openModal('socialLogin');
@@ -57,7 +56,7 @@ const Home = () => {
   return (
     <>
       <Header
-        isLoggedIn={isUserMenuVisible}
+        isLoggedIn={shouldShowUserUI}
         onLoginClick={handleLoginClick}
         onLogoClick={handleMoveToHome}
       />
@@ -113,7 +112,7 @@ const Home = () => {
             />
           </Flex>
           <Flex gap={8} width="80%" css={ButtonWrapperStyle}>
-            {isAuthenticatedUser ? (
+            {shouldShowUserUI ? (
               <>
                 <Button
                   onClick={handleCreateRoutieSpace}
