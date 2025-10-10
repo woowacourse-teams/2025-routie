@@ -5,7 +5,7 @@ import theme from '@/styles/theme';
 const HeaderStyle = css`
   width: 100%;
   height: 8rem;
-  background-color: ${theme.home.gray};
+  background-color: ${theme.colors.white};
 `;
 
 const HomeButtonStyle = css`
