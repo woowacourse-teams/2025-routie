@@ -31,11 +31,12 @@ const Home = () => {
     useRoutieSpaceNavigation();
   const { openModal } = useModal();
   const { showToast } = useToastContext();
-  const { error } = useUserQuery();
+  const { data: user, error, isFetching } = useUserQuery();
 
-  const accessToken = getAccessToken();
-  const role = localStorage.getItem('role');
-  const isAuthenticatedUser = Boolean(accessToken) && role === 'USER';
+  const hasAccessToken = Boolean(getAccessToken());
+  const isAuthenticatedUser = user?.role === 'USER';
+  const isUserMenuVisible =
+    isAuthenticatedUser || (hasAccessToken && isFetching);
 
   const handleLoginClick = () => {
     openModal('socialLogin');
@@ -54,7 +55,7 @@ const Home = () => {
   return (
     <>
       <Header>
-        {isAuthenticatedUser ? (
+        {isUserMenuVisible ? (
           <UserMenuButton />
         ) : (
           <Button
