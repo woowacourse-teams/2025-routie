@@ -12,7 +12,6 @@ const CreateRoutieSpaceButton = () => {
   return (
     <Button
       variant="primary"
-      width="100%"
       onClick={handleCreateRoutieSpace}
       css={css`
         max-width: 25rem;
