@@ -1,6 +1,5 @@
 interface HomeButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  isHome?: boolean;
   onClick: () => void;
 }
 

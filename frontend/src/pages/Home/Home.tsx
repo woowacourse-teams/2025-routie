@@ -9,7 +9,6 @@ import { useModal } from '@/@common/contexts/ModalContext';
 import { useToastContext } from '@/@common/contexts/useToastContext';
 import { getAccessToken } from '@/@common/utils/getAccessToken';
 import GoToLoginButton from '@/domains/auth/components/GoToLoginButton/GoToLoginButton';
-import UserMenuButton from '@/domains/auth/components/UserMenuButton/UserMenuButton';
 import { useUserQuery } from '@/domains/auth/queries/useAuthQuery';
 import theme from '@/styles/theme';
 
@@ -27,8 +26,11 @@ import InfoCard from './components/InfoCard/InfoCard';
 import { useRoutieSpaceNavigation } from './hooks/useRoutieSpaceNavigation';
 
 const Home = () => {
-  const { handleCreateRoutieSpace, handleMoveToManageRoutieSpace } =
-    useRoutieSpaceNavigation();
+  const {
+    handleMoveToHome,
+    handleCreateRoutieSpace,
+    handleMoveToManageRoutieSpace,
+  } = useRoutieSpaceNavigation();
   const { openModal } = useModal();
   const { showToast } = useToastContext();
   const { data: user, error, isFetching } = useUserQuery();
@@ -54,24 +56,14 @@ const Home = () => {
 
   return (
     <>
-      <Header>
-        {isUserMenuVisible ? (
-          <UserMenuButton />
-        ) : (
-          <Button
-            variant="primary"
-            width="fit-content"
-            onClick={handleLoginClick}
-          >
-            <Text color={theme.colors.white} variant="body">
-              로그인
-            </Text>
-          </Button>
-        )}
-      </Header>
+      <Header
+        isLoggedIn={isUserMenuVisible}
+        onLoginClick={handleLoginClick}
+        onLogoClick={handleMoveToHome}
+      />
       <Flex
         direction="column"
-        height="calc(100dvh - 7.1rem)"
+        height="calc(100dvh - 8rem)"
         padding={5}
         css={HomepageStyle}
       >
