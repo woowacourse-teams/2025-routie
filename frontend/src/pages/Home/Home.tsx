@@ -33,11 +33,11 @@ const Home = () => {
   } = useRoutieSpaceNavigation();
   const { openModal } = useModal();
   const { showToast } = useToastContext();
-  const { error } = useUserQuery();
+  const { data: user, error, isFetching } = useUserQuery();
 
-  const accessToken = getAccessToken();
-  const role = localStorage.getItem('role');
-  const isAuthenticatedUser = Boolean(accessToken) && role === 'USER';
+  const hasAccessToken = Boolean(getAccessToken());
+  const isAuthenticatedUser = user?.role === 'USER';
+  const shouldShowUserUI = isAuthenticatedUser || (hasAccessToken && isFetching);
 
   const handleLoginClick = () => {
     openModal('socialLogin');
@@ -56,7 +56,7 @@ const Home = () => {
   return (
     <>
       <Header
-        isLoggedIn={!!isAuthenticatedUser}
+        isLoggedIn={shouldShowUserUI}
         onLoginClick={handleLoginClick}
         onLogoClick={handleMoveToHome}
       />
@@ -112,7 +112,7 @@ const Home = () => {
             />
           </Flex>
           <Flex gap={8} width="80%" css={ButtonWrapperStyle}>
-            {isAuthenticatedUser ? (
+            {shouldShowUserUI ? (
               <>
                 <Button
                   onClick={handleCreateRoutieSpace}
