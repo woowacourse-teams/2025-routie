@@ -7,7 +7,7 @@ const KakaoMapWrapperStyle = css`
 
   overflow: hidden;
 
-  width: calc(100vw - 50rem);
+  width: 100vw;
   height: 100vh;
   margin: 0;
 `;
