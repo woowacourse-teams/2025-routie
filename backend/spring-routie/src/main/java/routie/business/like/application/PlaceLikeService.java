@@ -1,37 +1,16 @@
 package routie.business.like.application;
 
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import routie.business.place.domain.Place;
-import routie.business.place.domain.PlaceRepository;
-import routie.business.like.domain.PlaceLikeRepository;
-import routie.business.like.domain.PlaceLike;
-import routie.business.routiespace.domain.RoutieSpace;
-import routie.business.routiespace.domain.RoutieSpaceRepository;
-import routie.global.exception.domain.BusinessException;
-import routie.global.exception.domain.ErrorCode;
+import routie.business.authentication.domain.Role;
+import routie.business.like.ui.dto.response.LikedPlacesResponse;
+import routie.business.participant.domain.Participant;
 
-@Service
-@RequiredArgsConstructor
-@Transactional(readOnly = true)
-public class PlaceLikeService {
+public interface PlaceLikeService<T extends Participant> {
 
-    private final PlaceLikeRepository placeLikeRepository;
-    private final RoutieSpaceRepository routieSpaceRepository;
-    private final PlaceRepository placeRepository;
+    void likePlace(Long placeId, String routieSpaceIdentifier, T participant);
 
-    @Transactional
-    public void likePlace(final Long placeId, final String routieSpaceIdentifier) {
-        final RoutieSpace routieSpace = routieSpaceRepository.findByIdentifier(routieSpaceIdentifier)
-                .orElseThrow(() -> new BusinessException(ErrorCode.ROUTIE_SPACE_NOT_FOUND_BY_IDENTIFIER));
+    void removePlaceLike(Long placeId, String routieSpaceIdentifier, T participant);
 
-        final Place place = placeRepository.findByIdAndRoutieSpace(placeId, routieSpace)
-                .orElseThrow(() -> new BusinessException(
-                        ErrorCode.PLACE_NOT_FOUND_IN_ROUTIE_SPACE,
-                        "루티 스페이스 내에서 해당하는 장소를 찾을 수 없습니다: " + placeId
-                ));
+    LikedPlacesResponse getLikedPlaces(String routieSpaceIdentifier, T participant);
 
-        placeLikeRepository.save(new PlaceLike(place));
-    }
+    Role getRole();
 }

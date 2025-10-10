@@ -1,6 +1,6 @@
-import { memo, useCallback } from 'react';
+/** @jsxImportSource @emotion/react */
 
-import { css } from '@emotion/react';
+import { memo, useCallback } from 'react';
 
 import Button from '@/@common/components/Button/Button';
 import Flex from '@/@common/components/Flex/Flex';
@@ -31,30 +31,49 @@ const RoutieSpaceListItem = ({
   );
 
   return (
-    <li css={RoutieSpaceListItemStyle} onClick={handleClick}>
-      <Flex flex={1} direction="column" alignItems="flex-start" gap={0.5}>
-        <Text variant="subTitle">{name}</Text>
-        <Text variant="caption">
-          {date.toLocaleString('ko-KR', {
-            year: 'numeric',
-            month: '2-digit',
-            day: '2-digit',
-            hour: '2-digit',
-            minute: '2-digit',
-          })}
-        </Text>
+    <li css={RoutieSpaceListItemStyle}>
+      <Flex flex={1} direction="column" gap={0.5}>
+        <Flex
+          direction="column"
+          gap={0.5}
+          alignItems="flex-start"
+          margin="0 0 12rem 0"
+        >
+          <Text variant="subTitle">{name}</Text>
+          <Text variant="caption">
+            {date.toLocaleString('ko-KR', {
+              year: 'numeric',
+              month: '2-digit',
+              day: '2-digit',
+              hour: '2-digit',
+              minute: '2-digit',
+            })}
+          </Text>
+        </Flex>
+        <Flex gap={1}>
+          <Button
+            variant="primary"
+            width="50%"
+            radius="sm"
+            padding="0.8rem 0.6rem"
+            onClick={handleClick}
+          >
+            <Text variant="caption" color={theme.colors.white}>
+              수정
+            </Text>
+          </Button>
+          <Button
+            variant="dangerSecondary"
+            width="50%"
+            padding="0.8rem 0.6rem"
+            onClick={handleDelete}
+          >
+            <Text variant="caption" color={theme.colors.white}>
+              삭제
+            </Text>
+          </Button>
+        </Flex>
       </Flex>
-      <Button
-        width="5rem"
-        onClick={handleDelete}
-        css={css`
-          &:hover {
-            background-color: ${theme.colors.red[50]};
-          }
-        `}
-      >
-        <Text variant="body">삭제</Text>
-      </Button>
     </li>
   );
 };

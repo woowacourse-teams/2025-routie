@@ -11,6 +11,7 @@ import logo from '@/assets/icons/logo.png';
 import logout from '@/assets/icons/logout.svg';
 import pin from '@/assets/icons/pin.svg';
 import collectPlace from '@/assets/icons/place-home.svg';
+import plusRound from '@/assets/icons/plus-round.svg';
 import plus from '@/assets/icons/plus.svg';
 import scroll from '@/assets/icons/scroll.svg';
 import search from '@/assets/icons/search.svg';
@@ -34,6 +35,7 @@ const allIcons = {
   pin,
   plus,
   scroll,
+  plusRound,
   search,
   trash,
   closeRed,

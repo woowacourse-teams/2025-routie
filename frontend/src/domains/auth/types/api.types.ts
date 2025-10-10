@@ -12,7 +12,7 @@ interface KakaoAccessTokenResponseType {
 }
 
 interface UserNameResponseType {
-  nickName: string;
+  nickname: string;
 }
 
 export type {

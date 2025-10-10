@@ -18,13 +18,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import routie.business.authentication.domain.jwt.JwtProcessor;
+import routie.business.participant.domain.User;
+import routie.business.participant.domain.UserFixture;
+import routie.business.participant.domain.UserRepository;
 import routie.business.place.domain.PlaceFixture;
 import routie.business.place.ui.dto.request.PlaceCreateRequest;
 import routie.business.place.ui.dto.response.PlaceCreateResponse;
 import routie.business.routiespace.ui.dto.response.RoutieSpaceListResponse;
-import routie.business.user.domain.User;
-import routie.business.user.domain.UserFixture;
-import routie.business.user.domain.UserRepository;
 
 @DirtiesContext(classMode = ClassMode.AFTER_CLASS)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
