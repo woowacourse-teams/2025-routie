@@ -1,13 +1,12 @@
 import { useEffect } from 'react';
 
-import Button from '@/@common/components/Button/Button';
 import Flex from '@/@common/components/Flex/Flex';
 import Header from '@/@common/components/Header/Header';
 import Text from '@/@common/components/Text/Text';
 import { useModal } from '@/@common/contexts/ModalContext';
 import { useToastContext } from '@/@common/contexts/useToastContext';
 import { getAccessToken } from '@/@common/utils/getAccessToken';
-import GoToLoginButton from '@/domains/auth/components/GoToLoginButton/GoToLoginButton';
+import CreateRoutieButton from '@/domains/auth/components/CreateRoutieButton/CreateRoutieButton';
 import { useUserQuery } from '@/domains/auth/queries/useAuthQuery';
 import theme from '@/styles/theme';
 
@@ -22,40 +21,44 @@ import {
   linkStyle,
 } from './Home.styles';
 import PhoneFrame from './PhoneChatFrame/PhoneChatFrame';
+import { useRoutieSpaceNavigation } from './hooks/useRoutieSpaceNavigation';
 
 const Home = () => {
+  const { handleMoveToHome, handleCreateRoutieSpace } =
+    useRoutieSpaceNavigation();
   const { openModal } = useModal();
   const { showToast } = useToastContext();
   const { data: user, error, isFetching } = useUserQuery();
 
   const hasAccessToken = Boolean(getAccessToken());
   const isAuthenticatedUser = user?.role === 'USER';
-  const shouldShowUserUI = isAuthenticatedUser || (hasAccessToken && isFetching);
+  const shouldShowUserUI =
+    isAuthenticatedUser || (hasAccessToken && isFetching);
 
   const handleLoginClick = () => {
     openModal('socialLogin');
   };
+
+  useEffect(() => {
+    if (error) {
+      showToast({
+        message: '사용자 정보를 불러오는 중 에러가 발생했습니다.',
+        type: 'error',
+      });
+      console.error(error);
+    }
+  }, [error, showToast]);
 
   const FEEDBACK_URL =
     'https://docs.google.com/forms/d/e/1FAIpQLSfixG5-LD4kYYC3T0XueS7Ud7XHXbA53gJGxb60x4qwLl_4qA/viewform';
 
   return (
     <>
-      <Header>
-        {kakaoAccessToken ? (
-          <UserMenuButton />
-        ) : (
-          <Button
-            variant="primary"
-            width="fit-content"
-            onClick={handleLoginClick}
-          >
-            <Text color={theme.colors.white} variant="body">
-              로그인
-            </Text>
-          </Button>
-        )}
-      </Header>
+      <Header
+        isLoggedIn={shouldShowUserUI}
+        onLoginClick={handleLoginClick}
+        onLogoClick={handleMoveToHome}
+      />
       <div css={HomeScrollContainerStyle}>
         <div css={CircleStyle} />
         <div css={RectangleStyle} />
@@ -97,7 +100,11 @@ const Home = () => {
                     </Text>
                   </Flex>
                 </Flex>
-                <GoToLoginButton onClick={handleLoginClick} />
+                <CreateRoutieButton
+                  onClick={handleLoginClick}
+                  onAuthenticatedClick={handleCreateRoutieSpace}
+                  isAuthenticated={shouldShowUserUI}
+                />
               </Flex>
               <PhoneFrame />
             </Flex>
