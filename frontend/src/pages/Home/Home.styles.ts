@@ -2,65 +2,115 @@ import { css } from '@emotion/react';
 
 import theme from '@/styles/theme';
 
-const HomepageStyle = css`
-  background-color: ${theme.home.gray};
+const HomeScrollContainerStyle = css`
+  overflow-y: auto;
+  height: calc(100dvh - 8.1rem);
+`;
 
-  @media (width <= 970px) {
+const HomeContentStyle = css`
+  background-color: ${theme.colors.white};
+
+  @media (width <= 1200px) {
     height: auto;
   }
 `;
 
-const TitleTextStyle = css`
-  font-size: 4rem;
-`;
+const MainContentWrapperStyle = css`
+  position: relative;
+  z-index: 10;
 
-const SubTitleTextStyle = css`
-  font-size: 2.5rem;
-`;
-
-const VioletTextStyle = css`
-  font-size: 2.5rem;
-  color: ${theme.home.violet};
-`;
-
-const InfoCardsWrapperStyle = css`
-  padding: 5rem 0;
-
-  @media (width <= 970px) {
+  @media (width <= 1200px) {
     flex-direction: column;
-    gap: 3rem;
+    height: auto;
+    padding: 4rem 0;
   }
 `;
 
-const ButtonWrapperStyle = css`
-  @media (width <= 970px) {
-    flex-direction: column;
-    gap: 2rem;
-    max-width: 40rem;
+const CircleStyle = css`
+  position: fixed;
+  z-index: 0;
+  top: 57%;
+  left: 40%;
+  transform: translate(-50%, -50%);
+
+  width: 50vw;
+  min-width: 20rem;
+  max-width: 50rem;
+  height: 50vw;
+  min-height: 20rem;
+  max-height: 50rem;
+  border-radius: 50%;
+
+  background: ${theme.colors.blue[200]}50;
+`;
+
+const RectangleStyle = css`
+  position: fixed;
+  z-index: 0;
+  top: 37%;
+  left: 48%;
+  transform: translate(-30%, -50%);
+
+  width: 40vw;
+  min-width: 18rem;
+  max-width: 40rem;
+  height: 55vw;
+  min-height: 25rem;
+  max-height: 55rem;
+
+  background: ${theme.colors.blue[450]}60;
+`;
+
+const FeedbackTextStyle = css`
+  z-index: 10;
+`;
+
+const FeedbackButtonStyle = css`
+  position: relative;
+  z-index: 10;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  box-sizing: border-box;
+  width: 30rem;
+  padding: 2rem;
+  border-radius: ${theme.radius.sm};
+
+  color: ${theme.colors.white};
+
+  background-color: ${theme.colors.blue[450]};
+  box-shadow: 0 0.8rem 1.6rem rgb(0 0 0 / 26%);
+
+  &:hover {
+    color: ${theme.colors.white};
+    background-color: ${theme.colors.blue[200]};
+  }
+
+  @media (width <= 800px) {
+    width: 100%;
+    max-width: 28rem;
   }
 `;
 
-const CreateButtonStyle = css`
-  justify-content: center;
-  max-width: 31rem;
-  background-color: ${theme.home.violet};
-  box-shadow: 0 8px 16px rgb(0 0 0 / 16%);
-`;
+const linkStyle = css`
+  color: inherit;
+  text-decoration: none;
 
-const ContinueButtonStyle = css`
-  justify-content: center;
-  max-width: 31rem;
-  background-color: ${theme.colors.white};
-  box-shadow: 0 8px 16px rgb(0 0 0 / 16%);
+  &:focus-visible {
+    outline: 2px solid ${theme.colors.blue[450]};
+    outline-offset: 2px;
+  }
 `;
 
 export {
-  HomepageStyle,
-  TitleTextStyle,
-  SubTitleTextStyle,
-  VioletTextStyle,
-  InfoCardsWrapperStyle,
-  ButtonWrapperStyle,
-  CreateButtonStyle,
-  ContinueButtonStyle,
+  HomeScrollContainerStyle,
+  HomeContentStyle,
+  MainContentWrapperStyle,
+  CircleStyle,
+  RectangleStyle,
+  FeedbackTextStyle,
+  FeedbackButtonStyle,
+  linkStyle,
 };

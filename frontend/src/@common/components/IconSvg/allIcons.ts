@@ -7,7 +7,6 @@ import close from '@/assets/icons/close.svg';
 import closeSheetIcon from '@/assets/icons/closeSheet.svg';
 import copy from '@/assets/icons/copy.svg';
 import drag from '@/assets/icons/drag.svg';
-import list from '@/assets/icons/list.svg';
 import logo from '@/assets/icons/logo.png';
 import logout from '@/assets/icons/logout.svg';
 import menu from '@/assets/icons/menu.svg';
@@ -15,6 +14,7 @@ import pin from '@/assets/icons/pin.svg';
 import collectPlace from '@/assets/icons/place-home.svg';
 import plusRound from '@/assets/icons/plus-round.svg';
 import plus from '@/assets/icons/plus.svg';
+import scroll from '@/assets/icons/scroll.svg';
 import search from '@/assets/icons/search.svg';
 import thumbsUp from '@/assets/icons/thumbs-up.svg';
 import disableTrash from '@/assets/icons/trash-disable.svg';
@@ -36,6 +36,7 @@ const allIcons = {
   pin,
   menu,
   plus,
+  scroll,
   plusRound,
   search,
   trash,
@@ -43,7 +44,6 @@ const allIcons = {
   thumbsUp,
   disableTrash,
   user,
-  list,
 } as const;
 
 export default allIcons;
