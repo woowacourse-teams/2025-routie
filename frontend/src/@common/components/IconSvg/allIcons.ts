@@ -20,6 +20,7 @@ import routeTabSelect from '@/assets/icons/route-tab-select.svg';
 import routeTab from '@/assets/icons/route-tab.svg';
 import scroll from '@/assets/icons/scroll.svg';
 import search from '@/assets/icons/search.svg';
+import share from '@/assets/icons/share.svg';
 import thumbsUp from '@/assets/icons/thumbs-up.svg';
 import disableTrash from '@/assets/icons/trash-disable.svg';
 import trash from '@/assets/icons/trash.svg';
@@ -52,6 +53,7 @@ const allIcons = {
   thumbsUp,
   disableTrash,
   user,
+  share,
 } as const;
 
 export default allIcons;
