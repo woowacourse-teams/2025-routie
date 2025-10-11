@@ -11,7 +11,10 @@ import { usePlaceLikes } from '@/domains/places/hooks/usePlaceLikes';
 import { usePlaceList } from '@/domains/places/hooks/usePlaceList';
 import { useRoutieList } from '@/domains/routie/hooks/useRoutieList';
 import { useGoogleEventTrigger } from '@/libs/googleAnalytics/hooks/useGoogleEventTrigger';
-import { PlaceViewContainerStyle } from '@/pages/RoutieSpace/components/PlaceView/PlaceView.styles';
+import {
+  PlaceListContainerStyle,
+  PlaceViewContainerStyle,
+} from '@/pages/RoutieSpace/components/PlaceView/PlaceView.styles';
 import theme from '@/styles/theme';
 
 const PlaceView = () => {
@@ -82,12 +85,7 @@ const PlaceView = () => {
   );
 
   return (
-    <Flex
-      css={PlaceViewContainerStyle}
-      direction="column"
-      height="100%"
-      padding="1rem 0"
-    >
+    <Flex css={PlaceViewContainerStyle} direction="column" height="100%">
       <Flex justifyContent="space-between" padding="0 1rem 2rem">
         <Text variant="subTitle">장소 목록</Text>
         <Button variant="primary" onClick={handleOpenAddModalClick} width="20%">
@@ -110,10 +108,10 @@ const PlaceView = () => {
       <Flex
         direction="column"
         justifyContent="flex-start"
-        gap={2}
-        css={{ overflowY: 'auto' }}
+        gap={1}
+        css={PlaceListContainerStyle}
         height="100%"
-        padding="0 0 3rem 0"
+        padding={1}
       >
         {placeList?.map((place) => {
           const selected = routieIdList.includes(place.id);
