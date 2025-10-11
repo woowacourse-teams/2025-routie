@@ -16,7 +16,7 @@ const InvalidBorder = css`
 
 const RoutieSpaceNameInputStyle = (invalidNameLength: boolean) => css`
   width: 100%;
-  max-width: 38rem;
+  max-width: 41rem;
   margin: 0;
   padding: 0.4rem;
   border: none;
