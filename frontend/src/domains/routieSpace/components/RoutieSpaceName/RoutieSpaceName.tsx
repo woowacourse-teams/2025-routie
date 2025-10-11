@@ -46,7 +46,7 @@ const RoutieSpaceName = () => {
           disabled={isLoading}
           padding="0.6rem 0.8rem"
         >
-          <Text variant="caption" color={theme.colors.white}>
+          <Text variant="label" color={theme.colors.white}>
             {isEditing ? '저장' : '수정'}
           </Text>
         </Button>
