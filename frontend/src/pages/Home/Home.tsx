@@ -39,6 +39,10 @@ const Home = () => {
     openModal('socialLogin');
   };
 
+  const handleCreateRoutieButtonClick = isAuthenticatedUser
+    ? handleCreateRoutieSpace
+    : handleLoginClick;
+
   useEffect(() => {
     if (error) {
       showToast({
@@ -100,11 +104,7 @@ const Home = () => {
                     </Text>
                   </Flex>
                 </Flex>
-                <CreateRoutieButton
-                  onClick={handleLoginClick}
-                  onAuthenticatedClick={handleCreateRoutieSpace}
-                  isAuthenticated={shouldShowUserUI}
-                />
+                <CreateRoutieButton onClick={handleCreateRoutieButtonClick} />
               </Flex>
               <PhoneFrame />
             </Flex>
