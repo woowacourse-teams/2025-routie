@@ -68,7 +68,7 @@ public class PlaceControllerV1 {
             @PathVariable final long placeId,
             @RequestBody @Valid final UpdateHashtagsRequest updateHashTagsRequest
     ) {
-        final UpdateHashtagsResponse response = placeService.replaceHashtags(
+        final UpdateHashtagsResponse response = placeService.modifyHashtags(
                 routieSpaceIdentifier,
                 placeId,
                 updateHashTagsRequest.hashtags()

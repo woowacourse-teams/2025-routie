@@ -85,7 +85,7 @@ public class PlaceService {
     }
 
     @Transactional
-    public UpdateHashtagsResponse replaceHashtags(
+    public UpdateHashtagsResponse modifyHashtags(
             final String routieSpaceIdentifier,
             final long placeId,
             final List<String> hashTagNames
