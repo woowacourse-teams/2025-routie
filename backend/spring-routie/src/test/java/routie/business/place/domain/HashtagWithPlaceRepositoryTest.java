@@ -87,8 +87,8 @@ class HashtagWithPlaceRepositoryTest {
 
         // then
         final Place updatedPlace = placeRepository.findByIdAndRoutieSpace(place.getId(), routieSpace).orElseThrow();
-        assertThat(updatedPlace.getHashtagNames()).hasSize(2);
-        assertThat(updatedPlace.getHashtagNames()).containsAll(newHashtagNames);
+        assertThat(updatedPlace.getHashtags()).hasSize(2);
+        assertThat(updatedPlace.getHashtags().stream().map(Hashtag::getName)).containsAll(newHashtagNames);
     }
 
     @Test
@@ -107,7 +107,7 @@ class HashtagWithPlaceRepositoryTest {
         // then
         final Place updatedPlace = placeRepository.findByIdAndRoutieSpace(place.getId(), routieSpace).orElseThrow();
         assertThat(updatedPlace.getPlaceHashtags()).isEmpty();
-        assertThat(updatedPlace.getHashtagNames()).isEmpty();
+        assertThat(updatedPlace.getHashtags()).isEmpty();
     }
 
     @Test
@@ -159,7 +159,7 @@ class HashtagWithPlaceRepositoryTest {
 
         final Place savedPlace2 = placeRepository.findByIdAndRoutieSpace(place2.getId(), routieSpace).orElseThrow();
         assertThat(savedPlace2.getPlaceHashtags()).hasSize(1);
-        assertThat(savedPlace2.getHashtagNames()).containsExactly("산책");
+        assertThat(savedPlace2.getHashtags().stream().map(Hashtag::getName)).containsExactly("산책");
     }
 
     @Test

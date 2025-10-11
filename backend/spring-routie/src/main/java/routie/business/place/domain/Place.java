@@ -15,6 +15,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -153,17 +155,26 @@ public class Place {
                 && Objects.equals(otherPlace.getLongitude(), longitude);
     }
 
-    public void updateHashtags(final List<Hashtag> hashtags) {
-        this.placeHashtags.clear();
-        hashtags.forEach(hashtag -> {
-            PlaceHashtag placeHashtag = new PlaceHashtag(this, hashtag);
-            this.placeHashtags.add(placeHashtag);
-        });
+    public void updateHashtags(final List<Hashtag> newHashtags) {
+        Set<String> newHashtagNames = newHashtags.stream()
+                .map(Hashtag::getName)
+                .collect(Collectors.toSet());
+        Set<String> currentHashtagNames = placeHashtags.stream()
+                .map(placeHashtag -> placeHashtag.getHashtag().getName())
+                .collect(Collectors.toSet());
+
+        newHashtags.stream()
+                .filter(hashtag -> !currentHashtagNames.contains(hashtag.getName()))
+                .forEach(hashtag -> placeHashtags.add(new PlaceHashtag(this, hashtag)));
+
+        placeHashtags.removeIf(placeHashtag ->
+                !newHashtagNames.contains(placeHashtag.getHashtag().getName())
+        );
     }
 
-    public List<String> getHashtagNames() {
+    public List<Hashtag> getHashtags() {
         return placeHashtags.stream()
-                .map(ph -> ph.getHashtag().getName())
+                .map(PlaceHashtag::getHashtag)
                 .toList();
     }
 }
