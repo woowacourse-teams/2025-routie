@@ -2,8 +2,8 @@ interface KakaoLoginUriType {
   uri: string;
 }
 
-interface KakaoAccessTokenType {
+interface AccessTokenType {
   accessToken: string;
 }
 
-export type { KakaoLoginUriType, KakaoAccessTokenType };
+export type { KakaoLoginUriType, AccessTokenType };

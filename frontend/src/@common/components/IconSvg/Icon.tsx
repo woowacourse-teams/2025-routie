@@ -1,3 +1,4 @@
+/** @jsxImportSource @emotion/react */
 import { IconStyle } from './Icon.styles';
 import allIcons from './allIcons';
 

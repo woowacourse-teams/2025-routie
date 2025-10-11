@@ -9,6 +9,7 @@ import copy from '@/assets/icons/copy.svg';
 import drag from '@/assets/icons/drag.svg';
 import logo from '@/assets/icons/logo.png';
 import logout from '@/assets/icons/logout.svg';
+import menu from '@/assets/icons/menu.svg';
 import pin from '@/assets/icons/pin.svg';
 import collectPlace from '@/assets/icons/place-home.svg';
 import plusRound from '@/assets/icons/plus-round.svg';
@@ -33,6 +34,7 @@ const allIcons = {
   logo,
   logout,
   pin,
+  menu,
   plus,
   scroll,
   plusRound,

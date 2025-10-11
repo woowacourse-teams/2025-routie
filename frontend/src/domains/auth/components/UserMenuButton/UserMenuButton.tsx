@@ -1,3 +1,4 @@
+/** @jsxImportSource @emotion/react */
 import { useState } from 'react';
 
 import Icon from '@/@common/components/IconSvg/Icon';
@@ -35,7 +36,7 @@ const UserMenuButton = ({
   return (
     <div css={wrapperStyle}>
       <Icon
-        name="user"
+        name="menu"
         size={40}
         css={UserMenuIconStyle}
         onClick={handleProfileClick}

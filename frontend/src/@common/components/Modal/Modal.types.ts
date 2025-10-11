@@ -4,7 +4,7 @@ interface ModalProps {
   children: React.ReactNode;
 }
 
-type ModalType = 'login' | 'addPlace';
+type ModalType = 'login' | 'addPlace' | 'socialLogin';
 
 interface ModalStateType {
   type: ModalType | null;

@@ -1,5 +1,4 @@
 import Flex from '@/@common/components/Flex/Flex';
-import Header from '@/@common/components/Header/Header';
 import RoutieSpaceName from '@/domains/routieSpace/components/RoutieSpaceName/RoutieSpaceName';
 
 import ShareLinkButtonSection from './ShareLinkButtonSection';
@@ -16,9 +15,7 @@ const Sidebar = () => {
       gap={1.6}
       css={SidebarContainerStyle}
     >
-      <Header isHome={false}>
-        <RoutieSpaceName />
-      </Header>
+      <RoutieSpaceName />
       <ShareLinkButtonSection />
       <SidebarWhereSection />
     </Flex>

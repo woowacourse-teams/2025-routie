@@ -1,6 +1,7 @@
 import { useState } from 'react';
 
 import Flex from '@/@common/components/Flex/Flex';
+import { getAccessToken } from '@/@common/utils/getAccessToken';
 import UserMenuButton from '@/domains/auth/components/UserMenuButton/UserMenuButton';
 import KakaoMap from '@/domains/maps/components/KakaoMap/KakaoMap';
 
@@ -10,7 +11,7 @@ import { ContainerStyle } from './MapWithSideSheet.styles';
 
 const MapWithSideSheet = () => {
   const [open, setOpen] = useState(true);
-  const accessToken = localStorage.getItem('accessToken');
+  const accessToken = getAccessToken();
 
   return (
     <Flex>

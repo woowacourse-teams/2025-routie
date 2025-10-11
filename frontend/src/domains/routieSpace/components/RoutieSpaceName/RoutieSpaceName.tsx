@@ -1,6 +1,7 @@
 import Button from '@/@common/components/Button/Button';
 import Flex from '@/@common/components/Flex/Flex';
 import Text from '@/@common/components/Text/Text';
+import { getAccessToken } from '@/@common/utils/getAccessToken';
 import theme from '@/styles/theme';
 
 import { useRoutieSpace } from '../../hooks/useRoutieSpace';
@@ -18,7 +19,8 @@ const RoutieSpaceName = () => {
     handleClick,
     handleChange,
   } = useRoutieSpace();
-  const accessToken = localStorage.getItem('accessToken');
+  const accessToken = getAccessToken();
+  const role = localStorage.getItem('role');
 
   return (
     <Flex justifyContent="space-between" margin={0.4} gap={3}>
@@ -36,7 +38,7 @@ const RoutieSpaceName = () => {
           <Text variant="subTitle">{name}</Text>
         </Flex>
       )}
-      {accessToken && (
+      {accessToken && role === 'USER' && (
         <Button
           variant="primary"
           onClick={handleClick}
