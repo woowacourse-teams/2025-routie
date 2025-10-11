@@ -4,17 +4,16 @@ import theme from '@/styles/theme';
 
 const SheetBaseStyle = css`
   position: absolute;
-  z-index: 1000;
-  top: 1rem;
-  bottom: 1rem;
-  left: 1rem;
+  z-index: 1;
+  top: 0;
+  bottom: 0;
+  left: calc(100% + 1rem);
 
   display: flex;
   flex-direction: column;
 
   width: 40rem;
   min-height: 0;
-  border: 1px solid ${theme.colors.black};
   border-radius: ${theme.radius.sm};
 
   background-color: ${theme.colors.white};

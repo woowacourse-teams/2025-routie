@@ -4,8 +4,11 @@ import theme from '@/styles/theme';
 
 const UserMenuIconStyle = css`
   cursor: pointer;
+
+  box-sizing: border-box;
   padding: 0.8rem;
   border-radius: ${theme.radius.sm};
+
   background-color: ${theme.colors.white};
 
   &:hover {

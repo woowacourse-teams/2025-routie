@@ -10,9 +10,14 @@ const SidebarSectionStyle = (overflow: boolean) => css`
 `;
 
 const SidebarContainerStyle = css`
-  overflow: hidden;
-  padding-bottom: 1.6rem;
-  border-right: 1px solid ${theme.colors.black};
+  position: absolute;
+  z-index: 1000;
+  top: 1rem;
+  bottom: 1rem;
+  left: 1rem;
+
+  display: flex;
+  flex-direction: column;
 `;
 
 const RoutieSectionScrollStyle = css`
