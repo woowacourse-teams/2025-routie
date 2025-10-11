@@ -1,5 +1,6 @@
 package routie.business.place.domain;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
@@ -8,9 +9,14 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -60,6 +66,9 @@ public class Place {
     @LastModifiedDate
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
+
+    @OneToMany(mappedBy = "place", cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true)
+    private List<PlaceHashtag> placeHashtags = new ArrayList<>();
 
     public Place(
             final String name,
@@ -144,5 +153,28 @@ public class Place {
     public boolean hasSameCoordinate(final Place otherPlace) {
         return Objects.equals(otherPlace.getLatitude(), latitude)
                 && Objects.equals(otherPlace.getLongitude(), longitude);
+    }
+
+    public void updateHashtags(final List<Hashtag> newHashtags) {
+        Set<String> newHashtagNames = newHashtags.stream()
+                .map(Hashtag::getName)
+                .collect(Collectors.toSet());
+        Set<String> currentHashtagNames = placeHashtags.stream()
+                .map(placeHashtag -> placeHashtag.getHashtag().getName())
+                .collect(Collectors.toSet());
+
+        newHashtags.stream()
+                .filter(hashtag -> !currentHashtagNames.contains(hashtag.getName()))
+                .forEach(hashtag -> placeHashtags.add(new PlaceHashtag(this, hashtag)));
+
+        placeHashtags.removeIf(placeHashtag ->
+                !newHashtagNames.contains(placeHashtag.getHashtag().getName())
+        );
+    }
+
+    public List<Hashtag> getHashtags() {
+        return placeHashtags.stream()
+                .map(PlaceHashtag::getHashtag)
+                .toList();
     }
 }
