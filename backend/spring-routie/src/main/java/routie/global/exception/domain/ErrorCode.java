@@ -92,6 +92,11 @@ public enum ErrorCode {
             "휴무일은 null일 수 없습니다.",
             HttpStatus.BAD_REQUEST
     ),
+    HASHTAG_LENGTH_INVALID(
+            "1012",
+            "해시태그의 길이는 1자 이상 8자 이하이어야 합니다.",
+            HttpStatus.BAD_REQUEST
+    ),
 
     // SearchedPlace Validation
     SEARCHED_PLACE_ID_REQUIRED(

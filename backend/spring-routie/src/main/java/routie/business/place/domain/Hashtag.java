@@ -13,12 +13,13 @@ import jakarta.persistence.Table;
 import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import routie.business.routiespace.domain.RoutieSpace;
+import routie.global.exception.domain.BusinessException;
+import routie.global.exception.domain.ErrorCode;
 
 @Entity
 @Getter
@@ -44,7 +45,14 @@ public class Hashtag {
     private LocalDateTime createdAt;
 
     public Hashtag(final String name, final RoutieSpace routieSpace) {
+        validateName(name);
         this.name = name;
         this.routieSpace = routieSpace;
+    }
+
+    private void validateName(final String name) {
+        if (name.isEmpty() || name.length() > 8) {
+            throw new BusinessException(ErrorCode.HASHTAG_LENGTH_INVALID);
+        }
     }
 }
