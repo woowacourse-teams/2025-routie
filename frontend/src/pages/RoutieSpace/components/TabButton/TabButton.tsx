@@ -1,3 +1,4 @@
+/** @jsxImportSource @emotion/react */
 import Icon from '@/@common/components/IconSvg/Icon';
 import Text from '@/@common/components/Text/Text';
 import theme from '@/styles/theme';
