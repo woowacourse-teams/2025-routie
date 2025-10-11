@@ -30,8 +30,13 @@ const SearchPlace = ({
           <SearchAddress addressType={addressType} address={address} />
         </Flex>
       </Flex>
-      <Button onClick={() => handleSubmit()} variant="primary" width="20%">
-        <Text variant="caption" color={theme.colors.white}>
+      <Button
+        onClick={() => handleSubmit()}
+        variant="primary"
+        width="20%"
+        padding="0.6rem 0.8rem"
+      >
+        <Text variant="label" color={theme.colors.white}>
           추가하기
         </Text>
       </Button>

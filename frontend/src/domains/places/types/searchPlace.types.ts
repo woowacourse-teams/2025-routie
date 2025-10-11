@@ -1,9 +1,5 @@
 import { SearchedPlaceType } from './place.types';
 
-interface SearchBoxProps {
-  onClose: () => void;
-}
-
 interface SearchEmptyStateProps {
   keyword: string;
 }
@@ -27,7 +23,6 @@ interface SearchPlaceProps extends SearchAddressProps {
 }
 
 export type {
-  SearchBoxProps,
   SearchEmptyStateProps,
   SearchListProps,
   AddressType,

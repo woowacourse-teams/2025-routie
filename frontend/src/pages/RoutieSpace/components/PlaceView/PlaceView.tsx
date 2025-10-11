@@ -1,12 +1,11 @@
 import { useCallback } from 'react';
 
-import Button from '@/@common/components/Button/Button';
 import EmptyMessage from '@/@common/components/EmptyMessage/EmptyMessage';
 import Flex from '@/@common/components/Flex/Flex';
-import Text from '@/@common/components/Text/Text';
 import { useModal } from '@/@common/contexts/ModalContext';
 import { getAccessToken } from '@/@common/utils/getAccessToken';
 import PlaceCard from '@/domains/places/components/PlaceCard/PlaceCard';
+import SearchBox from '@/domains/places/components/SearchBox/SearchBox';
 import { usePlaceLikes } from '@/domains/places/hooks/usePlaceLikes';
 import { usePlaceList } from '@/domains/places/hooks/usePlaceList';
 import { useRoutieList } from '@/domains/routie/hooks/useRoutieList';
@@ -15,7 +14,6 @@ import {
   PlaceListContainerStyle,
   PlaceViewContainerStyle,
 } from '@/pages/RoutieSpace/components/PlaceView/PlaceView.styles';
-import theme from '@/styles/theme';
 
 const PlaceView = () => {
   const { placeList, handleDeletePlace } = usePlaceList();
@@ -86,14 +84,7 @@ const PlaceView = () => {
 
   return (
     <Flex css={PlaceViewContainerStyle} direction="column" height="100%">
-      <Flex justifyContent="space-between" padding="0 1rem 2rem">
-        <Text variant="subTitle">장소 목록</Text>
-        <Button variant="primary" onClick={handleOpenAddModalClick} width="20%">
-          <Text variant="caption" color={theme.colors.white}>
-            + 장소 추가
-          </Text>
-        </Button>
-      </Flex>
+      <SearchBox />
       {placeList?.length === 0 && (
         <Flex height="100%">
           <EmptyMessage

@@ -8,6 +8,8 @@ const ListStyle = css`
   width: 100%;
   max-height: 20rem;
   border: 1px solid ${theme.colors.gray[50]};
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
 
   background-color: ${theme.colors.white};
 `;
