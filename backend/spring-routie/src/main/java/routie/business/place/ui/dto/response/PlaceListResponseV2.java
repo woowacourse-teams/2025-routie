@@ -1,6 +1,7 @@
 package routie.business.place.ui.dto.response;
 
 import java.util.List;
+import routie.business.place.domain.Hashtag;
 import routie.business.place.domain.Place;
 
 public record PlaceListResponseV2(
@@ -21,9 +22,14 @@ public record PlaceListResponseV2(
             String addressName,
             Double longitude,
             Double latitude,
-            Long likeCount
+            Long likeCount,
+            List<String> hashTags
     ) {
         public static PlaceCardResponseV2 createPlaceWithLikeCount(final Place place, final Long likeCount) {
+            List<String> hashTagNames = place.getHashtags().stream()
+                    .map(Hashtag::getName)
+                    .toList();
+
             return new PlaceCardResponseV2(
                     place.getId(),
                     place.getName(),
@@ -31,7 +37,8 @@ public record PlaceListResponseV2(
                     place.getAddressName(),
                     place.getLongitude(),
                     place.getLatitude(),
-                    likeCount
+                    likeCount,
+                    hashTagNames
             );
         }
     }
