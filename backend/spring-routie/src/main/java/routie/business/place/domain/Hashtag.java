@@ -51,7 +51,7 @@ public class Hashtag {
     }
 
     private void validateName(final String name) {
-        if (name.isEmpty() || name.length() > 8) {
+        if (name.isEmpty() || name.length() > 7) {
             throw new BusinessException(ErrorCode.HASHTAG_LENGTH_INVALID);
         }
     }
