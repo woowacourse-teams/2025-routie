@@ -78,7 +78,7 @@ public class PlaceService {
                 routieSpace
         );
 
-        final List<Hashtag> hashtags = getDistinctHashtags(placeCreateRequest.hashTags(), routieSpace);
+        final List<Hashtag> hashtags = getDistinctHashtags(placeCreateRequest.hashtags(), routieSpace);
         place.addHashtags(hashtags);
 
         return new PlaceCreateResponse(placeRepository.save(place).getId());

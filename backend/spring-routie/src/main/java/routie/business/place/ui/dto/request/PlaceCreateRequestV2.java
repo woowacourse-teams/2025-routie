@@ -11,6 +11,6 @@ public record PlaceCreateRequestV2(
         @NotBlank String addressName,
         @NotNull Double longitude,
         @NotNull Double latitude,
-        @NotNull List<String> hashTags
+        @NotNull List<String> hashtags
 ) {
 }
