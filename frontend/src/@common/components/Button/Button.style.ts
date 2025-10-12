@@ -16,6 +16,7 @@ const buttonVariant: Record<ButtonVariantType, SerializedStyles> = {
   `,
 
   danger: css`
+    border: 1px solid ${theme.colors.gray[100]};
     color: ${theme.colors.gray[300]};
 
     :hover {
