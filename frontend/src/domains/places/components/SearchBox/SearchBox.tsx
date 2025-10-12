@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import { css } from '@emotion/react';
 
@@ -7,10 +7,20 @@ import EmptyMessage from '@/@common/components/EmptyMessage/EmptyMessage';
 import Flex from '@/@common/components/Flex/Flex';
 import Input from '@/@common/components/Input/Input';
 import Text from '@/@common/components/Text/Text';
+import HashTag from '@/domains/places/components/HashTag/HashTag';
 import SearchList from '@/domains/places/components/SearchList/SearchList';
-import { ListStyle } from '@/domains/places/components/SearchList/SearchList.styles';
+import { usePlaceList } from '@/domains/places/hooks/usePlaceList';
 import { useSearchPlace } from '@/domains/places/hooks/useSearchPlace';
+import type { SearchedPlaceType } from '@/domains/places/types/place.types';
+import type { SearchedPlaceWithTags } from '@/domains/places/types/searchPlace.types';
 import theme from '@/styles/theme';
+
+import {
+  ContainerStyle,
+  SearchBoxWrapperStyle,
+  DropdownContainerStyle,
+  ListStyle,
+} from './SearchBox.styles';
 
 const SearchBox = () => {
   const {
@@ -22,9 +32,32 @@ const SearchBox = () => {
     searchedKeyword,
     isDropdownOpen,
     handleCloseDropdown,
+    handleReset,
   } = useSearchPlace();
 
+  const { handleAddPlace } = usePlaceList();
+
+  const [selectedPlace, setSelectedPlace] = useState<SearchedPlaceType | null>(
+    null,
+  );
   const containerRef = useRef<HTMLDivElement>(null);
+
+  const handleSelectPlace = (place: SearchedPlaceType) => {
+    setSelectedPlace(place);
+  };
+
+  const handleCancelHashTag = () => {
+    setSelectedPlace(null);
+  };
+
+  const handleSubmitHashTag: (
+    place: SearchedPlaceWithTags,
+  ) => Promise<void> = async (place) => {
+    await handleAddPlace(place);
+    setSelectedPlace(null);
+    handleCloseDropdown();
+    handleReset();
+  };
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -61,13 +94,7 @@ const SearchBox = () => {
         padding: 1rem 0;
       `}
     >
-      <Flex
-        gap={1}
-        direction="column"
-        css={css`
-          position: relative;
-        `}
-      >
+      <Flex gap={1} direction="column" css={ContainerStyle}>
         <Flex justifyContent="space-between" gap={1} padding="0 1rem">
           <Input
             id="search"
@@ -84,7 +111,7 @@ const SearchBox = () => {
             width="20%"
             type="button"
             onClick={handleSearch}
-            disabled={keyword ? false : true}
+            disabled={!keyword}
             padding="0.8rem 0.8rem"
           >
             <Text color={theme.colors.white} variant="label">
@@ -92,21 +119,30 @@ const SearchBox = () => {
             </Text>
           </Button>
         </Flex>
-        {isDropdownOpen && searchedKeyword && (
-          <Flex
-            direction="column"
-            css={css`
-              position: absolute;
-              z-index: 1000;
-              top: 100%;
-              right: 0;
-              left: 0;
 
-              margin-top: 0.5rem;
-            `}
-          >
-            {searchResults === null ? (
-              <ul css={ListStyle}>
+        {isDropdownOpen && searchedKeyword && (
+          <Flex direction="column" padding="0 1rem" css={SearchBoxWrapperStyle}>
+            {selectedPlace ? (
+              <Flex
+                direction="column"
+                gap={2}
+                padding={2}
+                css={DropdownContainerStyle}
+              >
+                <HashTag
+                  searchResult={selectedPlace}
+                  addressType={
+                    selectedPlace.roadAddressName ? '도로명' : '지번'
+                  }
+                  address={
+                    selectedPlace.roadAddressName ?? selectedPlace.addressName
+                  }
+                  onCancel={handleCancelHashTag}
+                  onSubmit={handleSubmitHashTag}
+                />
+              </Flex>
+            ) : searchResults === null ? (
+              <ul css={[DropdownContainerStyle, ListStyle]}>
                 <EmptyMessage
                   messages={['검색된 장소가 없습니다.', '장소를 검색해주세요!']}
                 />
@@ -114,10 +150,8 @@ const SearchBox = () => {
             ) : (
               <SearchList
                 searchResults={searchResults!}
-                onClose={() => {
-                  handleCloseDropdown();
-                }}
                 searchedKeyword={searchedKeyword}
+                onSelectPlace={handleSelectPlace}
               />
             )}
           </Flex>
