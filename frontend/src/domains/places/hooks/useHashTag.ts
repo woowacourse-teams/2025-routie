@@ -16,6 +16,13 @@ const useHashTag = () => {
     if (selectedTags.includes(tag)) {
       setSelectedTags((prev) => prev.filter((t) => t !== tag));
     } else {
+      if (selectedTags.length >= MAX_TAGS) {
+        showToast({
+          message: `해시태그는 최대 ${MAX_TAGS}개까지 추가할 수 있습니다.`,
+          type: 'info',
+        });
+        return;
+      }
       setSelectedTags((prev) => [...prev, tag]);
     }
   };
