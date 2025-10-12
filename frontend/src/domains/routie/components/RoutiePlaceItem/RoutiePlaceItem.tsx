@@ -25,10 +25,7 @@ const RoutiePlaceItem = ({
         isLast={isLast}
       />
 
-      <RoutiePlaceCard
-        place={place}
-        onDelete={() => onDelete(routie.placeId)}
-      />
+      <RoutiePlaceCard place={place} onDelete={onDelete} />
     </div>
   );
 };

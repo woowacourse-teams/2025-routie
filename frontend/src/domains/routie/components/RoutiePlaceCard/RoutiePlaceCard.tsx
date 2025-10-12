@@ -44,7 +44,7 @@ const RoutiePlaceCard = ({ place, onDelete }: RoutiePlaceCardProps) => {
 
   const handleDeleteClick = () => {
     setIsMenuOpen(false);
-    onDelete();
+    onDelete(place.id);
   };
 
   return (
