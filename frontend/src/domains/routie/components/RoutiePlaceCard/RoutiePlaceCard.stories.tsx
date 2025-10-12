@@ -1,8 +1,6 @@
-import { userEvent, within, expect, waitFor } from '@storybook/test';
-
 import RoutiePlaceCard from './RoutiePlaceCard';
 
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-webpack5';
 
 /**
  * RoutiePlaceCard 컴포넌트
