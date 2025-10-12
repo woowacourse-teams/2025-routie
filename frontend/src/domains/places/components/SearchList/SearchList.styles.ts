@@ -5,11 +5,13 @@ import theme from '@/styles/theme';
 const ListStyle = css`
   overflow-y: auto;
 
-  width: 100%;
+  width: 90%;
   max-height: 20rem;
   border: 1px solid ${theme.colors.gray[50]};
+  border-radius: ${theme.radius.sm};
 
   background-color: ${theme.colors.white};
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 10%), 0 2px 4px -1px rgb(0 0 0 / 6%);
 `;
 
 /**

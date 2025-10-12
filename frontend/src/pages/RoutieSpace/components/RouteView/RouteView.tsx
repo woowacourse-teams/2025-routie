@@ -5,24 +5,15 @@ import RoutieSection from '@/domains/routie/components/RoutieSection/RoutieSecti
 import { useRoutieList } from '@/domains/routie/hooks/useRoutieList';
 
 import {
-  RoutieSectionScrollStyle,
-  SidebarSectionStyle,
-} from './Sidebar.styles';
+  RouteViewContainerStyle,
+  RoutieListContainerStyle,
+} from './RouteView.styles';
 
-const SidebarWhereSection = () => {
+const RouteView = () => {
   const { routiePlaces } = useRoutieList();
 
   return (
-    <Flex
-      direction="column"
-      alignItems="flex-start"
-      justifyContent="flex-start"
-      width="90%"
-      height="100%"
-      gap={1.2}
-      padding={1.6}
-      css={SidebarSectionStyle(true)}
-    >
+    <Flex direction="column" height="100%" css={RouteViewContainerStyle}>
       <Flex padding={0.5} justifyContent="flex-start" gap={1}>
         <Text variant="subTitle">내가 갈 곳</Text>
         <Text variant="label" color="gray">
@@ -43,8 +34,10 @@ const SidebarWhereSection = () => {
       <Flex
         direction="column"
         justifyContent="flex-start"
-        padding={1.6}
-        css={RoutieSectionScrollStyle}
+        padding={1}
+        css={RoutieListContainerStyle}
+        height="100%"
+        gap={1}
       >
         <RoutieSection />
       </Flex>
@@ -52,4 +45,4 @@ const SidebarWhereSection = () => {
   );
 };
 
-export default SidebarWhereSection;
+export default RouteView;
