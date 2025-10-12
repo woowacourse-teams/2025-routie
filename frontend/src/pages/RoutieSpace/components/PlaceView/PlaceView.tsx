@@ -82,6 +82,10 @@ const PlaceView = () => {
     [ensureAuthenticated, handleDeleteLikePlace],
   );
 
+  const handlePlaceEdit = useCallback((placeId: number) => {
+    console.log(placeId);
+  }, []);
+
   return (
     <Flex css={PlaceViewContainerStyle} direction="column" height="100%">
       <SearchBox />
@@ -99,10 +103,8 @@ const PlaceView = () => {
       <Flex
         direction="column"
         justifyContent="flex-start"
-        gap={1}
         css={PlaceListContainerStyle}
         height="100%"
-        padding={1}
       >
         {placeList?.map((place) => {
           const selected = routieIdList.includes(place.id);
@@ -116,6 +118,7 @@ const PlaceView = () => {
               onSelect={handlePlaceSelect}
               onDelete={handlePlaceDelete}
               onLike={liked ? handleUnlikeButtonClick : handleLikeButtonClick}
+              onEdit={handlePlaceEdit}
             />
           );
         })}
