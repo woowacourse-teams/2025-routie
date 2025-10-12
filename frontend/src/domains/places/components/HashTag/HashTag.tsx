@@ -1,7 +1,10 @@
+import { useState } from 'react';
+
 import Button from '@/@common/components/Button/Button';
 import Flex from '@/@common/components/Flex/Flex';
 import Input from '@/@common/components/Input/Input';
 import Text from '@/@common/components/Text/Text';
+import { useToastContext } from '@/@common/contexts/useToastContext';
 import SearchAddress from '@/domains/places/components/SearchAddress/SearchAddress';
 import useHashTag from '@/domains/places/hooks/useHashTag';
 import type { HashTagInputProps } from '@/domains/places/types/searchPlace.types';
@@ -20,6 +23,8 @@ const HashTag = ({
   onCancel,
   onSubmit,
 }: HashTagInputProps) => {
+  const { showToast } = useToastContext();
+
   const {
     inputValue,
     selectedTags,
@@ -31,10 +36,17 @@ const HashTag = ({
   } = useHashTag();
 
   const handleSubmit = async () => {
-    await onSubmit({
-      ...searchResult,
-      hashTags: selectedTags,
-    });
+    try {
+      await onSubmit({
+        ...searchResult,
+        hashTags: selectedTags,
+      });
+    } catch (error) {
+      showToast({
+        message: '장소 추가에 실패했습니다. 다시 시도해주세요.',
+        type: 'error',
+      });
+    }
   };
 
   return (
