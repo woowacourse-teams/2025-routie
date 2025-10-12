@@ -10,11 +10,11 @@ public record PlaceReadResponse(
         String addressName,
         Double longitude,
         Double latitude,
-        List<String> hashTags
+        List<String> hashtags
 ) {
 
     public static PlaceReadResponse from(final Place place) {
-        List<String> hashTagNames = place.getHashtags().stream()
+        List<String> hashtagNames = place.getHashtags().stream()
                 .map(Hashtag::getName)
                 .toList();
 
@@ -24,7 +24,7 @@ public record PlaceReadResponse(
                 place.getAddressName(),
                 place.getLongitude(),
                 place.getLatitude(),
-                hashTagNames
+                hashtagNames
         );
     }
 }

@@ -79,7 +79,7 @@ public class PlaceService {
         );
 
         final List<Hashtag> hashtags = getDistinctHashtags(placeCreateRequest.hashTags(), routieSpace);
-        place.getHashtags().addAll(hashtags);
+        place.addHashtags(hashtags);
 
         return new PlaceCreateResponse(placeRepository.save(place).getId());
     }

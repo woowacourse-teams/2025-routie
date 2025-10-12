@@ -23,7 +23,7 @@ public record PlaceListResponseV2(
             Double longitude,
             Double latitude,
             Long likeCount,
-            List<String> hashTags
+            List<String> hashtags
     ) {
         public static PlaceCardResponseV2 createPlaceWithLikeCount(final Place place, final Long likeCount) {
             List<String> hashTagNames = place.getHashtags().stream()
