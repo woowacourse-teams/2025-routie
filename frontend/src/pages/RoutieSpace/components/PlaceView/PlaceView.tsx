@@ -9,7 +9,6 @@ import SearchBox from '@/domains/places/components/SearchBox/SearchBox';
 import { usePlaceLikes } from '@/domains/places/hooks/usePlaceLikes';
 import { usePlaceList } from '@/domains/places/hooks/usePlaceList';
 import { useRoutieList } from '@/domains/routie/hooks/useRoutieList';
-import { useGoogleEventTrigger } from '@/libs/googleAnalytics/hooks/useGoogleEventTrigger';
 import {
   PlaceListContainerStyle,
   PlaceViewContainerStyle,
@@ -21,7 +20,6 @@ const PlaceView = () => {
     usePlaceLikes();
   const { routieIdList, handleAddRoutie } = useRoutieList();
   const { openModal } = useModal();
-  const { triggerEvent } = useGoogleEventTrigger();
 
   const ensureAuthenticated = useCallback(() => {
     const accessToken = getAccessToken();
@@ -33,17 +31,6 @@ const PlaceView = () => {
 
     return true;
   }, [openModal]);
-
-  const handleOpenAddModalClick = useCallback(() => {
-    if (!ensureAuthenticated()) return;
-
-    triggerEvent({
-      action: 'click',
-      category: 'place',
-      label: '장소 추가하기 모달 열기 버튼',
-    });
-    openModal('addPlace');
-  }, [ensureAuthenticated, openModal, triggerEvent]);
 
   const handlePlaceSelect = useCallback(
     async (placeId: number, selected: boolean) => {
