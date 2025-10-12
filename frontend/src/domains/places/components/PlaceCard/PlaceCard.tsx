@@ -1,3 +1,4 @@
+/** @jsxImportSource @emotion/react */
 import { memo } from 'react';
 
 import Button from '@/@common/components/Button/Button';
