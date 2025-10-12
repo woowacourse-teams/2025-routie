@@ -59,6 +59,9 @@ const PlaceView = () => {
     async (placeId: number) => {
       if (!ensureAuthenticated()) return;
 
+      const confirmed = confirm('정말로 이 장소를 삭제하시겠습니까?');
+      if (!confirmed) return;
+
       await handleDeletePlace(placeId);
     },
     [ensureAuthenticated, handleDeletePlace],
