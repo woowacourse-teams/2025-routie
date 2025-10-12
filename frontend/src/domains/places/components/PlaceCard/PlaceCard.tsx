@@ -30,7 +30,13 @@ const PlaceCard = ({
       padding="1.6rem"
     >
       <Flex justifyContent="space-between" alignItems="flex-start" gap={1.6}>
-        <Flex direction="column" alignItems="flex-start" gap={1} flex={1}>
+        <Flex
+          direction="column"
+          alignItems="flex-start"
+          gap={1}
+          flex={1}
+          maxWidth="70%"
+        >
           <Text variant="body" ellipsis color={theme.colors.gray[300]}>
             {props.name}
           </Text>
