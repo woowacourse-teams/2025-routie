@@ -14,12 +14,13 @@ const useCardDrag = <T>(items: T[], setItems: (updated: T[]) => void) => {
     ) as HTMLElement;
 
     if (cardElement) {
-      // 카드 요소를 드래그 이미지로 설정 (오프셋은 마우스 포인터 위치)
-      e.dataTransfer.setDragImage(
-        cardElement,
-        e.nativeEvent.offsetX,
-        e.nativeEvent.offsetY,
-      );
+      // 카드 요소 기준으로 오프셋 재계산
+      const cardRect = cardElement.getBoundingClientRect();
+      const offsetX = e.clientX - cardRect.left;
+      const offsetY = e.clientY - cardRect.top;
+
+      // 카드 요소를 드래그 이미지로 설정 (카드 기준 오프셋)
+      e.dataTransfer.setDragImage(cardElement, offsetX, offsetY);
     }
   };
 
