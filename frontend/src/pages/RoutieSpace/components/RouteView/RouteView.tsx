@@ -37,7 +37,7 @@ const RouteView = () => {
         padding={1}
         css={RoutieListContainerStyle}
         height="100%"
-        gap={1}
+        gap={2.4}
       >
         <RoutieSection />
       </Flex>
