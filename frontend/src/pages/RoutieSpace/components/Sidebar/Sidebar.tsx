@@ -10,10 +10,11 @@ import RouteView from '@/pages/RoutieSpace/components/RouteView/RouteView';
 import TabButton from '@/pages/RoutieSpace/components/TabButton/TabButton';
 import theme from '@/styles/theme';
 
-import { SidebarContainerStyle } from './Sidebar.styles';
+import { SidebarContainerStyle, ToggleButtonStyle } from './Sidebar.styles';
 
 const Sidebar = () => {
   const [activeTab, setActiveTab] = useState<'place' | 'route'>('place');
+  const [isOpen, setIsOpen] = useState(true);
 
   const { showToast } = useToastContext();
   const shareLink = useShareLink();
@@ -27,17 +28,33 @@ const Sidebar = () => {
     }
   };
 
+  const tabButtonBorder = isOpen
+    ? `${theme.radius.sm}  0 0 ${theme.radius.sm}`
+    : `${theme.radius.sm}`;
+
   return (
-    <div css={SidebarContainerStyle}>
-      <Flex justifyContent="flex-start" height="100%" padding="1.6rem 0">
+    <div css={SidebarContainerStyle(isOpen)}>
+      <button css={ToggleButtonStyle} onClick={() => setIsOpen(!isOpen)}>
+        <Icon
+          name="arrowWhite"
+          size={20}
+          css={{
+            transform: `${isOpen ? 'rotate(180deg)' : 'rotate(0deg)'}`,
+            transition: 'transform 0.3s ease-in-out',
+          }}
+        />
+      </button>
+      <Flex justifyContent="flex-start" height="100%">
         <Flex
-          width="10%"
+          width="5.5rem"
           height="100%"
           css={{
             backgroundColor: `${theme.colors.white}`,
+            borderRadius: `${tabButtonBorder}`,
           }}
           direction="column"
           justifyContent="flex-start"
+          padding="1.6rem 0"
         >
           <Icon name="logo" size={34} css={{ marginBottom: '1rem' }} />
           <TabButton
@@ -61,10 +78,15 @@ const Sidebar = () => {
         </Flex>
         <Flex
           direction="column"
-          width="90%"
+          width="49.5rem"
           gap={1}
           justifyContent="flex-start"
           height="100%"
+          padding="1.6rem 0"
+          css={{
+            display: `${isOpen ? 'flex' : 'none'}`,
+            borderLeft: `1px solid ${theme.colors.gray[100]}`,
+          }}
         >
           <RoutieSpaceName />
           {activeTab === 'route' && <RouteView />}
