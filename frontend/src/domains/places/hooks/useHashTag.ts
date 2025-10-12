@@ -20,9 +20,19 @@ const useHashTag = () => {
     }
   };
 
+  const MAX_TAGS = 5;
+
   const handleAddTag = (tag: string) => {
     const trimmedTag = tag.trim();
     if (!trimmedTag) return;
+
+    if (selectedTags.length >= MAX_TAGS) {
+      showToast({
+        message: `해시태그는 최대 ${MAX_TAGS}개까지 추가할 수 있습니다.`,
+        type: 'info',
+      });
+      return;
+    }
 
     const formattedTag = trimmedTag.startsWith('#')
       ? trimmedTag
