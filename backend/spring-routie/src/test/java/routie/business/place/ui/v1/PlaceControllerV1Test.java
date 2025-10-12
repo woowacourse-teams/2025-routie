@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
+import java.util.List;
 import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -20,6 +21,7 @@ import routie.business.like.domain.PlaceLikeRepository;
 import routie.business.participant.domain.User;
 import routie.business.participant.domain.UserFixture;
 import routie.business.participant.domain.UserRepository;
+import routie.business.place.domain.Hashtag;
 import routie.business.place.domain.Place;
 import routie.business.place.domain.PlaceBuilder;
 import routie.business.place.domain.PlaceRepository;
@@ -66,6 +68,7 @@ public class PlaceControllerV1Test {
                 .latitude(10.123)
                 .routieSpace(testRoutieSpace)
                 .build();
+        testPlace.addHashtags(List.of(new Hashtag("hash", testRoutieSpace), new Hashtag("tag", testRoutieSpace)));
         placeRepository.save(testPlace);
 
         final User user = userRepository.save(UserFixture.emptyUser());
@@ -168,6 +171,7 @@ public class PlaceControllerV1Test {
         assertThat(responseBody).contains("roadAddressName");
         assertThat(responseBody).contains("longitude");
         assertThat(responseBody).contains("latitude");
+        assertThat(responseBody).contains("hashtags");
     }
 
     @Test
