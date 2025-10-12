@@ -52,6 +52,7 @@ const RoutiePlaceCard = ({ place, onDelete }: RoutiePlaceCardProps) => {
       data-card-element
       css={RoutiePlaceCardContainerStyle}
       padding="1.2rem"
+      flex={1}
     >
       <Flex justifyContent="space-between" gap={1.5}>
         <Flex direction="column" alignItems="flex-start" gap={1.1}>
