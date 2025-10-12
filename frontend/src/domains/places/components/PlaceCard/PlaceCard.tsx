@@ -56,7 +56,7 @@ const PlaceCard = ({
           </Text>
         </Button>
       </Flex>
-      <Flex justifyContent="space-between" alignItems="center">
+      <Flex justifyContent="space-between">
         <LikeButton
           count={props.likeCount}
           liked={liked}
