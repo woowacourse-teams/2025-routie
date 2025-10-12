@@ -56,7 +56,7 @@ const InputStyle = ({ variant, icon }: InputStyleProps) => css`
   &::placeholder {
     font-size: ${theme.font.size.label};
     font-weight: ${theme.font.weight.medium};
-    color: ${theme.colors.gray[50]};
+    color: ${theme.colors.gray[150]};
   }
 
   &:focus {
