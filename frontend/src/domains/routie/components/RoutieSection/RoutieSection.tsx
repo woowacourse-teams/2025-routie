@@ -1,9 +1,8 @@
 import { useCallback, useMemo } from 'react';
 
-import Flex from '@/@common/components/Flex/Flex';
 import { useCardDrag } from '@/@common/hooks/useCardDrag';
 import { usePlaceList } from '@/domains/places/hooks/usePlaceList';
-import RoutiePlaceCard from '@/domains/routie/components/RoutiePlaceCard/RoutiePlaceCard';
+import RoutiePlaceItem from '@/domains/routie/components/RoutiePlaceItem/RoutiePlaceItem';
 import { useRoutieList } from '@/domains/routie/hooks/useRoutieList';
 
 const RoutieSection = () => {
@@ -28,18 +27,18 @@ const RoutieSection = () => {
   return routiePlaces.map((routiePlace, index) => {
     const place = placeMap.get(routiePlace.placeId);
     if (!place) return null;
+
     return (
-      <div
+      <RoutiePlaceItem
         key={routiePlace.placeId}
-        {...getDragProps(index)}
-        css={{ width: '100%' }}
-      >
-        <RoutiePlaceCard
-          routie={routiePlace}
-          place={place!}
-          onDelete={handleDeleteRoutieClick}
-        />
-      </div>
+        routie={routiePlace}
+        place={place}
+        index={index}
+        isFirst={index === 0}
+        isLast={index === routiePlaces.length - 1}
+        onDelete={handleDeleteRoutieClick}
+        getDragProps={getDragProps}
+      />
     );
   });
 };
