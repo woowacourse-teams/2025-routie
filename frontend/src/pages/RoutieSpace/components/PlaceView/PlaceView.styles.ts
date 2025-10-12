@@ -9,6 +9,10 @@ const PlaceViewContainerStyle = css`
 
 const PlaceListContainerStyle = css`
   overflow-y: auto;
+
+  & > div:not(:last-child) {
+    border-bottom: 1px solid ${theme.colors.gray[100]};
+  }
 `;
 
 export { PlaceViewContainerStyle, PlaceListContainerStyle };
