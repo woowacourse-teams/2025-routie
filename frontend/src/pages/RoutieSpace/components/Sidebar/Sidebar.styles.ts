@@ -2,6 +2,8 @@ import { css } from '@emotion/react';
 
 import theme from '@/styles/theme';
 
+import { SIDEBAR_WIDTH_OPEN, SIDEBAR_WIDTH_CLOSED } from './width';
+
 const SidebarContainerStyle = (isOpen: boolean) => css`
   position: absolute;
   z-index: 1000;
@@ -12,7 +14,7 @@ const SidebarContainerStyle = (isOpen: boolean) => css`
   display: flex;
   flex-direction: column;
 
-  width: ${isOpen ? '55rem' : '5.5rem'};
+  width: ${isOpen ? SIDEBAR_WIDTH_OPEN : SIDEBAR_WIDTH_CLOSED};
   border-radius: ${theme.radius.sm};
 
   background-color: ${theme.colors.white};

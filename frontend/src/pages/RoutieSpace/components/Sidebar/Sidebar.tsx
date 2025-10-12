@@ -11,6 +11,7 @@ import TabButton from '@/pages/RoutieSpace/components/TabButton/TabButton';
 import theme from '@/styles/theme';
 
 import { SidebarContainerStyle, ToggleButtonStyle } from './Sidebar.styles';
+import { SIDEBAR_WIDTH_CLOSED, CONTENT_WIDTH } from './width';
 
 const Sidebar = () => {
   const [activeTab, setActiveTab] = useState<'place' | 'route'>('place');
@@ -46,7 +47,7 @@ const Sidebar = () => {
       </button>
       <Flex justifyContent="flex-start" height="100%">
         <Flex
-          width="5.5rem"
+          width={SIDEBAR_WIDTH_CLOSED}
           height="100%"
           css={{
             backgroundColor: `${theme.colors.white}`,
@@ -78,7 +79,7 @@ const Sidebar = () => {
         </Flex>
         <Flex
           direction="column"
-          width="49.5rem"
+          width={CONTENT_WIDTH}
           gap={1}
           justifyContent="flex-start"
           height="100%"
