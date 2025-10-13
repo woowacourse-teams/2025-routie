@@ -29,10 +29,6 @@ const ToggleButtonStyle = css`
   &:hover {
     box-shadow: 0 4px 12px rgb(0 0 0 / 15%);
   }
-
-  img {
-    filter: invert(1);
-  }
 `;
 
 const ToggleButtonIconStyle = (isOpen: boolean) => css`

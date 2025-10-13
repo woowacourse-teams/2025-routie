@@ -13,7 +13,7 @@ const SidebarToggleButton = ({
 }: SidebarToggleButtonProps) => {
   return (
     <button type="button" css={ToggleButtonStyle} onClick={handleToggle}>
-      <Icon name="arrowWhite" size={20} css={ToggleButtonIconStyle(isOpen)} />
+      <Icon name="arrow" size={20} css={ToggleButtonIconStyle(isOpen)} />
     </button>
   );
 };
