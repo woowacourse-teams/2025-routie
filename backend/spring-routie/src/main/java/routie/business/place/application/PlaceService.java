@@ -79,7 +79,7 @@ public class PlaceService {
                 routieSpace
         );
 
-        final List<Hashtag> hashtags = getDistinctHashtags(placeCreateRequest.hashtags(), routieSpace);
+        final List<Hashtag> hashtags = convertNamesToHashtags(placeCreateRequest.hashtags(), routieSpace);
         place.addHashtags(hashtags);
 
         return new PlaceCreateResponse(placeRepository.save(place).getId());
@@ -94,7 +94,7 @@ public class PlaceService {
         RoutieSpace routieSpace = getRoutieSpaceByIdentifier(routieSpaceIdentifier);
         Place place = getPlaceByIdAndRoutieSpace(placeId, routieSpace);
 
-        final List<Hashtag> newHashtags = getDistinctHashtags(updateHashtagsRequest.hashtags(), routieSpace);
+        final List<Hashtag> newHashtags = convertNamesToHashtags(updateHashtagsRequest.hashtags(), routieSpace);
         place.updateHashtags(newHashtags);
 
         List<String> updatedHashTagNames = place.getHashtags().stream()
@@ -104,9 +104,12 @@ public class PlaceService {
         return new UpdateHashtagsResponse(updatedHashTagNames);
     }
 
-    private List<Hashtag> getDistinctHashtags(final List<String> hashTagNames, final RoutieSpace routieSpace) {
-        Set<String> uniqueHashTagNames = new HashSet<>(hashTagNames);
-        return uniqueHashTagNames.stream()
+    private List<Hashtag> convertNamesToHashtags(final List<String> hashTagNames, final RoutieSpace routieSpace) {
+        Set<String> distinctHashTagNames = new HashSet<>(hashTagNames);
+        if (distinctHashTagNames.size() != hashTagNames.size()) {
+            throw new BusinessException(ErrorCode.HASHTAG_DUPLICATED);
+        }
+        return hashTagNames.stream()
                 .map(hashTagName -> getOrCreateHashtag(hashTagName, routieSpace))
                 .toList();
     }

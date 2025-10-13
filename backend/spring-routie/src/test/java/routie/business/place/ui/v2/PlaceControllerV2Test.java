@@ -278,18 +278,10 @@ public class PlaceControllerV2Test {
                 .extract().response();
 
         HttpStatus actualHttpStatus = HttpStatus.valueOf(response.getStatusCode());
-        HttpStatus expectedHttpStatus = HttpStatus.OK;
-
-        final PlaceCreateResponse placeCreateResponse = response.as(PlaceCreateResponse.class);
+        HttpStatus expectedHttpStatus = HttpStatus.BAD_REQUEST;
 
         // then
-        final PlaceReadResponse placeReadResponse = readPlaceWithV1(
-                emptyRoutieSpace.getIdentifier(),
-                placeCreateResponse.id()
-        );
         assertThat(actualHttpStatus).isEqualTo(expectedHttpStatus);
-        assertThat(placeReadResponse.name()).isEqualTo(placeCreateRequest.name());
-        assertThat(placeReadResponse.hashtags()).containsExactlyInAnyOrder("hash");
     }
 
     @Test
