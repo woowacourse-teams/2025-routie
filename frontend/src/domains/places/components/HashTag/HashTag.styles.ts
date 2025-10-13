@@ -4,7 +4,7 @@ import theme from '@/styles/theme';
 
 const PlaceInfoStyle = css`
   border-radius: ${theme.radius.sm};
-  background-color: ${theme.colors.blue[100]};
+  background-color: ${theme.colors.gray[50]};
 `;
 
 const SelectedTagsWrapperStyle = css`
