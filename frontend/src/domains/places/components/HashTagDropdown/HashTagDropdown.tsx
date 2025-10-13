@@ -85,30 +85,45 @@ const HashTagDropdown = ({
             </Text>
           </Button>
         </Flex>
-        {(selectedTags.length > 0 || previousTags.length > 0) && (
+
+        {selectedTags.filter((tag) => !previousTags.includes(tag)).length >
+          0 && (
           <Flex
             gap={0.6}
             justifyContent="flex-start"
             css={SelectedTagsWrapperStyle}
           >
-            {selectedTags.map((tag) => (
-              <HashTag
-                key={tag}
-                tag={tag}
-                isSelected={true}
-                onClick={() => handleToggleTag(tag)}
-              />
-            ))}
-            {previousTags
-              .filter((tag) => !selectedTags.includes(tag))
+            {selectedTags
+              .filter((tag) => !previousTags.includes(tag))
               .map((tag) => (
                 <HashTag
                   key={tag}
                   tag={tag}
-                  isSelected={false}
+                  isSelected={true}
                   onClick={() => handleToggleTag(tag)}
                 />
               ))}
+          </Flex>
+        )}
+        {previousTags.length > 0 && (
+          <Flex direction="column" gap={0.8} alignItems="flex-start">
+            <Text variant="caption" color={theme.colors.gray[300]}>
+              내가 사용했던 태그
+            </Text>
+            <Flex
+              gap={0.6}
+              justifyContent="flex-start"
+              css={SelectedTagsWrapperStyle}
+            >
+              {previousTags.map((tag) => (
+                <HashTag
+                  key={tag}
+                  tag={tag}
+                  isSelected={selectedTags.includes(tag)}
+                  onClick={() => handleToggleTag(tag)}
+                />
+              ))}
+            </Flex>
           </Flex>
         )}
       </Flex>
