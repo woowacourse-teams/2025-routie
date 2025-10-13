@@ -3,11 +3,13 @@ import { useState } from 'react';
 import Flex from '@/@common/components/Flex/Flex';
 import Icon from '@/@common/components/IconSvg/Icon';
 import { useToastContext } from '@/@common/contexts/useToastContext';
+import { useToggle } from '@/@common/hooks/useToggle';
 import RoutieSpaceName from '@/domains/routieSpace/components/RoutieSpaceName/RoutieSpaceName';
 import { useShareLink } from '@/domains/routieSpace/hooks/useShareLink';
 import { useRoutieSpaceNavigation } from '@/pages/Home/hooks/useRoutieSpaceNavigation';
 import PlaceView from '@/pages/RoutieSpace/components/PlaceView/PlaceView';
 import RouteView from '@/pages/RoutieSpace/components/RouteView/RouteView';
+import SidebarToggleButton from '@/pages/RoutieSpace/components/SIdebarToggleButton/SidebarToggleButton';
 import TabButton from '@/pages/RoutieSpace/components/TabButton/TabButton';
 import theme from '@/styles/theme';
 
@@ -16,8 +18,7 @@ import { SIDEBAR_WIDTH_CLOSED, CONTENT_WIDTH } from './width';
 
 const Sidebar = () => {
   const [activeTab, setActiveTab] = useState<'place' | 'route'>('place');
-  const [isOpen, setIsOpen] = useState(true);
-
+  const { isOpen, handleToggle } = useToggle();
   const { handleMoveToHome } = useRoutieSpaceNavigation();
   const { showToast } = useToastContext();
   const shareLink = useShareLink();
@@ -37,16 +38,7 @@ const Sidebar = () => {
 
   return (
     <div css={SidebarContainerStyle(isOpen)}>
-      <button css={ToggleButtonStyle} onClick={() => setIsOpen(!isOpen)}>
-        <Icon
-          name="arrowWhite"
-          size={20}
-          css={{
-            transform: `${isOpen ? 'rotate(180deg)' : 'rotate(0deg)'}`,
-            transition: 'transform 0.3s ease-in-out',
-          }}
-        />
-      </button>
+      <SidebarToggleButton isOpen={isOpen} handleToggle={handleToggle} />
       <Flex justifyContent="flex-start" height="100%">
         <Flex
           width={SIDEBAR_WIDTH_CLOSED}
