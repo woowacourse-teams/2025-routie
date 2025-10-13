@@ -48,7 +48,7 @@ const inputVariant: Record<InputVariantType, SerializedStyles> = {
 const InputStyle = ({ variant, icon }: InputStyleProps) => css`
   width: 100%;
   height: 3.5rem;
-  padding: 0.4rem 0.8rem;
+  padding: 0.4rem 1.2rem;
   border: 1px solid;
   border-radius: ${theme.radius.sm};
   ${icon ? 'padding-left: 2.5rem;' : ''}
@@ -62,7 +62,7 @@ const InputStyle = ({ variant, icon }: InputStyleProps) => css`
   &:focus {
     width: 100%;
     height: 3.5rem;
-    padding: 0.4rem 0.8rem;
+    padding: 0.4rem 1.2rem;
     border: 3px solid;
     ${icon ? 'padding-left: 2.5rem;' : ''}
 
