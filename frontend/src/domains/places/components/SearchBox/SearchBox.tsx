@@ -2,18 +2,15 @@ import { useEffect, useRef, useState } from 'react';
 
 import { css } from '@emotion/react';
 
-import Button from '@/@common/components/Button/Button';
 import EmptyMessage from '@/@common/components/EmptyMessage/EmptyMessage';
 import Flex from '@/@common/components/Flex/Flex';
 import Input from '@/@common/components/Input/Input';
-import Text from '@/@common/components/Text/Text';
-import HashTag from '@/domains/places/components/HashTag/HashTag';
+import HashTagDropdown from '@/domains/places/components/HashTagDropdown/HashTagDropdown';
 import SearchList from '@/domains/places/components/SearchList/SearchList';
 import { usePlaceList } from '@/domains/places/hooks/usePlaceList';
 import { useSearchPlace } from '@/domains/places/hooks/useSearchPlace';
 import type { SearchedPlaceType } from '@/domains/places/types/place.types';
 import type { SearchedPlaceWithTags } from '@/domains/places/types/searchPlace.types';
-import theme from '@/styles/theme';
 
 import {
   ContainerStyle,
@@ -27,7 +24,6 @@ const SearchBox = () => {
     keyword,
     searchResults,
     handleChangeKeyword,
-    handleSearch,
     handleEnterSearch,
     searchedKeyword,
     isDropdownOpen,
@@ -114,7 +110,7 @@ const SearchBox = () => {
                 padding={2}
                 css={DropdownContainerStyle}
               >
-                <HashTag
+                <HashTagDropdown
                   searchResult={selectedPlace}
                   addressType={
                     selectedPlace.roadAddressName ? '도로명' : '지번'
