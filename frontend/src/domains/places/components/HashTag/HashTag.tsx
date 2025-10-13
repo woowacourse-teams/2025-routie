@@ -1,139 +1,32 @@
 import Button from '@/@common/components/Button/Button';
-import Flex from '@/@common/components/Flex/Flex';
-import Input from '@/@common/components/Input/Input';
 import Text from '@/@common/components/Text/Text';
-import { useToastContext } from '@/@common/contexts/useToastContext';
-import SearchAddress from '@/domains/places/components/SearchAddress/SearchAddress';
-import useHashTag from '@/domains/places/hooks/useHashTag';
-import type { HashTagInputProps } from '@/domains/places/types/searchPlace.types';
 import theme from '@/styles/theme';
 
-import {
-  PlaceInfoStyle,
-  SearchButtonStyle,
-  SelectedTagsWrapperStyle,
-  SelectedTagStyle,
-} from './HashTag.styles';
+import { HashTagStyle } from './HashTag.styles';
 
-const HashTag = ({
-  searchResult,
-  addressType,
-  address,
-  onCancel,
-  onSubmit,
-}: HashTagInputProps) => {
-  const { showToast } = useToastContext();
+interface HashTagProps {
+  tag: string;
+  isSelected: boolean;
+  onClick: () => void;
+}
 
-  const {
-    inputValue,
-    selectedTags,
-    previousTags,
-    handleInputChange,
-    handleAddTag,
-    handleToggleTag,
-    handleEnterTag,
-  } = useHashTag();
-
-  const handleSubmit = async () => {
-    try {
-      await onSubmit({
-        ...searchResult,
-        hashTags: selectedTags,
-      });
-    } catch (error) {
-      showToast({
-        message: '장소 추가에 실패했습니다. 다시 시도해주세요.',
-        type: 'error',
-      });
-    }
-  };
-
+const HashTag = ({ tag, isSelected, onClick }: HashTagProps) => {
   return (
-    <>
-      <Flex
-        direction="column"
-        gap={1}
-        padding={2}
-        alignItems="flex-start"
-        css={PlaceInfoStyle}
+    <Button
+      variant={isSelected ? 'primary' : 'secondary'}
+      onClick={onClick}
+      padding="0.6rem 1.2rem"
+      width="auto"
+      radius="lg"
+      css={isSelected ? HashTagStyle : undefined}
+    >
+      <Text
+        variant="caption"
+        color={isSelected ? theme.colors.white : undefined}
       >
-        <Text variant="body">{searchResult.name}</Text>
-        <SearchAddress addressType={addressType} address={address} />
-      </Flex>
-      <Flex direction="column" gap={2} alignItems="flex-start">
-        <Text variant="subTitle">해시태그</Text>
-        <Flex gap={1}>
-          <Input
-            id="hashtag-input"
-            value={inputValue}
-            placeholder="해시태그를 추가하거나 만들어보세요"
-            onChange={handleInputChange}
-            onKeyDown={handleEnterTag}
-            maxLength={7}
-            css={SearchButtonStyle}
-          />
-          <Button
-            variant="primary"
-            onClick={() => handleAddTag(inputValue)}
-            disabled={!inputValue.trim()}
-            width="15%"
-            radius="md"
-            padding="0.6rem 0.8rem"
-          >
-            <Text color={theme.colors.white} variant="caption">
-              추가
-            </Text>
-          </Button>
-        </Flex>
-        {(selectedTags.length > 0 || previousTags.length > 0) && (
-          <Flex
-            gap={0.6}
-            justifyContent="flex-start"
-            css={SelectedTagsWrapperStyle}
-          >
-            {selectedTags.map((tag) => (
-              <Button
-                key={tag}
-                variant="primary"
-                onClick={() => handleToggleTag(tag)}
-                padding="0.6rem 1.2rem"
-                width="auto"
-                radius="lg"
-                css={SelectedTagStyle}
-              >
-                <Text variant="caption" color={theme.colors.white}>
-                  {tag}
-                </Text>
-              </Button>
-            ))}
-            {previousTags
-              .filter((tag) => !selectedTags.includes(tag))
-              .map((tag) => (
-                <Button
-                  key={tag}
-                  variant="secondary"
-                  onClick={() => handleToggleTag(tag)}
-                  padding="0.6rem 1.2rem"
-                  width="auto"
-                  radius="lg"
-                >
-                  <Text variant="caption">{tag}</Text>
-                </Button>
-              ))}
-          </Flex>
-        )}
-      </Flex>
-      <Flex gap={1}>
-        <Button variant="secondary" onClick={onCancel} radius="lg">
-          <Text variant="caption">닫기</Text>
-        </Button>
-        <Button variant="primary" onClick={handleSubmit} radius="lg">
-          <Text color={theme.colors.white} variant="caption">
-            장소 추가하기
-          </Text>
-        </Button>
-      </Flex>
-    </>
+        {tag}
+      </Text>
+    </Button>
   );
 };
 
