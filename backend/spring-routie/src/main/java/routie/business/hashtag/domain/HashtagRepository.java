@@ -7,7 +7,7 @@ import routie.business.routiespace.domain.RoutieSpace;
 
 public interface HashtagRepository extends JpaRepository<Hashtag, Long> {
 
-    List<Hashtag> findByRoutieSpaceId(Long routieSpaceId);
+    List<Hashtag> findByRoutieSpace(RoutieSpace routieSpace);
 
     Optional<Hashtag> findByRoutieSpaceIdAndName(Long routieSpaceId, String name);
 }

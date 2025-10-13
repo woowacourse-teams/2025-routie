@@ -265,6 +265,6 @@ class HashtagWithPlaceRepositoryTest {
     }
 
     private List<Hashtag> findAllHashtags(final RoutieSpace routieSpace) {
-        return hashtagRepository.findByRoutieSpaceId(routieSpace.getId());
+        return hashtagRepository.findByRoutieSpace(routieSpace);
     }
 }

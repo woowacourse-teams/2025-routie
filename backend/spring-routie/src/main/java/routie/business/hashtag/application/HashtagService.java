@@ -24,7 +24,7 @@ public class HashtagService {
         RoutieSpace routieSpace = routieSpaceRepository.findByIdentifier(routieSpaceIdentifier)
                 .orElseThrow(() -> new BusinessException(ErrorCode.ROUTIE_SPACE_NOT_FOUND));
 
-        List<Hashtag> hashtags = hashtagRepository.findByRoutieSpaceId(routieSpace.getId());
+        List<Hashtag> hashtags = hashtagRepository.findByRoutieSpace(routieSpace);
 
         return HashtagsResponse.from(hashtags);
     }
