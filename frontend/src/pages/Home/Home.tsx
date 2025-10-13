@@ -1,7 +1,8 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 import Flex from '@/@common/components/Flex/Flex';
 import Header from '@/@common/components/Header/Header';
+import IconButton from '@/@common/components/IconButton/IconButton';
 import Text from '@/@common/components/Text/Text';
 import { useModal } from '@/@common/contexts/ModalContext';
 import { useToastContext } from '@/@common/contexts/useToastContext';
@@ -10,20 +11,20 @@ import CreateRoutieButton from '@/domains/auth/components/CreateRoutieButton/Cre
 import { useUserQuery } from '@/domains/auth/queries/useAuthQuery';
 import theme from '@/styles/theme';
 
+import FeedbackPanel from './FeedbackPanel/FeedbackPanel';
 import {
   HomeScrollContainerStyle,
   HomeContentStyle,
   MainContentWrapperStyle,
   CircleStyle,
   RectangleStyle,
-  FeedbackTextStyle,
-  FeedbackButtonStyle,
-  linkStyle,
+  FeedbackIconButtonStyle,
 } from './Home.styles';
 import PhoneFrame from './PhoneChatFrame/PhoneChatFrame';
 import { useRoutieSpaceNavigation } from './hooks/useRoutieSpaceNavigation';
 
 const Home = () => {
+  const [isFeedbackPanelOpen, setIsFeedbackPanelOpen] = useState(false);
   const { handleMoveToHome, handleCreateRoutieSpace } =
     useRoutieSpaceNavigation();
   const { openModal } = useModal();
@@ -43,6 +44,10 @@ const Home = () => {
     ? handleCreateRoutieSpace
     : handleLoginClick;
 
+  const handleFeedbackButtonClick = () => {
+    setIsFeedbackPanelOpen((prev) => !prev);
+  };
+
   useEffect(() => {
     if (error) {
       showToast({
@@ -52,9 +57,6 @@ const Home = () => {
       console.error(error);
     }
   }, [error, showToast]);
-
-  const FEEDBACK_URL =
-    'https://docs.google.com/forms/d/e/1FAIpQLSfixG5-LD4kYYC3T0XueS7Ud7XHXbA53gJGxb60x4qwLl_4qA/viewform';
 
   return (
     <>
@@ -116,26 +118,14 @@ const Home = () => {
               </Flex>
             </Flex>
           </Flex>
-          <Flex height="25vh" direction="column" css={FeedbackTextStyle}>
-            <Flex direction="column" gap={3}>
-              <Flex direction="column" gap={2}>
-                <Text variant="title">루티가 불편하다면?</Text>
-                <Text variant="subTitle">개발자에게 피드백을 주세요!</Text>
-              </Flex>
-              <a
-                href={FEEDBACK_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                css={[linkStyle, FeedbackButtonStyle]}
-              >
-                <Text variant="subTitle" color={theme.colors.white}>
-                  피드백 작성하러 가기
-                </Text>
-              </a>
-            </Flex>
-          </Flex>
         </Flex>
       </div>
+      <FeedbackPanel isVisible={isFeedbackPanelOpen} />
+      <IconButton
+        icon="feedback"
+        onClick={handleFeedbackButtonClick}
+        css={FeedbackIconButtonStyle}
+      />
     </>
   );
 };
