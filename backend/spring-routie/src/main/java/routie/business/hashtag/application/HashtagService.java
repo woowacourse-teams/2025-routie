@@ -1,12 +1,12 @@
-package routie.business.place.application;
+package routie.business.hashtag.application;
 
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import routie.business.place.domain.Hashtag;
-import routie.business.place.domain.HashtagRepository;
-import routie.business.place.ui.dto.response.HashtagsResponse;
+import routie.business.hashtag.domain.Hashtag;
+import routie.business.hashtag.domain.HashtagRepository;
+import routie.business.hashtag.ui.dto.response.HashtagsResponse;
 import routie.business.routiespace.domain.RoutieSpace;
 import routie.business.routiespace.domain.RoutieSpaceRepository;
 import routie.global.exception.domain.BusinessException;

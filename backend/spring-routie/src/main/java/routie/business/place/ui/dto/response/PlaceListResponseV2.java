@@ -1,7 +1,7 @@
 package routie.business.place.ui.dto.response;
 
 import java.util.List;
-import routie.business.place.domain.Hashtag;
+import routie.business.hashtag.domain.Hashtag;
 import routie.business.place.domain.Place;
 
 public record PlaceListResponseV2(
