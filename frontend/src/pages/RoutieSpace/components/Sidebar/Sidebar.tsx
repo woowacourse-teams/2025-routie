@@ -5,6 +5,7 @@ import Icon from '@/@common/components/IconSvg/Icon';
 import { useToastContext } from '@/@common/contexts/useToastContext';
 import RoutieSpaceName from '@/domains/routieSpace/components/RoutieSpaceName/RoutieSpaceName';
 import { useShareLink } from '@/domains/routieSpace/hooks/useShareLink';
+import { useRoutieSpaceNavigation } from '@/pages/Home/hooks/useRoutieSpaceNavigation';
 import PlaceView from '@/pages/RoutieSpace/components/PlaceView/PlaceView';
 import RouteView from '@/pages/RoutieSpace/components/RouteView/RouteView';
 import TabButton from '@/pages/RoutieSpace/components/TabButton/TabButton';
@@ -17,6 +18,7 @@ const Sidebar = () => {
   const [activeTab, setActiveTab] = useState<'place' | 'route'>('place');
   const [isOpen, setIsOpen] = useState(true);
 
+  const { handleMoveToHome } = useRoutieSpaceNavigation();
   const { showToast } = useToastContext();
   const shareLink = useShareLink();
   const handleCopy = async () => {
@@ -57,7 +59,12 @@ const Sidebar = () => {
           justifyContent="flex-start"
           padding="1.6rem 0"
         >
-          <Icon name="logo" size={34} css={{ marginBottom: '1rem' }} />
+          <Icon
+            name="logo"
+            size={34}
+            css={{ marginBottom: '1rem' }}
+            onClick={handleMoveToHome}
+          />
           <TabButton
             name="장소"
             icon={activeTab === 'place' ? 'placeTabSelect' : 'placeTab'}
