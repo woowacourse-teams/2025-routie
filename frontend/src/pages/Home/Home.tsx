@@ -68,7 +68,7 @@ const Home = () => {
         <div css={RectangleStyle} />
         <Flex direction="column" padding={10} gap={10} css={HomeContentStyle}>
           <Flex direction="column" gap={20} css={MainContentWrapperStyle}>
-            <Flex alignItems="flex-start" gap={4} width="auto">
+            <Flex alignItems="flex-start" gap={20} width="auto">
               <Flex direction="column" alignItems="flex-start" gap={4}>
                 <Flex direction="column" gap={10}>
                   <Flex direction="column" alignItems="flex-start" gap={6}>
