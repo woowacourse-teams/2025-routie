@@ -71,7 +71,7 @@ public class PlaceControllerV1 {
         final UpdateHashtagsResponse response = placeService.modifyHashtags(
                 routieSpaceIdentifier,
                 placeId,
-                updateHashTagsRequest.hashtags()
+                updateHashTagsRequest
         );
         return ResponseEntity.ok(response);
     }

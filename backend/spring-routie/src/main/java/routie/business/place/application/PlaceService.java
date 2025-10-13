@@ -12,6 +12,7 @@ import routie.business.place.domain.Place;
 import routie.business.place.domain.PlaceRepository;
 import routie.business.place.ui.dto.request.PlaceCreateRequest;
 import routie.business.place.ui.dto.request.PlaceCreateRequestV2;
+import routie.business.place.ui.dto.request.UpdateHashtagsRequest;
 import routie.business.place.ui.dto.response.PlaceCreateResponse;
 import routie.business.place.ui.dto.response.PlaceListResponse;
 import routie.business.place.ui.dto.response.PlaceListResponseV2;
@@ -88,12 +89,12 @@ public class PlaceService {
     public UpdateHashtagsResponse modifyHashtags(
             final String routieSpaceIdentifier,
             final long placeId,
-            final List<String> hashTagNames
+            final UpdateHashtagsRequest updateHashtagsRequest
     ) {
         RoutieSpace routieSpace = getRoutieSpaceByIdentifier(routieSpaceIdentifier);
         Place place = getPlaceByIdAndRoutieSpace(placeId, routieSpace);
 
-        final List<Hashtag> newHashtags = getDistinctHashtags(hashTagNames, routieSpace);
+        final List<Hashtag> newHashtags = getDistinctHashtags(updateHashtagsRequest.hashtags(), routieSpace);
         place.updateHashtags(newHashtags);
 
         List<String> updatedHashTagNames = place.getHashtags().stream()
