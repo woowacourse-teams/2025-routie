@@ -1,4 +1,4 @@
-import arrowWhite from '@/assets/icons/arrow-white.svg';
+import arrow from '@/assets/icons/arrow.svg';
 import checkHome from '@/assets/icons/check-home.svg';
 import check from '@/assets/icons/check.svg';
 import clockHome from '@/assets/icons/clock-home.svg';
@@ -27,7 +27,7 @@ import trash from '@/assets/icons/trash.svg';
 import user from '@/assets/icons/user.svg';
 
 const allIcons = {
-  arrowWhite,
+  arrow,
   check,
   checkHome,
   clockHome,
