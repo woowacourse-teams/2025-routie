@@ -26,12 +26,6 @@ public class HashtagService {
 
         List<Hashtag> hashtags = hashtagRepository.findByRoutieSpaceId(routieSpace.getId());
 
-        List<String> distinctHashtagNames = hashtags.stream()
-                .map(Hashtag::getName)
-                .distinct()
-                .sorted()
-                .toList();
-
-        return new HashtagsResponse(distinctHashtagNames);
+        return HashtagsResponse.from(hashtags);
     }
 }
