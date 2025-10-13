@@ -7,6 +7,10 @@ const PlaceInfoStyle = css`
   background-color: ${theme.colors.gray[50]};
 `;
 
+const SearchButtonStyle = css`
+  border-radius: ${theme.radius.lg};
+`;
+
 const SelectedTagsWrapperStyle = css`
   flex-wrap: wrap;
 `;
@@ -15,4 +19,9 @@ const SelectedTagStyle = css`
   border: 1px solid transparent;
 `;
 
-export { PlaceInfoStyle, SelectedTagsWrapperStyle, SelectedTagStyle };
+export {
+  PlaceInfoStyle,
+  SearchButtonStyle,
+  SelectedTagsWrapperStyle,
+  SelectedTagStyle,
+};

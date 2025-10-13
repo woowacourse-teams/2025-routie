@@ -1,5 +1,3 @@
-import { useState } from 'react';
-
 import Button from '@/@common/components/Button/Button';
 import Flex from '@/@common/components/Flex/Flex';
 import Input from '@/@common/components/Input/Input';
@@ -12,6 +10,7 @@ import theme from '@/styles/theme';
 
 import {
   PlaceInfoStyle,
+  SearchButtonStyle,
   SelectedTagsWrapperStyle,
   SelectedTagStyle,
 } from './HashTag.styles';
@@ -61,26 +60,27 @@ const HashTag = ({
         <Text variant="body">{searchResult.name}</Text>
         <SearchAddress addressType={addressType} address={address} />
       </Flex>
-      <Flex direction="column" gap={1} alignItems="flex-start">
+      <Flex direction="column" gap={2} alignItems="flex-start">
         <Text variant="subTitle">해시태그</Text>
         <Flex gap={1}>
-          <Flex width="80%">
-            <Input
-              id="hashtag-input"
-              value={inputValue}
-              placeholder="해시태그를 추가하거나 만들어보세요"
-              onChange={handleInputChange}
-              onKeyDown={handleEnterTag}
-              maxLength={7}
-            />
-          </Flex>
+          <Input
+            id="hashtag-input"
+            value={inputValue}
+            placeholder="해시태그를 추가하거나 만들어보세요"
+            onChange={handleInputChange}
+            onKeyDown={handleEnterTag}
+            maxLength={7}
+            css={SearchButtonStyle}
+          />
           <Button
             variant="primary"
             onClick={() => handleAddTag(inputValue)}
             disabled={!inputValue.trim()}
-            width="20%"
+            width="15%"
+            radius="md"
+            padding="0.6rem 0.8rem"
           >
-            <Text color={theme.colors.white} variant="label">
+            <Text color={theme.colors.white} variant="caption">
               추가
             </Text>
           </Button>
@@ -98,6 +98,7 @@ const HashTag = ({
                 onClick={() => handleToggleTag(tag)}
                 padding="0.6rem 1.2rem"
                 width="auto"
+                radius="lg"
                 css={SelectedTagStyle}
               >
                 <Text variant="caption" color={theme.colors.white}>
@@ -114,6 +115,7 @@ const HashTag = ({
                   onClick={() => handleToggleTag(tag)}
                   padding="0.6rem 1.2rem"
                   width="auto"
+                  radius="lg"
                 >
                   <Text variant="caption">{tag}</Text>
                 </Button>
@@ -122,11 +124,11 @@ const HashTag = ({
         )}
       </Flex>
       <Flex gap={1}>
-        <Button variant="secondary" onClick={onCancel}>
-          <Text variant="body">닫기</Text>
+        <Button variant="secondary" onClick={onCancel} radius="lg">
+          <Text variant="caption">닫기</Text>
         </Button>
-        <Button variant="primary" onClick={handleSubmit}>
-          <Text color={theme.colors.white} variant="body">
+        <Button variant="primary" onClick={handleSubmit} radius="lg">
+          <Text color={theme.colors.white} variant="caption">
             장소 추가하기
           </Text>
         </Button>
