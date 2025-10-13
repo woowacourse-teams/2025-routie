@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.transaction.annotation.Transactional;
+import routie.business.hashtag.domain.Hashtag;
+import routie.business.hashtag.domain.HashtagRepository;
 import routie.business.participant.domain.User;
 import routie.business.participant.domain.UserFixture;
 import routie.business.participant.domain.UserRepository;
@@ -137,8 +139,8 @@ class HashtagWithPlaceRepositoryTest {
     void reuseHashtagWhenNameAlreadyExists() {
         // given
         final Place place1 = createPlaceWithHashtags(routieSpace, List.of("산책", "드라이브"));
-        final Hashtag existingHashtag = hashtagRepository.findByRoutieSpaceIdAndName(
-                routieSpace.getId(),
+        final Hashtag existingHashtag = hashtagRepository.findByRoutieSpaceAndName(
+                routieSpace,
                 "산책"
         ).orElseThrow();
 
@@ -196,7 +198,7 @@ class HashtagWithPlaceRepositoryTest {
         final Place otherPlace = new PlaceBuilder()
                 .routieSpace(otherSpace)
                 .build();
-        final Hashtag otherHashtag = new Hashtag("산책", otherSpace);
+        final Hashtag otherHashtag = hashtagRepository.save(new Hashtag("산책", otherSpace));
         otherPlace.updateHashtags(List.of(otherHashtag));
         placeRepository.save(otherPlace);
 
@@ -221,12 +223,12 @@ class HashtagWithPlaceRepositoryTest {
         entityManager.clear();
 
         // when
-        final Optional<Hashtag> found = hashtagRepository.findByRoutieSpaceIdAndName(
-                routieSpace.getId(),
+        final Optional<Hashtag> found = hashtagRepository.findByRoutieSpaceAndName(
+                routieSpace,
                 "산책"
         );
-        final Optional<Hashtag> notFound = hashtagRepository.findByRoutieSpaceIdAndName(
-                routieSpace.getId(),
+        final Optional<Hashtag> notFound = hashtagRepository.findByRoutieSpaceAndName(
+                routieSpace,
                 "존재하지않음"
         );
 
@@ -258,11 +260,11 @@ class HashtagWithPlaceRepositoryTest {
     }
 
     private Hashtag createHashtagIfNotExist(final RoutieSpace routieSpace, final String name) {
-        return hashtagRepository.findByRoutieSpaceIdAndName(routieSpace.getId(), name)
-                .orElse(new Hashtag(name, routieSpace));
+        return hashtagRepository.findByRoutieSpaceAndName(routieSpace, name)
+                .orElseGet(() -> hashtagRepository.save(new Hashtag(name, routieSpace)));
     }
 
     private List<Hashtag> findAllHashtags(final RoutieSpace routieSpace) {
-        return hashtagRepository.findByRoutieSpaceId(routieSpace.getId());
+        return hashtagRepository.findByRoutieSpace(routieSpace);
     }
 }
