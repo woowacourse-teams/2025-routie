@@ -21,37 +21,20 @@ const SidebarContainerStyle = (isOpen: boolean) => css`
   box-shadow: 0 0 1rem 0 rgb(0 0 0 / 20%);
 `;
 
-const ToggleButtonStyle = css`
-  cursor: pointer;
-
-  position: absolute;
-  z-index: 1001;
-  top: 50%;
-  right: -2.4rem;
-  transform: translateY(-50%);
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  width: 3.6rem;
-  height: 3.6rem;
-  padding: 0;
-  border: 1px solid ${theme.colors.gray[100]};
-  border-radius: 50%;
-
-  background-color: ${theme.colors.white};
-  box-shadow: 0 2px 8px rgb(0 0 0 / 10%);
-
-  transition: box-shadow 0.2s ease-in-out;
-
-  &:hover {
-    box-shadow: 0 4px 12px rgb(0 0 0 / 15%);
-  }
-
-  img {
-    filter: invert(1);
-  }
+const SidebarContentContainerStyle = (isOpen: boolean) => css`
+  display: ${isOpen ? 'flex' : 'none'};
+  border-left: 1px solid ${theme.colors.gray[100]};
 `;
 
-export { SidebarContainerStyle, ToggleButtonStyle };
+const SidebarTabContainerStyle = (isOpen: boolean) => css`
+  border-radius: ${isOpen
+    ? `${theme.radius.sm}  0 0 ${theme.radius.sm}`
+    : `${theme.radius.sm}`};
+  background-color: ${theme.colors.white};
+`;
+
+export {
+  SidebarContainerStyle,
+  SidebarTabContainerStyle,
+  SidebarContentContainerStyle,
+};

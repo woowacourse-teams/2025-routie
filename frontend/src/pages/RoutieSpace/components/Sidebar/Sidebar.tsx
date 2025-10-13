@@ -11,10 +11,13 @@ import PlaceView from '@/pages/RoutieSpace/components/PlaceView/PlaceView';
 import RouteView from '@/pages/RoutieSpace/components/RouteView/RouteView';
 import SidebarToggleButton from '@/pages/RoutieSpace/components/SIdebarToggleButton/SidebarToggleButton';
 import TabButton from '@/pages/RoutieSpace/components/TabButton/TabButton';
-import theme from '@/styles/theme';
 
-import { SidebarContainerStyle, ToggleButtonStyle } from './Sidebar.styles';
-import { SIDEBAR_WIDTH_CLOSED, CONTENT_WIDTH } from './width';
+import {
+  SidebarContainerStyle,
+  SidebarContentContainerStyle,
+  SidebarTabContainerStyle,
+} from './Sidebar.styles';
+import { CONTENT_WIDTH, SIDEBAR_WIDTH_CLOSED } from './width';
 
 const Sidebar = () => {
   const [activeTab, setActiveTab] = useState<'place' | 'route'>('place');
@@ -22,6 +25,7 @@ const Sidebar = () => {
   const { handleMoveToHome } = useRoutieSpaceNavigation();
   const { showToast } = useToastContext();
   const shareLink = useShareLink();
+
   const handleCopy = async () => {
     if (!shareLink) return;
     try {
@@ -32,10 +36,6 @@ const Sidebar = () => {
     }
   };
 
-  const tabButtonBorder = isOpen
-    ? `${theme.radius.sm}  0 0 ${theme.radius.sm}`
-    : `${theme.radius.sm}`;
-
   return (
     <div css={SidebarContainerStyle(isOpen)}>
       <SidebarToggleButton isOpen={isOpen} handleToggle={handleToggle} />
@@ -43,10 +43,7 @@ const Sidebar = () => {
         <Flex
           width={SIDEBAR_WIDTH_CLOSED}
           height="100%"
-          css={{
-            backgroundColor: `${theme.colors.white}`,
-            borderRadius: `${tabButtonBorder}`,
-          }}
+          css={SidebarTabContainerStyle(isOpen)}
           direction="column"
           justifyContent="flex-start"
           padding="1.6rem 0"
@@ -83,10 +80,7 @@ const Sidebar = () => {
           justifyContent="flex-start"
           height="100%"
           padding="1.6rem 0"
-          css={{
-            display: `${isOpen ? 'flex' : 'none'}`,
-            borderLeft: `1px solid ${theme.colors.gray[100]}`,
-          }}
+          css={SidebarContentContainerStyle(isOpen)}
         >
           <RoutieSpaceName />
           {activeTab === 'route' && <RouteView />}
