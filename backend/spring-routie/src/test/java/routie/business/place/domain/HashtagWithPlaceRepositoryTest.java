@@ -139,8 +139,8 @@ class HashtagWithPlaceRepositoryTest {
     void reuseHashtagWhenNameAlreadyExists() {
         // given
         final Place place1 = createPlaceWithHashtags(routieSpace, List.of("산책", "드라이브"));
-        final Hashtag existingHashtag = hashtagRepository.findByRoutieSpaceIdAndName(
-                routieSpace.getId(),
+        final Hashtag existingHashtag = hashtagRepository.findByRoutieSpaceAndName(
+                routieSpace,
                 "산책"
         ).orElseThrow();
 
@@ -223,12 +223,12 @@ class HashtagWithPlaceRepositoryTest {
         entityManager.clear();
 
         // when
-        final Optional<Hashtag> found = hashtagRepository.findByRoutieSpaceIdAndName(
-                routieSpace.getId(),
+        final Optional<Hashtag> found = hashtagRepository.findByRoutieSpaceAndName(
+                routieSpace,
                 "산책"
         );
-        final Optional<Hashtag> notFound = hashtagRepository.findByRoutieSpaceIdAndName(
-                routieSpace.getId(),
+        final Optional<Hashtag> notFound = hashtagRepository.findByRoutieSpaceAndName(
+                routieSpace,
                 "존재하지않음"
         );
 
@@ -260,7 +260,7 @@ class HashtagWithPlaceRepositoryTest {
     }
 
     private Hashtag createHashtagIfNotExist(final RoutieSpace routieSpace, final String name) {
-        return hashtagRepository.findByRoutieSpaceIdAndName(routieSpace.getId(), name)
+        return hashtagRepository.findByRoutieSpaceAndName(routieSpace, name)
                 .orElseGet(() -> hashtagRepository.save(new Hashtag(name, routieSpace)));
     }
 

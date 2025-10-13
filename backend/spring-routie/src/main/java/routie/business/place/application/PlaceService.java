@@ -112,7 +112,7 @@ public class PlaceService {
     }
 
     private Hashtag getOrCreateHashtag(final String name, final RoutieSpace routieSpace) {
-        return hashtagRepository.findByRoutieSpaceIdAndName(routieSpace.getId(), name)
+        return hashtagRepository.findByRoutieSpaceAndName(routieSpace, name)
                 .orElseGet(() -> hashtagRepository.save(new Hashtag(name, routieSpace)));
     }
 

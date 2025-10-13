@@ -9,5 +9,7 @@ public interface HashtagRepository extends JpaRepository<Hashtag, Long> {
 
     List<Hashtag> findByRoutieSpace(RoutieSpace routieSpace);
 
-    Optional<Hashtag> findByRoutieSpaceIdAndName(Long routieSpaceId, String name);
+    Optional<Hashtag> findByRoutieSpaceAndName(RoutieSpace routieSpace, String name);
+
+    void deleteByRoutieSpace(RoutieSpace routieSpace);
 }
