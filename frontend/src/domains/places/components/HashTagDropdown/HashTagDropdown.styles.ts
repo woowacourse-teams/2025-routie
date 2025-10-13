@@ -7,7 +7,7 @@ const PlaceInfoStyle = css`
   background-color: ${theme.colors.gray[50]};
 `;
 
-const SearchButtonStyle = css`
+const HashTagAddButtonStyle = css`
   border-radius: ${theme.radius.lg};
 `;
 
@@ -15,13 +15,4 @@ const SelectedTagsWrapperStyle = css`
   flex-wrap: wrap;
 `;
 
-const SelectedTagStyle = css`
-  border: 1px solid transparent;
-`;
-
-export {
-  PlaceInfoStyle,
-  SearchButtonStyle,
-  SelectedTagsWrapperStyle,
-  SelectedTagStyle,
-};
+export { PlaceInfoStyle, HashTagAddButtonStyle, SelectedTagsWrapperStyle };

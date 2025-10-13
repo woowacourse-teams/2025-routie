@@ -11,7 +11,7 @@ import theme from '@/styles/theme';
 
 import {
   PlaceInfoStyle,
-  SearchButtonStyle,
+  HashTagAddButtonStyle,
   SelectedTagsWrapperStyle,
 } from './HashTagDropdown.styles';
 
@@ -70,7 +70,7 @@ const HashTagDropdown = ({
             onChange={handleInputChange}
             onKeyDown={handleEnterTag}
             maxLength={7}
-            css={SearchButtonStyle}
+            css={HashTagAddButtonStyle}
           />
           <Button
             variant="primary"
