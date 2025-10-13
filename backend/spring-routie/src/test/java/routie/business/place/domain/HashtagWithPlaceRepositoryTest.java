@@ -198,7 +198,7 @@ class HashtagWithPlaceRepositoryTest {
         final Place otherPlace = new PlaceBuilder()
                 .routieSpace(otherSpace)
                 .build();
-        final Hashtag otherHashtag = new Hashtag("산책", otherSpace);
+        final Hashtag otherHashtag = hashtagRepository.save(new Hashtag("산책", otherSpace));
         otherPlace.updateHashtags(List.of(otherHashtag));
         placeRepository.save(otherPlace);
 
@@ -261,7 +261,7 @@ class HashtagWithPlaceRepositoryTest {
 
     private Hashtag createHashtagIfNotExist(final RoutieSpace routieSpace, final String name) {
         return hashtagRepository.findByRoutieSpaceIdAndName(routieSpace.getId(), name)
-                .orElse(new Hashtag(name, routieSpace));
+                .orElseGet(() -> hashtagRepository.save(new Hashtag(name, routieSpace)));
     }
 
     private List<Hashtag> findAllHashtags(final RoutieSpace routieSpace) {

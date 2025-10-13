@@ -16,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import routie.business.hashtag.domain.Hashtag;
+import routie.business.hashtag.domain.HashtagRepository;
 import routie.business.place.domain.Place;
 import routie.business.place.domain.PlaceBuilder;
 import routie.business.place.domain.PlaceRepository;
@@ -45,6 +46,8 @@ class HashtagControllerV1Test {
     private Place place1;
     private Place place2;
     private Place place3;
+    @Autowired
+    private HashtagRepository hashtagRepository;
 
     @BeforeEach
     void setUp() {
@@ -65,7 +68,13 @@ class HashtagControllerV1Test {
                 .latitude(10.123)
                 .routieSpace(testRoutieSpace1)
                 .build();
-        place1.addHashtags(List.of(new Hashtag("hash", testRoutieSpace1), new Hashtag("tag", testRoutieSpace1)));
+        final Hashtag hashtag1 = hashtagRepository.save(new Hashtag("hash", testRoutieSpace1));
+        final Hashtag hashtag2 = hashtagRepository.save(new Hashtag("tag", testRoutieSpace1));
+        final Hashtag hashtag3 = hashtagRepository.save(new Hashtag("hashtag", testRoutieSpace1));
+        final Hashtag hashtag4 = hashtagRepository.save(new Hashtag("hhash", testRoutieSpace2));
+        final Hashtag hashtag5 = hashtagRepository.save(new Hashtag("ttag", testRoutieSpace2));
+
+        place1.addHashtags(List.of(hashtag1, hashtag2));
         placeRepository.save(place1);
 
         place2 = new PlaceBuilder()
@@ -75,7 +84,7 @@ class HashtagControllerV1Test {
                 .latitude(20.456)
                 .routieSpace(testRoutieSpace1)
                 .build();
-        place2.addHashtags(List.of(new Hashtag("hash", testRoutieSpace1), new Hashtag("hashtag", testRoutieSpace1)));
+        place2.addHashtags(List.of(hashtag1, hashtag3));
         placeRepository.save(place2);
 
         place3 = new PlaceBuilder()
@@ -85,7 +94,7 @@ class HashtagControllerV1Test {
                 .latitude(20.456)
                 .routieSpace(testRoutieSpace2)
                 .build();
-        place3.addHashtags(List.of(new Hashtag("hashh", testRoutieSpace2), new Hashtag("ttag", testRoutieSpace2)));
+        place3.addHashtags(List.of(hashtag4, hashtag5));
         placeRepository.save(place3);
     }
 

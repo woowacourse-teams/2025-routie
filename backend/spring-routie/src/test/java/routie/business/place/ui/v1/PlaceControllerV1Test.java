@@ -17,6 +17,7 @@ import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
+import routie.business.hashtag.domain.HashtagRepository;
 import routie.business.like.domain.PlaceLikeBuilder;
 import routie.business.like.domain.PlaceLikeRepository;
 import routie.business.participant.domain.User;
@@ -56,6 +57,8 @@ public class PlaceControllerV1Test {
 
     private Place testPlace;
     private RoutieSpace testRoutieSpace;
+    @Autowired
+    private HashtagRepository hashtagRepository;
 
     @BeforeEach
     void setUp() {
@@ -64,6 +67,8 @@ public class PlaceControllerV1Test {
         testRoutieSpace = routieSpaceRepository.save(RoutieSpace.withIdentifierProvider(
                 null, routieSpaceIdentifierProvider
         ));
+        final Hashtag hashtag1 = hashtagRepository.save(new Hashtag("hash", testRoutieSpace));
+        final Hashtag hashtag2 = hashtagRepository.save(new Hashtag("tag", testRoutieSpace));
         testPlace = new PlaceBuilder()
                 .name("테스트 카페")
                 .roadAddressName("서울시 강남구 테스트로 123")
@@ -71,7 +76,7 @@ public class PlaceControllerV1Test {
                 .latitude(10.123)
                 .routieSpace(testRoutieSpace)
                 .build();
-        testPlace.addHashtags(List.of(new Hashtag("hash", testRoutieSpace), new Hashtag("tag", testRoutieSpace)));
+        testPlace.addHashtags(List.of(hashtag1, hashtag2));
         placeRepository.save(testPlace);
 
         final User user = userRepository.save(UserFixture.emptyUser());
