@@ -25,10 +25,8 @@ interface SearchPlaceProps extends SearchAddressProps {
 interface HashTagInputProps extends SearchAddressProps {
   searchResult: SearchedPlaceType;
   onCancel: () => void;
-  onSubmit: (place: SearchedPlaceWithTags) => Promise<void>;
+  onSubmit: (place: SearchedPlaceType) => Promise<void>;
 }
-
-type SearchedPlaceWithTags = SearchedPlaceType & { hashTags: string[] };
 
 export type {
   SearchEmptyStateProps,
@@ -37,5 +35,4 @@ export type {
   SearchAddressProps,
   SearchPlaceProps,
   HashTagInputProps,
-  SearchedPlaceWithTags,
 };

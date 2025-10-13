@@ -10,7 +10,6 @@ import SearchList from '@/domains/places/components/SearchList/SearchList';
 import { usePlaceList } from '@/domains/places/hooks/usePlaceList';
 import { useSearchPlace } from '@/domains/places/hooks/useSearchPlace';
 import type { SearchedPlaceType } from '@/domains/places/types/place.types';
-import type { SearchedPlaceWithTags } from '@/domains/places/types/searchPlace.types';
 
 import {
   ContainerStyle,
@@ -47,7 +46,7 @@ const SearchBox = () => {
   };
 
   const handleSubmitHashTag: (
-    place: SearchedPlaceWithTags,
+    place: SearchedPlaceType,
   ) => Promise<void> = async (place) => {
     await handleAddPlace(place);
     setSelectedPlace(null);
