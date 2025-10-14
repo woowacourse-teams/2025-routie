@@ -5,11 +5,12 @@ import { css } from '@emotion/react';
 import EmptyMessage from '@/@common/components/EmptyMessage/EmptyMessage';
 import Flex from '@/@common/components/Flex/Flex';
 import Input from '@/@common/components/Input/Input';
-import HashtagDropdown from '@/domains/places/components/HashtagDropdown/HashtagDropdown';
 import SearchList from '@/domains/places/components/SearchList/SearchList';
 import { usePlaceList } from '@/domains/places/hooks/usePlaceList';
 import { useSearchPlace } from '@/domains/places/hooks/useSearchPlace';
 import type { SearchedPlaceType } from '@/domains/places/types/place.types';
+
+import AddHashtagDropdown from '../AddHashtagDropdown/AddHashtagDropdown';
 
 import {
   ContainerStyle,
@@ -109,7 +110,7 @@ const SearchBox = () => {
                 padding={2}
                 css={DropdownContainerStyle}
               >
-                <HashtagDropdown
+                <AddHashtagDropdown
                   searchResult={selectedPlace}
                   addressType={
                     selectedPlace.roadAddressName ? '도로명' : '지번'

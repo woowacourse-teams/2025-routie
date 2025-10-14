@@ -13,14 +13,17 @@ import {
   HashtagAddButtonStyle,
   PlaceInfoStyle,
   SelectedTagsWrapperStyle,
-} from './HashtagDropdown.styles';
+} from './AddHashtagDropdown.styles';
 
-const HashtagDropdown = ({
+const AddHashtagDropdown = ({
   searchResult,
   addressType,
   address,
   onCancel,
   onSubmit,
+  mode = 'add',
+  initialHashtags,
+  onUpdate,
 }: HashtagInputProps) => {
   const { showToast } = useToastContext();
 
@@ -32,17 +35,28 @@ const HashtagDropdown = ({
     handleAddTag,
     handleToggleTag,
     handleEnterTag,
-  } = useHashtag();
+  } = useHashtag(initialHashtags);
+
+  const isHashtagsChanged =
+    mode === 'edit' &&
+    JSON.stringify(selectedTags) !== JSON.stringify(initialHashtags);
 
   const handleSubmit = async () => {
     try {
-      await onSubmit({
-        ...searchResult,
-        hashtags: selectedTags,
-      });
+      if (mode === 'edit' && onUpdate) {
+        await onUpdate(selectedTags);
+      } else {
+        await onSubmit({
+          ...searchResult,
+          hashtags: selectedTags,
+        });
+      }
     } catch (error) {
       showToast({
-        message: '장소 추가에 실패했습니다. 다시 시도해주세요.',
+        message:
+          mode === 'edit'
+            ? '해시태그 수정에 실패했습니다. 다시 시도해주세요.'
+            : '장소 추가에 실패했습니다. 다시 시도해주세요.',
         type: 'error',
       });
     }
@@ -131,9 +145,14 @@ const HashtagDropdown = ({
         <Button variant="secondary" onClick={onCancel} radius="lg">
           <Text variant="caption">닫기</Text>
         </Button>
-        <Button variant="primary" onClick={handleSubmit} radius="lg">
+        <Button
+          variant="primary"
+          onClick={handleSubmit}
+          radius="lg"
+          disabled={mode === 'edit' && !isHashtagsChanged}
+        >
           <Text color={theme.colors.white} variant="caption">
-            장소 추가하기
+            {mode === 'edit' ? '수정하기' : '장소 추가하기'}
           </Text>
         </Button>
       </Flex>
@@ -141,4 +160,4 @@ const HashtagDropdown = ({
   );
 };
 
-export default HashtagDropdown;
+export default AddHashtagDropdown;
