@@ -30,7 +30,7 @@ const addPlace = async (placeInfo: AddPlaceRequestType) => {
   ensureRoutieSpaceUuid(routieSpaceUuid);
 
   const response = await apiClient.post(
-    `/v1/routie-spaces/${routieSpaceUuid}/places`,
+    `/v2/routie-spaces/${routieSpaceUuid}/places`,
     placeInfo,
   );
 
