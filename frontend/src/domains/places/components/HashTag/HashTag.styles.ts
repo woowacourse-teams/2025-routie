@@ -1,7 +1,7 @@
 import { css } from '@emotion/react';
 
-const HashTagStyle = css`
+const HashtagStyle = css`
   border: 1px solid transparent;
 `;
 
-export { HashTagStyle };
+export { HashtagStyle };

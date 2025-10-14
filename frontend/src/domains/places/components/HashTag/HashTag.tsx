@@ -2,15 +2,15 @@ import Button from '@/@common/components/Button/Button';
 import Text from '@/@common/components/Text/Text';
 import theme from '@/styles/theme';
 
-import { HashTagStyle } from './HashTag.styles';
+import { HashtagStyle } from './Hashtag.styles';
 
-interface HashTagProps {
+interface HashtagProps {
   tag: string;
   isSelected: boolean;
   onClick: () => void;
 }
 
-const HashTag = ({ tag, isSelected, onClick }: HashTagProps) => {
+const Hashtag = ({ tag, isSelected, onClick }: HashtagProps) => {
   return (
     <Button
       variant={isSelected ? 'primary' : 'secondary'}
@@ -18,7 +18,7 @@ const HashTag = ({ tag, isSelected, onClick }: HashTagProps) => {
       padding="0.6rem 1.2rem"
       width="auto"
       radius="lg"
-      css={isSelected ? HashTagStyle : undefined}
+      css={isSelected ? HashtagStyle : undefined}
     >
       <Text
         variant="caption"
@@ -30,4 +30,4 @@ const HashTag = ({ tag, isSelected, onClick }: HashTagProps) => {
   );
 };
 
-export default HashTag;
+export default Hashtag;

@@ -3,25 +3,25 @@ import Flex from '@/@common/components/Flex/Flex';
 import Input from '@/@common/components/Input/Input';
 import Text from '@/@common/components/Text/Text';
 import { useToastContext } from '@/@common/contexts/useToastContext';
-import HashTag from '@/domains/places/components/HashTag/HashTag';
+import Hashtag from '@/domains/places/components/Hashtag/Hashtag';
 import SearchAddress from '@/domains/places/components/SearchAddress/SearchAddress';
-import useHashTag from '@/domains/places/hooks/useHashTag';
-import type { HashTagInputProps } from '@/domains/places/types/searchPlace.types';
+import useHashtag from '@/domains/places/hooks/useHashtag';
+import type { HashtagInputProps } from '@/domains/places/types/searchPlace.types';
 import theme from '@/styles/theme';
 
 import {
+  HashtagAddButtonStyle,
   PlaceInfoStyle,
-  HashTagAddButtonStyle,
   SelectedTagsWrapperStyle,
-} from './HashTagDropdown.styles';
+} from './HashtagDropdown.styles';
 
-const HashTagDropdown = ({
+const HashtagDropdown = ({
   searchResult,
   addressType,
   address,
   onCancel,
   onSubmit,
-}: HashTagInputProps) => {
+}: HashtagInputProps) => {
   const { showToast } = useToastContext();
 
   const {
@@ -32,7 +32,7 @@ const HashTagDropdown = ({
     handleAddTag,
     handleToggleTag,
     handleEnterTag,
-  } = useHashTag();
+  } = useHashtag();
 
   const handleSubmit = async () => {
     try {
@@ -70,7 +70,7 @@ const HashTagDropdown = ({
             onChange={handleInputChange}
             onKeyDown={handleEnterTag}
             maxLength={6}
-            css={HashTagAddButtonStyle}
+            css={HashtagAddButtonStyle}
           />
           <Button
             variant="primary"
@@ -96,7 +96,7 @@ const HashTagDropdown = ({
             {selectedTags
               .filter((tag) => !previousTags.includes(tag))
               .map((tag) => (
-                <HashTag
+                <Hashtag
                   key={tag}
                   tag={tag}
                   isSelected={true}
@@ -116,7 +116,7 @@ const HashTagDropdown = ({
               css={SelectedTagsWrapperStyle}
             >
               {previousTags.map((tag) => (
-                <HashTag
+                <Hashtag
                   key={tag}
                   tag={tag}
                   isSelected={selectedTags.includes(tag)}
@@ -141,4 +141,4 @@ const HashTagDropdown = ({
   );
 };
 
-export default HashTagDropdown;
+export default HashtagDropdown;

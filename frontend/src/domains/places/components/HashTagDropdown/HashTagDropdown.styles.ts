@@ -7,7 +7,7 @@ const PlaceInfoStyle = css`
   background-color: ${theme.colors.gray[50]};
 `;
 
-const HashTagAddButtonStyle = css`
+const HashtagAddButtonStyle = css`
   border-radius: ${theme.radius.lg};
 `;
 
@@ -15,4 +15,4 @@ const SelectedTagsWrapperStyle = css`
   flex-wrap: wrap;
 `;
 
-export { PlaceInfoStyle, HashTagAddButtonStyle, SelectedTagsWrapperStyle };
+export { PlaceInfoStyle, HashtagAddButtonStyle, SelectedTagsWrapperStyle };
