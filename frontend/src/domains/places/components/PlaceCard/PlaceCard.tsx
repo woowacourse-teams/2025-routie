@@ -61,7 +61,7 @@ const PlaceCard = ({
           onClick={handlePlaceSelect}
           disabled={selected}
           padding="0.6rem 1.2rem"
-          width="auto"
+          width="10rem"
         >
           <Text variant="caption" color={theme.colors.white}>
             동선에 추가
@@ -74,7 +74,7 @@ const PlaceCard = ({
           liked={liked}
           onClick={() => onLike(props.id)}
         />
-        <Flex gap={0.8} width="auto">
+        <Flex justifyContent="space-between" width="10rem">
           <Button
             variant="secondary"
             onClick={() => onEdit(props.id)}
