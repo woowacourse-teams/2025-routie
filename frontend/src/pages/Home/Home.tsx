@@ -19,6 +19,7 @@ import {
   CircleStyle,
   RectangleStyle,
   FeedbackIconButtonStyle,
+  FeedbackOverlayStyle,
 } from './Home.styles';
 import PhoneFrame from './PhoneChatFrame/PhoneChatFrame';
 import { useRoutieSpaceNavigation } from './hooks/useRoutieSpaceNavigation';
@@ -46,6 +47,10 @@ const Home = () => {
 
   const handleFeedbackButtonClick = () => {
     setIsFeedbackPanelOpen((prev) => !prev);
+  };
+
+  const handleFeedbackPanelClose = () => {
+    setIsFeedbackPanelOpen(false);
   };
 
   useEffect(() => {
@@ -120,6 +125,13 @@ const Home = () => {
           </Flex>
         </Flex>
       </div>
+      {isFeedbackPanelOpen && (
+        <div
+          role="presentation"
+          css={FeedbackOverlayStyle}
+          onClick={handleFeedbackPanelClose}
+        />
+      )}
       <FeedbackPanel isVisible={isFeedbackPanelOpen} />
       <IconButton
         icon="feedback"

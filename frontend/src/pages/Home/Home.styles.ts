@@ -89,6 +89,13 @@ const FeedbackIconButtonStyle = css`
   }
 `;
 
+const FeedbackOverlayStyle = css`
+  position: fixed;
+  z-index: 98;
+  inset: 0;
+  background: transparent;
+`;
+
 export {
   HomeScrollContainerStyle,
   HomeContentStyle,
@@ -96,4 +103,5 @@ export {
   CircleStyle,
   RectangleStyle,
   FeedbackIconButtonStyle,
+  FeedbackOverlayStyle,
 };
