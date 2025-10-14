@@ -4,6 +4,7 @@ interface ApiPlaceBaseType {
   addressName: string;
   longitude: number;
   latitude: number;
+  hashtags?: string[];
 }
 
 interface SearchPlaceRequestType {

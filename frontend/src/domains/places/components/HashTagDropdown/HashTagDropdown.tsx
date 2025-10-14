@@ -38,7 +38,7 @@ const HashTagDropdown = ({
     try {
       await onSubmit({
         ...searchResult,
-        hashTags: selectedTags,
+        hashtags: selectedTags,
       });
     } catch (error) {
       showToast({
