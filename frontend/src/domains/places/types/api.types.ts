@@ -46,6 +46,11 @@ interface LikedPlacesResponseType {
   likedPlaceIds: number[];
 }
 
+interface UpdatePlaceHashtagsRequestType {
+  placeId: number;
+  hashtags: string[];
+}
+
 export type {
   SearchPlaceRequestType,
   SearchPlaceResponseType,
@@ -57,4 +62,5 @@ export type {
   LikePlaceRequestType,
   UnlikePlaceRequestType,
   LikedPlacesResponseType,
+  UpdatePlaceHashtagsRequestType,
 };

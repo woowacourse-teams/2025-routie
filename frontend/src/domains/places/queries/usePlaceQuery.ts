@@ -10,11 +10,13 @@ import {
   getPlaceList,
   postLikePlace,
   searchPlace,
+  updatePlaceHashtags,
 } from '@/domains/places/apis/place';
 import type {
   AddPlaceRequestType,
   LikePlaceRequestType,
   UnlikePlaceRequestType,
+  UpdatePlaceHashtagsRequestType,
 } from '@/domains/places/types/api.types';
 
 import { placesKeys } from './key';
@@ -145,6 +147,29 @@ const useLikedPlacesQuery = (enabled: boolean) => {
   });
 };
 
+const useUpdatePlaceHashtagsMutation = () => {
+  const { showToast } = useToastContext();
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ placeId, hashtags }: UpdatePlaceHashtagsRequestType) =>
+      updatePlaceHashtags({ placeId, hashtags }),
+    onSuccess: () => {
+      showToast({
+        message: '해시태그가 수정되었습니다.',
+        type: 'success',
+      });
+      queryClient.invalidateQueries({ queryKey: placesKeys.list() });
+    },
+    onError: (error) => {
+      showToast({
+        message: error.message,
+        type: 'error',
+      });
+    },
+  });
+};
+
 export {
   useAddPlaceQuery,
   useDeletePlaceQuery,
@@ -154,4 +179,5 @@ export {
   useLikePlaceMutation,
   useDeleteLikePlaceMutation,
   useLikedPlacesQuery,
+  useUpdatePlaceHashtagsMutation,
 };

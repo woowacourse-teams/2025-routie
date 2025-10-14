@@ -13,6 +13,7 @@ import type {
   LikePlaceRequestType,
   SearchPlaceRequestType,
   UnlikePlaceRequestType,
+  UpdatePlaceHashtagsRequestType,
 } from '@/domains/places/types/api.types';
 import type {
   LikedPlacesResponseAdapterType,
@@ -145,6 +146,25 @@ const getLikedPlaces = async (): Promise<LikedPlacesResponseAdapterType> => {
   return likedPlacesAdapter(data);
 };
 
+const updatePlaceHashtags = async ({
+  placeId,
+  hashtags,
+}: UpdatePlaceHashtagsRequestType) => {
+  const routieSpaceUuid = getRoutieSpaceUuid();
+  ensureRoutieSpaceUuid(routieSpaceUuid);
+
+  const response = await apiClient.put(
+    `/v1/routie-spaces/${routieSpaceUuid}/places/${placeId}/hashtags`,
+    { hashtags },
+  );
+
+  if (!response.ok) {
+    throw new Error('해시태그 수정 실패');
+  }
+
+  return response.json();
+};
+
 export {
   addPlace,
   deletePlace,
@@ -154,4 +174,5 @@ export {
   postLikePlace,
   deleteLikePlace,
   getLikedPlaces,
+  updatePlaceHashtags,
 };

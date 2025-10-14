@@ -6,6 +6,7 @@ import {
   useAddPlaceQuery,
   useDeletePlaceQuery,
   usePlaceListQuery,
+  useUpdatePlaceHashtagsMutation,
 } from '@/domains/places/queries/usePlaceQuery';
 import type { SearchedPlaceType } from '@/domains/places/types/place.types';
 import { useGoogleEventTrigger } from '@/libs/googleAnalytics/hooks/useGoogleEventTrigger';
@@ -14,9 +15,12 @@ const usePlaceList = () => {
   const { data: placeList, error } = usePlaceListQuery();
   const { mutateAsync: addPlace, data: addedPlaceId } = useAddPlaceQuery();
   const { mutateAsync: deletePlace } = useDeletePlaceQuery();
+  const { mutateAsync: updatePlaceHashtags } =
+    useUpdatePlaceHashtagsMutation();
   const { showToast } = useToastContext();
   const { runWithLock: runDeleteWithLock } = useAsyncLock();
   const { runWithLock: runAddWithLock } = useAsyncLock();
+  const { runWithLock: runUpdateWithLock } = useAsyncLock();
   const { triggerEvent } = useGoogleEventTrigger();
 
   const handleAddPlace = useCallback(
@@ -43,6 +47,15 @@ const usePlaceList = () => {
     [deletePlace],
   );
 
+  const handleUpdatePlaceHashtags = useCallback(
+    async (placeId: number, hashtags: string[]) => {
+      return runUpdateWithLock(async () => {
+        await updatePlaceHashtags({ placeId, hashtags });
+      });
+    },
+    [updatePlaceHashtags],
+  );
+
   useEffect(() => {
     if (error) {
       console.error(error);
@@ -58,6 +71,7 @@ const usePlaceList = () => {
     handleAddPlace,
     addedPlaceId,
     handleDeletePlace,
+    handleUpdatePlaceHashtags,
   };
 };
 
