@@ -1,3 +1,5 @@
+import { useMemo } from 'react';
+
 import Button from '@/@common/components/Button/Button';
 import Flex from '@/@common/components/Flex/Flex';
 import Input from '@/@common/components/Input/Input';
@@ -21,7 +23,7 @@ interface EditHashtagDropdownProps {
 }
 
 const EditHashtagDropdown = ({
-  initialHashtags = [],
+  initialHashtags,
   onCancel,
   onUpdate,
 }: EditHashtagDropdownProps) => {
@@ -37,8 +39,21 @@ const EditHashtagDropdown = ({
     handleEnterTag,
   } = useHashtag(initialHashtags);
 
-  const isHashtagsChanged =
-    JSON.stringify(selectedTags) !== JSON.stringify(initialHashtags);
+  const stableInitial = useMemo(
+    () => initialHashtags ?? [],
+    [initialHashtags?.join('|')],
+  );
+
+  const normalize = (arr?: string[]) =>
+    Array.from(new Set((arr ?? []).map((s) => s.trim()))).sort();
+
+  const isHashtagsChanged = useMemo(() => {
+    const a = normalize(selectedTags);
+    const b = normalize(stableInitial);
+    if (a.length !== b.length) return true;
+    for (let i = 0; i < a.length; i++) if (a[i] !== b[i]) return true;
+    return false;
+  }, [selectedTags, stableInitial]);
 
   const handleSubmit = async () => {
     try {
