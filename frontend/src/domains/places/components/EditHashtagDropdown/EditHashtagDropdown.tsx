@@ -6,9 +6,8 @@ import Input from '@/@common/components/Input/Input';
 import Text from '@/@common/components/Text/Text';
 import { useToastContext } from '@/@common/contexts/useToastContext';
 import Hashtag from '@/domains/places/components/Hashtag/Hashtag';
+import useHashtag from '@/domains/places/hooks/useHashtag';
 import theme from '@/styles/theme';
-
-import useHashtag from '../../hooks/useHashtag';
 
 import {
   EditDropdownContainerStyle,
