@@ -80,8 +80,7 @@ const EditHashtagDropdown = ({
             </Button>
           </Flex>
 
-          {selectedTags.filter((tag) => !previousTags.includes(tag)).length >
-            0 && (
+          {selectedTags.some((tag) => !previousTags.includes(tag)) && (
             <Flex
               gap={0.6}
               justifyContent="flex-start"
