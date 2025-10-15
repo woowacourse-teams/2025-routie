@@ -18,6 +18,7 @@ import type {
   UnlikePlaceRequestType,
   UpdatePlaceHashtagsRequestType,
 } from '@/domains/places/types/api.types';
+import { useGoogleEventTrigger } from '@/libs/googleAnalytics/hooks/useGoogleEventTrigger';
 
 import { placesKeys } from './key';
 
@@ -69,9 +70,10 @@ const useAddPlaceQuery = () => {
   });
 };
 
-const useDeletePlaceQuery = (onSuccessCallback?: () => void) => {
+const useDeletePlaceQuery = () => {
   const { showToast } = useToastContext();
   const queryClient = useQueryClient();
+  const { triggerEvent } = useGoogleEventTrigger();
 
   return useMutation({
     mutationFn: (placeId: number) => deletePlace({ placeId }),
@@ -81,7 +83,11 @@ const useDeletePlaceQuery = (onSuccessCallback?: () => void) => {
         type: 'success',
       });
       queryClient.invalidateQueries({ queryKey: placesKeys.list() });
-      onSuccessCallback?.();
+      triggerEvent({
+        action: 'click',
+        category: 'place',
+        label: '장소 삭제하기 버튼',
+      });
     },
     onError: (error) => {
       showToast({

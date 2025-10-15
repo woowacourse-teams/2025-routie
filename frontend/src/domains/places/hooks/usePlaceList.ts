@@ -9,19 +9,11 @@ import {
   useUpdatePlaceHashtagsMutation,
 } from '@/domains/places/queries/usePlaceQuery';
 import type { SearchedPlaceType } from '@/domains/places/types/place.types';
-import { useGoogleEventTrigger } from '@/libs/googleAnalytics/hooks/useGoogleEventTrigger';
 
 const usePlaceList = () => {
   const { data: placeList, error } = usePlaceListQuery();
   const { mutate: addPlace, data: addedPlaceId } = useAddPlaceQuery();
-  const { triggerEvent } = useGoogleEventTrigger();
-  const { mutate: deletePlace } = useDeletePlaceQuery(() => {
-    triggerEvent({
-      action: 'click',
-      category: 'place',
-      label: '장소 삭제하기 버튼',
-    });
-  });
+  const { mutate: deletePlace } = useDeletePlaceQuery();
   const { mutate: updatePlaceHashtags } = useUpdatePlaceHashtagsMutation();
   const { showToast } = useToastContext();
   const { runWithLock: runDeleteWithLock } = useAsyncLock();
