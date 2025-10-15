@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useId, useMemo } from 'react';
 
 import Button from '@/@common/components/Button/Button';
 import Flex from '@/@common/components/Flex/Flex';
@@ -27,6 +27,7 @@ const EditHashtagDropdown = ({
   onUpdate,
 }: EditHashtagDropdownProps) => {
   const { showToast } = useToastContext();
+  const inputId = useId();
 
   const {
     inputValue,
@@ -72,7 +73,7 @@ const EditHashtagDropdown = ({
           <Text variant="subTitle">해시태그 수정</Text>
           <Flex gap={1}>
             <Input
-              id="hashtag-input"
+              id={inputId}
               value={inputValue}
               placeholder="해시태그를 추가하거나 만들어보세요"
               onChange={handleInputChange}
