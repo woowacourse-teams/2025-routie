@@ -5,9 +5,9 @@ import Flex from '@/@common/components/Flex/Flex';
 import Input from '@/@common/components/Input/Input';
 import Text from '@/@common/components/Text/Text';
 import { useToastContext } from '@/@common/contexts/useToastContext';
+import useArrayChange from '@/@common/hooks/useArrayChange';
 import Hashtag from '@/domains/places/components/Hashtag/Hashtag';
 import { useHashtag } from '@/domains/places/hooks/useHashtag';
-import useHashtagsChange from '@/domains/places/hooks/useHashtagsChange';
 import type { EditHashtagDropdownProps } from '@/domains/places/types/hashtag.types';
 import theme from '@/styles/theme';
 
@@ -35,7 +35,7 @@ const EditHashtagDropdown = ({
     handleEnterTag,
   } = useHashtag(initialHashtags);
 
-  const { isHashtagsChanged } = useHashtagsChange(
+  const { isChanged: isHashtagsChanged } = useArrayChange(
     initialHashtags,
     selectedTags,
   );

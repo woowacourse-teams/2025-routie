@@ -3,24 +3,24 @@ import { useMemo } from 'react';
 const normalize = (arr?: string[]) =>
   Array.from(new Set((arr ?? []).map((s) => s.trim()))).sort();
 
-const useHashtagsChange = (
-  initialHashtags: string[] | undefined,
-  selectedTags: string[],
+const useArrayChange = (
+  initialArray: string[] | undefined,
+  currentArray: string[],
 ) => {
   const stableInitial = useMemo(
-    () => initialHashtags ?? [],
-    [initialHashtags?.join('|')],
+    () => initialArray ?? [],
+    [initialArray?.join('|')],
   );
 
-  const isHashtagsChanged = useMemo(() => {
-    const a = normalize(selectedTags);
+  const isChanged = useMemo(() => {
+    const a = normalize(currentArray);
     const b = normalize(stableInitial);
     if (a.length !== b.length) return true;
     for (let i = 0; i < a.length; i++) if (a[i] !== b[i]) return true;
     return false;
-  }, [selectedTags, stableInitial]);
+  }, [currentArray, stableInitial]);
 
-  return { isHashtagsChanged };
+  return { isChanged };
 };
 
-export default useHashtagsChange;
+export default useArrayChange;
