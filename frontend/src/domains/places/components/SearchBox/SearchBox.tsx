@@ -111,7 +111,7 @@ const SearchBox = () => {
                 css={DropdownContainerStyle}
               >
                 <AddHashtagDropdown
-                  searchResult={selectedPlace}
+                  place={selectedPlace}
                   addressType={
                     selectedPlace.roadAddressName ? '도로명' : '지번'
                   }

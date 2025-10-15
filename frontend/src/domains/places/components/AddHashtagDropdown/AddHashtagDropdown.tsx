@@ -6,7 +6,7 @@ import { useToastContext } from '@/@common/contexts/useToastContext';
 import Hashtag from '@/domains/places/components/Hashtag/Hashtag';
 import SearchAddress from '@/domains/places/components/SearchAddress/SearchAddress';
 import useHashtag from '@/domains/places/hooks/useHashtag';
-import type { HashtagInputProps } from '@/domains/places/types/searchPlace.types';
+import type { HashtagInputProps } from '@/domains/places/types/hashtag.types';
 import theme from '@/styles/theme';
 
 import {
@@ -15,16 +15,10 @@ import {
   SelectedTagsWrapperStyle,
 } from './AddHashtagDropdown.styles';
 
-const AddHashtagDropdown = ({
-  searchResult,
-  addressType,
-  address,
-  onCancel,
-  onSubmit,
-  mode = 'add',
-  initialHashtags,
-  onUpdate,
-}: HashtagInputProps) => {
+const AddHashtagDropdown = (props: HashtagInputProps) => {
+  const { place, addressType, address, onCancel } = props;
+  const mode = props.mode ?? 'add';
+  const initialHashtags = 'initialHashtags' in props ? props.initialHashtags : undefined;
   const { showToast } = useToastContext();
 
   const {
@@ -52,11 +46,11 @@ const AddHashtagDropdown = ({
 
   const handleSubmit = async () => {
     try {
-      if (mode === 'edit' && onUpdate) {
-        await onUpdate(selectedTags);
+      if (props.mode === 'edit') {
+        await props.onUpdate(selectedTags);
       } else {
-        await onSubmit({
-          ...searchResult,
+        await props.onSubmit({
+          ...place,
           hashtags: selectedTags,
         });
       }
@@ -80,7 +74,7 @@ const AddHashtagDropdown = ({
         alignItems="flex-start"
         css={PlaceInfoStyle}
       >
-        <Text variant="body">{searchResult.name}</Text>
+        <Text variant="body">{place.name}</Text>
         <SearchAddress addressType={addressType} address={address} />
       </Flex>
       <Flex direction="column" gap={2} alignItems="flex-start">
