@@ -25,31 +25,43 @@ const usePlaceList = () => {
   const handleAddPlace = useCallback(
     async (addPlaceInfo: SearchedPlaceType) => {
       const result = await runAddWithLock(async () => {
-        await addPlace(addPlaceInfo);
+        try {
+          await addPlace(addPlaceInfo);
+        } catch {
+          // onError에서 이미 에러를 처리했으므로 무시
+        }
       });
       return result;
     },
-    [addPlace],
+    [addPlace, runAddWithLock],
   );
 
   const handleDeletePlace = useCallback(
     async (placeId: number) => {
       return runDeleteWithLock(async () => {
-        await deletePlace(placeId);
-        triggerEvent({
-          action: 'click',
-          category: 'place',
-          label: '장소 삭제하기 버튼',
-        });
+        try {
+          await deletePlace(placeId);
+          triggerEvent({
+            action: 'click',
+            category: 'place',
+            label: '장소 삭제하기 버튼',
+          });
+        } catch {
+          // onError에서 이미 에러를 처리했으므로 무시
+        }
       });
     },
-    [deletePlace],
+    [deletePlace, runDeleteWithLock, triggerEvent],
   );
 
   const handleUpdatePlaceHashtags = useCallback(
     async (placeId: number, hashtags: string[]) => {
       return runUpdateWithLock(async () => {
-        await updatePlaceHashtags({ placeId, hashtags });
+        try {
+          await updatePlaceHashtags({ placeId, hashtags });
+        } catch {
+          // onError에서 이미 에러를 처리했으므로 무시
+        }
       });
     },
     [updatePlaceHashtags, runUpdateWithLock],
