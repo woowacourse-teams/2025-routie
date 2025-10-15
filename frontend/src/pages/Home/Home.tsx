@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
 import Flex from '@/@common/components/Flex/Flex';
 import Header from '@/@common/components/Header/Header';
@@ -6,6 +6,7 @@ import IconButton from '@/@common/components/IconButton/IconButton';
 import Text from '@/@common/components/Text/Text';
 import { useModal } from '@/@common/contexts/ModalContext';
 import { useToastContext } from '@/@common/contexts/useToastContext';
+import { useToggle } from '@/@common/hooks/useToggle';
 import { getAccessToken } from '@/@common/utils/getAccessToken';
 import CreateRoutieButton from '@/domains/auth/components/CreateRoutieButton/CreateRoutieButton';
 import { useUserQuery } from '@/domains/auth/queries/useAuthQuery';
@@ -25,7 +26,7 @@ import PhoneFrame from './PhoneChatFrame/PhoneChatFrame';
 import { useRoutieSpaceNavigation } from './hooks/useRoutieSpaceNavigation';
 
 const Home = () => {
-  const [isFeedbackPanelOpen, setIsFeedbackPanelOpen] = useState(false);
+  const { isOpen, handleToggle } = useToggle(false);
   const { handleMoveToHome, handleCreateRoutieSpace } =
     useRoutieSpaceNavigation();
   const { openModal } = useModal();
@@ -46,11 +47,13 @@ const Home = () => {
     : handleLoginClick;
 
   const handleFeedbackButtonClick = () => {
-    setIsFeedbackPanelOpen((prev) => !prev);
+    handleToggle();
   };
 
   const handleFeedbackPanelClose = () => {
-    setIsFeedbackPanelOpen(false);
+    if (isOpen) {
+      handleToggle();
+    }
   };
 
   useEffect(() => {
@@ -125,14 +128,14 @@ const Home = () => {
           </Flex>
         </Flex>
       </div>
-      {isFeedbackPanelOpen && (
+      {isOpen && (
         <div
           role="presentation"
           css={FeedbackOverlayStyle}
           onClick={handleFeedbackPanelClose}
         />
       )}
-      <FeedbackPanel isVisible={isFeedbackPanelOpen} />
+      <FeedbackPanel isVisible={isOpen} />
       <IconButton
         icon="feedback"
         onClick={handleFeedbackButtonClick}
