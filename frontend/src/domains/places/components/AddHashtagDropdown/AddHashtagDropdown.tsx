@@ -5,7 +5,7 @@ import Text from '@/@common/components/Text/Text';
 import { useToastContext } from '@/@common/contexts/useToastContext';
 import Hashtag from '@/domains/places/components/Hashtag/Hashtag';
 import SearchAddress from '@/domains/places/components/SearchAddress/SearchAddress';
-import useHashtag from '@/domains/places/hooks/useHashtag';
+import { useHashtag } from '@/domains/places/hooks/useHashtag';
 import type { AddHashtagDropdownProps } from '@/domains/places/types/hashtag.types';
 import theme from '@/styles/theme';
 

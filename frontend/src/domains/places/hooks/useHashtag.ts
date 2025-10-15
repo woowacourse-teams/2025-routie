@@ -87,4 +87,4 @@ const useHashtag = (initialTags?: string[]) => {
   };
 };
 
-export default useHashtag;
+export { useHashtag };
