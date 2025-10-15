@@ -51,8 +51,7 @@ const useAddPlaceQuery = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (addPlaceInfo: AddPlaceRequestType) =>
-      await addPlace(addPlaceInfo),
+    mutationFn: (addPlaceInfo: AddPlaceRequestType) => addPlace(addPlaceInfo),
     onSuccess: (data) => {
       showToast({
         message: '장소가 추가되었습니다.',
@@ -75,7 +74,7 @@ const useDeletePlaceQuery = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (placeId: number) => await deletePlace({ placeId }),
+    mutationFn: (placeId: number) => deletePlace({ placeId }),
     onSuccess: () => {
       showToast({
         message: '장소가 삭제되었습니다.',
@@ -97,8 +96,8 @@ const useLikePlaceMutation = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async ({ placeId }: LikePlaceRequestType) =>
-      await postLikePlace({ placeId }),
+    mutationFn: ({ placeId }: LikePlaceRequestType) =>
+      postLikePlace({ placeId }),
     onSuccess: () => {
       showToast({
         message: '좋아요가 추가되었습니다.',
@@ -121,8 +120,8 @@ const useDeleteLikePlaceMutation = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async ({ placeId }: UnlikePlaceRequestType) =>
-      await deleteLikePlace({ placeId }),
+    mutationFn: ({ placeId }: UnlikePlaceRequestType) =>
+      deleteLikePlace({ placeId }),
     onSuccess: () => {
       showToast({
         message: '좋아요가 취소되었습니다.',
@@ -153,8 +152,8 @@ const useUpdatePlaceHashtagsMutation = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async ({ placeId, hashtags }: UpdatePlaceHashtagsRequestType) =>
-      await updatePlaceHashtags({ placeId, hashtags }),
+    mutationFn: ({ placeId, hashtags }: UpdatePlaceHashtagsRequestType) =>
+      updatePlaceHashtags({ placeId, hashtags }),
     onSuccess: () => {
       showToast({
         message: '해시태그가 수정되었습니다.',
