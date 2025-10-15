@@ -13,16 +13,16 @@ import { useGoogleEventTrigger } from '@/libs/googleAnalytics/hooks/useGoogleEve
 
 const usePlaceList = () => {
   const { data: placeList, error } = usePlaceListQuery();
-  const { mutateAsync: addPlace, data: addedPlaceId } = useAddPlaceQuery();
+  const { mutate: addPlace, data: addedPlaceId } = useAddPlaceQuery();
   const { triggerEvent } = useGoogleEventTrigger();
-  const { mutateAsync: deletePlace } = useDeletePlaceQuery(() => {
+  const { mutate: deletePlace } = useDeletePlaceQuery(() => {
     triggerEvent({
       action: 'click',
       category: 'place',
       label: '장소 삭제하기 버튼',
     });
   });
-  const { mutateAsync: updatePlaceHashtags } = useUpdatePlaceHashtagsMutation();
+  const { mutate: updatePlaceHashtags } = useUpdatePlaceHashtagsMutation();
   const { showToast } = useToastContext();
   const { runWithLock: runDeleteWithLock } = useAsyncLock();
   const { runWithLock: runAddWithLock } = useAsyncLock();
