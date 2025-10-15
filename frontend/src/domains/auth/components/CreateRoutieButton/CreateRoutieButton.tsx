@@ -12,7 +12,7 @@ const CreateRoutieButton = ({ onClick }: CreateRoutieButtonProps) => {
       variant="primary"
       onClick={onClick}
       css={CreateRoutieButtonStyle}
-      width="54rem"
+      width="36rem"
       padding="2rem"
     >
       <Text color={theme.colors.white} variant="subTitle">

@@ -8,6 +8,7 @@ import closeSheetIcon from '@/assets/icons/closeSheet.svg';
 import copy from '@/assets/icons/copy.svg';
 import drag from '@/assets/icons/drag.svg';
 import edit from '@/assets/icons/edit.svg';
+import feedback from '@/assets/icons/feedback.svg';
 import logo from '@/assets/icons/logo.png';
 import logout from '@/assets/icons/logout.svg';
 import menu from '@/assets/icons/menu.svg';
@@ -38,6 +39,7 @@ const allIcons = {
   copy,
   drag,
   edit,
+  feedback,
   logo,
   logout,
   pin,
