@@ -220,7 +220,7 @@ public class PlaceControllerV1Test {
         final UpdateHashtagsRequest updateHashtagsRequest = new UpdateHashtagsRequest(List.of("new", "hash", "tags"));
 
         // when
-        Response response = RestAssured
+        final Response response = RestAssured
                 .given()
                 .contentType(ContentType.JSON)
                 .body(updateHashtagsRequest)
@@ -234,8 +234,8 @@ public class PlaceControllerV1Test {
                 .log().all()
                 .extract().response();
 
-        HttpStatus actualHttpStatus = HttpStatus.valueOf(response.getStatusCode());
-        HttpStatus expectedHttpStatus = HttpStatus.OK;
+        final HttpStatus actualHttpStatus = HttpStatus.valueOf(response.getStatusCode());
+        final HttpStatus expectedHttpStatus = HttpStatus.OK;
 
         final UpdateHashtagsResponse updateHashtagsResponse = response.as(UpdateHashtagsResponse.class);
 
@@ -254,7 +254,7 @@ public class PlaceControllerV1Test {
         final UpdateHashtagsRequest updateHashtagsRequest = new UpdateHashtagsRequest(List.of("new", "longHashtags"));
 
         // when
-        Response response = RestAssured
+        final Response response = RestAssured
                 .given()
                 .contentType(ContentType.JSON)
                 .body(updateHashtagsRequest)
@@ -268,8 +268,8 @@ public class PlaceControllerV1Test {
                 .log().all()
                 .extract().response();
 
-        HttpStatus actualHttpStatus = HttpStatus.valueOf(response.getStatusCode());
-        HttpStatus expectedHttpStatus = HttpStatus.BAD_REQUEST;
+        final HttpStatus actualHttpStatus = HttpStatus.valueOf(response.getStatusCode());
+        final HttpStatus expectedHttpStatus = HttpStatus.BAD_REQUEST;
 
         // then
         assertThat(actualHttpStatus).isEqualTo(expectedHttpStatus);

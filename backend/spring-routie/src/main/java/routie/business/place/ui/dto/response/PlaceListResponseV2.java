@@ -26,7 +26,7 @@ public record PlaceListResponseV2(
             List<String> hashtags
     ) {
         public static PlaceCardResponseV2 createPlaceWithLikeCount(final Place place, final Long likeCount) {
-            List<String> hashTagNames = place.getHashtags().stream()
+            final List<String> hashTagNames = place.getHashtags().stream()
                     .map(Hashtag::getName)
                     .toList();
 

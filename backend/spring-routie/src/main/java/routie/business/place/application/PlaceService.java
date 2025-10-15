@@ -67,10 +67,10 @@ public class PlaceService {
             final String routieSpaceIdentifier,
             final PlaceCreateRequestV2 placeCreateRequest
     ) {
-        RoutieSpace routieSpace = routieSpaceRepository.findByIdentifier(routieSpaceIdentifier)
+        final RoutieSpace routieSpace = routieSpaceRepository.findByIdentifier(routieSpaceIdentifier)
                 .orElseThrow(() -> new BusinessException(ErrorCode.ROUTIE_SPACE_NOT_FOUND));
 
-        Place place = Place.create(
+        final Place place = Place.create(
                 placeCreateRequest.name(),
                 placeCreateRequest.roadAddressName(),
                 placeCreateRequest.addressName(),
@@ -91,13 +91,13 @@ public class PlaceService {
             final long placeId,
             final UpdateHashtagsRequest updateHashtagsRequest
     ) {
-        RoutieSpace routieSpace = getRoutieSpaceByIdentifier(routieSpaceIdentifier);
-        Place place = getPlaceByIdAndRoutieSpace(placeId, routieSpace);
+        final RoutieSpace routieSpace = getRoutieSpaceByIdentifier(routieSpaceIdentifier);
+        final Place place = getPlaceByIdAndRoutieSpace(placeId, routieSpace);
 
         final List<Hashtag> newHashtags = convertNamesToHashtags(updateHashtagsRequest.hashtags(), routieSpace);
         place.updateHashtags(newHashtags);
 
-        List<String> updatedHashTagNames = place.getHashtags().stream()
+        final List<String> updatedHashTagNames = place.getHashtags().stream()
                 .map(Hashtag::getName)
                 .toList();
 
@@ -105,7 +105,7 @@ public class PlaceService {
     }
 
     private List<Hashtag> convertNamesToHashtags(final List<String> hashTagNames, final RoutieSpace routieSpace) {
-        Set<String> distinctHashTagNames = new HashSet<>(hashTagNames);
+        final Set<String> distinctHashTagNames = new HashSet<>(hashTagNames);
         if (distinctHashTagNames.size() != hashTagNames.size()) {
             throw new BusinessException(ErrorCode.HASHTAG_DUPLICATED);
         }

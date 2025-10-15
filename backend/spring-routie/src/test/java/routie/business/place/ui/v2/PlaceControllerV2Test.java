@@ -210,10 +210,10 @@ public class PlaceControllerV2Test {
     @DisplayName("V2 API로 장소를 추가할 수 있다")
     public void addPlaceV2Test() {
         // given
-        RoutieSpace emptyRoutieSpace = routieSpaceRepository.save(RoutieSpace.withIdentifierProvider(
+        final RoutieSpace emptyRoutieSpace = routieSpaceRepository.save(RoutieSpace.withIdentifierProvider(
                 null, routieSpaceIdentifierProvider
         ));
-        PlaceCreateRequestV2 placeCreateRequest = new PlaceCreateRequestV2(
+        final PlaceCreateRequestV2 placeCreateRequest = new PlaceCreateRequestV2(
                 "1",
                 "place",
                 "roadAddress",
@@ -224,7 +224,7 @@ public class PlaceControllerV2Test {
         );
 
         // when
-        Response response = RestAssured
+        final Response response = RestAssured
                 .given()
                 .contentType(ContentType.JSON)
                 .body(placeCreateRequest)
@@ -234,8 +234,8 @@ public class PlaceControllerV2Test {
                 .log().all()
                 .extract().response();
 
-        HttpStatus actualHttpStatus = HttpStatus.valueOf(response.getStatusCode());
-        HttpStatus expectedHttpStatus = HttpStatus.OK;
+        final HttpStatus actualHttpStatus = HttpStatus.valueOf(response.getStatusCode());
+        final HttpStatus expectedHttpStatus = HttpStatus.OK;
 
         final PlaceCreateResponse placeCreateResponse = response.as(PlaceCreateResponse.class);
 
@@ -253,10 +253,10 @@ public class PlaceControllerV2Test {
     @DisplayName("V2 API로 장소를 추가할 때 중복되는 해시태그는 중복 제거 후 저장된다")
     public void addPlaceV2WithDuplicateHashtagTest() {
         // given
-        RoutieSpace emptyRoutieSpace = routieSpaceRepository.save(RoutieSpace.withIdentifierProvider(
+        final RoutieSpace emptyRoutieSpace = routieSpaceRepository.save(RoutieSpace.withIdentifierProvider(
                 null, routieSpaceIdentifierProvider
         ));
-        PlaceCreateRequestV2 placeCreateRequest = new PlaceCreateRequestV2(
+        final PlaceCreateRequestV2 placeCreateRequest = new PlaceCreateRequestV2(
                 "1",
                 "place",
                 "roadAddress",
@@ -267,7 +267,7 @@ public class PlaceControllerV2Test {
         );
 
         // when
-        Response response = RestAssured
+        final Response response = RestAssured
                 .given()
                 .contentType(ContentType.JSON)
                 .body(placeCreateRequest)
@@ -277,8 +277,8 @@ public class PlaceControllerV2Test {
                 .log().all()
                 .extract().response();
 
-        HttpStatus actualHttpStatus = HttpStatus.valueOf(response.getStatusCode());
-        HttpStatus expectedHttpStatus = HttpStatus.BAD_REQUEST;
+        final HttpStatus actualHttpStatus = HttpStatus.valueOf(response.getStatusCode());
+        final HttpStatus expectedHttpStatus = HttpStatus.BAD_REQUEST;
 
         // then
         assertThat(actualHttpStatus).isEqualTo(expectedHttpStatus);
@@ -288,10 +288,10 @@ public class PlaceControllerV2Test {
     @DisplayName("V2 API로 장소를 추가할 때 해시태그가 비어있어도 추가할 수 있다.")
     public void addPlaceV2WithEmptyHashtagListTest() {
         // given
-        RoutieSpace emptyRoutieSpace = routieSpaceRepository.save(RoutieSpace.withIdentifierProvider(
+        final RoutieSpace emptyRoutieSpace = routieSpaceRepository.save(RoutieSpace.withIdentifierProvider(
                 null, routieSpaceIdentifierProvider
         ));
-        PlaceCreateRequestV2 placeCreateRequest = new PlaceCreateRequestV2(
+        final PlaceCreateRequestV2 placeCreateRequest = new PlaceCreateRequestV2(
                 "1",
                 "place",
                 "roadAddress",
@@ -302,7 +302,7 @@ public class PlaceControllerV2Test {
         );
 
         // when
-        Response response = RestAssured
+        final Response response = RestAssured
                 .given()
                 .contentType(ContentType.JSON)
                 .body(placeCreateRequest)
@@ -312,8 +312,8 @@ public class PlaceControllerV2Test {
                 .log().all()
                 .extract().response();
 
-        HttpStatus actualHttpStatus = HttpStatus.valueOf(response.getStatusCode());
-        HttpStatus expectedHttpStatus = HttpStatus.OK;
+        final HttpStatus actualHttpStatus = HttpStatus.valueOf(response.getStatusCode());
+        final HttpStatus expectedHttpStatus = HttpStatus.OK;
 
         final PlaceCreateResponse placeCreateResponse = response.as(PlaceCreateResponse.class);
 
@@ -331,10 +331,10 @@ public class PlaceControllerV2Test {
     @DisplayName("V2 API로 장소를 추가할 때 해시태그의 길이가 8자 이상이거나 비어있다면 예외가 발생한다")
     public void addPlaceV2WithInvalidLengthHashtagTest() {
         // given
-        RoutieSpace emptyRoutieSpace = routieSpaceRepository.save(RoutieSpace.withIdentifierProvider(
+        final RoutieSpace emptyRoutieSpace = routieSpaceRepository.save(RoutieSpace.withIdentifierProvider(
                 null, routieSpaceIdentifierProvider
         ));
-        PlaceCreateRequestV2 placeCreateRequest = new PlaceCreateRequestV2(
+        final PlaceCreateRequestV2 placeCreateRequest = new PlaceCreateRequestV2(
                 "1",
                 "place",
                 "roadAddress",
@@ -345,7 +345,7 @@ public class PlaceControllerV2Test {
         );
 
         // when
-        Response response = RestAssured
+        final Response response = RestAssured
                 .given()
                 .contentType(ContentType.JSON)
                 .body(placeCreateRequest)
@@ -355,8 +355,8 @@ public class PlaceControllerV2Test {
                 .log().all()
                 .extract().response();
 
-        HttpStatus actualHttpStatus = HttpStatus.valueOf(response.getStatusCode());
-        HttpStatus expectedHttpStatus = HttpStatus.BAD_REQUEST;
+        final HttpStatus actualHttpStatus = HttpStatus.valueOf(response.getStatusCode());
+        final HttpStatus expectedHttpStatus = HttpStatus.BAD_REQUEST;
 
         // then
         assertThat(actualHttpStatus).isEqualTo(expectedHttpStatus);

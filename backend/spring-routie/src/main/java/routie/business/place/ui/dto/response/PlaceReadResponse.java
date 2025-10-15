@@ -14,7 +14,7 @@ public record PlaceReadResponse(
 ) {
 
     public static PlaceReadResponse from(final Place place) {
-        List<String> hashtagNames = place.getHashtags().stream()
+        final List<String> hashtagNames = place.getHashtags().stream()
                 .map(Hashtag::getName)
                 .toList();
 

@@ -157,7 +157,7 @@ public class Place {
     }
 
     public void addHashtags(final List<Hashtag> hashtags) {
-        List<PlaceHashtag> placeHashtags = hashtags.stream()
+        final List<PlaceHashtag> placeHashtags = hashtags.stream()
                 .map(hashtag -> new PlaceHashtag(this, hashtag))
                 .toList();
         this.placeHashtags.addAll(placeHashtags);
