@@ -1,6 +1,11 @@
 import type { SearchedPlaceType } from './place.types';
 import type { SearchAddressProps } from './searchPlace.types';
 
+interface HashtagProps {
+  tag: string;
+  isSelected: boolean;
+  onClick: () => void;
+}
 interface AddHashtagDropdownProps extends SearchAddressProps {
   place: SearchedPlaceType;
   onCancel: () => void;
@@ -14,4 +19,4 @@ interface EditHashtagDropdownProps {
   onUpdate: (hashtags: string[]) => Promise<void>;
 }
 
-export type { AddHashtagDropdownProps, EditHashtagDropdownProps };
+export type { HashtagProps, AddHashtagDropdownProps, EditHashtagDropdownProps };

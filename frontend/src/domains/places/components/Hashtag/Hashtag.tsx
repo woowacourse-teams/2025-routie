@@ -1,14 +1,9 @@
 import Button from '@/@common/components/Button/Button';
 import Text from '@/@common/components/Text/Text';
+import { HashtagProps } from '@/domains/places/types/hashtag.types';
 import theme from '@/styles/theme';
 
 import { HashtagStyle } from './Hashtag.styles';
-
-interface HashtagProps {
-  tag: string;
-  isSelected: boolean;
-  onClick: () => void;
-}
 
 const Hashtag = ({ tag, isSelected, onClick }: HashtagProps) => {
   return (
