@@ -44,17 +44,17 @@ public class AuthenticationService {
     public ExternalAuthenticationResponse authenticateByExternalAuthenticationProvider(
             final ExternalAuthenticationRequest request
     ) {
-        ExternalAuthenticationProvider externalAuthenticationProvider = ExternalAuthenticationProvider.fromName(
+        final ExternalAuthenticationProvider externalAuthenticationProvider = ExternalAuthenticationProvider.fromName(
                 request.providerName()
         );
-        ExternalAuthenticationProcessor externalAuthenticationProcessor =
+        final ExternalAuthenticationProcessor externalAuthenticationProcessor =
                 externalAuthenticationProcessorRegistry.getExternalAuthenticationProcessor(
                         externalAuthenticationProvider
                 );
-        String externalAuthenticationIdentifier = externalAuthenticationProcessor.getAuthenticationIdentifier(
+        final String externalAuthenticationIdentifier = externalAuthenticationProcessor.getAuthenticationIdentifier(
                 request.code()
         );
-        User user = userRepository.findByExternalAuthenticationIdentifierAndExternalAuthenticationProvider(
+        final User user = userRepository.findByExternalAuthenticationIdentifierAndExternalAuthenticationProvider(
                         externalAuthenticationIdentifier,
                         externalAuthenticationProvider
                 )
@@ -67,7 +67,8 @@ public class AuthenticationService {
             final String externalAuthenticationIdentifier,
             final ExternalAuthenticationProvider externalAuthenticationProvider
     ) {
-        User user = new User(getRandomNickname(), externalAuthenticationIdentifier, externalAuthenticationProvider);
+        final User user = new User(getRandomNickname(), externalAuthenticationIdentifier,
+                externalAuthenticationProvider);
         return userRepository.save(user);
     }
 
@@ -91,14 +92,14 @@ public class AuthenticationService {
     public ExternalAuthenticationUriResponse getExternalAuthenticationUri(
             final String providerName
     ) {
-        ExternalAuthenticationProvider externalAuthenticationProvider = ExternalAuthenticationProvider.fromName(
+        final ExternalAuthenticationProvider externalAuthenticationProvider = ExternalAuthenticationProvider.fromName(
                 providerName
         );
-        ExternalAuthenticationProcessor externalAuthenticationProcessor =
+        final ExternalAuthenticationProcessor externalAuthenticationProcessor =
                 externalAuthenticationProcessorRegistry.getExternalAuthenticationProcessor(
                         externalAuthenticationProvider
                 );
-        String uri = externalAuthenticationProcessor.getAuthorizationUri();
+        final String uri = externalAuthenticationProcessor.getAuthorizationUri();
         return new ExternalAuthenticationUriResponse(uri);
     }
 

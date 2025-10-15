@@ -20,7 +20,7 @@ public record VWorldPlaceSearchApiErrorResponse(
         @Override
         public VWorldPlaceSearchApiErrorResponse deserialize(final JsonParser p, final DeserializationContext ctxt)
                 throws IOException {
-            JsonNode errorNode = parseErrorNode(p);
+            final JsonNode errorNode = parseErrorNode(p);
             return new VWorldPlaceSearchApiErrorResponse(
                     errorNode.path("level").isMissingNode() ? null : errorNode.get("level").asInt(),
                     errorNode.path("code").asText(null),
@@ -29,7 +29,7 @@ public record VWorldPlaceSearchApiErrorResponse(
         }
 
         private JsonNode parseErrorNode(final JsonParser jsonParser) throws IOException {
-            JsonNode root = jsonParser.getCodec().readTree(jsonParser);
+            final JsonNode root = jsonParser.getCodec().readTree(jsonParser);
             return root.path("response").path("error");
         }
     }

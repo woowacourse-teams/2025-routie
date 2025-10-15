@@ -86,17 +86,17 @@ public class PlaceControllerV2Test {
     @DisplayName("V2 API로 장소 목록을 조회한다")
     public void readPlacesV2() {
         // when
-        Response response = RestAssured
+        final Response response = RestAssured
                 .when()
                 .get("/v2/routie-spaces/" + testRoutieSpace.getIdentifier() + "/places")
                 .then()
                 .log().all()
                 .extract().response();
 
-        HttpStatus actualHttpStatus = HttpStatus.valueOf(response.getStatusCode());
-        HttpStatus expectedHttpStatus = HttpStatus.OK;
+        final HttpStatus actualHttpStatus = HttpStatus.valueOf(response.getStatusCode());
+        final HttpStatus expectedHttpStatus = HttpStatus.OK;
 
-        PlaceListResponseV2 responseBody = response.as(PlaceListResponseV2.class);
+        final PlaceListResponseV2 responseBody = response.as(PlaceListResponseV2.class);
 
         // then
         assertThat(expectedHttpStatus).isEqualTo(actualHttpStatus);
@@ -121,7 +121,7 @@ public class PlaceControllerV2Test {
         final User user = userRepository.save(UserFixture.emptyUser());
 
         for (int i = 0; i < 3; i++) {
-            PlaceLike placeLike = new PlaceLikeBuilder()
+            final PlaceLike placeLike = new PlaceLikeBuilder()
                     .place(place1)
                     .user(user)
                     .build();
@@ -129,22 +129,22 @@ public class PlaceControllerV2Test {
         }
 
         // when
-        Response response = RestAssured
+        final Response response = RestAssured
                 .when()
                 .get("/v2/routie-spaces/" + testRoutieSpace.getIdentifier() + "/places")
                 .then()
                 .log().all()
                 .extract().response();
 
-        PlaceListResponseV2 responseBody = response.as(PlaceListResponseV2.class);
+        final PlaceListResponseV2 responseBody = response.as(PlaceListResponseV2.class);
 
         // then
-        PlaceCardResponseV2 placeWithLikes = responseBody.places().stream()
+        final PlaceCardResponseV2 placeWithLikes = responseBody.places().stream()
                 .filter(place -> place.id().equals(place1.getId()))
                 .findFirst()
                 .orElseThrow();
 
-        PlaceCardResponseV2 placeWithoutLikes = responseBody.places().stream()
+        final PlaceCardResponseV2 placeWithoutLikes = responseBody.places().stream()
                 .filter(place -> place.id().equals(place2.getId()))
                 .findFirst()
                 .orElseThrow();
@@ -157,18 +157,18 @@ public class PlaceControllerV2Test {
     @DisplayName("V2 API로 존재하지 않는 루티 스페이스 조회 시 예외가 발생한다")
     public void readPlacesV2WithNonExistentRoutieSpace() {
         // given
-        String nonExistentIdentifier = "non-existent-identifier";
+        final String nonExistentIdentifier = "non-existent-identifier";
 
         // when
-        Response response = RestAssured
+        final Response response = RestAssured
                 .when()
                 .get("/v2/routie-spaces/" + nonExistentIdentifier + "/places")
                 .then()
                 .log().all()
                 .extract().response();
 
-        HttpStatus actualHttpStatus = HttpStatus.valueOf(response.getStatusCode());
-        HttpStatus expectedHttpStatus = HttpStatus.NOT_FOUND;
+        final HttpStatus actualHttpStatus = HttpStatus.valueOf(response.getStatusCode());
+        final HttpStatus expectedHttpStatus = HttpStatus.NOT_FOUND;
 
         // then
         assertThat(expectedHttpStatus).isEqualTo(actualHttpStatus);
@@ -178,22 +178,22 @@ public class PlaceControllerV2Test {
     @DisplayName("V2 API로 빈 루티 스페이스 조회 시 빈 배열을 반환한다")
     public void readPlacesV2WithEmptyRoutieSpace() {
         // given
-        RoutieSpace emptyRoutieSpace = routieSpaceRepository.save(RoutieSpace.withIdentifierProvider(
+        final RoutieSpace emptyRoutieSpace = routieSpaceRepository.save(RoutieSpace.withIdentifierProvider(
                 null, routieSpaceIdentifierProvider
         ));
 
         // when
-        Response response = RestAssured
+        final Response response = RestAssured
                 .when()
                 .get("/v2/routie-spaces/" + emptyRoutieSpace.getIdentifier() + "/places")
                 .then()
                 .log().all()
                 .extract().response();
 
-        HttpStatus actualHttpStatus = HttpStatus.valueOf(response.getStatusCode());
-        HttpStatus expectedHttpStatus = HttpStatus.OK;
+        final HttpStatus actualHttpStatus = HttpStatus.valueOf(response.getStatusCode());
+        final HttpStatus expectedHttpStatus = HttpStatus.OK;
 
-        PlaceListResponseV2 responseBody = response.as(PlaceListResponseV2.class);
+        final PlaceListResponseV2 responseBody = response.as(PlaceListResponseV2.class);
 
         // then
         assertThat(expectedHttpStatus).isEqualTo(actualHttpStatus);

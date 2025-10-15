@@ -27,20 +27,20 @@ public class RequestLoggingAspect {
     @Around("@within(org.springframework.web.bind.annotation.RestController)")
     public Object handleAroundRequest(final ProceedingJoinPoint joinPoint) throws Throwable {
 
-        long startTime = System.currentTimeMillis();
+        final long startTime = System.currentTimeMillis();
         TraceIdHolder.setTraceId();
 
-        ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes) RequestContextHolder
+        final ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes) RequestContextHolder
                 .currentRequestAttributes();
-        HttpServletRequest httpServletRequest = servletRequestAttributes.getRequest();
+        final HttpServletRequest httpServletRequest = servletRequestAttributes.getRequest();
 
         boolean isSuccess = false;
         try {
-            Object result = joinPoint.proceed();
+            final Object result = joinPoint.proceed();
             isSuccess = true;
             return result;
         } finally {
-            long executionTime = System.currentTimeMillis() - startTime;
+            final long executionTime = System.currentTimeMillis() - startTime;
             logClientRequest(joinPoint, httpServletRequest, executionTime, isSuccess);
             if (isSuccess) {
                 TraceIdHolder.clearTraceId();
@@ -62,7 +62,7 @@ public class RequestLoggingAspect {
             final long executionTime,
             final boolean isSuccess
     ) {
-        Map<LoggingField, Object> logData = logDataBuilder.buildLogData(new AspectLoggingContext(
+        final Map<LoggingField, Object> logData = logDataBuilder.buildLogData(new AspectLoggingContext(
                 httpServletRequest,
                 executionTime,
                 joinPoint,

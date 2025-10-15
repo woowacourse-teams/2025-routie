@@ -27,7 +27,7 @@ public class AuthenticationControllerV1 {
     public ResponseEntity<ExternalAuthenticationUriResponse> getExternalAuthenticationUri(
             @Valid @RequestParam("provider") final String providerName
     ) {
-        ExternalAuthenticationUriResponse externalAuthenticationUriResponse =
+        final ExternalAuthenticationUriResponse externalAuthenticationUriResponse =
                 authenticationService.getExternalAuthenticationUri(providerName);
         return ResponseEntity.ok(externalAuthenticationUriResponse);
     }
@@ -36,7 +36,7 @@ public class AuthenticationControllerV1 {
     public ResponseEntity<ExternalAuthenticationResponse> authenticateByExternalAuthenticationProvider(
             @Valid @RequestBody final ExternalAuthenticationRequest externalAuthenticationRequest
     ) {
-        ExternalAuthenticationResponse externalAuthenticationResponse =
+        final ExternalAuthenticationResponse externalAuthenticationResponse =
                 authenticationService.authenticateByExternalAuthenticationProvider(
                         externalAuthenticationRequest
                 );
@@ -47,7 +47,7 @@ public class AuthenticationControllerV1 {
     public ResponseEntity<GuestAuthenticationResponse> authenticateGuest(
             @Valid @RequestBody final GuestAuthenticationRequest guestAuthenticationRequest
     ) {
-        GuestAuthenticationResponse guestAuthenticationResponse =
+        final GuestAuthenticationResponse guestAuthenticationResponse =
                 authenticationService.authenticateGuest(guestAuthenticationRequest);
         return ResponseEntity.ok(guestAuthenticationResponse);
     }

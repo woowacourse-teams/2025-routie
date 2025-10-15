@@ -15,7 +15,7 @@ public class KakaoExternalAuthenticationApiClient {
     private final RestClient restClient;
 
     public KakaoExternalAuthenticationTokenApiResponse getToken(final String code) {
-        MultiValueMap<String, String> requestBody = new LinkedMultiValueMap<>();
+        final MultiValueMap<String, String> requestBody = new LinkedMultiValueMap<>();
         requestBody.add("grant_type", "authorization_code");
         requestBody.add("client_id", clientId);
         requestBody.add("code", code);

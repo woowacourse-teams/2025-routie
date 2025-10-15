@@ -24,7 +24,7 @@ public class TimePeriodCalculator {
         TimePeriods timePeriods = TimePeriods.empty();
 
         if (routiePlaces.size() == 1) {
-            RoutiePlace firstRoutiePlace = routiePlaces.getFirst();
+            final RoutiePlace firstRoutiePlace = routiePlaces.getFirst();
 
             return TimePeriods.empty().
                     withAdded(
@@ -37,16 +37,16 @@ public class TimePeriodCalculator {
                     );
         }
 
-        List<RoutiePlace> orderedRoutiePlaces = routes.orderedRoutiePlaces();
+        final List<RoutiePlace> orderedRoutiePlaces = routes.orderedRoutiePlaces();
         LocalDateTime currentTime = startDateTime;
 
         for (final RoutiePlace routiePlace : orderedRoutiePlaces) {
-            LocalDateTime start = currentTime;
-            LocalDateTime end = start.plusMinutes(0); // 검증 필드 제거에 따른 구현
+            final LocalDateTime start = currentTime;
+            final LocalDateTime end = start.plusMinutes(0); // 검증 필드 제거에 따른 구현
 
             timePeriods = timePeriods.withAdded(routiePlace, new TimePeriod(routiePlace, start, end));
 
-            Route route = routes.getByRoutiePlace(routiePlace);
+            final Route route = routes.getByRoutiePlace(routiePlace);
             if (route != null) {
                 currentTime = end.plusMinutes(route.duration());
             }

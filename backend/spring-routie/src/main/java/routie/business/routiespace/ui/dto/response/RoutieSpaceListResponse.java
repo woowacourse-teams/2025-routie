@@ -10,7 +10,7 @@ public record RoutieSpaceListResponse(
 ) {
 
     public static RoutieSpaceListResponse from(final List<RoutieSpace> routieSpaces) {
-        List<RoutieSpaceResponse> routieSpaceResponses = routieSpaces.stream()
+        final List<RoutieSpaceResponse> routieSpaceResponses = routieSpaces.stream()
                 .map(RoutieSpaceResponse::from)
                 .toList();
 

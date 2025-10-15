@@ -7,7 +7,7 @@ public record PlaceListResponseV2(
         List<PlaceCardResponseV2> places
 ) {
     public static PlaceListResponseV2 from(final List<Place> places) {
-        List<PlaceCardResponseV2> placeCardResponses = places.stream()
+        final List<PlaceCardResponseV2> placeCardResponses = places.stream()
                 .map(place -> PlaceCardResponseV2.createPlaceWithLikeCount(place, 0L))
                 .toList();
 

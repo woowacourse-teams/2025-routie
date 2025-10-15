@@ -40,10 +40,10 @@ public class PlaceService {
             final String routieSpaceIdentifier,
             final PlaceCreateRequest placeCreateRequest
     ) {
-        RoutieSpace routieSpace = routieSpaceRepository.findByIdentifier(routieSpaceIdentifier)
+        final RoutieSpace routieSpace = routieSpaceRepository.findByIdentifier(routieSpaceIdentifier)
                 .orElseThrow(() -> new BusinessException(ErrorCode.ROUTIE_SPACE_NOT_FOUND));
 
-        Place place = Place.create(
+        final Place place = Place.create(
                 placeCreateRequest.name(),
                 placeCreateRequest.roadAddressName(),
                 placeCreateRequest.addressName(),
@@ -55,14 +55,14 @@ public class PlaceService {
     }
 
     public PlaceListResponse readPlaces(final String routieSpaceIdentifier) {
-        RoutieSpace routieSpace = routieSpaceRepository.findByIdentifier(routieSpaceIdentifier)
+        final RoutieSpace routieSpace = routieSpaceRepository.findByIdentifier(routieSpaceIdentifier)
                 .orElseThrow(() -> new BusinessException(ErrorCode.ROUTIE_SPACE_NOT_FOUND));
         final List<Place> places = routieSpace.getPlaces();
         return PlaceListResponse.from(places);
     }
 
     public PlaceListResponseV2 readPlacesV2(final String routieSpaceIdentifier) {
-        RoutieSpace routieSpace = routieSpaceRepository.findByIdentifier(routieSpaceIdentifier)
+        final RoutieSpace routieSpace = routieSpaceRepository.findByIdentifier(routieSpaceIdentifier)
                 .orElseThrow(() -> new BusinessException(ErrorCode.ROUTIE_SPACE_NOT_FOUND));
         final List<Place> places = routieSpace.getPlaces();
 
@@ -78,7 +78,7 @@ public class PlaceService {
 
     @Transactional
     public void removePlace(final String routieSpaceIdentifier, final long placeId) {
-        RoutieSpace routieSpace = getRoutieSpaceByIdentifier(routieSpaceIdentifier);
+        final RoutieSpace routieSpace = getRoutieSpaceByIdentifier(routieSpaceIdentifier);
         if (!placeRepository.existsByIdAndRoutieSpace(placeId, routieSpace)) {
             throw new BusinessException(ErrorCode.PLACE_NOT_FOUND);
         }

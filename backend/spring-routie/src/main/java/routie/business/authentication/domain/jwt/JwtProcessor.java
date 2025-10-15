@@ -40,13 +40,13 @@ public class JwtProcessor {
     }
 
     public String createJwt(final Participant participant) {
-        Claims claims = Jwts.claims()
+        final Claims claims = Jwts.claims()
                 .subject(participant.getId().toString())
                 .add(CLAIM_KEY_ROLE, participant.getRole().getKey())
                 .build();
 
-        Date now = new Date();
-        Date expiration = new Date(now.getTime() + this.expiration);
+        final Date now = new Date();
+        final Date expiration = new Date(now.getTime() + this.expiration);
 
         return Jwts.builder()
                 .claims(claims)

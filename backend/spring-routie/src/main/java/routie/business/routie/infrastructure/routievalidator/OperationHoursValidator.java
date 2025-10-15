@@ -23,9 +23,9 @@ public class OperationHoursValidator implements RoutieValidator {
             final ValidationContext validationContext,
             final ValidationStrategy validationStrategy
     ) {
-        List<TimePeriod> timePeriods = validationContext.timePeriods().orderedList();
+        final List<TimePeriod> timePeriods = validationContext.timePeriods().orderedList();
 
-        List<RoutiePlace> invalidRoutiePlaces = timePeriods.stream()
+        final List<RoutiePlace> invalidRoutiePlaces = timePeriods.stream()
                 .filter(timePeriod -> !this.isWithinBusinessHours(timePeriod))
                 .map(TimePeriod::routiePlace)
                 .toList();
@@ -38,7 +38,7 @@ public class OperationHoursValidator implements RoutieValidator {
     }
 
     private boolean isWithinBusinessHours(final TimePeriod timePeriod) {
-        Place place = timePeriod.routiePlace().getPlace();
+        final Place place = timePeriod.routiePlace().getPlace();
 
         final LocalTime openAt = LocalTime.now(); // 검증 필드 제거에 따른 구현
         final LocalTime closeAt = LocalTime.now(); // 검증 필드 제거에 따른 구현

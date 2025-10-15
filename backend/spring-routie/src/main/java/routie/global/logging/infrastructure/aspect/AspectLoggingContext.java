@@ -29,8 +29,8 @@ public class AspectLoggingContext implements LoggingContext {
 
     @Override
     public String getHandlerMethod() {
-        String controllerName = joinPoint.getTarget().getClass().getName();
-        String methodName = joinPoint.getSignature().getName();
+        final String controllerName = joinPoint.getTarget().getClass().getName();
+        final String methodName = joinPoint.getSignature().getName();
         return controllerName + "#" + methodName;
     }
 
@@ -41,7 +41,7 @@ public class AspectLoggingContext implements LoggingContext {
 
     @Override
     public List<HandlerParameter> getHandlerParameters() {
-        MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();
+        final MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();
         return HandlerParametersExtractor.extractParameters(joinPoint.getArgs(), methodSignature.getMethod());
     }
 }

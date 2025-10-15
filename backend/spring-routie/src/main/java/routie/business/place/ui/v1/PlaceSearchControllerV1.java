@@ -20,7 +20,7 @@ public class PlaceSearchControllerV1 {
     public ResponseEntity<SearchedPlacesResponse> searchPlaces(
             @RequestParam("query") final String query
     ) {
-        SearchedPlacesResponse searchedPlacesResponse = placeSearchService.search(query);
+        final SearchedPlacesResponse searchedPlacesResponse = placeSearchService.search(query);
 
         return ResponseEntity.ok(searchedPlacesResponse);
     }

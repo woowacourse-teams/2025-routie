@@ -37,7 +37,7 @@ public class Routie {
     public RoutiePlace createLastRoutiePlace(final Place place) {
         validatePlace(place);
         validatePlaceAlreadyExists(place);
-        RoutiePlace routiePlace = new RoutiePlace(getLastSequence() + 1, place);
+        final RoutiePlace routiePlace = new RoutiePlace(getLastSequence() + 1, place);
         routiePlaces.add(routiePlace);
         return routiePlace;
     }

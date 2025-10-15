@@ -26,9 +26,9 @@ public class BreaktimeValidator implements RoutieValidator {
             final ValidationContext validationContext,
             final ValidationStrategy validationStrategy
     ) {
-        List<TimePeriod> timePeriods = validationContext.timePeriods().orderedList();
+        final List<TimePeriod> timePeriods = validationContext.timePeriods().orderedList();
 
-        List<RoutiePlace> invalidRoutiePlaces = timePeriods.stream()
+        final List<RoutiePlace> invalidRoutiePlaces = timePeriods.stream()
                 .filter(timePeriod -> !this.isNotDuringBreaktime(timePeriod))
                 .map(TimePeriod::routiePlace)
                 .toList();
@@ -62,15 +62,15 @@ public class BreaktimeValidator implements RoutieValidator {
             final LocalTime breakEndAt
     ) {
         LocalDate currentDate = visitStart.toLocalDate().minusDays(1);
-        LocalDate endDate = visitEnd.toLocalDate();
+        final LocalDate endDate = visitEnd.toLocalDate();
 
         while (!currentDate.isAfter(endDate)) {
-            LocalDateTime breakStart = currentDate.atTime(breakStartAt);
-            LocalDateTime breakEnd = breakStartAt.isAfter(breakEndAt)
+            final LocalDateTime breakStart = currentDate.atTime(breakStartAt);
+            final LocalDateTime breakEnd = breakStartAt.isAfter(breakEndAt)
                     ? breakStart.plusDays(1).with(breakEndAt)
                     : breakStart.with(breakEndAt);
 
-            boolean overlaps = visitStart.isBefore(breakEnd) && breakStart.isBefore(visitEnd);
+            final boolean overlaps = visitStart.isBefore(breakEnd) && breakStart.isBefore(visitEnd);
             if (overlaps) {
                 return true;
             }

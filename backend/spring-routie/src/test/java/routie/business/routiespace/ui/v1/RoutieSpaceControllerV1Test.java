@@ -46,7 +46,7 @@ public class RoutieSpaceControllerV1Test {
         RestAssured.port = port;
 
         // 테스트용 루티 스페이스 생성
-        Response createSpaceResponse = RestAssured
+        final Response createSpaceResponse = RestAssured
                 .when()
                 .post("/v1/routie-spaces")
                 .then()
@@ -59,21 +59,21 @@ public class RoutieSpaceControllerV1Test {
     @DisplayName("V1 API로 루티 스페이스를 생성한다")
     public void createRoutieSpace() {
         // given
-        Pattern routieSpaceIdentifierPattern = Pattern.compile(
+        final Pattern routieSpaceIdentifierPattern = Pattern.compile(
                 "[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}");
 
         // when
-        Response response = RestAssured
+        final Response response = RestAssured
                 .when()
                 .post("/v1/routie-spaces")
                 .then()
                 .log().all()
                 .extract().response();
 
-        HttpStatus actualHttpStatus = HttpStatus.valueOf(response.getStatusCode());
-        HttpStatus expectedHttpStatus = HttpStatus.OK;
+        final HttpStatus actualHttpStatus = HttpStatus.valueOf(response.getStatusCode());
+        final HttpStatus expectedHttpStatus = HttpStatus.OK;
 
-        String routieSpaceIdentifier = response.jsonPath().getString("routieSpaceIdentifier");
+        final String routieSpaceIdentifier = response.jsonPath().getString("routieSpaceIdentifier");
 
         // then
         assertThat(expectedHttpStatus).isEqualTo(actualHttpStatus);
@@ -84,7 +84,7 @@ public class RoutieSpaceControllerV1Test {
     @DisplayName("V1 API로 장소 생성에 성공한다")
     public void createPlace() {
         // given
-        PlaceCreateRequest placeCreateRequest = new PlaceCreateRequest(
+        final PlaceCreateRequest placeCreateRequest = new PlaceCreateRequest(
                 "12345678",
                 "스타벅스 강남점",
                 "서울시 강남구 도로명 주소",
@@ -94,7 +94,7 @@ public class RoutieSpaceControllerV1Test {
         );
 
         // when
-        PlaceCreateResponse placeCreateResponse = RestAssured
+        final PlaceCreateResponse placeCreateResponse = RestAssured
                 .given()
                 .contentType(ContentType.JSON)
                 .body(placeCreateRequest)
@@ -107,7 +107,7 @@ public class RoutieSpaceControllerV1Test {
                 .as(PlaceCreateResponse.class);
 
         // then
-        Long placeId = placeCreateResponse.id();
+        final Long placeId = placeCreateResponse.id();
         assertThat(placeId).isNotNull();
         assertThat(placeId).isPositive();
     }
@@ -116,7 +116,7 @@ public class RoutieSpaceControllerV1Test {
     @DisplayName("V1 API로 장소 목록 조회에 성공한다")
     public void readPlaces() {
         // given
-        PlaceCreateRequest place1RequestBody = new PlaceCreateRequest(
+        final PlaceCreateRequest place1RequestBody = new PlaceCreateRequest(
                 "12345678",
                 "스타벅스 강남점",
                 "서울시 강남구 도로명 주소",
@@ -125,7 +125,7 @@ public class RoutieSpaceControllerV1Test {
                 37.504497373023206
         );
 
-        PlaceCreateRequest place2RequestBody = new PlaceCreateRequest(
+        final PlaceCreateRequest place2RequestBody = new PlaceCreateRequest(
                 "12345679",
                 "투썸플레이스 역삼점",
                 "서울시 강남구 도로명 주소",
@@ -148,19 +148,19 @@ public class RoutieSpaceControllerV1Test {
                 .post("/v1/routie-spaces/{routieSpaceIdentifier}/places", routieSpaceIdentifier);
 
         // when
-        Response response = RestAssured
+        final Response response = RestAssured
                 .when()
                 .get("/v1/routie-spaces/{routieSpaceIdentifier}/places", routieSpaceIdentifier)
                 .then()
                 .log().all()
                 .extract().response();
 
-        HttpStatus actualHttpStatus = HttpStatus.valueOf(response.getStatusCode());
-        HttpStatus expectedHttpStatus = HttpStatus.OK;
+        final HttpStatus actualHttpStatus = HttpStatus.valueOf(response.getStatusCode());
+        final HttpStatus expectedHttpStatus = HttpStatus.OK;
 
-        List<Object> places = response.jsonPath().getList("places");
-        String firstPlaceName = response.jsonPath().getString("places[0].name");
-        String firstPlaceAddress = response.jsonPath().getString("places[0].roadAddressName");
+        final List<Object> places = response.jsonPath().getList("places");
+        final String firstPlaceName = response.jsonPath().getString("places[0].name");
+        final String firstPlaceAddress = response.jsonPath().getString("places[0].roadAddressName");
 
         // then
         assertThat(expectedHttpStatus).isEqualTo(actualHttpStatus);
@@ -173,9 +173,9 @@ public class RoutieSpaceControllerV1Test {
     @DisplayName("V1 API로 내 루티 스페이스 목록 조회에 성공한다")
     public void readMyRoutieSpaces() {
         // 테스트용 사용자 생성 및 토큰 발급
-        User user = UserFixture.emptyUser();
+        final User user = UserFixture.emptyUser();
         userRepository.save(user);
-        String accessToken = jwtProcessor.createJwt(user);
+        final String accessToken = jwtProcessor.createJwt(user);
 
         // given
         RestAssured
@@ -195,7 +195,7 @@ public class RoutieSpaceControllerV1Test {
                 .statusCode(HttpStatus.OK.value());
 
         // when
-        RoutieSpaceListResponse routieSpaceListResponse = RestAssured
+        final RoutieSpaceListResponse routieSpaceListResponse = RestAssured
                 .given().log().all()
                 .header("Authorization", "Bearer " + accessToken)
                 .when().log().all()
@@ -214,12 +214,12 @@ public class RoutieSpaceControllerV1Test {
     @DisplayName("V1 API로 루티 스페이스 삭제에 성공한다")
     public void deleteRoutieSpace() {
         // 테스트용 사용자 생성 및 토큰 발급
-        User user = UserFixture.emptyUser();
+        final User user = UserFixture.emptyUser();
         userRepository.save(user);
-        String accessToken = jwtProcessor.createJwt(user);
+        final String accessToken = jwtProcessor.createJwt(user);
 
         // given
-        Response createSpaceResponse = RestAssured
+        final Response createSpaceResponse = RestAssured
                 .given().log().all()
                 .header("Authorization", "Bearer " + accessToken)
                 .when().log().all()
@@ -228,7 +228,7 @@ public class RoutieSpaceControllerV1Test {
                 .statusCode(HttpStatus.OK.value())
                 .extract().response();
 
-        String newRoutieSpaceIdentifier = createSpaceResponse.jsonPath().getString("routieSpaceIdentifier");
+        final String newRoutieSpaceIdentifier = createSpaceResponse.jsonPath().getString("routieSpaceIdentifier");
 
         final PlaceCreateRequest placeCreateRequest = new PlaceCreateRequest(
                 "testPlaceId",

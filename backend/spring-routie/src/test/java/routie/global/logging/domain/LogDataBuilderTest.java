@@ -9,10 +9,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.mock.web.MockHttpServletRequest;
-import routie.global.logging.domain.LogDataBuilder;
-import routie.global.logging.domain.LoggingContext;
-import routie.global.logging.domain.LoggingField;
-import routie.global.logging.domain.LoggingStrategy;
 import routie.global.logging.domain.extractor.HandlerParameter;
 import routie.global.logging.infrastructure.strategy.DevLoggingStrategy;
 
@@ -22,7 +18,7 @@ class LogDataBuilderTest {
 
     @BeforeEach
     void setUp() {
-        LoggingStrategy devLoggingStrategy = new DevLoggingStrategy();
+        final LoggingStrategy devLoggingStrategy = new DevLoggingStrategy();
         logDataBuilder = new LogDataBuilder(devLoggingStrategy);
     }
 
@@ -30,10 +26,10 @@ class LogDataBuilderTest {
     @DisplayName("실제 HttpServletRequest로 로그 데이터 생성 성공")
     void buildLogData_WithRealHttpRequest_Success() {
         // given
-        MockHttpServletRequest request = new MockHttpServletRequest("GET", "/api/test");
+        final MockHttpServletRequest request = new MockHttpServletRequest("GET", "/api/test");
         request.addHeader("X-Forwarded-For", "123.123.123.123");
 
-        TestLoggingContext loggingContext = TestLoggingContext.builder()
+        final TestLoggingContext loggingContext = TestLoggingContext.builder()
                 .request(request)
                 .executionTime(250L)
                 .handlerMethod("TestController#getTest")
@@ -45,7 +41,7 @@ class LogDataBuilderTest {
                 .build();
 
         // when
-        Map<LoggingField, Object> result = logDataBuilder.buildLogData(loggingContext);
+        final Map<LoggingField, Object> result = logDataBuilder.buildLogData(loggingContext);
 
         // then
         assertThat(result).hasSize(7);
@@ -62,9 +58,9 @@ class LogDataBuilderTest {
     @DisplayName("빈 핸들러 파라미터로 로그 데이터 생성")
     void buildLogData_WithEmptyHandlerParams_Success() {
         // given
-        MockHttpServletRequest request = new MockHttpServletRequest("GET", "/api/health");
+        final MockHttpServletRequest request = new MockHttpServletRequest("GET", "/api/health");
 
-        TestLoggingContext loggingContext = TestLoggingContext.builder()
+        final TestLoggingContext loggingContext = TestLoggingContext.builder()
                 .request(request)
                 .executionTime(50L)
                 .handlerMethod("HealthController#check")
@@ -73,7 +69,7 @@ class LogDataBuilderTest {
                 .build();
 
         // when
-        Map<LoggingField, Object> result = logDataBuilder.buildLogData(loggingContext);
+        final Map<LoggingField, Object> result = logDataBuilder.buildLogData(loggingContext);
 
         // then
         assertThat(result).hasSize(7);
@@ -84,9 +80,9 @@ class LogDataBuilderTest {
     @DisplayName("null 값들이 포함된 경우 필터링하여 로그 데이터 생성")
     void buildLogData_WithNullValues_FiltersNullFields() {
         // given
-        MockHttpServletRequest request = new MockHttpServletRequest("GET", "/api/test");
+        final MockHttpServletRequest request = new MockHttpServletRequest("GET", "/api/test");
 
-        TestLoggingContext loggingContext = TestLoggingContext.builder()
+        final TestLoggingContext loggingContext = TestLoggingContext.builder()
                 .request(request)
                 .executionTime(75L)
                 .requestResult("SUCCESS")
@@ -95,7 +91,7 @@ class LogDataBuilderTest {
                 .build();
 
         // when
-        Map<LoggingField, Object> result = logDataBuilder.buildLogData(loggingContext);
+        final Map<LoggingField, Object> result = logDataBuilder.buildLogData(loggingContext);
 
         // then
         assertThat(result).hasSize(5);
@@ -109,9 +105,9 @@ class LogDataBuilderTest {
     @DisplayName("UnsupportedOperationException 발생 시 해당 필드 제외")
     void buildLogData_WithUnsupportedOperationException_FiltersExceptionFields() {
         // given
-        MockHttpServletRequest request = new MockHttpServletRequest("GET", "/api/test");
+        final MockHttpServletRequest request = new MockHttpServletRequest("GET", "/api/test");
 
-        TestLoggingContext loggingContext = new TestLoggingContext(request, 100L, null, "SUCCESS", null) {
+        final TestLoggingContext loggingContext = new TestLoggingContext(request, 100L, null, "SUCCESS", null) {
             @Override
             public String getHandlerMethod() {
                 throw new UnsupportedOperationException("Handler method not available");
@@ -124,7 +120,7 @@ class LogDataBuilderTest {
         };
 
         // when
-        Map<LoggingField, Object> result = logDataBuilder.buildLogData(loggingContext);
+        final Map<LoggingField, Object> result = logDataBuilder.buildLogData(loggingContext);
 
         // then
         assertThat(result).hasSize(5);

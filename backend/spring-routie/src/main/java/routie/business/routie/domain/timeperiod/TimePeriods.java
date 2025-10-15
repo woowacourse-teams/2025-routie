@@ -34,7 +34,7 @@ public class TimePeriods {
     public TimePeriods withAdded(final RoutiePlace routiePlace, final TimePeriod timePeriod) {
         validateRoutiePlace(routiePlace);
         validateTimePeriod(timePeriod);
-        Map<RoutiePlace, TimePeriod> newTimePeriods = new TreeMap<>(ROUTIE_PLACE_COMPARATOR);
+        final Map<RoutiePlace, TimePeriod> newTimePeriods = new TreeMap<>(ROUTIE_PLACE_COMPARATOR);
         newTimePeriods.putAll(this.timePeriods);
         newTimePeriods.put(routiePlace, timePeriod);
 

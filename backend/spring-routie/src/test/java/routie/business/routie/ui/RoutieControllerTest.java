@@ -63,7 +63,7 @@ class RoutieControllerTest {
     void setUp() {
         RestAssured.port = port;
 
-        User user = UserFixture.emptyUser();
+        final User user = UserFixture.emptyUser();
         routieSpace = new RoutieSpaceBuilder()
                 .owner(user)
                 .build();
@@ -71,7 +71,7 @@ class RoutieControllerTest {
                 .owner(user)
                 .build();
 
-        Place placeA = new PlaceBuilder()
+        final Place placeA = new PlaceBuilder()
                 .name("장소 A")
                 .roadAddressName("도로명 주소")
                 .addressName("지번 주소")
@@ -80,7 +80,7 @@ class RoutieControllerTest {
                 .routieSpace(routieSpace)
                 .build();
 
-        Place placeB = new PlaceBuilder()
+        final Place placeB = new PlaceBuilder()
                 .name("장소 B")
                 .roadAddressName("도로명 주소")
                 .addressName("지번 주소")
@@ -89,7 +89,7 @@ class RoutieControllerTest {
                 .routieSpace(routieSpace)
                 .build();
 
-        Place placeC = new PlaceBuilder()
+        final Place placeC = new PlaceBuilder()
                 .name("장소 C")
                 .roadAddressName("도로명 주소")
                 .addressName("지번 주소")
@@ -117,7 +117,7 @@ class RoutieControllerTest {
     @DisplayName("루티에 장소를 추가할 수 있다")
     void addRoutiePlace() {
         // given
-        Place place = new PlaceBuilder()
+        final Place place = new PlaceBuilder()
                 .name("장소 A")
                 .roadAddressName("도로명 주소")
                 .addressName("지번 주소")
@@ -127,12 +127,12 @@ class RoutieControllerTest {
                 .build();
         placeRepository.save(place);
 
-        Map<String, Object> requestBody = Map.of(
+        final Map<String, Object> requestBody = Map.of(
                 "placeId", place.getId()
         );
 
         // when
-        Response response = RestAssured
+        final Response response = RestAssured
                 .given().log().all()
                 .when()
                 .contentType("application/json")
@@ -152,7 +152,7 @@ class RoutieControllerTest {
     @DisplayName("새로운 장소만으로 루티를 완전히 교체할 수 있다")
     void updateRoutie_WithNewPlaces_ReplacesEntireRoutie() {
         // given
-        Place newPlace = new PlaceBuilder()
+        final Place newPlace = new PlaceBuilder()
                 .name("새로운 장소")
                 .roadAddressName("새로운 도로명 주소")
                 .addressName("새로운 지번 주소")
@@ -162,14 +162,14 @@ class RoutieControllerTest {
                 .build();
         placeRepository.save(newPlace);
 
-        Map<String, Object> requestBody = Map.of(
+        final Map<String, Object> requestBody = Map.of(
                 "routiePlaces", List.of(
                         Map.of("placeId", newPlace.getId(), "sequence", 1)
                 )
         );
 
         // when
-        Response response = RestAssured
+        final Response response = RestAssured
                 .given().log().all()
                 .contentType("application/json")
                 .body(requestBody)
@@ -181,7 +181,7 @@ class RoutieControllerTest {
         // then
         assertThat(response.statusCode()).isEqualTo(HttpStatus.NO_CONTENT.value());
 
-        RoutieReadResponse routieReadResponse = RestAssured
+        final RoutieReadResponse routieReadResponse = RestAssured
                 .given()
                 .when()
                 .get("/routie-spaces/" + routieSpace.getIdentifier() + "/routie")
@@ -199,11 +199,11 @@ class RoutieControllerTest {
     @DisplayName("유효한 경로 검증 시 200 OK와 함께 isValid true를 반환한다")
     void validateRoutie_WithValidCase_ReturnsOkWithTrue() {
         // given: 검증 조건에 어긋나지 않는 출발, 도착 시각
-        LocalDateTime startTime = LocalDateTime.of(2025, 8, 18, 9, 0);
-        LocalDateTime endTime = LocalDateTime.of(2025, 8, 18, 18, 0);
+        final LocalDateTime startTime = LocalDateTime.of(2025, 8, 18, 9, 0);
+        final LocalDateTime endTime = LocalDateTime.of(2025, 8, 18, 18, 0);
 
         // when
-        Response response = RestAssured
+        final Response response = RestAssured
                 .given().log().all()
                 .queryParam("startDateTime", startTime.format(DateTimeFormatter.ISO_DATE_TIME))
                 .queryParam("endDateTime", endTime.format(DateTimeFormatter.ISO_DATE_TIME))
@@ -214,9 +214,9 @@ class RoutieControllerTest {
                 .extract().response();
 
         // then
-        List<Map<String, Object>> validationResults = response.jsonPath().getList("validationResultResponses");
+        final List<Map<String, Object>> validationResults = response.jsonPath().getList("validationResultResponses");
 
-        boolean isAllValid = validationResults.stream()
+        final boolean isAllValid = validationResults.stream()
                 .anyMatch(result -> Boolean.TRUE.equals(result.get("isValid")));
 
         assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
@@ -228,11 +228,11 @@ class RoutieControllerTest {
     @DisplayName("장소 휴무일에 방문하는 경로 검증 시 200 OK와 함께 isValid false를 반환한다")
     void validateRoutie_OnClosedDay_ReturnsOkWithFalse() {
         // given: 월요일(장소 B의 휴무일)에 방문
-        LocalDateTime startTime = LocalDateTime.of(2025, 7, 28, 10, 0);
-        LocalDateTime endTime = LocalDateTime.of(2025, 7, 28, 18, 0);
+        final LocalDateTime startTime = LocalDateTime.of(2025, 7, 28, 10, 0);
+        final LocalDateTime endTime = LocalDateTime.of(2025, 7, 28, 18, 0);
 
         // when
-        Response response = RestAssured
+        final Response response = RestAssured
                 .given().log().all()
                 .queryParam("startDateTime", startTime.format(DateTimeFormatter.ISO_DATE_TIME))
                 .queryParam("endDateTime", endTime.format(DateTimeFormatter.ISO_DATE_TIME))
@@ -243,9 +243,9 @@ class RoutieControllerTest {
                 .extract().response();
 
         // then
-        List<Map<String, Object>> validationResults = response.jsonPath().getList("validationResultResponses");
+        final List<Map<String, Object>> validationResults = response.jsonPath().getList("validationResultResponses");
 
-        boolean closedDayIsInvalid = validationResults.stream()
+        final boolean closedDayIsInvalid = validationResults.stream()
                 .anyMatch(result ->
                         "IS_NOT_CLOSED_DAY".equals(result.get("validationCode")) &&
                                 Boolean.FALSE.equals(result.get("isValid"))
@@ -261,11 +261,11 @@ class RoutieControllerTest {
     void validateRoutie_DuringBreakTime_ReturnsOkWithFalse() {
         // given
         // 예상 TimePeriod: A(12:10-13:10), B(14:50-16:20)는 장소 B 브레이크 타임(14:00-15:00)과 겹치므로 isValid = false
-        LocalDateTime startTime = LocalDateTime.of(2025, 7, 29, 12, 10);
-        LocalDateTime endTime = LocalDateTime.of(2025, 7, 29, 20, 0);
+        final LocalDateTime startTime = LocalDateTime.of(2025, 7, 29, 12, 10);
+        final LocalDateTime endTime = LocalDateTime.of(2025, 7, 29, 20, 0);
 
         // when
-        Response response = RestAssured
+        final Response response = RestAssured
                 .given().log().all()
                 .queryParam("startDateTime", startTime.format(DateTimeFormatter.ISO_DATE_TIME))
                 .queryParam("endDateTime", endTime.format(DateTimeFormatter.ISO_DATE_TIME))
@@ -277,9 +277,9 @@ class RoutieControllerTest {
 
         // then
         assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
-        List<Map<String, Object>> validationResults = response.jsonPath().getList("validationResultResponses");
+        final List<Map<String, Object>> validationResults = response.jsonPath().getList("validationResultResponses");
 
-        boolean breakTimeIsInvalid = validationResults.stream()
+        final boolean breakTimeIsInvalid = validationResults.stream()
                 .anyMatch(result ->
                         "IS_NOT_DURING_BREAKTIME".equals(result.get("validationCode")) &&
                                 Boolean.FALSE.equals(result.get("isValid"))
@@ -293,11 +293,11 @@ class RoutieControllerTest {
     void validateRoutie_WithInvalidTimeFormat_ReturnsInternalServerError() {
         // given
         // invalidStartTime이 ISO_DATE_TIME 형식이 아님
-        String invalidStartTime = "2025-07-29 10:00:00";
-        String validEndTime = LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME);
+        final String invalidStartTime = "2025-07-29 10:00:00";
+        final String validEndTime = LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME);
 
         // when
-        Response response = RestAssured
+        final Response response = RestAssured
                 .given().log().all()
                 .queryParam("startDateTime", invalidStartTime)
                 .queryParam("endDateTime", validEndTime)
@@ -315,10 +315,10 @@ class RoutieControllerTest {
     @DisplayName("startDateTime이 쿼리 파라미터로 온 요청에 대해서는 루티 플레이스의 도착, 출발 정보 정상 반환")
     void readRoutieWithStartDateTime() {
         // given
-        String startDateTime = "2025-07-29T10:00:00";
+        final String startDateTime = "2025-07-29T10:00:00";
 
         // when
-        RoutieReadResponse routieReadResponse = RestAssured
+        final RoutieReadResponse routieReadResponse = RestAssured
                 .given().log().all()
                 .queryParam("startDateTime", startDateTime)
                 .queryParam("movingStrategy", "DRIVING")
@@ -330,9 +330,9 @@ class RoutieControllerTest {
                 .as(RoutieReadResponse.class);
 
         // then
-        RoutiePlaceResponse firstRoutiePlace = routieReadResponse.routiePlaces().get(0);
-        RoutiePlaceResponse secondRoutiePlace = routieReadResponse.routiePlaces().get(1);
-        RouteResponse route = routieReadResponse.routes().get(0);
+        final RoutiePlaceResponse firstRoutiePlace = routieReadResponse.routiePlaces().get(0);
+        final RoutiePlaceResponse secondRoutiePlace = routieReadResponse.routiePlaces().get(1);
+        final RouteResponse route = routieReadResponse.routes().get(0);
 
         assertThat(routieReadResponse.routiePlaces()).hasSize(2);
         assertThat(routieReadResponse.routes()).hasSize(1);
@@ -356,10 +356,10 @@ class RoutieControllerTest {
     @DisplayName("RoutiePlace가 하나만 있을 때도 정상적으로 도착/출발 정보 반환")
     void readRoutieWithSingleRoutiePlace() {
         // given
-        String startDateTime = "2025-07-29T10:00:00";
+        final String startDateTime = "2025-07-29T10:00:00";
 
         // when
-        RoutieReadResponse routieReadResponse = RestAssured
+        final RoutieReadResponse routieReadResponse = RestAssured
                 .given().log().all()
                 .queryParam("startDateTime", startDateTime)
                 .queryParam("movingStrategy", "DRIVING")
@@ -374,7 +374,7 @@ class RoutieControllerTest {
         assertThat(routieReadResponse.routiePlaces()).hasSize(1);
         assertThat(routieReadResponse.routes()).isEmpty();
 
-        RoutiePlaceResponse routiePlace = routieReadResponse.routiePlaces().get(0);
+        final RoutiePlaceResponse routiePlace = routieReadResponse.routiePlaces().get(0);
 
         assertThat(routiePlace.sequence()).isEqualTo(1);
         assertThat(routiePlace.arriveDateTime()).isEqualTo(LocalDateTime.of(2025, 7, 29, 10, 0));
@@ -387,7 +387,7 @@ class RoutieControllerTest {
         // given
 
         // when
-        RoutieReadResponse routieReadResponse = RestAssured
+        final RoutieReadResponse routieReadResponse = RestAssured
                 .given().log().all()
                 .when()
                 .queryParam("movingStrategy", "DRIVING")
@@ -398,9 +398,9 @@ class RoutieControllerTest {
                 .as(RoutieReadResponse.class);
 
         // then
-        RoutiePlaceResponse firstRoutiePlace = routieReadResponse.routiePlaces().get(0);
-        RoutiePlaceResponse secondRoutiePlace = routieReadResponse.routiePlaces().get(1);
-        RouteResponse route = routieReadResponse.routes().get(0);
+        final RoutiePlaceResponse firstRoutiePlace = routieReadResponse.routiePlaces().get(0);
+        final RoutiePlaceResponse secondRoutiePlace = routieReadResponse.routiePlaces().get(1);
+        final RouteResponse route = routieReadResponse.routes().get(0);
 
         assertThat(routieReadResponse.routiePlaces()).hasSize(2);
         assertThat(routieReadResponse.routes()).hasSize(1);
@@ -423,7 +423,7 @@ class RoutieControllerTest {
     @DisplayName("movingStrategy 쿼리 파라미터가 없으면, 경로와 시간 정보 응답은 비어있다")
     void readRoutie_whenMovingStrategyIsAbsent() {
         // given & when
-        RoutieReadResponse response = RestAssured
+        final RoutieReadResponse response = RestAssured
                 .given().log().all()
                 .when()
                 .get("/routie-spaces/" + routieSpace.getIdentifier() + "/routie")
@@ -435,12 +435,12 @@ class RoutieControllerTest {
         // then
         assertThat(response.routiePlaces()).hasSize(2);
 
-        RoutiePlaceResponse firstRoutiePlace = response.routiePlaces().get(0);
+        final RoutiePlaceResponse firstRoutiePlace = response.routiePlaces().get(0);
         assertThat(firstRoutiePlace.sequence()).isEqualTo(1);
         assertThat(firstRoutiePlace.arriveDateTime()).isNull();
         assertThat(firstRoutiePlace.departureDateTime()).isNull();
 
-        RoutiePlaceResponse secondRoutiePlace = response.routiePlaces().get(1);
+        final RoutiePlaceResponse secondRoutiePlace = response.routiePlaces().get(1);
         assertThat(secondRoutiePlace.sequence()).isEqualTo(2);
         assertThat(secondRoutiePlace.arriveDateTime()).isNull();
         assertThat(secondRoutiePlace.departureDateTime()).isNull();
@@ -452,10 +452,10 @@ class RoutieControllerTest {
     @DisplayName("루티의 장소를 삭제할 수 있다")
     void deleteRoutiePlace() {
         // given
-        long placeId = routie.getRoutiePlaces().getFirst().getPlace().getId();
+        final long placeId = routie.getRoutiePlaces().getFirst().getPlace().getId();
 
         // when
-        Response response = RestAssured
+        final Response response = RestAssured
                 .given().log().all()
                 .when()
                 .delete("/routie-spaces/" + routieSpace.getIdentifier() + "/routie/places/" + placeId)
@@ -466,7 +466,7 @@ class RoutieControllerTest {
         assertThat(response.statusCode()).isEqualTo(HttpStatus.NO_CONTENT.value());
 
         // 추가 검증: 루티에서 해당 장소가 삭제되었는지 확인
-        RoutieReadResponse routieReadResponse = RestAssured
+        final RoutieReadResponse routieReadResponse = RestAssured
                 .given().log().all()
                 .when()
                 .get("/routie-spaces/" + routieSpace.getIdentifier() + "/routie")

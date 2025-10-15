@@ -18,11 +18,11 @@ public class KakaoUserApiClientConfig {
 
     @Bean
     public KakaoUserApiClient kakaoUserApiClient() {
-        SimpleClientHttpRequestFactory requestFactory = new SimpleClientHttpRequestFactory();
+        final SimpleClientHttpRequestFactory requestFactory = new SimpleClientHttpRequestFactory();
         requestFactory.setConnectTimeout(Duration.ofSeconds(2));
         requestFactory.setReadTimeout(Duration.ofSeconds(4));
 
-        RestClient restClient = RestClient.builder()
+        final RestClient restClient = RestClient.builder()
                 .requestFactory(requestFactory)
                 .baseUrl("https://kapi.kakao.com/v1/user")
                 .defaultStatusHandler(kakaoUserApiErrorHandler)

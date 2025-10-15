@@ -64,7 +64,8 @@ public class ExceptionHandlerPostProcessor implements BeanPostProcessor {
     }
 
     private void validateAnnotation(final Method exceptionHandlerMethod) {
-        Class<? extends Throwable>[] exceptionClasses = exceptionHandlerMethod.getAnnotation(ExceptionHandler.class)
+        final Class<? extends Throwable>[] exceptionClasses = exceptionHandlerMethod.getAnnotation(
+                        ExceptionHandler.class)
                 .value();
         if (exceptionClasses.length != 1) {
             throw new BeanDefinitionValidationException(
@@ -77,10 +78,10 @@ public class ExceptionHandlerPostProcessor implements BeanPostProcessor {
     private void validateParameter(
             final Method exceptionHandlerMethod
     ) {
-        Class<? extends Throwable> exceptionClass =
+        final Class<? extends Throwable> exceptionClass =
                 exceptionHandlerMethod.getAnnotation(ExceptionHandler.class).value()[0];
 
-        List<Class<?>> throwableParameters = Arrays.stream(exceptionHandlerMethod.getParameterTypes())
+        final List<Class<?>> throwableParameters = Arrays.stream(exceptionHandlerMethod.getParameterTypes())
                 .filter(Throwable.class::isAssignableFrom)
                 .toList();
 
@@ -100,10 +101,10 @@ public class ExceptionHandlerPostProcessor implements BeanPostProcessor {
     }
 
     private void validateUniqueness(final Method exceptionHandlerMethod) {
-        ExceptionHandler annotation = exceptionHandlerMethod.getAnnotation(ExceptionHandler.class);
+        final ExceptionHandler annotation = exceptionHandlerMethod.getAnnotation(ExceptionHandler.class);
         for (final Class<? extends Throwable> exceptionClass : annotation.value()) {
             if (exceptionHandlers.containsKey(exceptionClass)) {
-                Method existingMethod = exceptionHandlers.get(exceptionClass);
+                final Method existingMethod = exceptionHandlers.get(exceptionClass);
                 throw new BeanDefinitionValidationException(
                         exceptionClass.getSimpleName() + " 을 처리하는 ExceptionHandler가 중복되었습니다: " +
                                 formatExceptionHandlerName(existingMethod) + ", " + formatExceptionHandlerName(
