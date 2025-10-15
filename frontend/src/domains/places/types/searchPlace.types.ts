@@ -22,20 +22,10 @@ interface SearchPlaceProps extends SearchAddressProps {
   onSelect?: () => void;
 }
 
-interface HashtagInputProps extends SearchAddressProps {
-  searchResult: SearchedPlaceType;
-  onCancel: () => void;
-  onSubmit: (place: SearchedPlaceType) => Promise<void>;
-  mode?: 'add' | 'edit';
-  initialHashtags?: string[];
-  onUpdate?: (hashtags: string[]) => Promise<void>;
-}
-
 export type {
   SearchEmptyStateProps,
   SearchListProps,
   AddressType,
   SearchAddressProps,
   SearchPlaceProps,
-  HashtagInputProps,
 };

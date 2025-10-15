@@ -50,7 +50,6 @@ const searchPlaceAdapter = (
       addressName: item.addressName,
       latitude: item.latitude,
       longitude: item.longitude,
-      hashtags: item.hashtags,
     };
   });
 };
