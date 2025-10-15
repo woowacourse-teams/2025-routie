@@ -1,4 +1,4 @@
-import { useId, useMemo } from 'react';
+import { useId } from 'react';
 
 import Button from '@/@common/components/Button/Button';
 import Flex from '@/@common/components/Flex/Flex';
@@ -7,6 +7,7 @@ import Text from '@/@common/components/Text/Text';
 import { useToastContext } from '@/@common/contexts/useToastContext';
 import Hashtag from '@/domains/places/components/Hashtag/Hashtag';
 import useHashtag from '@/domains/places/hooks/useHashtag';
+import useHashtagsChange from '@/domains/places/hooks/useHashtagsChange';
 import type { EditHashtagDropdownProps } from '@/domains/places/types/hashtag.types';
 import theme from '@/styles/theme';
 
@@ -34,21 +35,10 @@ const EditHashtagDropdown = ({
     handleEnterTag,
   } = useHashtag(initialHashtags);
 
-  const stableInitial = useMemo(
-    () => initialHashtags ?? [],
-    [initialHashtags?.join('|')],
+  const { isHashtagsChanged } = useHashtagsChange(
+    initialHashtags,
+    selectedTags,
   );
-
-  const normalize = (arr?: string[]) =>
-    Array.from(new Set((arr ?? []).map((s) => s.trim()))).sort();
-
-  const isHashtagsChanged = useMemo(() => {
-    const a = normalize(selectedTags);
-    const b = normalize(stableInitial);
-    if (a.length !== b.length) return true;
-    for (let i = 0; i < a.length; i++) if (a[i] !== b[i]) return true;
-    return false;
-  }, [selectedTags, stableInitial]);
 
   const handleSubmit = async () => {
     try {
