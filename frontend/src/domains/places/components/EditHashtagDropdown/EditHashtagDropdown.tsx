@@ -52,91 +52,94 @@ const EditHashtagDropdown = ({
   };
 
   return (
-    <div css={EditDropdownContainerStyle}>
-      <Flex direction="column" gap={2}>
-        <Flex direction="column" gap={2} alignItems="flex-start">
-          <Text variant="subTitle">해시태그 수정</Text>
-          <Flex gap={1}>
-            <Input
-              id={inputId}
-              value={inputValue}
-              placeholder="해시태그를 추가하거나 만들어보세요"
-              onChange={handleInputChange}
-              onKeyDown={handleEnterTag}
-              maxLength={6}
-              css={HashtagAddButtonStyle}
-            />
-            <Button
-              variant="primary"
-              onClick={() => handleAddTag(inputValue)}
-              disabled={!inputValue.trim()}
-              width="15%"
-              radius="md"
-              padding="0.6rem 0.8rem"
-            >
-              <Text color={theme.colors.white} variant="caption">
-                추가
-              </Text>
-            </Button>
-          </Flex>
+    <Flex
+      direction="column"
+      gap={2}
+      padding={1.6}
+      css={EditDropdownContainerStyle}
+    >
+      <Flex direction="column" gap={2} alignItems="flex-start">
+        <Text variant="body">해시태그 수정</Text>
+        <Flex gap={1}>
+          <Input
+            id={inputId}
+            value={inputValue}
+            placeholder="해시태그를 추가하거나 만들어보세요"
+            onChange={handleInputChange}
+            onKeyDown={handleEnterTag}
+            maxLength={6}
+            css={HashtagAddButtonStyle}
+          />
+          <Button
+            variant="primary"
+            onClick={() => handleAddTag(inputValue)}
+            disabled={!inputValue.trim()}
+            width="15%"
+            radius="md"
+            padding="0.6rem 0.8rem"
+          >
+            <Text color={theme.colors.white} variant="caption">
+              추가
+            </Text>
+          </Button>
+        </Flex>
 
-          {selectedTags.some((tag) => !previousTags.includes(tag)) && (
+        {selectedTags.some((tag) => !previousTags.includes(tag)) && (
+          <Flex
+            gap={0.6}
+            justifyContent="flex-start"
+            css={SelectedTagsWrapperStyle}
+          >
+            {selectedTags
+              .filter((tag) => !previousTags.includes(tag))
+              .map((tag) => (
+                <Hashtag
+                  key={tag}
+                  tag={tag}
+                  isSelected={true}
+                  onClick={() => handleToggleTag(tag)}
+                />
+              ))}
+          </Flex>
+        )}
+        {previousTags.length > 0 && (
+          <Flex direction="column" gap={0.8} alignItems="flex-start">
+            <Text variant="caption" color={theme.colors.gray[300]}>
+              내가 사용했던 태그
+            </Text>
             <Flex
               gap={0.6}
               justifyContent="flex-start"
               css={SelectedTagsWrapperStyle}
             >
-              {selectedTags
-                .filter((tag) => !previousTags.includes(tag))
-                .map((tag) => (
-                  <Hashtag
-                    key={tag}
-                    tag={tag}
-                    isSelected={true}
-                    onClick={() => handleToggleTag(tag)}
-                  />
-                ))}
+              {previousTags.map((tag) => (
+                <Hashtag
+                  key={tag}
+                  tag={tag}
+                  isSelected={selectedTags.includes(tag)}
+                  onClick={() => handleToggleTag(tag)}
+                />
+              ))}
             </Flex>
-          )}
-          {previousTags.length > 0 && (
-            <Flex direction="column" gap={0.8} alignItems="flex-start">
-              <Text variant="caption" color={theme.colors.gray[300]}>
-                내가 사용했던 태그
-              </Text>
-              <Flex
-                gap={0.6}
-                justifyContent="flex-start"
-                css={SelectedTagsWrapperStyle}
-              >
-                {previousTags.map((tag) => (
-                  <Hashtag
-                    key={tag}
-                    tag={tag}
-                    isSelected={selectedTags.includes(tag)}
-                    onClick={() => handleToggleTag(tag)}
-                  />
-                ))}
-              </Flex>
-            </Flex>
-          )}
-        </Flex>
-        <Flex gap={1}>
-          <Button variant="secondary" onClick={onCancel} radius="lg">
-            <Text variant="caption">닫기</Text>
-          </Button>
-          <Button
-            variant="primary"
-            onClick={handleSubmit}
-            radius="lg"
-            disabled={!isHashtagsChanged}
-          >
-            <Text color={theme.colors.white} variant="caption">
-              수정하기
-            </Text>
-          </Button>
-        </Flex>
+          </Flex>
+        )}
       </Flex>
-    </div>
+      <Flex gap={1}>
+        <Button variant="secondary" onClick={onCancel} radius="lg">
+          <Text variant="caption">닫기</Text>
+        </Button>
+        <Button
+          variant="primary"
+          onClick={handleSubmit}
+          radius="lg"
+          disabled={!isHashtagsChanged}
+        >
+          <Text color={theme.colors.white} variant="caption">
+            수정하기
+          </Text>
+        </Button>
+      </Flex>
+    </Flex>
   );
 };
 
