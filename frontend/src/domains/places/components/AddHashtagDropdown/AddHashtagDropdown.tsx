@@ -37,9 +37,18 @@ const AddHashtagDropdown = ({
     handleEnterTag,
   } = useHashtag(initialHashtags);
 
+  const normalize = (arr?: string[]) =>
+    Array.from(new Set((arr ?? []).map((s) => s.trim()))).sort();
+
   const isHashtagsChanged =
     mode === 'edit' &&
-    JSON.stringify(selectedTags) !== JSON.stringify(initialHashtags);
+    (() => {
+      const a = normalize(selectedTags);
+      const b = normalize(initialHashtags);
+      if (a.length !== b.length) return true;
+      for (let i = 0; i < a.length; i++) if (a[i] !== b[i]) return true;
+      return false;
+    })();
 
   const handleSubmit = async () => {
     try {
