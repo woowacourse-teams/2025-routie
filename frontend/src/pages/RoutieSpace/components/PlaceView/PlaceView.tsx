@@ -4,12 +4,10 @@ import EmptyMessage from '@/@common/components/EmptyMessage/EmptyMessage';
 import Flex from '@/@common/components/Flex/Flex';
 import { useModal } from '@/@common/contexts/ModalContext';
 import { getAccessToken } from '@/@common/utils/getAccessToken';
-import EditHashtagDropdown from '@/domains/places/components/EditHashtagDropdown/EditHashtagDropdown';
 import PlaceCard from '@/domains/places/components/PlaceCard/PlaceCard';
 import SearchBox from '@/domains/places/components/SearchBox/SearchBox';
 import { usePlaceLikes } from '@/domains/places/hooks/usePlaceLikes';
 import { usePlaceList } from '@/domains/places/hooks/usePlaceList';
-import type { PlaceWithLikeType } from '@/domains/places/types/place.types';
 import { useRoutieList } from '@/domains/routie/hooks/useRoutieList';
 import {
   PlaceViewContainerStyle,
@@ -24,9 +22,7 @@ const PlaceView = () => {
     usePlaceLikes();
   const { routieIdList, handleAddRoutie } = useRoutieList();
   const { openModal } = useModal();
-  const [editingPlace, setEditingPlace] = useState<PlaceWithLikeType | null>(
-    null,
-  );
+  const [editingPlaceId, setEditingPlaceId] = useState<number | null>(null);
 
   const ensureAuthenticated = useCallback(() => {
     const accessToken = getAccessToken();
@@ -77,25 +73,21 @@ const PlaceView = () => {
   const handlePlaceEdit = useCallback(
     (placeId: number) => {
       if (!ensureAuthenticated()) return;
-
-      const place = placeList?.find((p) => p.id === placeId);
-      if (place) setEditingPlace(place);
+      setEditingPlaceId(placeId);
     },
-    [ensureAuthenticated, placeList],
+    [ensureAuthenticated],
   );
 
   const handleCloseEditModal = useCallback(() => {
-    setEditingPlace(null);
+    setEditingPlaceId(null);
   }, []);
 
   const handleUpdateHashtags = useCallback(
-    async (hashtags: string[]) => {
-      if (!editingPlace) return;
-
-      await handleUpdatePlaceHashtags(editingPlace.id, hashtags);
-      setEditingPlace(null);
+    async (placeId: number, hashtags: string[]) => {
+      await handleUpdatePlaceHashtags(placeId, hashtags);
+      setEditingPlaceId(null);
     },
-    [editingPlace, handleUpdatePlaceHashtags],
+    [handleUpdatePlaceHashtags],
   );
 
   return (
@@ -121,7 +113,7 @@ const PlaceView = () => {
           {placeList?.map((place) => {
             const selected = routieIdList.includes(place.id);
             const liked = likedPlaceIds.includes(place.id);
-            const isEditing = editingPlace?.id === place.id;
+            const isEditing = editingPlaceId === place.id;
 
             return (
               <div key={place.id} css={PlaceCardContainerStyle}>
@@ -129,21 +121,18 @@ const PlaceView = () => {
                   {...place}
                   selected={selected}
                   liked={liked}
+                  isEditing={isEditing}
                   onSelect={handlePlaceSelect}
                   onDelete={handlePlaceDelete}
                   onLike={
                     liked ? handleUnlikeButtonClick : handleLikeButtonClick
                   }
                   onEdit={handlePlaceEdit}
+                  onCancelEdit={handleCloseEditModal}
+                  onUpdateHashtags={(hashtags) =>
+                    handleUpdateHashtags(place.id, hashtags)
+                  }
                 />
-
-                {isEditing && (
-                  <EditHashtagDropdown
-                    initialHashtags={place.hashtags || []}
-                    onCancel={handleCloseEditModal}
-                    onUpdate={handleUpdateHashtags}
-                  />
-                )}
               </div>
             );
           })}
