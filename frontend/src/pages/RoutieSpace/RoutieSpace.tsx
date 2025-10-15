@@ -7,7 +7,7 @@ import { getAccessToken } from '@/@common/utils/getAccessToken';
 import UserMenuButton from '@/domains/auth/components/UserMenuButton/UserMenuButton';
 import { useUserQuery } from '@/domains/auth/queries/useAuthQuery';
 import KakaoMap from '@/domains/maps/components/KakaoMap/KakaoMap';
-import Sidebar from '@/layouts/Sidebar/Sidebar';
+import Sidebar from '@/pages/RoutieSpace/components/Sidebar/Sidebar';
 
 import { RoutieSpaceContainerStyle } from './RoutieSpace.styles';
 

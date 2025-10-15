@@ -168,6 +168,11 @@ public enum ErrorCode {
             "장소가 루티 장소에 등록되어 있습니다.",
             HttpStatus.BAD_REQUEST
     ),
+    HASHTAG_DUPLICATED(
+            "1104",
+            "장소에 중복된 해시태그가 존재합니다.",
+            HttpStatus.BAD_REQUEST
+    ),
 
     /**
      * 2XXX: Routie Space domain

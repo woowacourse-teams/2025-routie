@@ -23,7 +23,7 @@ const RoutieSpaceName = () => {
   const role = localStorage.getItem('role');
 
   return (
-    <Flex justifyContent="space-between" margin={0.4} gap={3}>
+    <Flex justifyContent="space-between" gap={3} padding="0 1rem">
       {isEditing ? (
         <input
           ref={inputRef}
@@ -34,7 +34,7 @@ const RoutieSpaceName = () => {
           onKeyDown={handleEnter}
         />
       ) : (
-        <Flex justifyContent="flex-start" padding={0.4}>
+        <Flex justifyContent="flex-start" maxWidth="41rem" padding={0.4}>
           <Text variant="subTitle">{name}</Text>
         </Flex>
       )}
@@ -44,9 +44,9 @@ const RoutieSpaceName = () => {
           onClick={handleClick}
           width="5rem"
           disabled={isLoading}
-          padding="0.8rem 0.6rem"
+          padding="0.6rem 0.8rem"
         >
-          <Text variant="caption" color={theme.colors.white}>
+          <Text variant="label" color={theme.colors.white}>
             {isEditing ? '저장' : '수정'}
           </Text>
         </Button>

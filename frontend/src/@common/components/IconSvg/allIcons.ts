@@ -1,4 +1,4 @@
-import arrowWhite from '@/assets/icons/arrow-white.svg';
+import arrow from '@/assets/icons/arrow.svg';
 import checkHome from '@/assets/icons/check-home.svg';
 import check from '@/assets/icons/check.svg';
 import clockHome from '@/assets/icons/clock-home.svg';
@@ -12,17 +12,22 @@ import logout from '@/assets/icons/logout.svg';
 import menu from '@/assets/icons/menu.svg';
 import pin from '@/assets/icons/pin.svg';
 import collectPlace from '@/assets/icons/place-home.svg';
+import placeTabSelect from '@/assets/icons/place-tab-select.svg';
+import placeTab from '@/assets/icons/place-tab.svg';
 import plusRound from '@/assets/icons/plus-round.svg';
 import plus from '@/assets/icons/plus.svg';
+import routeTabSelect from '@/assets/icons/route-tab-select.svg';
+import routeTab from '@/assets/icons/route-tab.svg';
 import scroll from '@/assets/icons/scroll.svg';
 import search from '@/assets/icons/search.svg';
+import share from '@/assets/icons/share.svg';
 import thumbsUp from '@/assets/icons/thumbs-up.svg';
 import disableTrash from '@/assets/icons/trash-disable.svg';
 import trash from '@/assets/icons/trash.svg';
 import user from '@/assets/icons/user.svg';
 
 const allIcons = {
-  arrowWhite,
+  arrow,
   check,
   checkHome,
   clockHome,
@@ -36,6 +41,10 @@ const allIcons = {
   pin,
   menu,
   plus,
+  placeTab,
+  placeTabSelect,
+  routeTab,
+  routeTabSelect,
   scroll,
   plusRound,
   search,
@@ -44,6 +53,7 @@ const allIcons = {
   thumbsUp,
   disableTrash,
   user,
+  share,
 } as const;
 
 export default allIcons;

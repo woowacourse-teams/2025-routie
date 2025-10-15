@@ -24,6 +24,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import routie.business.hashtag.domain.Hashtag;
 import routie.business.routiespace.domain.RoutieSpace;
 import routie.global.exception.domain.BusinessException;
 import routie.global.exception.domain.ErrorCode;
@@ -153,6 +154,13 @@ public class Place {
     public boolean hasSameCoordinate(final Place otherPlace) {
         return Objects.equals(otherPlace.getLatitude(), latitude)
                 && Objects.equals(otherPlace.getLongitude(), longitude);
+    }
+
+    public void addHashtags(final List<Hashtag> hashtags) {
+        List<PlaceHashtag> placeHashtags = hashtags.stream()
+                .map(hashtag -> new PlaceHashtag(this, hashtag))
+                .toList();
+        this.placeHashtags.addAll(placeHashtags);
     }
 
     public void updateHashtags(final List<Hashtag> newHashtags) {

@@ -3,7 +3,9 @@ package routie.business.place.ui.v1;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import io.restassured.RestAssured;
+import io.restassured.http.ContentType;
 import io.restassured.response.Response;
+import java.util.List;
 import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -15,14 +17,18 @@ import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
+import routie.business.hashtag.domain.HashtagRepository;
 import routie.business.like.domain.PlaceLikeBuilder;
 import routie.business.like.domain.PlaceLikeRepository;
 import routie.business.participant.domain.User;
 import routie.business.participant.domain.UserFixture;
 import routie.business.participant.domain.UserRepository;
+import routie.business.hashtag.domain.Hashtag;
 import routie.business.place.domain.Place;
 import routie.business.place.domain.PlaceBuilder;
 import routie.business.place.domain.PlaceRepository;
+import routie.business.place.ui.dto.request.UpdateHashtagsRequest;
+import routie.business.place.ui.dto.response.UpdateHashtagsResponse;
 import routie.business.routiespace.domain.RoutieSpace;
 import routie.business.routiespace.domain.RoutieSpaceIdentifierProvider;
 import routie.business.routiespace.domain.RoutieSpaceRepository;
@@ -51,6 +57,8 @@ public class PlaceControllerV1Test {
 
     private Place testPlace;
     private RoutieSpace testRoutieSpace;
+    @Autowired
+    private HashtagRepository hashtagRepository;
 
     @BeforeEach
     void setUp() {
@@ -59,6 +67,8 @@ public class PlaceControllerV1Test {
         testRoutieSpace = routieSpaceRepository.save(RoutieSpace.withIdentifierProvider(
                 null, routieSpaceIdentifierProvider
         ));
+        final Hashtag hashtag1 = hashtagRepository.save(new Hashtag("hash", testRoutieSpace));
+        final Hashtag hashtag2 = hashtagRepository.save(new Hashtag("tag", testRoutieSpace));
         testPlace = new PlaceBuilder()
                 .name("테스트 카페")
                 .roadAddressName("서울시 강남구 테스트로 123")
@@ -66,6 +76,7 @@ public class PlaceControllerV1Test {
                 .latitude(10.123)
                 .routieSpace(testRoutieSpace)
                 .build();
+        testPlace.addHashtags(List.of(hashtag1, hashtag2));
         placeRepository.save(testPlace);
 
         final User user = userRepository.save(UserFixture.emptyUser());
@@ -168,6 +179,7 @@ public class PlaceControllerV1Test {
         assertThat(responseBody).contains("roadAddressName");
         assertThat(responseBody).contains("longitude");
         assertThat(responseBody).contains("latitude");
+        assertThat(responseBody).contains("hashtags");
     }
 
     @Test
@@ -197,5 +209,69 @@ public class PlaceControllerV1Test {
                 "longitude",
                 "latitude"
         );
+    }
+
+    @Test
+    @DisplayName("V1 API로 장소의 해시태그를 수정할 수 있다.")
+    public void updateHashtagTest() {
+        // given
+        final String routieSpaceIdentifier = testPlace.getRoutieSpace().getIdentifier();
+        final Long placeId = testPlace.getId();
+        final UpdateHashtagsRequest updateHashtagsRequest = new UpdateHashtagsRequest(List.of("new", "hash", "tags"));
+
+        // when
+        Response response = RestAssured
+                .given()
+                .contentType(ContentType.JSON)
+                .body(updateHashtagsRequest)
+                .when()
+                .put(
+                        "/v1/routie-spaces/{routieSpaceIdentifier}/places/{placeId}/hashtags",
+                        routieSpaceIdentifier,
+                        placeId
+                )
+                .then()
+                .log().all()
+                .extract().response();
+
+        HttpStatus actualHttpStatus = HttpStatus.valueOf(response.getStatusCode());
+        HttpStatus expectedHttpStatus = HttpStatus.OK;
+
+        final UpdateHashtagsResponse updateHashtagsResponse = response.as(UpdateHashtagsResponse.class);
+
+        // then
+        assertThat(actualHttpStatus).isEqualTo(expectedHttpStatus);
+        assertThat(updateHashtagsResponse.hashtags()).hasSize(3);
+        assertThat(updateHashtagsResponse.hashtags()).containsExactlyInAnyOrder("new", "hash", "tags");
+    }
+
+    @Test
+    @DisplayName("V1 API로 장소의 해시태그를 수정할 수 있다.")
+    public void updateHashtagWithInvalidLengthTest() {
+        // given
+        final String routieSpaceIdentifier = testPlace.getRoutieSpace().getIdentifier();
+        final Long placeId = testPlace.getId();
+        final UpdateHashtagsRequest updateHashtagsRequest = new UpdateHashtagsRequest(List.of("new", "longHashtags"));
+
+        // when
+        Response response = RestAssured
+                .given()
+                .contentType(ContentType.JSON)
+                .body(updateHashtagsRequest)
+                .when()
+                .put(
+                        "/v1/routie-spaces/{routieSpaceIdentifier}/places/{placeId}/hashtags",
+                        routieSpaceIdentifier,
+                        placeId
+                )
+                .then()
+                .log().all()
+                .extract().response();
+
+        HttpStatus actualHttpStatus = HttpStatus.valueOf(response.getStatusCode());
+        HttpStatus expectedHttpStatus = HttpStatus.BAD_REQUEST;
+
+        // then
+        assertThat(actualHttpStatus).isEqualTo(expectedHttpStatus);
     }
 }

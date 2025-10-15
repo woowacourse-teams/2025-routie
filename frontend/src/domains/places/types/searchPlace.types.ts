@@ -1,17 +1,13 @@
 import { SearchedPlaceType } from './place.types';
 
-interface SearchBoxProps {
-  onClose: () => void;
-}
-
 interface SearchEmptyStateProps {
   keyword: string;
 }
 
 interface SearchListProps {
   searchResults: SearchedPlaceType[];
-  onClose: () => void;
   searchedKeyword: string;
+  onSelectPlace: (place: SearchedPlaceType) => void;
 }
 
 type AddressType = '도로명' | '지번';
@@ -23,14 +19,20 @@ interface SearchAddressProps {
 
 interface SearchPlaceProps extends SearchAddressProps {
   searchResult: SearchedPlaceType;
-  onClose: () => void;
+  onSelect?: () => void;
+}
+
+interface HashTagInputProps extends SearchAddressProps {
+  searchResult: SearchedPlaceType;
+  onCancel: () => void;
+  onSubmit: (place: SearchedPlaceType) => Promise<void>;
 }
 
 export type {
-  SearchBoxProps,
   SearchEmptyStateProps,
   SearchListProps,
   AddressType,
   SearchAddressProps,
   SearchPlaceProps,
+  HashTagInputProps,
 };

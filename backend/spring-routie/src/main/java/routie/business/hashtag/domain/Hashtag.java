@@ -1,4 +1,4 @@
-package routie.business.place.domain;
+package routie.business.hashtag.domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

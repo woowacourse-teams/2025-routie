@@ -3,7 +3,9 @@ package routie.business.place.ui.v2;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import io.restassured.RestAssured;
+import io.restassured.http.ContentType;
 import io.restassured.response.Response;
+import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -23,8 +25,11 @@ import routie.business.participant.domain.UserRepository;
 import routie.business.place.domain.Place;
 import routie.business.place.domain.PlaceBuilder;
 import routie.business.place.domain.PlaceRepository;
+import routie.business.place.ui.dto.request.PlaceCreateRequestV2;
+import routie.business.place.ui.dto.response.PlaceCreateResponse;
 import routie.business.place.ui.dto.response.PlaceListResponseV2;
 import routie.business.place.ui.dto.response.PlaceListResponseV2.PlaceCardResponseV2;
+import routie.business.place.ui.dto.response.PlaceReadResponse;
 import routie.business.routiespace.domain.RoutieSpace;
 import routie.business.routiespace.domain.RoutieSpaceIdentifierProvider;
 import routie.business.routiespace.domain.RoutieSpaceRepository;
@@ -111,6 +116,7 @@ public class PlaceControllerV2Test {
             assertThat(place.longitude()).isNotNull();
             assertThat(place.latitude()).isNotNull();
             assertThat(place.likeCount()).isNotNull();
+            assertThat(place.hashtags()).isNotNull();
         });
     }
 
@@ -198,5 +204,171 @@ public class PlaceControllerV2Test {
         // then
         assertThat(expectedHttpStatus).isEqualTo(actualHttpStatus);
         assertThat(responseBody.places()).isEmpty();
+    }
+
+    @Test
+    @DisplayName("V2 API로 장소를 추가할 수 있다")
+    public void addPlaceV2Test() {
+        // given
+        RoutieSpace emptyRoutieSpace = routieSpaceRepository.save(RoutieSpace.withIdentifierProvider(
+                null, routieSpaceIdentifierProvider
+        ));
+        PlaceCreateRequestV2 placeCreateRequest = new PlaceCreateRequestV2(
+                "1",
+                "place",
+                "roadAddress",
+                "address",
+                89.0,
+                89.0,
+                List.of("hash", "tag")
+        );
+
+        // when
+        Response response = RestAssured
+                .given()
+                .contentType(ContentType.JSON)
+                .body(placeCreateRequest)
+                .when()
+                .post("/v2/routie-spaces/{routieSpaceIdentifier}/places", emptyRoutieSpace.getIdentifier())
+                .then()
+                .log().all()
+                .extract().response();
+
+        HttpStatus actualHttpStatus = HttpStatus.valueOf(response.getStatusCode());
+        HttpStatus expectedHttpStatus = HttpStatus.OK;
+
+        final PlaceCreateResponse placeCreateResponse = response.as(PlaceCreateResponse.class);
+
+        // then
+        final PlaceReadResponse placeReadResponse = readPlaceWithV1(
+                emptyRoutieSpace.getIdentifier(),
+                placeCreateResponse.id()
+        );
+        assertThat(actualHttpStatus).isEqualTo(expectedHttpStatus);
+        assertThat(placeReadResponse.name()).isEqualTo(placeCreateRequest.name());
+        assertThat(placeReadResponse.hashtags()).containsExactlyInAnyOrder("hash", "tag");
+    }
+
+    @Test
+    @DisplayName("V2 API로 장소를 추가할 때 중복되는 해시태그는 중복 제거 후 저장된다")
+    public void addPlaceV2WithDuplicateHashtagTest() {
+        // given
+        RoutieSpace emptyRoutieSpace = routieSpaceRepository.save(RoutieSpace.withIdentifierProvider(
+                null, routieSpaceIdentifierProvider
+        ));
+        PlaceCreateRequestV2 placeCreateRequest = new PlaceCreateRequestV2(
+                "1",
+                "place",
+                "roadAddress",
+                "address",
+                89.0,
+                89.0,
+                List.of("hash", "hash")
+        );
+
+        // when
+        Response response = RestAssured
+                .given()
+                .contentType(ContentType.JSON)
+                .body(placeCreateRequest)
+                .when()
+                .post("/v2/routie-spaces/{routieSpaceIdentifier}/places", emptyRoutieSpace.getIdentifier())
+                .then()
+                .log().all()
+                .extract().response();
+
+        HttpStatus actualHttpStatus = HttpStatus.valueOf(response.getStatusCode());
+        HttpStatus expectedHttpStatus = HttpStatus.BAD_REQUEST;
+
+        // then
+        assertThat(actualHttpStatus).isEqualTo(expectedHttpStatus);
+    }
+
+    @Test
+    @DisplayName("V2 API로 장소를 추가할 때 해시태그가 비어있어도 추가할 수 있다.")
+    public void addPlaceV2WithEmptyHashtagListTest() {
+        // given
+        RoutieSpace emptyRoutieSpace = routieSpaceRepository.save(RoutieSpace.withIdentifierProvider(
+                null, routieSpaceIdentifierProvider
+        ));
+        PlaceCreateRequestV2 placeCreateRequest = new PlaceCreateRequestV2(
+                "1",
+                "place",
+                "roadAddress",
+                "address",
+                89.0,
+                89.0,
+                List.of()
+        );
+
+        // when
+        Response response = RestAssured
+                .given()
+                .contentType(ContentType.JSON)
+                .body(placeCreateRequest)
+                .when()
+                .post("/v2/routie-spaces/{routieSpaceIdentifier}/places", emptyRoutieSpace.getIdentifier())
+                .then()
+                .log().all()
+                .extract().response();
+
+        HttpStatus actualHttpStatus = HttpStatus.valueOf(response.getStatusCode());
+        HttpStatus expectedHttpStatus = HttpStatus.OK;
+
+        final PlaceCreateResponse placeCreateResponse = response.as(PlaceCreateResponse.class);
+
+        // then
+        final PlaceReadResponse placeReadResponse = readPlaceWithV1(
+                emptyRoutieSpace.getIdentifier(),
+                placeCreateResponse.id()
+        );
+        assertThat(actualHttpStatus).isEqualTo(expectedHttpStatus);
+        assertThat(placeReadResponse.name()).isEqualTo(placeCreateRequest.name());
+        assertThat(placeReadResponse.hashtags()).isEmpty();
+    }
+
+    @Test
+    @DisplayName("V2 API로 장소를 추가할 때 해시태그의 길이가 8자 이상이거나 비어있다면 예외가 발생한다")
+    public void addPlaceV2WithInvalidLengthHashtagTest() {
+        // given
+        RoutieSpace emptyRoutieSpace = routieSpaceRepository.save(RoutieSpace.withIdentifierProvider(
+                null, routieSpaceIdentifierProvider
+        ));
+        PlaceCreateRequestV2 placeCreateRequest = new PlaceCreateRequestV2(
+                "1",
+                "place",
+                "roadAddress",
+                "address",
+                89.0,
+                89.0,
+                List.of("hashtags", "tag")
+        );
+
+        // when
+        Response response = RestAssured
+                .given()
+                .contentType(ContentType.JSON)
+                .body(placeCreateRequest)
+                .when()
+                .post("/v2/routie-spaces/{routieSpaceIdentifier}/places", emptyRoutieSpace.getIdentifier())
+                .then()
+                .log().all()
+                .extract().response();
+
+        HttpStatus actualHttpStatus = HttpStatus.valueOf(response.getStatusCode());
+        HttpStatus expectedHttpStatus = HttpStatus.BAD_REQUEST;
+
+        // then
+        assertThat(actualHttpStatus).isEqualTo(expectedHttpStatus);
+    }
+
+    private PlaceReadResponse readPlaceWithV1(final String routieSpaceIdentifier, final long placeId) {
+        final Response responsed = RestAssured
+                .when()
+                .get("/v1/routie-spaces/{routieSpaceIdentifier}/places/{placeId}", routieSpaceIdentifier, placeId)
+                .then()
+                .log().all()
+                .extract().response();
+        return responsed.as(PlaceReadResponse.class);
     }
 }
