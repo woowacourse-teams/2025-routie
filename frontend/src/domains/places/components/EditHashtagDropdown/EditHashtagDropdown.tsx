@@ -7,6 +7,7 @@ import Text from '@/@common/components/Text/Text';
 import { useToastContext } from '@/@common/contexts/useToastContext';
 import Hashtag from '@/domains/places/components/Hashtag/Hashtag';
 import useHashtag from '@/domains/places/hooks/useHashtag';
+import type { EditHashtagDropdownProps } from '@/domains/places/types/hashtag.types';
 import theme from '@/styles/theme';
 
 import {
@@ -14,12 +15,6 @@ import {
   HashtagAddButtonStyle,
   SelectedTagsWrapperStyle,
 } from './EditHashtagDropdown.styles';
-
-interface EditHashtagDropdownProps {
-  initialHashtags?: string[];
-  onCancel: () => void;
-  onUpdate: (hashtags: string[]) => Promise<void>;
-}
 
 const EditHashtagDropdown = ({
   initialHashtags,

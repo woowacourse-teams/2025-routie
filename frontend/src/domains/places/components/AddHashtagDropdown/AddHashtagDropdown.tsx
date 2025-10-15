@@ -6,7 +6,7 @@ import { useToastContext } from '@/@common/contexts/useToastContext';
 import Hashtag from '@/domains/places/components/Hashtag/Hashtag';
 import SearchAddress from '@/domains/places/components/SearchAddress/SearchAddress';
 import useHashtag from '@/domains/places/hooks/useHashtag';
-import type { HashtagInputProps } from '@/domains/places/types/hashtag.types';
+import type { AddHashtagDropdownProps } from '@/domains/places/types/hashtag.types';
 import theme from '@/styles/theme';
 
 import {
@@ -15,10 +15,8 @@ import {
   SelectedTagsWrapperStyle,
 } from './AddHashtagDropdown.styles';
 
-const AddHashtagDropdown = (props: HashtagInputProps) => {
-  const { place, addressType, address, onCancel } = props;
-  const mode = props.mode ?? 'add';
-  const initialHashtags = 'initialHashtags' in props ? props.initialHashtags : undefined;
+const AddHashtagDropdown = (props: AddHashtagDropdownProps) => {
+  const { place, addressType, address, onCancel, onSubmit, initialHashtags } = props;
   const { showToast } = useToastContext();
 
   const {
@@ -31,35 +29,15 @@ const AddHashtagDropdown = (props: HashtagInputProps) => {
     handleEnterTag,
   } = useHashtag(initialHashtags);
 
-  const normalize = (arr?: string[]) =>
-    Array.from(new Set((arr ?? []).map((s) => s.trim()))).sort();
-
-  const isHashtagsChanged =
-    mode === 'edit' &&
-    (() => {
-      const a = normalize(selectedTags);
-      const b = normalize(initialHashtags);
-      if (a.length !== b.length) return true;
-      for (let i = 0; i < a.length; i++) if (a[i] !== b[i]) return true;
-      return false;
-    })();
-
   const handleSubmit = async () => {
     try {
-      if (props.mode === 'edit') {
-        await props.onUpdate(selectedTags);
-      } else {
-        await props.onSubmit({
-          ...place,
-          hashtags: selectedTags,
-        });
-      }
+      await onSubmit({
+        ...place,
+        hashtags: selectedTags,
+      });
     } catch (error) {
       showToast({
-        message:
-          mode === 'edit'
-            ? '해시태그 수정에 실패했습니다. 다시 시도해주세요.'
-            : '장소 추가에 실패했습니다. 다시 시도해주세요.',
+        message: '장소 추가에 실패했습니다. 다시 시도해주세요.',
         type: 'error',
       });
     }
@@ -148,14 +126,9 @@ const AddHashtagDropdown = (props: HashtagInputProps) => {
         <Button variant="secondary" onClick={onCancel} radius="lg">
           <Text variant="caption">닫기</Text>
         </Button>
-        <Button
-          variant="primary"
-          onClick={handleSubmit}
-          radius="lg"
-          disabled={mode === 'edit' && !isHashtagsChanged}
-        >
+        <Button variant="primary" onClick={handleSubmit} radius="lg">
           <Text color={theme.colors.white} variant="caption">
-            {mode === 'edit' ? '수정하기' : '장소 추가하기'}
+            장소 추가하기
           </Text>
         </Button>
       </Flex>
