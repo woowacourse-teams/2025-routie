@@ -14,13 +14,19 @@ import { useGoogleEventTrigger } from '@/libs/googleAnalytics/hooks/useGoogleEve
 const usePlaceList = () => {
   const { data: placeList, error } = usePlaceListQuery();
   const { mutateAsync: addPlace, data: addedPlaceId } = useAddPlaceQuery();
-  const { mutateAsync: deletePlace } = useDeletePlaceQuery();
+  const { triggerEvent } = useGoogleEventTrigger();
+  const { mutateAsync: deletePlace } = useDeletePlaceQuery(() => {
+    triggerEvent({
+      action: 'click',
+      category: 'place',
+      label: '장소 삭제하기 버튼',
+    });
+  });
   const { mutateAsync: updatePlaceHashtags } = useUpdatePlaceHashtagsMutation();
   const { showToast } = useToastContext();
   const { runWithLock: runDeleteWithLock } = useAsyncLock();
   const { runWithLock: runAddWithLock } = useAsyncLock();
   const { runWithLock: runUpdateWithLock } = useAsyncLock();
-  const { triggerEvent } = useGoogleEventTrigger();
 
   const handleAddPlace = useCallback(
     async (addPlaceInfo: SearchedPlaceType) => {
@@ -36,14 +42,9 @@ const usePlaceList = () => {
     async (placeId: number) => {
       return runDeleteWithLock(async () => {
         deletePlace(placeId);
-        triggerEvent({
-          action: 'click',
-          category: 'place',
-          label: '장소 삭제하기 버튼',
-        });
       });
     },
-    [deletePlace, runDeleteWithLock, triggerEvent],
+    [deletePlace, runDeleteWithLock],
   );
 
   const handleUpdatePlaceHashtags = useCallback(

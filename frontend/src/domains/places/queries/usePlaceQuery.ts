@@ -69,7 +69,7 @@ const useAddPlaceQuery = () => {
   });
 };
 
-const useDeletePlaceQuery = () => {
+const useDeletePlaceQuery = (onSuccessCallback?: () => void) => {
   const { showToast } = useToastContext();
   const queryClient = useQueryClient();
 
@@ -81,6 +81,7 @@ const useDeletePlaceQuery = () => {
         type: 'success',
       });
       queryClient.invalidateQueries({ queryKey: placesKeys.list() });
+      onSuccessCallback?.();
     },
     onError: (error) => {
       showToast({
