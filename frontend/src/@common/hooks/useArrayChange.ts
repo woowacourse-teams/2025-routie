@@ -1,7 +1,6 @@
 import { useMemo } from 'react';
 
-const normalize = (arr?: string[]) =>
-  Array.from(new Set((arr ?? []).map((s) => s.trim()))).sort();
+import normalize from '@/@common/utils/normalize';
 
 const useArrayChange = (
   initialArray: string[] | undefined,
