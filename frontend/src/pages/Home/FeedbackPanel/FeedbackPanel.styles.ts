@@ -10,10 +10,6 @@ const FeedbackSectionStyle = ({ isVisible }: { isVisible: boolean }) => css`
   right: 3rem;
   bottom: 10rem;
 
-  display: flex;
-
-  min-width: 20rem;
-  padding: 2rem;
   border: 0.5px solid ${theme.colors.gray[100]};
   border-radius: ${theme.radius.sm};
 

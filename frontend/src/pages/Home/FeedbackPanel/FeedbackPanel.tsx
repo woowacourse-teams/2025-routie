@@ -17,7 +17,7 @@ const FeedbackPanel = ({ isVisible }: FeedbackPanelProps) => {
     'https://docs.google.com/forms/d/e/1FAIpQLSfixG5-LD4kYYC3T0XueS7Ud7XHXbA53gJGxb60x4qwLl_4qA/viewform';
 
   return (
-    <div css={FeedbackSectionStyle({ isVisible })}>
+    <Flex width="20rem" padding={2} css={FeedbackSectionStyle({ isVisible })}>
       <Flex direction="column" gap={2}>
         <Flex direction="column" gap={2}>
           <Text variant="subTitle">루티가 불편하다면?</Text>
@@ -34,7 +34,7 @@ const FeedbackPanel = ({ isVisible }: FeedbackPanelProps) => {
           </Text>
         </a>
       </Flex>
-    </div>
+    </Flex>
   );
 };
 
