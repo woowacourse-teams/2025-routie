@@ -15,8 +15,7 @@ const usePlaceList = () => {
   const { data: placeList, error } = usePlaceListQuery();
   const { mutateAsync: addPlace, data: addedPlaceId } = useAddPlaceQuery();
   const { mutateAsync: deletePlace } = useDeletePlaceQuery();
-  const { mutateAsync: updatePlaceHashtags } =
-    useUpdatePlaceHashtagsMutation();
+  const { mutateAsync: updatePlaceHashtags } = useUpdatePlaceHashtagsMutation();
   const { showToast } = useToastContext();
   const { runWithLock: runDeleteWithLock } = useAsyncLock();
   const { runWithLock: runAddWithLock } = useAsyncLock();
@@ -53,7 +52,7 @@ const usePlaceList = () => {
         await updatePlaceHashtags({ placeId, hashtags });
       });
     },
-    [updatePlaceHashtags],
+    [updatePlaceHashtags, runUpdateWithLock],
   );
 
   useEffect(() => {
