@@ -44,9 +44,9 @@ const PlaceCard = ({
             {props.roadAddressName || props.addressName}
           </Text>
           <Flex justifyContent="flex-start" gap={1}>
-            {props.hashtags?.map((hashtag, index) => (
+            {props.hashtags?.map((hashtag) => (
               <Text
-                key={index}
+                key={hashtag}
                 variant="caption"
                 color={theme.colors.blue[400]}
                 css={{ whiteSpace: 'nowrap' }}
