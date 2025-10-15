@@ -112,7 +112,12 @@ const PlaceView = () => {
           />
         </Flex>
       ) : (
-        <div css={PlaceListContainerStyle}>
+        <Flex
+          direction="column"
+          justifyContent="flex-start"
+          css={PlaceListContainerStyle}
+          height="100%"
+        >
           {placeList?.map((place) => {
             const selected = routieIdList.includes(place.id);
             const liked = likedPlaceIds.includes(place.id);
@@ -142,7 +147,7 @@ const PlaceView = () => {
               </div>
             );
           })}
-        </div>
+        </Flex>
       )}
     </Flex>
   );
