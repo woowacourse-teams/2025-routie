@@ -3,7 +3,7 @@ import { css } from '@emotion/react';
 import theme from '@/styles/theme';
 
 const HomeScrollContainerStyle = css`
-  overflow-y: auto;
+  overflow-y: hidden;
   height: calc(100dvh - 8.1rem);
 `;
 
@@ -61,47 +61,39 @@ const RectangleStyle = css`
   background: ${theme.colors.blue[450]}60;
 `;
 
-const FeedbackTextStyle = css`
-  z-index: 10;
-`;
+const FeedbackIconButtonStyle = css`
+  position: fixed;
+  z-index: 100;
+  right: 3rem;
+  bottom: 3rem;
 
-const FeedbackButtonStyle = css`
-  position: relative;
-  z-index: 10;
+  width: 4rem;
+  height: 4rem;
+  border-radius: 50%;
 
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  background-color: ${theme.colors.white};
+  box-shadow: 0 0.4rem 1.2rem rgb(0 0 0 / 30%);
 
-  box-sizing: border-box;
-  width: 30rem;
-  padding: 2rem;
-  border-radius: ${theme.radius.sm};
-
-  color: ${theme.colors.white};
-
-  background-color: ${theme.colors.blue[450]};
-  box-shadow: 0 0.8rem 1.6rem rgb(0 0 0 / 26%);
+  & img {
+    width: 2rem;
+    height: 2rem;
+  }
 
   &:hover {
-    color: ${theme.colors.white};
-    background-color: ${theme.colors.blue[200]};
+    transform: scale(1.05);
+    box-shadow: 0 0.6rem 1.6rem rgb(0 0 0 / 35%);
   }
 
-  @media (width <= 800px) {
-    width: 100%;
-    max-width: 28rem;
+  &:active {
+    transform: scale(0.95);
   }
 `;
 
-const linkStyle = css`
-  color: inherit;
-  text-decoration: none;
-
-  &:focus-visible {
-    outline: 2px solid ${theme.colors.blue[450]};
-    outline-offset: 2px;
-  }
+const FeedbackOverlayStyle = css`
+  position: fixed;
+  z-index: 98;
+  inset: 0;
+  background: transparent;
 `;
 
 export {
@@ -110,7 +102,6 @@ export {
   MainContentWrapperStyle,
   CircleStyle,
   RectangleStyle,
-  FeedbackTextStyle,
-  FeedbackButtonStyle,
-  linkStyle,
+  FeedbackIconButtonStyle,
+  FeedbackOverlayStyle,
 };
