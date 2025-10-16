@@ -16,7 +16,13 @@ const useHashtag = (initialTags?: string[]) => {
   }, [initialTags]);
 
   const { showToast } = useToastContext();
+  const MAX_TAG_LENGTH = 7;
+
   const handleInputChange = (value: string) => {
+    const hashtagWithoutHash = value.startsWith('#') ? value.slice(1) : value;
+    if (hashtagWithoutHash.length > MAX_TAG_LENGTH) {
+      return;
+    }
     setInputValue(value);
   };
 
@@ -50,8 +56,8 @@ const useHashtag = (initialTags?: string[]) => {
     }
 
     const formattedTag = trimmedTag.startsWith('#')
-      ? trimmedTag
-      : `#${trimmedTag}`;
+      ? trimmedTag.slice(1)
+      : trimmedTag;
 
     if (selectedTags.includes(formattedTag)) {
       showToast({

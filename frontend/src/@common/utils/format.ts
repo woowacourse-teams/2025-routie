@@ -29,3 +29,7 @@ export const getCombineDateTime = (dateTime: {
     endDateTime: `${dateTime.date}T${dateTime.endTime}:00`,
   };
 };
+
+export const formatHashtag = (tag: string): string => {
+  return tag.startsWith('#') ? tag : `#${tag}`;
+};
