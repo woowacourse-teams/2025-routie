@@ -67,7 +67,6 @@ const EditHashtagDropdown = ({
             placeholder="해시태그를 추가하거나 만들어보세요"
             onChange={handleInputChange}
             onKeyDown={handleEnterTag}
-            maxLength={6}
             css={HashtagAddButtonStyle}
           />
           <Button
