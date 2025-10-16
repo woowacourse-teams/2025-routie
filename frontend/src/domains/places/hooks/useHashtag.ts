@@ -1,11 +1,13 @@
 import { useEffect, useState } from 'react';
 
 import { useToastContext } from '@/@common/contexts/useToastContext';
+import { useHashtagsQuery } from '@/domains/places/queries/usePlaceQuery';
 
 const useHashtag = (initialTags?: string[]) => {
   const [inputValue, setInputValue] = useState('');
   const [selectedTags, setSelectedTags] = useState<string[]>(initialTags || []);
-  const [previousTags] = useState<string[]>(['#맛집', '#카페', '#데이트코스']);
+  const { data: hashtagsData } = useHashtagsQuery();
+  const previousTags = hashtagsData?.hashtags || [];
 
   useEffect(() => {
     if (initialTags) {
