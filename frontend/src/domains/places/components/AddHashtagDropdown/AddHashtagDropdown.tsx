@@ -103,7 +103,7 @@ const AddHashtagDropdown = (props: AddHashtagDropdownProps) => {
         {previousTags.length > 0 && (
           <Flex direction="column" gap={0.8} alignItems="flex-start">
             <Text variant="caption" color={theme.colors.gray[300]}>
-              내가 사용했던 태그
+              이전 태그 기록
             </Text>
             <Flex
               gap={0.6}
