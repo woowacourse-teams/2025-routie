@@ -18,14 +18,18 @@ const useMarkerRenderer = ({
 
   const renderMarkers = useCallback(() => {
     clearMarkers();
-    const filteredPlaces =
-      selectedHashtags.length === 0
-        ? placeList
-        : placeList?.filter((place) =>
-            place.hashtags?.some((hashtag) =>
-              selectedHashtags.includes(hashtag),
-            ),
-          );
+
+    const routiePlaceIds = routiePlacesWithDetails.map((rp) => rp.id);
+
+    const filteredPlaces = placeList?.filter((place) => {
+      if (routiePlaceIds.includes(place.id)) return true;
+
+      if (selectedHashtags.length === 0) return true;
+
+      return place.hashtags?.some((hashtag) =>
+        selectedHashtags.includes(hashtag),
+      );
+    });
 
     filteredPlaces?.forEach((place) => {
       const routiePlace = routiePlacesWithDetails.find(
