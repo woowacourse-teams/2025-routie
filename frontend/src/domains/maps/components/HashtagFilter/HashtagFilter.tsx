@@ -2,6 +2,7 @@ import { useRef, useState } from 'react';
 
 import Button from '@/@common/components/Button/Button';
 import Flex from '@/@common/components/Flex/Flex';
+import { useHashtagFilterContext } from '@/domains/maps/contexts/useHashtagFilterContext';
 import Hashtag from '@/domains/places/components/Hashtag/Hashtag';
 import { useHashtagsQuery } from '@/domains/places/queries/usePlaceQuery';
 
@@ -17,7 +18,7 @@ import type { HashtagFilterProps } from './HashtagFilter.types';
 
 const HashtagFilter = ({ isSidebarOpen }: HashtagFilterProps) => {
   const visibleHashtagsRef = useRef<HTMLDivElement>(null);
-  const [selectedHashtags, setSelectedHashtags] = useState<string[]>([]);
+  const { selectedHashtags, toggleHashtag } = useHashtagFilterContext();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const { data: hashtagsData } = useHashtagsQuery();
@@ -28,11 +29,7 @@ const HashtagFilter = ({ isSidebarOpen }: HashtagFilterProps) => {
   const hiddenHashtags = hashtags.slice(MAX_VISIBLE_HASHTAGS);
 
   const handleHashtagClick = (hashtag: string) => {
-    setSelectedHashtags((prev) =>
-      prev.includes(hashtag)
-        ? prev.filter((tag) => tag !== hashtag)
-        : [...prev, hashtag],
-    );
+    toggleHashtag(hashtag);
   };
 
   const handleDropdownToggle = () => {

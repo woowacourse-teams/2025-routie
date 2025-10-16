@@ -1,5 +1,6 @@
 import { useCallback } from 'react';
 
+import { useHashtagFilterContext } from '@/domains/maps/contexts/useHashtagFilterContext';
 import type { UseMarkerRendererProps } from '@/domains/maps/types/map.types';
 import { usePlaceList } from '@/domains/places/hooks/usePlaceList';
 
@@ -13,9 +14,20 @@ const useMarkerRenderer = ({
   const { placeList } = usePlaceList();
   const { routiePlacesWithDetails } = useRoutePlacesWithDetails();
   const { clearMarkers, drawMarkers } = useMapMarkerControl(mapRef);
+  const { selectedHashtags } = useHashtagFilterContext();
+
   const renderMarkers = useCallback(() => {
     clearMarkers();
-    placeList?.forEach((place) => {
+    const filteredPlaces =
+      selectedHashtags.length === 0
+        ? placeList
+        : placeList?.filter((place) =>
+            place.hashtags?.some((hashtag) =>
+              selectedHashtags.includes(hashtag),
+            ),
+          );
+
+    filteredPlaces?.forEach((place) => {
       const routiePlace = routiePlacesWithDetails.find(
         (rp) => rp.id === place.id,
       );
@@ -33,6 +45,7 @@ const useMarkerRenderer = ({
     handleMarkerClick,
     clearMarkers,
     drawMarkers,
+    selectedHashtags,
   ]);
 
   return { renderMarkers };
