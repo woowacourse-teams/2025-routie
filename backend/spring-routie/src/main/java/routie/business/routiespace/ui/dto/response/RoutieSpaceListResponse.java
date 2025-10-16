@@ -10,7 +10,7 @@ public record RoutieSpaceListResponse(
 ) {
 
     public static RoutieSpaceListResponse from(final List<RoutieSpace> routieSpaces) {
-        List<RoutieSpaceResponse> routieSpaceResponses = routieSpaces.stream()
+        final List<RoutieSpaceResponse> routieSpaceResponses = routieSpaces.stream()
                 .map(RoutieSpaceResponse::from)
                 .toList();
 
@@ -20,8 +20,7 @@ public record RoutieSpaceListResponse(
     public record RoutieSpaceResponse(
             String identifier,
             String name,
-            @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
-            LocalDateTime createdTime
+            @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss") LocalDateTime createdTime
     ) {
 
         public static RoutieSpaceResponse from(final RoutieSpace routieSpace) {

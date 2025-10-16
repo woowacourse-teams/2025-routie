@@ -85,12 +85,12 @@ public class ParticipantControllerV1Test {
     @DisplayName("User는 자신의 정보를 가져올 수 있다.")
     void getMyInformation_withUserToken() {
         // given
-        User user = UserFixture.emptyUser();
+        final User user = UserFixture.emptyUser();
         userRepository.save(user);
-        String accessToken = jwtProcessor.createJwt(user);
+        final String accessToken = jwtProcessor.createJwt(user);
 
         // when
-        Response response = RestAssured
+        final Response response = RestAssured
                 .given().log().all()
                 .header("Authorization", "Bearer " + accessToken)
                 .when().get("/v1/participants/me")
@@ -107,15 +107,15 @@ public class ParticipantControllerV1Test {
     @DisplayName("Guest는 자신의 정보를 가져올 수 있다.")
     void getMyInformation_withGuestToken() {
         // given
-        Guest guest = new GuestBuilder()
+        final Guest guest = new GuestBuilder()
                 .routieSpace(testRoutieSpace)
                 .build();
 
         guestRepository.save(guest);
-        String accessToken = jwtProcessor.createJwt(guest);
+        final String accessToken = jwtProcessor.createJwt(guest);
 
         // when
-        Response response = RestAssured
+        final Response response = RestAssured
                 .given().log().all()
                 .header("Authorization", "Bearer " + accessToken)
                 .when().get("/v1/participants/me")

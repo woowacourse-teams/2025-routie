@@ -33,9 +33,11 @@ public interface PlaceLikeRepository extends JpaRepository<PlaceLike, Long> {
 
     @Query("SELECT pl FROM PlaceLike pl JOIN pl.place p WHERE p.routieSpace = :routieSpace AND pl.user = :user")
     List<PlaceLike> findByRoutieSpaceAndUser(@Param("routieSpace") RoutieSpace routieSpace,
-                                             @Param("user") User user);
+            @Param("user") User user
+    );
 
     @Query("SELECT pl FROM PlaceLike pl JOIN pl.place p WHERE p.routieSpace = :routieSpace AND pl.guest = :guest")
     List<PlaceLike> findByRoutieSpaceAndGuest(@Param("routieSpace") RoutieSpace routieSpace,
-                                              @Param("guest") Guest guest);
+            @Param("guest") Guest guest
+    );
 }

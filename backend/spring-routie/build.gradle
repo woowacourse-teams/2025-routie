@@ -98,7 +98,6 @@ tasks.named('test') {
 spotless {
     java {
         eclipse().configFile("config/formatter/eclipse-java-routie-style.xml")
-        importOrder()
         removeUnusedImports()
         trimTrailingWhitespace()
         endWithNewline()

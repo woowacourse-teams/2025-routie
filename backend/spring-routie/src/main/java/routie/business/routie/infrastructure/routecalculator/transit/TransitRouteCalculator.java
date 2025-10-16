@@ -35,26 +35,27 @@ public class TransitRouteCalculator implements RouteCalculator {
 
     @Override
     public Routes calculateRoutes(final RouteCalculationContext routeCalculationContext) {
-        List<RoutiePlace> routiePlaces = routeCalculationContext.getOrderedRoutiePlaces();
-        LocalDateTime startDateTime = routeCalculationContext.getStartDateTime()
+        final List<RoutiePlace> routiePlaces = routeCalculationContext.getOrderedRoutiePlaces();
+        final LocalDateTime startDateTime = routeCalculationContext.getStartDateTime()
                 .orElse(LocalDateTime.now());
 
         validateStartDateTime(startDateTime);
 
-        Map<RoutiePlace, Route> routeMap = new HashMap<>();
+        final Map<RoutiePlace, Route> routeMap = new HashMap<>();
         for (int sequence = 0; sequence < routiePlaces.size() - 1; sequence++) {
-            RoutiePlace from = routiePlaces.get(sequence);
-            RoutiePlace to = routiePlaces.get(sequence + 1);
+            final RoutiePlace from = routiePlaces.get(sequence);
+            final RoutiePlace to = routiePlaces.get(sequence + 1);
 
             if (isZeroDistanceRoute(from, to)) {
                 routeMap.put(from, new Route(from, to, 0, 0));
                 continue;
             }
 
-            GoogleTransitRouteApiResponse googleTransitRouteApiResponse =
-                    googleTransitRouteApiClient.getRoute(GoogleTransitRouteApiRequest.from(startDateTime, from, to));
+            final GoogleTransitRouteApiResponse googleTransitRouteApiResponse = googleTransitRouteApiClient.getRoute(
+                    GoogleTransitRouteApiRequest.from(startDateTime, from, to)
+            );
 
-            RouteResponse routeResponse = googleTransitRouteApiResponse.routeResponses()
+            final RouteResponse routeResponse = googleTransitRouteApiResponse.routeResponses()
                     .getFirst();
 
             routeMap.put(
@@ -80,9 +81,9 @@ public class TransitRouteCalculator implements RouteCalculator {
      * @param startDateTime 검증할 시작 시간
      */
     private void validateStartDateTime(final LocalDateTime startDateTime) {
-        LocalDateTime now = LocalDateTime.now();
-        LocalDateTime earliestAllowed = now.minusDays(PAST_DAYS_LIMIT);
-        LocalDateTime latestAllowed = now.plusDays(FUTURE_DAYS_LIMIT);
+        final LocalDateTime now = LocalDateTime.now();
+        final LocalDateTime earliestAllowed = now.minusDays(PAST_DAYS_LIMIT);
+        final LocalDateTime latestAllowed = now.plusDays(FUTURE_DAYS_LIMIT);
 
         if (startDateTime.isBefore(earliestAllowed) || startDateTime.isAfter(latestAllowed)) {
             throw new BusinessException(ErrorCode.GOOGLE_TRANSIT_ROUTE_API_DEPARTURE_TIME_OUT_OF_RANGE);
@@ -91,7 +92,7 @@ public class TransitRouteCalculator implements RouteCalculator {
 
     private int parseDurationResponseToInt(final String durationResponse) {
         if (durationResponse != null && durationResponse.endsWith("s")) {
-            String secondsOnly = durationResponse.substring(0, durationResponse.length() - 1);
+            final String secondsOnly = durationResponse.substring(0, durationResponse.length() - 1);
             return Integer.parseInt(secondsOnly);
         }
         throw new BusinessException(ErrorCode.GOOGLE_TRANSIT_ROUTE_API_ERROR);

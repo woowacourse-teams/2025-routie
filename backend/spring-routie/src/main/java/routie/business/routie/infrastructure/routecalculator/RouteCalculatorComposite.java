@@ -25,7 +25,7 @@ public class RouteCalculatorComposite implements RouteCalculator {
     }
 
     private RouteCalculator selectRouteCalculator(final RouteCalculationContext routeCalculationContext) {
-        MovingStrategy movingStrategy = routeCalculationContext.getMovingStrategy();
+        final MovingStrategy movingStrategy = routeCalculationContext.getMovingStrategy();
         return routeCalculators.stream()
                 .filter(calculator -> calculator.supportsStrategy(movingStrategy))
                 .findFirst()

@@ -29,20 +29,20 @@ public class RoutieSpaceService {
     private final HashtagRepository hashtagRepository;
 
     public RoutieSpaceReadResponse getRoutieSpace(final String routieSpaceIdentifier) {
-        RoutieSpace routieSpace = getRoutieSpaceByRoutieSpaceIdentifier(routieSpaceIdentifier);
+        final RoutieSpace routieSpace = getRoutieSpaceByRoutieSpaceIdentifier(routieSpaceIdentifier);
 
         return RoutieSpaceReadResponse.from(routieSpace);
     }
 
     public RoutieSpaceListResponse getRoutieSpaces(final User user) {
-        List<RoutieSpace> routieSpaces = routieSpaceRepository.findByOwnerOrderByCreatedAtDesc(user);
+        final List<RoutieSpace> routieSpaces = routieSpaceRepository.findByOwnerOrderByCreatedAtDesc(user);
 
         return RoutieSpaceListResponse.from(routieSpaces);
     }
 
     @Transactional
     public RoutieSpaceCreateResponse addRoutieSpace() {
-        RoutieSpace routieSpace = RoutieSpace.withIdentifierProvider(
+        final RoutieSpace routieSpace = RoutieSpace.withIdentifierProvider(
                 null,
                 routieSpaceIdentifierProvider
         );
@@ -52,7 +52,7 @@ public class RoutieSpaceService {
 
     @Transactional
     public RoutieSpaceCreateResponse addRoutieSpaceV2(final User user) {
-        RoutieSpace routieSpace = RoutieSpace.withIdentifierProvider(
+        final RoutieSpace routieSpace = RoutieSpace.withIdentifierProvider(
                 user,
                 routieSpaceIdentifierProvider
         );
@@ -66,7 +66,7 @@ public class RoutieSpaceService {
             final RoutieSpaceUpdateRequest routieSpaceUpdateRequest
     ) {
         // TODO: 예외처리 구조 개선 예정
-        RoutieSpace routieSpace = getRoutieSpaceByRoutieSpaceIdentifier(routieSpaceIdentifier);
+        final RoutieSpace routieSpace = getRoutieSpaceByRoutieSpaceIdentifier(routieSpaceIdentifier);
         routieSpace.updateName(routieSpaceUpdateRequest.name());
 
         return new RoutieSpaceUpdateResponse(routieSpace.getName());
@@ -79,7 +79,7 @@ public class RoutieSpaceService {
             final User user
     ) {
         // TODO: 예외처리 구조 개선 예정
-        RoutieSpace routieSpace = getRoutieSpaceByRoutieSpaceIdentifier(routieSpaceIdentifier);
+        final RoutieSpace routieSpace = getRoutieSpaceByRoutieSpaceIdentifier(routieSpaceIdentifier);
         validateOwner(user, routieSpace);
         routieSpace.updateName(routieSpaceUpdateRequest.name());
 
@@ -91,7 +91,7 @@ public class RoutieSpaceService {
             final String routieSpaceIdentifier,
             final User user
     ) {
-        RoutieSpace routieSpace = getRoutieSpaceByRoutieSpaceIdentifier(routieSpaceIdentifier);
+        final RoutieSpace routieSpace = getRoutieSpaceByRoutieSpaceIdentifier(routieSpaceIdentifier);
         validateOwner(user, routieSpace);
 
         hashtagRepository.deleteByRoutieSpace(routieSpace);

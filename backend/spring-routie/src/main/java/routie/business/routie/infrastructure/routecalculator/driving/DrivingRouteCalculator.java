@@ -31,18 +31,19 @@ public class DrivingRouteCalculator implements RouteCalculator {
 
     @Override
     public Routes calculateRoutes(final RouteCalculationContext routeCalculationContext) {
-        List<RoutiePlace> routiePlaces = routeCalculationContext.getOrderedRoutiePlaces();
+        final List<RoutiePlace> routiePlaces = routeCalculationContext.getOrderedRoutiePlaces();
 
-        RoutiePlace from = routiePlaces.getFirst();
-        RoutiePlace to = routiePlaces.getLast();
+        final RoutiePlace from = routiePlaces.getFirst();
+        final RoutiePlace to = routiePlaces.getLast();
         if (isZeroDistanceRoute(routiePlaces, from, to)) {
             return new Routes(Map.of(from, new Route(from, to, 0, 0)));
         }
 
-        KakaoDrivingRouteApiResponse kakaoDrivingRouteApiResponse = kakaoDrivingRouteApiClient.getRoute(
+        final KakaoDrivingRouteApiResponse kakaoDrivingRouteApiResponse = kakaoDrivingRouteApiClient.getRoute(
                 KakaoDrivingRouteApiRequest.from(routiePlaces)
         );
-        List<SectionResponse> sectionResponses = getRouteResponse(kakaoDrivingRouteApiResponse).sectionResponses();
+        final List<SectionResponse> sectionResponses = getRouteResponse(
+                kakaoDrivingRouteApiResponse).sectionResponses();
 
         return mapToRoutes(routiePlaces, sectionResponses);
     }
@@ -67,12 +68,12 @@ public class DrivingRouteCalculator implements RouteCalculator {
             final List<RoutiePlace> routiePlaces,
             final List<SectionResponse> sectionResponses
     ) {
-        Map<RoutiePlace, Route> routeMap = new HashMap<>();
+        final Map<RoutiePlace, Route> routeMap = new HashMap<>();
         for (int i = 0; i < sectionResponses.size(); i++) {
-            SectionResponse sectionResponse = sectionResponses.get(i);
-            RoutiePlace from = routiePlaces.get(i);
-            RoutiePlace to = routiePlaces.get(i + 1);
-            Route route = new Route(
+            final SectionResponse sectionResponse = sectionResponses.get(i);
+            final RoutiePlace from = routiePlaces.get(i);
+            final RoutiePlace to = routiePlaces.get(i + 1);
+            final Route route = new Route(
                     from, to, sectionResponse.duration() / 60,
                     sectionResponse.distance()
             );

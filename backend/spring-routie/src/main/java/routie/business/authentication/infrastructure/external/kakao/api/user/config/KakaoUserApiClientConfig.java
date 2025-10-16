@@ -9,7 +9,6 @@ import org.springframework.web.client.RestClient;
 import routie.business.authentication.infrastructure.external.kakao.api.user.KakaoUserApiClient;
 import routie.business.authentication.infrastructure.external.kakao.api.user.config.error.KakaoUserApiErrorHandler;
 
-
 @Configuration
 @RequiredArgsConstructor
 public class KakaoUserApiClientConfig {
@@ -18,11 +17,11 @@ public class KakaoUserApiClientConfig {
 
     @Bean
     public KakaoUserApiClient kakaoUserApiClient() {
-        SimpleClientHttpRequestFactory requestFactory = new SimpleClientHttpRequestFactory();
+        final SimpleClientHttpRequestFactory requestFactory = new SimpleClientHttpRequestFactory();
         requestFactory.setConnectTimeout(Duration.ofSeconds(2));
         requestFactory.setReadTimeout(Duration.ofSeconds(4));
 
-        RestClient restClient = RestClient.builder()
+        final RestClient restClient = RestClient.builder()
                 .requestFactory(requestFactory)
                 .baseUrl("https://kapi.kakao.com/v1/user")
                 .defaultStatusHandler(kakaoUserApiErrorHandler)

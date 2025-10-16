@@ -30,7 +30,7 @@ public class RoutieSpaceControllerV1 {
 
     @PostMapping("/routie-spaces")
     public ResponseEntity<RoutieSpaceCreateResponse> createRoutieSpace() {
-        RoutieSpaceCreateResponse routieSpaceCreateResponse = routieSpaceService.addRoutieSpace();
+        final RoutieSpaceCreateResponse routieSpaceCreateResponse = routieSpaceService.addRoutieSpace();
 
         return ResponseEntity.ok(routieSpaceCreateResponse);
     }
@@ -39,7 +39,8 @@ public class RoutieSpaceControllerV1 {
     public ResponseEntity<RoutieSpaceReadResponse> readRoutieSpace(
             @PathVariable final String routieSpaceIdentifier
     ) {
-        RoutieSpaceReadResponse routieSpaceReadResponse = routieSpaceService.getRoutieSpace(routieSpaceIdentifier);
+        final RoutieSpaceReadResponse routieSpaceReadResponse = routieSpaceService.getRoutieSpace(
+                routieSpaceIdentifier);
         return ResponseEntity.ok(routieSpaceReadResponse);
     }
 
@@ -47,7 +48,7 @@ public class RoutieSpaceControllerV1 {
     public ResponseEntity<RoutieSpaceListResponse> readRoutieSpaces(
             @AuthenticatedParticipant(roles = Role.USER) final User user
     ) {
-        RoutieSpaceListResponse routieSpaceListResponse = routieSpaceService.getRoutieSpaces(user);
+        final RoutieSpaceListResponse routieSpaceListResponse = routieSpaceService.getRoutieSpaces(user);
 
         return ResponseEntity.ok(routieSpaceListResponse);
     }
@@ -57,7 +58,7 @@ public class RoutieSpaceControllerV1 {
             @PathVariable final String routieSpaceIdentifier,
             @RequestBody @Valid final RoutieSpaceUpdateRequest routieSpaceUpdateRequest
     ) {
-        RoutieSpaceUpdateResponse routieSpaceUpdateResponse = routieSpaceService.modifyRoutieSpace(
+        final RoutieSpaceUpdateResponse routieSpaceUpdateResponse = routieSpaceService.modifyRoutieSpace(
                 routieSpaceIdentifier,
                 routieSpaceUpdateRequest
         );

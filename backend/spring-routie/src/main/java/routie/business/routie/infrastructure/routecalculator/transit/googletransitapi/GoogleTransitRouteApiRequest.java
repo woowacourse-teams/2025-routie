@@ -40,7 +40,7 @@ public final class GoogleTransitRouteApiRequest {
             final RoutiePlace from,
             final RoutiePlace to
     ) {
-        ZonedDateTime zonedDateTime = startDateTime.atZone(ZoneId.of("Asia/Seoul"));
+        final ZonedDateTime zonedDateTime = startDateTime.atZone(ZoneId.of("Asia/Seoul"));
 
         return new GoogleTransitRouteApiRequest(
                 zonedDateTime,
@@ -53,7 +53,7 @@ public final class GoogleTransitRouteApiRequest {
             @JsonProperty("location") Location location
     ) {
         public static CoordinateRequest from(final RoutiePlace routiePlace) {
-            Place place = routiePlace.getPlace();
+            final Place place = routiePlace.getPlace();
             return new CoordinateRequest(
                     new Location(
                             new LatLng(

@@ -157,17 +157,17 @@ public class Place {
     }
 
     public void addHashtags(final List<Hashtag> hashtags) {
-        List<PlaceHashtag> placeHashtags = hashtags.stream()
+        final List<PlaceHashtag> placeHashtags = hashtags.stream()
                 .map(hashtag -> new PlaceHashtag(this, hashtag))
                 .toList();
         this.placeHashtags.addAll(placeHashtags);
     }
 
     public void updateHashtags(final List<Hashtag> newHashtags) {
-        Set<String> newHashtagNames = newHashtags.stream()
+        final Set<String> newHashtagNames = newHashtags.stream()
                 .map(Hashtag::getName)
                 .collect(Collectors.toSet());
-        Set<String> currentHashtagNames = placeHashtags.stream()
+        final Set<String> currentHashtagNames = placeHashtags.stream()
                 .map(placeHashtag -> placeHashtag.getHashtag().getName())
                 .collect(Collectors.toSet());
 
@@ -175,8 +175,7 @@ public class Place {
                 .filter(hashtag -> !currentHashtagNames.contains(hashtag.getName()))
                 .forEach(hashtag -> placeHashtags.add(new PlaceHashtag(this, hashtag)));
 
-        placeHashtags.removeIf(placeHashtag ->
-                !newHashtagNames.contains(placeHashtag.getHashtag().getName())
+        placeHashtags.removeIf(placeHashtag -> !newHashtagNames.contains(placeHashtag.getHashtag().getName())
         );
     }
 

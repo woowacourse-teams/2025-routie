@@ -70,10 +70,10 @@ class PlaceSearchControllerTest {
     @DisplayName("장소를 검색한다.")
     void searchPlacesSuccessfully() {
         // given
-        String query = "선릉역";
+        final String query = "선릉역";
 
         // when
-        SearchedPlacesResponse searchedPlacesResponse = RestAssured.given()
+        final SearchedPlacesResponse searchedPlacesResponse = RestAssured.given()
                 .contentType(ContentType.JSON)
                 .queryParam("query", query)
                 .when()

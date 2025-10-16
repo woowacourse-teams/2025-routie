@@ -33,14 +33,12 @@ import routie.global.exception.domain.ErrorCode;
 @Getter
 @Entity
 @Table(
-        name = "users",
-        uniqueConstraints = {
+        name = "users", uniqueConstraints = {
                 @UniqueConstraint(
-                        name = "uk_external_authentication_identifier_provider",
-                        columnNames = {"external_authentication_identifier", "external_authentication_provider"}
+                        name = "uk_external_authentication_identifier_provider", columnNames = {
+                                "external_authentication_identifier", "external_authentication_provider"}
                 )
         }
-
 )
 @EntityListeners(AuditingEntityListener.class)
 @AllArgsConstructor(access = AccessLevel.PACKAGE)

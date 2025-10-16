@@ -29,7 +29,7 @@ public class KakaoDrivingRouteApiClientConfig {
 
     @Bean
     public KakaoDrivingRouteApiClient kakaoDrivingApiClient() {
-        RestClient restClient = RestClient.builder()
+        final RestClient restClient = RestClient.builder()
                 .baseUrl("https://apis-navi.kakaomobility.com")
                 .defaultHeader(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON_VALUE)
                 .defaultHeader(HttpHeaders.AUTHORIZATION, "KakaoAK " + kakaoApiKey)

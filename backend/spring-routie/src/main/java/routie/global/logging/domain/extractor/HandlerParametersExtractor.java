@@ -12,7 +12,7 @@ public class HandlerParametersExtractor {
 
     public static List<HandlerParameter> extractParameters(final Object[] args, final Method method) {
         try {
-            Parameter[] parameters = method.getParameters();
+            final Parameter[] parameters = method.getParameters();
 
             return IntStream.range(0, Math.min(parameters.length, args.length))
                     .filter(i -> isLoggableParameter(parameters[i], args[i]))

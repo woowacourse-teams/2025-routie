@@ -10,10 +10,10 @@ public class SwaggerConfig {
 
     @Bean
     public OpenAPI routieOpenAPI() {
-        String title = "Routie Docs";
-        String description = "Routie API 문서입니다.";
+        final String title = "Routie Docs";
+        final String description = "Routie API 문서입니다.";
 
-        Info info = new Info().title(title).description(description).version("0.0.1");
+        final Info info = new Info().title(title).description(description).version("0.0.1");
 
         return new OpenAPI().info(info);
     }

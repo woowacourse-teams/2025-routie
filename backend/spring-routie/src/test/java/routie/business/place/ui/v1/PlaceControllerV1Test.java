@@ -92,18 +92,18 @@ public class PlaceControllerV1Test {
     @DisplayName("V1 API로 장소를 삭제한다")
     public void deletePlace() {
         // given
-        long placeId = testPlace.getId();
+        final long placeId = testPlace.getId();
 
         // when
-        Response response = RestAssured
+        final Response response = RestAssured
                 .when()
                 .delete("/v1/routie-spaces/" + testRoutieSpace.getIdentifier() + "/places/" + placeId)
                 .then()
                 .log().all()
                 .extract().response();
 
-        HttpStatus actualHttpStatus = HttpStatus.valueOf(response.getStatusCode());
-        HttpStatus expectedHttpStatus = HttpStatus.NO_CONTENT;
+        final HttpStatus actualHttpStatus = HttpStatus.valueOf(response.getStatusCode());
+        final HttpStatus expectedHttpStatus = HttpStatus.NO_CONTENT;
 
         // then
         assertThat(expectedHttpStatus).isEqualTo(actualHttpStatus);
@@ -113,20 +113,20 @@ public class PlaceControllerV1Test {
     @DisplayName("V1 API로 루티 장소에서 사용 중인 장소는 삭제할 수 없다")
     public void cannotDeletePlaceWhenUsedInRoutiePlace() {
         // given
-        long placeId = testPlace.getId();
+        final long placeId = testPlace.getId();
         testRoutieSpace.getRoutie().createLastRoutiePlace(testPlace);
         routieSpaceRepository.save(testRoutieSpace);
 
         // when
-        Response response = RestAssured
+        final Response response = RestAssured
                 .when()
                 .delete("/v1/routie-spaces/" + testRoutieSpace.getIdentifier() + "/places/" + placeId)
                 .then()
                 .log().all()
                 .extract().response();
 
-        HttpStatus actualHttpStatus = HttpStatus.valueOf(response.getStatusCode());
-        HttpStatus expectedHttpStatus = HttpStatus.BAD_REQUEST;
+        final HttpStatus actualHttpStatus = HttpStatus.valueOf(response.getStatusCode());
+        final HttpStatus expectedHttpStatus = HttpStatus.BAD_REQUEST;
 
         // then
         assertThat(expectedHttpStatus).isEqualTo(actualHttpStatus);
@@ -136,18 +136,18 @@ public class PlaceControllerV1Test {
     @DisplayName("V1 API로 존재하지 않는 장소 삭제 시 예외가 발생한다")
     public void deleteNonExistentPlace() {
         // given
-        long nonExistentPlaceId = 999999L;
+        final long nonExistentPlaceId = 999999L;
 
         // when
-        Response response = RestAssured
+        final Response response = RestAssured
                 .when()
                 .delete("/v1/routie-spaces/" + testRoutieSpace.getIdentifier() + "/places/" + nonExistentPlaceId)
                 .then()
                 .log().all()
                 .extract().response();
 
-        HttpStatus actualHttpStatus = HttpStatus.valueOf(response.getStatusCode());
-        HttpStatus expectedHttpStatus = HttpStatus.NOT_FOUND;
+        final HttpStatus actualHttpStatus = HttpStatus.valueOf(response.getStatusCode());
+        final HttpStatus expectedHttpStatus = HttpStatus.NOT_FOUND;
 
         // then
         assertThat(expectedHttpStatus).isEqualTo(actualHttpStatus);
@@ -157,20 +157,20 @@ public class PlaceControllerV1Test {
     @DisplayName("V1 API로 장소를 조회한다")
     public void readPlace() {
         // given
-        long placeId = testPlace.getId();
+        final long placeId = testPlace.getId();
 
         // when
-        Response response = RestAssured
+        final Response response = RestAssured
                 .when()
                 .get("/v1/routie-spaces/" + testRoutieSpace.getIdentifier() + "/places/" + placeId)
                 .then()
                 .log().all()
                 .extract().response();
 
-        HttpStatus actualHttpStatus = HttpStatus.valueOf(response.getStatusCode());
-        HttpStatus expectedHttpStatus = HttpStatus.OK;
+        final HttpStatus actualHttpStatus = HttpStatus.valueOf(response.getStatusCode());
+        final HttpStatus expectedHttpStatus = HttpStatus.OK;
 
-        String responseBody = response.getBody().asString();
+        final String responseBody = response.getBody().asString();
 
         // then
         assertThat(expectedHttpStatus).isEqualTo(actualHttpStatus);
@@ -186,20 +186,20 @@ public class PlaceControllerV1Test {
     @DisplayName("V1 API로 장소를 조회한다 - 응답 구조 검증")
     public void readPlaceWithDetailValidation() {
         // given
-        long placeId = testPlace.getId();
+        final long placeId = testPlace.getId();
 
         // when
-        Response response = RestAssured
+        final Response response = RestAssured
                 .when()
                 .get("/v1/routie-spaces/" + testRoutieSpace.getIdentifier() + "/places/" + placeId)
                 .then()
                 .log().all()
                 .extract().response();
 
-        HttpStatus actualHttpStatus = HttpStatus.valueOf(response.getStatusCode());
-        HttpStatus expectedHttpStatus = HttpStatus.OK;
+        final HttpStatus actualHttpStatus = HttpStatus.valueOf(response.getStatusCode());
+        final HttpStatus expectedHttpStatus = HttpStatus.OK;
 
-        Map<String, Object> responseBody = response.jsonPath().getMap("");
+        final Map<String, Object> responseBody = response.jsonPath().getMap("");
 
         // then
         assertThat(expectedHttpStatus).isEqualTo(actualHttpStatus);
@@ -220,7 +220,7 @@ public class PlaceControllerV1Test {
         final UpdateHashtagsRequest updateHashtagsRequest = new UpdateHashtagsRequest(List.of("new", "hash", "tags"));
 
         // when
-        Response response = RestAssured
+        final Response response = RestAssured
                 .given()
                 .contentType(ContentType.JSON)
                 .body(updateHashtagsRequest)
@@ -234,8 +234,8 @@ public class PlaceControllerV1Test {
                 .log().all()
                 .extract().response();
 
-        HttpStatus actualHttpStatus = HttpStatus.valueOf(response.getStatusCode());
-        HttpStatus expectedHttpStatus = HttpStatus.OK;
+        final HttpStatus actualHttpStatus = HttpStatus.valueOf(response.getStatusCode());
+        final HttpStatus expectedHttpStatus = HttpStatus.OK;
 
         final UpdateHashtagsResponse updateHashtagsResponse = response.as(UpdateHashtagsResponse.class);
 
@@ -254,7 +254,7 @@ public class PlaceControllerV1Test {
         final UpdateHashtagsRequest updateHashtagsRequest = new UpdateHashtagsRequest(List.of("new", "longHashtags"));
 
         // when
-        Response response = RestAssured
+        final Response response = RestAssured
                 .given()
                 .contentType(ContentType.JSON)
                 .body(updateHashtagsRequest)
@@ -268,8 +268,8 @@ public class PlaceControllerV1Test {
                 .log().all()
                 .extract().response();
 
-        HttpStatus actualHttpStatus = HttpStatus.valueOf(response.getStatusCode());
-        HttpStatus expectedHttpStatus = HttpStatus.BAD_REQUEST;
+        final HttpStatus actualHttpStatus = HttpStatus.valueOf(response.getStatusCode());
+        final HttpStatus expectedHttpStatus = HttpStatus.BAD_REQUEST;
 
         // then
         assertThat(actualHttpStatus).isEqualTo(expectedHttpStatus);

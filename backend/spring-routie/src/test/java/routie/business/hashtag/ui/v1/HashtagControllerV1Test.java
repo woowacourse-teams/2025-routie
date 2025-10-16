@@ -105,15 +105,15 @@ class HashtagControllerV1Test {
         final String routieSpaceIdentifier = testRoutieSpace1.getIdentifier();
 
         // when
-        Response response = RestAssured
+        final Response response = RestAssured
                 .when()
                 .get("/v1/routie-spaces/{routieSpaceIdentifier}/hashtags", routieSpaceIdentifier)
                 .then()
                 .log().all()
                 .extract().response();
 
-        HttpStatus actualHttpStatus = HttpStatus.valueOf(response.getStatusCode());
-        HttpStatus expectedHttpStatus = HttpStatus.OK;
+        final HttpStatus actualHttpStatus = HttpStatus.valueOf(response.getStatusCode());
+        final HttpStatus expectedHttpStatus = HttpStatus.OK;
 
         final HashtagsResponse hashtagsResponse = response.as(HashtagsResponse.class);
 

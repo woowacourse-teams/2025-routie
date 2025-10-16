@@ -32,14 +32,16 @@ public record VWorldPlaceSearchApiStatusResponse(
     static class Deserializer extends JsonDeserializer<VWorldPlaceSearchApiStatusResponse> {
 
         @Override
-        public VWorldPlaceSearchApiStatusResponse deserialize(final JsonParser p, final DeserializationContext ctxt)
-                throws IOException {
-            JsonNode errorNode = parseErrorNode(p);
+        public VWorldPlaceSearchApiStatusResponse deserialize(
+                final JsonParser p,
+                final DeserializationContext ctxt
+        ) throws IOException {
+            final JsonNode errorNode = parseErrorNode(p);
             return new VWorldPlaceSearchApiStatusResponse(Status.valueOf(errorNode.asText(null)));
         }
 
         private JsonNode parseErrorNode(final JsonParser jsonParser) throws IOException {
-            JsonNode root = jsonParser.getCodec().readTree(jsonParser);
+            final JsonNode root = jsonParser.getCodec().readTree(jsonParser);
             return root.path("response").path("status");
         }
     }

@@ -80,16 +80,16 @@ public class PlaceLikeControllerV2Test {
     @DisplayName("V2 API로 장소에 유저의 좋아요를 성공적으로 추가한다")
     public void likePlaceWithUserToken() {
         // given
-        long placeId = testPlace.getId();
-        long initialLikeCount = placeLikeRepository.countByPlace(testPlace);
+        final long placeId = testPlace.getId();
+        final long initialLikeCount = placeLikeRepository.countByPlace(testPlace);
 
         // 테스트용 사용자 생성 및 토큰 발급
-        User user = UserFixture.emptyUser();
+        final User user = UserFixture.emptyUser();
         userRepository.save(user);
-        String accessToken = jwtProcessor.createJwt(user);
+        final String accessToken = jwtProcessor.createJwt(user);
 
         // when
-        Response response = RestAssured
+        final Response response = RestAssured
                 .given().log().all()
                 .header("Authorization", "Bearer " + accessToken)
                 .when()
@@ -98,13 +98,13 @@ public class PlaceLikeControllerV2Test {
                 .log().all()
                 .extract().response();
 
-        HttpStatus actualHttpStatus = HttpStatus.valueOf(response.getStatusCode());
-        HttpStatus expectedHttpStatus = HttpStatus.OK;
+        final HttpStatus actualHttpStatus = HttpStatus.valueOf(response.getStatusCode());
+        final HttpStatus expectedHttpStatus = HttpStatus.OK;
 
         // then
         assertThat(expectedHttpStatus).isEqualTo(actualHttpStatus);
 
-        long finalLikeCount = placeLikeRepository.countByPlace(testPlace);
+        final long finalLikeCount = placeLikeRepository.countByPlace(testPlace);
         assertThat(finalLikeCount).isEqualTo(initialLikeCount + 1);
     }
 
@@ -112,19 +112,19 @@ public class PlaceLikeControllerV2Test {
     @DisplayName("V2 API로 장소에 게스트의 좋아요를 성공적으로 추가한다")
     public void likePlaceWithGuestToken() {
         // given
-        long placeId = testPlace.getId();
-        long initialLikeCount = placeLikeRepository.countByPlace(testPlace);
+        final long placeId = testPlace.getId();
+        final long initialLikeCount = placeLikeRepository.countByPlace(testPlace);
 
         // 테스트용 사용자 생성 및 토큰 발급
-        Guest guest = new GuestBuilder()
+        final Guest guest = new GuestBuilder()
                 .routieSpace(testRoutieSpace)
                 .build();
 
         guestRepository.save(guest);
-        String accessToken = jwtProcessor.createJwt(guest);
+        final String accessToken = jwtProcessor.createJwt(guest);
 
         // when
-        Response response = RestAssured
+        final Response response = RestAssured
                 .given().log().all()
                 .header("Authorization", "Bearer " + accessToken)
                 .when()
@@ -133,13 +133,13 @@ public class PlaceLikeControllerV2Test {
                 .log().all()
                 .extract().response();
 
-        HttpStatus actualHttpStatus = HttpStatus.valueOf(response.getStatusCode());
-        HttpStatus expectedHttpStatus = HttpStatus.OK;
+        final HttpStatus actualHttpStatus = HttpStatus.valueOf(response.getStatusCode());
+        final HttpStatus expectedHttpStatus = HttpStatus.OK;
 
         // then
         assertThat(expectedHttpStatus).isEqualTo(actualHttpStatus);
 
-        long finalLikeCount = placeLikeRepository.countByPlace(testPlace);
+        final long finalLikeCount = placeLikeRepository.countByPlace(testPlace);
         assertThat(finalLikeCount).isEqualTo(initialLikeCount + 1);
     }
 
@@ -147,16 +147,16 @@ public class PlaceLikeControllerV2Test {
     @DisplayName("V2 API로 존재하지 않는 루티 스페이스에 좋아요 시 예외가 발생한다")
     public void likeWithNonExistentRoutieSpace() {
         // given
-        long placeId = testPlace.getId();
-        String nonExistentIdentifier = "non-existent-identifier";
+        final long placeId = testPlace.getId();
+        final String nonExistentIdentifier = "non-existent-identifier";
 
         // 테스트용 사용자 생성 및 토큰 발급
-        User user = UserFixture.emptyUser();
+        final User user = UserFixture.emptyUser();
         userRepository.save(user);
-        String accessToken = jwtProcessor.createJwt(user);
+        final String accessToken = jwtProcessor.createJwt(user);
 
         // when
-        Response response = RestAssured
+        final Response response = RestAssured
                 .given().log().all()
                 .header("Authorization", "Bearer " + accessToken)
                 .when()
@@ -165,8 +165,8 @@ public class PlaceLikeControllerV2Test {
                 .log().all()
                 .extract().response();
 
-        HttpStatus actualHttpStatus = HttpStatus.valueOf(response.getStatusCode());
-        HttpStatus expectedHttpStatus = HttpStatus.NOT_FOUND;
+        final HttpStatus actualHttpStatus = HttpStatus.valueOf(response.getStatusCode());
+        final HttpStatus expectedHttpStatus = HttpStatus.NOT_FOUND;
 
         // then
         assertThat(expectedHttpStatus).isEqualTo(actualHttpStatus);
@@ -176,15 +176,15 @@ public class PlaceLikeControllerV2Test {
     @DisplayName("V2 API로 존재하지 않는 장소에 좋아요 시 예외가 발생한다")
     public void likeNonExistentPlace() {
         // given
-        long nonExistentPlaceId = 999999L;
+        final long nonExistentPlaceId = 999999L;
 
         // 테스트용 사용자 생성 및 토큰 발급
-        User user = UserFixture.emptyUser();
+        final User user = UserFixture.emptyUser();
         userRepository.save(user);
-        String accessToken = jwtProcessor.createJwt(user);
+        final String accessToken = jwtProcessor.createJwt(user);
 
         // when
-        Response response = RestAssured
+        final Response response = RestAssured
                 .given().log().all()
                 .header("Authorization", "Bearer " + accessToken)
                 .when()
@@ -194,8 +194,8 @@ public class PlaceLikeControllerV2Test {
                 .log().all()
                 .extract().response();
 
-        HttpStatus actualHttpStatus = HttpStatus.valueOf(response.getStatusCode());
-        HttpStatus expectedHttpStatus = HttpStatus.NOT_FOUND;
+        final HttpStatus actualHttpStatus = HttpStatus.valueOf(response.getStatusCode());
+        final HttpStatus expectedHttpStatus = HttpStatus.NOT_FOUND;
 
         // then
         assertThat(expectedHttpStatus).isEqualTo(actualHttpStatus);

@@ -18,7 +18,7 @@ public class VWorldPlaceSearchApiClientConfig {
 
     @Bean
     public VWorldPlaceSearchApiClient vWorldApiClient() {
-        RestClient restClient = RestClient.builder()
+        final RestClient restClient = RestClient.builder()
                 .baseUrl("https://api.vworld.kr/req")
                 .requestInterceptor(new HttpResponseBodyCachingInterceptor())
                 .defaultStatusHandler(new VWorldPlaceSearchApiClientErrorHandler(objectMapper))

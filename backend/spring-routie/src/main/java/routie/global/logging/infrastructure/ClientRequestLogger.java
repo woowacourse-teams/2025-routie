@@ -31,8 +31,8 @@ public class ClientRequestLogger {
                 .stream()
                 .filter(entry -> entry.getValue() != null)
                 .forEach(entry -> {
-                    String fieldName = entry.getKey().getFieldName();
-                    String fieldValue = convertToString(entry.getKey(), entry.getValue());
+                    final String fieldName = entry.getKey().getFieldName();
+                    final String fieldValue = convertToString(entry.getKey(), entry.getValue());
                     MDC.put(fieldName, fieldValue);
                 });
     }

@@ -41,7 +41,7 @@ public class KakaoPlaceSearchApiErrorHandler implements ResponseErrorHandler {
             @NonNull final HttpMethod method,
             final ClientHttpResponse response
     ) throws IOException {
-        KakaoPlaceSearchApiErrorResponse kakaoPlaceSearchApiErrorResponse = objectMapper.readValue(
+        final KakaoPlaceSearchApiErrorResponse kakaoPlaceSearchApiErrorResponse = objectMapper.readValue(
                 response.getBody(),
                 KakaoPlaceSearchApiErrorResponse.class
         );
