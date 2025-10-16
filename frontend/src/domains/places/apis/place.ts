@@ -10,6 +10,7 @@ import type {
   AddPlaceRequestType,
   DeletePlaceRequestType,
   FetchPlaceRequestType,
+  HashtagsResponseType,
   LikePlaceRequestType,
   SearchPlaceRequestType,
   UnlikePlaceRequestType,
@@ -165,6 +166,19 @@ const updatePlaceHashtags = async ({
   return response.json();
 };
 
+const getHashtags = async (): Promise<HashtagsResponseType> => {
+  const routieSpaceUuid = getRoutieSpaceUuid();
+  ensureRoutieSpaceUuid(routieSpaceUuid);
+
+  const response = await apiClient.get(
+    `/v1/routie-spaces/${routieSpaceUuid}/hashtags`,
+  );
+
+  const data = await response.json();
+
+  return data;
+};
+
 export {
   addPlace,
   deletePlace,
@@ -175,4 +189,5 @@ export {
   deleteLikePlace,
   getLikedPlaces,
   updatePlaceHashtags,
+  getHashtags,
 };
