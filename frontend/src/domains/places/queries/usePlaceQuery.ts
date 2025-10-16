@@ -5,6 +5,7 @@ import {
   addPlace,
   deleteLikePlace,
   deletePlace,
+  getHashtags,
   getLikedPlaces,
   getPlace,
   getPlaceList,
@@ -177,6 +178,13 @@ const useUpdatePlaceHashtagsMutation = () => {
   });
 };
 
+const useHashtagsQuery = () => {
+  return useQuery({
+    queryKey: placesKeys.hashtags(),
+    queryFn: getHashtags,
+  });
+};
+
 export {
   useAddPlaceQuery,
   useDeletePlaceQuery,
@@ -187,4 +195,5 @@ export {
   useDeleteLikePlaceMutation,
   useLikedPlacesQuery,
   useUpdatePlaceHashtagsMutation,
+  useHashtagsQuery,
 };
