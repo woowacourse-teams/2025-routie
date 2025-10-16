@@ -1,9 +1,10 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 
 import EmptyMessage from '@/@common/components/EmptyMessage/EmptyMessage';
 import Flex from '@/@common/components/Flex/Flex';
 import { useModal } from '@/@common/contexts/ModalContext';
 import { getAccessToken } from '@/@common/utils/getAccessToken';
+import { useHashtagFilterContext } from '@/domains/maps/contexts/useHashtagFilterContext';
 import PlaceCard from '@/domains/places/components/PlaceCard/PlaceCard';
 import SearchBox from '@/domains/places/components/SearchBox/SearchBox';
 import { usePlaceLikes } from '@/domains/places/hooks/usePlaceLikes';
@@ -22,7 +23,17 @@ const PlaceView = () => {
     usePlaceLikes();
   const { routieIdList, handleAddRoutie } = useRoutieList();
   const { openModal } = useModal();
+  const { selectedHashtags } = useHashtagFilterContext();
   const [editingPlaceId, setEditingPlaceId] = useState<number | null>(null);
+
+  const filteredPlaceList = useMemo(() => {
+    if (!placeList) return [];
+    if (selectedHashtags.length === 0) return placeList;
+
+    return placeList.filter((place) =>
+      place.hashtags?.some((hashtag) => selectedHashtags.includes(hashtag)),
+    );
+  }, [placeList, selectedHashtags]);
 
   const ensureAuthenticated = useCallback(() => {
     const accessToken = getAccessToken();
@@ -103,6 +114,15 @@ const PlaceView = () => {
             ]}
           />
         </Flex>
+      ) : filteredPlaceList.length === 0 ? (
+        <Flex height="100%">
+          <EmptyMessage
+            messages={[
+              '선택된 해시태그와 일치하는 장소가 없습니다.',
+              '다른 해시태그를 선택해보세요!',
+            ]}
+          />
+        </Flex>
       ) : (
         <Flex
           direction="column"
@@ -110,7 +130,7 @@ const PlaceView = () => {
           css={PlaceListContainerStyle}
           height="100%"
         >
-          {placeList?.map((place) => {
+          {filteredPlaceList.map((place) => {
             const selected = routieIdList.includes(place.id);
             const liked = likedPlaceIds.includes(place.id);
             const isEditing = editingPlaceId === place.id;
