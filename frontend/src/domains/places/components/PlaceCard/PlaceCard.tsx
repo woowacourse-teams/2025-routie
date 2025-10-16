@@ -49,16 +49,22 @@ const PlaceCard = ({
             {props.roadAddressName || props.addressName}
           </Text>
           <Flex justifyContent="flex-start" gap={0.5}>
-            {props.hashtags?.map((hashtag) => (
-              <Text
-                key={hashtag}
-                variant="caption"
-                color={theme.colors.blue[400]}
-                css={{ whiteSpace: 'nowrap' }}
-              >
-                {hashtag}
+            {props.hashtags && props.hashtags.length > 0 ? (
+              props.hashtags.map((hashtag) => (
+                <Text
+                  key={hashtag}
+                  variant="caption"
+                  color={theme.colors.blue[400]}
+                  css={{ whiteSpace: 'nowrap' }}
+                >
+                  {hashtag}
+                </Text>
+              ))
+            ) : (
+              <Text variant="caption" color={theme.colors.gray[100]}>
+                해시태그 없음
               </Text>
-            ))}
+            )}
             {!isEditing && (
               <Icon
                 name="edit"
