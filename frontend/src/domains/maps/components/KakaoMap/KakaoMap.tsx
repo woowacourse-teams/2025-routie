@@ -8,17 +8,26 @@ import { useClickedPlace } from '@/domains/maps/hooks/useClickedPlace';
 import { useCustomOverlay } from '@/domains/maps/hooks/useCustomOverlay';
 import { useMapRenderer } from '@/domains/maps/hooks/useMapRenderer';
 import { useMapState } from '@/domains/maps/hooks/useMapState';
+import Hashtag from '@/domains/places/components/Hashtag/Hashtag';
+import { useHashtagsQuery } from '@/domains/places/queries/usePlaceQuery';
 
 import {
+  HashtagButtonContainerStyle,
   KakaoMapContainerStyle,
   KakaoMapErrorStyle,
   KakaoMapLoadingStyle,
   KakaoMapWrapperStyle,
 } from './KakaoMap.styles';
 
-const KakaoMap = () => {
+import type { KakaoMapProps } from './KakaoMap.types';
+
+const KakaoMap = ({ isSidebarOpen }: KakaoMapProps) => {
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const [isInitialLoad, setIsInitialLoad] = useState(true);
+  const [selectedHashtags, setSelectedHashtags] = useState<string[]>([]);
+
+  const { data: hashtagsData } = useHashtagsQuery();
+  const hashtags = hashtagsData?.hashtags || [];
 
   const { mapRef, finalMapState, finalError } = useMapState({
     containerRef: mapContainerRef,
@@ -34,6 +43,14 @@ const KakaoMap = () => {
     setIsInitialLoad,
     handleMarkerClick,
   });
+
+  const handleHashtagClick = (hashtag: string) => {
+    setSelectedHashtags((prev) =>
+      prev.includes(hashtag)
+        ? prev.filter((tag) => tag !== hashtag)
+        : [...prev, hashtag],
+    );
+  };
 
   useEffect(() => {
     if (finalMapState !== 'ready' || !mapRef.current) return;
@@ -70,6 +87,22 @@ const KakaoMap = () => {
         aria-label="카카오 지도"
         tabIndex={0}
       />
+      {hashtags.length > 0 && (
+        <Flex
+          justifyContent="flex-start"
+          gap={0.8}
+          css={HashtagButtonContainerStyle(isSidebarOpen)}
+        >
+          {hashtags.map((hashtag) => (
+            <Hashtag
+              key={hashtag}
+              tag={hashtag}
+              isSelected={selectedHashtags.includes(hashtag)}
+              onClick={() => handleHashtagClick(hashtag)}
+            />
+          ))}
+        </Flex>
+      )}
       {finalMapState === 'loading' && (
         <Flex
           css={KakaoMapLoadingStyle}

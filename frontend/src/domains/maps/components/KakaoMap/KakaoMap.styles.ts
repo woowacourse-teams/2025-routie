@@ -2,6 +2,27 @@ import { css } from '@emotion/react';
 
 import theme from '@/styles/theme';
 
+const HashtagButtonContainerStyle = (isSidebarOpen: boolean) => css`
+  scrollbar-width: none;
+
+  position: absolute;
+  z-index: 10;
+  top: 1.6rem;
+  right: 1.6rem;
+  left: ${isSidebarOpen ? 'calc(55rem + 1.6rem)' : 'calc(5.5rem + 1.6rem)'};
+
+  overflow: auto hidden;
+  flex-wrap: nowrap;
+
+  padding-bottom: 0.8rem;
+
+  transition: left 0.3s ease-in-out;
+
+  &::-webkit-scrollbar {
+    height: 0;
+  }
+`;
+
 const KakaoMapWrapperStyle = css`
   position: relative;
 
@@ -40,6 +61,7 @@ const KakaoMapErrorStyle = css`
 `;
 
 export {
+  HashtagButtonContainerStyle,
   KakaoMapWrapperStyle,
   KakaoMapContainerStyle,
   KakaoMapLoadingStyle,

@@ -46,7 +46,7 @@ const RoutieSpace = () => {
 
   return (
     <div css={RoutieSpaceContainerStyle}>
-      <KakaoMap />
+      <KakaoMap isSidebarOpen={isSidebarOpen} />
       {accessToken && <UserMenuButton />}
       <Sidebar isOpen={isSidebarOpen} handleToggle={handleSidebarToggle} />
     </div>
