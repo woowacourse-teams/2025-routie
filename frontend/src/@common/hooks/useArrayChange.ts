@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 
-import normalize from '@/@common/utils/normalize';
+import { normalize } from '@/@common/utils/normalize';
 
 const useArrayChange = (
   initialArray: string[] | undefined,
