@@ -3,6 +3,7 @@ import { useSearchParams } from 'react-router';
 
 import { useModal } from '@/@common/contexts/ModalContext';
 import { useToastContext } from '@/@common/contexts/useToastContext';
+import { useToggle } from '@/@common/hooks/useToggle';
 import { getAccessToken } from '@/@common/utils/getAccessToken';
 import UserMenuButton from '@/domains/auth/components/UserMenuButton/UserMenuButton';
 import { useUserQuery } from '@/domains/auth/queries/useAuthQuery';
@@ -18,6 +19,8 @@ const RoutieSpace = () => {
   const { error } = useUserQuery();
   const routieSpaceIdentifier = searchParams.get('routieSpaceIdentifier');
   const accessToken = getAccessToken();
+  const { isOpen: isSidebarOpen, handleToggle: handleSidebarToggle } =
+    useToggle();
 
   useLayoutEffect(() => {
     if (routieSpaceIdentifier) {
@@ -45,7 +48,7 @@ const RoutieSpace = () => {
     <div css={RoutieSpaceContainerStyle}>
       <KakaoMap />
       {accessToken && <UserMenuButton />}
-      <Sidebar />
+      <Sidebar isOpen={isSidebarOpen} handleToggle={handleSidebarToggle} />
     </div>
   );
 };
