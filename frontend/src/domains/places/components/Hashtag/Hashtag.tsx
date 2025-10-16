@@ -20,7 +20,7 @@ const Hashtag = ({ tag, isSelected, onClick }: HashtagProps) => {
     >
       <Text
         variant="caption"
-        color={isSelected ? theme.colors.white : undefined}
+        color={isSelected ? theme.colors.white : theme.colors.blue[450]}
       >
         {displayTag}
       </Text>

@@ -49,7 +49,7 @@ const PlaceCard = ({
           <Text variant="caption" color={theme.colors.gray[200]} ellipsis>
             {props.roadAddressName || props.addressName}
           </Text>
-          <Flex justifyContent="flex-start" gap={0.5}>
+          <Flex justifyContent="flex-start" gap={0.5} css={{ flexWrap: 'wrap' }}>
             {props.hashtags && props.hashtags.length > 0 ? (
               props.hashtags.map((hashtag) => (
                 <Text
