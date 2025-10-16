@@ -1,11 +1,17 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { useToastContext } from '@/@common/contexts/useToastContext';
 
-const useHashTag = () => {
+const useHashtag = (initialTags?: string[]) => {
   const [inputValue, setInputValue] = useState('');
-  const [selectedTags, setSelectedTags] = useState<string[]>([]);
+  const [selectedTags, setSelectedTags] = useState<string[]>(initialTags || []);
   const [previousTags] = useState<string[]>(['#맛집', '#카페', '#데이트코스']);
+
+  useEffect(() => {
+    if (initialTags) {
+      setSelectedTags(initialTags);
+    }
+  }, [initialTags]);
 
   const { showToast } = useToastContext();
   const handleInputChange = (value: string) => {
@@ -81,4 +87,4 @@ const useHashTag = () => {
   };
 };
 
-export default useHashTag;
+export { useHashtag };

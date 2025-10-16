@@ -3,25 +3,20 @@ import Flex from '@/@common/components/Flex/Flex';
 import Input from '@/@common/components/Input/Input';
 import Text from '@/@common/components/Text/Text';
 import { useToastContext } from '@/@common/contexts/useToastContext';
-import HashTag from '@/domains/places/components/HashTag/HashTag';
+import Hashtag from '@/domains/places/components/Hashtag/Hashtag';
 import SearchAddress from '@/domains/places/components/SearchAddress/SearchAddress';
-import useHashTag from '@/domains/places/hooks/useHashTag';
-import type { HashTagInputProps } from '@/domains/places/types/searchPlace.types';
+import { useHashtag } from '@/domains/places/hooks/useHashtag';
+import type { AddHashtagDropdownProps } from '@/domains/places/types/hashtag.types';
 import theme from '@/styles/theme';
 
 import {
+  HashtagAddButtonStyle,
   PlaceInfoStyle,
-  HashTagAddButtonStyle,
   SelectedTagsWrapperStyle,
-} from './HashTagDropdown.styles';
+} from './AddHashtagDropdown.styles';
 
-const HashTagDropdown = ({
-  searchResult,
-  addressType,
-  address,
-  onCancel,
-  onSubmit,
-}: HashTagInputProps) => {
+const AddHashtagDropdown = (props: AddHashtagDropdownProps) => {
+  const { place, addressType, address, onCancel, onSubmit, initialHashtags } = props;
   const { showToast } = useToastContext();
 
   const {
@@ -32,13 +27,13 @@ const HashTagDropdown = ({
     handleAddTag,
     handleToggleTag,
     handleEnterTag,
-  } = useHashTag();
+  } = useHashtag(initialHashtags);
 
   const handleSubmit = async () => {
     try {
       await onSubmit({
-        ...searchResult,
-        hashTags: selectedTags,
+        ...place,
+        hashtags: selectedTags,
       });
     } catch (error) {
       showToast({
@@ -57,7 +52,7 @@ const HashTagDropdown = ({
         alignItems="flex-start"
         css={PlaceInfoStyle}
       >
-        <Text variant="body">{searchResult.name}</Text>
+        <Text variant="body">{place.name}</Text>
         <SearchAddress addressType={addressType} address={address} />
       </Flex>
       <Flex direction="column" gap={2} alignItems="flex-start">
@@ -69,8 +64,8 @@ const HashTagDropdown = ({
             placeholder="해시태그를 추가하거나 만들어보세요"
             onChange={handleInputChange}
             onKeyDown={handleEnterTag}
-            maxLength={7}
-            css={HashTagAddButtonStyle}
+            maxLength={6}
+            css={HashtagAddButtonStyle}
           />
           <Button
             variant="primary"
@@ -96,7 +91,7 @@ const HashTagDropdown = ({
             {selectedTags
               .filter((tag) => !previousTags.includes(tag))
               .map((tag) => (
-                <HashTag
+                <Hashtag
                   key={tag}
                   tag={tag}
                   isSelected={true}
@@ -116,7 +111,7 @@ const HashTagDropdown = ({
               css={SelectedTagsWrapperStyle}
             >
               {previousTags.map((tag) => (
-                <HashTag
+                <Hashtag
                   key={tag}
                   tag={tag}
                   isSelected={selectedTags.includes(tag)}
@@ -141,4 +136,4 @@ const HashTagDropdown = ({
   );
 };
 
-export default HashTagDropdown;
+export default AddHashtagDropdown;

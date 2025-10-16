@@ -5,11 +5,12 @@ import { css } from '@emotion/react';
 import EmptyMessage from '@/@common/components/EmptyMessage/EmptyMessage';
 import Flex from '@/@common/components/Flex/Flex';
 import Input from '@/@common/components/Input/Input';
-import HashTagDropdown from '@/domains/places/components/HashTagDropdown/HashTagDropdown';
 import SearchList from '@/domains/places/components/SearchList/SearchList';
 import { usePlaceList } from '@/domains/places/hooks/usePlaceList';
 import { useSearchPlace } from '@/domains/places/hooks/useSearchPlace';
 import type { SearchedPlaceType } from '@/domains/places/types/place.types';
+
+import AddHashtagDropdown from '../AddHashtagDropdown/AddHashtagDropdown';
 
 import {
   ContainerStyle,
@@ -41,11 +42,11 @@ const SearchBox = () => {
     setSelectedPlace(place);
   };
 
-  const handleCancelHashTag = () => {
+  const handleCancelHashtag = () => {
     setSelectedPlace(null);
   };
 
-  const handleSubmitHashTag: (
+  const handleSubmitHashtag: (
     place: SearchedPlaceType,
   ) => Promise<void> = async (place) => {
     await handleAddPlace(place);
@@ -109,16 +110,16 @@ const SearchBox = () => {
                 padding={2}
                 css={DropdownContainerStyle}
               >
-                <HashTagDropdown
-                  searchResult={selectedPlace}
+                <AddHashtagDropdown
+                  place={selectedPlace}
                   addressType={
                     selectedPlace.roadAddressName ? '도로명' : '지번'
                   }
                   address={
                     selectedPlace.roadAddressName ?? selectedPlace.addressName
                   }
-                  onCancel={handleCancelHashTag}
-                  onSubmit={handleSubmitHashTag}
+                  onCancel={handleCancelHashtag}
+                  onSubmit={handleSubmitHashtag}
                 />
               </Flex>
             ) : searchResults === null ? (

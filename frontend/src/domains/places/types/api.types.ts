@@ -4,6 +4,7 @@ interface ApiPlaceBaseType {
   addressName: string;
   longitude: number;
   latitude: number;
+  hashtags?: string[];
 }
 
 interface SearchPlaceRequestType {
@@ -45,6 +46,11 @@ interface LikedPlacesResponseType {
   likedPlaceIds: number[];
 }
 
+interface UpdatePlaceHashtagsRequestType {
+  placeId: number;
+  hashtags: string[];
+}
+
 export type {
   SearchPlaceRequestType,
   SearchPlaceResponseType,
@@ -56,4 +62,5 @@ export type {
   LikePlaceRequestType,
   UnlikePlaceRequestType,
   LikedPlacesResponseType,
+  UpdatePlaceHashtagsRequestType,
 };

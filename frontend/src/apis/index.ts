@@ -31,6 +31,7 @@ const handleApiError = async (response: Response) => {
 export const apiClient = {
   get: createApiMethod('GET'),
   post: createApiMethod('POST'),
+  put: createApiMethod('PUT'),
   patch: createApiMethod('PATCH'),
   delete: createApiMethod('DELETE'),
 };

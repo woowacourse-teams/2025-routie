@@ -18,6 +18,7 @@ const getPlaceAdapter = (data: FetchPlaceResponseType): PlaceAdapterType => {
     addressName: data.addressName,
     latitude: data.latitude,
     longitude: data.longitude,
+    hashtags: data.hashtags,
   };
 };
 
@@ -33,6 +34,7 @@ const getPlaceListAdapter = (
       latitude: item.latitude,
       longitude: item.longitude,
       likeCount: item.likeCount,
+      hashtags: item.hashtags,
     };
   });
 };

@@ -10,12 +10,15 @@ import {
   getPlaceList,
   postLikePlace,
   searchPlace,
+  updatePlaceHashtags,
 } from '@/domains/places/apis/place';
 import type {
   AddPlaceRequestType,
   LikePlaceRequestType,
   UnlikePlaceRequestType,
+  UpdatePlaceHashtagsRequestType,
 } from '@/domains/places/types/api.types';
+import { useGoogleEventTrigger } from '@/libs/googleAnalytics/hooks/useGoogleEventTrigger';
 
 import { placesKeys } from './key';
 
@@ -70,6 +73,7 @@ const useAddPlaceQuery = () => {
 const useDeletePlaceQuery = () => {
   const { showToast } = useToastContext();
   const queryClient = useQueryClient();
+  const { triggerEvent } = useGoogleEventTrigger();
 
   return useMutation({
     mutationFn: (placeId: number) => deletePlace({ placeId }),
@@ -79,6 +83,11 @@ const useDeletePlaceQuery = () => {
         type: 'success',
       });
       queryClient.invalidateQueries({ queryKey: placesKeys.list() });
+      triggerEvent({
+        action: 'click',
+        category: 'place',
+        label: '장소 삭제하기 버튼',
+      });
     },
     onError: (error) => {
       showToast({
@@ -145,6 +154,29 @@ const useLikedPlacesQuery = (enabled: boolean) => {
   });
 };
 
+const useUpdatePlaceHashtagsMutation = () => {
+  const { showToast } = useToastContext();
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ placeId, hashtags }: UpdatePlaceHashtagsRequestType) =>
+      updatePlaceHashtags({ placeId, hashtags }),
+    onSuccess: () => {
+      showToast({
+        message: '해시태그가 수정되었습니다.',
+        type: 'success',
+      });
+      queryClient.invalidateQueries({ queryKey: placesKeys.list() });
+    },
+    onError: (error) => {
+      showToast({
+        message: error.message,
+        type: 'error',
+      });
+    },
+  });
+};
+
 export {
   useAddPlaceQuery,
   useDeletePlaceQuery,
@@ -154,4 +186,5 @@ export {
   useLikePlaceMutation,
   useDeleteLikePlaceMutation,
   useLikedPlacesQuery,
+  useUpdatePlaceHashtagsMutation,
 };

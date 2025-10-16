@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { useCallback, useState } from 'react';
 
 import EmptyMessage from '@/@common/components/EmptyMessage/EmptyMessage';
 import Flex from '@/@common/components/Flex/Flex';
@@ -10,32 +10,32 @@ import { usePlaceLikes } from '@/domains/places/hooks/usePlaceLikes';
 import { usePlaceList } from '@/domains/places/hooks/usePlaceList';
 import { useRoutieList } from '@/domains/routie/hooks/useRoutieList';
 import {
-  PlaceListContainerStyle,
   PlaceViewContainerStyle,
+  PlaceListContainerStyle,
+  PlaceCardContainerStyle,
 } from '@/pages/RoutieSpace/components/PlaceView/PlaceView.styles';
 
 const PlaceView = () => {
-  const { placeList, handleDeletePlace } = usePlaceList();
+  const { placeList, handleDeletePlace, handleUpdatePlaceHashtags } =
+    usePlaceList();
   const { handleLikePlace, handleDeleteLikePlace, likedPlaceIds } =
     usePlaceLikes();
   const { routieIdList, handleAddRoutie } = useRoutieList();
   const { openModal } = useModal();
+  const [editingPlaceId, setEditingPlaceId] = useState<number | null>(null);
 
   const ensureAuthenticated = useCallback(() => {
     const accessToken = getAccessToken();
-
     if (!accessToken) {
       openModal('login');
       return false;
     }
-
     return true;
   }, [openModal]);
 
   const handlePlaceSelect = useCallback(
     async (placeId: number, selected: boolean) => {
       if (!ensureAuthenticated()) return;
-
       if (selected) return;
       await handleAddRoutie(placeId);
     },
@@ -57,7 +57,6 @@ const PlaceView = () => {
   const handleLikeButtonClick = useCallback(
     (placeId: number) => {
       if (!ensureAuthenticated()) return;
-
       handleLikePlace(placeId);
     },
     [ensureAuthenticated, handleLikePlace],
@@ -66,20 +65,36 @@ const PlaceView = () => {
   const handleUnlikeButtonClick = useCallback(
     (placeId: number) => {
       if (!ensureAuthenticated()) return;
-
       handleDeleteLikePlace(placeId);
     },
     [ensureAuthenticated, handleDeleteLikePlace],
   );
 
-  const handlePlaceEdit = useCallback((placeId: number) => {
-    console.log(placeId);
+  const handlePlaceEdit = useCallback(
+    (placeId: number) => {
+      if (!ensureAuthenticated()) return;
+      setEditingPlaceId(placeId);
+    },
+    [ensureAuthenticated],
+  );
+
+  const handleCloseEditModal = useCallback(() => {
+    setEditingPlaceId(null);
   }, []);
 
+  const handleUpdateHashtags = useCallback(
+    async (placeId: number, hashtags: string[]) => {
+      await handleUpdatePlaceHashtags(placeId, hashtags);
+      setEditingPlaceId(null);
+    },
+    [handleUpdatePlaceHashtags],
+  );
+
   return (
-    <Flex css={PlaceViewContainerStyle} direction="column" height="100%">
+    <Flex direction="column" height="100%" css={PlaceViewContainerStyle}>
       <SearchBox />
-      {placeList?.length === 0 && (
+
+      {placeList?.length === 0 ? (
         <Flex height="100%">
           <EmptyMessage
             messages={[
@@ -88,31 +103,41 @@ const PlaceView = () => {
             ]}
           />
         </Flex>
-      )}
+      ) : (
+        <Flex
+          direction="column"
+          justifyContent="flex-start"
+          css={PlaceListContainerStyle}
+          height="100%"
+        >
+          {placeList?.map((place) => {
+            const selected = routieIdList.includes(place.id);
+            const liked = likedPlaceIds.includes(place.id);
+            const isEditing = editingPlaceId === place.id;
 
-      <Flex
-        direction="column"
-        justifyContent="flex-start"
-        css={PlaceListContainerStyle}
-        height="100%"
-      >
-        {placeList?.map((place) => {
-          const selected = routieIdList.includes(place.id);
-          const liked = likedPlaceIds.includes(place.id);
-          return (
-            <PlaceCard
-              {...place}
-              key={place.id}
-              selected={selected}
-              liked={liked}
-              onSelect={handlePlaceSelect}
-              onDelete={handlePlaceDelete}
-              onLike={liked ? handleUnlikeButtonClick : handleLikeButtonClick}
-              onEdit={handlePlaceEdit}
-            />
-          );
-        })}
-      </Flex>
+            return (
+              <div key={place.id} css={PlaceCardContainerStyle}>
+                <PlaceCard
+                  {...place}
+                  selected={selected}
+                  liked={liked}
+                  isEditing={isEditing}
+                  onSelect={handlePlaceSelect}
+                  onDelete={handlePlaceDelete}
+                  onLike={
+                    liked ? handleUnlikeButtonClick : handleLikeButtonClick
+                  }
+                  onEdit={handlePlaceEdit}
+                  onCancelEdit={handleCloseEditModal}
+                  onUpdateHashtags={(hashtags) =>
+                    handleUpdateHashtags(place.id, hashtags)
+                  }
+                />
+              </div>
+            );
+          })}
+        </Flex>
+      )}
     </Flex>
   );
 };
