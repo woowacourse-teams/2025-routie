@@ -8,6 +8,7 @@ import { getAccessToken } from '@/@common/utils/getAccessToken';
 import UserMenuButton from '@/domains/auth/components/UserMenuButton/UserMenuButton';
 import { useUserQuery } from '@/domains/auth/queries/useAuthQuery';
 import KakaoMap from '@/domains/maps/components/KakaoMap/KakaoMap';
+import HashtagFilterProvider from '@/domains/maps/contexts/HashtagFilterProvider';
 import Sidebar from '@/pages/RoutieSpace/components/Sidebar/Sidebar';
 
 import { RoutieSpaceContainerStyle } from './RoutieSpace.styles';
@@ -45,11 +46,13 @@ const RoutieSpace = () => {
   }, [error, showToast]);
 
   return (
-    <div css={RoutieSpaceContainerStyle}>
-      <KakaoMap isSidebarOpen={isSidebarOpen} />
-      {accessToken && <UserMenuButton />}
-      <Sidebar isOpen={isSidebarOpen} handleToggle={handleSidebarToggle} />
-    </div>
+    <HashtagFilterProvider>
+      <div css={RoutieSpaceContainerStyle}>
+        <KakaoMap isSidebarOpen={isSidebarOpen} />
+        {accessToken && <UserMenuButton />}
+        <Sidebar isOpen={isSidebarOpen} handleToggle={handleSidebarToggle} />
+      </div>
+    </HashtagFilterProvider>
   );
 };
 
