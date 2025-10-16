@@ -60,6 +60,7 @@ const useAddPlaceQuery = () => {
         type: 'success',
       });
       queryClient.invalidateQueries({ queryKey: placesKeys.list() });
+      queryClient.invalidateQueries({ queryKey: placesKeys.hashtags() });
       queryClient.setQueryData(['addedPlaceId'], data.id);
     },
     onError: (error) => {
@@ -168,6 +169,7 @@ const useUpdatePlaceHashtagsMutation = () => {
         type: 'success',
       });
       queryClient.invalidateQueries({ queryKey: placesKeys.list() });
+      queryClient.invalidateQueries({ queryKey: placesKeys.hashtags() });
     },
     onError: (error) => {
       showToast({
