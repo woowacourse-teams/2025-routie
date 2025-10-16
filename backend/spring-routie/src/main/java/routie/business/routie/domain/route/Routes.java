@@ -10,8 +10,7 @@ import routie.global.exception.domain.BusinessException;
 import routie.global.exception.domain.ErrorCode;
 
 public class Routes {
-    private static final Comparator<RoutiePlace> ROUTE_COMPARATOR =
-            Comparator.comparing(RoutiePlace::getSequence);
+    private static final Comparator<RoutiePlace> ROUTE_COMPARATOR = Comparator.comparing(RoutiePlace::getSequence);
 
     private final TreeMap<RoutiePlace, Route> routes;
 

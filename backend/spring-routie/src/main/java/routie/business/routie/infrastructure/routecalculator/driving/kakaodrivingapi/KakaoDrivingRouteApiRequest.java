@@ -12,7 +12,6 @@ public record KakaoDrivingRouteApiRequest(
         @JsonProperty("waypoints") List<CoordinateRequest> waypoints
 ) {
 
-
     public static KakaoDrivingRouteApiRequest from(final List<RoutiePlace> routiePlaces) {
         return new KakaoDrivingRouteApiRequest(
                 CoordinateRequest.from(routiePlaces.getFirst()),

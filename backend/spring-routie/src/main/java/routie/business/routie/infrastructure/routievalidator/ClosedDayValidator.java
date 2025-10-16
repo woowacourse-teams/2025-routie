@@ -36,7 +36,6 @@ public class ClosedDayValidator implements RoutieValidator {
         );
     }
 
-
     private boolean isTimePeriodNotClosedDays(final TimePeriod timePeriod) {
         final List<DayOfWeek> closedDayOfWeeks = List.of(); // 검증 필드 제거에 따른 구현
 

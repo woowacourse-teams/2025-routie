@@ -175,8 +175,7 @@ public class Place {
                 .filter(hashtag -> !currentHashtagNames.contains(hashtag.getName()))
                 .forEach(hashtag -> placeHashtags.add(new PlaceHashtag(this, hashtag)));
 
-        placeHashtags.removeIf(placeHashtag ->
-                !newHashtagNames.contains(placeHashtag.getHashtag().getName())
+        placeHashtags.removeIf(placeHashtag -> !newHashtagNames.contains(placeHashtag.getHashtag().getName())
         );
     }
 

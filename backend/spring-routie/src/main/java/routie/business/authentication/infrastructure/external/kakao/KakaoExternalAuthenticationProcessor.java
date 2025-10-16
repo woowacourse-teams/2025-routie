@@ -41,8 +41,8 @@ public class KakaoExternalAuthenticationProcessor implements ExternalAuthenticat
 
     @Override
     public String getAuthenticationIdentifier(final String authenticationCode) {
-        final KakaoExternalAuthenticationTokenApiResponse kakaoExternalAuthenticationTokenApiResponse = kakaoExternalAuthenticationApiClient.getToken(
-                authenticationCode);
+        final KakaoExternalAuthenticationTokenApiResponse kakaoExternalAuthenticationTokenApiResponse = kakaoExternalAuthenticationApiClient
+                .getToken(authenticationCode);
         return kakaoUserApiClient.getTokenInformation(kakaoExternalAuthenticationTokenApiResponse.accessToken())
                 .kakaoId().toString();
     }

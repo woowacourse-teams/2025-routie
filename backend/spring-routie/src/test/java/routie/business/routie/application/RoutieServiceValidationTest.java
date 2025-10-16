@@ -172,8 +172,10 @@ class RoutieServiceValidationTest {
         assertValidationResultIsFalse(response, ValidationStrategy.IS_NOT_DURING_BREAKTIME);
     }
 
-    private void assertValidationResultIsFalse(final RoutieValidationResponse response,
-                                               final ValidationStrategy strategy) {
+    private void assertValidationResultIsFalse(
+            final RoutieValidationResponse response,
+            final ValidationStrategy strategy
+    ) {
         final boolean isValid = response.validationResultResponses().stream()
                 .filter(r -> Objects.equals(r.validationCode(), strategy.getValidationCode()))
                 .map(ValidationResultResponse::isValid)

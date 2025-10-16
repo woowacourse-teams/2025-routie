@@ -51,8 +51,9 @@ public class TransitRouteCalculator implements RouteCalculator {
                 continue;
             }
 
-            final GoogleTransitRouteApiResponse googleTransitRouteApiResponse =
-                    googleTransitRouteApiClient.getRoute(GoogleTransitRouteApiRequest.from(startDateTime, from, to));
+            final GoogleTransitRouteApiResponse googleTransitRouteApiResponse = googleTransitRouteApiClient.getRoute(
+                    GoogleTransitRouteApiRequest.from(startDateTime, from, to)
+            );
 
             final RouteResponse routeResponse = googleTransitRouteApiResponse.routeResponses()
                     .getFirst();

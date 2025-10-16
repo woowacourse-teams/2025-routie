@@ -246,9 +246,8 @@ class RoutieControllerTest {
         final List<Map<String, Object>> validationResults = response.jsonPath().getList("validationResultResponses");
 
         final boolean closedDayIsInvalid = validationResults.stream()
-                .anyMatch(result ->
-                        "IS_NOT_CLOSED_DAY".equals(result.get("validationCode")) &&
-                                Boolean.FALSE.equals(result.get("isValid"))
+                .anyMatch(result -> "IS_NOT_CLOSED_DAY".equals(result.get("validationCode")) &&
+                        Boolean.FALSE.equals(result.get("isValid"))
                 );
 
         assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
@@ -280,9 +279,8 @@ class RoutieControllerTest {
         final List<Map<String, Object>> validationResults = response.jsonPath().getList("validationResultResponses");
 
         final boolean breakTimeIsInvalid = validationResults.stream()
-                .anyMatch(result ->
-                        "IS_NOT_DURING_BREAKTIME".equals(result.get("validationCode")) &&
-                                Boolean.FALSE.equals(result.get("isValid"))
+                .anyMatch(result -> "IS_NOT_DURING_BREAKTIME".equals(result.get("validationCode")) &&
+                        Boolean.FALSE.equals(result.get("isValid"))
                 );
 
         assertThat(breakTimeIsInvalid).isTrue();

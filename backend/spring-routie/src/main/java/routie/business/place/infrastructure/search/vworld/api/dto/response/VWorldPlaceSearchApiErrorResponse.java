@@ -18,8 +18,10 @@ public record VWorldPlaceSearchApiErrorResponse(
     static class Deserializer extends JsonDeserializer<VWorldPlaceSearchApiErrorResponse> {
 
         @Override
-        public VWorldPlaceSearchApiErrorResponse deserialize(final JsonParser p, final DeserializationContext ctxt)
-                throws IOException {
+        public VWorldPlaceSearchApiErrorResponse deserialize(
+                final JsonParser p,
+                final DeserializationContext ctxt
+        ) throws IOException {
             final JsonNode errorNode = parseErrorNode(p);
             return new VWorldPlaceSearchApiErrorResponse(
                     errorNode.path("level").isMissingNode() ? null : errorNode.get("level").asInt(),

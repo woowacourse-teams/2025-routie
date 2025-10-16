@@ -26,15 +26,14 @@ public class TimePeriodCalculator {
         if (routiePlaces.size() == 1) {
             final RoutiePlace firstRoutiePlace = routiePlaces.getFirst();
 
-            return TimePeriods.empty().
-                    withAdded(
+            return TimePeriods.empty().withAdded(
+                    firstRoutiePlace,
+                    new TimePeriod(
                             firstRoutiePlace,
-                            new TimePeriod(
-                                    firstRoutiePlace,
-                                    startDateTime,
-                                    startDateTime.plusMinutes(0) // 검증 필드 제거에 따른 구현
-                            )
-                    );
+                            startDateTime,
+                            startDateTime.plusMinutes(0) // 검증 필드 제거에 따른 구현
+                    )
+            );
         }
 
         final List<RoutiePlace> orderedRoutiePlaces = routes.orderedRoutiePlaces();

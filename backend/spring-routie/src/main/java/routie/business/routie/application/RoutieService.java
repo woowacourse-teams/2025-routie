@@ -135,8 +135,10 @@ public class RoutieService {
                 .collect(Collectors.toMap(Place::getId, Function.identity()));
     }
 
-    private List<RoutiePlace> createNewRoutiePlaces(final RoutieUpdateRequest request,
-                                                    final Map<Long, Place> placeMap) {
+    private List<RoutiePlace> createNewRoutiePlaces(
+            final RoutieUpdateRequest request,
+            final Map<Long, Place> placeMap
+    ) {
         return request.routiePlaces().stream()
                 .map(r -> new RoutiePlace(
                         r.sequence(),

@@ -9,7 +9,6 @@ import org.springframework.web.client.RestClient;
 import routie.business.authentication.infrastructure.external.kakao.api.user.KakaoUserApiClient;
 import routie.business.authentication.infrastructure.external.kakao.api.user.config.error.KakaoUserApiErrorHandler;
 
-
 @Configuration
 @RequiredArgsConstructor
 public class KakaoUserApiClientConfig {

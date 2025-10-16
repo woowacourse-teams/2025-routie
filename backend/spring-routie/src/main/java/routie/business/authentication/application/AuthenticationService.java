@@ -47,17 +47,17 @@ public class AuthenticationService {
         final ExternalAuthenticationProvider externalAuthenticationProvider = ExternalAuthenticationProvider.fromName(
                 request.providerName()
         );
-        final ExternalAuthenticationProcessor externalAuthenticationProcessor =
-                externalAuthenticationProcessorRegistry.getExternalAuthenticationProcessor(
+        final ExternalAuthenticationProcessor externalAuthenticationProcessor = externalAuthenticationProcessorRegistry
+                .getExternalAuthenticationProcessor(
                         externalAuthenticationProvider
                 );
         final String externalAuthenticationIdentifier = externalAuthenticationProcessor.getAuthenticationIdentifier(
                 request.code()
         );
         final User user = userRepository.findByExternalAuthenticationIdentifierAndExternalAuthenticationProvider(
-                        externalAuthenticationIdentifier,
-                        externalAuthenticationProvider
-                )
+                externalAuthenticationIdentifier,
+                externalAuthenticationProvider
+        )
                 .orElseGet(() -> createUser(externalAuthenticationIdentifier, externalAuthenticationProvider));
 
         return new ExternalAuthenticationResponse(jwtProcessor.createJwt(user));
@@ -95,8 +95,8 @@ public class AuthenticationService {
         final ExternalAuthenticationProvider externalAuthenticationProvider = ExternalAuthenticationProvider.fromName(
                 providerName
         );
-        final ExternalAuthenticationProcessor externalAuthenticationProcessor =
-                externalAuthenticationProcessorRegistry.getExternalAuthenticationProcessor(
+        final ExternalAuthenticationProcessor externalAuthenticationProcessor = externalAuthenticationProcessorRegistry
+                .getExternalAuthenticationProcessor(
                         externalAuthenticationProvider
                 );
         final String uri = externalAuthenticationProcessor.getAuthorizationUri();

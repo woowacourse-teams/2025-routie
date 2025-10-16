@@ -10,8 +10,8 @@ import routie.global.exception.domain.ErrorCode;
 
 public class TimePeriods {
 
-    private static final Comparator<RoutiePlace> ROUTIE_PLACE_COMPARATOR =
-            Comparator.comparing(RoutiePlace::getSequence);
+    private static final Comparator<RoutiePlace> ROUTIE_PLACE_COMPARATOR = Comparator.comparing(
+            RoutiePlace::getSequence);
 
     private final TreeMap<RoutiePlace, TimePeriod> timePeriods;
 

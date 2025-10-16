@@ -136,8 +136,7 @@ class RoutieServiceTest {
             assertThat(successCount.get()).isEqualTo(1);
         }
 
-        final Long finalCount = transactionTemplate.execute(status ->
-                (long) routiePlaceRepository.findAll().size());
+        final Long finalCount = transactionTemplate.execute(status -> (long) routiePlaceRepository.findAll().size());
         assertThat(finalCount).isEqualTo(1);
     }
 
