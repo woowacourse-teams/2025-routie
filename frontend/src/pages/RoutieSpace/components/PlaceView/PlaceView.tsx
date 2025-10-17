@@ -9,6 +9,7 @@ import PlaceCard from '@/domains/places/components/PlaceCard/PlaceCard';
 import SearchBox from '@/domains/places/components/SearchBox/SearchBox';
 import { usePlaceLikes } from '@/domains/places/hooks/usePlaceLikes';
 import { usePlaceList } from '@/domains/places/hooks/usePlaceList';
+import { filterPlacesByHashtags } from '@/domains/places/utils/filterPlaces';
 import { useRoutieList } from '@/domains/routie/hooks/useRoutieList';
 import {
   PlaceViewContainerStyle,
@@ -28,11 +29,11 @@ const PlaceView = () => {
 
   const filteredPlaceList = useMemo(() => {
     if (!placeList) return [];
-    if (selectedHashtags.length === 0) return placeList;
 
-    return placeList.filter((place) =>
-      place.hashtags?.some((hashtag) => selectedHashtags.includes(hashtag)),
-    );
+    return filterPlacesByHashtags({
+      places: placeList,
+      selectedHashtags,
+    });
   }, [placeList, selectedHashtags]);
 
   const ensureAuthenticated = useCallback(() => {
