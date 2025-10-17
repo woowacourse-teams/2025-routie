@@ -51,11 +51,6 @@ interface PlaceOverlayCardProps {
   onClose: () => void;
 }
 
-interface HashtagFilterContextType {
-  selectedHashtags: string[];
-  updateHashtagSelection: (hashtag: string) => void;
-}
-
 export type {
   UseMapNavigationProps,
   UseMapRendererProps,
@@ -66,5 +61,4 @@ export type {
   UseClickedPlaceReturn,
   UseMarkerRendererProps,
   PlaceOverlayCardProps,
-  HashtagFilterContextType,
 };

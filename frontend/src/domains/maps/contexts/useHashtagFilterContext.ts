@@ -1,6 +1,6 @@
 import { createContext, useContext } from 'react';
 
-import type { HashtagFilterContextType } from '@/domains/maps/types/map.types';
+import type { HashtagFilterContextType } from '@/domains/places/types/hashtag.types';
 
 const HashtagFilterContext = createContext<
   HashtagFilterContextType | undefined

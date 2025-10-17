@@ -19,4 +19,14 @@ interface EditHashtagDropdownProps {
   onUpdate: (hashtags: string[]) => Promise<void>;
 }
 
-export type { HashtagProps, AddHashtagDropdownProps, EditHashtagDropdownProps };
+interface HashtagFilterContextType {
+  selectedHashtags: string[];
+  updateHashtagSelection: (hashtag: string) => void;
+}
+
+export type {
+  HashtagProps,
+  AddHashtagDropdownProps,
+  EditHashtagDropdownProps,
+  HashtagFilterContextType,
+};
