@@ -1,12 +1,13 @@
 import { css } from '@emotion/react';
 
+import { SIDEBAR_WIDTH_CLOSED, SIDEBAR_WIDTH_OPEN } from '@/pages/RoutieSpace/components/Sidebar/width';
 import theme from '@/styles/theme';
 
 const ButtonContainerStyle = (isSidebarOpen: boolean) => css`
   position: absolute;
   z-index: 10;
   top: 1.6rem;
-  left: ${isSidebarOpen ? 'calc(55rem + 1.6rem)' : 'calc(5.5rem + 1.6rem)'};
+  left: ${isSidebarOpen ? `calc(${SIDEBAR_WIDTH_OPEN} + 1.6rem)` : `calc(${SIDEBAR_WIDTH_CLOSED} + 1.6rem)`};
 
   transition: left 0.3s ease-in-out;
 `;
