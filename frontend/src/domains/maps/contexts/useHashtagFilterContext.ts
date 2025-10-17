@@ -2,11 +2,11 @@ import { createContext, useContext } from 'react';
 
 import type { HashtagFilterContextType } from '@/domains/maps/types/map.types';
 
-export const HashtagFilterContext = createContext<
+const HashtagFilterContext = createContext<
   HashtagFilterContextType | undefined
 >(undefined);
 
-export const useHashtagFilterContext = () => {
+const useHashtagFilterContext = () => {
   const context = useContext(HashtagFilterContext);
   if (!context) {
     throw new Error(
@@ -15,3 +15,5 @@ export const useHashtagFilterContext = () => {
   }
   return context;
 };
+
+export { HashtagFilterContext, useHashtagFilterContext };

@@ -2,4 +2,4 @@ interface HashtagFilterProps {
   isSidebarOpen: boolean;
 }
 
-export { HashtagFilterProps };
+export type { HashtagFilterProps };
