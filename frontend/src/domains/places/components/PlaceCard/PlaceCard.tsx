@@ -63,7 +63,7 @@ const PlaceCard = ({
               ))
             ) : (
               <Text variant="caption" color={theme.colors.gray[100]}>
-                해시태그 없음
+                #
               </Text>
             )}
             {!isEditing && (
