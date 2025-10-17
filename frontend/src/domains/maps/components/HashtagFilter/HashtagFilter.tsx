@@ -1,7 +1,8 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import Button from '@/@common/components/Button/Button';
 import Flex from '@/@common/components/Flex/Flex';
+import { useToastContext } from '@/@common/contexts/useToastContext';
 import { useHashtagFilterContext } from '@/domains/maps/contexts/useHashtagFilterContext';
 import Hashtag from '@/domains/places/components/Hashtag/Hashtag';
 import { useHashtagsQuery } from '@/domains/places/queries/usePlaceQuery';
@@ -20,9 +21,19 @@ const HashtagFilter = ({ isSidebarOpen }: HashtagFilterProps) => {
   const visibleHashtagsRef = useRef<HTMLDivElement>(null);
   const { selectedHashtags, toggleHashtag } = useHashtagFilterContext();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const { showToast } = useToastContext();
 
-  const { data: hashtagsData } = useHashtagsQuery();
+  const { data: hashtagsData, isError, error } = useHashtagsQuery();
   const hashtags = hashtagsData?.hashtags || [];
+
+  useEffect(() => {
+    if (isError) {
+      showToast({
+        message: error?.message || '해시태그를 불러오는데 실패했습니다.',
+        type: 'error',
+      });
+    }
+  }, [isError, error, showToast]);
 
   const MAX_VISIBLE_HASHTAGS = 7;
   const visibleHashtags = hashtags.slice(0, MAX_VISIBLE_HASHTAGS);

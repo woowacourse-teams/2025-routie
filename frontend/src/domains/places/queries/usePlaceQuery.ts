@@ -181,18 +181,9 @@ const useUpdatePlaceHashtagsMutation = () => {
 };
 
 const useHashtagsQuery = () => {
-  const { showToast } = useToastContext();
-
   return useQuery({
     queryKey: placesKeys.hashtags(),
     queryFn: getHashtags,
-    throwOnError: (error) => {
-      showToast({
-        message: error.message || '해시태그를 불러오는데 실패했습니다.',
-        type: 'error',
-      });
-      return false;
-    },
   });
 };
 

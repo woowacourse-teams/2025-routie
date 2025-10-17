@@ -9,8 +9,9 @@ const useHashtag = (initialTags?: string[]) => {
 
   const [inputValue, setInputValue] = useState('');
   const [selectedTags, setSelectedTags] = useState<string[]>(initialTags || []);
-  const { data: hashtagsData } = useHashtagsQuery();
+  const { data: hashtagsData, isError, error } = useHashtagsQuery();
   const previousTags = hashtagsData?.hashtags || [];
+  const { showToast } = useToastContext();
 
   useEffect(() => {
     if (initialTags) {
@@ -18,7 +19,14 @@ const useHashtag = (initialTags?: string[]) => {
     }
   }, [initialTags]);
 
-  const { showToast } = useToastContext();
+  useEffect(() => {
+    if (isError) {
+      showToast({
+        message: error?.message || '해시태그를 불러오는데 실패했습니다.',
+        type: 'error',
+      });
+    }
+  }, [isError, error, showToast]);
 
   const handleInputChange = (value: string) => {
     const hashtagWithoutHash = value.startsWith('#') ? value.slice(1) : value;
