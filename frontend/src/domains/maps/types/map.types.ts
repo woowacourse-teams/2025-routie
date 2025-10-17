@@ -53,7 +53,7 @@ interface PlaceOverlayCardProps {
 
 interface HashtagFilterContextType {
   selectedHashtags: string[];
-  toggleHashtag: (hashtag: string) => void;
+  updateHashtagSelection: (hashtag: string) => void;
 }
 
 export type {

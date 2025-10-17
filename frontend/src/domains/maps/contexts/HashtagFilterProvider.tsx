@@ -5,7 +5,7 @@ import { HashtagFilterContext } from './useHashtagFilterContext';
 const HashtagFilterProvider = ({ children }: { children: React.ReactNode }) => {
   const [selectedHashtags, setSelectedHashtags] = useState<string[]>([]);
 
-  const toggleHashtag = (hashtag: string) => {
+  const updateHashtagSelection = (hashtag: string) => {
     setSelectedHashtags((prev) =>
       prev.includes(hashtag)
         ? prev.filter((tag) => tag !== hashtag)
@@ -14,7 +14,7 @@ const HashtagFilterProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   return (
-    <HashtagFilterContext.Provider value={{ selectedHashtags, toggleHashtag }}>
+    <HashtagFilterContext.Provider value={{ selectedHashtags, updateHashtagSelection }}>
       {children}
     </HashtagFilterContext.Provider>
   );

@@ -19,7 +19,7 @@ import type { HashtagFilterProps } from './HashtagFilter.types';
 
 const HashtagFilter = ({ isSidebarOpen }: HashtagFilterProps) => {
   const visibleHashtagsRef = useRef<HTMLDivElement>(null);
-  const { selectedHashtags, toggleHashtag } = useHashtagFilterContext();
+  const { selectedHashtags, updateHashtagSelection } = useHashtagFilterContext();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const { showToast } = useToastContext();
 
@@ -40,7 +40,7 @@ const HashtagFilter = ({ isSidebarOpen }: HashtagFilterProps) => {
   const hiddenHashtags = hashtags.slice(MAX_VISIBLE_HASHTAGS);
 
   const handleHashtagClick = (hashtag: string) => {
-    toggleHashtag(hashtag);
+    updateHashtagSelection(hashtag);
   };
 
   const handleDropdownToggle = () => {
