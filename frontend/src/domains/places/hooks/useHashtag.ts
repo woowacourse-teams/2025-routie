@@ -4,6 +4,9 @@ import { useToastContext } from '@/@common/contexts/useToastContext';
 import { useHashtagsQuery } from '@/domains/places/queries/usePlaceQuery';
 
 const useHashtag = (initialTags?: string[]) => {
+  const MAX_TAG_LENGTH = 7;
+  const MAX_TAGS = 5;
+
   const [inputValue, setInputValue] = useState('');
   const [selectedTags, setSelectedTags] = useState<string[]>(initialTags || []);
   const { data: hashtagsData } = useHashtagsQuery();
@@ -16,7 +19,6 @@ const useHashtag = (initialTags?: string[]) => {
   }, [initialTags]);
 
   const { showToast } = useToastContext();
-  const MAX_TAG_LENGTH = 7;
 
   const handleInputChange = (value: string) => {
     const hashtagWithoutHash = value.startsWith('#') ? value.slice(1) : value;
@@ -40,8 +42,6 @@ const useHashtag = (initialTags?: string[]) => {
       setSelectedTags((prev) => [...prev, tag]);
     }
   };
-
-  const MAX_TAGS = 5;
 
   const handleAddTag = (tag: string) => {
     const trimmedTag = tag.trim();
