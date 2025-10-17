@@ -1,17 +1,10 @@
-import { useState } from 'react';
+import { useHashtagSelection } from '@/domains/places/hooks/useHashtagSelection';
 
 import { HashtagFilterContext } from './useHashtagFilterContext';
 
 const HashtagFilterProvider = ({ children }: { children: React.ReactNode }) => {
-  const [selectedHashtags, setSelectedHashtags] = useState<string[]>([]);
-
-  const updateHashtagSelection = (hashtag: string) => {
-    setSelectedHashtags((prev) =>
-      prev.includes(hashtag)
-        ? prev.filter((tag) => tag !== hashtag)
-        : [...prev, hashtag],
-    );
-  };
+  const { selectedTags: selectedHashtags, handleToggleTag: updateHashtagSelection } =
+    useHashtagSelection();
 
   return (
     <HashtagFilterContext.Provider value={{ selectedHashtags, updateHashtagSelection }}>

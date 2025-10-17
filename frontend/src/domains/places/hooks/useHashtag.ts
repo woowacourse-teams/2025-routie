@@ -3,21 +3,18 @@ import { useEffect, useState } from 'react';
 import { useToastContext } from '@/@common/contexts/useToastContext';
 import { useHashtagsQuery } from '@/domains/places/queries/usePlaceQuery';
 
+import { useHashtagSelection } from './useHashtagSelection';
+
 const useHashtag = (initialTags?: string[]) => {
   const MAX_TAG_LENGTH = 7;
   const MAX_TAGS = 5;
 
   const [inputValue, setInputValue] = useState('');
-  const [selectedTags, setSelectedTags] = useState<string[]>(initialTags || []);
+  const { selectedTags, handleToggleTag, resetSelectedTags, addTag } =
+    useHashtagSelection(initialTags);
   const { data: hashtagsData, isError, error } = useHashtagsQuery();
   const previousTags = hashtagsData?.hashtags || [];
   const { showToast } = useToastContext();
-
-  useEffect(() => {
-    if (initialTags) {
-      setSelectedTags(initialTags);
-    }
-  }, [initialTags]);
 
   useEffect(() => {
     if (isError) {
@@ -36,19 +33,15 @@ const useHashtag = (initialTags?: string[]) => {
     setInputValue(value);
   };
 
-  const handleToggleTag = (tag: string) => {
-    if (selectedTags.includes(tag)) {
-      setSelectedTags((prev) => prev.filter((t) => t !== tag));
-    } else {
-      if (selectedTags.length >= MAX_TAGS) {
-        showToast({
-          message: `해시태그는 최대 ${MAX_TAGS}개까지 추가할 수 있습니다.`,
-          type: 'info',
-        });
-        return;
-      }
-      setSelectedTags((prev) => [...prev, tag]);
+  const handleToggleTagWithLimit = (tag: string) => {
+    if (!selectedTags.includes(tag) && selectedTags.length >= MAX_TAGS) {
+      showToast({
+        message: `해시태그는 최대 ${MAX_TAGS}개까지 추가할 수 있습니다.`,
+        type: 'info',
+      });
+      return;
     }
+    handleToggleTag(tag);
   };
 
   const handleAddTag = (tag: string) => {
@@ -75,7 +68,7 @@ const useHashtag = (initialTags?: string[]) => {
       return;
     }
 
-    setSelectedTags((prev) => [formattedTag, ...prev]);
+    addTag(formattedTag);
     setInputValue('');
   };
 
@@ -88,7 +81,7 @@ const useHashtag = (initialTags?: string[]) => {
 
   const handleReset = () => {
     setInputValue('');
-    setSelectedTags([]);
+    resetSelectedTags();
   };
 
   return {
@@ -97,7 +90,7 @@ const useHashtag = (initialTags?: string[]) => {
     previousTags,
     handleInputChange,
     handleAddTag,
-    handleToggleTag,
+    handleToggleTag: handleToggleTagWithLimit,
     handleEnterTag,
     handleReset,
   };
