@@ -50,7 +50,7 @@ const PlaceCard = ({
             {props.roadAddressName || props.addressName}
           </Text>
           <Flex justifyContent="flex-start" gap={0.5} css={{ flexWrap: 'wrap' }}>
-            {props.hashtags && props.hashtags.length > 0 ? (
+            {props.hashtags?.length ? (
               props.hashtags.map((hashtag) => (
                 <Text
                   key={hashtag}
