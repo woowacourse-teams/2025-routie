@@ -21,7 +21,7 @@ const RoutieSpace = () => {
   const routieSpaceIdentifier = searchParams.get('routieSpaceIdentifier');
   const accessToken = getAccessToken();
   const { isOpen: isSidebarOpen, handleToggle: handleSidebarToggle } =
-    useToggle();
+    useToggle(false, 'isSidebarOpen');
 
   useLayoutEffect(() => {
     if (routieSpaceIdentifier) {
