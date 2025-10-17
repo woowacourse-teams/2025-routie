@@ -1,8 +1,9 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 
 import Button from '@/@common/components/Button/Button';
 import Flex from '@/@common/components/Flex/Flex';
 import { useToastContext } from '@/@common/contexts/useToastContext';
+import { useToggle } from '@/@common/hooks/useToggle';
 import { useHashtagFilterContext } from '@/domains/maps/contexts/useHashtagFilterContext';
 import Hashtag from '@/domains/places/components/Hashtag/Hashtag';
 import { useHashtagsQuery } from '@/domains/places/queries/usePlaceQuery';
@@ -20,7 +21,7 @@ import type { HashtagFilterProps } from './HashtagFilter.types';
 const HashtagFilter = ({ isSidebarOpen }: HashtagFilterProps) => {
   const visibleHashtagsRef = useRef<HTMLDivElement>(null);
   const { selectedHashtags, updateHashtagSelection } = useHashtagFilterContext();
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const { isOpen: isDropdownOpen, handleToggle: handleDropdownToggle } = useToggle(false);
   const { showToast } = useToastContext();
 
   const { data: hashtagsData, isError, error } = useHashtagsQuery();
@@ -41,10 +42,6 @@ const HashtagFilter = ({ isSidebarOpen }: HashtagFilterProps) => {
 
   const handleHashtagClick = (hashtag: string) => {
     updateHashtagSelection(hashtag);
-  };
-
-  const handleDropdownToggle = () => {
-    setIsDropdownOpen((prev) => !prev);
   };
 
   if (hashtags.length === 0) return null;
