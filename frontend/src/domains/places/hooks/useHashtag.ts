@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 
 import { useToastContext } from '@/@common/contexts/useToastContext';
+import { addHashtagPrefix } from '@/@common/utils/format';
 import { useHashtagsQuery } from '@/domains/places/queries/usePlaceQuery';
 
 import { useHashtagSelection } from './useHashtagSelection';
@@ -56,9 +57,7 @@ const useHashtag = (initialTags?: string[]) => {
       return;
     }
 
-    const formattedTag = trimmedTag.startsWith('#')
-      ? trimmedTag.slice(1)
-      : trimmedTag;
+    const formattedTag = addHashtagPrefix(trimmedTag);
 
     if (selectedTags.includes(formattedTag)) {
       showToast({
