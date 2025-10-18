@@ -1,5 +1,6 @@
 import Button from '@/@common/components/Button/Button';
 import Flex from '@/@common/components/Flex/Flex';
+import { useToggle } from '@/@common/hooks/useToggle';
 import { useHashtagFilter } from '@/domains/maps/hooks/useHashtagFilter';
 import Hashtag from '@/domains/places/components/Hashtag/Hashtag';
 
@@ -20,10 +21,9 @@ const HashtagFilter = ({ isSidebarOpen }: HashtagFilterProps) => {
     hashtags,
     visibleHashtags,
     hiddenHashtags,
-    isDropdownOpen,
-    handleDropdownToggle,
     handleHashtagClick,
   } = useHashtagFilter();
+  const { isOpen: isDropdownOpen, handleToggle: handleDropdownToggle } = useToggle(false);
 
   if (hashtags.length === 0) return null;
 

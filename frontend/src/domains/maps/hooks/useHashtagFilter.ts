@@ -1,7 +1,6 @@
 import { useEffect, useRef } from 'react';
 
 import { useToastContext } from '@/@common/contexts/useToastContext';
-import { useToggle } from '@/@common/hooks/useToggle';
 import { useHashtagFilterContext } from '@/domains/places/contexts/useHashtagFilterContext';
 import { useHashtagsQuery } from '@/domains/places/queries/usePlaceQuery';
 
@@ -10,7 +9,6 @@ const useHashtagFilter = () => {
 
   const visibleHashtagsRef = useRef<HTMLDivElement>(null);
   const { selectedHashtags, updateHashtagSelection } = useHashtagFilterContext();
-  const { isOpen: isDropdownOpen, handleToggle: handleDropdownToggle } = useToggle(false);
   const { showToast } = useToastContext();
 
   const { data: hashtagsData, isError, error } = useHashtagsQuery();
@@ -38,8 +36,6 @@ const useHashtagFilter = () => {
     hashtags,
     visibleHashtags,
     hiddenHashtags,
-    isDropdownOpen,
-    handleDropdownToggle,
     handleHashtagClick,
   };
 };
