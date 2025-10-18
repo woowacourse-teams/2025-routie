@@ -2,8 +2,8 @@
 import { useState } from 'react';
 
 import Icon from '@/@common/components/IconSvg/Icon';
+import { logout } from '@/@common/utils/logout';
 import UserMenu from '@/domains/auth/components/UserMenu/UserMenu';
-import { useLogout } from '@/domains/auth/hooks/useLogout';
 
 import {
   UserMenuIconStyle,
@@ -18,7 +18,7 @@ const UserMenuButton = ({
   positioning = 'absolute',
 }: UserMenuButtonProps) => {
   const [isUserInfoOpen, setIsUserInfoOpen] = useState(false);
-  const { handleLogout } = useLogout();
+  const handleLogout = () => logout();
 
   const handleProfileClick = () => {
     if (onClick) {
