@@ -1,10 +1,13 @@
 import { getAccessTokenOrThrow } from '@/@common/utils/getAccessTokenOrThrow';
 import { apiClient } from '@/apis';
 import {
+  addPlaceRequestAdapter,
   getPlaceAdapter,
   getPlaceListAdapter,
+  hashtagsAdapter,
   likedPlacesAdapter,
   searchPlaceAdapter,
+  updatePlaceHashtagsRequestAdapter,
 } from '@/domains/places/adapters/placeAdapter';
 import type {
   AddPlaceRequestType,
@@ -31,9 +34,11 @@ const addPlace = async (placeInfo: AddPlaceRequestType) => {
   const routieSpaceUuid = getRoutieSpaceUuid();
   ensureRoutieSpaceUuid(routieSpaceUuid);
 
+  const requestData = addPlaceRequestAdapter(placeInfo);
+
   const response = await apiClient.post(
     `/v2/routie-spaces/${routieSpaceUuid}/places`,
-    placeInfo,
+    requestData,
   );
 
   const data = await response.json();
@@ -154,9 +159,11 @@ const updatePlaceHashtags = async ({
   const routieSpaceUuid = getRoutieSpaceUuid();
   ensureRoutieSpaceUuid(routieSpaceUuid);
 
+  const cleanedHashtags = updatePlaceHashtagsRequestAdapter(hashtags);
+
   const response = await apiClient.put(
     `/v1/routie-spaces/${routieSpaceUuid}/places/${placeId}/hashtags`,
-    { hashtags },
+    { hashtags: cleanedHashtags },
   );
 
   if (!response.ok) {
@@ -176,7 +183,7 @@ const getHashtags = async (): Promise<HashtagsResponseType> => {
 
   const data = await response.json();
 
-  return data;
+  return hashtagsAdapter(data);
 };
 
 export {
