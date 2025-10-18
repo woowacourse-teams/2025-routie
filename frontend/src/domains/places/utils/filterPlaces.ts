@@ -1,10 +1,5 @@
+import type { FilterPlacesByHashtagsParams } from '@/domains/places/types/hashtag.types';
 import type { PlaceWithLikeType } from '@/domains/places/types/place.types';
-
-interface FilterPlacesByHashtagsParams {
-  places: PlaceWithLikeType[];
-  selectedHashtags: string[];
-  priorityPlaceIds?: number[];
-}
 
 const filterPlacesByHashtags = ({
   places,
