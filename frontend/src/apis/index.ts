@@ -1,4 +1,5 @@
 import { ERROR_MESSAGES } from '@/@common/constants/message';
+import { logout } from '@/@common/utils/logout';
 import type { ErrorResponseType } from '@/apis/types/apIResponse.types';
 
 const createApiMethod =
@@ -22,6 +23,12 @@ const createApiMethod =
 
 const handleApiError = async (response: Response) => {
   const errorData = (await response.json()) as ErrorResponseType;
+
+  if (response.status === 401 && errorData?.code === 'ATH-002') {
+    logout(); // 토큰 제거 + 로그인 페이지 이동
+    return;
+  }
+
   const errorMessage =
     ERROR_MESSAGES[errorData.code as keyof typeof ERROR_MESSAGES] ||
     '알 수 없는 오류가 발생했습니다. 다시 시도해 주세요.';
