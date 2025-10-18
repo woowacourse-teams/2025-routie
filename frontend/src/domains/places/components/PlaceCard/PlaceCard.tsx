@@ -5,7 +5,6 @@ import Button from '@/@common/components/Button/Button';
 import Flex from '@/@common/components/Flex/Flex';
 import Icon from '@/@common/components/IconSvg/Icon';
 import Text from '@/@common/components/Text/Text';
-import { formatHashtag } from '@/@common/utils/format';
 import EditHashtagDropdown from '@/domains/places/components/EditHashtagDropdown/EditHashtagDropdown';
 import LikeButton from '@/domains/places/components/LikeButton/LikeButton';
 import theme from '@/styles/theme';
@@ -49,7 +48,11 @@ const PlaceCard = ({
           <Text variant="caption" color={theme.colors.gray[200]} ellipsis>
             {props.roadAddressName || props.addressName}
           </Text>
-          <Flex justifyContent="flex-start" gap={0.5} css={{ flexWrap: 'wrap' }}>
+          <Flex
+            justifyContent="flex-start"
+            gap={0.5}
+            css={{ flexWrap: 'wrap' }}
+          >
             {props.hashtags?.length ? (
               props.hashtags.map((hashtag) => (
                 <Text
@@ -58,7 +61,7 @@ const PlaceCard = ({
                   color={theme.colors.blue[400]}
                   css={{ whiteSpace: 'nowrap' }}
                 >
-                  {formatHashtag(hashtag)}
+                  {hashtag}
                 </Text>
               ))
             ) : (
