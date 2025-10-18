@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 
-import { useHashtagFilterContext } from '@/domains/maps/contexts/useHashtagFilterContext';
 import type { UseMarkerRendererProps } from '@/domains/maps/types/map.types';
+import { useHashtagFilterContext } from '@/domains/places/contexts/useHashtagFilterContext';
 import { usePlaceList } from '@/domains/places/hooks/usePlaceList';
 import { filterPlacesByHashtags } from '@/domains/places/utils/filterPlaces';
 

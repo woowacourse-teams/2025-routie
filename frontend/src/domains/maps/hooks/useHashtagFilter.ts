@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react';
 
 import { useToastContext } from '@/@common/contexts/useToastContext';
 import { useToggle } from '@/@common/hooks/useToggle';
-import { useHashtagFilterContext } from '@/domains/maps/contexts/useHashtagFilterContext';
+import { useHashtagFilterContext } from '@/domains/places/contexts/useHashtagFilterContext';
 import { useHashtagsQuery } from '@/domains/places/queries/usePlaceQuery';
 
 const useHashtagFilter = () => {
