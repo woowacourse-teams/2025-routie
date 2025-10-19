@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import { sessionStorageUtils } from '../../../@common/utils/sessionStorage';
+import { sessionStorageUtils } from '@/@common/utils/sessionStorage';
 
 const STORAGE_KEY = 'selectedHashtags';
 
