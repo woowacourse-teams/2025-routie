@@ -21,10 +21,7 @@ import type { KakaoMapProps } from './KakaoMap.types';
 
 const KakaoMap = ({ isSidebarOpen }: KakaoMapProps) => {
   const mapContainerRef = useRef<HTMLDivElement>(null);
-  const [isInitialLoad, setIsInitialLoad] = useState(() => {
-    const stored = sessionStorage.getItem('isInitialLoad');
-    return stored === null ? true : JSON.parse(stored);
-  });
+  const [isInitialLoad, setIsInitialLoad] = useState(true);
 
   const { mapRef, finalMapState, finalError } = useMapState({
     containerRef: mapContainerRef,
@@ -40,10 +37,6 @@ const KakaoMap = ({ isSidebarOpen }: KakaoMapProps) => {
     setIsInitialLoad,
     handleMarkerClick,
   });
-
-  useEffect(() => {
-    sessionStorage.setItem('isInitialLoad', JSON.stringify(isInitialLoad));
-  }, [isInitialLoad]);
 
   useEffect(() => {
     if (finalMapState !== 'ready' || !mapRef.current) return;
