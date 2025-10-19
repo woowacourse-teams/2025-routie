@@ -1,6 +1,7 @@
 package routie.business.routiespace.application;
 
 import java.util.List;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -94,6 +95,7 @@ public class RoutieSpaceService {
         final RoutieSpace routieSpace = getRoutieSpaceByRoutieSpaceIdentifier(routieSpaceIdentifier);
         validateOwner(user, routieSpace);
 
+        routieSpace.getPlaces().forEach(place -> place.getPlaceHashtags().clear());
         hashtagRepository.deleteByRoutieSpace(routieSpace);
         placeLikeRepository.deleteByRoutieSpace(routieSpace);
         routieSpaceRepository.delete(routieSpace);

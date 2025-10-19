@@ -23,6 +23,7 @@ import routie.business.participant.domain.UserFixture;
 import routie.business.participant.domain.UserRepository;
 import routie.business.place.domain.PlaceFixture;
 import routie.business.place.ui.dto.request.PlaceCreateRequest;
+import routie.business.place.ui.dto.request.PlaceCreateRequestV2;
 import routie.business.place.ui.dto.response.PlaceCreateResponse;
 import routie.business.routiespace.ui.dto.response.RoutieSpaceListResponse;
 
@@ -270,6 +271,64 @@ public class RoutieSpaceControllerV1Test {
 
         // then
         // 삭제된 루티 스페이스 조회 시 404 응답 확인
+        RestAssured
+                .given().log().all()
+                .when().log().all()
+                .get("/v1/routie-spaces/{routieSpaceIdentifier}", newRoutieSpaceIdentifier)
+                .then().log().all()
+                .statusCode(HttpStatus.NOT_FOUND.value());
+    }
+
+    @Test
+    @DisplayName("V1 API로 해시태그가 있는 장소를 포함한 루티 스페이스 삭제에 성공한다")
+    public void deleteRoutieSpaceWithHashtags() {
+        // 테스트용 사용자 생성 및 토큰 발급
+        final User user = UserFixture.emptyUser();
+        userRepository.save(user);
+        final String accessToken = jwtProcessor.createJwt(user);
+
+        // given
+        final Response createSpaceResponse = RestAssured
+                .given().log().all()
+                .header("Authorization", "Bearer " + accessToken)
+                .when().log().all()
+                .post("/v2/routie-spaces")
+                .then().log().all()
+                .statusCode(HttpStatus.OK.value())
+                .extract().response();
+
+        final String newRoutieSpaceIdentifier = createSpaceResponse.jsonPath().getString("routieSpaceIdentifier");
+
+        // 해시태그를 포함한 장소 생성 (V2 API 사용)
+        final PlaceCreateRequestV2 placeCreateRequest = new PlaceCreateRequestV2(
+                "testPlaceId",
+                "스타벅스 강남점",
+                "서울시 강남구 테헤란로 123",
+                "서울시 강남구 역삼동 123-45",
+                127.0276,
+                37.4979,
+                List.of("카페", "조용함")
+        );
+
+        RestAssured
+                .given()
+                .contentType(ContentType.JSON)
+                .body(placeCreateRequest)
+                .when()
+                .post("/v2/routie-spaces/{routieSpaceIdentifier}/places", newRoutieSpaceIdentifier)
+                .then().log().all()
+                .statusCode(HttpStatus.OK.value());
+
+        // when - 루티 스페이스 삭제
+        RestAssured
+                .given().log().all()
+                .header("Authorization", "Bearer " + accessToken)
+                .when().log().all()
+                .delete("/v1/routie-spaces/{routieSpaceIdentifier}", newRoutieSpaceIdentifier)
+                .then().log().all()
+                .statusCode(HttpStatus.NO_CONTENT.value());
+
+        // then - 삭제된 루티 스페이스 조회 시 404 응답 확인
         RestAssured
                 .given().log().all()
                 .when().log().all()
