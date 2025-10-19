@@ -10,9 +10,9 @@ import type { AddHashtagDropdownProps } from '@/domains/places/types/hashtag.typ
 import theme from '@/styles/theme';
 
 import {
-  HashtagAddButtonStyle,
   PlaceInfoStyle,
   SelectedTagsWrapperStyle,
+  AddButtonStyle,
 } from './AddHashtagDropdown.styles';
 
 const AddHashtagDropdown = (props: AddHashtagDropdownProps) => {
@@ -65,7 +65,6 @@ const AddHashtagDropdown = (props: AddHashtagDropdownProps) => {
             placeholder="해시태그를 추가하거나 만들어보세요"
             onChange={handleInputChange}
             onKeyDown={handleEnterTag}
-            css={HashtagAddButtonStyle}
           />
           <Button
             variant="primary"
@@ -74,6 +73,7 @@ const AddHashtagDropdown = (props: AddHashtagDropdownProps) => {
             width="15%"
             radius="md"
             padding="0.6rem 0.8rem"
+            css={AddButtonStyle}
           >
             <Text color={theme.colors.white} variant="caption">
               추가

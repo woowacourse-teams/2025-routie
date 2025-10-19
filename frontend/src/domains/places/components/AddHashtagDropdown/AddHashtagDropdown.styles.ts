@@ -7,12 +7,13 @@ const PlaceInfoStyle = css`
   background-color: ${theme.colors.gray[50]};
 `;
 
-const HashtagAddButtonStyle = css`
-  border-radius: ${theme.radius.lg};
-`;
-
 const SelectedTagsWrapperStyle = css`
   flex-wrap: wrap;
 `;
 
-export { PlaceInfoStyle, HashtagAddButtonStyle, SelectedTagsWrapperStyle };
+const AddButtonStyle = css`
+  height: 3.6rem;
+  border-radius: ${theme.radius.lg};
+`;
+
+export { PlaceInfoStyle, SelectedTagsWrapperStyle, AddButtonStyle };

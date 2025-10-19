@@ -13,8 +13,8 @@ import theme from '@/styles/theme';
 
 import {
   EditDropdownContainerStyle,
-  HashtagAddButtonStyle,
   SelectedTagsWrapperStyle,
+  AddButtonStyle,
 } from './EditHashtagDropdown.styles';
 
 const EditHashtagDropdown = ({
@@ -67,7 +67,6 @@ const EditHashtagDropdown = ({
             placeholder="해시태그를 추가하거나 만들어보세요"
             onChange={handleInputChange}
             onKeyDown={handleEnterTag}
-            css={HashtagAddButtonStyle}
           />
           <Button
             variant="primary"
@@ -76,6 +75,7 @@ const EditHashtagDropdown = ({
             width="15%"
             radius="md"
             padding="0.6rem 0.8rem"
+            css={AddButtonStyle}
           >
             <Text color={theme.colors.white} variant="caption">
               추가

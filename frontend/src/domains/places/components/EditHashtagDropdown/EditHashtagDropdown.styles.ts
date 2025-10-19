@@ -2,10 +2,6 @@ import { css } from '@emotion/react';
 
 import theme from '@/styles/theme';
 
-const HashtagAddButtonStyle = css`
-  border-radius: ${theme.radius.lg};
-`;
-
 const SelectedTagsWrapperStyle = css`
   flex-wrap: wrap;
 `;
@@ -17,8 +13,9 @@ const EditDropdownContainerStyle = css`
   background-color: ${theme.colors.blue[50]};
 `;
 
-export {
-  HashtagAddButtonStyle,
-  SelectedTagsWrapperStyle,
-  EditDropdownContainerStyle,
-};
+const AddButtonStyle = css`
+  height: 3.6rem;
+  border-radius: ${theme.radius.lg};
+`;
+
+export { SelectedTagsWrapperStyle, EditDropdownContainerStyle, AddButtonStyle };

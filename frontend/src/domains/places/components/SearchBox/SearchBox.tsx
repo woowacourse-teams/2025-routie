@@ -20,6 +20,7 @@ import {
   SearchBoxWrapperStyle,
   DropdownContainerStyle,
   ListStyle,
+  SearchButtonStyle,
 } from './SearchBox.styles';
 
 const SearchBox = () => {
@@ -113,8 +114,9 @@ const SearchBox = () => {
             onClick={handleSearch}
             disabled={!keyword}
             padding="0.8rem 0.8rem"
+            css={SearchButtonStyle}
           >
-            <Text color={theme.colors.white} variant="label">
+            <Text color={theme.colors.white} variant="caption">
               검색
             </Text>
           </Button>

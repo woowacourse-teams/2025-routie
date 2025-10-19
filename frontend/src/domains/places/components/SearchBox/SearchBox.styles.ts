@@ -29,9 +29,15 @@ const ListStyle = css`
   max-height: 25rem;
 `;
 
+const SearchButtonStyle = css`
+  height: 3.6rem;
+  border-radius: ${theme.radius.lg};
+`;
+
 export {
   ContainerStyle,
   SearchBoxWrapperStyle,
   DropdownContainerStyle,
   ListStyle,
+  SearchButtonStyle,
 };
