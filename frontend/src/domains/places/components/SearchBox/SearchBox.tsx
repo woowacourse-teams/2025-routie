@@ -2,13 +2,16 @@ import { useEffect, useRef, useState } from 'react';
 
 import { css } from '@emotion/react';
 
+import Button from '@/@common/components/Button/Button';
 import EmptyMessage from '@/@common/components/EmptyMessage/EmptyMessage';
 import Flex from '@/@common/components/Flex/Flex';
 import Input from '@/@common/components/Input/Input';
+import Text from '@/@common/components/Text/Text';
 import SearchList from '@/domains/places/components/SearchList/SearchList';
 import { usePlaceList } from '@/domains/places/hooks/usePlaceList';
 import { useSearchPlace } from '@/domains/places/hooks/useSearchPlace';
 import type { SearchedPlaceType } from '@/domains/places/types/place.types';
+import theme from '@/styles/theme';
 
 import AddHashtagDropdown from '../AddHashtagDropdown/AddHashtagDropdown';
 
@@ -24,6 +27,7 @@ const SearchBox = () => {
     keyword,
     searchResults,
     handleChangeKeyword,
+    handleSearch,
     handleEnterSearch,
     searchedKeyword,
     isDropdownOpen,
@@ -90,17 +94,31 @@ const SearchBox = () => {
         padding: 1rem 0;
       `}
     >
-      <Flex gap={1} direction="column" css={ContainerStyle} padding="0 1rem">
-        <Input
-          id="search"
-          value={keyword}
-          icon="search"
-          placeholder="장소를 검색하세요"
-          onChange={handleChangeKeyword}
-          onKeyDown={keyword ? handleEnterSearch : undefined}
-          maxLength={15}
-          autoFocus
-        />
+      <Flex gap={1} direction="column" css={ContainerStyle}>
+        <Flex justifyContent="space-between" gap={1} padding="0 1rem">
+          <Input
+            id="search"
+            value={keyword}
+            icon="search"
+            placeholder="장소를 검색하세요"
+            onChange={handleChangeKeyword}
+            onKeyDown={keyword ? handleEnterSearch : undefined}
+            maxLength={15}
+            autoFocus
+          />
+          <Button
+            variant="primary"
+            width="20%"
+            type="button"
+            onClick={handleSearch}
+            disabled={!keyword}
+            padding="0.8rem 0.8rem"
+          >
+            <Text color={theme.colors.white} variant="label">
+              검색
+            </Text>
+          </Button>
+        </Flex>
         {isDropdownOpen && searchedKeyword && (
           <Flex direction="column" padding="0 1rem" css={SearchBoxWrapperStyle}>
             {selectedPlace ? (
