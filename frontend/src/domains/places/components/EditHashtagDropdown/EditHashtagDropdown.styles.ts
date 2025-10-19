@@ -15,7 +15,6 @@ const EditDropdownContainerStyle = css`
 
 const AddButtonStyle = css`
   height: 3.6rem;
-  border-radius: ${theme.radius.lg};
 `;
 
 export { SelectedTagsWrapperStyle, EditDropdownContainerStyle, AddButtonStyle };

@@ -71,7 +71,7 @@ const AddHashtagDropdown = (props: AddHashtagDropdownProps) => {
             onClick={() => handleAddTag(inputValue)}
             disabled={!inputValue.trim()}
             width="15%"
-            radius="md"
+            radius="lg"
             padding="0.6rem 0.8rem"
             css={AddButtonStyle}
           >
