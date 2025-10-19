@@ -3,7 +3,6 @@ import { useState } from 'react';
 import Flex from '@/@common/components/Flex/Flex';
 import Icon from '@/@common/components/IconSvg/Icon';
 import { useToastContext } from '@/@common/contexts/useToastContext';
-import { useToggle } from '@/@common/hooks/useToggle';
 import RoutieSpaceName from '@/domains/routieSpace/components/RoutieSpaceName/RoutieSpaceName';
 import { useShareLink } from '@/domains/routieSpace/hooks/useShareLink';
 import { useRoutieSpaceNavigation } from '@/pages/Home/hooks/useRoutieSpaceNavigation';
@@ -19,9 +18,10 @@ import {
 } from './Sidebar.styles';
 import { CONTENT_WIDTH, SIDEBAR_WIDTH_CLOSED } from './width';
 
-const Sidebar = () => {
+import type { SidebarProps } from './Sidebar.types';
+
+const Sidebar = ({ isOpen, handleToggle }: SidebarProps) => {
   const [activeTab, setActiveTab] = useState<'place' | 'route'>('place');
-  const { isOpen, handleToggle } = useToggle();
   const { handleMoveToHome } = useRoutieSpaceNavigation();
   const { showToast } = useToastContext();
   const shareLink = useShareLink();

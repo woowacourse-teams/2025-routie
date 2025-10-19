@@ -3,10 +3,12 @@ import { useSearchParams } from 'react-router';
 
 import { useModal } from '@/@common/contexts/ModalContext';
 import { useToastContext } from '@/@common/contexts/useToastContext';
+import { useToggle } from '@/@common/hooks/useToggle';
 import { getAccessToken } from '@/@common/utils/getAccessToken';
 import UserMenuButton from '@/domains/auth/components/UserMenuButton/UserMenuButton';
 import { useUserQuery } from '@/domains/auth/queries/useAuthQuery';
 import KakaoMap from '@/domains/maps/components/KakaoMap/KakaoMap';
+import HashtagFilterProvider from '@/domains/places/contexts/HashtagFilterProvider';
 import Sidebar from '@/pages/RoutieSpace/components/Sidebar/Sidebar';
 
 import { RoutieSpaceContainerStyle } from './RoutieSpace.styles';
@@ -18,6 +20,8 @@ const RoutieSpace = () => {
   const { error } = useUserQuery();
   const routieSpaceIdentifier = searchParams.get('routieSpaceIdentifier');
   const accessToken = getAccessToken();
+  const { isOpen: isSidebarOpen, handleToggle: handleSidebarToggle } =
+    useToggle();
 
   useLayoutEffect(() => {
     if (routieSpaceIdentifier) {
@@ -42,11 +46,13 @@ const RoutieSpace = () => {
   }, [error, showToast]);
 
   return (
-    <div css={RoutieSpaceContainerStyle}>
-      <KakaoMap />
-      {accessToken && <UserMenuButton />}
-      <Sidebar />
-    </div>
+    <HashtagFilterProvider>
+      <div css={RoutieSpaceContainerStyle}>
+        <KakaoMap isSidebarOpen={isSidebarOpen} />
+        {accessToken && <UserMenuButton />}
+        <Sidebar isOpen={isSidebarOpen} handleToggle={handleSidebarToggle} />
+      </div>
+    </HashtagFilterProvider>
   );
 };
 
