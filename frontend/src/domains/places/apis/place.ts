@@ -1,13 +1,12 @@
+import { removeHashtagPrefix } from '@/@common/utils/format';
 import { getAccessTokenOrThrow } from '@/@common/utils/getAccessTokenOrThrow';
 import { apiClient } from '@/apis';
 import {
-  addPlaceRequestAdapter,
   getPlaceAdapter,
   getPlaceListAdapter,
   hashtagsAdapter,
   likedPlacesAdapter,
   searchPlaceAdapter,
-  updatePlaceHashtagsRequestAdapter,
 } from '@/domains/places/adapters/placeAdapter';
 import type {
   AddPlaceRequestType,
@@ -34,11 +33,12 @@ const addPlace = async (placeInfo: AddPlaceRequestType) => {
   const routieSpaceUuid = getRoutieSpaceUuid();
   ensureRoutieSpaceUuid(routieSpaceUuid);
 
-  const requestData = addPlaceRequestAdapter(placeInfo);
-
   const response = await apiClient.post(
     `/v2/routie-spaces/${routieSpaceUuid}/places`,
-    requestData,
+    {
+      ...placeInfo,
+      hashtags: placeInfo.hashtags?.map(removeHashtagPrefix),
+    },
   );
 
   const data = await response.json();
@@ -159,11 +159,9 @@ const updatePlaceHashtags = async ({
   const routieSpaceUuid = getRoutieSpaceUuid();
   ensureRoutieSpaceUuid(routieSpaceUuid);
 
-  const cleanedHashtags = updatePlaceHashtagsRequestAdapter(hashtags);
-
   const response = await apiClient.put(
     `/v1/routie-spaces/${routieSpaceUuid}/places/${placeId}/hashtags`,
-    { hashtags: cleanedHashtags },
+    { hashtags: hashtags.map(removeHashtagPrefix) },
   );
 
   if (!response.ok) {

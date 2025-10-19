@@ -1,6 +1,5 @@
-import { addHashtagPrefix, removeHashtagPrefix } from '@/@common/utils/format';
+import { addHashtagPrefix } from '@/@common/utils/format';
 import type {
-  AddPlaceRequestType,
   FetchPlaceListResponseType,
   FetchPlaceResponseType,
   HashtagsResponseType,
@@ -69,25 +68,10 @@ const hashtagsAdapter = (data: HashtagsResponseType): HashtagsResponseType => {
   };
 };
 
-const addPlaceRequestAdapter = (
-  placeInfo: AddPlaceRequestType,
-): AddPlaceRequestType => {
-  return {
-    ...placeInfo,
-    hashtags: placeInfo.hashtags?.map(removeHashtagPrefix),
-  };
-};
-
-const updatePlaceHashtagsRequestAdapter = (hashtags: string[]): string[] => {
-  return hashtags.map(removeHashtagPrefix);
-};
-
 export {
   getPlaceAdapter,
   getPlaceListAdapter,
   searchPlaceAdapter,
   likedPlacesAdapter,
   hashtagsAdapter,
-  addPlaceRequestAdapter,
-  updatePlaceHashtagsRequestAdapter,
 };
