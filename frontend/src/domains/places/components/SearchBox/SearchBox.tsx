@@ -7,13 +7,12 @@ import EmptyMessage from '@/@common/components/EmptyMessage/EmptyMessage';
 import Flex from '@/@common/components/Flex/Flex';
 import Input from '@/@common/components/Input/Input';
 import Text from '@/@common/components/Text/Text';
+import AddHashtagDropdown from '@/domains/places/components/AddHashtagDropdown/AddHashtagDropdown';
 import SearchList from '@/domains/places/components/SearchList/SearchList';
 import { usePlaceList } from '@/domains/places/hooks/usePlaceList';
 import { useSearchPlace } from '@/domains/places/hooks/useSearchPlace';
 import type { SearchedPlaceType } from '@/domains/places/types/place.types';
 import theme from '@/styles/theme';
-
-import AddHashtagDropdown from '../AddHashtagDropdown/AddHashtagDropdown';
 
 import {
   ContainerStyle,
