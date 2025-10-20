@@ -25,7 +25,7 @@ const handleApiError = async (response: Response) => {
   const errorData = (await response.json()) as ErrorResponseType;
 
   if (response.status === 401 && errorData?.code === 'ATH-002') {
-    logout(); // 토큰 제거 + 로그인 페이지 이동
+    logout();
     return;
   }
 
