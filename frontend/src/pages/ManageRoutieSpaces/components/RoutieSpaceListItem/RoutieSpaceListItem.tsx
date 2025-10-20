@@ -25,7 +25,12 @@ const RoutieSpaceListItem = ({
   const handleDelete = useCallback(
     (e: React.MouseEvent<HTMLButtonElement>) => {
       e.stopPropagation();
-      onDeleteRoutieSpace(routieSpaceUuid);
+
+      const isConfirmed = window.confirm('정말로 삭제하시겠습니까?');
+
+      if (isConfirmed) {
+        onDeleteRoutieSpace(routieSpaceUuid);
+      }
     },
     [onDeleteRoutieSpace, routieSpaceUuid],
   );
