@@ -39,7 +39,7 @@ const Sidebar = ({ isOpen, handleToggle }: SidebarProps) => {
     }
   };
 
-  const handleTabClick = (tab: 'place' | 'route') => {
+  const handleTabClick = (tab: 'place' | 'route' | 'share') => {
     if (!isOpen) {
       handleToggle();
     }
@@ -83,9 +83,9 @@ const Sidebar = ({ isOpen, handleToggle }: SidebarProps) => {
             isActive={activeTab === 'route'}
           />
           <TabButton
-            name="링크 공유"
-            icon="share"
-            onClick={() => setActiveTab('share')}
+            name="공유"
+            icon={activeTab === 'share' ? 'shareTabSelect' : 'share'}
+            onClick={() => handleTabClick('share')}
             isActive={activeTab === 'share'}
           />
         </Flex>
@@ -101,7 +101,7 @@ const Sidebar = ({ isOpen, handleToggle }: SidebarProps) => {
           <RoutieSpaceName />
           {activeTab === 'route' && <RouteView />}
           {activeTab === 'place' && <PlaceView />}
-          {activeTab === 'share' && <ShareView onShareClick={handleCopy} />}
+          {activeTab === 'share' && <ShareView />}
         </Flex>
       </Flex>
     </div>
