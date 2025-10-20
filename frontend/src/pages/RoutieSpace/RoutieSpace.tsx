@@ -5,6 +5,7 @@ import { useModal } from '@/@common/contexts/ModalContext';
 import { useToastContext } from '@/@common/contexts/useToastContext';
 import { useToggle } from '@/@common/hooks/useToggle';
 import { getAccessToken } from '@/@common/utils/getAccessToken';
+import { sessionStorageUtils } from '@/@common/utils/sessionStorage';
 import UserMenuButton from '@/domains/auth/components/UserMenuButton/UserMenuButton';
 import { useUserQuery } from '@/domains/auth/queries/useAuthQuery';
 import KakaoMap from '@/domains/maps/components/KakaoMap/KakaoMap';
@@ -44,6 +45,12 @@ const RoutieSpace = () => {
       console.error(error);
     }
   }, [error, showToast]);
+
+  useEffect(() => {
+    return () => {
+      sessionStorageUtils.remove('selectedHashtags');
+    };
+  }, []);
 
   return (
     <HashtagFilterProvider>
