@@ -2,9 +2,7 @@ import { useEffect, useState } from 'react';
 
 import Flex from '@/@common/components/Flex/Flex';
 import Icon from '@/@common/components/IconSvg/Icon';
-import { useToastContext } from '@/@common/contexts/useToastContext';
 import RoutieSpaceName from '@/domains/routieSpace/components/RoutieSpaceName/RoutieSpaceName';
-import { useShareLink } from '@/domains/routieSpace/hooks/useShareLink';
 import { useRoutieSpaceNavigation } from '@/pages/Home/hooks/useRoutieSpaceNavigation';
 import PlaceView from '@/pages/RoutieSpace/components/PlaceView/PlaceView';
 import RouteView from '@/pages/RoutieSpace/components/RouteView/RouteView';
@@ -26,18 +24,6 @@ const Sidebar = ({ isOpen, handleToggle }: SidebarProps) => {
     'place' | 'route' | 'share' | null
   >('place');
   const { handleMoveToHome } = useRoutieSpaceNavigation();
-  const { showToast } = useToastContext();
-  const shareLink = useShareLink();
-
-  const handleCopy = async () => {
-    if (!shareLink) return;
-    try {
-      await navigator.clipboard.writeText(shareLink);
-      showToast({ type: 'info', message: '링크가 복사되었습니다.' });
-    } catch (error) {
-      showToast({ type: 'error', message: '링크 복사를 실패하였습니다.' });
-    }
-  };
 
   const handleTabClick = (tab: 'place' | 'route' | 'share') => {
     if (!isOpen) {
