@@ -1,5 +1,3 @@
-import { useState } from 'react';
-
 import Flex from '@/@common/components/Flex/Flex';
 import Text from '@/@common/components/Text/Text';
 import { useTemporaryState } from '@/@common/hooks/useTemporaryState';
@@ -14,8 +12,7 @@ import {
 
 const ShareView = () => {
   const { shareLink, handleCopyLink } = useShareLink();
-  const { showToast } = useToastContext();
-  const shareLink = useShareLink();
+  const { isActive: isCopied, activate } = useTemporaryState(2000);
 
   const handleLinkCopyClick = () => {
     if (!shareLink) return;
