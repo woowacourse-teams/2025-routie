@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 import Flex from '@/@common/components/Flex/Flex';
 import Icon from '@/@common/components/IconSvg/Icon';
@@ -20,9 +20,9 @@ import { CONTENT_WIDTH, SIDEBAR_WIDTH_CLOSED } from './width';
 import type { SidebarProps } from './Sidebar.types';
 
 const Sidebar = ({ isOpen, handleToggle }: SidebarProps) => {
-  const [activeTab, setActiveTab] = useState<
-    'place' | 'route' | 'share' | null
-  >('place');
+  const [activeTab, setActiveTab] = useState<'place' | 'route' | 'share'>(
+    'place',
+  );
   const { handleMoveToHome } = useRoutieSpaceNavigation();
 
   const handleTabClick = (tab: 'place' | 'route' | 'share') => {
@@ -31,12 +31,6 @@ const Sidebar = ({ isOpen, handleToggle }: SidebarProps) => {
     }
     setActiveTab(tab);
   };
-
-  useEffect(() => {
-    if (!isOpen) {
-      setActiveTab(null);
-    }
-  }, [isOpen]);
 
   return (
     <div css={SidebarContainerStyle(isOpen)}>
