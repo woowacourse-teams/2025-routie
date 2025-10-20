@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import Flex from '@/@common/components/Flex/Flex';
 import Icon from '@/@common/components/IconSvg/Icon';
@@ -21,7 +21,7 @@ import { CONTENT_WIDTH, SIDEBAR_WIDTH_CLOSED } from './width';
 import type { SidebarProps } from './Sidebar.types';
 
 const Sidebar = ({ isOpen, handleToggle }: SidebarProps) => {
-  const [activeTab, setActiveTab] = useState<'place' | 'route'>('place');
+  const [activeTab, setActiveTab] = useState<'place' | 'route' | null>('place');
   const { handleMoveToHome } = useRoutieSpaceNavigation();
   const { showToast } = useToastContext();
   const shareLink = useShareLink();
@@ -35,6 +35,19 @@ const Sidebar = ({ isOpen, handleToggle }: SidebarProps) => {
       showToast({ type: 'error', message: '링크 복사를 실패하였습니다.' });
     }
   };
+
+  const handleTabClick = (tab: 'place' | 'route') => {
+    if (!isOpen) {
+      handleToggle();
+    }
+    setActiveTab(tab);
+  };
+
+  useEffect(() => {
+    if (!isOpen) {
+      setActiveTab(null);
+    }
+  }, [isOpen]);
 
   return (
     <div css={SidebarContainerStyle(isOpen)}>
@@ -57,13 +70,13 @@ const Sidebar = ({ isOpen, handleToggle }: SidebarProps) => {
           <TabButton
             name="장소"
             icon={activeTab === 'place' ? 'placeTabSelect' : 'placeTab'}
-            onClick={() => setActiveTab('place')}
+            onClick={() => handleTabClick('place')}
             isActive={activeTab === 'place'}
           />
           <TabButton
             name="동선"
             icon={activeTab === 'route' ? 'routeTabSelect' : 'routeTab'}
-            onClick={() => setActiveTab('route')}
+            onClick={() => handleTabClick('route')}
             isActive={activeTab === 'route'}
           />
           <TabButton
