@@ -47,21 +47,23 @@ const inputVariant: Record<InputVariantType, SerializedStyles> = {
 
 const InputStyle = ({ variant, icon }: InputStyleProps) => css`
   width: 100%;
-  height: 3.5rem;
+  height: 4rem;
   padding: 0.4rem 1.2rem;
   border: 1px solid;
-  border-radius: ${theme.radius.sm};
+  border-radius: ${theme.radius.lg};
+
+  font-size: ${theme.font.size.caption};
   ${icon ? 'padding-left: 2.5rem;' : ''}
 
   &::placeholder {
-    font-size: ${theme.font.size.label};
+    font-size: ${theme.font.size.caption};
     font-weight: ${theme.font.weight.medium};
     color: ${theme.colors.gray[150]};
   }
 
   &:focus {
     width: 100%;
-    height: 3.5rem;
+    height: 4rem;
     padding: 0.4rem 1.2rem;
     border: 3px solid;
     ${icon ? 'padding-left: 2.5rem;' : ''}

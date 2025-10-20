@@ -29,9 +29,14 @@ const ListStyle = css`
   max-height: 25rem;
 `;
 
+const SearchButtonStyle = css`
+  height: 4rem;
+`;
+
 export {
   ContainerStyle,
   SearchBoxWrapperStyle,
   DropdownContainerStyle,
   ListStyle,
+  SearchButtonStyle,
 };
