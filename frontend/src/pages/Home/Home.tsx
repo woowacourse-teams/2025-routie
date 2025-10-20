@@ -19,8 +19,6 @@ import {
   MainContentWrapperStyle,
   CircleStyle,
   RectangleStyle,
-  FeedbackIconButtonStyle,
-  FeedbackOverlayStyle,
 } from './Home.styles';
 import PhoneFrame from './PhoneChatFrame/PhoneChatFrame';
 import { useRoutieSpaceNavigation } from './hooks/useRoutieSpaceNavigation';
