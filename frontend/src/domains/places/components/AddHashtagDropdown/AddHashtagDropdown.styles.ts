@@ -12,7 +12,7 @@ const SelectedTagsWrapperStyle = css`
 `;
 
 const AddButtonStyle = css`
-  height: 3.6rem;
+  height: 4rem;
 `;
 
 export { PlaceInfoStyle, SelectedTagsWrapperStyle, AddButtonStyle };

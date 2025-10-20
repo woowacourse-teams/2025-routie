@@ -30,7 +30,7 @@ const ListStyle = css`
 `;
 
 const SearchButtonStyle = css`
-  height: 3.6rem;
+  height: 4rem;
 `;
 
 export {
