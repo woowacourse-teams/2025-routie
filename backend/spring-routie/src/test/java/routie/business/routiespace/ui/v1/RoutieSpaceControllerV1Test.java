@@ -5,8 +5,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
+
 import java.util.List;
 import java.util.regex.Pattern;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -310,10 +312,28 @@ public class RoutieSpaceControllerV1Test {
                 List.of("카페", "조용함")
         );
 
+        final PlaceCreateRequestV2 placeCreateRequest2 = new PlaceCreateRequestV2(
+                "testPlaceId2",
+                "스타벅스 강남점",
+                "서울시 강남구 테헤란로 123",
+                "서울시 강남구 역삼동 123-45",
+                127.0276,
+                37.4979,
+                List.of("술집", "조용함")
+        );
+
         RestAssured
                 .given()
                 .contentType(ContentType.JSON)
                 .body(placeCreateRequest)
+                .when()
+                .post("/v2/routie-spaces/{routieSpaceIdentifier}/places", newRoutieSpaceIdentifier)
+                .then().log().all()
+                .statusCode(HttpStatus.OK.value());
+        RestAssured
+                .given()
+                .contentType(ContentType.JSON)
+                .body(placeCreateRequest2)
                 .when()
                 .post("/v2/routie-spaces/{routieSpaceIdentifier}/places", newRoutieSpaceIdentifier)
                 .then().log().all()
