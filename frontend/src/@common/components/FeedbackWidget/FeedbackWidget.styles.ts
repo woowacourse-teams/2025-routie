@@ -14,6 +14,7 @@ const FeedbackSectionStyle = ({ isVisible }: { isVisible: boolean }) => css`
   border-radius: ${theme.radius.sm};
 
   opacity: ${isVisible ? 1 : 0};
+  background-color: ${theme.colors.white};
   box-shadow: 2px 4px 4px 0 rgb(0 0 0 / 15%);
 
   transition: opacity 0.3s ease;
