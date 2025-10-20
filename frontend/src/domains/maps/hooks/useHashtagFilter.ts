@@ -8,7 +8,8 @@ const useHashtagFilter = () => {
   const MAX_VISIBLE_HASHTAGS = 7;
 
   const visibleHashtagsRef = useRef<HTMLDivElement>(null);
-  const { selectedHashtags, updateHashtagSelection } = useHashtagFilterContext();
+  const { selectedHashtags, updateHashtagSelection, handleSelectAll, resetSelectedTags } =
+    useHashtagFilterContext();
   const { showToast } = useToastContext();
 
   const { data: hashtagsData, isError, error } = useHashtagsQuery();
@@ -30,6 +31,16 @@ const useHashtagFilter = () => {
     updateHashtagSelection(hashtag);
   };
 
+  const isAllSelected = hashtags.length > 0 && selectedHashtags.length === hashtags.length;
+
+  const handleToggleSelectAll = () => {
+    if (isAllSelected) {
+      resetSelectedTags();
+    } else {
+      handleSelectAll(hashtags);
+    }
+  };
+
   return {
     visibleHashtagsRef,
     selectedHashtags,
@@ -37,6 +48,8 @@ const useHashtagFilter = () => {
     visibleHashtags,
     hiddenHashtags,
     handleHashtagClick,
+    isAllSelected,
+    handleToggleSelectAll,
   };
 };
 
