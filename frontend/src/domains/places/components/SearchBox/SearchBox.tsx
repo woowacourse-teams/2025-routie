@@ -109,6 +109,7 @@ const SearchBox = () => {
           <Button
             variant="primary"
             width="20%"
+            radius="lg"
             type="button"
             onClick={handleSearch}
             disabled={!keyword}
