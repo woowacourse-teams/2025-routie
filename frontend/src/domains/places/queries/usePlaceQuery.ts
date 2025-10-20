@@ -5,6 +5,7 @@ import {
   addPlace,
   deleteLikePlace,
   deletePlace,
+  getHashtags,
   getLikedPlaces,
   getPlace,
   getPlaceList,
@@ -58,6 +59,7 @@ const useAddPlaceQuery = () => {
         message: '장소가 추가되었습니다.',
         type: 'success',
       });
+      queryClient.invalidateQueries({ queryKey: placesKeys.hashtags() });
       queryClient.setQueryData(['addedPlaceId'], data.id);
     },
     onError: (error) => {
@@ -160,6 +162,7 @@ const useUpdatePlaceHashtagsMutation = () => {
         message: '해시태그가 수정되었습니다.',
         type: 'success',
       });
+      queryClient.invalidateQueries({ queryKey: placesKeys.hashtags() });
     },
     onError: (error) => {
       showToast({
@@ -167,6 +170,13 @@ const useUpdatePlaceHashtagsMutation = () => {
         type: 'error',
       });
     },
+  });
+};
+
+const useHashtagsQuery = () => {
+  return useQuery({
+    queryKey: placesKeys.hashtags(),
+    queryFn: getHashtags,
   });
 };
 
@@ -180,4 +190,5 @@ export {
   usePlaceListQuery,
   usePlaceSearchQuery,
   useUpdatePlaceHashtagsMutation,
+  useHashtagsQuery,
 };

@@ -13,8 +13,8 @@ import theme from '@/styles/theme';
 
 import {
   EditDropdownContainerStyle,
-  HashtagAddButtonStyle,
   SelectedTagsWrapperStyle,
+  AddButtonStyle,
 } from './EditHashtagDropdown.styles';
 
 const EditHashtagDropdown = ({
@@ -67,16 +67,15 @@ const EditHashtagDropdown = ({
             placeholder="해시태그를 추가하거나 만들어보세요"
             onChange={handleInputChange}
             onKeyDown={handleEnterTag}
-            maxLength={6}
-            css={HashtagAddButtonStyle}
           />
           <Button
             variant="primary"
             onClick={() => handleAddTag(inputValue)}
             disabled={!inputValue.trim()}
             width="15%"
-            radius="md"
+            radius="lg"
             padding="0.6rem 0.8rem"
+            css={AddButtonStyle}
           >
             <Text color={theme.colors.white} variant="caption">
               추가
@@ -105,7 +104,7 @@ const EditHashtagDropdown = ({
         {previousTags.length > 0 && (
           <Flex direction="column" gap={0.8} alignItems="flex-start">
             <Text variant="caption" color={theme.colors.gray[300]}>
-              내가 사용했던 태그
+              이전 태그 기록
             </Text>
             <Flex
               gap={0.6}
