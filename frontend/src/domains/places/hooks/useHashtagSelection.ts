@@ -37,11 +37,16 @@ const useHashtagSelection = (initialTags?: string[]) => {
     }
   };
 
+  const handleSelectAll = (allTags: string[]) => {
+    setSelectedTags(allTags);
+  };
+
   return {
     selectedTags,
     handleToggleTag,
     resetSelectedTags,
     addTag,
+    handleSelectAll,
   };
 };
 
