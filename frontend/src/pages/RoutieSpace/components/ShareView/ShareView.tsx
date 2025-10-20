@@ -2,7 +2,7 @@ import { useState } from 'react';
 
 import Flex from '@/@common/components/Flex/Flex';
 import Text from '@/@common/components/Text/Text';
-import { useToastContext } from '@/@common/contexts/useToastContext';
+import { useTemporaryState } from '@/@common/hooks/useTemporaryState';
 import { useShareLink } from '@/domains/routieSpace/hooks/useShareLink';
 import theme from '@/styles/theme';
 
@@ -13,20 +13,16 @@ import {
 } from './ShareView.styles';
 
 const ShareView = () => {
-  const [shareClicked, setShareClicked] = useState(false);
+  const { shareLink, handleCopyLink } = useShareLink();
   const { showToast } = useToastContext();
   const shareLink = useShareLink();
 
-  const handleCopyClick = async () => {
+  const handleLinkCopyClick = () => {
     if (!shareLink) return;
 
-    try {
-      await navigator.clipboard.writeText(shareLink);
-      showToast({ type: 'info', message: '링크가 복사되었습니다.' });
-      setShareClicked(true);
-    } catch (error) {
-      showToast({ type: 'error', message: '링크 복사를 실패하였습니다.' });
-    }
+    handleCopyLink().then(() => {
+      activate();
+    });
   };
 
   return (
@@ -48,11 +44,11 @@ const ShareView = () => {
           </Text>
         </Flex>
         <button
-          onClick={handleCopyClick}
-          css={LinkCopyButtonStyle(shareClicked)}
+          onClick={handleLinkCopyClick}
+          css={LinkCopyButtonStyle(isCopied)}
         >
           <Text variant="label" color={theme.colors.white}>
-            {shareClicked ? 'Copied' : 'Copy'}
+            {isCopied ? 'Copied' : 'Copy'}
           </Text>
         </button>
       </Flex>
