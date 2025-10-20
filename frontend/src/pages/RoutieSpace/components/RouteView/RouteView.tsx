@@ -3,6 +3,7 @@ import Flex from '@/@common/components/Flex/Flex';
 import Text from '@/@common/components/Text/Text';
 import RoutieSection from '@/domains/routie/components/RoutieSection/RoutieSection';
 import { useRoutieList } from '@/domains/routie/hooks/useRoutieList';
+import theme from '@/styles/theme';
 
 import {
   RouteViewContainerStyle,
@@ -14,10 +15,9 @@ const RouteView = () => {
 
   return (
     <Flex direction="column" height="100%" css={RouteViewContainerStyle}>
-      <Flex padding={0.5} justifyContent="flex-start" gap={1}>
-        <Text variant="subTitle">내가 갈 곳</Text>
-        <Text variant="label" color="gray">
-          {routiePlaces.length}개의 장소
+      <Flex padding={1} justifyContent="flex-start">
+        <Text variant="body" color={theme.colors.gray[200]}>
+          순서를 바꿔가며 동선을 수정해보세요
         </Text>
       </Flex>
 
@@ -37,7 +37,7 @@ const RouteView = () => {
         padding={1}
         css={RoutieListContainerStyle}
         height="100%"
-        gap={1}
+        gap={2.4}
       >
         <RoutieSection />
       </Flex>

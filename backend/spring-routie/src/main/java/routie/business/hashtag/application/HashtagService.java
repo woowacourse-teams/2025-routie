@@ -21,10 +21,10 @@ public class HashtagService {
     private final RoutieSpaceRepository routieSpaceRepository;
 
     public HashtagsResponse getHashtagsByRoutieSpace(final String routieSpaceIdentifier) {
-        RoutieSpace routieSpace = routieSpaceRepository.findByIdentifier(routieSpaceIdentifier)
+        final RoutieSpace routieSpace = routieSpaceRepository.findByIdentifier(routieSpaceIdentifier)
                 .orElseThrow(() -> new BusinessException(ErrorCode.ROUTIE_SPACE_NOT_FOUND));
 
-        List<Hashtag> hashtags = hashtagRepository.findByRoutieSpace(routieSpace);
+        final List<Hashtag> hashtags = hashtagRepository.findByRoutieSpace(routieSpace);
 
         return HashtagsResponse.from(hashtags);
     }

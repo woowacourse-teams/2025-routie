@@ -11,13 +11,13 @@ public final class ClientIpExtractor {
 
     public static String extractClientIp(final HttpServletRequest request) {
         for (final String header : IP_HEADERS) {
-            String ip = request.getHeader(header);
+            final String ip = request.getHeader(header);
             if (isValidIp(ip)) {
                 return ip.split(",")[0].trim();
             }
         }
 
-        String remoteAddr = request.getRemoteAddr();
+        final String remoteAddr = request.getRemoteAddr();
         return remoteAddr == null ? UNKNOWN_IP : remoteAddr;
     }
 

@@ -8,7 +8,7 @@ public record PlaceListResponseV2(
         List<PlaceCardResponseV2> places
 ) {
     public static PlaceListResponseV2 from(final List<Place> places) {
-        List<PlaceCardResponseV2> placeCardResponses = places.stream()
+        final List<PlaceCardResponseV2> placeCardResponses = places.stream()
                 .map(place -> PlaceCardResponseV2.createPlaceWithLikeCount(place, 0L))
                 .toList();
 
@@ -26,7 +26,7 @@ public record PlaceListResponseV2(
             List<String> hashtags
     ) {
         public static PlaceCardResponseV2 createPlaceWithLikeCount(final Place place, final Long likeCount) {
-            List<String> hashTagNames = place.getHashtags().stream()
+            final List<String> hashTagNames = place.getHashtags().stream()
                     .map(Hashtag::getName)
                     .toList();
 

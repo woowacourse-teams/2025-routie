@@ -1,6 +1,5 @@
 package routie.global.exception.infrastructure.expected.authentication;
 
-
 import io.jsonwebtoken.JwtException;
 import org.springframework.http.ProblemDetail;
 import org.springframework.web.bind.annotation.ExceptionHandler;

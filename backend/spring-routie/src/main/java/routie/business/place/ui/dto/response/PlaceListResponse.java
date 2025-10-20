@@ -8,7 +8,7 @@ public record PlaceListResponse(
 ) {
 
     public static PlaceListResponse from(final List<Place> places) {
-        List<PlaceCardResponse> placeCardResponses = places.stream()
+        final List<PlaceCardResponse> placeCardResponses = places.stream()
                 .map(PlaceCardResponse::from)
                 .toList();
 

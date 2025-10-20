@@ -1,22 +1,31 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import Flex from '@/@common/components/Flex/Flex';
 import Icon from '@/@common/components/IconSvg/Icon';
 import { useToastContext } from '@/@common/contexts/useToastContext';
 import RoutieSpaceName from '@/domains/routieSpace/components/RoutieSpaceName/RoutieSpaceName';
 import { useShareLink } from '@/domains/routieSpace/hooks/useShareLink';
+import { useRoutieSpaceNavigation } from '@/pages/Home/hooks/useRoutieSpaceNavigation';
 import PlaceView from '@/pages/RoutieSpace/components/PlaceView/PlaceView';
 import RouteView from '@/pages/RoutieSpace/components/RouteView/RouteView';
+import SidebarToggleButton from '@/pages/RoutieSpace/components/SidebarToggleButton/SidebarToggleButton';
 import TabButton from '@/pages/RoutieSpace/components/TabButton/TabButton';
-import theme from '@/styles/theme';
 
-import { SidebarContainerStyle } from './Sidebar.styles';
+import {
+  SidebarContainerStyle,
+  SidebarContentContainerStyle,
+  SidebarTabContainerStyle,
+} from './Sidebar.styles';
+import { CONTENT_WIDTH, SIDEBAR_WIDTH_CLOSED } from './width';
 
-const Sidebar = () => {
-  const [activeTab, setActiveTab] = useState<'place' | 'route'>('place');
+import type { SidebarProps } from './Sidebar.types';
 
+const Sidebar = ({ isOpen, handleToggle }: SidebarProps) => {
+  const [activeTab, setActiveTab] = useState<'place' | 'route' | null>('place');
+  const { handleMoveToHome } = useRoutieSpaceNavigation();
   const { showToast } = useToastContext();
   const shareLink = useShareLink();
+
   const handleCopy = async () => {
     if (!shareLink) return;
     try {
@@ -27,29 +36,47 @@ const Sidebar = () => {
     }
   };
 
+  const handleTabClick = (tab: 'place' | 'route') => {
+    if (!isOpen) {
+      handleToggle();
+    }
+    setActiveTab(tab);
+  };
+
+  useEffect(() => {
+    if (!isOpen) {
+      setActiveTab(null);
+    }
+  }, [isOpen]);
+
   return (
-    <div css={SidebarContainerStyle}>
-      <Flex justifyContent="flex-start" height="100%" padding="1.6rem 0">
+    <div css={SidebarContainerStyle(isOpen)}>
+      <SidebarToggleButton isOpen={isOpen} handleToggle={handleToggle} />
+      <Flex justifyContent="flex-start" height="100%">
         <Flex
-          width="10%"
+          width={SIDEBAR_WIDTH_CLOSED}
           height="100%"
-          css={{
-            backgroundColor: `${theme.colors.white}`,
-          }}
+          css={SidebarTabContainerStyle(isOpen)}
           direction="column"
           justifyContent="flex-start"
+          padding="1.6rem 0"
         >
-          <Icon name="logo" size={34} css={{ marginBottom: '1rem' }} />
+          <Icon
+            name="logo"
+            size={34}
+            css={{ marginBottom: '1rem' }}
+            onClick={handleMoveToHome}
+          />
           <TabButton
             name="장소"
             icon={activeTab === 'place' ? 'placeTabSelect' : 'placeTab'}
-            onClick={() => setActiveTab('place')}
+            onClick={() => handleTabClick('place')}
             isActive={activeTab === 'place'}
           />
           <TabButton
             name="동선"
             icon={activeTab === 'route' ? 'routeTabSelect' : 'routeTab'}
-            onClick={() => setActiveTab('route')}
+            onClick={() => handleTabClick('route')}
             isActive={activeTab === 'route'}
           />
           <TabButton
@@ -61,10 +88,12 @@ const Sidebar = () => {
         </Flex>
         <Flex
           direction="column"
-          width="90%"
+          width={CONTENT_WIDTH}
           gap={1}
           justifyContent="flex-start"
           height="100%"
+          padding="1.6rem 0"
+          css={SidebarContentContainerStyle(isOpen)}
         >
           <RoutieSpaceName />
           {activeTab === 'route' && <RouteView />}

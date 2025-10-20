@@ -503,7 +503,7 @@ public enum ErrorCode {
     private final HttpStatus httpStatus;
 
     public ProblemDetail toProblemDetail() {
-        ProblemDetail problemDetail = ProblemDetail.forStatus(httpStatus);
+        final ProblemDetail problemDetail = ProblemDetail.forStatus(httpStatus);
         problemDetail.setDetail(message);
         problemDetail.setProperty("code", code);
         return problemDetail;

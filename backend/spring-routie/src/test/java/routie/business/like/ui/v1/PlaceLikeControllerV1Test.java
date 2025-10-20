@@ -79,24 +79,24 @@ public class PlaceLikeControllerV1Test {
     @DisplayName("V1 API로 장소에 좋아요를 성공적으로 추가한다")
     public void likePlace() {
         // given
-        long placeId = testPlace.getId();
-        long initialLikeCount = placeLikeRepository.countByPlace(testPlace);
+        final long placeId = testPlace.getId();
+        final long initialLikeCount = placeLikeRepository.countByPlace(testPlace);
 
         // when
-        Response response = RestAssured
+        final Response response = RestAssured
                 .when()
                 .post("/v1/routie-spaces/" + testRoutieSpace.getIdentifier() + "/places/" + placeId + "/likes")
                 .then()
                 .log().all()
                 .extract().response();
 
-        HttpStatus actualHttpStatus = HttpStatus.valueOf(response.getStatusCode());
-        HttpStatus expectedHttpStatus = HttpStatus.OK;
+        final HttpStatus actualHttpStatus = HttpStatus.valueOf(response.getStatusCode());
+        final HttpStatus expectedHttpStatus = HttpStatus.OK;
 
         // then
         assertThat(expectedHttpStatus).isEqualTo(actualHttpStatus);
 
-        long finalLikeCount = placeLikeRepository.countByPlace(testPlace);
+        final long finalLikeCount = placeLikeRepository.countByPlace(testPlace);
         assertThat(finalLikeCount).isEqualTo(initialLikeCount + 1);
     }
 
@@ -105,19 +105,19 @@ public class PlaceLikeControllerV1Test {
     @DisplayName("V1 API로 존재하지 않는 루티 스페이스에 좋아요 시 예외가 발생한다")
     public void likeWithNonExistentRoutieSpace() {
         // given
-        long placeId = testPlace.getId();
-        String nonExistentIdentifier = "non-existent-identifier";
+        final long placeId = testPlace.getId();
+        final String nonExistentIdentifier = "non-existent-identifier";
 
         // when
-        Response response = RestAssured
+        final Response response = RestAssured
                 .when()
                 .post("/v1/routie-spaces/" + nonExistentIdentifier + "/places/" + placeId + "/likes")
                 .then()
                 .log().all()
                 .extract().response();
 
-        HttpStatus actualHttpStatus = HttpStatus.valueOf(response.getStatusCode());
-        HttpStatus expectedHttpStatus = HttpStatus.NOT_FOUND;
+        final HttpStatus actualHttpStatus = HttpStatus.valueOf(response.getStatusCode());
+        final HttpStatus expectedHttpStatus = HttpStatus.NOT_FOUND;
 
         // then
         assertThat(expectedHttpStatus).isEqualTo(actualHttpStatus);
@@ -128,10 +128,10 @@ public class PlaceLikeControllerV1Test {
     @DisplayName("V1 API로 존재하지 않는 장소에 좋아요 시 예외가 발생한다")
     public void likeNonExistentPlace() {
         // given
-        long nonExistentPlaceId = 999999L;
+        final long nonExistentPlaceId = 999999L;
 
         // when
-        Response response = RestAssured
+        final Response response = RestAssured
                 .when()
                 .post("/v1/routie-spaces/" + testRoutieSpace.getIdentifier() + "/places/" + nonExistentPlaceId
                         + "/likes")
@@ -139,8 +139,8 @@ public class PlaceLikeControllerV1Test {
                 .log().all()
                 .extract().response();
 
-        HttpStatus actualHttpStatus = HttpStatus.valueOf(response.getStatusCode());
-        HttpStatus expectedHttpStatus = HttpStatus.NOT_FOUND;
+        final HttpStatus actualHttpStatus = HttpStatus.valueOf(response.getStatusCode());
+        final HttpStatus expectedHttpStatus = HttpStatus.NOT_FOUND;
 
         // then
         assertThat(expectedHttpStatus).isEqualTo(actualHttpStatus);
@@ -152,14 +152,14 @@ public class PlaceLikeControllerV1Test {
         // given
 
         // 테스트용 사용자 생성 및 토큰 발급
-        User user = UserFixture.emptyUser();
+        final User user = UserFixture.emptyUser();
         userRepository.save(user);
-        String accessToken = jwtProcessor.createJwt(user);
+        final String accessToken = jwtProcessor.createJwt(user);
 
         placeLikeRepository.save(user.likePlace(testPlace));
 
         // when
-        Response response = RestAssured
+        final Response response = RestAssured
                 .given().log().all()
                 .header("Authorization", "Bearer " + accessToken)
                 .when()
@@ -168,8 +168,8 @@ public class PlaceLikeControllerV1Test {
                 .log().all()
                 .extract().response();
 
-        HttpStatus actualHttpStatus = HttpStatus.valueOf(response.getStatusCode());
-        HttpStatus expectedHttpStatus = HttpStatus.OK;
+        final HttpStatus actualHttpStatus = HttpStatus.valueOf(response.getStatusCode());
+        final HttpStatus expectedHttpStatus = HttpStatus.OK;
 
         // then
         assertThat(actualHttpStatus).isEqualTo(expectedHttpStatus);
@@ -181,13 +181,13 @@ public class PlaceLikeControllerV1Test {
     @DisplayName("장소에 좋아요를 성공적으로 삭제한다")
     public void deletePlaceLike() {
         // given
-        long placeId = testPlace.getId();
-        long initialLikeCount = placeLikeRepository.countByPlace(testPlace);
+        final long placeId = testPlace.getId();
+        final long initialLikeCount = placeLikeRepository.countByPlace(testPlace);
 
         // 테스트용 사용자 생성 및 토큰 발급
-        User user = UserFixture.emptyUser();
+        final User user = UserFixture.emptyUser();
         userRepository.save(user);
-        String accessToken = jwtProcessor.createJwt(user);
+        final String accessToken = jwtProcessor.createJwt(user);
 
         RestAssured
                 .given().log().all()
@@ -199,7 +199,7 @@ public class PlaceLikeControllerV1Test {
                 .extract().response();
 
         // when
-        Response response = RestAssured
+        final Response response = RestAssured
                 .given().log().all()
                 .header("Authorization", "Bearer " + accessToken)
                 .when()
@@ -208,13 +208,13 @@ public class PlaceLikeControllerV1Test {
                 .log().all()
                 .extract().response();
 
-        HttpStatus actualHttpStatus = HttpStatus.valueOf(response.getStatusCode());
-        HttpStatus expectedHttpStatus = HttpStatus.OK;
+        final HttpStatus actualHttpStatus = HttpStatus.valueOf(response.getStatusCode());
+        final HttpStatus expectedHttpStatus = HttpStatus.OK;
 
         // then
         assertThat(expectedHttpStatus).isEqualTo(actualHttpStatus);
 
-        long finalLikeCount = placeLikeRepository.countByPlace(testPlace);
+        final long finalLikeCount = placeLikeRepository.countByPlace(testPlace);
         assertThat(finalLikeCount).isEqualTo(initialLikeCount);
     }
 }

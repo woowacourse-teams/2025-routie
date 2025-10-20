@@ -8,7 +8,8 @@ public class UserBuilder {
 
     private String nickname = UserFixture.anyNickname();
     private String externalAuthenticationIdentifier = UserFixture.anyExternalAuthenticationIdentifier();
-    private ExternalAuthenticationProvider externalAuthenticationProvider = UserFixture.anyExternalAuthenticationProvider();
+    private ExternalAuthenticationProvider externalAuthenticationProvider = UserFixture
+            .anyExternalAuthenticationProvider();
     private List<RoutieSpace> routieSpaces = UserFixture.emptyRoutieSpaces();
 
     public UserBuilder nickname(final String nickname) {

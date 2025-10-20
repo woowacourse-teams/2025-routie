@@ -30,7 +30,7 @@ public class RoutieSpaceControllerV2 {
     public ResponseEntity<RoutieSpaceCreateResponse> createRoutieSpace(
             @AuthenticatedParticipant(roles = Role.USER) final User user
     ) {
-        RoutieSpaceCreateResponse routieSpaceCreateResponse = routieSpaceService.addRoutieSpaceV2(user);
+        final RoutieSpaceCreateResponse routieSpaceCreateResponse = routieSpaceService.addRoutieSpaceV2(user);
         return ResponseEntity.ok(routieSpaceCreateResponse);
     }
 
@@ -38,7 +38,8 @@ public class RoutieSpaceControllerV2 {
     public ResponseEntity<RoutieSpaceReadResponse> readRoutieSpace(
             @PathVariable final String routieSpaceIdentifier
     ) {
-        RoutieSpaceReadResponse routieSpaceReadResponse = routieSpaceService.getRoutieSpace(routieSpaceIdentifier);
+        final RoutieSpaceReadResponse routieSpaceReadResponse = routieSpaceService.getRoutieSpace(
+                routieSpaceIdentifier);
         return ResponseEntity.ok(routieSpaceReadResponse);
     }
 
@@ -48,7 +49,7 @@ public class RoutieSpaceControllerV2 {
             @RequestBody @Valid final RoutieSpaceUpdateRequest routieSpaceUpdateRequest,
             @AuthenticatedParticipant(roles = Role.USER) final User user
     ) {
-        RoutieSpaceUpdateResponse routieSpaceUpdateResponse = routieSpaceService.modifyRoutieSpaceV2(
+        final RoutieSpaceUpdateResponse routieSpaceUpdateResponse = routieSpaceService.modifyRoutieSpaceV2(
                 routieSpaceIdentifier,
                 routieSpaceUpdateRequest,
                 user

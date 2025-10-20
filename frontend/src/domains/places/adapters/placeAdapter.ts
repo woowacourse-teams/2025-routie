@@ -1,6 +1,8 @@
+import { addHashtagPrefix } from '@/@common/utils/format';
 import type {
   FetchPlaceListResponseType,
   FetchPlaceResponseType,
+  HashtagsResponseType,
   LikedPlacesResponseType,
   SearchPlaceResponseType,
 } from '@/domains/places/types/api.types';
@@ -18,6 +20,7 @@ const getPlaceAdapter = (data: FetchPlaceResponseType): PlaceAdapterType => {
     addressName: data.addressName,
     latitude: data.latitude,
     longitude: data.longitude,
+    hashtags: data.hashtags?.map(addHashtagPrefix) ?? [],
   };
 };
 
@@ -33,6 +36,7 @@ const getPlaceListAdapter = (
       latitude: item.latitude,
       longitude: item.longitude,
       likeCount: item.likeCount,
+      hashtags: item.hashtags?.map(addHashtagPrefix) ?? [],
     };
   });
 };
@@ -58,9 +62,16 @@ const likedPlacesAdapter = (
   return { likedPlaceIds: data.likedPlaceIds };
 };
 
+const hashtagsAdapter = (data: HashtagsResponseType): HashtagsResponseType => {
+  return {
+    hashtags: data.hashtags.map(addHashtagPrefix),
+  };
+};
+
 export {
   getPlaceAdapter,
   getPlaceListAdapter,
   searchPlaceAdapter,
   likedPlacesAdapter,
+  hashtagsAdapter,
 };

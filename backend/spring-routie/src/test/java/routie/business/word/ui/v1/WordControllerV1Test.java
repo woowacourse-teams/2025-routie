@@ -50,7 +50,7 @@ class WordControllerV1Test {
         wordService.addWord(WordType.NOUN, "하루");
 
         // when
-        ExtractableResponse<Response> response = RestAssured.given().log().all()
+        final ExtractableResponse<Response> response = RestAssured.given().log().all()
                 .when().get("/v1/words/nickname")
                 .then().log().all()
                 .extract();
@@ -64,10 +64,10 @@ class WordControllerV1Test {
     @DisplayName("단어 추가 시 내용이 비어있으면 400 에러를 반환한다.")
     void addWordWithBlankContent() {
         // given
-        WordCreateRequest request = new WordCreateRequest(" ");
+        final WordCreateRequest request = new WordCreateRequest(" ");
 
         // when
-        ExtractableResponse<Response> response = RestAssured.given().log().all()
+        final ExtractableResponse<Response> response = RestAssured.given().log().all()
                 .contentType(ContentType.JSON)
                 .body(request)
                 .when().post("/v1/words/{wordType}", WordType.ADJECTIVE)
@@ -82,10 +82,10 @@ class WordControllerV1Test {
     @DisplayName("단어 목록 덮어쓰기 시 null 목록이면 400 에러를 반환한다.")
     void replaceAllWordsWithNullList() {
         // given
-        String requestBody = "{\"contents\":null}";
+        final String requestBody = "{\"contents\":null}";
 
         // when
-        ExtractableResponse<Response> response = RestAssured.given().log().all()
+        final ExtractableResponse<Response> response = RestAssured.given().log().all()
                 .contentType(ContentType.JSON)
                 .body(requestBody)
                 .when().put("/v1/words/{wordType}", WordType.ADJECTIVE)
@@ -101,10 +101,10 @@ class WordControllerV1Test {
     void replaceAllWordsWithBlankContentInList() {
         // given
         wordService.addWord(WordType.ADJECTIVE, "오래된1");
-        WordReplaceRequest request = new WordReplaceRequest(List.of("유효한단어", " "));
+        final WordReplaceRequest request = new WordReplaceRequest(List.of("유효한단어", " "));
 
         // when
-        ExtractableResponse<Response> response = RestAssured.given().log().all()
+        final ExtractableResponse<Response> response = RestAssured.given().log().all()
                 .contentType(ContentType.JSON)
                 .body(request)
                 .when().put("/v1/words/{wordType}", WordType.ADJECTIVE)

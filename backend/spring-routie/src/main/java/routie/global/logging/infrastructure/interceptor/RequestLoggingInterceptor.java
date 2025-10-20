@@ -37,10 +37,10 @@ public class RequestLoggingInterceptor implements HandlerInterceptor {
             final Exception ex
     ) {
         try {
-            Long startTime = (Long) request.getAttribute(START_TIME_ATTRIBUTE);
-            long executionTime = startTime == null ? -1 : System.currentTimeMillis() - startTime;
+            final Long startTime = (Long) request.getAttribute(START_TIME_ATTRIBUTE);
+            final long executionTime = startTime == null ? -1 : System.currentTimeMillis() - startTime;
 
-            Map<LoggingField, Object> logData = logDataBuilder.buildLogData(new InterceptorLoggingContext(
+            final Map<LoggingField, Object> logData = logDataBuilder.buildLogData(new InterceptorLoggingContext(
                     request,
                     response,
                     executionTime

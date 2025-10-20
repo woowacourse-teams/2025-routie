@@ -5,8 +5,6 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import routie.business.place.domain.PlaceSearcher;
-import routie.business.place.domain.SearchedPlace;
 
 @SpringBootTest
 class PlaceSearcherTest {
@@ -17,8 +15,8 @@ class PlaceSearcherTest {
     @Test
     @Disabled
     void searchPlacesPlaceTest() {
-        String query = "선릉역";
-        List<SearchedPlace> searchedPlaces = placeSearcher.searchPlaces(query, 5);
+        final String query = "선릉역";
+        final List<SearchedPlace> searchedPlaces = placeSearcher.searchPlaces(query, 5);
         for (final SearchedPlace searchedPlace : searchedPlaces) {
             System.out.println(
                     searchedPlace.searchedPlaceId() + ", "

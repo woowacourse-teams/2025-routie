@@ -25,11 +25,9 @@ import routie.global.exception.domain.ErrorCode;
 @Entity
 @Getter
 @Table(
-        name = "routie_places",
-        uniqueConstraints = {
+        name = "routie_places", uniqueConstraints = {
                 @UniqueConstraint(
-                        name = "uk_routie_space_place",
-                        columnNames = {"routie_space_id", "place_id"}
+                        name = "uk_routie_space_place", columnNames = {"routie_space_id", "place_id"}
                 )
         }
 )

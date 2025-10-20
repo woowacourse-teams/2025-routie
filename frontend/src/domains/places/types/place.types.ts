@@ -4,6 +4,7 @@ interface PlaceBaseType {
   addressName: string;
   latitude: number;
   longitude: number;
+  hashtags?: string[];
 }
 
 interface SearchedPlaceType extends PlaceBaseType {

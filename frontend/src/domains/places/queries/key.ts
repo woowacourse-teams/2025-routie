@@ -4,6 +4,7 @@ const placesKeys = {
   detail: (placeId: number) => [...placesKeys.all, 'detail', placeId] as const,
   search: (query: string) => [...placesKeys.all, 'search', query] as const,
   liked: () => [...placesKeys.all, 'liked'] as const,
+  hashtags: () => [...placesKeys.all, 'hashtags'] as const,
 };
 
 export { placesKeys };

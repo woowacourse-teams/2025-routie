@@ -3,7 +3,7 @@ import { css } from '@emotion/react';
 import theme from '@/styles/theme';
 
 const PlaceViewContainerStyle = css`
-  overflow-y: auto;
+  overflow: hidden;
   background-color: ${theme.colors.white};
 `;
 
@@ -15,4 +15,13 @@ const PlaceListContainerStyle = css`
   }
 `;
 
-export { PlaceViewContainerStyle, PlaceListContainerStyle };
+const PlaceCardContainerStyle = css`
+  position: relative;
+  width: 100%;
+`;
+
+export {
+  PlaceViewContainerStyle,
+  PlaceListContainerStyle,
+  PlaceCardContainerStyle,
+};

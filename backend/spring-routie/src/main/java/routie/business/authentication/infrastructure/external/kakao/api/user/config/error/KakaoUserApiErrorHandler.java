@@ -41,7 +41,7 @@ public class KakaoUserApiErrorHandler implements ResponseErrorHandler {
     }
 
     private <T> T parseResponseBody(final ClientHttpResponse response, final Class<T> bodyType) throws Exception {
-        try (InputStream responseBody = response.getBody()) {
+        try (final InputStream responseBody = response.getBody()) {
             return objectMapper.readValue(responseBody, bodyType);
         }
     }

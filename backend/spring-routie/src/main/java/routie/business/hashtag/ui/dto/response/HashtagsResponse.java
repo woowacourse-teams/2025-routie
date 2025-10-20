@@ -8,7 +8,7 @@ public record HashtagsResponse(
 ) {
 
     public static HashtagsResponse from(final List<Hashtag> hashtags) {
-        List<String> hashtagNames = hashtags.stream()
+        final List<String> hashtagNames = hashtags.stream()
                 .map(Hashtag::getName)
                 .sorted()
                 .toList();

@@ -3,6 +3,7 @@ import { createPortal } from 'react-dom';
 
 import Flex from '@/@common/components/Flex/Flex';
 import Text from '@/@common/components/Text/Text';
+import HashtagFilter from '@/domains/maps/components/HashtagFilter/HashtagFilter';
 import PlaceOverlayCard from '@/domains/maps/components/PlaceOverlayCard/PlaceOverlayCard';
 import { useClickedPlace } from '@/domains/maps/hooks/useClickedPlace';
 import { useCustomOverlay } from '@/domains/maps/hooks/useCustomOverlay';
@@ -16,7 +17,9 @@ import {
   KakaoMapWrapperStyle,
 } from './KakaoMap.styles';
 
-const KakaoMap = () => {
+import type { KakaoMapProps } from './KakaoMap.types';
+
+const KakaoMap = ({ isSidebarOpen }: KakaoMapProps) => {
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const [isInitialLoad, setIsInitialLoad] = useState(true);
 
@@ -70,6 +73,7 @@ const KakaoMap = () => {
         aria-label="카카오 지도"
         tabIndex={0}
       />
+      <HashtagFilter isSidebarOpen={isSidebarOpen} />
       {finalMapState === 'loading' && (
         <Flex
           css={KakaoMapLoadingStyle}

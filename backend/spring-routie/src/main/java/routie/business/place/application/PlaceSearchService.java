@@ -17,7 +17,7 @@ public class PlaceSearchService {
     private final PlaceSearcher placeSearcher;
 
     public SearchedPlacesResponse search(final String query) {
-        List<SearchedPlace> searchedPlaces = placeSearcher.searchPlaces(query, SEARCH_SIZE);
+        final List<SearchedPlace> searchedPlaces = placeSearcher.searchPlaces(query, SEARCH_SIZE);
 
         return SearchedPlacesResponse.from(searchedPlaces);
     }

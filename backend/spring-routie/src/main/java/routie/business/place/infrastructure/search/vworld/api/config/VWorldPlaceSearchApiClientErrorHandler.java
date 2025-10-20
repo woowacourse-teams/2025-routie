@@ -26,8 +26,10 @@ public class VWorldPlaceSearchApiClientErrorHandler implements ResponseErrorHand
             if (response.getStatusCode().isError()) {
                 return true;
             }
-            VWorldPlaceSearchApiStatusResponse vWorldPlaceSearchApiStatusResponse =
-                    parseResponseBody(response, VWorldPlaceSearchApiStatusResponse.class);
+            final VWorldPlaceSearchApiStatusResponse vWorldPlaceSearchApiStatusResponse = parseResponseBody(
+                    response,
+                    VWorldPlaceSearchApiStatusResponse.class
+            );
             return !vWorldPlaceSearchApiStatusResponse.isSuccess();
         } catch (final Exception e) {
             log.warn("V World API 응답 상태 파싱 실패", e);
@@ -54,7 +56,7 @@ public class VWorldPlaceSearchApiClientErrorHandler implements ResponseErrorHand
     }
 
     private <T> T parseResponseBody(final ClientHttpResponse response, final Class<T> bodyType) throws Exception {
-        try (InputStream responseBody = response.getBody()) {
+        try (final InputStream responseBody = response.getBody()) {
             return objectMapper.readValue(responseBody, bodyType);
         }
     }

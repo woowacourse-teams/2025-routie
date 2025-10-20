@@ -6,41 +6,46 @@ import {
   useAddPlaceQuery,
   useDeletePlaceQuery,
   usePlaceListQuery,
+  useUpdatePlaceHashtagsMutation,
 } from '@/domains/places/queries/usePlaceQuery';
 import type { SearchedPlaceType } from '@/domains/places/types/place.types';
-import { useGoogleEventTrigger } from '@/libs/googleAnalytics/hooks/useGoogleEventTrigger';
 
 const usePlaceList = () => {
   const { data: placeList, error } = usePlaceListQuery();
-  const { mutateAsync: addPlace, data: addedPlaceId } = useAddPlaceQuery();
-  const { mutateAsync: deletePlace } = useDeletePlaceQuery();
+  const { mutate: addPlace, data: addedPlaceId } = useAddPlaceQuery();
+  const { mutate: deletePlace } = useDeletePlaceQuery();
+  const { mutate: updatePlaceHashtags } = useUpdatePlaceHashtagsMutation();
   const { showToast } = useToastContext();
   const { runWithLock: runDeleteWithLock } = useAsyncLock();
   const { runWithLock: runAddWithLock } = useAsyncLock();
-  const { triggerEvent } = useGoogleEventTrigger();
+  const { runWithLock: runUpdateWithLock } = useAsyncLock();
 
   const handleAddPlace = useCallback(
     async (addPlaceInfo: SearchedPlaceType) => {
       const result = await runAddWithLock(async () => {
-        await addPlace(addPlaceInfo);
+        addPlace(addPlaceInfo);
       });
       return result;
     },
-    [addPlace],
+    [addPlace, runAddWithLock],
   );
 
   const handleDeletePlace = useCallback(
     async (placeId: number) => {
       return runDeleteWithLock(async () => {
-        await deletePlace(placeId);
-        triggerEvent({
-          action: 'click',
-          category: 'place',
-          label: '장소 삭제하기 버튼',
-        });
+        deletePlace(placeId);
       });
     },
-    [deletePlace],
+    [deletePlace, runDeleteWithLock],
+  );
+
+  const handleUpdatePlaceHashtags = useCallback(
+    async (placeId: number, hashtags: string[]) => {
+      return runUpdateWithLock(async () => {
+        updatePlaceHashtags({ placeId, hashtags });
+      });
+    },
+    [updatePlaceHashtags, runUpdateWithLock],
   );
 
   useEffect(() => {
@@ -58,6 +63,7 @@ const usePlaceList = () => {
     handleAddPlace,
     addedPlaceId,
     handleDeletePlace,
+    handleUpdatePlaceHashtags,
   };
 };
 

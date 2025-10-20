@@ -6,8 +6,8 @@ interface SearchEmptyStateProps {
 
 interface SearchListProps {
   searchResults: SearchedPlaceType[];
-  onClose: () => void;
   searchedKeyword: string;
+  onSelectPlace: (place: SearchedPlaceType) => void;
 }
 
 type AddressType = '도로명' | '지번';
@@ -19,7 +19,7 @@ interface SearchAddressProps {
 
 interface SearchPlaceProps extends SearchAddressProps {
   searchResult: SearchedPlaceType;
-  onClose: () => void;
+  onSelect?: () => void;
 }
 
 export type {

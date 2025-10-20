@@ -19,7 +19,7 @@ class PlaceTest {
         // given
 
         // when
-        Place place = Place.create(
+        final Place place = Place.create(
                 "스타벅스",
                 "테스트 도로명 주소",
                 "테스트 지번 주소",
@@ -36,7 +36,7 @@ class PlaceTest {
     @DisplayName("장소명이 null일 경우 실패")
     void createPlaceWithNullNameFail() {
         // given
-        String nullName = null;
+        final String nullName = null;
 
         // when & then
         assertThatThrownBy(() -> Place.create(
@@ -54,7 +54,7 @@ class PlaceTest {
     @DisplayName("장소명이 공백일 경우 실패")
     void createPlaceWithBlankNameFail() {
         // given
-        String blankName = "   ";
+        final String blankName = "   ";
 
         // when & then
         assertThatThrownBy(() -> Place.create(
@@ -72,7 +72,7 @@ class PlaceTest {
     @DisplayName("장소명이 31자일 경우 실패")
     void createPlaceWith31CharacterNameFail() {
         // given
-        String longName = "a".repeat(31);
+        final String longName = "a".repeat(31);
 
         // when & then
         assertThatThrownBy(() -> Place.create(

@@ -1,8 +1,10 @@
+import { removeHashtagPrefix } from '@/@common/utils/format';
 import { getAccessTokenOrThrow } from '@/@common/utils/getAccessTokenOrThrow';
 import { apiClient } from '@/apis';
 import {
   getPlaceAdapter,
   getPlaceListAdapter,
+  hashtagsAdapter,
   likedPlacesAdapter,
   searchPlaceAdapter,
 } from '@/domains/places/adapters/placeAdapter';
@@ -10,9 +12,11 @@ import type {
   AddPlaceRequestType,
   DeletePlaceRequestType,
   FetchPlaceRequestType,
+  HashtagsResponseType,
   LikePlaceRequestType,
   SearchPlaceRequestType,
   UnlikePlaceRequestType,
+  UpdatePlaceHashtagsRequestType,
 } from '@/domains/places/types/api.types';
 import type {
   LikedPlacesResponseAdapterType,
@@ -30,8 +34,11 @@ const addPlace = async (placeInfo: AddPlaceRequestType) => {
   ensureRoutieSpaceUuid(routieSpaceUuid);
 
   const response = await apiClient.post(
-    `/v1/routie-spaces/${routieSpaceUuid}/places`,
-    placeInfo,
+    `/v2/routie-spaces/${routieSpaceUuid}/places`,
+    {
+      ...placeInfo,
+      hashtags: placeInfo.hashtags?.map(removeHashtagPrefix),
+    },
   );
 
   const data = await response.json();
@@ -145,6 +152,38 @@ const getLikedPlaces = async (): Promise<LikedPlacesResponseAdapterType> => {
   return likedPlacesAdapter(data);
 };
 
+const updatePlaceHashtags = async ({
+  placeId,
+  hashtags,
+}: UpdatePlaceHashtagsRequestType) => {
+  const routieSpaceUuid = getRoutieSpaceUuid();
+  ensureRoutieSpaceUuid(routieSpaceUuid);
+
+  const response = await apiClient.put(
+    `/v1/routie-spaces/${routieSpaceUuid}/places/${placeId}/hashtags`,
+    { hashtags: hashtags.map(removeHashtagPrefix) },
+  );
+
+  if (!response.ok) {
+    throw new Error('해시태그 수정 실패');
+  }
+
+  return response.json();
+};
+
+const getHashtags = async (): Promise<HashtagsResponseType> => {
+  const routieSpaceUuid = getRoutieSpaceUuid();
+  ensureRoutieSpaceUuid(routieSpaceUuid);
+
+  const response = await apiClient.get(
+    `/v1/routie-spaces/${routieSpaceUuid}/hashtags`,
+  );
+
+  const data = await response.json();
+
+  return hashtagsAdapter(data);
+};
+
 export {
   addPlace,
   deletePlace,
@@ -154,4 +193,6 @@ export {
   postLikePlace,
   deleteLikePlace,
   getLikedPlaces,
+  updatePlaceHashtags,
+  getHashtags,
 };
