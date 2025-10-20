@@ -153,6 +153,7 @@ const useLikedPlacesQuery = (enabled: boolean) => {
 
 const useUpdatePlaceHashtagsMutation = () => {
   const { showToast } = useToastContext();
+    const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: ({ placeId, hashtags }: UpdatePlaceHashtagsRequestType) =>
@@ -162,6 +163,7 @@ const useUpdatePlaceHashtagsMutation = () => {
         message: '해시태그가 수정되었습니다.',
         type: 'success',
       });
+      queryClient.invalidateQueries({ queryKey: placesKeys.hashtags() });
     },
     onError: (error) => {
       showToast({
