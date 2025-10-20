@@ -12,7 +12,7 @@ const useHashtag = (initialTags?: string[]) => {
 
   const [inputValue, setInputValue] = useState('');
   const { selectedTags, handleToggleTag, resetSelectedTags, addTag } =
-    useHashtagSelection(initialTags);
+    useHashtagSelection(initialTags, false);
   const { data: hashtagsData, isError, error } = useHashtagsQuery();
   const previousTags = hashtagsData?.hashtags || [];
   const { showToast } = useToastContext();
