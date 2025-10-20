@@ -58,7 +58,6 @@ const useAddPlaceQuery = () => {
         message: '장소가 추가되었습니다.',
         type: 'success',
       });
-      queryClient.invalidateQueries({ queryKey: placesKeys.list() });
       queryClient.setQueryData(['addedPlaceId'], data.id);
     },
     onError: (error) => {
@@ -72,7 +71,6 @@ const useAddPlaceQuery = () => {
 
 const useDeletePlaceQuery = () => {
   const { showToast } = useToastContext();
-  const queryClient = useQueryClient();
   const { triggerEvent } = useGoogleEventTrigger();
 
   return useMutation({
@@ -82,7 +80,6 @@ const useDeletePlaceQuery = () => {
         message: '장소가 삭제되었습니다.',
         type: 'success',
       });
-      queryClient.invalidateQueries({ queryKey: placesKeys.list() });
       triggerEvent({
         action: 'click',
         category: 'place',
@@ -110,7 +107,6 @@ const useLikePlaceMutation = () => {
         message: '좋아요가 추가되었습니다.',
         type: 'success',
       });
-      queryClient.invalidateQueries({ queryKey: placesKeys.list() });
       queryClient.invalidateQueries({ queryKey: placesKeys.liked() });
     },
     onError: (error) => {
@@ -134,7 +130,6 @@ const useDeleteLikePlaceMutation = () => {
         message: '좋아요가 취소되었습니다.',
         type: 'success',
       });
-      queryClient.invalidateQueries({ queryKey: placesKeys.list() });
       queryClient.invalidateQueries({ queryKey: placesKeys.liked() });
     },
     onError: (error) => {
@@ -156,7 +151,6 @@ const useLikedPlacesQuery = (enabled: boolean) => {
 
 const useUpdatePlaceHashtagsMutation = () => {
   const { showToast } = useToastContext();
-  const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: ({ placeId, hashtags }: UpdatePlaceHashtagsRequestType) =>
@@ -166,7 +160,6 @@ const useUpdatePlaceHashtagsMutation = () => {
         message: '해시태그가 수정되었습니다.',
         type: 'success',
       });
-      queryClient.invalidateQueries({ queryKey: placesKeys.list() });
     },
     onError: (error) => {
       showToast({
@@ -179,12 +172,12 @@ const useUpdatePlaceHashtagsMutation = () => {
 
 export {
   useAddPlaceQuery,
+  useDeleteLikePlaceMutation,
   useDeletePlaceQuery,
+  useLikedPlacesQuery,
+  useLikePlaceMutation,
   usePlaceDetailQuery,
   usePlaceListQuery,
   usePlaceSearchQuery,
-  useLikePlaceMutation,
-  useDeleteLikePlaceMutation,
-  useLikedPlacesQuery,
   useUpdatePlaceHashtagsMutation,
 };
