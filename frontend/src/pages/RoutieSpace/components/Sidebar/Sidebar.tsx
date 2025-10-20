@@ -8,6 +8,7 @@ import { useShareLink } from '@/domains/routieSpace/hooks/useShareLink';
 import { useRoutieSpaceNavigation } from '@/pages/Home/hooks/useRoutieSpaceNavigation';
 import PlaceView from '@/pages/RoutieSpace/components/PlaceView/PlaceView';
 import RouteView from '@/pages/RoutieSpace/components/RouteView/RouteView';
+import ShareView from '@/pages/RoutieSpace/components/ShareView/ShareView';
 import SidebarToggleButton from '@/pages/RoutieSpace/components/SidebarToggleButton/SidebarToggleButton';
 import TabButton from '@/pages/RoutieSpace/components/TabButton/TabButton';
 
@@ -21,7 +22,9 @@ import { CONTENT_WIDTH, SIDEBAR_WIDTH_CLOSED } from './width';
 import type { SidebarProps } from './Sidebar.types';
 
 const Sidebar = ({ isOpen, handleToggle }: SidebarProps) => {
-  const [activeTab, setActiveTab] = useState<'place' | 'route'>('place');
+  const [activeTab, setActiveTab] = useState<'place' | 'route' | 'share'>(
+    'place',
+  );
   const { handleMoveToHome } = useRoutieSpaceNavigation();
   const { showToast } = useToastContext();
   const shareLink = useShareLink();
@@ -69,8 +72,8 @@ const Sidebar = ({ isOpen, handleToggle }: SidebarProps) => {
           <TabButton
             name="링크 공유"
             icon="share"
-            onClick={handleCopy}
-            isActive={false}
+            onClick={() => setActiveTab('share')}
+            isActive={activeTab === 'share'}
           />
         </Flex>
         <Flex
@@ -85,6 +88,7 @@ const Sidebar = ({ isOpen, handleToggle }: SidebarProps) => {
           <RoutieSpaceName />
           {activeTab === 'route' && <RouteView />}
           {activeTab === 'place' && <PlaceView />}
+          {activeTab === 'share' && <ShareView onShareClick={handleCopy} />}
         </Flex>
       </Flex>
     </div>
