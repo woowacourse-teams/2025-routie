@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 
-import FeedbackWidget from '@/@common/components/FeedbackWidget/FeedbacWidget';
+import FeedbackWidget from '@/@common/components/FeedbackWidget/FeedbackWidget';
 import Flex from '@/@common/components/Flex/Flex';
 import Header from '@/@common/components/Header/Header';
 import Text from '@/@common/components/Text/Text';
