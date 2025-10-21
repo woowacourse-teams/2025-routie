@@ -1,6 +1,5 @@
 import { useEffect, useRef } from 'react';
 
-import { patchSseSubscription } from '@/libs/sse/apis/sseApi';
 import { ensureStreamToken } from '@/libs/utils/token';
 
 // 훅을 사용할 때 외부에서 넘기는 옵션 형태
@@ -38,18 +37,6 @@ const openSource = (fullUrl: string, entry: RegistryEntry) => {
     if (entry.reconnectTimer) {
       window.clearTimeout(entry.reconnectTimer);
       entry.reconnectTimer = undefined;
-    }
-
-    try {
-      await patchSseSubscription({
-        subscriptionPath: `/routie-spaces/{routieSpaceIdentifier}/server-sent-events/subscriptions/{token}`,
-        token: placeSseToken,
-      });
-    } catch (error) {
-      console.error(`[SSE] 구독 PATCH 실패 (${fullUrl})`, error);
-      source.close();
-      entry.source = null;
-      registry.delete(fullUrl);
     }
   };
 
