@@ -3,6 +3,7 @@ import { useSearchParams } from 'react-router-dom';
 
 import { useQueryClient } from '@tanstack/react-query';
 
+import { useToastContext } from '@/@common/contexts/useToastContext';
 import { getPlaceListAdapter } from '@/domains/places/adapters/placeAdapter';
 import { placesKeys } from '@/domains/places/queries/key';
 import type { FetchPlaceListResponseType } from '@/domains/places/types/api.types';
@@ -16,6 +17,7 @@ type PlaceHistoryEvent = {
 export const usePlaceStream = () => {
   const queryClient = useQueryClient();
   const [searchParams] = useSearchParams();
+  const { showToast } = useToastContext();
 
   const routieSpaceUuid = searchParams.get('routieSpaceIdentifier');
 
@@ -41,7 +43,13 @@ export const usePlaceStream = () => {
   useSse<PlaceHistoryEvent>({
     url: sseUrl,
     eventName: 'PLACE_CREATED',
-    onMessage: ({ places }) => replaceLPlaceList({ places }),
+    onMessage: ({ places }) => {
+      replaceLPlaceList({ places });
+      showToast({
+        message: '장소가 추가되었습니다.',
+        type: 'success',
+      });
+    },
   });
 
   useSse<PlaceHistoryEvent>({
@@ -53,6 +61,12 @@ export const usePlaceStream = () => {
   useSse<PlaceHistoryEvent>({
     url: sseUrl,
     eventName: 'PLACE_DELETED',
-    onMessage: ({ places }) => replaceLPlaceList({ places }),
+    onMessage: ({ places }) => {
+      replaceLPlaceList({ places });
+      showToast({
+        message: '장소가 삭제되었습니다.',
+        type: 'success',
+      });
+    },
   });
 };

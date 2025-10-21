@@ -56,10 +56,6 @@ const useAddPlaceQuery = () => {
   return useMutation({
     mutationFn: (addPlaceInfo: AddPlaceRequestType) => addPlace(addPlaceInfo),
     onSuccess: (data) => {
-      showToast({
-        message: '장소가 추가되었습니다.',
-        type: 'success',
-      });
       queryClient.invalidateQueries({ queryKey: placesKeys.hashtags() });
       queryClient.setQueryData(['addedPlaceId'], data.id);
     },
@@ -79,10 +75,6 @@ const useDeletePlaceQuery = () => {
   return useMutation({
     mutationFn: (placeId: number) => deletePlace({ placeId }),
     onSuccess: () => {
-      showToast({
-        message: '장소가 삭제되었습니다.',
-        type: 'success',
-      });
       triggerEvent({
         action: 'click',
         category: 'place',
