@@ -11,7 +11,6 @@ import copy from '@/assets/icons/copy.svg';
 import drag from '@/assets/icons/drag.svg';
 import edit from '@/assets/icons/edit.svg';
 import feedback from '@/assets/icons/feedback.svg';
-import logo from '@/assets/icons/logo.png';
 import logout from '@/assets/icons/logout.svg';
 import menu from '@/assets/icons/menu.svg';
 import pin from '@/assets/icons/pin.svg';
@@ -30,6 +29,7 @@ import thumbsUp from '@/assets/icons/thumbs-up.svg';
 import disableTrash from '@/assets/icons/trash-disable.svg';
 import trash from '@/assets/icons/trash.svg';
 import user from '@/assets/icons/user.svg';
+import logo from '@/assets/images/routie-logo.png';
 
 const allIcons = {
   allSelect,

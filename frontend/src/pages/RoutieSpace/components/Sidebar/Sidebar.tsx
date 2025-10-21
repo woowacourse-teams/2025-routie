@@ -42,12 +42,12 @@ const Sidebar = ({ isOpen, handleToggle }: SidebarProps) => {
           css={SidebarTabContainerStyle(isOpen)}
           direction="column"
           justifyContent="flex-start"
-          padding="1.6rem 0"
+          padding="1.4rem 0"
         >
           <Icon
             name="logo"
-            size={34}
-            css={{ marginBottom: '1rem' }}
+            size={35}
+            css={{ marginBottom: '1.4rem' }}
             onClick={handleMoveToHome}
           />
           <TabButton
