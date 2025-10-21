@@ -107,12 +107,13 @@ const PlaceCard = ({
             />
             <Flex justifyContent="flex-end" width="15rem">
               <Button
-                variant="danger"
+                variant="dangerSecondary"
                 onClick={() => onDelete(props.id)}
-                padding="0.6rem 1.2rem"
-                width="auto"
+                padding="0.6rem 0.8rem"
+                width="8rem"
+                disabled={selected}
               >
-                <Text variant="label" color={theme.colors.gray[300]}>
+                <Text variant="label" color={theme.colors.white}>
                   삭제
                 </Text>
               </Button>
@@ -130,12 +131,13 @@ const PlaceCard = ({
           />
           <Flex justifyContent="flex-end" width="15rem">
             <Button
-              variant="danger"
+              variant="dangerSecondary"
               onClick={() => onDelete(props.id)}
-              padding="0.6rem 1.2rem"
-              width="auto"
+              padding="0.6rem 0.8rem"
+              width="8rem"
+              disabled={selected}
             >
-              <Text variant="label" color={theme.colors.gray[300]}>
+              <Text variant="label" color={theme.colors.white}>
                 삭제
               </Text>
             </Button>
