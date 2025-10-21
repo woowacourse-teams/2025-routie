@@ -89,6 +89,11 @@ const PlaceCard = ({
           <Text variant="caption" color={theme.colors.white}>
             동선에 추가
           </Text>
+          <span className="hide">
+            , 장소명 {props.name}, 주소
+            {props.roadAddressName ?? props.addressName}, 엔터를 눌러 동선에
+            추가할 수 있습니다.
+          </span>
         </Button>
       </Flex>
 
@@ -112,7 +117,11 @@ const PlaceCard = ({
                 padding="0.6rem 1.2rem"
                 width="auto"
               >
-                <Text variant="label" color={theme.colors.gray[300]}>
+                <Text
+                  variant="label"
+                  color={theme.colors.gray[300]}
+                  aria-label="장소 삭제"
+                >
                   삭제
                 </Text>
               </Button>
@@ -135,7 +144,11 @@ const PlaceCard = ({
               padding="0.6rem 1.2rem"
               width="auto"
             >
-              <Text variant="label" color={theme.colors.gray[300]}>
+              <Text
+                variant="label"
+                color={theme.colors.gray[300]}
+                aria-label="장소 삭제"
+              >
                 삭제
               </Text>
             </Button>
