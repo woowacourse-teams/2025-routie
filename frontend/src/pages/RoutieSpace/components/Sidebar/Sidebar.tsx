@@ -68,7 +68,8 @@ const Sidebar = ({ isOpen, handleToggle }: SidebarProps) => {
             onClick={handleMoveToHome}
           />
           <p id="sideBar" className="hide" tabIndex={0}>
-            사이드바에서 장소, 동선, 링크 공유 중에 선택할 수 있습니다.
+            사이드바에서 장소, 동선, 링크 공유 중 하나를 선택할 수 있습니다. 각
+            탭에 포커스를 이동한 뒤 엔터를 누르면 해당 기능이 열립니다.
           </p>
           <TabButton
             name="장소"
