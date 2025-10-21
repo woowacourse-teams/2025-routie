@@ -1,27 +1,65 @@
 import Button from '@/@common/components/Button/Button';
+import Flex from '@/@common/components/Flex/Flex';
+import Icon from '@/@common/components/IconSvg/Icon';
 import Text from '@/@common/components/Text/Text';
 import { HashtagProps } from '@/domains/places/types/hashtag.types';
 import theme from '@/styles/theme';
 
-import { HashtagStyle } from './Hashtag.styles';
+import { ButtonStyle, DeleteStyle } from './Hashtag.styles';
 
-const Hashtag = ({ tag, isSelected, onClick }: HashtagProps) => {
+const Hashtag = ({
+  tag,
+  isSelected,
+  onClick,
+  count,
+  isEditMode,
+  onDelete,
+}: HashtagProps) => {
+  const handleDelete = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    onDelete?.();
+  };
+
+  const handleClick = () => {
+    if (isEditMode) {
+      return;
+    }
+    onClick();
+  };
+
   return (
-    <Button
-      variant={isSelected ? 'primary' : 'secondary'}
-      onClick={onClick}
-      padding="0.6rem 1.2rem"
-      width="auto"
-      radius="lg"
-      css={isSelected ? HashtagStyle : undefined}
-    >
-      <Text
-        variant="caption"
-        color={isSelected ? theme.colors.white : theme.colors.blue[450]}
+    <div style={{ position: 'relative' }}>
+      <Button
+        variant={isSelected ? 'primary' : 'secondary'}
+        onClick={handleClick}
+        padding="1rem"
+        width="auto"
+        radius="lg"
+        css={ButtonStyle}
       >
-        {tag}
-      </Text>
-    </Button>
+        <Flex gap={0.4}>
+          <Text
+            variant="caption"
+            color={isSelected ? theme.colors.white : theme.colors.gray[300]}
+          >
+            {tag}
+          </Text>
+          {count !== undefined && (
+            <Text
+              variant="caption"
+              color={isSelected ? theme.colors.white : theme.colors.gray[300]}
+            >
+              ({count})
+            </Text>
+          )}
+        </Flex>
+      </Button>
+      {isEditMode && (
+        <Flex onClick={handleDelete} css={DeleteStyle}>
+          <Icon name="deleteIcon" size={24} />
+        </Flex>
+      )}
+    </div>
   );
 };
 
