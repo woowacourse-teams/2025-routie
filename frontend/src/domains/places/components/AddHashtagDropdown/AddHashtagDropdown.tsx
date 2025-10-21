@@ -65,7 +65,11 @@ const AddHashtagDropdown = (props: AddHashtagDropdownProps) => {
             placeholder="해시태그를 추가하거나 만들어보세요"
             onChange={handleInputChange}
             onKeyDown={handleEnterTag}
+            aria-describedby="hashtag"
           />
+          <span id="hashtag" className="hide">
+            해시 태그를 입력 후 엔터를 눌러 추가할 수 있습니다.
+          </span>
           <Button
             variant="primary"
             onClick={() => handleAddTag(inputValue)}
@@ -123,7 +127,12 @@ const AddHashtagDropdown = (props: AddHashtagDropdownProps) => {
         )}
       </Flex>
       <Flex gap={1}>
-        <Button variant="secondary" onClick={onCancel} radius="lg">
+        <Button
+          variant="secondary"
+          onClick={onCancel}
+          radius="lg"
+          aria-label="장소 추가 닫기"
+        >
           <Text variant="caption">닫기</Text>
         </Button>
         <Button variant="primary" onClick={handleSubmit} radius="lg">
