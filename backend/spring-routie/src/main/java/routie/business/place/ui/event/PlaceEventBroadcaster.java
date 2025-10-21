@@ -3,7 +3,7 @@ package routie.business.place.ui.event;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Async;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.event.TransactionPhase;
 import org.springframework.transaction.event.TransactionalEventListener;
 import routie.business.place.application.PlaceService;
@@ -15,7 +15,7 @@ import routie.business.routiespace.ui.event.RoutieSpaceSseEmitters;
 import routie.business.routiespace.ui.event.RoutieSpaceSseEstablishedEvent;
 import routie.business.sse.ui.SseMessage;
 
-@Service
+@Component
 @RequiredArgsConstructor
 public class PlaceEventBroadcaster {
 
