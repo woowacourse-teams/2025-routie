@@ -1,14 +1,11 @@
-import { useHashtagSelection } from '@/domains/places/hooks/useHashtagSelection';
+import { useHashtagFilter } from '@/domains/places/hooks/useHashtagFilter';
 
 import { HashtagFilterContext } from './useHashtagFilterContext';
 
 const HashtagFilterProvider = ({ children }: { children: React.ReactNode }) => {
-  const {
-    selectedTags: selectedHashtags,
-    handleToggleTag: updateHashtagSelection,
-    handleSelectAll,
-    resetSelectedTags,
-  } = useHashtagSelection();
+
+  const { selectedTags: selectedHashtags, handleToggleTag: updateHashtagSelection, handleSelectAll, resetSelectedTags } =
+    useHashtagFilter();
 
   return (
     <HashtagFilterContext.Provider

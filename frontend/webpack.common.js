@@ -2,6 +2,7 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { DefinePlugin } = require('webpack');
 const ImageMinimizerPlugin = require('image-minimizer-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 const buildDate = new Date().toISOString();
 
@@ -42,6 +43,14 @@ module.exports = () => {
     plugins: [
       new HtmlWebpackPlugin({
         template: 'public/index.html',
+      }),
+      new CopyWebpackPlugin({
+        patterns: [
+          {
+            from: 'public/favicon',
+            to: 'favicon',
+          },
+        ],
       }),
       new DefinePlugin({
         __BUILD_VERSION__: JSON.stringify(require('./package.json').version),
