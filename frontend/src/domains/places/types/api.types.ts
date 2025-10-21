@@ -51,6 +51,10 @@ interface UpdatePlaceHashtagsRequestType {
   hashtags: string[];
 }
 
+interface HashtagsResponseType {
+  hashtags: string[];
+}
+
 export type {
   SearchPlaceRequestType,
   SearchPlaceResponseType,
@@ -63,4 +67,5 @@ export type {
   UnlikePlaceRequestType,
   LikedPlacesResponseType,
   UpdatePlaceHashtagsRequestType,
+  HashtagsResponseType,
 };

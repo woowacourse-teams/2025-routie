@@ -21,9 +21,6 @@ const useRoutieSpaceNavigation = () => {
   }, [navigate]);
 
   const handleMoveToManageRoutieSpace = useCallback(() => {
-    const existingUuid = localStorage.getItem('routieSpaceUuid');
-    if (!existingUuid) return;
-
     navigate(`/manage-routie-spaces`);
   }, [navigate]);
 

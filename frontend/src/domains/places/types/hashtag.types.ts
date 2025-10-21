@@ -1,4 +1,4 @@
-import type { SearchedPlaceType } from './place.types';
+import type { PlaceWithLikeType, SearchedPlaceType } from './place.types';
 import type { SearchAddressProps } from './searchPlace.types';
 
 interface HashtagProps {
@@ -19,4 +19,23 @@ interface EditHashtagDropdownProps {
   onUpdate: (hashtags: string[]) => Promise<void>;
 }
 
-export type { HashtagProps, AddHashtagDropdownProps, EditHashtagDropdownProps };
+interface HashtagFilterContextType {
+  selectedHashtags: string[];
+  updateHashtagSelection: (hashtag: string) => void;
+  handleSelectAll: (allTags: string[]) => void;
+  resetSelectedTags: () => void;
+}
+
+interface FilterPlacesByHashtagsParams {
+  places: PlaceWithLikeType[];
+  selectedHashtags: string[];
+  priorityPlaceIds?: number[];
+}
+
+export type {
+  HashtagProps,
+  AddHashtagDropdownProps,
+  EditHashtagDropdownProps,
+  HashtagFilterContextType,
+  FilterPlacesByHashtagsParams,
+};

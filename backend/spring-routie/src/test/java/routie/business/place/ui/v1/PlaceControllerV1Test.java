@@ -5,8 +5,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
+
 import java.util.List;
 import java.util.Map;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -27,8 +29,8 @@ import routie.business.hashtag.domain.Hashtag;
 import routie.business.place.domain.Place;
 import routie.business.place.domain.PlaceBuilder;
 import routie.business.place.domain.PlaceRepository;
-import routie.business.place.ui.dto.request.UpdateHashtagsRequest;
-import routie.business.place.ui.dto.response.UpdateHashtagsResponse;
+import routie.business.place.ui.dto.request.HashtagsUpdateRequest;
+import routie.business.place.ui.dto.response.HashtagsUpdateResponse;
 import routie.business.routiespace.domain.RoutieSpace;
 import routie.business.routiespace.domain.RoutieSpaceIdentifierProvider;
 import routie.business.routiespace.domain.RoutieSpaceRepository;
@@ -217,13 +219,13 @@ public class PlaceControllerV1Test {
         // given
         final String routieSpaceIdentifier = testPlace.getRoutieSpace().getIdentifier();
         final Long placeId = testPlace.getId();
-        final UpdateHashtagsRequest updateHashtagsRequest = new UpdateHashtagsRequest(List.of("new", "hash", "tags"));
+        final HashtagsUpdateRequest hashtagsUpdateRequest = new HashtagsUpdateRequest(List.of("new", "hash", "tags"));
 
         // when
         final Response response = RestAssured
                 .given()
                 .contentType(ContentType.JSON)
-                .body(updateHashtagsRequest)
+                .body(hashtagsUpdateRequest)
                 .when()
                 .put(
                         "/v1/routie-spaces/{routieSpaceIdentifier}/places/{placeId}/hashtags",
@@ -237,12 +239,12 @@ public class PlaceControllerV1Test {
         final HttpStatus actualHttpStatus = HttpStatus.valueOf(response.getStatusCode());
         final HttpStatus expectedHttpStatus = HttpStatus.OK;
 
-        final UpdateHashtagsResponse updateHashtagsResponse = response.as(UpdateHashtagsResponse.class);
+        final HashtagsUpdateResponse hashtagsUpdateResponse = response.as(HashtagsUpdateResponse.class);
 
         // then
         assertThat(actualHttpStatus).isEqualTo(expectedHttpStatus);
-        assertThat(updateHashtagsResponse.hashtags()).hasSize(3);
-        assertThat(updateHashtagsResponse.hashtags()).containsExactlyInAnyOrder("new", "hash", "tags");
+        assertThat(hashtagsUpdateResponse.hashtags()).hasSize(3);
+        assertThat(hashtagsUpdateResponse.hashtags()).containsExactlyInAnyOrder("new", "hash", "tags");
     }
 
     @Test
@@ -251,13 +253,13 @@ public class PlaceControllerV1Test {
         // given
         final String routieSpaceIdentifier = testPlace.getRoutieSpace().getIdentifier();
         final Long placeId = testPlace.getId();
-        final UpdateHashtagsRequest updateHashtagsRequest = new UpdateHashtagsRequest(List.of("new", "longHashtags"));
+        final HashtagsUpdateRequest hashtagsUpdateRequest = new HashtagsUpdateRequest(List.of("new", "longHashtags"));
 
         // when
         final Response response = RestAssured
                 .given()
                 .contentType(ContentType.JSON)
-                .body(updateHashtagsRequest)
+                .body(hashtagsUpdateRequest)
                 .when()
                 .put(
                         "/v1/routie-spaces/{routieSpaceIdentifier}/places/{placeId}/hashtags",

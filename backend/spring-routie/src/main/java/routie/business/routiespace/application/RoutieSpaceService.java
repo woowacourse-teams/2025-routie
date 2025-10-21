@@ -1,11 +1,14 @@
 package routie.business.routiespace.application;
 
+import java.util.List;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import routie.business.hashtag.domain.HashtagRepository;
 import routie.business.like.domain.PlaceLikeRepository;
 import routie.business.participant.domain.User;
+import routie.business.place.domain.PlaceRepository;
 import routie.business.routiespace.domain.RoutieSpace;
 import routie.business.routiespace.domain.RoutieSpaceIdentifierProvider;
 import routie.business.routiespace.domain.RoutieSpaceRepository;
@@ -17,8 +20,6 @@ import routie.business.routiespace.ui.dto.response.RoutieSpaceUpdateResponse;
 import routie.global.exception.domain.BusinessException;
 import routie.global.exception.domain.ErrorCode;
 
-import java.util.List;
-
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -28,6 +29,7 @@ public class RoutieSpaceService {
     private final RoutieSpaceIdentifierProvider routieSpaceIdentifierProvider;
     private final PlaceLikeRepository placeLikeRepository;
     private final HashtagRepository hashtagRepository;
+    private final PlaceRepository placeRepository;
 
     public RoutieSpaceReadResponse getRoutieSpace(final String routieSpaceIdentifier) {
         final RoutieSpace routieSpace = getRoutieSpaceByRoutieSpaceIdentifier(routieSpaceIdentifier);
@@ -95,6 +97,7 @@ public class RoutieSpaceService {
         final RoutieSpace routieSpace = getRoutieSpaceByRoutieSpaceIdentifier(routieSpaceIdentifier);
         validateOwner(user, routieSpace);
 
+        placeRepository.deletePlaceHashtagsByRoutieSpace(routieSpace);
         hashtagRepository.deleteByRoutieSpace(routieSpace);
         placeLikeRepository.deleteByRoutieSpace(routieSpace);
         routieSpaceRepository.delete(routieSpace);

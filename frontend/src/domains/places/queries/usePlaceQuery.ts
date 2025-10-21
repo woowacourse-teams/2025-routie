@@ -5,6 +5,7 @@ import {
   addPlace,
   deleteLikePlace,
   deletePlace,
+  getHashtags,
   getLikedPlaces,
   getPlace,
   getPlaceList,
@@ -59,6 +60,7 @@ const useAddPlaceQuery = () => {
         type: 'success',
       });
       queryClient.invalidateQueries({ queryKey: placesKeys.list() });
+      queryClient.invalidateQueries({ queryKey: placesKeys.hashtags() });
       queryClient.setQueryData(['addedPlaceId'], data.id);
     },
     onError: (error) => {
@@ -167,6 +169,7 @@ const useUpdatePlaceHashtagsMutation = () => {
         type: 'success',
       });
       queryClient.invalidateQueries({ queryKey: placesKeys.list() });
+      queryClient.invalidateQueries({ queryKey: placesKeys.hashtags() });
     },
     onError: (error) => {
       showToast({
@@ -174,6 +177,13 @@ const useUpdatePlaceHashtagsMutation = () => {
         type: 'error',
       });
     },
+  });
+};
+
+const useHashtagsQuery = () => {
+  return useQuery({
+    queryKey: placesKeys.hashtags(),
+    queryFn: getHashtags,
   });
 };
 
@@ -187,4 +197,5 @@ export {
   useDeleteLikePlaceMutation,
   useLikedPlacesQuery,
   useUpdatePlaceHashtagsMutation,
+  useHashtagsQuery,
 };

@@ -1,39 +1,49 @@
 import { useEffect, useState } from 'react';
 
 import { useToastContext } from '@/@common/contexts/useToastContext';
+import { addHashtagPrefix } from '@/@common/utils/format';
+import { useHashtagsQuery } from '@/domains/places/queries/usePlaceQuery';
+
+import { useHashtagSelection } from './useHashtagSelection';
 
 const useHashtag = (initialTags?: string[]) => {
+  const MAX_TAG_LENGTH = 7;
+  const MAX_TAGS = 5;
+
   const [inputValue, setInputValue] = useState('');
-  const [selectedTags, setSelectedTags] = useState<string[]>(initialTags || []);
-  const [previousTags] = useState<string[]>(['#맛집', '#카페', '#데이트코스']);
+  const { selectedTags, handleToggleTag, resetSelectedTags, addTag } =
+    useHashtagSelection(initialTags);
+  const { data: hashtagsData, isError, error } = useHashtagsQuery();
+  const previousTags = hashtagsData?.hashtags || [];
+  const { showToast } = useToastContext();
 
   useEffect(() => {
-    if (initialTags) {
-      setSelectedTags(initialTags);
+    if (isError) {
+      showToast({
+        message: error?.message || '해시태그를 불러오는데 실패했습니다.',
+        type: 'error',
+      });
     }
-  }, [initialTags]);
+  }, [isError, error, showToast]);
 
-  const { showToast } = useToastContext();
   const handleInputChange = (value: string) => {
+    const hashtagWithoutHash = value.startsWith('#') ? value.slice(1) : value;
+    if (hashtagWithoutHash.length > MAX_TAG_LENGTH) {
+      return;
+    }
     setInputValue(value);
   };
 
-  const handleToggleTag = (tag: string) => {
-    if (selectedTags.includes(tag)) {
-      setSelectedTags((prev) => prev.filter((t) => t !== tag));
-    } else {
-      if (selectedTags.length >= MAX_TAGS) {
-        showToast({
-          message: `해시태그는 최대 ${MAX_TAGS}개까지 추가할 수 있습니다.`,
-          type: 'info',
-        });
-        return;
-      }
-      setSelectedTags((prev) => [...prev, tag]);
+  const handleToggleTagWithLimit = (tag: string) => {
+    if (!selectedTags.includes(tag) && selectedTags.length >= MAX_TAGS) {
+      showToast({
+        message: `해시태그는 최대 ${MAX_TAGS}개까지 추가할 수 있습니다.`,
+        type: 'info',
+      });
+      return;
     }
+    handleToggleTag(tag);
   };
-
-  const MAX_TAGS = 5;
 
   const handleAddTag = (tag: string) => {
     const trimmedTag = tag.trim();
@@ -47,9 +57,7 @@ const useHashtag = (initialTags?: string[]) => {
       return;
     }
 
-    const formattedTag = trimmedTag.startsWith('#')
-      ? trimmedTag
-      : `#${trimmedTag}`;
+    const formattedTag = addHashtagPrefix(trimmedTag);
 
     if (selectedTags.includes(formattedTag)) {
       showToast({
@@ -59,7 +67,7 @@ const useHashtag = (initialTags?: string[]) => {
       return;
     }
 
-    setSelectedTags((prev) => [formattedTag, ...prev]);
+    addTag(formattedTag);
     setInputValue('');
   };
 
@@ -72,7 +80,7 @@ const useHashtag = (initialTags?: string[]) => {
 
   const handleReset = () => {
     setInputValue('');
-    setSelectedTags([]);
+    resetSelectedTags();
   };
 
   return {
@@ -81,7 +89,7 @@ const useHashtag = (initialTags?: string[]) => {
     previousTags,
     handleInputChange,
     handleAddTag,
-    handleToggleTag,
+    handleToggleTag: handleToggleTagWithLimit,
     handleEnterTag,
     handleReset,
   };
