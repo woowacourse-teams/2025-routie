@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import routie.business.hashtag.application.HashtagService;
+import routie.business.hashtag.ui.dto.response.HashtagHistoryResponse;
 import routie.business.hashtag.ui.dto.response.HashtagsResponse;
 
 @RestController
@@ -21,6 +22,12 @@ public class HashtagControllerV1 {
     public ResponseEntity<HashtagsResponse> getHashtags(@PathVariable final String routieSpaceIdentifier) {
         final HashtagsResponse hashtagsResponse = hashtagService.getHashtagsByRoutieSpace(routieSpaceIdentifier);
         return ResponseEntity.ok(hashtagsResponse);
+    }
+
+    @GetMapping("/history")
+    public ResponseEntity<HashtagHistoryResponse> readHashtagHistory(@PathVariable final String routieSpaceIdentifier) {
+        final HashtagHistoryResponse hashtagHistoryResponse = hashtagService.getHashtagHistory(routieSpaceIdentifier);
+        return ResponseEntity.ok(hashtagHistoryResponse);
     }
 
     @DeleteMapping("/{hashtagId}")

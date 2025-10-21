@@ -205,4 +205,36 @@ class HashtagControllerV1Test {
         // then
         assertThat(actualHttpStatus).isEqualTo(expectedHttpStatus);
     }
+
+    @Test
+    @DisplayName("V1 API로 해시태그 사용 히스토리를 조회할 수 있다 - 사용 빈도순 정렬")
+    public void readHashtagHistoryTest() {
+        // given
+        final String routieSpaceIdentifier = testRoutieSpace1.getIdentifier();
+
+        // place1: hashtag1(hash), hashtag2(tag)
+        // place2: hashtag1(hash), hashtag3(hashtag)
+        // 예상 순서: hash(2번), hashtag(1번), tag(1번)
+        // 같은 빈도일 경우 이름순: hashtag < tag
+
+        // when
+        final Response response = RestAssured
+                .when()
+                .get("/v1/routie-spaces/{routieSpaceIdentifier}/hashtags/history", routieSpaceIdentifier)
+                .then()
+                .log().all()
+                .extract().response();
+
+        final HttpStatus actualHttpStatus = HttpStatus.valueOf(response.getStatusCode());
+        final HttpStatus expectedHttpStatus = HttpStatus.OK;
+
+        final List<String> hashtags = response.jsonPath().getList("hashtags", String.class);
+
+        // then
+        assertThat(actualHttpStatus).isEqualTo(expectedHttpStatus);
+        assertThat(hashtags).hasSize(3);
+        assertThat(hashtags.get(0)).isEqualTo("hash");
+        assertThat(hashtags.get(1)).isEqualTo("hashtag");
+        assertThat(hashtags.get(2)).isEqualTo("tag");
+    }
 }

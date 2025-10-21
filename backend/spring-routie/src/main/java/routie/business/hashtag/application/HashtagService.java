@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import routie.business.hashtag.domain.Hashtag;
 import routie.business.hashtag.domain.HashtagRepository;
+import routie.business.hashtag.ui.dto.response.HashtagHistoryResponse;
 import routie.business.hashtag.ui.dto.response.HashtagsResponse;
 import routie.business.place.domain.PlaceRepository;
 import routie.business.routiespace.domain.RoutieSpace;
@@ -30,6 +31,15 @@ public class HashtagService {
         final List<Hashtag> hashtags = hashtagRepository.findByRoutieSpace(routieSpace);
 
         return HashtagsResponse.from(hashtags);
+    }
+
+    public HashtagHistoryResponse getHashtagHistory(final String routieSpaceIdentifier) {
+        final RoutieSpace routieSpace = routieSpaceRepository.findByIdentifier(routieSpaceIdentifier)
+                .orElseThrow(() -> new BusinessException(ErrorCode.ROUTIE_SPACE_NOT_FOUND));
+
+        final List<Hashtag> hashtags = hashtagRepository.findByRoutieSpaceOrderByUsageCountDescAndNameAsc(routieSpace);
+
+        return HashtagHistoryResponse.from(hashtags);
     }
 
     @Transactional
