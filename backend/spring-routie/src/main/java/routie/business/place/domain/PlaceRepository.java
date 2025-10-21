@@ -1,6 +1,7 @@
 package routie.business.place.domain;
 
 import java.util.Optional;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -23,4 +24,7 @@ public interface PlaceRepository extends JpaRepository<Place, Long> {
     @Modifying
     @Query("DELETE FROM PlaceHashtag ph WHERE ph.hashtag = :hashtag")
     void deletePlaceHashtagsByHashtag(@Param("hashtag") Hashtag hashtag);
+
+    @Query("SELECT COUNT(ph) FROM PlaceHashtag ph WHERE ph.hashtag = :hashtag")
+    Long countPlaceHashtagsByHashtag(@Param("hashtag") Hashtag hashtag);
 }

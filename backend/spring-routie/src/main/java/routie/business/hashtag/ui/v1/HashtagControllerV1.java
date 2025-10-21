@@ -18,8 +18,9 @@ public class HashtagControllerV1 {
 
     private final HashtagService hashtagService;
 
+    @Deprecated
     @GetMapping
-    public ResponseEntity<HashtagsResponse> getHashtags(@PathVariable final String routieSpaceIdentifier) {
+    public ResponseEntity<HashtagsResponse> readHashtags(@PathVariable final String routieSpaceIdentifier) {
         final HashtagsResponse hashtagsResponse = hashtagService.getHashtagsByRoutieSpace(routieSpaceIdentifier);
         return ResponseEntity.ok(hashtagsResponse);
     }
