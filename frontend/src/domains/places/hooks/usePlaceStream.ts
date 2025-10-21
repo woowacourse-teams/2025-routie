@@ -24,7 +24,7 @@ export const usePlaceStream = () => {
     queryClient.setQueryData(placesKeys.list(), getPlaceListAdapter(places));
   };
 
-  const sseUrl = `/v1/routie-spaces/${routieSpaceUuid}/places/server-side-events/subscriptions`;
+  const sseUrl = `/v1/routie-spaces/${routieSpaceUuid}/server-sent-events/subscriptions`;
 
   useEffect(() => {
     ensureRoutieSpaceUuid(routieSpaceUuid);
