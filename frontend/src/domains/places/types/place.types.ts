@@ -13,9 +13,12 @@ interface SearchedPlaceType extends PlaceBaseType {
 
 interface PlaceDataType extends PlaceBaseType {
   id: number;
+  kakaoPlaceId?: string;
 }
 
-type PlaceAdapterType = PlaceBaseType;
+interface PlaceAdapterType extends PlaceBaseType {
+  kakaoPlaceId?: string;
+}
 
 interface PlaceWithLikeType extends PlaceDataType {
   likeCount: number;

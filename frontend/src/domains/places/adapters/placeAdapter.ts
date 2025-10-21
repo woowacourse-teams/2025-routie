@@ -21,6 +21,7 @@ const getPlaceAdapter = (data: FetchPlaceResponseType): PlaceAdapterType => {
     latitude: data.latitude,
     longitude: data.longitude,
     hashtags: data.hashtags?.map(addHashtagPrefix) ?? [],
+    kakaoPlaceId: data.kakaoPlaceId,
   };
 };
 
@@ -37,6 +38,7 @@ const getPlaceListAdapter = (
       longitude: item.longitude,
       likeCount: item.likeCount,
       hashtags: item.hashtags?.map(addHashtagPrefix) ?? [],
+      kakaoPlaceId: item.kakaoPlaceId,
     };
   });
 };

@@ -23,11 +23,14 @@ interface FetchPlaceRequestType {
   placeId: number;
 }
 
-type FetchPlaceResponseType = ApiPlaceBaseType;
+interface FetchPlaceResponseType extends ApiPlaceBaseType {
+  kakaoPlaceId?: string;
+}
 
 interface FetchPlaceListResponseType extends ApiPlaceBaseType {
   id: number;
   likeCount: number;
+  kakaoPlaceId?: string;
 }
 
 interface DeletePlaceRequestType {
