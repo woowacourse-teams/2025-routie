@@ -220,7 +220,7 @@ class HashtagControllerV1Test {
         // when
         final Response response = RestAssured
                 .when()
-                .get("/v1/routie-spaces/{routieSpaceIdentifier}/hashtags/history", routieSpaceIdentifier)
+                .get("/v1/routie-spaces/{routieSpaceIdentifier}/hashtags/popular", routieSpaceIdentifier)
                 .then()
                 .log().all()
                 .extract().response();

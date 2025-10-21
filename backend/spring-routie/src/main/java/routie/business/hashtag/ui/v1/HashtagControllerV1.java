@@ -25,7 +25,7 @@ public class HashtagControllerV1 {
         return ResponseEntity.ok(hashtagsResponse);
     }
 
-    @GetMapping("/history")
+    @GetMapping("/popular")
     public ResponseEntity<HashtagHistoryResponse> readHashtagHistory(@PathVariable final String routieSpaceIdentifier) {
         final HashtagHistoryResponse hashtagHistoryResponse = hashtagService.getHashtagHistory(routieSpaceIdentifier);
         return ResponseEntity.ok(hashtagHistoryResponse);
