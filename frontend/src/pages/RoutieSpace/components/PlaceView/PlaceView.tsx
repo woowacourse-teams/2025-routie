@@ -102,6 +102,10 @@ const PlaceView = () => {
     [handleUpdatePlaceHashtags],
   );
 
+  const handleReturnFocusToSidebar = useCallback(() => {
+    document.getElementById('sideBar')?.focus();
+  }, []);
+
   return (
     <Flex direction="column" height="100%" css={PlaceViewContainerStyle}>
       <SearchBox />
@@ -157,6 +161,12 @@ const PlaceView = () => {
               </div>
             );
           })}
+          <span
+            tabIndex={0}
+            onFocus={handleReturnFocusToSidebar}
+            className="hide"
+            aria-label="사이드바로 이동"
+          />
         </Flex>
       )}
     </Flex>
