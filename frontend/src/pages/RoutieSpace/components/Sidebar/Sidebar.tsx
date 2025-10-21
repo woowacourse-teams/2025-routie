@@ -1,13 +1,12 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 import Flex from '@/@common/components/Flex/Flex';
 import Icon from '@/@common/components/IconSvg/Icon';
-import { useToastContext } from '@/@common/contexts/useToastContext';
 import RoutieSpaceName from '@/domains/routieSpace/components/RoutieSpaceName/RoutieSpaceName';
-import { useShareLink } from '@/domains/routieSpace/hooks/useShareLink';
 import { useRoutieSpaceNavigation } from '@/pages/Home/hooks/useRoutieSpaceNavigation';
 import PlaceView from '@/pages/RoutieSpace/components/PlaceView/PlaceView';
 import RouteView from '@/pages/RoutieSpace/components/RouteView/RouteView';
+import ShareView from '@/pages/RoutieSpace/components/ShareView/ShareView';
 import SidebarToggleButton from '@/pages/RoutieSpace/components/SidebarToggleButton/SidebarToggleButton';
 import TabButton from '@/pages/RoutieSpace/components/TabButton/TabButton';
 
@@ -21,33 +20,17 @@ import { CONTENT_WIDTH, SIDEBAR_WIDTH_CLOSED } from './width';
 import type { SidebarProps } from './Sidebar.types';
 
 const Sidebar = ({ isOpen, handleToggle }: SidebarProps) => {
-  const [activeTab, setActiveTab] = useState<'place' | 'route' | null>('place');
+  const [activeTab, setActiveTab] = useState<'place' | 'route' | 'share'>(
+    'place',
+  );
   const { handleMoveToHome } = useRoutieSpaceNavigation();
-  const { showToast } = useToastContext();
-  const shareLink = useShareLink();
 
-  const handleCopy = async () => {
-    if (!shareLink) return;
-    try {
-      await navigator.clipboard.writeText(shareLink);
-      showToast({ type: 'info', message: '링크가 복사되었습니다.' });
-    } catch (error) {
-      showToast({ type: 'error', message: '링크 복사를 실패하였습니다.' });
-    }
-  };
-
-  const handleTabClick = (tab: 'place' | 'route') => {
+  const handleTabClick = (tab: 'place' | 'route' | 'share') => {
     if (!isOpen) {
       handleToggle();
     }
     setActiveTab(tab);
   };
-
-  useEffect(() => {
-    if (!isOpen) {
-      setActiveTab(null);
-    }
-  }, [isOpen]);
 
   return (
     <div css={SidebarContainerStyle(isOpen)}>
@@ -80,10 +63,10 @@ const Sidebar = ({ isOpen, handleToggle }: SidebarProps) => {
             isActive={activeTab === 'route'}
           />
           <TabButton
-            name="링크 공유"
-            icon="share"
-            onClick={handleCopy}
-            isActive={false}
+            name="공유"
+            icon={activeTab === 'share' ? 'shareTabSelect' : 'share'}
+            onClick={() => handleTabClick('share')}
+            isActive={activeTab === 'share'}
           />
         </Flex>
         <Flex
@@ -98,6 +81,7 @@ const Sidebar = ({ isOpen, handleToggle }: SidebarProps) => {
           <RoutieSpaceName />
           {activeTab === 'route' && <RouteView />}
           {activeTab === 'place' && <PlaceView />}
+          {activeTab === 'share' && <ShareView />}
         </Flex>
       </Flex>
     </div>
