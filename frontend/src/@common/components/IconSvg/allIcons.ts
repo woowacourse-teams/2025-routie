@@ -1,3 +1,5 @@
+import allSelect from '@/assets/icons/all-select.svg';
+import allUnselect from '@/assets/icons/all-unselect.svg';
 import arrow from '@/assets/icons/arrow.svg';
 import checkHome from '@/assets/icons/check-home.svg';
 import check from '@/assets/icons/check.svg';
@@ -29,6 +31,8 @@ import trash from '@/assets/icons/trash.svg';
 import user from '@/assets/icons/user.svg';
 
 const allIcons = {
+  allSelect,
+  allUnselect,
   arrow,
   check,
   checkHome,

@@ -25,9 +25,14 @@ const useHashtagFilter = () => {
     setSelectedTags([]);
   };
 
+  const handleSelectAll = (allTags: string[]) => {
+    setSelectedTags(allTags);
+  };
+
   return {
     selectedTags,
     handleToggleTag,
+    handleSelectAll,
     resetSelectedTags,
   };
 };
