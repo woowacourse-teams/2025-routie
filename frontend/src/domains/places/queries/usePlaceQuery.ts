@@ -12,12 +12,15 @@ import {
   postLikePlace,
   searchPlace,
   updatePlaceHashtags,
+  deleteHashtag,
+  getPopularHashtags,
 } from '@/domains/places/apis/place';
 import type {
   AddPlaceRequestType,
   LikePlaceRequestType,
   UnlikePlaceRequestType,
   UpdatePlaceHashtagsRequestType,
+  DeleteHashtagRequestType,
 } from '@/domains/places/types/api.types';
 import { useGoogleEventTrigger } from '@/libs/googleAnalytics/hooks/useGoogleEventTrigger';
 
@@ -187,6 +190,38 @@ const useHashtagsQuery = () => {
   });
 };
 
+const useDeleteHashtagMutation = () => {
+  const { showToast } = useToastContext();
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ hashtagId }: DeleteHashtagRequestType) =>
+      deleteHashtag({ hashtagId }),
+    onSuccess: () => {
+      showToast({
+        message: '해시태그가 삭제되었습니다.',
+        type: 'success',
+      });
+      queryClient.invalidateQueries({ queryKey: placesKeys.list() });
+      queryClient.invalidateQueries({ queryKey: placesKeys.hashtags() });
+      queryClient.invalidateQueries({ queryKey: placesKeys.popularHashtags() });
+    },
+    onError: (error) => {
+      showToast({
+        message: error.message,
+        type: 'error',
+      });
+    },
+  });
+};
+
+const usePopularHashtagsQuery = () => {
+  return useQuery({
+    queryKey: placesKeys.popularHashtags(),
+    queryFn: getPopularHashtags,
+  });
+};
+
 export {
   useAddPlaceQuery,
   useDeletePlaceQuery,
@@ -198,4 +233,6 @@ export {
   useLikedPlacesQuery,
   useUpdatePlaceHashtagsMutation,
   useHashtagsQuery,
+  useDeleteHashtagMutation,
+  usePopularHashtagsQuery,
 };

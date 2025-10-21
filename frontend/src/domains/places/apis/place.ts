@@ -18,6 +18,7 @@ import type {
   SearchPlaceRequestType,
   UnlikePlaceRequestType,
   UpdatePlaceHashtagsRequestType,
+  DeleteHashtagRequestType,
 } from '@/domains/places/types/api.types';
 import type {
   LikedPlacesResponseAdapterType,
@@ -198,6 +199,19 @@ const getPopularHashtags = async (): Promise<string[]> => {
   return popularHashtagsAdapter(data);
 };
 
+const deleteHashtag = async ({ hashtagId }: DeleteHashtagRequestType) => {
+  const routieSpaceUuid = getRoutieSpaceUuid();
+  ensureRoutieSpaceUuid(routieSpaceUuid);
+
+  const response = await apiClient.delete(
+    `/v1/routie-spaces/${routieSpaceUuid}/hashtags/${hashtagId}`,
+  );
+
+  if (!response.ok) {
+    throw new Error('해시태그 삭제 실패');
+  }
+};
+
 export {
   addPlace,
   deletePlace,
@@ -210,4 +224,5 @@ export {
   updatePlaceHashtags,
   getHashtags,
   getPopularHashtags,
+  deleteHashtag,
 };

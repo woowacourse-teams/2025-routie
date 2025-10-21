@@ -61,6 +61,10 @@ interface HashtagsResponseType {
   hashtags: HashtagWithCountType[];
 }
 
+interface DeleteHashtagRequestType {
+  hashtagId: number;
+}
+
 export type {
   SearchPlaceRequestType,
   SearchPlaceResponseType,
@@ -75,4 +79,5 @@ export type {
   UpdatePlaceHashtagsRequestType,
   HashtagsResponseType,
   HashtagWithCountType,
+  DeleteHashtagRequestType,
 };
