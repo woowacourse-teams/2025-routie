@@ -2,24 +2,24 @@ package routie.business.routiespace.ui.v1;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import routie.business.authentication.domain.Role;
 import routie.business.authentication.ui.argument.annotation.AuthenticatedParticipant;
 import routie.business.participant.domain.User;
 import routie.business.routiespace.application.RoutieSpaceService;
-import routie.business.routiespace.domain.RoutieSpace;
 import routie.business.routiespace.ui.dto.request.RoutieSpaceUpdateRequest;
 import routie.business.routiespace.ui.dto.response.RoutieSpaceCreateResponse;
 import routie.business.routiespace.ui.dto.response.RoutieSpaceListResponse;
 import routie.business.routiespace.ui.dto.response.RoutieSpaceReadResponse;
 import routie.business.routiespace.ui.dto.response.RoutieSpaceUpdateResponse;
-import routie.business.routiespace.ui.event.RoutieSpaceSseEmitters;
-import routie.business.routiespace.ui.event.RoutieSpaceSseEstablishedEvent;
-import routie.business.sse.ui.SseToken;
 
 @RestController
 @RequiredArgsConstructor
@@ -27,8 +27,6 @@ import routie.business.sse.ui.SseToken;
 public class RoutieSpaceControllerV1 {
 
     private final RoutieSpaceService routieSpaceService;
-    private final RoutieSpaceSseEmitters routieSpaceSseEmitters;
-    private final ApplicationEventPublisher applicationEventPublisher;
 
     @PostMapping("/routie-spaces")
     public ResponseEntity<RoutieSpaceCreateResponse> createRoutieSpace() {
@@ -76,20 +74,5 @@ public class RoutieSpaceControllerV1 {
         routieSpaceService.deleteRoutieSpace(routieSpaceIdentifier, user);
 
         return ResponseEntity.noContent().build();
-    }
-
-    @GetMapping(
-            value = "/routie-spaces/{routieSpaceIdentifier}/server-sent-events/subscriptions", produces = MediaType.TEXT_EVENT_STREAM_VALUE
-    )
-    public SseEmitter subscribe(
-            @RequestParam("token") final String token,
-            @PathVariable final String routieSpaceIdentifier
-    ) {
-        final RoutieSpace routieSpace = routieSpaceService.getRoutieSpaceByRoutieSpaceIdentifier(routieSpaceIdentifier);
-        final SseEmitter emitter = routieSpaceSseEmitters.put(routieSpace, new SseToken(token));
-        applicationEventPublisher.publishEvent(
-                new RoutieSpaceSseEstablishedEvent(this, emitter, routieSpaceIdentifier)
-        );
-        return emitter;
     }
 }
