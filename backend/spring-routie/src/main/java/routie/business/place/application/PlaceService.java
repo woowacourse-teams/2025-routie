@@ -3,6 +3,7 @@ package routie.business.place.application;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,13 +13,13 @@ import routie.business.place.domain.Place;
 import routie.business.place.domain.PlaceRepository;
 import routie.business.place.ui.dto.request.PlaceCreateRequest;
 import routie.business.place.ui.dto.request.PlaceCreateRequestV2;
-import routie.business.place.ui.dto.request.UpdateHashtagsRequest;
+import routie.business.place.ui.dto.request.HashtagsUpdateRequest;
 import routie.business.place.ui.dto.response.PlaceCreateResponse;
 import routie.business.place.ui.dto.response.PlaceListResponse;
 import routie.business.place.ui.dto.response.PlaceListResponseV2;
 import routie.business.place.ui.dto.response.PlaceListResponseV2.PlaceCardResponseV2;
 import routie.business.place.ui.dto.response.PlaceReadResponse;
-import routie.business.place.ui.dto.response.UpdateHashtagsResponse;
+import routie.business.place.ui.dto.response.HashtagsUpdateResponse;
 import routie.business.like.domain.PlaceLikeRepository;
 import routie.business.routie.domain.RoutiePlaceRepository;
 import routie.business.routiespace.domain.RoutieSpace;
@@ -86,22 +87,22 @@ public class PlaceService {
     }
 
     @Transactional
-    public UpdateHashtagsResponse modifyHashtags(
+    public HashtagsUpdateResponse modifyHashtags(
             final String routieSpaceIdentifier,
             final long placeId,
-            final UpdateHashtagsRequest updateHashtagsRequest
+            final HashtagsUpdateRequest hashtagsUpdateRequest
     ) {
         final RoutieSpace routieSpace = getRoutieSpaceByIdentifier(routieSpaceIdentifier);
         final Place place = getPlaceByIdAndRoutieSpace(placeId, routieSpace);
 
-        final List<Hashtag> newHashtags = convertNamesToHashtags(updateHashtagsRequest.hashtags(), routieSpace);
+        final List<Hashtag> newHashtags = convertNamesToHashtags(hashtagsUpdateRequest.hashtags(), routieSpace);
         place.updateHashtags(newHashtags);
 
         final List<String> updatedHashTagNames = place.getHashtags().stream()
                 .map(Hashtag::getName)
                 .toList();
 
-        return new UpdateHashtagsResponse(updatedHashTagNames);
+        return new HashtagsUpdateResponse(updatedHashTagNames);
     }
 
     private List<Hashtag> convertNamesToHashtags(final List<String> hashTagNames, final RoutieSpace routieSpace) {
