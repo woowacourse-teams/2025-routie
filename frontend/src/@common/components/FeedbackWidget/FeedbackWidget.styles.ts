@@ -2,7 +2,9 @@ import { css } from '@emotion/react';
 
 import theme from '@/styles/theme';
 
-const FeedbackSectionStyle = ({ isVisible }: { isVisible: boolean }) => css`
+import type { FeedbackSectionStyleProps } from './FeedbackWidget.types';
+
+const FeedbackSectionStyle = ({ isVisible }: FeedbackSectionStyleProps) => css`
   pointer-events: ${isVisible ? 'auto' : 'none'};
 
   position: fixed;
