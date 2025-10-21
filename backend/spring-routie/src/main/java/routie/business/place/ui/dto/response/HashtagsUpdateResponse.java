@@ -2,7 +2,7 @@ package routie.business.place.ui.dto.response;
 
 import java.util.List;
 
-public record UpdateHashtagsResponse(
+public record HashtagsUpdateResponse(
         List<String> hashtags
 ) {
 }
