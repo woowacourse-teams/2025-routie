@@ -1,15 +1,12 @@
-// src/domains/places/hooks/usePlaceStream.ts
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
+import { useSearchParams } from 'react-router-dom';
 
 import { useQueryClient } from '@tanstack/react-query';
 
 import { getPlaceListAdapter } from '@/domains/places/adapters/placeAdapter';
 import { placesKeys } from '@/domains/places/queries/key';
 import type { FetchPlaceListResponseType } from '@/domains/places/types/api.types';
-import {
-  ensureRoutieSpaceUuid,
-  getRoutieSpaceUuid,
-} from '@/domains/utils/routieSpaceUuid';
+import { ensureRoutieSpaceUuid } from '@/domains/utils/routieSpaceUuid';
 import { useSse } from '@/libs/sse/hooks/useSse';
 
 type PlaceHistoryEvent = {
@@ -18,13 +15,18 @@ type PlaceHistoryEvent = {
 
 export const usePlaceStream = () => {
   const queryClient = useQueryClient();
-  const routieSpaceUuid = getRoutieSpaceUuid();
+  const [searchParams] = useSearchParams();
+
+  const routieSpaceUuid = searchParams.get('routieSpaceIdentifier');
+
+  const sseUrl = useMemo(
+    () => (routieSpaceUuid ? `/sse/v1/routie-spaces/${routieSpaceUuid}` : ''),
+    [routieSpaceUuid],
+  );
 
   const replaceLPlaceList = ({ places }: PlaceHistoryEvent) => {
     queryClient.setQueryData(placesKeys.list(), getPlaceListAdapter(places));
   };
-
-  const sseUrl = `/sse/v1/routie-spaces/${routieSpaceUuid}`;
 
   useEffect(() => {
     ensureRoutieSpaceUuid(routieSpaceUuid);
