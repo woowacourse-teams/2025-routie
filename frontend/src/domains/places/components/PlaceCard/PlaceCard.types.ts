@@ -10,6 +10,7 @@ interface PlaceCardProps extends PlaceWithLikeType {
   onEdit: (placeId: number) => void | Promise<void>;
   onCancelEdit?: () => void;
   onUpdateHashtags?: (hashtags: string[]) => Promise<void>;
+  onDeleteRoutie: (placeId: number) => Promise<void>;
 }
 
 export type { PlaceCardProps };

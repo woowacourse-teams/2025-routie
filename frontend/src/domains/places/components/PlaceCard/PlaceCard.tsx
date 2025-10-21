@@ -21,10 +21,15 @@ const PlaceCard = ({
   onLike,
   onCancelEdit,
   onUpdateHashtags,
+  onDeleteRoutie,
   ...props
 }: PlaceCardProps) => {
   const handlePlaceSelect = async () => {
     await onSelect(props.id, selected);
+  };
+
+  const handleDeleteRoutie = async () => {
+    await onDeleteRoutie(props.id);
   };
 
   return (
@@ -80,14 +85,13 @@ const PlaceCard = ({
           </Flex>
         </Flex>
         <Button
-          variant="primary"
-          onClick={handlePlaceSelect}
-          disabled={selected}
-          padding="0.6rem 1.2rem"
+          variant={selected ? 'dangerSecondary' : 'primary'}
+          onClick={selected ? handleDeleteRoutie : handlePlaceSelect}
+          padding="0.6rem 0.8rem"
           width="10rem"
         >
-          <Text variant="caption" color={theme.colors.white}>
-            동선에 추가
+          <Text variant="label" color={theme.colors.white}>
+            {selected ? '동선에서 삭제' : '동선에 추가'}
           </Text>
         </Button>
       </Flex>

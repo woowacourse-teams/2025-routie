@@ -47,6 +47,9 @@ export const Default: Story = {
     onLike: (placeId: number) => {
       alert(`장소 ${placeId} 좋아요`);
     },
+    onDeleteRoutie: async (placeId: number) => {
+      alert(`장소 ${placeId} 동선에서 삭제`);
+    },
   },
 };
 
