@@ -23,10 +23,11 @@ import { useGoogleEventTrigger } from '@/libs/googleAnalytics/hooks/useGoogleEve
 
 import { placesKeys } from './key';
 
-const usePlaceListQuery = () => {
+const usePlaceListQuery = ({ enabled = true }: { enabled?: boolean } = {}) => {
   return useQuery({
     queryKey: placesKeys.list(),
     queryFn: getPlaceList,
+    enabled,
   });
 };
 
@@ -153,7 +154,7 @@ const useLikedPlacesQuery = (enabled: boolean) => {
 
 const useUpdatePlaceHashtagsMutation = () => {
   const { showToast } = useToastContext();
-    const queryClient = useQueryClient();
+  const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: ({ placeId, hashtags }: UpdatePlaceHashtagsRequestType) =>
