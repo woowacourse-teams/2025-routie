@@ -140,6 +140,16 @@ public enum ErrorCode {
             "장소에 중복된 해시태그가 존재합니다.",
             HttpStatus.BAD_REQUEST
     ),
+    HASHTAG_NOT_FOUND(
+            "HTG-003",
+            "해당 해시태그를 찾을 수 없습니다.",
+            HttpStatus.NOT_FOUND
+    ),
+    HASHTAG_NOT_FOUND_IN_ROUTIE_SPACE(
+            "HTG-004",
+            "루티 스페이스 내에서 해당하는 해시태그를 찾을 수 없습니다.",
+            HttpStatus.NOT_FOUND
+    ),
 
     /**
      * SPL: Searched Place

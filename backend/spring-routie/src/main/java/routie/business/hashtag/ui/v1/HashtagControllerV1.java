@@ -2,6 +2,7 @@ package routie.business.hashtag.ui.v1;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,5 +21,14 @@ public class HashtagControllerV1 {
     public ResponseEntity<HashtagsResponse> getHashtags(@PathVariable final String routieSpaceIdentifier) {
         final HashtagsResponse hashtagsResponse = hashtagService.getHashtagsByRoutieSpace(routieSpaceIdentifier);
         return ResponseEntity.ok(hashtagsResponse);
+    }
+
+    @DeleteMapping("/{hashtagId}")
+    public ResponseEntity<Void> deleteHashtag(
+            @PathVariable final String routieSpaceIdentifier,
+            @PathVariable final Long hashtagId
+    ) {
+        hashtagService.removeHashtag(routieSpaceIdentifier, hashtagId);
+        return ResponseEntity.noContent().build();
     }
 }
