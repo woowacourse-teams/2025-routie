@@ -228,6 +228,11 @@ public enum ErrorCode {
             "해당 루티 스페이스에 접근할 권한이 없는 게스트입니다.",
             HttpStatus.FORBIDDEN
     ),
+    ROUTIE_SPACE_NULL(
+            "RTS-009",
+            "RoutieSpace 는 null일 수 없습니다.",
+            HttpStatus.BAD_REQUEST
+    ),
 
     /**
      * RTI: Routie
@@ -510,6 +515,20 @@ public enum ErrorCode {
             "EXT-009",
             "장소 검색 서비스를 사용할 수 없습니다.",
             HttpStatus.SERVICE_UNAVAILABLE
+    ),
+
+    /**
+     * SSE: Server Sent Events
+     */
+    FAILED_TO_SEND_SSE_MESSAGE(
+            "SSE-001",
+            "SSE 메시지 전송에 실패했습니다.",
+            HttpStatus.INTERNAL_SERVER_ERROR
+    ),
+    SSE_EMITTER_NOT_FOUND(
+            "SSE-002",
+            "해당 SSE Emitter를 찾을 수 없습니다.",
+            HttpStatus.NOT_FOUND
     ),
     ;
 
