@@ -25,15 +25,52 @@ type RegistryEntry = {
 const RECONNECT_DELAY_MS = 3_000; // 연결이 끊겼을 때 다시 시도하기까지 기다릴 시간
 const registry = new Map<string, RegistryEntry>(); // URL별 RegistryEntry를 보관하는 맵
 
+// 전역 언로드 가드 (한 번만)
+let unloadGuardsBound = false;
+const bindGlobalUnloadGuards = () => {
+  if (unloadGuardsBound) return;
+  unloadGuardsBound = true;
+
+  const handleUnload = () => {
+    // 페이지 이탈 시 남은 연결, 타이머를 최대한 즉시 정리
+    registry.forEach((entry) => {
+      if (entry.reconnectTimer) {
+        clearTimeout(entry.reconnectTimer);
+        entry.reconnectTimer = undefined;
+      }
+      entry.source?.close();
+    });
+    registry.clear();
+    console.log('[SSE] unload');
+  };
+
+  window.addEventListener('beforeunload', handleUnload);
+  window.addEventListener('pagehide', handleUnload); // iOS/Safari용
+};
+
 // 주어진 URL로 EventSource를 열고 기본 동작을 붙인다
 const openSource = (fullUrl: string, entry: RegistryEntry) => {
-  const placeSseToken = ensureStreamToken();
-  const source = new EventSource(`${fullUrl}?token=${placeSseToken}`); // 새로운 EventSource 생성
-  entry.source = source; // 방금 만든 소스를 상태에 저장
+  // EventSource 생성자 즉시 실패 대비 (동기 예외 방지)
+  let source: EventSource | null = null;
+  try {
+    const placeSseToken = ensureStreamToken();
+    source = new EventSource(`${fullUrl}?token=${placeSseToken}`);
+  } catch (error) {
+    // 생성자에서 바로 에러가 난 경우 onerror가 호출되지 않음  -> 지연 재시도
+    console.error('[SSE] EventSource 생성자 실패:', error);
+    if (!entry.reconnectTimer) {
+      entry.reconnectTimer = window.setTimeout(() => {
+        entry.reconnectTimer = undefined;
+        openSource(fullUrl, entry);
+      }, RECONNECT_DELAY_MS);
+    }
+    return;
+  }
 
-  source.onopen = async () => {
-    console.log(`[SSE] 연결 성공 (${`${fullUrl}?token=${placeSseToken}`})`);
-    // 재연결 타이머가 걸려 있었다면 정상 연결 되었으니 취소한다
+  entry.source = source;
+
+  source.onopen = () => {
+    console.log(`[SSE] 연결 성공 (${fullUrl})`);
     if (entry.reconnectTimer) {
       window.clearTimeout(entry.reconnectTimer);
       entry.reconnectTimer = undefined;
@@ -43,7 +80,7 @@ const openSource = (fullUrl: string, entry: RegistryEntry) => {
   source.onerror = () => {
     console.warn(`[SSE] 연결 끊김 또는 오류 (${fullUrl})`);
     // 오류가 나면 현재 소스를 닫고 끊어진 상태로 표시한다
-    source.close();
+    source?.close();
     entry.source = null;
 
     if (entry.listeners.length === 0) {
@@ -69,13 +106,16 @@ const openSource = (fullUrl: string, entry: RegistryEntry) => {
 
 // URL에 해당하는 RegistryEntry를 찾아서 없으면 생성해 돌려준다
 const registryEntry = (fullUrl: string) => {
+  // 전역 언로드 가드 바인딩 (최초 1회)
+  bindGlobalUnloadGuards();
+
   let entry = registry.get(fullUrl); // 기존 엔트리가 있는지 확인
   if (!entry) {
     entry = { source: null, listeners: [] }; // 없으면 새 엔트리 생성
     registry.set(fullUrl, entry);
   }
 
-  if (!entry.source) {
+  if (!entry.source && !entry.reconnectTimer) {
     openSource(fullUrl, entry); // EventSource가 없으면 바로 연결을 연다
   }
 
