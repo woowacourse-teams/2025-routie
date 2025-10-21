@@ -75,7 +75,7 @@ const getPlaceList = async (): Promise<PlaceListAdapterType> => {
   ensureRoutieSpaceUuid(routieSpaceUuid);
 
   const response = await apiClient.get(
-    `/v2/routie-spaces/${routieSpaceUuid}/places`,
+    `/v3/routie-spaces/${routieSpaceUuid}/places`,
   );
 
   const data = await response.json();
