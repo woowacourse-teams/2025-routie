@@ -1,6 +1,6 @@
 import { useToggle } from './useToggle';
 
-export const useFeedback = () => {
+const useFeedback = () => {
   const { isOpen, handleToggle } = useToggle(false);
 
   const handleFeedbackButtonClick = () => {
@@ -19,3 +19,5 @@ export const useFeedback = () => {
     handleFeedbackPanelClose,
   };
 };
+
+export { useFeedback };
