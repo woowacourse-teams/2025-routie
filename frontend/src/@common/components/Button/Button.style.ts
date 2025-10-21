@@ -25,10 +25,10 @@ const buttonVariant: Record<ButtonVariantType, SerializedStyles> = {
   `,
 
   dangerSecondary: css`
-    background-color: ${theme.colors.red[50]};
+    background-color: ${theme.colors.red[100]};
 
     &:hover {
-      background-color: ${theme.colors.red[100]};
+      background-color: ${theme.colors.red[50]};
     }
   `,
 };
