@@ -84,6 +84,7 @@ export const Default: Story = {
       addressName: '경기 성남시 분당구 서현동 269-7',
       latitude: 37.385635,
       longitude: 127.121855,
+      kakaoPlaceId: '23913503',
     },
     onDelete: () => alert('Deleted: 서현역광장'),
   },

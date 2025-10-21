@@ -29,9 +29,7 @@ const PlaceCard = ({
   };
 
   const handleKakaoPlaceClick = () => {
-    if (props.kakaoPlaceId) {
-      openKakaoPlace(props.kakaoPlaceId);
-    }
+    openKakaoPlace(props.kakaoPlaceId);
   };
 
   return (
@@ -113,18 +111,16 @@ const PlaceCard = ({
               onClick={() => onLike(props.id)}
             />
             <Flex justifyContent="flex-end" width="15rem" gap={0.8}>
-              {props.kakaoPlaceId && (
-                <Button
-                  variant="secondary"
-                  onClick={handleKakaoPlaceClick}
-                  padding="0.6rem 1.2rem"
-                  width="auto"
-                >
-                  <Text variant="label" color={theme.colors.gray[300]}>
-                    카카오맵
-                  </Text>
-                </Button>
-              )}
+              <Button
+                variant="secondary"
+                onClick={handleKakaoPlaceClick}
+                padding="0.6rem 1.2rem"
+                width="auto"
+              >
+                <Text variant="label" color={theme.colors.gray[300]}>
+                  카카오맵
+                </Text>
+              </Button>
               <Button
                 variant="danger"
                 onClick={() => onDelete(props.id)}
@@ -148,18 +144,16 @@ const PlaceCard = ({
             onClick={() => onLike(props.id)}
           />
           <Flex justifyContent="flex-end" width="15rem" gap={0.8}>
-            {props.kakaoPlaceId && (
-              <Button
-                variant="secondary"
-                onClick={handleKakaoPlaceClick}
-                padding="0.6rem 1.2rem"
-                width="auto"
-              >
-                <Text variant="label" color={theme.colors.gray[300]}>
-                  카카오맵
-                </Text>
-              </Button>
-            )}
+            <Button
+              variant="secondary"
+              onClick={handleKakaoPlaceClick}
+              padding="0.6rem 1.2rem"
+              width="auto"
+            >
+              <Text variant="label" color={theme.colors.gray[300]}>
+                카카오맵
+              </Text>
+            </Button>
             <Button
               variant="danger"
               onClick={() => onDelete(props.id)}

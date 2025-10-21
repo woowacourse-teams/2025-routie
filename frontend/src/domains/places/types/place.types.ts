@@ -13,11 +13,11 @@ interface SearchedPlaceType extends PlaceBaseType {
 
 interface PlaceDataType extends PlaceBaseType {
   id: number;
-  kakaoPlaceId?: string;
+  kakaoPlaceId: string;
 }
 
 interface PlaceAdapterType extends PlaceBaseType {
-  kakaoPlaceId?: string;
+  kakaoPlaceId: string;
 }
 
 interface PlaceWithLikeType extends PlaceDataType {

@@ -50,9 +50,7 @@ const RoutiePlaceCard = ({ place, onDelete }: RoutiePlaceCardProps) => {
 
   const handleKakaoPlaceClick = () => {
     setIsMenuOpen(false);
-    if (place.kakaoPlaceId) {
-      openKakaoPlace(place.kakaoPlaceId);
-    }
+    openKakaoPlace(place.kakaoPlaceId);
   };
 
   return (
@@ -91,18 +89,16 @@ const RoutiePlaceCard = ({ place, onDelete }: RoutiePlaceCardProps) => {
                 padding={0.8}
                 gap={0.8}
               >
-                {place.kakaoPlaceId && (
-                  <Button
-                    variant="secondary"
-                    padding="0.6rem 1.2rem"
-                    onClick={handleKakaoPlaceClick}
-                    aria-label="카카오맵에서 보기"
-                  >
-                    <Text variant="caption" color={theme.colors.gray[300]}>
-                      카카오맵
-                    </Text>
-                  </Button>
-                )}
+                <Button
+                  variant="secondary"
+                  padding="0.6rem 1.2rem"
+                  onClick={handleKakaoPlaceClick}
+                  aria-label="카카오맵에서 보기"
+                >
+                  <Text variant="caption" color={theme.colors.gray[300]}>
+                    카카오맵
+                  </Text>
+                </Button>
                 <Button
                   variant="dangerSecondary"
                   padding="0.6rem 1.2rem"
