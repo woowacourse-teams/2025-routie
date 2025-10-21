@@ -5,6 +5,7 @@ import Button from '@/@common/components/Button/Button';
 import Flex from '@/@common/components/Flex/Flex';
 import Icon from '@/@common/components/IconSvg/Icon';
 import Text from '@/@common/components/Text/Text';
+import { openKakaoPlace } from '@/@common/utils/externalLink';
 import theme from '@/styles/theme';
 
 import {
@@ -47,6 +48,13 @@ const RoutiePlaceCard = ({ place, onDelete }: RoutiePlaceCardProps) => {
     onDelete(place.id);
   };
 
+  const handleKakaoPlaceClick = () => {
+    setIsMenuOpen(false);
+    if (place.kakaoPlaceId) {
+      openKakaoPlace(place.kakaoPlaceId);
+    }
+  };
+
   return (
     <Flex
       data-card-element
@@ -77,11 +85,27 @@ const RoutiePlaceCard = ({ place, onDelete }: RoutiePlaceCardProps) => {
               <span css={KebabIconTextStyle}>⋮</span>
             </button>
             {isMenuOpen && (
-              <Flex direction="column" css={KebabDropdownStyle} padding={0.8}>
+              <Flex
+                direction="column"
+                css={KebabDropdownStyle}
+                padding={0.8}
+                gap={0.8}
+              >
+                {place.kakaoPlaceId && (
+                  <Button
+                    variant="secondary"
+                    padding="0.6rem 1.2rem"
+                    onClick={handleKakaoPlaceClick}
+                    aria-label="카카오맵에서 보기"
+                  >
+                    <Text variant="caption" color={theme.colors.gray[300]}>
+                      카카오맵
+                    </Text>
+                  </Button>
+                )}
                 <Button
                   variant="dangerSecondary"
                   padding="0.6rem 1.2rem"
-                  width="auto"
                   onClick={handleDeleteClick}
                   aria-label="동선에서 삭제"
                 >
