@@ -7,6 +7,7 @@ import {
   hashtagsAdapter,
   likedPlacesAdapter,
   searchPlaceAdapter,
+  popularHashtagsAdapter,
 } from '@/domains/places/adapters/placeAdapter';
 import type {
   AddPlaceRequestType,
@@ -176,12 +177,25 @@ const getHashtags = async (): Promise<HashtagsResponseType> => {
   ensureRoutieSpaceUuid(routieSpaceUuid);
 
   const response = await apiClient.get(
-    `/v1/routie-spaces/${routieSpaceUuid}/hashtags`,
+    `/v2/routie-spaces/${routieSpaceUuid}/hashtags`,
   );
 
   const data = await response.json();
 
   return hashtagsAdapter(data);
+};
+
+const getPopularHashtags = async (): Promise<string[]> => {
+  const routieSpaceUuid = getRoutieSpaceUuid();
+  ensureRoutieSpaceUuid(routieSpaceUuid);
+
+  const response = await apiClient.get(
+    `/v1/routie-spaces/${routieSpaceUuid}/hashtags/popular`,
+  );
+
+  const data = await response.json();
+
+  return popularHashtagsAdapter(data);
 };
 
 export {
@@ -195,4 +209,5 @@ export {
   getLikedPlaces,
   updatePlaceHashtags,
   getHashtags,
+  getPopularHashtags,
 };

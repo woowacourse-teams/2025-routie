@@ -51,8 +51,14 @@ interface UpdatePlaceHashtagsRequestType {
   hashtags: string[];
 }
 
+interface HashtagWithCountType {
+  id: number;
+  name: string;
+  count: number;
+}
+
 interface HashtagsResponseType {
-  hashtags: string[];
+  hashtags: HashtagWithCountType[];
 }
 
 export type {
@@ -68,4 +74,5 @@ export type {
   LikedPlacesResponseType,
   UpdatePlaceHashtagsRequestType,
   HashtagsResponseType,
+  HashtagWithCountType,
 };
