@@ -50,7 +50,7 @@ const Sidebar = ({ isOpen, handleToggle }: SidebarProps) => {
   }, [isOpen]);
 
   return (
-    <div css={SidebarContainerStyle(isOpen)}>
+    <div css={SidebarContainerStyle(isOpen)} tabIndex={-1}>
       <SidebarToggleButton isOpen={isOpen} handleToggle={handleToggle} />
       <Flex justifyContent="flex-start" height="100%">
         <Flex
@@ -67,17 +67,22 @@ const Sidebar = ({ isOpen, handleToggle }: SidebarProps) => {
             css={{ marginBottom: '1rem' }}
             onClick={handleMoveToHome}
           />
+          <p id="sideBar" className="hide" tabIndex={0}>
+            사이드바에서 장소, 동선, 링크 공유 중에 선택할 수 있습니다.
+          </p>
           <TabButton
             name="장소"
             icon={activeTab === 'place' ? 'placeTabSelect' : 'placeTab'}
             onClick={() => handleTabClick('place')}
             isActive={activeTab === 'place'}
+            aria-label="장소 탭"
           />
           <TabButton
             name="동선"
             icon={activeTab === 'route' ? 'routeTabSelect' : 'routeTab'}
             onClick={() => handleTabClick('route')}
             isActive={activeTab === 'route'}
+            aria-label="동선 탭"
           />
           <TabButton
             name="링크 공유"
