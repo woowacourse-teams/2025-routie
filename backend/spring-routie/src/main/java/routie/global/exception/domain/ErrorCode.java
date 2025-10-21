@@ -150,6 +150,11 @@ public enum ErrorCode {
             "루티 스페이스 내에서 해당하는 해시태그를 찾을 수 없습니다.",
             HttpStatus.NOT_FOUND
     ),
+    HASHTAG_SIZE_INVALID(
+            "HTG-005",
+            "해시태그 사이즈는 5개 이하여야 합니다.",
+            HttpStatus.BAD_REQUEST
+    ),
 
     /**
      * SPL: Searched Place

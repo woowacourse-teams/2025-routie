@@ -5,7 +5,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
+
 import java.util.List;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -247,6 +249,41 @@ public class PlaceControllerV2Test {
         assertThat(actualHttpStatus).isEqualTo(expectedHttpStatus);
         assertThat(placeReadResponse.name()).isEqualTo(placeCreateRequest.name());
         assertThat(placeReadResponse.hashtags()).containsExactlyInAnyOrder("hash", "tag");
+    }
+
+    @Test
+    @DisplayName("V2 API로 해시태그 크기가 5개 초과인 장소를 추가할 수 없다")
+    public void addPlaceWithMoreThanFiveHashtagTest() {
+        // given
+        final RoutieSpace emptyRoutieSpace = routieSpaceRepository.save(RoutieSpace.withIdentifierProvider(
+                null, routieSpaceIdentifierProvider
+        ));
+        final PlaceCreateRequestV2 placeCreateRequest = new PlaceCreateRequestV2(
+                "1",
+                "place",
+                "roadAddress",
+                "address",
+                89.0,
+                89.0,
+                List.of("hash", "tag", "1", "2", "3", "4")
+        );
+
+        // when
+        final Response response = RestAssured
+                .given()
+                .contentType(ContentType.JSON)
+                .body(placeCreateRequest)
+                .when()
+                .post("/v2/routie-spaces/{routieSpaceIdentifier}/places", emptyRoutieSpace.getIdentifier())
+                .then()
+                .log().all()
+                .extract().response();
+
+        final HttpStatus actualHttpStatus = HttpStatus.valueOf(response.getStatusCode());
+        final HttpStatus expectedHttpStatus = HttpStatus.BAD_REQUEST;
+
+        // then
+        assertThat(actualHttpStatus).isEqualTo(expectedHttpStatus);
     }
 
     @Test
