@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react';
 
+import { patchSseSubscription } from '@/libs/sse/apis/sseApi';
 import { ensureStreamToken } from '@/libs/utils/token';
 
 // 훅을 사용할 때 외부에서 넘기는 옵션 형태
@@ -22,7 +23,7 @@ type RegistryEntry = {
   reconnectTimer?: number; // 자동 재연결 예약 타이머 id
 };
 
-const RECONNECT_DELAY_MS = 10_000; // 연결이 끊겼을 때 다시 시도하기까지 기다릴 시간
+const RECONNECT_DELAY_MS = 3_000; // 연결이 끊겼을 때 다시 시도하기까지 기다릴 시간
 const registry = new Map<string, RegistryEntry>(); // URL별 RegistryEntry를 보관하는 맵
 
 // 주어진 URL로 EventSource를 열고 기본 동작을 붙인다
@@ -31,12 +32,24 @@ const openSource = (fullUrl: string, entry: RegistryEntry) => {
   const source = new EventSource(`${fullUrl}?token=${placeSseToken}`); // 새로운 EventSource 생성
   entry.source = source; // 방금 만든 소스를 상태에 저장
 
-  source.onopen = () => {
+  source.onopen = async () => {
     console.log(`[SSE] 연결 성공 (${`${fullUrl}?token=${placeSseToken}`})`);
     // 재연결 타이머가 걸려 있었다면 정상 연결 되었으니 취소한다
     if (entry.reconnectTimer) {
       window.clearTimeout(entry.reconnectTimer);
       entry.reconnectTimer = undefined;
+    }
+
+    try {
+      await patchSseSubscription({
+        subscriptionPath: `/routie-spaces/{routieSpaceIdentifier}/server-sent-events/subscriptions/{token}`,
+        token: placeSseToken,
+      });
+    } catch (error) {
+      console.error(`[SSE] 구독 PATCH 실패 (${fullUrl})`, error);
+      source.close();
+      entry.source = null;
+      registry.delete(fullUrl);
     }
   };
 
