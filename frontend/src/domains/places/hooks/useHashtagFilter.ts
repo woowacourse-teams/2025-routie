@@ -1,13 +1,17 @@
 import { useEffect, useState } from 'react';
 
-const useHashtagSelection = (initialTags?: string[]) => {
-  const [selectedTags, setSelectedTags] = useState<string[]>(initialTags || []);
+import { sessionStorageUtils } from '@/@common/utils/sessionStorage';
+
+const STORAGE_KEY = 'selectedHashtags';
+
+const useHashtagFilter = () => {
+  const [selectedTags, setSelectedTags] = useState<string[]>(() => {
+    return sessionStorageUtils.get(STORAGE_KEY, []);
+  });
 
   useEffect(() => {
-    if (initialTags) {
-      setSelectedTags(initialTags);
-    }
-  }, [initialTags]);
+    sessionStorageUtils.set(STORAGE_KEY, selectedTags);
+  }, [selectedTags]);
 
   const handleToggleTag = (tag: string) => {
     if (selectedTags.includes(tag)) {
@@ -21,18 +25,11 @@ const useHashtagSelection = (initialTags?: string[]) => {
     setSelectedTags([]);
   };
 
-  const addTag = (tag: string) => {
-    if (!selectedTags.includes(tag)) {
-      setSelectedTags((prev) => [tag, ...prev]);
-    }
-  };
-
   return {
     selectedTags,
     handleToggleTag,
     resetSelectedTags,
-    addTag,
   };
 };
 
-export { useHashtagSelection };
+export { useHashtagFilter };
