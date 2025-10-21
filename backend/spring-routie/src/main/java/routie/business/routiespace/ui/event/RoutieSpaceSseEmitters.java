@@ -33,9 +33,9 @@ public class RoutieSpaceSseEmitters {
 
     public SseEmitter put(final RoutieSpace routieSpace, final SseToken token) {
         return emitters.computeIfAbsent(
-                        routieSpace.getIdentifier(),
-                        routieSpaceIdentifier -> new SseEmitters()
-                )
+                routieSpace.getIdentifier(),
+                routieSpaceIdentifier -> new SseEmitters()
+        )
                 .put(token, SSE_EMITTER_TIMEOUT);
     }
 

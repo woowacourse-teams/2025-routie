@@ -79,8 +79,7 @@ public class RoutieSpaceControllerV1 {
     }
 
     @GetMapping(
-            value = "/routie-spaces/{routieSpaceIdentifier}/server-sent-events/subscriptions",
-            produces = MediaType.TEXT_EVENT_STREAM_VALUE
+            value = "/routie-spaces/{routieSpaceIdentifier}/server-sent-events/subscriptions", produces = MediaType.TEXT_EVENT_STREAM_VALUE
     )
     public SseEmitter subscribe(
             @RequestParam("token") final String token,
