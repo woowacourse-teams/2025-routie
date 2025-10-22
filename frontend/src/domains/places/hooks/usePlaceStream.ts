@@ -6,15 +6,12 @@ import { useQueryClient } from '@tanstack/react-query';
 import { useToastContext } from '@/@common/contexts/useToastContext';
 import { getPlaceListAdapter } from '@/domains/places/adapters/placeAdapter';
 import { placesKeys } from '@/domains/places/queries/key';
-import type { FetchPlaceListResponseType } from '@/domains/places/types/api.types';
 import { ensureRoutieSpaceUuid } from '@/domains/utils/routieSpaceUuid';
 import { useSse } from '@/libs/sse/hooks/useSse';
 
-type PlaceHistoryEvent = {
-  places: FetchPlaceListResponseType[];
-};
+import { PlaceHistoryEvent } from '../types/placeStream.types';
 
-export const usePlaceStream = () => {
+const usePlaceStream = () => {
   const queryClient = useQueryClient();
   const [searchParams] = useSearchParams();
   const { showToast } = useToastContext();
@@ -70,3 +67,5 @@ export const usePlaceStream = () => {
     },
   });
 };
+
+export { usePlaceStream };
