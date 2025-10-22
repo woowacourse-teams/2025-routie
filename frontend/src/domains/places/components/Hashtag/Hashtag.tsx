@@ -5,7 +5,7 @@ import Text from '@/@common/components/Text/Text';
 import type { HashtagProps } from '@/domains/places/types/hashtag.types';
 import theme from '@/styles/theme';
 
-import { ButtonStyle, DeleteStyle } from './Hashtag.styles';
+import { ContainerStyle, ButtonStyle, DeleteStyle } from './Hashtag.styles';
 
 const Hashtag = ({
   tag,
@@ -21,11 +21,14 @@ const Hashtag = ({
   };
 
   const handleClick = () => {
-    if (!isEditMode) onClick();
+    if (isEditMode) {
+      return;
+    }
+    onClick();
   };
 
   return (
-    <div style={{ position: 'relative' }}>
+    <div css={ContainerStyle}>
       <Button
         variant={isSelected ? 'primary' : 'secondary'}
         onClick={handleClick}

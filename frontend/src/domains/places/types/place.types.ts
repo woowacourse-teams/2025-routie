@@ -30,11 +30,9 @@ interface LikedPlacesResponseAdapterType {
 }
 
 interface HashtagsAdapterType {
-  hashtags: Array<{
-    id: number;
-    name: string;
-    count: number;
-  }>;
+  id: number;
+  name: string;
+  count: number;
 }
 
 export type {

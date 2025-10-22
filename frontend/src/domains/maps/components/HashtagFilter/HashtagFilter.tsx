@@ -6,6 +6,7 @@ import { useToggle } from '@/@common/hooks/useToggle';
 import { useHashtagFilter } from '@/domains/maps/hooks/useHashtagFilter';
 import Hashtag from '@/domains/places/components/Hashtag/Hashtag';
 import { useDeleteHashtagMutation } from '@/domains/places/queries/usePlaceQuery';
+import theme from '@/styles/theme';
 
 import {
   ButtonContainerStyle,
@@ -38,7 +39,9 @@ const HashtagFilter = ({ isSidebarOpen }: HashtagFilterProps) => {
     const confirmed = confirm(
       '정말로 이 해시태그를 삭제하시겠습니까?\n삭제 시, 모든 장소에서 해당 해시태그가 삭제됩니다.',
     );
-    if (confirmed) deleteHashtag({ hashtagId });
+    if (!confirmed) return;
+
+    deleteHashtag({ hashtagId });
   };
 
   if (hashtags.length === 0) return null;
@@ -58,7 +61,7 @@ const HashtagFilter = ({ isSidebarOpen }: HashtagFilterProps) => {
             radius="lg"
             padding="1rem"
             onClick={handleToggleSelectAll}
-            css={ButtonStyle(isAllSelected)}
+            css={ButtonStyle}
             disabled={isEditMode}
           >
             <Icon
@@ -133,10 +136,13 @@ const HashtagFilter = ({ isSidebarOpen }: HashtagFilterProps) => {
           radius="lg"
           padding={isEditMode ? '1rem 2.2rem' : '1rem'}
           onClick={toggleEditMode}
-          css={ButtonStyle(isEditMode)}
+          css={ButtonStyle}
         >
           {!isEditMode && <Icon name="control" size={14} />}
-          <Text variant="caption" color={isEditMode ? 'white' : undefined}>
+          <Text
+            variant="caption"
+            color={isEditMode ? `${theme.colors.white}` : undefined}
+          >
             {isEditMode ? '완료' : '편집'}
           </Text>
         </Button>

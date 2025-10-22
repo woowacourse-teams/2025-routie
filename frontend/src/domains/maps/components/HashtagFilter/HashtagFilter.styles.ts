@@ -34,7 +34,7 @@ const HashtagsContainerStyle = css`
   }
 `;
 
-const ButtonStyle = (_isAllSelected?: boolean) => css`
+const ButtonStyle = css`
   gap: 1rem;
   border: none;
   box-shadow: 0 0.2rem 0.8rem rgb(0 0 0 / 30%);
