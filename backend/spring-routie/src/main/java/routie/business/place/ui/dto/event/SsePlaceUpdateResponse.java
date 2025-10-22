@@ -6,7 +6,7 @@ import routie.business.place.ui.dto.response.PlaceListResponseV2;
 import java.util.List;
 
 public record SsePlaceUpdateResponse(
-        Long updatedPlaceId,
+        @JsonProperty("updatedPlaceId") Long updatedPlaceId,
         @JsonProperty("places") List<SsePlaceResponse> ssePlaceResponses
 ) {
 
