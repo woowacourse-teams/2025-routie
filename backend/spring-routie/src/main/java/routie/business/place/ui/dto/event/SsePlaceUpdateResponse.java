@@ -29,4 +29,16 @@ public record SsePlaceUpdateResponse(
 
         return new SsePlaceUpdateResponse(updatedPlaceId, ssePlaceResponses);
     }
+
+    public record SsePlaceResponse(
+            Long id,
+            String name,
+            String roadAddressName,
+            String addressName,
+            Double longitude,
+            Double latitude,
+            Long likeCount,
+            List<String> hashtags
+    ) {
+    }
 }
