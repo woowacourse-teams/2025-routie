@@ -6,7 +6,12 @@ import { useQueryClient } from '@tanstack/react-query';
 import { useToastContext } from '@/@common/contexts/useToastContext';
 import { getPlaceListAdapter } from '@/domains/places/adapters/placeAdapter';
 import { placesKeys } from '@/domains/places/queries/key';
-import type { PlaceHistoryEvent } from '@/domains/places/types/placeStream.types';
+import type {
+  PlaceCratedEvent,
+  PlaceDeletedEvent,
+  PlaceHistoryEvent,
+  PlaceUpdatedEvent,
+} from '@/domains/places/types/placeStream.types';
 import { ensureRoutieSpaceUuid } from '@/domains/utils/routieSpaceUuid';
 import { useSse } from '@/libs/sse/hooks/useSse';
 
@@ -36,31 +41,50 @@ const usePlaceStream = () => {
     onMessage: ({ places }) => replacePlaceList({ places }),
   });
 
-  useSse<PlaceHistoryEvent>({
+  useSse<PlaceCratedEvent>({
     url: sseUrl,
     eventName: 'PLACE_CREATED',
-    onMessage: ({ places }) => {
+    onMessage: ({ createdPlaceId, places }) => {
+      const adaptedPlaces = getPlaceListAdapter(places);
+      const createdPlace = adaptedPlaces.find(
+        (place) => place.id === createdPlaceId,
+      );
+
       replacePlaceList({ places });
       showToast({
-        message: '장소가 추가되었습니다.',
+        message: `"${createdPlace?.name ?? '장소'}" 추가되었습니다.`,
         type: 'success',
       });
     },
   });
 
-  useSse<PlaceHistoryEvent>({
+  useSse<PlaceUpdatedEvent>({
     url: sseUrl,
     eventName: 'PLACE_UPDATED',
-    onMessage: ({ places }) => replacePlaceList({ places }),
-  });
-
-  useSse<PlaceHistoryEvent>({
-    url: sseUrl,
-    eventName: 'PLACE_DELETED',
-    onMessage: ({ places }) => {
+    onMessage: ({ updatedPlaceId, places }) => {
+      const adaptedPlaces = getPlaceListAdapter(places);
+      const updatedPlace = adaptedPlaces.find(
+        (place) => place.id === updatedPlaceId,
+      );
       replacePlaceList({ places });
       showToast({
-        message: '장소가 삭제되었습니다.',
+        message: `"${updatedPlace?.name ?? '장소'}" 수정되었습니다.`,
+        type: 'success',
+      });
+    },
+  });
+
+  useSse<PlaceDeletedEvent>({
+    url: sseUrl,
+    eventName: 'PLACE_DELETED',
+    onMessage: ({ deletedPlaceId, places }) => {
+      const adaptedPlaces = getPlaceListAdapter(places);
+      const deletedPlace = adaptedPlaces.find(
+        (place) => place.id === deletedPlaceId,
+      );
+      replacePlaceList({ places });
+      showToast({
+        message: `"${deletedPlace?.name ?? '장소'}" 삭제되었습니다.`,
         type: 'success',
       });
     },
