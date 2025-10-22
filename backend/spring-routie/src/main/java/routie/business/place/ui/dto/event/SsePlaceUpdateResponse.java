@@ -1,7 +1,7 @@
 package routie.business.place.ui.dto.event;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import routie.business.place.ui.dto.response.PlaceListResponseV2;
+import routie.business.place.ui.dto.response.PlaceListResponseV3;
 
 import java.util.List;
 
@@ -12,18 +12,19 @@ public record SsePlaceUpdateResponse(
 
     public static SsePlaceUpdateResponse createWithPlaceListResponseV2(
             final Long updatedPlaceId,
-            final PlaceListResponseV2 placeListResponseV2
+            final PlaceListResponseV3 placeListResponseV3
     ) {
-        final List<SsePlaceResponse> ssePlaceResponses = placeListResponseV2.places().stream()
-                .map(placeCardResponseV2 -> new SsePlaceResponse(
-                        placeCardResponseV2.id(),
-                        placeCardResponseV2.name(),
-                        placeCardResponseV2.roadAddressName(),
-                        placeCardResponseV2.addressName(),
-                        placeCardResponseV2.longitude(),
-                        placeCardResponseV2.latitude(),
-                        placeCardResponseV2.likeCount(),
-                        placeCardResponseV2.hashtags()
+        final List<SsePlaceResponse> ssePlaceResponses = placeListResponseV3.places().stream()
+                .map(placeCardResponseV3 -> new SsePlaceResponse(
+                        placeCardResponseV3.id(),
+                        placeCardResponseV3.name(),
+                        placeCardResponseV3.roadAddressName(),
+                        placeCardResponseV3.addressName(),
+                        placeCardResponseV3.longitude(),
+                        placeCardResponseV3.latitude(),
+                        placeCardResponseV3.likeCount(),
+                        placeCardResponseV3.kakaoPlaceId(),
+                        placeCardResponseV3.hashtags()
                 ))
                 .toList();
 
@@ -38,6 +39,7 @@ public record SsePlaceUpdateResponse(
             Double longitude,
             Double latitude,
             Long likeCount,
+            String kakaoPlaceId,
             List<String> hashtags
     ) {
     }
