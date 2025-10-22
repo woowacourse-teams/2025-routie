@@ -13,7 +13,7 @@ import { RoutieType } from '@/domains/routie/types/routie.types';
 import { useGoogleEventTrigger } from '@/libs/googleAnalytics/hooks/useGoogleEventTrigger';
 
 const useRoutieList = () => {
-  const { data: routie, error } = useRoutieQuery();
+  const { data: routie, error } = useRoutieQuery({ enabled: false });
   const { mutateAsync: addRoutie } = useAddRoutieQuery();
   const { mutateAsync: deleteRoutie } = useDeleteRoutieQuery();
   const { mutateAsync: changeRoutie } = useChangeRoutieQuery();
