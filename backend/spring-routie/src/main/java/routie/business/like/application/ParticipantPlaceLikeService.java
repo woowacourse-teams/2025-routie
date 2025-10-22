@@ -32,13 +32,13 @@ public class ParticipantPlaceLikeService {
     @Transactional
     public void addPlaceLike(final Long placeId, final String routieSpaceIdentifier, final Participant participant) {
         findService(participant).likePlace(placeId, routieSpaceIdentifier, participant);
-        applicationEventPublisher.publishEvent(new PlaceUpdateEvent(this, routieSpaceIdentifier));
+        applicationEventPublisher.publishEvent(new PlaceUpdateEvent(this, placeId, routieSpaceIdentifier));
     }
 
     @Transactional
     public void removePlaceLike(final Long placeId, final String routieSpaceIdentifier, final Participant participant) {
         findService(participant).removePlaceLike(placeId, routieSpaceIdentifier, participant);
-        applicationEventPublisher.publishEvent(new PlaceUpdateEvent(this, routieSpaceIdentifier));
+        applicationEventPublisher.publishEvent(new PlaceUpdateEvent(this, placeId, routieSpaceIdentifier));
     }
 
     public LikedPlacesResponse getLikedPlaces(final String routieSpaceIdentifier, final Participant participant) {
