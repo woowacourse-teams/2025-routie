@@ -10,7 +10,7 @@ import routie.business.place.application.PlaceService;
 import routie.business.place.domain.event.PlaceCreateEvent;
 import routie.business.place.domain.event.PlaceDeleteEvent;
 import routie.business.place.domain.event.PlaceUpdateEvent;
-import routie.business.place.ui.dto.response.PlaceListResponseV2;
+import routie.business.place.ui.dto.response.PlaceListResponseV3;
 import routie.business.routiespace.ui.event.RoutieSpaceSseEmitters;
 import routie.business.routiespace.ui.event.RoutieSpaceSseEstablishedEvent;
 import routie.business.sse.ui.SseMessage;
@@ -23,7 +23,7 @@ public class PlaceEventBroadcaster {
     private final RoutieSpaceSseEmitters routieSpaceSseEmitters;
 
     private SseMessage getAllPlacesSseMessage(final String eventName, final String routieSpaceIdentifier) {
-        final PlaceListResponseV2 placeListResponse = placeService.readPlacesV2(routieSpaceIdentifier);
+        final PlaceListResponseV3 placeListResponse = placeService.readPlacesV3(routieSpaceIdentifier);
         return new SseMessage(eventName, placeListResponse);
     }
 
