@@ -33,6 +33,7 @@ const mockPlace = {
 export const Default: Story = {
   args: {
     ...mockPlace,
+    kakaoPlaceId: '23913503',
     selected: false,
     liked: false,
     onSelect: async (placeId: number, selected: boolean) => {

@@ -5,6 +5,7 @@ import Button from '@/@common/components/Button/Button';
 import Flex from '@/@common/components/Flex/Flex';
 import Icon from '@/@common/components/IconSvg/Icon';
 import Text from '@/@common/components/Text/Text';
+import { openKakaoPlace } from '@/@common/utils/externalLink';
 import theme from '@/styles/theme';
 
 import {
@@ -42,9 +43,14 @@ const RoutiePlaceCard = ({ place, onDelete }: RoutiePlaceCardProps) => {
     setIsMenuOpen((prev) => !prev);
   };
 
-  const handleDeleteClick = () => {
+  const handleDeleteClick = (placeId: number) => {
     setIsMenuOpen(false);
-    onDelete(place.id);
+    onDelete(placeId);
+  };
+
+  const handleKakaoPlaceClick = (kakaoPlaceId: string) => {
+    setIsMenuOpen(false);
+    openKakaoPlace(kakaoPlaceId);
   };
 
   return (
@@ -77,15 +83,29 @@ const RoutiePlaceCard = ({ place, onDelete }: RoutiePlaceCardProps) => {
               <span css={KebabIconTextStyle}>⋮</span>
             </button>
             {isMenuOpen && (
-              <Flex direction="column" css={KebabDropdownStyle} padding={0.8}>
+              <Flex
+                direction="column"
+                css={KebabDropdownStyle}
+                padding={0.8}
+                gap={0.8}
+              >
+                <Button
+                  variant="secondary"
+                  padding="0.6rem 0.8rem"
+                  onClick={() => handleKakaoPlaceClick(place.kakaoPlaceId)}
+                  aria-label="카카오맵에서 장소 보기"
+                >
+                  <Text variant="label" color={theme.colors.gray[300]}>
+                    카카오맵
+                  </Text>
+                </Button>
                 <Button
                   variant="dangerSecondary"
-                  padding="0.6rem 1.2rem"
-                  width="auto"
-                  onClick={handleDeleteClick}
-                  aria-label="동선에서 삭제"
+                  padding="0.6rem 0.8rem"
+                  onClick={() => handleDeleteClick(place.id)}
+                  aria-label="동선에서 장소 삭제"
                 >
-                  <Text variant="caption" color={theme.colors.white}>
+                  <Text variant="label" color={theme.colors.white}>
                     동선에서 삭제
                   </Text>
                 </Button>
