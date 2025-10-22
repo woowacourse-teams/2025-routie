@@ -38,13 +38,9 @@ const useRoutieQuery = ({ enabled = true }: UseRoutieQueryOptions = {}) => {
 
 const useAddRoutieQuery = () => {
   const { showToast } = useToastContext();
-  const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: (placeId: AddRoutiePlaceRequestType) => addRoutiePlace(placeId),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: routiesKeys.all });
-    },
     onError: (error) => {
       showToast({
         message: error.message,
@@ -56,15 +52,11 @@ const useAddRoutieQuery = () => {
 
 const useChangeRoutieQuery = () => {
   const { showToast } = useToastContext();
-  const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: (routiePlaces: RoutieType[]) =>
       editRoutieSequence({ routiePlaces }),
 
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: routiesKeys.all });
-    },
     onError: (error) => {
       showToast({
         message: error.message,
@@ -76,14 +68,10 @@ const useChangeRoutieQuery = () => {
 
 const useDeleteRoutieQuery = () => {
   const { showToast } = useToastContext();
-  const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: (placeId: DeleteRoutiePlaceRequestType) =>
       deleteRoutiePlace(placeId),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: routiesKeys.all });
-    },
     onError: (error) => {
       showToast({
         message: error.message,
