@@ -10,7 +10,6 @@ interface RoutieType {
 
 interface RoutieContextType {
   routiePlaces: RoutieType[];
-  routes: RoutesType[];
   refetchRoutieData: () => Promise<void>;
   handleAddRoutie: (id: number) => Promise<void>;
   handleDeleteRoutie: (id: number) => Promise<void>;
@@ -20,7 +19,6 @@ interface RoutieContextType {
 
 interface RoutieAdapterType {
   routiePlaces: RoutieType[];
-  routes: RoutesType[];
 }
 
 export type { RoutieType, RoutesType, RoutieContextType, RoutieAdapterType };

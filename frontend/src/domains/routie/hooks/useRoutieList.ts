@@ -97,7 +97,6 @@ const useRoutieList = () => {
 
   return {
     routiePlaces: routie.routiePlaces,
-    routes: routie.routes,
     routieIdList,
     handleAddRoutie,
     handleChangeRoutie,

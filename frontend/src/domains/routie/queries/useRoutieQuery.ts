@@ -22,7 +22,6 @@ const useRoutieQuery = ({ enabled = true }: UseRoutieQueryOptions = {}) => {
     queryKey: routiesKeys.all,
     queryFn: getRoutie,
     initialData: {
-      routes: [],
       routiePlaces: [],
     },
     select: (routie) => {
