@@ -14,7 +14,7 @@ const Toast = () => {
   const { toast } = useToastContext();
 
   return (
-    <div css={ToastContainerStyle}>
+    <div css={ToastContainerStyle} aria-live="assertive" aria-atomic="true">
       {toast?.map((item) => (
         <ToastItem key={item.id} item={item} />
       ))}
@@ -26,9 +26,14 @@ export default Toast;
 
 const ToastItem = ({ item }: { item: ToastInfoProps }) => {
   return (
-    <div css={ToastItemWrapperStyle(item.leaving)}>
+    <div
+      css={ToastItemWrapperStyle(item.leaving)}
+      role="alert"
+      aria-live="assertive"
+      aria-describedby="toast"
+    >
       <span css={ToastBadgeStyle(item.type)} />
-      <Text variant="body" css={ToastMessageStyle}>
+      <Text id="toast" variant="body" css={ToastMessageStyle}>
         {item.message}
       </Text>
     </div>
