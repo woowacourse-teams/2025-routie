@@ -12,7 +12,6 @@ public record PlaceCreateRequestV3(
         @NotBlank String addressName,
         @NotNull Double longitude,
         @NotNull Double latitude,
-        String kakaoPlaceId,
         @NotNull List<String> hashtags
 ) {
 }

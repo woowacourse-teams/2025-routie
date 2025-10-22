@@ -15,7 +15,6 @@ import routie.business.place.domain.event.PlaceUpdateEvent;
 import routie.business.place.ui.dto.request.HashtagsUpdateRequest;
 import routie.business.place.ui.dto.request.PlaceCreateRequest;
 import routie.business.place.ui.dto.request.PlaceCreateRequestV2;
-import routie.business.place.ui.dto.request.PlaceCreateRequestV3;
 import routie.business.place.ui.dto.response.HashtagsUpdateResponse;
 import routie.business.place.ui.dto.response.PlaceCreateResponse;
 import routie.business.place.ui.dto.response.PlaceListResponse;
@@ -81,38 +80,13 @@ public class PlaceService {
         final RoutieSpace routieSpace = routieSpaceRepository.findByIdentifier(routieSpaceIdentifier)
                 .orElseThrow(() -> new BusinessException(ErrorCode.ROUTIE_SPACE_NOT_FOUND));
 
-        final Place place = Place.create(
-                placeCreateRequest.name(),
-                placeCreateRequest.roadAddressName(),
-                placeCreateRequest.addressName(),
-                placeCreateRequest.longitude(),
-                placeCreateRequest.latitude(),
-                routieSpace
-        );
-
-        final List<Hashtag> hashtags = convertNamesToHashtags(placeCreateRequest.hashtags(), routieSpace);
-        place.addHashtags(hashtags);
-
-        applicationEventPublisher.publishEvent(new PlaceCreateEvent(this, routieSpaceIdentifier));
-
-        return new PlaceCreateResponse(placeRepository.save(place).getId());
-    }
-
-    @Transactional
-    public PlaceCreateResponse addPlaceV3(
-            final String routieSpaceIdentifier,
-            final PlaceCreateRequestV3 placeCreateRequest
-    ) {
-        final RoutieSpace routieSpace = routieSpaceRepository.findByIdentifier(routieSpaceIdentifier)
-                .orElseThrow(() -> new BusinessException(ErrorCode.ROUTIE_SPACE_NOT_FOUND));
-
         final Place place = Place.createWithKakaoPlaceId(
                 placeCreateRequest.name(),
                 placeCreateRequest.roadAddressName(),
                 placeCreateRequest.addressName(),
                 placeCreateRequest.longitude(),
                 placeCreateRequest.latitude(),
-                placeCreateRequest.kakaoPlaceId(),
+                placeCreateRequest.searchedPlaceId(),
                 routieSpace
         );
 
