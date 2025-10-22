@@ -17,6 +17,7 @@ spring:
         format_sql: true
         dialect: org.hibernate.dialect.MySQLDialect
     show-sql: true
+    open-in-view: false
 
   flyway:
     enabled: true
@@ -27,6 +28,23 @@ management:
     web:
       exposure:
         include: health
+  metrics:
+    enable:
+      all: false
+      hikaricp: true
+      http.server.requests: true
+      jvm.memory.used: true
+      process.cpu.usage: true
+      tomcat.threads: true
+
+server:
+  tomcat:
+    mbeanregistry:
+      enabled: true
+
+cloudwatch:
+  metrics:
+    enabled: false
 
 logging:
   file:

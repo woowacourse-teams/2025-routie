@@ -1,13 +1,26 @@
 import { css } from '@emotion/react';
 
-import { SIDEBAR_WIDTH_CLOSED, SIDEBAR_WIDTH_OPEN } from '@/pages/RoutieSpace/components/Sidebar/width';
+import {
+  SIDEBAR_WIDTH_CLOSED,
+  SIDEBAR_WIDTH_OPEN,
+} from '@/pages/RoutieSpace/components/Sidebar/width';
 import theme from '@/styles/theme';
+
+const ButtonStyle = (isAllSelected: boolean) => css`
+  flex-shrink: 0;
+  gap: 1rem;
+  white-space: nowrap;
+  ${isAllSelected && `border: 1px solid transparent;`}
+`;
 
 const ButtonContainerStyle = (isSidebarOpen: boolean) => css`
   position: absolute;
   z-index: 10;
   top: 1.6rem;
-  left: ${isSidebarOpen ? `calc(${SIDEBAR_WIDTH_OPEN} + 1.6rem)` : `calc(${SIDEBAR_WIDTH_CLOSED} + 1.6rem)`};
+  right: 8rem;
+  left: ${isSidebarOpen
+    ? `calc(${SIDEBAR_WIDTH_OPEN} + 2rem)`
+    : `calc(${SIDEBAR_WIDTH_CLOSED} + 2rem)`};
 
   transition: left 0.3s ease-in-out;
 `;
@@ -15,13 +28,15 @@ const ButtonContainerStyle = (isSidebarOpen: boolean) => css`
 const HashtagsContainerStyle = css`
   scrollbar-width: none;
 
-  overflow: auto hidden;
+  overflow: visible;
   display: flex;
   flex: 1;
-  flex-wrap: nowrap;
+  flex-wrap: wrap;
   gap: 0.8rem;
+  align-items: center;
 
   max-width: none;
+  min-height: 4rem;
 
   &::-webkit-scrollbar {
     height: 0;
@@ -48,6 +63,7 @@ const DropdownButtonStyle = (isOpen: boolean) => css`
 
 const DropdownContentStyle = (isOpen: boolean) => css`
   position: absolute;
+  z-index: 1000;
   top: calc(100% + 0.8rem);
   left: -6rem;
 
@@ -56,7 +72,6 @@ const DropdownContentStyle = (isOpen: boolean) => css`
 
   min-width: 16rem;
   max-height: 40rem;
-  padding: 0.8rem;
   border-radius: ${theme.radius.md};
 
   background-color: ${theme.colors.white};
@@ -64,6 +79,7 @@ const DropdownContentStyle = (isOpen: boolean) => css`
 `;
 
 export {
+  ButtonStyle,
   ButtonContainerStyle,
   HashtagsContainerStyle,
   DropdownWrapperStyle,

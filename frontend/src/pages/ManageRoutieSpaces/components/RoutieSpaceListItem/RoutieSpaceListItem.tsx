@@ -25,13 +25,18 @@ const RoutieSpaceListItem = ({
   const handleDelete = useCallback(
     (e: React.MouseEvent<HTMLButtonElement>) => {
       e.stopPropagation();
-      onDeleteRoutieSpace(routieSpaceUuid);
+
+      const isConfirmed = window.confirm('정말로 삭제하시겠습니까?');
+
+      if (isConfirmed) {
+        onDeleteRoutieSpace(routieSpaceUuid);
+      }
     },
     [onDeleteRoutieSpace, routieSpaceUuid],
   );
 
   return (
-    <li css={RoutieSpaceListItemStyle}>
+    <li css={RoutieSpaceListItemStyle} onClick={handleClick}>
       <Flex flex={1} direction="column" gap={0.5}>
         <Flex
           direction="column"
@@ -50,29 +55,16 @@ const RoutieSpaceListItem = ({
             })}
           </Text>
         </Flex>
-        <Flex gap={1}>
-          <Button
-            variant="primary"
-            width="50%"
-            radius="sm"
-            padding="0.8rem 0.6rem"
-            onClick={handleClick}
-          >
-            <Text variant="caption" color={theme.colors.white}>
-              수정
-            </Text>
-          </Button>
-          <Button
-            variant="dangerSecondary"
-            width="50%"
-            padding="0.8rem 0.6rem"
-            onClick={handleDelete}
-          >
-            <Text variant="caption" color={theme.colors.white}>
-              삭제
-            </Text>
-          </Button>
-        </Flex>
+
+        <Button
+          variant="dangerSecondary"
+          padding="0.8rem 0.6rem"
+          onClick={handleDelete}
+        >
+          <Text variant="caption" color={theme.colors.white}>
+            삭제
+          </Text>
+        </Button>
       </Flex>
     </li>
   );

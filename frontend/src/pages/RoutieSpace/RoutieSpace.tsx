@@ -1,10 +1,12 @@
 import { useEffect, useLayoutEffect } from 'react';
 import { useSearchParams } from 'react-router';
 
+import FeedbackWidget from '@/@common/components/FeedbackWidget/FeedbackWidget';
 import { useModal } from '@/@common/contexts/ModalContext';
 import { useToastContext } from '@/@common/contexts/useToastContext';
 import { useToggle } from '@/@common/hooks/useToggle';
 import { getAccessToken } from '@/@common/utils/getAccessToken';
+import { sessionStorageUtils } from '@/@common/utils/sessionStorage';
 import UserMenuButton from '@/domains/auth/components/UserMenuButton/UserMenuButton';
 import { useUserQuery } from '@/domains/auth/queries/useAuthQuery';
 import KakaoMap from '@/domains/maps/components/KakaoMap/KakaoMap';
@@ -45,6 +47,12 @@ const RoutieSpace = () => {
     }
   }, [error, showToast]);
 
+  useEffect(() => {
+    return () => {
+      sessionStorageUtils.remove('selectedHashtags');
+    };
+  }, []);
+
   return (
     <HashtagFilterProvider>
       <div css={RoutieSpaceContainerStyle}>
@@ -52,6 +60,7 @@ const RoutieSpace = () => {
         {accessToken && <UserMenuButton />}
         <Sidebar isOpen={isSidebarOpen} handleToggle={handleSidebarToggle} />
       </div>
+      <FeedbackWidget />
     </HashtagFilterProvider>
   );
 };

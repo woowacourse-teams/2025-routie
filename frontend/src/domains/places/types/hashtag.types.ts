@@ -22,6 +22,8 @@ interface EditHashtagDropdownProps {
 interface HashtagFilterContextType {
   selectedHashtags: string[];
   updateHashtagSelection: (hashtag: string) => void;
+  handleSelectAll: (allTags: string[]) => void;
+  resetSelectedTags: () => void;
 }
 
 interface FilterPlacesByHashtagsParams {

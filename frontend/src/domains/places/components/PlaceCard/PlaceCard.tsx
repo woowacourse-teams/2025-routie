@@ -21,10 +21,15 @@ const PlaceCard = ({
   onLike,
   onCancelEdit,
   onUpdateHashtags,
+  onDeleteRoutie,
   ...props
 }: PlaceCardProps) => {
   const handlePlaceSelect = async () => {
     await onSelect(props.id, selected);
+  };
+
+  const handleDeleteRoutie = async () => {
+    await onDeleteRoutie(props.id);
   };
 
   return (
@@ -80,15 +85,14 @@ const PlaceCard = ({
           </Flex>
         </Flex>
         <Button
-          variant="primary"
-          onClick={handlePlaceSelect}
-          disabled={selected}
-          padding="0.6rem 1.2rem"
+          variant={selected ? 'dangerSecondary' : 'primary'}
+          onClick={selected ? handleDeleteRoutie : handlePlaceSelect}
+          padding="0.6rem 0.8rem"
           width="10rem"
           autoFocus
         >
-          <Text variant="caption" color={theme.colors.white}>
-            동선에 추가
+          <Text variant="label" color={theme.colors.white}>
+            {selected ? '동선에서 삭제' : '동선에 추가'}
           </Text>
           <span className="hide">
             , 장소명 {props.name}, 주소
@@ -113,10 +117,11 @@ const PlaceCard = ({
             />
             <Flex justifyContent="flex-end" width="15rem">
               <Button
-                variant="danger"
+                variant="dangerSecondary"
                 onClick={() => onDelete(props.id)}
-                padding="0.6rem 1.2rem"
-                width="auto"
+                padding="0.6rem 0.8rem"
+                width="8rem"
+                disabled={selected}
               >
                 <Text
                   variant="label"
@@ -140,14 +145,15 @@ const PlaceCard = ({
           />
           <Flex justifyContent="flex-end" width="15rem">
             <Button
-              variant="danger"
+              variant="dangerSecondary"
               onClick={() => onDelete(props.id)}
-              padding="0.6rem 1.2rem"
-              width="auto"
+              padding="0.6rem 0.8rem"
+              width="8rem"
+              disabled={selected}
             >
               <Text
                 variant="label"
-                color={theme.colors.gray[300]}
+                color={theme.colors.white}
                 aria-label="장소 삭제"
               >
                 삭제

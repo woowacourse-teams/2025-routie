@@ -140,6 +140,21 @@ public enum ErrorCode {
             "장소에 중복된 해시태그가 존재합니다.",
             HttpStatus.BAD_REQUEST
     ),
+    HASHTAG_NOT_FOUND(
+            "HTG-003",
+            "해당 해시태그를 찾을 수 없습니다.",
+            HttpStatus.NOT_FOUND
+    ),
+    HASHTAG_NOT_FOUND_IN_ROUTIE_SPACE(
+            "HTG-004",
+            "루티 스페이스 내에서 해당하는 해시태그를 찾을 수 없습니다.",
+            HttpStatus.NOT_FOUND
+    ),
+    HASHTAG_SIZE_INVALID(
+            "HTG-005",
+            "해시태그 사이즈는 5개 이하여야 합니다.",
+            HttpStatus.BAD_REQUEST
+    ),
 
     /**
      * SPL: Searched Place
@@ -212,6 +227,11 @@ public enum ErrorCode {
             "RTS-008",
             "해당 루티 스페이스에 접근할 권한이 없는 게스트입니다.",
             HttpStatus.FORBIDDEN
+    ),
+    ROUTIE_SPACE_NULL(
+            "RTS-009",
+            "RoutieSpace 는 null일 수 없습니다.",
+            HttpStatus.BAD_REQUEST
     ),
 
     /**
@@ -495,6 +515,20 @@ public enum ErrorCode {
             "EXT-009",
             "장소 검색 서비스를 사용할 수 없습니다.",
             HttpStatus.SERVICE_UNAVAILABLE
+    ),
+
+    /**
+     * SSE: Server Sent Events
+     */
+    FAILED_TO_SEND_SSE_MESSAGE(
+            "SSE-001",
+            "SSE 메시지 전송에 실패했습니다.",
+            HttpStatus.INTERNAL_SERVER_ERROR
+    ),
+    SSE_EMITTER_NOT_FOUND(
+            "SSE-002",
+            "해당 SSE Emitter를 찾을 수 없습니다.",
+            HttpStatus.NOT_FOUND
     ),
     ;
 

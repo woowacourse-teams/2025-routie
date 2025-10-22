@@ -22,7 +22,7 @@ const PlaceView = () => {
     usePlaceList();
   const { handleLikePlace, handleDeleteLikePlace, likedPlaceIds } =
     usePlaceLikes();
-  const { routieIdList, handleAddRoutie } = useRoutieList();
+  const { routieIdList, handleAddRoutie, handleDeleteRoutie } = useRoutieList();
   const { openModal } = useModal();
   const { selectedHashtags } = useHashtagFilterContext();
   const [editingPlaceId, setEditingPlaceId] = useState<number | null>(null);
@@ -149,6 +149,7 @@ const PlaceView = () => {
                   isEditing={isEditing}
                   onSelect={handlePlaceSelect}
                   onDelete={handlePlaceDelete}
+                  onDeleteRoutie={handleDeleteRoutie}
                   onLike={
                     liked ? handleUnlikeButtonClick : handleLikeButtonClick
                   }

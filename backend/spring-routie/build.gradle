@@ -66,6 +66,9 @@ dependencies {
     // Actuator
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
 
+    // Metric
+    implementation 'io.micrometer:micrometer-registry-cloudwatch2:1.15.5'
+
     // Test
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
