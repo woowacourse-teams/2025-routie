@@ -141,7 +141,7 @@ const PlaceView = () => {
             const isEditing = editingPlaceId === place.id;
 
             return (
-              <div key={place.id} css={PlaceCardContainerStyle}>
+              <section key={place.id} css={PlaceCardContainerStyle}>
                 <PlaceCard
                   {...place}
                   selected={selected}
@@ -158,7 +158,7 @@ const PlaceView = () => {
                     handleUpdateHashtags(place.id, hashtags)
                   }
                 />
-              </div>
+              </section>
             );
           })}
           <span

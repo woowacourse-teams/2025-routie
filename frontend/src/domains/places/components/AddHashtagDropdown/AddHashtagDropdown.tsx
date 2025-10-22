@@ -1,3 +1,5 @@
+import { css } from '@emotion/react';
+
 import Button from '@/@common/components/Button/Button';
 import Flex from '@/@common/components/Flex/Flex';
 import Input from '@/@common/components/Input/Input';
@@ -45,7 +47,12 @@ const AddHashtagDropdown = (props: AddHashtagDropdownProps) => {
   };
 
   return (
-    <>
+    <section
+      css={css`
+        width: 100%;
+        padding: 1rem 0;
+      `}
+    >
       <Flex
         direction="column"
         gap={1}
@@ -142,7 +149,7 @@ const AddHashtagDropdown = (props: AddHashtagDropdownProps) => {
           </Text>
         </Button>
       </Flex>
-    </>
+    </section>
   );
 };
 

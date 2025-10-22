@@ -50,7 +50,7 @@ const Sidebar = ({ isOpen, handleToggle }: SidebarProps) => {
   }, [isOpen]);
 
   return (
-    <div css={SidebarContainerStyle(isOpen)} tabIndex={-1}>
+    <aside css={SidebarContainerStyle(isOpen)} tabIndex={-1}>
       <SidebarToggleButton isOpen={isOpen} handleToggle={handleToggle} />
       <Flex justifyContent="flex-start" height="100%">
         <Flex
@@ -106,7 +106,7 @@ const Sidebar = ({ isOpen, handleToggle }: SidebarProps) => {
           {activeTab === 'place' && <PlaceView />}
         </Flex>
       </Flex>
-    </div>
+    </aside>
   );
 };
 
