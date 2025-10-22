@@ -44,6 +44,7 @@ const useRoutieSpaceStream = () => {
     url: sseUrl,
     eventName: 'ROUTIE_SPACE_UPDATED',
     onMessage: (routieSpaceName) => {
+      // console.log('ROUTIE_SPACE_UPDATED', routieSpaceName);
       replaceRoutieSpace(routieSpaceName);
     },
   });
