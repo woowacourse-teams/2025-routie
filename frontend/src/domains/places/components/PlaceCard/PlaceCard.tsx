@@ -120,7 +120,7 @@ const PlaceCard = ({
               >
                 <Text
                   variant="label"
-                  color={theme.colors.gray[300]}
+                  color={theme.colors.white}
                   aria-label="장소 삭제"
                 >
                   삭제
