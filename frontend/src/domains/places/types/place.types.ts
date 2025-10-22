@@ -35,6 +35,10 @@ interface HashtagsAdapterType {
   count: number;
 }
 
+interface HashtagsResponseAdapterType {
+  hashtags: HashtagsAdapterType[];
+}
+
 export type {
   SearchedPlaceType,
   PlaceDataType,
@@ -44,4 +48,5 @@ export type {
   SearchPlaceAdapterType,
   LikedPlacesResponseAdapterType,
   HashtagsAdapterType,
+  HashtagsResponseAdapterType,
 };
