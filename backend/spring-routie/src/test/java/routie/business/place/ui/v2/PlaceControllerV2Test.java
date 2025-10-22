@@ -1,13 +1,8 @@
 package routie.business.place.ui.v2;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
-
-import java.util.List;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -35,6 +30,10 @@ import routie.business.place.ui.dto.response.PlaceReadResponse;
 import routie.business.routiespace.domain.RoutieSpace;
 import routie.business.routiespace.domain.RoutieSpaceIdentifierProvider;
 import routie.business.routiespace.domain.RoutieSpaceRepository;
+
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 @DirtiesContext(classMode = ClassMode.AFTER_CLASS)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
