@@ -11,12 +11,14 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
+
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -157,6 +159,7 @@ public class Place {
     }
 
     public void addHashtags(final List<Hashtag> hashtags) {
+        validateHashtagSize(hashtags);
         final List<PlaceHashtag> placeHashtags = hashtags.stream()
                 .map(hashtag -> new PlaceHashtag(this, hashtag))
                 .toList();
@@ -164,6 +167,7 @@ public class Place {
     }
 
     public void updateHashtags(final List<Hashtag> newHashtags) {
+        validateHashtagSize(newHashtags);
         final Set<String> newHashtagNames = newHashtags.stream()
                 .map(Hashtag::getName)
                 .collect(Collectors.toSet());
@@ -177,6 +181,12 @@ public class Place {
 
         placeHashtags.removeIf(placeHashtag -> !newHashtagNames.contains(placeHashtag.getHashtag().getName())
         );
+    }
+
+    private void validateHashtagSize(final List<Hashtag> hashtags) {
+        if (hashtags.size() > 5) {
+            throw new BusinessException(ErrorCode.HASHTAG_SIZE_INVALID);
+        }
     }
 
     public List<Hashtag> getHashtags() {
