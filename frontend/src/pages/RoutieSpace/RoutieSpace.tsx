@@ -1,6 +1,7 @@
 import { useEffect, useLayoutEffect } from 'react';
 import { useSearchParams } from 'react-router';
 
+import FeedbackWidget from '@/@common/components/FeedbackWidget/FeedbackWidget';
 import { useModal } from '@/@common/contexts/ModalContext';
 import { useToastContext } from '@/@common/contexts/useToastContext';
 import { useToggle } from '@/@common/hooks/useToggle';
@@ -59,6 +60,7 @@ const RoutieSpace = () => {
         {accessToken && <UserMenuButton />}
         <Sidebar isOpen={isSidebarOpen} handleToggle={handleSidebarToggle} />
       </div>
+      <FeedbackWidget />
     </HashtagFilterProvider>
   );
 };
