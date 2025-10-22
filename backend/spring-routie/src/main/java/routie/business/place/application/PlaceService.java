@@ -88,10 +88,11 @@ public class PlaceService {
 
         final List<Hashtag> hashtags = convertNamesToHashtags(placeCreateRequest.hashtags(), routieSpace);
         place.addHashtags(hashtags);
+        placeRepository.save(place);
 
         applicationEventPublisher.publishEvent(new PlaceCreateEvent(this, place.getId(), routieSpaceIdentifier));
 
-        return new PlaceCreateResponse(placeRepository.save(place).getId());
+        return new PlaceCreateResponse(place.getId());
     }
 
     @Transactional
