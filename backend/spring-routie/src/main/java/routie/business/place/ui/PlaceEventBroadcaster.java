@@ -1,4 +1,4 @@
-package routie.business.place.ui.event;
+package routie.business.place.ui;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.event.EventListener;
@@ -31,7 +31,7 @@ public class PlaceEventBroadcaster {
         final String routieSpaceIdentifier = placeUpdateEvent.getRoutieSpaceIdentifier();
         final SsePlaceUpdateResponse placeUpdateResponse = SsePlaceUpdateResponse.createWithPlaceListResponseV2(
                 placeUpdateEvent.getPlaceId(),
-                placeService.readPlacesV2(routieSpaceIdentifier)
+                placeService.readPlacesV3(routieSpaceIdentifier)
         );
         final SseMessage message = new SseMessage("PLACE_UPDATED", placeUpdateResponse);
         routieSpaceSseEmitters.broadcast(routieSpaceIdentifier, message);
@@ -43,7 +43,7 @@ public class PlaceEventBroadcaster {
         final String routieSpaceIdentifier = placeDeleteEvent.getRoutieSpaceIdentifier();
         final SsePlaceDeleteResponse placeDeleteResponse = SsePlaceDeleteResponse.createWithPlaceListResponseV2(
                 placeDeleteEvent.getPlaceId(),
-                placeService.readPlacesV2(routieSpaceIdentifier)
+                placeService.readPlacesV3(routieSpaceIdentifier)
         );
         final SseMessage message = new SseMessage("PLACE_DELETED", placeDeleteResponse);
         routieSpaceSseEmitters.broadcast(routieSpaceIdentifier, message);
@@ -55,7 +55,7 @@ public class PlaceEventBroadcaster {
         final String routieSpaceIdentifier = placeCreateEvent.getRoutieSpaceIdentifier();
         final SsePlaceCreateResponse placeCreateResponse = SsePlaceCreateResponse.createWithPlaceListResponseV2(
                 placeCreateEvent.getPlaceId(),
-                placeService.readPlacesV2(routieSpaceIdentifier)
+                placeService.readPlacesV3(routieSpaceIdentifier)
         );
         final SseMessage message = new SseMessage("PLACE_CREATED", placeCreateResponse);
         routieSpaceSseEmitters.broadcast(routieSpaceIdentifier, message);
@@ -68,7 +68,7 @@ public class PlaceEventBroadcaster {
     ) {
         final String routieSpaceIdentifier = routieSpaceSseEstablishedEvent.getRoutieSpaceIdentifier();
         final SsePlaceHistoryResponse placeHistoryResponse = SsePlaceHistoryResponse.from(
-                placeService.readPlacesV2(routieSpaceIdentifier)
+                placeService.readPlacesV3(routieSpaceIdentifier)
         );
         final SseMessage message = new SseMessage("PLACE_HISTORY", placeHistoryResponse);
         message.sendTo(routieSpaceSseEstablishedEvent.getEmitter());
