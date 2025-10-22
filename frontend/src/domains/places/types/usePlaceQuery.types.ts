@@ -2,4 +2,4 @@ interface UsePlaceListQueryOptions {
   enabled?: boolean;
 }
 
-export { UsePlaceListQueryOptions };
+export type { UsePlaceListQueryOptions };

@@ -2,4 +2,4 @@ interface UseRoutieQueryOptions {
   enabled?: boolean;
 }
 
-export { UseRoutieQueryOptions };
+export type { UseRoutieQueryOptions };

@@ -21,9 +21,9 @@ import type {
 } from '@/domains/places/types/api.types';
 import { useGoogleEventTrigger } from '@/libs/googleAnalytics/hooks/useGoogleEventTrigger';
 
-import { UsePlaceListQueryOptions } from '../types/usePlaceQuery.types';
-
 import { placesKeys } from './key';
+
+import type { UsePlaceListQueryOptions } from '../types/usePlaceQuery.types';
 
 const usePlaceListQuery = ({
   enabled = true,

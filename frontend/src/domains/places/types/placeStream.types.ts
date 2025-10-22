@@ -17,7 +17,7 @@ interface PlaceDeletedEvent {
   places: FetchPlaceListResponseType[];
 }
 
-export {
+export type {
   PlaceHistoryEvent,
   PlaceCreatedEvent,
   PlaceUpdatedEvent,

@@ -18,4 +18,4 @@ interface RegistryEntry {
   reconnectTimer?: number; // 자동 재연결 예약 타이머 id
 }
 
-export { UseSseOptions, RegistryEntry };
+export type { UseSseOptions, RegistryEntry };

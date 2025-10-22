@@ -11,14 +11,15 @@ import { useSse } from '@/libs/sse/hooks/useSse';
 
 import { routieAdapter } from '../adapters/routieAdapter';
 import { routiesKeys } from '../queries/key';
-import {
+
+import type {
   RoutieCreatedEvent,
   RoutieDeletedEvent,
   RoutieHistoryEvent,
   RoutieUpdatedEvent,
 } from '../types/routieStream.types';
 
-export const useRoutieStream = () => {
+const useRoutieStream = () => {
   const queryClient = useQueryClient();
   const [searchParams] = useSearchParams();
   const { showToast } = useToastContext();
@@ -87,3 +88,5 @@ export const useRoutieStream = () => {
     },
   });
 };
+
+export { useRoutieStream };

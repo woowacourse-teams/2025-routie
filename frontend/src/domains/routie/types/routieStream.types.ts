@@ -11,7 +11,7 @@ interface RoutieDeletedEvent extends FetchRoutieResponseType {
   deletedRoutiePlaceId: number;
 }
 
-export {
+export type {
   RoutieHistoryEvent,
   RoutieCreatedEvent,
   RoutieUpdatedEvent,

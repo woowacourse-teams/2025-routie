@@ -13,9 +13,10 @@ import {
   editRoutieSequence,
   getRoutie,
 } from '../apis/routie';
-import { UseRoutieQueryOptions } from '../types/useRoutieQuery.types';
 
 import { routiesKeys } from './key';
+
+import type { UseRoutieQueryOptions } from '../types/useRoutieQuery.types';
 
 const useRoutieQuery = ({ enabled = true }: UseRoutieQueryOptions = {}) => {
   return useQuery({
