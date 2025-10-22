@@ -9,11 +9,11 @@ import {
   useDeleteRoutieQuery,
   useRoutieQuery,
 } from '@/domains/routie/queries/useRoutieQuery';
-import { RoutieType } from '@/domains/routie/types/routie.types';
+import type { RoutieType } from '@/domains/routie/types/routie.types';
 import { useGoogleEventTrigger } from '@/libs/googleAnalytics/hooks/useGoogleEventTrigger';
 
 const useRoutieList = () => {
-  const { data: routie, error } = useRoutieQuery();
+  const { data: routie, error } = useRoutieQuery({ enabled: false });
   const { mutateAsync: addRoutie } = useAddRoutieQuery();
   const { mutateAsync: deleteRoutie } = useDeleteRoutieQuery();
   const { mutateAsync: changeRoutie } = useChangeRoutieQuery();
@@ -97,7 +97,6 @@ const useRoutieList = () => {
 
   return {
     routiePlaces: routie.routiePlaces,
-    routes: routie.routes,
     routieIdList,
     handleAddRoutie,
     handleChangeRoutie,

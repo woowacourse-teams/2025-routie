@@ -26,10 +26,15 @@ import { useGoogleEventTrigger } from '@/libs/googleAnalytics/hooks/useGoogleEve
 
 import { placesKeys } from './key';
 
-const usePlaceListQuery = () => {
+import type { UsePlaceListQueryOptions } from '../types/usePlaceQuery.types';
+
+const usePlaceListQuery = ({
+  enabled = true,
+}: UsePlaceListQueryOptions = {}) => {
   return useQuery({
     queryKey: placesKeys.list(),
     queryFn: getPlaceList,
+    enabled,
   });
 };
 
@@ -58,11 +63,6 @@ const useAddPlaceQuery = () => {
   return useMutation({
     mutationFn: (addPlaceInfo: AddPlaceRequestType) => addPlace(addPlaceInfo),
     onSuccess: (data) => {
-      showToast({
-        message: '장소가 추가되었습니다.',
-        type: 'success',
-      });
-      queryClient.invalidateQueries({ queryKey: placesKeys.list() });
       queryClient.invalidateQueries({ queryKey: placesKeys.hashtags() });
       queryClient.setQueryData(['addedPlaceId'], data.id);
     },
@@ -77,17 +77,11 @@ const useAddPlaceQuery = () => {
 
 const useDeletePlaceQuery = () => {
   const { showToast } = useToastContext();
-  const queryClient = useQueryClient();
   const { triggerEvent } = useGoogleEventTrigger();
 
   return useMutation({
     mutationFn: (placeId: number) => deletePlace({ placeId }),
     onSuccess: () => {
-      showToast({
-        message: '장소가 삭제되었습니다.',
-        type: 'success',
-      });
-      queryClient.invalidateQueries({ queryKey: placesKeys.list() });
       triggerEvent({
         action: 'click',
         category: 'place',
@@ -115,7 +109,6 @@ const useLikePlaceMutation = () => {
         message: '좋아요가 추가되었습니다.',
         type: 'success',
       });
-      queryClient.invalidateQueries({ queryKey: placesKeys.list() });
       queryClient.invalidateQueries({ queryKey: placesKeys.liked() });
     },
     onError: (error) => {
@@ -139,7 +132,6 @@ const useDeleteLikePlaceMutation = () => {
         message: '좋아요가 취소되었습니다.',
         type: 'success',
       });
-      queryClient.invalidateQueries({ queryKey: placesKeys.list() });
       queryClient.invalidateQueries({ queryKey: placesKeys.liked() });
     },
     onError: (error) => {
@@ -171,7 +163,6 @@ const useUpdatePlaceHashtagsMutation = () => {
         message: '해시태그가 수정되었습니다.',
         type: 'success',
       });
-      queryClient.invalidateQueries({ queryKey: placesKeys.list() });
       queryClient.invalidateQueries({ queryKey: placesKeys.hashtags() });
     },
     onError: (error) => {
@@ -224,13 +215,13 @@ const usePopularHashtagsQuery = () => {
 
 export {
   useAddPlaceQuery,
+  useDeleteLikePlaceMutation,
   useDeletePlaceQuery,
+  useLikedPlacesQuery,
+  useLikePlaceMutation,
   usePlaceDetailQuery,
   usePlaceListQuery,
   usePlaceSearchQuery,
-  useLikePlaceMutation,
-  useDeleteLikePlaceMutation,
-  useLikedPlacesQuery,
   useUpdatePlaceHashtagsMutation,
   useHashtagsQuery,
   useDeleteHashtagMutation,
