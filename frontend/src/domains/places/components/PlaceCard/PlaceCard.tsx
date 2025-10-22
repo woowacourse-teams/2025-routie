@@ -96,7 +96,6 @@ const PlaceCard = ({
               ? handleDeleteRoutie(props.id)
               : handlePlaceSelect(props.id, selected)
           }
-          disabled={selected}
           padding="0.6rem 1.2rem"
           width="10rem"
         >
@@ -106,46 +105,14 @@ const PlaceCard = ({
         </Button>
       </Flex>
 
-      {isEditing && onCancelEdit && onUpdateHashtags && (
-        <Flex direction="column" gap={1.6}>
+      <Flex direction="column" gap={1.6}>
+        {isEditing && onCancelEdit && onUpdateHashtags && (
           <EditHashtagDropdown
             initialHashtags={props.hashtags || []}
             onCancel={onCancelEdit}
             onUpdate={onUpdateHashtags}
           />
-          <Flex justifyContent="space-between">
-            <LikeButton
-              count={props.likeCount}
-              liked={liked}
-              onClick={() => onLike(props.id)}
-            />
-            <Flex justifyContent="flex-end" width="15rem" gap={0.8}>
-              <Button
-                variant="secondary"
-                onClick={() => handleKakaoPlaceClick(props.kakaoPlaceId)}
-                padding="0.6rem 0.8rem"
-              >
-                <Text variant="label" color={theme.colors.gray[300]}>
-                  카카오맵
-                </Text>
-              </Button>
-              <Button
-                variant="dangerSecondary"
-                onClick={() => onDelete(props.id)}
-                padding="0.6rem 0.8rem"
-                width="8rem"
-                disabled={selected}
-              >
-                <Text variant="label" color={theme.colors.white}>
-                  삭제
-                </Text>
-              </Button>
-            </Flex>
-          </Flex>
-        </Flex>
-      )}
-
-      {!isEditing && (
+        )}
         <Flex justifyContent="space-between">
           <LikeButton
             count={props.likeCount}
@@ -175,7 +142,7 @@ const PlaceCard = ({
             </Button>
           </Flex>
         </Flex>
-      )}
+      </Flex>
     </Flex>
   );
 };
