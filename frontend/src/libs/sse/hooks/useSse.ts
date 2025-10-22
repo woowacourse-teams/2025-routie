@@ -1,8 +1,10 @@
 import { useEffect, useRef } from 'react';
 
+import type {
+  RegistryEntry,
+  UseSseOptions,
+} from '@/libs/sse/types/useSse.types';
 import { ensureStreamToken } from '@/libs/utils/token';
-
-import { RegistryEntry, UseSseOptions } from '../types/useSse.types';
 
 const RECONNECT_DELAY_MS = 3_000; // 연결이 끊겼을 때 다시 시도하기까지 기다릴 시간
 const registry = new Map<string, RegistryEntry>(); // URL별 RegistryEntry를 보관하는 맵
@@ -105,7 +107,7 @@ const registryEntry = (fullUrl: string) => {
 };
 
 // 실제로 컴포넌트에서 사용하는 훅 정의
-export const useSse = <T>({ url, eventName, onMessage }: UseSseOptions<T>) => {
+const useSse = <T>({ url, eventName, onMessage }: UseSseOptions<T>) => {
   const handlerRef = useRef(onMessage); // 최신 onMessage를 기억하기 위한 ref
 
   useEffect(() => {
@@ -152,3 +154,5 @@ export const useSse = <T>({ url, eventName, onMessage }: UseSseOptions<T>) => {
     };
   }, [url, eventName]);
 };
+
+export { useSse };

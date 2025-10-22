@@ -6,10 +6,9 @@ import { useQueryClient } from '@tanstack/react-query';
 import { useToastContext } from '@/@common/contexts/useToastContext';
 import { getPlaceListAdapter } from '@/domains/places/adapters/placeAdapter';
 import { placesKeys } from '@/domains/places/queries/key';
+import type { PlaceHistoryEvent } from '@/domains/places/types/placeStream.types';
 import { ensureRoutieSpaceUuid } from '@/domains/utils/routieSpaceUuid';
 import { useSse } from '@/libs/sse/hooks/useSse';
-
-import { PlaceHistoryEvent } from '../types/placeStream.types';
 
 const usePlaceStream = () => {
   const queryClient = useQueryClient();
