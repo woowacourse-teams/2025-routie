@@ -3,6 +3,7 @@ import { useSearchParams } from 'react-router-dom';
 
 import { useQueryClient } from '@tanstack/react-query';
 
+import { routieSpaceAdapter } from '@/domains/routieSpace/adapters/routieSpaceAdapter';
 import { routieSpaceKeys } from '@/domains/routieSpace/queries/key';
 import type { RoutieSpaceAdapterType } from '@/domains/routieSpace/types/routieSpace.types';
 import type {
@@ -25,7 +26,7 @@ const useRoutieSpaceStream = () => {
   const replaceRoutieSpace = (routieSpaceName: RoutieSpaceHistoryEvent) => {
     queryClient.setQueryData<RoutieSpaceAdapterType>(
       routieSpaceKeys.all,
-      routieSpaceName,
+      routieSpaceAdapter(routieSpaceName),
     );
   };
 
