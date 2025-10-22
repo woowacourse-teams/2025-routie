@@ -33,6 +33,7 @@ public class PlaceControllerV2 {
         return ResponseEntity.ok(placeCreateResponse);
     }
 
+    @Deprecated
     @GetMapping
     public ResponseEntity<PlaceListResponseV2> readPlaces(@PathVariable final String routieSpaceIdentifier) {
         final PlaceListResponseV2 placeListResponse = placeService.readPlacesV2(routieSpaceIdentifier);
