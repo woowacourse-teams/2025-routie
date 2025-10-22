@@ -7,6 +7,7 @@ import type {
   SearchPlaceResponseType,
 } from '@/domains/places/types/api.types';
 import type {
+  HashtagsAdapterType,
   LikedPlacesResponseAdapterType,
   PlaceAdapterType,
   PlaceListAdapterType,
@@ -62,7 +63,7 @@ const likedPlacesAdapter = (
   return { likedPlaceIds: data.likedPlaceIds };
 };
 
-const hashtagsAdapter = (data: HashtagsResponseType) => {
+const hashtagsAdapter = (data: HashtagsResponseType): HashtagsAdapterType => {
   return {
     hashtags: data.hashtags.map((hashtag) => ({
       id: hashtag.id,
