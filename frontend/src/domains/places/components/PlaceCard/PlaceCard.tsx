@@ -96,7 +96,6 @@ const PlaceCard = ({
               ? handleDeleteRoutie(props.id)
               : handlePlaceSelect(props.id, selected)
           }
-          disabled={selected}
           padding="0.6rem 1.2rem"
           width="10rem"
         >
