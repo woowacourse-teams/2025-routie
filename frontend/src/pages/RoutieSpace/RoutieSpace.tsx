@@ -11,6 +11,7 @@ import { useUserQuery } from '@/domains/auth/queries/useAuthQuery';
 import KakaoMap from '@/domains/maps/components/KakaoMap/KakaoMap';
 import HashtagFilterProvider from '@/domains/places/contexts/HashtagFilterProvider';
 import { usePlaceStream } from '@/domains/places/hooks/usePlaceStream';
+import { useRoutieStream } from '@/domains/routie/hooks/useRoutieStream';
 import Sidebar from '@/pages/RoutieSpace/components/Sidebar/Sidebar';
 
 import { RoutieSpaceContainerStyle } from './RoutieSpace.styles';
@@ -26,6 +27,7 @@ const RoutieSpace = () => {
     useToggle();
 
   usePlaceStream();
+  useRoutieStream();
 
   useLayoutEffect(() => {
     if (routieSpaceIdentifier) {
