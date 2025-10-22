@@ -2,7 +2,7 @@ import Button from '@/@common/components/Button/Button';
 import Flex from '@/@common/components/Flex/Flex';
 import Icon from '@/@common/components/IconSvg/Icon';
 import Text from '@/@common/components/Text/Text';
-import { HashtagProps } from '@/domains/places/types/hashtag.types';
+import type { HashtagProps } from '@/domains/places/types/hashtag.types';
 import theme from '@/styles/theme';
 
 import { ButtonStyle, DeleteStyle } from './Hashtag.styles';
