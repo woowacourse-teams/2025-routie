@@ -133,7 +133,7 @@ export const useSse = <T>({ url, eventName, onMessage }: UseSseOptions<T>) => {
   useEffect(() => {
     if (!url) return; // URL이 없다면 아무 작업도 하지 않는다
 
-    const fullUrl = `${process.env.REACT_APP_API_URL}${url}`; // 실제로 요청할 전체 URL
+    const fullUrl = `${process.env.REACT_APP_API_URL ?? ''}${url}`; // 실제로 요청할 전체 URL
     const type = eventName; // 이벤트 이름
     const entry = registryEntry(fullUrl); // 해당 URL의 RegistryEntry 확보
 
