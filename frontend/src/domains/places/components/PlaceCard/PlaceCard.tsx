@@ -25,16 +25,16 @@ const PlaceCard = ({
   onDeleteRoutie,
   ...props
 }: PlaceCardProps) => {
-  const handlePlaceSelect = async () => {
-    await onSelect(props.id, selected);
+  const handlePlaceSelect = async (placeId: number, selected: boolean) => {
+    await onSelect(placeId, selected);
   };
 
-  const handleDeleteRoutie = async () => {
-    await onDeleteRoutie(props.id);
+  const handleDeleteRoutie = async (placeId: number) => {
+    await onDeleteRoutie(placeId);
   };
 
-  const handleKakaoPlaceClick = () => {
-    openKakaoPlace(props.kakaoPlaceId);
+  const handleKakaoPlaceClick = (kakaoPlaceId: string) => {
+    openKakaoPlace(kakaoPlaceId);
   };
 
   return (
@@ -91,7 +91,11 @@ const PlaceCard = ({
         </Flex>
         <Button
           variant={selected ? 'dangerSecondary' : 'primary'}
-          onClick={selected ? handleDeleteRoutie : handlePlaceSelect}
+          onClick={() =>
+            selected
+              ? handleDeleteRoutie(props.id)
+              : handlePlaceSelect(props.id, selected)
+          }
           disabled={selected}
           padding="0.6rem 1.2rem"
           width="10rem"
@@ -118,7 +122,7 @@ const PlaceCard = ({
             <Flex justifyContent="flex-end" width="15rem" gap={0.8}>
               <Button
                 variant="secondary"
-                onClick={handleKakaoPlaceClick}
+                onClick={() => handleKakaoPlaceClick(props.kakaoPlaceId)}
                 padding="0.6rem 0.8rem"
               >
                 <Text variant="label" color={theme.colors.gray[300]}>
@@ -151,7 +155,7 @@ const PlaceCard = ({
           <Flex justifyContent="flex-end" width="15rem" gap={0.8}>
             <Button
               variant="secondary"
-              onClick={handleKakaoPlaceClick}
+              onClick={() => handleKakaoPlaceClick(props.kakaoPlaceId)}
               padding="0.6rem 0.8rem"
             >
               <Text variant="label" color={theme.colors.gray[300]}>
