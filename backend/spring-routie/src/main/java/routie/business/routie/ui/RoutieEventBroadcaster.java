@@ -38,7 +38,7 @@ public class RoutieEventBroadcaster {
 
     @Async
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
-    public void handleRoutieUpdateEvent(final RoutePlaceCreateEvent routieUpdateEvent) {
+    public void handleRoutePlaceCreateEvent(final RoutePlaceCreateEvent routieUpdateEvent) {
         final String routieSpaceIdentifier = routieUpdateEvent.getRoutieSpaceIdentifier();
         final SseRoutiePlaceCreateResponse response = SseRoutiePlaceCreateResponse.createWithRoutieReadResponse(
                 routieUpdateEvent.getPlaceId(),
@@ -50,7 +50,7 @@ public class RoutieEventBroadcaster {
 
     @Async
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
-    public void handleRoutieUpdateEvent(final RoutePlaceDeleteEvent routieUpdateEvent) {
+    public void handleRoutePlaceDeleteEvent(final RoutePlaceDeleteEvent routieUpdateEvent) {
         final String routieSpaceIdentifier = routieUpdateEvent.getRoutieSpaceIdentifier();
         final SseRoutiePlaceDeleteResponse response = SseRoutiePlaceDeleteResponse.createWithRoutieReadResponse(
                 routieUpdateEvent.getPlaceId(),
