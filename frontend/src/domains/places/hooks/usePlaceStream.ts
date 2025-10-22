@@ -7,7 +7,7 @@ import { useToastContext } from '@/@common/contexts/useToastContext';
 import { getPlaceListAdapter } from '@/domains/places/adapters/placeAdapter';
 import { placesKeys } from '@/domains/places/queries/key';
 import type {
-  PlaceCratedEvent,
+  PlaceCreatedEvent,
   PlaceDeletedEvent,
   PlaceHistoryEvent,
   PlaceUpdatedEvent,
@@ -41,7 +41,7 @@ const usePlaceStream = () => {
     onMessage: ({ places }) => replacePlaceList({ places }),
   });
 
-  useSse<PlaceCratedEvent>({
+  useSse<PlaceCreatedEvent>({
     url: sseUrl,
     eventName: 'PLACE_CREATED',
     onMessage: ({ createdPlaceId, places }) => {

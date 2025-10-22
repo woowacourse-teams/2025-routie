@@ -3,7 +3,7 @@ import { FetchPlaceListResponseType } from './api.types';
 interface PlaceHistoryEvent {
   places: FetchPlaceListResponseType[];
 }
-interface PlaceCratedEvent {
+interface PlaceCreatedEvent {
   createdPlaceId: number;
   places: FetchPlaceListResponseType[];
 }
@@ -19,7 +19,7 @@ interface PlaceDeletedEvent {
 
 export {
   PlaceHistoryEvent,
-  PlaceCratedEvent,
+  PlaceCreatedEvent,
   PlaceUpdatedEvent,
   PlaceDeletedEvent,
 };
