@@ -85,6 +85,7 @@ const PlaceCard = ({
           disabled={selected}
           padding="0.6rem 1.2rem"
           width="10rem"
+          autoFocus
         >
           <Text variant="caption" color={theme.colors.white}>
             동선에 추가

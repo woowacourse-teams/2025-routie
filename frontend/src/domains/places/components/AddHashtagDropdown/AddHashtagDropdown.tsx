@@ -66,6 +66,7 @@ const AddHashtagDropdown = (props: AddHashtagDropdownProps) => {
             onChange={handleInputChange}
             onKeyDown={handleEnterTag}
             aria-describedby="hashtag"
+            autoFocus
           />
           <span id="hashtag" className="hide">
             해시 태그를 입력 후 엔터를 눌러 추가할 수 있습니다.
