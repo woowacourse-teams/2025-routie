@@ -11,6 +11,9 @@ import UserMenuButton from '@/domains/auth/components/UserMenuButton/UserMenuBut
 import { useUserQuery } from '@/domains/auth/queries/useAuthQuery';
 import KakaoMap from '@/domains/maps/components/KakaoMap/KakaoMap';
 import HashtagFilterProvider from '@/domains/places/contexts/HashtagFilterProvider';
+import { usePlaceStream } from '@/domains/places/hooks/usePlaceStream';
+import { useRoutieStream } from '@/domains/routie/hooks/useRoutieStream';
+import { useRoutieSpaceStream } from '@/domains/routieSpace/hooks/useRoutieSpaceStream';
 import Sidebar from '@/pages/RoutieSpace/components/Sidebar/Sidebar';
 
 import { RoutieSpaceContainerStyle } from './RoutieSpace.styles';
@@ -24,6 +27,10 @@ const RoutieSpace = () => {
   const accessToken = getAccessToken();
   const { isOpen: isSidebarOpen, handleToggle: handleSidebarToggle } =
     useToggle();
+
+  usePlaceStream();
+  useRoutieStream();
+  useRoutieSpaceStream();
 
   useLayoutEffect(() => {
     if (routieSpaceIdentifier) {

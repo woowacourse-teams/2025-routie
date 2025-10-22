@@ -5,6 +5,27 @@ interface HashtagProps {
   tag: string;
   isSelected: boolean;
   onClick: () => void;
+  count?: number;
+  isEditMode?: boolean;
+  onDelete?: () => void;
+}
+
+interface HashtagPopularResponse {
+  hashtags: string[];
+}
+
+interface HashtagResponse {
+  id: number;
+  name: string;
+  count: number;
+}
+
+interface HashtagsApiResponse {
+  hashtags: HashtagResponse[];
+}
+
+interface HashtagPopularApiResponse {
+  hashtags: HashtagPopularResponse;
 }
 interface AddHashtagDropdownProps extends SearchAddressProps {
   place: SearchedPlaceType;
@@ -38,4 +59,7 @@ export type {
   EditHashtagDropdownProps,
   HashtagFilterContextType,
   FilterPlacesByHashtagsParams,
+  HashtagResponse,
+  HashtagsApiResponse,
+  HashtagPopularApiResponse,
 };

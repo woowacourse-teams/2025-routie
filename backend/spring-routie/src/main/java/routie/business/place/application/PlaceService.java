@@ -20,6 +20,7 @@ import routie.business.place.ui.dto.response.PlaceCreateResponse;
 import routie.business.place.ui.dto.response.PlaceListResponse;
 import routie.business.place.ui.dto.response.PlaceListResponseV2;
 import routie.business.place.ui.dto.response.PlaceListResponseV2.PlaceCardResponseV2;
+import routie.business.place.ui.dto.response.PlaceListResponseV3;
 import routie.business.place.ui.dto.response.PlaceReadResponse;
 import routie.business.routie.domain.RoutiePlaceRepository;
 import routie.business.routiespace.domain.RoutieSpace;
@@ -30,6 +31,8 @@ import routie.global.exception.domain.ErrorCode;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import static routie.business.place.ui.dto.response.PlaceListResponseV3.PlaceCardResponseV3;
 
 @Service
 @RequiredArgsConstructor
@@ -77,21 +80,23 @@ public class PlaceService {
         final RoutieSpace routieSpace = routieSpaceRepository.findByIdentifier(routieSpaceIdentifier)
                 .orElseThrow(() -> new BusinessException(ErrorCode.ROUTIE_SPACE_NOT_FOUND));
 
-        final Place place = Place.create(
+        final Place place = Place.createWithKakaoPlaceId(
                 placeCreateRequest.name(),
                 placeCreateRequest.roadAddressName(),
                 placeCreateRequest.addressName(),
                 placeCreateRequest.longitude(),
                 placeCreateRequest.latitude(),
+                placeCreateRequest.searchedPlaceId(),
                 routieSpace
         );
 
         final List<Hashtag> hashtags = convertNamesToHashtags(placeCreateRequest.hashtags(), routieSpace);
         place.addHashtags(hashtags);
+        placeRepository.save(place);
 
-        applicationEventPublisher.publishEvent(new PlaceCreateEvent(this, routieSpaceIdentifier));
+        applicationEventPublisher.publishEvent(new PlaceCreateEvent(this, place.getId(), routieSpaceIdentifier));
 
-        return new PlaceCreateResponse(placeRepository.save(place).getId());
+        return new PlaceCreateResponse(place.getId());
     }
 
     @Transactional
@@ -110,7 +115,7 @@ public class PlaceService {
                 .map(Hashtag::getName)
                 .toList();
 
-        applicationEventPublisher.publishEvent(new PlaceUpdateEvent(this, routieSpaceIdentifier));
+        applicationEventPublisher.publishEvent(new PlaceUpdateEvent(this, placeId, routieSpaceIdentifier));
 
         return new HashtagsUpdateResponse(updatedHashTagNames);
     }
@@ -152,6 +157,21 @@ public class PlaceService {
         return new PlaceListResponseV2(placeCardResponses);
     }
 
+    public PlaceListResponseV3 readPlacesV3(final String routieSpaceIdentifier) {
+        final RoutieSpace routieSpace = routieSpaceRepository.findByIdentifier(routieSpaceIdentifier)
+                .orElseThrow(() -> new BusinessException(ErrorCode.ROUTIE_SPACE_NOT_FOUND));
+        final List<Place> places = routieSpace.getPlaces();
+
+        final List<PlaceCardResponseV3> placeCardResponses = places.stream()
+                .map(place -> PlaceCardResponseV3.createPlaceWithLikeCount(
+                        place,
+                        placeLikeRepository.countByPlace(place)
+                ))
+                .toList();
+
+        return new PlaceListResponseV3(placeCardResponses);
+    }
+
     @Transactional
     public void removePlace(final String routieSpaceIdentifier, final long placeId) {
         final RoutieSpace routieSpace = getRoutieSpaceByIdentifier(routieSpaceIdentifier);
@@ -164,7 +184,7 @@ public class PlaceService {
         placeLikeRepository.deleteByPlaceId(placeId);
         placeRepository.deleteById(placeId);
 
-        applicationEventPublisher.publishEvent(new PlaceDeleteEvent(this, routieSpaceIdentifier));
+        applicationEventPublisher.publishEvent(new PlaceDeleteEvent(this, placeId, routieSpaceIdentifier));
     }
 
     public RoutieSpace getRoutieSpaceByIdentifier(final String routieSpaceIdentifier) {

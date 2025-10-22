@@ -11,7 +11,7 @@ import {
 import type { SearchedPlaceType } from '@/domains/places/types/place.types';
 
 const usePlaceList = () => {
-  const { data: placeList, error } = usePlaceListQuery();
+  const { data: placeList, error } = usePlaceListQuery({ enabled: false });
   const { mutate: addPlace, data: addedPlaceId } = useAddPlaceQuery();
   const { mutate: deletePlace } = useDeletePlaceQuery();
   const { mutate: updatePlaceHashtags } = useUpdatePlaceHashtagsMutation();

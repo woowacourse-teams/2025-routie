@@ -7,16 +7,8 @@ interface ApiRoutiePlaceType extends ApiRoutiePlacesBaseType {
   id: number;
 }
 
-interface ApiRouteDataType {
-  fromSequence: number;
-  toSequence: number;
-  duration: number;
-  distance: number;
-}
-
 interface FetchRoutieResponseType {
   routiePlaces: ApiRoutiePlaceType[];
-  routes: ApiRouteDataType[];
 }
 
 interface EditRoutieRequestType {

@@ -23,11 +23,14 @@ interface FetchPlaceRequestType {
   placeId: number;
 }
 
-type FetchPlaceResponseType = ApiPlaceBaseType;
+interface FetchPlaceResponseType extends ApiPlaceBaseType {
+  kakaoPlaceId: string;
+}
 
 interface FetchPlaceListResponseType extends ApiPlaceBaseType {
   id: number;
   likeCount: number;
+  kakaoPlaceId: string;
 }
 
 interface DeletePlaceRequestType {
@@ -51,8 +54,18 @@ interface UpdatePlaceHashtagsRequestType {
   hashtags: string[];
 }
 
+interface HashtagWithCountType {
+  id: number;
+  name: string;
+  count: number;
+}
+
 interface HashtagsResponseType {
-  hashtags: string[];
+  hashtags: HashtagWithCountType[];
+}
+
+interface DeleteHashtagRequestType {
+  hashtagId: number;
 }
 
 export type {
@@ -68,4 +81,6 @@ export type {
   LikedPlacesResponseType,
   UpdatePlaceHashtagsRequestType,
   HashtagsResponseType,
+  HashtagWithCountType,
+  DeleteHashtagRequestType,
 };

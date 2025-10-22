@@ -1,12 +1,7 @@
 package routie.business.place.ui.v1;
 
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.when;
-
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
-import java.util.List;
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -16,9 +11,15 @@ import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
-import routie.business.place.ui.dto.response.SearchedPlacesResponse;
 import routie.business.place.domain.PlaceSearcher;
 import routie.business.place.domain.SearchedPlace;
+import routie.business.place.ui.dto.response.SearchedPlacesResponse;
+
+import java.util.List;
+
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.when;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 class PlaceSearchControllerV1Test {
@@ -62,7 +63,7 @@ class PlaceSearchControllerV1Test {
                 )
         );
 
-        when(placeSearcher.searchPlaces(anyString(), eq(5)))
+        when(placeSearcher.searchPlaces(anyString(), anyInt()))
                 .thenReturn(stubbedSearchedPlaces);
     }
 

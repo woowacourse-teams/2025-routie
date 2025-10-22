@@ -1,11 +1,12 @@
 package routie.business.place.domain;
 
+import routie.business.routiespace.domain.RoutieSpace;
+import routie.business.routiespace.domain.RoutieSpaceFixture;
+
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
-import routie.business.routiespace.domain.RoutieSpace;
-import routie.business.routiespace.domain.RoutieSpaceFixture;
 
 public class PlaceFixture {
 
@@ -29,6 +30,10 @@ public class PlaceFixture {
 
     public static Double anyLatitude() {
         return 37.504497373023206;
+    }
+
+    public static String anyKakaoPlaceId() {
+        return "100000";
     }
 
     public static int anyStayDurationMinutes() {

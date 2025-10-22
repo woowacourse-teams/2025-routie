@@ -1,13 +1,7 @@
 package routie.business.routie.application;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import routie.business.place.domain.Place;
@@ -15,6 +9,9 @@ import routie.business.place.domain.PlaceRepository;
 import routie.business.routie.domain.Routie;
 import routie.business.routie.domain.RoutiePlace;
 import routie.business.routie.domain.RoutiePlaceRepository;
+import routie.business.routie.domain.event.RoutePlaceCreateEvent;
+import routie.business.routie.domain.event.RoutePlaceDeleteEvent;
+import routie.business.routie.domain.event.RoutieUpdateEvent;
 import routie.business.routie.domain.route.MovingStrategy;
 import routie.business.routie.domain.route.RouteCalculationContext;
 import routie.business.routie.domain.route.RouteCalculator;
@@ -36,6 +33,14 @@ import routie.business.routiespace.domain.RoutieSpaceRepository;
 import routie.global.exception.domain.BusinessException;
 import routie.global.exception.domain.ErrorCode;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -43,12 +48,13 @@ public class RoutieService {
 
     private static final int MIN_ROUTIE_PLACES_FOR_ROUTE = 2;
 
-    private final RoutieSpaceRepository routieSpaceRepository;
-    private final PlaceRepository placeRepository;
-    private final RoutiePlaceRepository routiePlaceRepository;
-    private final TimePeriodCalculator timePeriodCalculator;
-    private final RouteCalculator routeCalculator;
     private final RoutieValidator routieValidator;
+    private final PlaceRepository placeRepository;
+    private final RouteCalculator routeCalculator;
+    private final TimePeriodCalculator timePeriodCalculator;
+    private final RoutiePlaceRepository routiePlaceRepository;
+    private final RoutieSpaceRepository routieSpaceRepository;
+    private final ApplicationEventPublisher applicationEventPublisher;
 
     @Transactional
     public RoutiePlaceCreateResponse addRoutiePlace(
@@ -60,6 +66,7 @@ public class RoutieService {
         final Place place = getPlaceByRoutieSpaceAndPlaceId(routieSpace, routiePlaceCreateRequest.placeId());
         final RoutiePlace routiePlace = routie.createLastRoutiePlace(place);
         routiePlaceRepository.save(routiePlace);
+        applicationEventPublisher.publishEvent(new RoutePlaceCreateEvent(this, place.getId(), routieSpaceIdentifier));
         return RoutiePlaceCreateResponse.from(routiePlace);
     }
 
@@ -124,6 +131,7 @@ public class RoutieService {
         final List<RoutiePlace> newRoutiePlaces = createNewRoutiePlaces(routieUpdateRequest, placeMap);
 
         routieSpace.getRoutie().getRoutiePlaces().addAll(newRoutiePlaces);
+        applicationEventPublisher.publishEvent(new RoutieUpdateEvent(this, routieSpaceIdentifier));
     }
 
     private Map<Long, Place> getPlaceMap(final RoutieUpdateRequest request) {
@@ -183,5 +191,6 @@ public class RoutieService {
         final Place place = getPlaceByRoutieSpaceAndPlaceId(routieSpace, placeId);
         final Routie routie = routieSpace.getRoutie();
         routie.removePlace(place);
+        applicationEventPublisher.publishEvent(new RoutePlaceDeleteEvent(this, placeId, routieSpaceIdentifier));
     }
 }

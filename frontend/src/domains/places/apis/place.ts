@@ -7,6 +7,7 @@ import {
   hashtagsAdapter,
   likedPlacesAdapter,
   searchPlaceAdapter,
+  popularHashtagsAdapter,
 } from '@/domains/places/adapters/placeAdapter';
 import type {
   AddPlaceRequestType,
@@ -17,6 +18,7 @@ import type {
   SearchPlaceRequestType,
   UnlikePlaceRequestType,
   UpdatePlaceHashtagsRequestType,
+  DeleteHashtagRequestType,
 } from '@/domains/places/types/api.types';
 import type {
   LikedPlacesResponseAdapterType,
@@ -75,7 +77,7 @@ const getPlaceList = async (): Promise<PlaceListAdapterType> => {
   ensureRoutieSpaceUuid(routieSpaceUuid);
 
   const response = await apiClient.get(
-    `/v2/routie-spaces/${routieSpaceUuid}/places`,
+    `/v3/routie-spaces/${routieSpaceUuid}/places`,
   );
 
   const data = await response.json();
@@ -176,12 +178,38 @@ const getHashtags = async (): Promise<HashtagsResponseType> => {
   ensureRoutieSpaceUuid(routieSpaceUuid);
 
   const response = await apiClient.get(
-    `/v1/routie-spaces/${routieSpaceUuid}/hashtags`,
+    `/v2/routie-spaces/${routieSpaceUuid}/hashtags`,
   );
 
   const data = await response.json();
 
   return hashtagsAdapter(data);
+};
+
+const getPopularHashtags = async (): Promise<string[]> => {
+  const routieSpaceUuid = getRoutieSpaceUuid();
+  ensureRoutieSpaceUuid(routieSpaceUuid);
+
+  const response = await apiClient.get(
+    `/v1/routie-spaces/${routieSpaceUuid}/hashtags/popular`,
+  );
+
+  const data = await response.json();
+
+  return popularHashtagsAdapter(data);
+};
+
+const deleteHashtag = async ({ hashtagId }: DeleteHashtagRequestType) => {
+  const routieSpaceUuid = getRoutieSpaceUuid();
+  ensureRoutieSpaceUuid(routieSpaceUuid);
+
+  const response = await apiClient.delete(
+    `/v1/routie-spaces/${routieSpaceUuid}/hashtags/${hashtagId}`,
+  );
+
+  if (!response.ok) {
+    throw new Error('해시태그 삭제 실패');
+  }
 };
 
 export {
@@ -195,4 +223,6 @@ export {
   getLikedPlaces,
   updatePlaceHashtags,
   getHashtags,
+  getPopularHashtags,
+  deleteHashtag,
 };

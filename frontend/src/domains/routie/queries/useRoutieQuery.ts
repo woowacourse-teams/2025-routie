@@ -16,12 +16,13 @@ import {
 
 import { routiesKeys } from './key';
 
-const useRoutieQuery = () => {
+import type { UseRoutieQueryOptions } from '../types/useRoutieQuery.types';
+
+const useRoutieQuery = ({ enabled = true }: UseRoutieQueryOptions = {}) => {
   return useQuery({
     queryKey: routiesKeys.all,
     queryFn: getRoutie,
     initialData: {
-      routes: [],
       routiePlaces: [],
     },
     select: (routie) => {
@@ -31,22 +32,15 @@ const useRoutieQuery = () => {
 
       return { ...routie, routiePlaces: sortedPlaces };
     },
+    enabled,
   });
 };
 
 const useAddRoutieQuery = () => {
   const { showToast } = useToastContext();
-  const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: (placeId: AddRoutiePlaceRequestType) => addRoutiePlace(placeId),
-    onSuccess: () => {
-      showToast({
-        message: '동선에 장소가 추가되었습니다.',
-        type: 'success',
-      });
-      queryClient.invalidateQueries({ queryKey: routiesKeys.all });
-    },
     onError: (error) => {
       showToast({
         message: error.message,
@@ -58,19 +52,11 @@ const useAddRoutieQuery = () => {
 
 const useChangeRoutieQuery = () => {
   const { showToast } = useToastContext();
-  const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: (routiePlaces: RoutieType[]) =>
       editRoutieSequence({ routiePlaces }),
 
-    onSuccess: () => {
-      showToast({
-        message: '동선이 수정되었습니다.',
-        type: 'success',
-      });
-      queryClient.invalidateQueries({ queryKey: routiesKeys.all });
-    },
     onError: (error) => {
       showToast({
         message: error.message,
@@ -82,18 +68,10 @@ const useChangeRoutieQuery = () => {
 
 const useDeleteRoutieQuery = () => {
   const { showToast } = useToastContext();
-  const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: (placeId: DeleteRoutiePlaceRequestType) =>
       deleteRoutiePlace(placeId),
-    onSuccess: () => {
-      showToast({
-        message: '동선에서 장소가 삭제되었습니다.',
-        type: 'success',
-      });
-      queryClient.invalidateQueries({ queryKey: routiesKeys.all });
-    },
     onError: (error) => {
       showToast({
         message: error.message,

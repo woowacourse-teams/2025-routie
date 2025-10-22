@@ -9,12 +9,6 @@ const routieAdapter = (data: FetchRoutieResponseType): RoutieAdapterType => {
         placeId: routie.placeId,
       };
     }),
-    routes: data.routes.map((route) => {
-      return {
-        fromSequence: route.fromSequence,
-        toSequence: route.toSequence,
-      };
-    }),
   };
 };
 

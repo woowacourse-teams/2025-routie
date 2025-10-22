@@ -7,6 +7,7 @@ import type {
   SearchPlaceResponseType,
 } from '@/domains/places/types/api.types';
 import type {
+  HashtagsResponseAdapterType,
   LikedPlacesResponseAdapterType,
   PlaceAdapterType,
   PlaceListAdapterType,
@@ -21,6 +22,7 @@ const getPlaceAdapter = (data: FetchPlaceResponseType): PlaceAdapterType => {
     latitude: data.latitude,
     longitude: data.longitude,
     hashtags: data.hashtags?.map(addHashtagPrefix) ?? [],
+    kakaoPlaceId: data.kakaoPlaceId,
   };
 };
 
@@ -37,6 +39,7 @@ const getPlaceListAdapter = (
       longitude: item.longitude,
       likeCount: item.likeCount,
       hashtags: item.hashtags?.map(addHashtagPrefix) ?? [],
+      kakaoPlaceId: item.kakaoPlaceId,
     };
   });
 };
@@ -62,10 +65,20 @@ const likedPlacesAdapter = (
   return { likedPlaceIds: data.likedPlaceIds };
 };
 
-const hashtagsAdapter = (data: HashtagsResponseType): HashtagsResponseType => {
+const hashtagsAdapter = (
+  data: HashtagsResponseType,
+): HashtagsResponseAdapterType => {
   return {
-    hashtags: data.hashtags.map(addHashtagPrefix),
+    hashtags: data.hashtags.map((hashtag) => ({
+      id: hashtag.id,
+      name: addHashtagPrefix(hashtag.name),
+      count: hashtag.count,
+    })),
   };
+};
+
+const popularHashtagsAdapter = (data: { hashtags: string[] }): string[] => {
+  return data.hashtags.map(addHashtagPrefix);
 };
 
 export {
@@ -74,4 +87,5 @@ export {
   searchPlaceAdapter,
   likedPlacesAdapter,
   hashtagsAdapter,
+  popularHashtagsAdapter,
 };
