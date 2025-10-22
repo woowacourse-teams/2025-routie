@@ -92,10 +92,11 @@ public class PlaceService {
 
         final List<Hashtag> hashtags = convertNamesToHashtags(placeCreateRequest.hashtags(), routieSpace);
         place.addHashtags(hashtags);
+        placeRepository.save(place);
 
-        applicationEventPublisher.publishEvent(new PlaceCreateEvent(this, routieSpaceIdentifier));
+        applicationEventPublisher.publishEvent(new PlaceCreateEvent(this, place.getId(), routieSpaceIdentifier));
 
-        return new PlaceCreateResponse(placeRepository.save(place).getId());
+        return new PlaceCreateResponse(place.getId());
     }
 
     @Transactional
@@ -114,7 +115,7 @@ public class PlaceService {
                 .map(Hashtag::getName)
                 .toList();
 
-        applicationEventPublisher.publishEvent(new PlaceUpdateEvent(this, routieSpaceIdentifier));
+        applicationEventPublisher.publishEvent(new PlaceUpdateEvent(this, placeId, routieSpaceIdentifier));
 
         return new HashtagsUpdateResponse(updatedHashTagNames);
     }
@@ -183,7 +184,7 @@ public class PlaceService {
         placeLikeRepository.deleteByPlaceId(placeId);
         placeRepository.deleteById(placeId);
 
-        applicationEventPublisher.publishEvent(new PlaceDeleteEvent(this, routieSpaceIdentifier));
+        applicationEventPublisher.publishEvent(new PlaceDeleteEvent(this, placeId, routieSpaceIdentifier));
     }
 
     public RoutieSpace getRoutieSpaceByIdentifier(final String routieSpaceIdentifier) {
