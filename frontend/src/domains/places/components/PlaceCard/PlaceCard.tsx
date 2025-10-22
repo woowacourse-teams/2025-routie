@@ -11,7 +11,6 @@ import LikeButton from '@/domains/places/components/LikeButton/LikeButton';
 import theme from '@/styles/theme';
 
 import type { PlaceCardProps } from './PlaceCard.types';
-
 const PlaceCard = ({
   selected,
   liked,
@@ -28,15 +27,12 @@ const PlaceCard = ({
   const handlePlaceSelect = async (placeId: number, selected: boolean) => {
     await onSelect(placeId, selected);
   };
-
   const handleDeleteRoutie = async (placeId: number) => {
     await onDeleteRoutie(placeId);
   };
-
   const handleKakaoPlaceClick = (kakaoPlaceId: string) => {
     openKakaoPlace(kakaoPlaceId);
   };
-
   return (
     <Flex
       id={props.id.toString()}
@@ -98,7 +94,6 @@ const PlaceCard = ({
           }
           padding="0.6rem 1.2rem"
           width="10rem"
-          autoFocus
         >
           <Text variant="label" color={theme.colors.white}>
             {selected ? '동선에서 삭제' : '동선에 추가'}
@@ -110,7 +105,6 @@ const PlaceCard = ({
           </span>
         </Button>
       </Flex>
-
       <Flex direction="column" gap={1.6}>
         {isEditing && onCancelEdit && onUpdateHashtags && (
           <EditHashtagDropdown
@@ -118,34 +112,6 @@ const PlaceCard = ({
             onCancel={onCancelEdit}
             onUpdate={onUpdateHashtags}
           />
-          <Flex justifyContent="space-between">
-            <LikeButton
-              count={props.likeCount}
-              liked={liked}
-              onClick={() => onLike(props.id)}
-            />
-            <Flex justifyContent="flex-end" width="15rem">
-              <Button
-                variant="dangerSecondary"
-                onClick={() => onDelete(props.id)}
-                padding="0.6rem 0.8rem"
-                width="8rem"
-                disabled={selected}
-              >
-                <Text
-                  variant="label"
-                  color={theme.colors.white}
-                  aria-label="장소 삭제"
-                >
-                  삭제
-                </Text>
-              </Button>
-            </Flex>
-          </Flex>
-        </Flex>
-      )}
-
-      {!isEditing && (
         )}
         <Flex justifyContent="space-between">
           <LikeButton
