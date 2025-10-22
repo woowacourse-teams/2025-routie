@@ -23,7 +23,7 @@ const usePlaceStream = () => {
     [routieSpaceUuid],
   );
 
-  const replaceLPlaceList = ({ places }: PlaceHistoryEvent) => {
+  const replacePlaceList = ({ places }: PlaceHistoryEvent) => {
     queryClient.setQueryData(placesKeys.list(), getPlaceListAdapter(places));
   };
 
@@ -34,14 +34,14 @@ const usePlaceStream = () => {
   useSse<PlaceHistoryEvent>({
     url: sseUrl,
     eventName: 'PLACE_HISTORY',
-    onMessage: ({ places }) => replaceLPlaceList({ places }),
+    onMessage: ({ places }) => replacePlaceList({ places }),
   });
 
   useSse<PlaceHistoryEvent>({
     url: sseUrl,
     eventName: 'PLACE_CREATED',
     onMessage: ({ places }) => {
-      replaceLPlaceList({ places });
+      replacePlaceList({ places });
       showToast({
         message: '장소가 추가되었습니다.',
         type: 'success',
@@ -52,14 +52,14 @@ const usePlaceStream = () => {
   useSse<PlaceHistoryEvent>({
     url: sseUrl,
     eventName: 'PLACE_UPDATED',
-    onMessage: ({ places }) => replaceLPlaceList({ places }),
+    onMessage: ({ places }) => replacePlaceList({ places }),
   });
 
   useSse<PlaceHistoryEvent>({
     url: sseUrl,
     eventName: 'PLACE_DELETED',
     onMessage: ({ places }) => {
-      replaceLPlaceList({ places });
+      replacePlaceList({ places });
       showToast({
         message: '장소가 삭제되었습니다.',
         type: 'success',
