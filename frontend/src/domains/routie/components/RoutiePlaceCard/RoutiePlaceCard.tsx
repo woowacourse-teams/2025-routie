@@ -91,21 +91,21 @@ const RoutiePlaceCard = ({ place, onDelete }: RoutiePlaceCardProps) => {
               >
                 <Button
                   variant="secondary"
-                  padding="0.6rem 1.2rem"
+                  padding="0.6rem 0.8rem"
                   onClick={handleKakaoPlaceClick}
                   aria-label="카카오맵에서 보기"
                 >
-                  <Text variant="caption" color={theme.colors.gray[300]}>
+                  <Text variant="label" color={theme.colors.gray[300]}>
                     카카오맵
                   </Text>
                 </Button>
                 <Button
                   variant="dangerSecondary"
-                  padding="0.6rem 1.2rem"
+                  padding="0.6rem 0.8rem"
                   onClick={handleDeleteClick}
                   aria-label="동선에서 삭제"
                 >
-                  <Text variant="caption" color={theme.colors.white}>
+                  <Text variant="label" color={theme.colors.white}>
                     동선에서 삭제
                   </Text>
                 </Button>

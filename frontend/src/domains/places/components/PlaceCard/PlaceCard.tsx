@@ -88,7 +88,7 @@ const PlaceCard = ({
           variant="primary"
           onClick={handlePlaceSelect}
           disabled={selected}
-          padding="0.6rem 1.2rem"
+          padding="0.6rem 0.8rem"
           width="10rem"
         >
           <Text variant="caption" color={theme.colors.white}>
@@ -114,8 +114,7 @@ const PlaceCard = ({
               <Button
                 variant="secondary"
                 onClick={handleKakaoPlaceClick}
-                padding="0.6rem 1.2rem"
-                width="auto"
+                padding="0.6rem 0.8rem"
               >
                 <Text variant="label" color={theme.colors.gray[300]}>
                   카카오맵
@@ -124,8 +123,7 @@ const PlaceCard = ({
               <Button
                 variant="danger"
                 onClick={() => onDelete(props.id)}
-                padding="0.6rem 1.2rem"
-                width="auto"
+                padding="0.6rem 0.8rem"
               >
                 <Text variant="label" color={theme.colors.gray[300]}>
                   삭제
@@ -147,8 +145,7 @@ const PlaceCard = ({
             <Button
               variant="secondary"
               onClick={handleKakaoPlaceClick}
-              padding="0.6rem 1.2rem"
-              width="auto"
+              padding="0.6rem 0.8rem"
             >
               <Text variant="label" color={theme.colors.gray[300]}>
                 카카오맵
@@ -157,8 +154,7 @@ const PlaceCard = ({
             <Button
               variant="danger"
               onClick={() => onDelete(props.id)}
-              padding="0.6rem 1.2rem"
-              width="auto"
+              padding="0.6rem 0.8rem"
             >
               <Text variant="label" color={theme.colors.gray[300]}>
                 삭제
