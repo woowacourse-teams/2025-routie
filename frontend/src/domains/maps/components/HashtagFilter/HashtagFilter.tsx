@@ -38,9 +38,7 @@ const HashtagFilter = ({ isSidebarOpen }: HashtagFilterProps) => {
     const confirmed = confirm(
       '정말로 이 해시태그를 삭제하시겠습니까?\n삭제 시, 모든 장소에서 해당 해시태그가 삭제됩니다.',
     );
-    if (!confirmed) return;
-
-    deleteHashtag({ hashtagId });
+    if (confirmed) deleteHashtag({ hashtagId });
   };
 
   if (hashtags.length === 0) return null;

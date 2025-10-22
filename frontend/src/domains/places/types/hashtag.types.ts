@@ -10,6 +10,10 @@ interface HashtagProps {
   onDelete?: () => void;
 }
 
+interface HashtagPopularResponse {
+  hashtags: string[];
+}
+
 interface HashtagResponse {
   id: number;
   name: string;
@@ -21,7 +25,7 @@ interface HashtagsApiResponse {
 }
 
 interface HashtagPopularApiResponse {
-  hashtags: string[];
+  hashtags: HashtagPopularResponse;
 }
 interface AddHashtagDropdownProps extends SearchAddressProps {
   place: SearchedPlaceType;

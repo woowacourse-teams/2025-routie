@@ -21,10 +21,7 @@ const Hashtag = ({
   };
 
   const handleClick = () => {
-    if (isEditMode) {
-      return;
-    }
-    onClick();
+    if (!isEditMode) onClick();
   };
 
   return (

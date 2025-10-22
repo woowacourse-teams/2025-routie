@@ -29,8 +29,6 @@ const HashtagsContainerStyle = css`
   min-height: 4rem;
   border-radius: ${theme.radius.lg};
 
-  flexWrap: 'nowrap' 
-
   &::-webkit-scrollbar {
     height: 0;
   }
