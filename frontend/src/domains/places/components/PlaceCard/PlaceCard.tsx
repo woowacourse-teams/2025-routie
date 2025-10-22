@@ -11,6 +11,7 @@ import LikeButton from '@/domains/places/components/LikeButton/LikeButton';
 import theme from '@/styles/theme';
 
 import type { PlaceCardProps } from './PlaceCard.types';
+
 const PlaceCard = ({
   selected,
   liked,

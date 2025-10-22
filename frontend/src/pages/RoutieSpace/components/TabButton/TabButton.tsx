@@ -4,7 +4,8 @@ import Text from '@/@common/components/Text/Text';
 import theme from '@/styles/theme';
 
 import { TabButtonStyle } from './TabButton.styles';
-import { TabButtonProps } from './TabButton.types';
+
+import type { TabButtonProps } from './TabButton.types';
 
 const TabButton = ({
   name,
