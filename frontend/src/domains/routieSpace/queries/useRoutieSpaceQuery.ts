@@ -42,15 +42,17 @@ const useRoutieSpaceQuery = () => {
 
 const useEditRoutieSpaceNameQuery = (name: string) => {
   const { showToast } = useToastContext();
+  const queryClient = useQueryClient();
 
   return useMutation({
     mutationKey: routieSpaceKeys.edit(name),
     mutationFn: () => editRoutieSpaceName({ name }),
-    onSuccess: () => {
+    onSuccess: (data) => {
       showToast({
         message: '루티 스페이스 이름이 수정되었습니다.',
         type: 'success',
       });
+      queryClient.setQueryData(routieSpaceKeys.all, data);
     },
     onError: (error) => {
       showToast({
@@ -94,9 +96,9 @@ const useDeleteRoutieSpaceMutation = () => {
 };
 
 export {
+  useRoutieSpaceQuery,
   useCreateRoutieSpaceQuery,
-  useDeleteRoutieSpaceMutation,
   useEditRoutieSpaceNameQuery,
   useGetRoutieSpaceListQuery,
-  useRoutieSpaceQuery,
+  useDeleteRoutieSpaceMutation,
 };
