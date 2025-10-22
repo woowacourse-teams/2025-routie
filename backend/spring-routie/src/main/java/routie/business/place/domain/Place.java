@@ -81,6 +81,7 @@ public class Place {
             final String addressName,
             final Double longitude,
             final Double latitude,
+            final String kakaoPlaceId,
             final RoutieSpace routieSpace
     ) {
         validateName(name);
@@ -94,6 +95,7 @@ public class Place {
         this.addressName = addressName;
         this.longitude = longitude;
         this.latitude = latitude;
+        this.kakaoPlaceId = kakaoPlaceId;
         this.routieSpace = routieSpace;
     }
 
@@ -111,6 +113,27 @@ public class Place {
                 addressName,
                 longitude,
                 latitude,
+                null,
+                routieSpace
+        );
+    }
+
+    public static Place createWithKakaoPlaceId(
+            final String name,
+            final String roadAddressName,
+            final String addressName,
+            final Double longitude,
+            final Double latitude,
+            final String kakaoPlaceId,
+            final RoutieSpace routieSpace
+    ) {
+        return new Place(
+                name,
+                roadAddressName,
+                addressName,
+                longitude,
+                latitude,
+                kakaoPlaceId,
                 routieSpace
         );
     }
