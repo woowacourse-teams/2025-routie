@@ -9,6 +9,8 @@ import routie.business.place.domain.PlaceRepository;
 import routie.business.routie.domain.Routie;
 import routie.business.routie.domain.RoutiePlace;
 import routie.business.routie.domain.RoutiePlaceRepository;
+import routie.business.routie.domain.event.RoutePlaceCreateEvent;
+import routie.business.routie.domain.event.RoutePlaceDeleteEvent;
 import routie.business.routie.domain.event.RoutieUpdateEvent;
 import routie.business.routie.domain.route.MovingStrategy;
 import routie.business.routie.domain.route.RouteCalculationContext;
@@ -64,7 +66,7 @@ public class RoutieService {
         final Place place = getPlaceByRoutieSpaceAndPlaceId(routieSpace, routiePlaceCreateRequest.placeId());
         final RoutiePlace routiePlace = routie.createLastRoutiePlace(place);
         routiePlaceRepository.save(routiePlace);
-        applicationEventPublisher.publishEvent(new RoutieUpdateEvent(this, routieSpaceIdentifier));
+        applicationEventPublisher.publishEvent(new RoutePlaceCreateEvent(this, place.getId(), routieSpaceIdentifier));
         return RoutiePlaceCreateResponse.from(routiePlace);
     }
 
@@ -189,6 +191,6 @@ public class RoutieService {
         final Place place = getPlaceByRoutieSpaceAndPlaceId(routieSpace, placeId);
         final Routie routie = routieSpace.getRoutie();
         routie.removePlace(place);
-        applicationEventPublisher.publishEvent(new RoutieUpdateEvent(this, routieSpaceIdentifier));
+        applicationEventPublisher.publishEvent(new RoutePlaceDeleteEvent(this, placeId, routieSpaceIdentifier));
     }
 }
