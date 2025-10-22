@@ -61,16 +61,8 @@ const usePlaceStream = () => {
   useSse<PlaceUpdatedEvent>({
     url: sseUrl,
     eventName: 'PLACE_UPDATED',
-    onMessage: ({ updatedPlaceId, places }) => {
-      const adaptedPlaces = getPlaceListAdapter(places);
-      const updatedPlace = adaptedPlaces.find(
-        (place) => place.id === updatedPlaceId,
-      );
+    onMessage: ({ places }) => {
       replacePlaceList({ places });
-      showToast({
-        message: `"${updatedPlace?.name ?? '장소'}" 수정되었습니다.`,
-        type: 'success',
-      });
     },
   });
 
