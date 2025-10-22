@@ -32,6 +32,16 @@ interface LikedPlacesResponseAdapterType {
   likedPlaceIds: number[];
 }
 
+interface HashtagsAdapterType {
+  id: number;
+  name: string;
+  count: number;
+}
+
+interface HashtagsResponseAdapterType {
+  hashtags: HashtagsAdapterType[];
+}
+
 export type {
   SearchedPlaceType,
   PlaceDataType,
@@ -40,4 +50,6 @@ export type {
   PlaceListAdapterType,
   SearchPlaceAdapterType,
   LikedPlacesResponseAdapterType,
+  HashtagsAdapterType,
+  HashtagsResponseAdapterType,
 };

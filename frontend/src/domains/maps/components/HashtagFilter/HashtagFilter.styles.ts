@@ -6,13 +6,6 @@ import {
 } from '@/pages/RoutieSpace/components/Sidebar/width';
 import theme from '@/styles/theme';
 
-const ButtonStyle = (isAllSelected: boolean) => css`
-  flex-shrink: 0;
-  gap: 1rem;
-  white-space: nowrap;
-  ${isAllSelected && `border: 1px solid transparent;`}
-`;
-
 const ButtonContainerStyle = (isSidebarOpen: boolean) => css`
   position: absolute;
   z-index: 10;
@@ -29,27 +22,35 @@ const HashtagsContainerStyle = css`
   scrollbar-width: none;
 
   overflow: visible;
-  display: flex;
   flex: 1;
-  flex-wrap: wrap;
-  gap: 0.8rem;
-  align-items: center;
+  flex-flow: row nowrap;
 
   max-width: none;
   min-height: 4rem;
+  border-radius: ${theme.radius.lg};
 
   &::-webkit-scrollbar {
     height: 0;
   }
 `;
 
+const ButtonStyle = css`
+  gap: 1rem;
+  border: none;
+  box-shadow: 0 0.2rem 0.8rem rgb(0 0 0 / 30%);
+`;
+
 const DropdownWrapperStyle = css`
   position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
 `;
 
 const DropdownButtonStyle = (isOpen: boolean) => css`
   min-width: 4rem;
   height: 4rem;
+  border: none;
   border-radius: 50%;
 
   font-size: 1.4rem;
@@ -65,23 +66,18 @@ const DropdownContentStyle = (isOpen: boolean) => css`
   position: absolute;
   z-index: 1000;
   top: calc(100% + 0.8rem);
-  left: -6rem;
+  left: -2rem;
 
   overflow-y: auto;
   display: ${isOpen ? 'flex' : 'none'};
 
   min-width: 16rem;
-  max-height: 40rem;
-  border-radius: ${theme.radius.md};
-
-  background-color: ${theme.colors.white};
-  box-shadow: 0 0.4rem 0.8rem rgb(0 0 0 / 15%);
 `;
 
 export {
-  ButtonStyle,
   ButtonContainerStyle,
   HashtagsContainerStyle,
+  ButtonStyle,
   DropdownWrapperStyle,
   DropdownButtonStyle,
   DropdownContentStyle,

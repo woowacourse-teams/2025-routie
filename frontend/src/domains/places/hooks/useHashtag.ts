@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 
 import { useToastContext } from '@/@common/contexts/useToastContext';
 import { addHashtagPrefix } from '@/@common/utils/format';
-import { useHashtagsQuery } from '@/domains/places/queries/usePlaceQuery';
+import { usePopularHashtagsQuery } from '@/domains/places/queries/usePlaceQuery';
 
 import { useHashtagSelection } from './useHashtagSelection';
 
@@ -13,8 +13,8 @@ const useHashtag = (initialTags?: string[]) => {
   const [inputValue, setInputValue] = useState('');
   const { selectedTags, handleToggleTag, resetSelectedTags, addTag } =
     useHashtagSelection(initialTags);
-  const { data: hashtagsData, isError, error } = useHashtagsQuery();
-  const previousTags = hashtagsData?.hashtags || [];
+  const { data: popularHashtags, isError, error } = usePopularHashtagsQuery();
+  const previousTags = popularHashtags || [];
   const { showToast } = useToastContext();
 
   useEffect(() => {

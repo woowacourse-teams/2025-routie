@@ -1,19 +1,29 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useMemo } from 'react';
 
 import { useToastContext } from '@/@common/contexts/useToastContext';
 import { useHashtagFilterContext } from '@/domains/places/contexts/useHashtagFilterContext';
 import { useHashtagsQuery } from '@/domains/places/queries/usePlaceQuery';
 
 const useHashtagFilter = () => {
-  const MAX_VISIBLE_HASHTAGS = 7;
+  const MAX_VISIBLE_HASHTAGS = 4;
 
-  const visibleHashtagsRef = useRef<HTMLDivElement>(null);
-  const { selectedHashtags, updateHashtagSelection, handleSelectAll, resetSelectedTags } =
-    useHashtagFilterContext();
+  const {
+    selectedHashtags,
+    updateHashtagSelection,
+    handleSelectAll,
+    resetSelectedTags,
+  } = useHashtagFilterContext();
   const { showToast } = useToastContext();
 
   const { data: hashtagsData, isError, error } = useHashtagsQuery();
-  const hashtags = hashtagsData?.hashtags || [];
+  const hashtagsWithCount = useMemo(
+    () => hashtagsData?.hashtags || [],
+    [hashtagsData?.hashtags],
+  );
+  const hashtags = useMemo(
+    () => hashtagsWithCount.map((h) => h.name),
+    [hashtagsWithCount],
+  );
 
   useEffect(() => {
     if (isError) {
@@ -31,7 +41,8 @@ const useHashtagFilter = () => {
     updateHashtagSelection(hashtag);
   };
 
-  const isAllSelected = hashtags.length > 0 && selectedHashtags.length === hashtags.length;
+  const isAllSelected =
+    hashtags.length > 0 && selectedHashtags.length === hashtags.length;
 
   const handleToggleSelectAll = () => {
     if (isAllSelected) {
@@ -42,9 +53,9 @@ const useHashtagFilter = () => {
   };
 
   return {
-    visibleHashtagsRef,
     selectedHashtags,
     hashtags,
+    hashtagsWithCount,
     visibleHashtags,
     hiddenHashtags,
     handleHashtagClick,
