@@ -9,7 +9,7 @@ import {
   useDeleteRoutieQuery,
   useRoutieQuery,
 } from '@/domains/routie/queries/useRoutieQuery';
-import { RoutieType } from '@/domains/routie/types/routie.types';
+import type { RoutieType } from '@/domains/routie/types/routie.types';
 import { useGoogleEventTrigger } from '@/libs/googleAnalytics/hooks/useGoogleEventTrigger';
 
 const useRoutieList = () => {
