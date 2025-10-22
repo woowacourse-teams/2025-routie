@@ -47,12 +47,7 @@ const AddHashtagDropdown = (props: AddHashtagDropdownProps) => {
   };
 
   return (
-    <section
-      css={css`
-        width: 100%;
-        padding: 1rem 0;
-      `}
-    >
+    <>
       <Flex
         direction="column"
         gap={1}
@@ -149,7 +144,7 @@ const AddHashtagDropdown = (props: AddHashtagDropdownProps) => {
           </Text>
         </Button>
       </Flex>
-    </section>
+    </>
   );
 };
 
