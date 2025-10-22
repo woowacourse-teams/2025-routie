@@ -7,7 +7,9 @@ import clockHome from '@/assets/icons/clock-home.svg';
 import closeRed from '@/assets/icons/close-red.svg';
 import close from '@/assets/icons/close.svg';
 import closeSheetIcon from '@/assets/icons/closeSheet.svg';
+import control from '@/assets/icons/control.svg';
 import copy from '@/assets/icons/copy.svg';
+import deleteIcon from '@/assets/icons/delete.svg';
 import drag from '@/assets/icons/drag.svg';
 import edit from '@/assets/icons/edit.svg';
 import feedback from '@/assets/icons/feedback.svg';
@@ -41,7 +43,9 @@ const allIcons = {
   close,
   closeSheetIcon,
   collectPlace,
+  control,
   copy,
+  deleteIcon,
   drag,
   edit,
   feedback,

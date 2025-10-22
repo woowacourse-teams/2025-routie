@@ -1,4 +1,4 @@
-package routie.business.place.ui;
+package routie.business.place.ui.event;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.event.EventListener;

@@ -13,9 +13,12 @@ interface SearchedPlaceType extends PlaceBaseType {
 
 interface PlaceDataType extends PlaceBaseType {
   id: number;
+  kakaoPlaceId: string;
 }
 
-type PlaceAdapterType = PlaceBaseType;
+interface PlaceAdapterType extends PlaceBaseType {
+  kakaoPlaceId: string;
+}
 
 interface PlaceWithLikeType extends PlaceDataType {
   likeCount: number;
@@ -29,6 +32,16 @@ interface LikedPlacesResponseAdapterType {
   likedPlaceIds: number[];
 }
 
+interface HashtagsAdapterType {
+  id: number;
+  name: string;
+  count: number;
+}
+
+interface HashtagsResponseAdapterType {
+  hashtags: HashtagsAdapterType[];
+}
+
 export type {
   SearchedPlaceType,
   PlaceDataType,
@@ -37,4 +50,6 @@ export type {
   PlaceListAdapterType,
   SearchPlaceAdapterType,
   LikedPlacesResponseAdapterType,
+  HashtagsAdapterType,
+  HashtagsResponseAdapterType,
 };

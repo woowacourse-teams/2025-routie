@@ -21,8 +21,8 @@ public class CloudwatchMetricConfig {
     @Value("${cloudwatch.metrics.namespace:}")
     private String namespace;
 
-    @Value("${cloudwatch.metrics.step:10}")
-    private int stepMinutes;
+    @Value("${cloudwatch.metrics.step:600}")
+    private int stepSeconds;
 
     @Value("${cloudwatch.metrics.region:ap-northeast-2}")
     private String region;
@@ -49,7 +49,7 @@ public class CloudwatchMetricConfig {
 
             @Override
             public Duration step() {
-                return Duration.ofMinutes(stepMinutes);
+                return Duration.ofSeconds(stepSeconds);
             }
 
             @Override

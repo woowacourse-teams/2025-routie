@@ -11,14 +11,6 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
-import java.util.stream.Collectors;
-
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -30,6 +22,13 @@ import routie.business.hashtag.domain.Hashtag;
 import routie.business.routiespace.domain.RoutieSpace;
 import routie.global.exception.domain.BusinessException;
 import routie.global.exception.domain.ErrorCode;
+
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Entity
 @Getter
@@ -58,6 +57,9 @@ public class Place {
     @Column(name = "latitude", nullable = false)
     private Double latitude;
 
+    @Column(name = "kakao_place_id")
+    private String kakaoPlaceId;
+
     @ManyToOne
     @JoinColumn(name = "routie_space_id")
     private RoutieSpace routieSpace;
@@ -79,6 +81,7 @@ public class Place {
             final String addressName,
             final Double longitude,
             final Double latitude,
+            final String kakaoPlaceId,
             final RoutieSpace routieSpace
     ) {
         validateName(name);
@@ -92,6 +95,7 @@ public class Place {
         this.addressName = addressName;
         this.longitude = longitude;
         this.latitude = latitude;
+        this.kakaoPlaceId = kakaoPlaceId;
         this.routieSpace = routieSpace;
     }
 
@@ -109,6 +113,27 @@ public class Place {
                 addressName,
                 longitude,
                 latitude,
+                null,
+                routieSpace
+        );
+    }
+
+    public static Place createWithKakaoPlaceId(
+            final String name,
+            final String roadAddressName,
+            final String addressName,
+            final Double longitude,
+            final Double latitude,
+            final String kakaoPlaceId,
+            final RoutieSpace routieSpace
+    ) {
+        return new Place(
+                name,
+                roadAddressName,
+                addressName,
+                longitude,
+                latitude,
+                kakaoPlaceId,
                 routieSpace
         );
     }

@@ -20,6 +20,7 @@ import routie.business.place.ui.dto.response.PlaceCreateResponse;
 import routie.business.place.ui.dto.response.PlaceListResponse;
 import routie.business.place.ui.dto.response.PlaceListResponseV2;
 import routie.business.place.ui.dto.response.PlaceListResponseV2.PlaceCardResponseV2;
+import routie.business.place.ui.dto.response.PlaceListResponseV3;
 import routie.business.place.ui.dto.response.PlaceReadResponse;
 import routie.business.routie.domain.RoutiePlaceRepository;
 import routie.business.routiespace.domain.RoutieSpace;
@@ -30,6 +31,8 @@ import routie.global.exception.domain.ErrorCode;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import static routie.business.place.ui.dto.response.PlaceListResponseV3.PlaceCardResponseV3;
 
 @Service
 @RequiredArgsConstructor
@@ -77,12 +80,13 @@ public class PlaceService {
         final RoutieSpace routieSpace = routieSpaceRepository.findByIdentifier(routieSpaceIdentifier)
                 .orElseThrow(() -> new BusinessException(ErrorCode.ROUTIE_SPACE_NOT_FOUND));
 
-        final Place place = Place.create(
+        final Place place = Place.createWithKakaoPlaceId(
                 placeCreateRequest.name(),
                 placeCreateRequest.roadAddressName(),
                 placeCreateRequest.addressName(),
                 placeCreateRequest.longitude(),
                 placeCreateRequest.latitude(),
+                placeCreateRequest.searchedPlaceId(),
                 routieSpace
         );
 
@@ -151,6 +155,21 @@ public class PlaceService {
                 .toList();
 
         return new PlaceListResponseV2(placeCardResponses);
+    }
+
+    public PlaceListResponseV3 readPlacesV3(final String routieSpaceIdentifier) {
+        final RoutieSpace routieSpace = routieSpaceRepository.findByIdentifier(routieSpaceIdentifier)
+                .orElseThrow(() -> new BusinessException(ErrorCode.ROUTIE_SPACE_NOT_FOUND));
+        final List<Place> places = routieSpace.getPlaces();
+
+        final List<PlaceCardResponseV3> placeCardResponses = places.stream()
+                .map(place -> PlaceCardResponseV3.createPlaceWithLikeCount(
+                        place,
+                        placeLikeRepository.countByPlace(place)
+                ))
+                .toList();
+
+        return new PlaceListResponseV3(placeCardResponses);
     }
 
     @Transactional

@@ -5,6 +5,7 @@ import Button from '@/@common/components/Button/Button';
 import Flex from '@/@common/components/Flex/Flex';
 import Icon from '@/@common/components/IconSvg/Icon';
 import Text from '@/@common/components/Text/Text';
+import { openKakaoPlace } from '@/@common/utils/externalLink';
 import EditHashtagDropdown from '@/domains/places/components/EditHashtagDropdown/EditHashtagDropdown';
 import LikeButton from '@/domains/places/components/LikeButton/LikeButton';
 import theme from '@/styles/theme';
@@ -21,10 +22,19 @@ const PlaceCard = ({
   onLike,
   onCancelEdit,
   onUpdateHashtags,
+  onDeleteRoutie,
   ...props
 }: PlaceCardProps) => {
-  const handlePlaceSelect = async () => {
-    await onSelect(props.id, selected);
+  const handlePlaceSelect = async (placeId: number, selected: boolean) => {
+    await onSelect(placeId, selected);
+  };
+
+  const handleDeleteRoutie = async (placeId: number) => {
+    await onDeleteRoutie(placeId);
+  };
+
+  const handleKakaoPlaceClick = (kakaoPlaceId: string) => {
+    openKakaoPlace(kakaoPlaceId);
   };
 
   return (
@@ -80,14 +90,18 @@ const PlaceCard = ({
           </Flex>
         </Flex>
         <Button
-          variant="primary"
-          onClick={handlePlaceSelect}
+          variant={selected ? 'dangerSecondary' : 'primary'}
+          onClick={() =>
+            selected
+              ? handleDeleteRoutie(props.id)
+              : handlePlaceSelect(props.id, selected)
+          }
           disabled={selected}
           padding="0.6rem 1.2rem"
           width="10rem"
         >
-          <Text variant="caption" color={theme.colors.white}>
-            동선에 추가
+          <Text variant="label" color={theme.colors.white}>
+            {selected ? '동선에서 삭제' : '동선에 추가'}
           </Text>
         </Button>
       </Flex>
@@ -105,14 +119,24 @@ const PlaceCard = ({
               liked={liked}
               onClick={() => onLike(props.id)}
             />
-            <Flex justifyContent="flex-end" width="15rem">
+            <Flex justifyContent="flex-end" width="15rem" gap={0.8}>
               <Button
-                variant="danger"
-                onClick={() => onDelete(props.id)}
-                padding="0.6rem 1.2rem"
-                width="auto"
+                variant="secondary"
+                onClick={() => handleKakaoPlaceClick(props.kakaoPlaceId)}
+                padding="0.6rem 0.8rem"
               >
                 <Text variant="label" color={theme.colors.gray[300]}>
+                  카카오맵
+                </Text>
+              </Button>
+              <Button
+                variant="dangerSecondary"
+                onClick={() => onDelete(props.id)}
+                padding="0.6rem 0.8rem"
+                width="8rem"
+                disabled={selected}
+              >
+                <Text variant="label" color={theme.colors.white}>
                   삭제
                 </Text>
               </Button>
@@ -128,14 +152,24 @@ const PlaceCard = ({
             liked={liked}
             onClick={() => onLike(props.id)}
           />
-          <Flex justifyContent="flex-end" width="15rem">
+          <Flex justifyContent="flex-end" width="15rem" gap={0.8}>
             <Button
-              variant="danger"
-              onClick={() => onDelete(props.id)}
-              padding="0.6rem 1.2rem"
-              width="auto"
+              variant="secondary"
+              onClick={() => handleKakaoPlaceClick(props.kakaoPlaceId)}
+              padding="0.6rem 0.8rem"
             >
               <Text variant="label" color={theme.colors.gray[300]}>
+                카카오맵
+              </Text>
+            </Button>
+            <Button
+              variant="dangerSecondary"
+              onClick={() => onDelete(props.id)}
+              padding="0.6rem 0.8rem"
+              width="8rem"
+              disabled={selected}
+            >
+              <Text variant="label" color={theme.colors.white}>
                 삭제
               </Text>
             </Button>
