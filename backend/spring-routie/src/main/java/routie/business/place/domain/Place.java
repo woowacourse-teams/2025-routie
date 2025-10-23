@@ -1,5 +1,6 @@
 package routie.business.place.domain;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
@@ -8,9 +9,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import java.time.LocalDateTime;
-import java.util.Objects;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -18,9 +18,17 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import routie.business.hashtag.domain.Hashtag;
 import routie.business.routiespace.domain.RoutieSpace;
 import routie.global.exception.domain.BusinessException;
 import routie.global.exception.domain.ErrorCode;
+
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Entity
 @Getter
@@ -49,6 +57,9 @@ public class Place {
     @Column(name = "latitude", nullable = false)
     private Double latitude;
 
+    @Column(name = "kakao_place_id")
+    private String kakaoPlaceId;
+
     @ManyToOne
     @JoinColumn(name = "routie_space_id")
     private RoutieSpace routieSpace;
@@ -61,12 +72,16 @@ public class Place {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
+    @OneToMany(mappedBy = "place", cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true)
+    private List<PlaceHashtag> placeHashtags = new ArrayList<>();
+
     public Place(
             final String name,
             final String roadAddressName,
             final String addressName,
             final Double longitude,
             final Double latitude,
+            final String kakaoPlaceId,
             final RoutieSpace routieSpace
     ) {
         validateName(name);
@@ -80,6 +95,7 @@ public class Place {
         this.addressName = addressName;
         this.longitude = longitude;
         this.latitude = latitude;
+        this.kakaoPlaceId = kakaoPlaceId;
         this.routieSpace = routieSpace;
     }
 
@@ -97,6 +113,27 @@ public class Place {
                 addressName,
                 longitude,
                 latitude,
+                null,
+                routieSpace
+        );
+    }
+
+    public static Place createWithKakaoPlaceId(
+            final String name,
+            final String roadAddressName,
+            final String addressName,
+            final Double longitude,
+            final Double latitude,
+            final String kakaoPlaceId,
+            final RoutieSpace routieSpace
+    ) {
+        return new Place(
+                name,
+                roadAddressName,
+                addressName,
+                longitude,
+                latitude,
+                kakaoPlaceId,
                 routieSpace
         );
     }
@@ -144,5 +181,42 @@ public class Place {
     public boolean hasSameCoordinate(final Place otherPlace) {
         return Objects.equals(otherPlace.getLatitude(), latitude)
                 && Objects.equals(otherPlace.getLongitude(), longitude);
+    }
+
+    public void addHashtags(final List<Hashtag> hashtags) {
+        validateHashtagSize(hashtags);
+        final List<PlaceHashtag> placeHashtags = hashtags.stream()
+                .map(hashtag -> new PlaceHashtag(this, hashtag))
+                .toList();
+        this.placeHashtags.addAll(placeHashtags);
+    }
+
+    public void updateHashtags(final List<Hashtag> newHashtags) {
+        validateHashtagSize(newHashtags);
+        final Set<String> newHashtagNames = newHashtags.stream()
+                .map(Hashtag::getName)
+                .collect(Collectors.toSet());
+        final Set<String> currentHashtagNames = placeHashtags.stream()
+                .map(placeHashtag -> placeHashtag.getHashtag().getName())
+                .collect(Collectors.toSet());
+
+        newHashtags.stream()
+                .filter(hashtag -> !currentHashtagNames.contains(hashtag.getName()))
+                .forEach(hashtag -> placeHashtags.add(new PlaceHashtag(this, hashtag)));
+
+        placeHashtags.removeIf(placeHashtag -> !newHashtagNames.contains(placeHashtag.getHashtag().getName())
+        );
+    }
+
+    private void validateHashtagSize(final List<Hashtag> hashtags) {
+        if (hashtags.size() > 5) {
+            throw new BusinessException(ErrorCode.HASHTAG_SIZE_INVALID);
+        }
+    }
+
+    public List<Hashtag> getHashtags() {
+        return placeHashtags.stream()
+                .map(PlaceHashtag::getHashtag)
+                .toList();
     }
 }

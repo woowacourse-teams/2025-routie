@@ -4,6 +4,7 @@ interface PlaceBaseType {
   addressName: string;
   latitude: number;
   longitude: number;
+  hashtags?: string[];
 }
 
 interface SearchedPlaceType extends PlaceBaseType {
@@ -12,18 +13,43 @@ interface SearchedPlaceType extends PlaceBaseType {
 
 interface PlaceDataType extends PlaceBaseType {
   id: number;
+  kakaoPlaceId: string;
 }
 
-type PlaceAdapterType = PlaceBaseType;
+interface PlaceAdapterType extends PlaceBaseType {
+  kakaoPlaceId: string;
+}
 
-type PlaceListAdapterType = PlaceDataType[];
+interface PlaceWithLikeType extends PlaceDataType {
+  likeCount: number;
+}
+
+type PlaceListAdapterType = PlaceWithLikeType[];
 
 type SearchPlaceAdapterType = SearchedPlaceType[];
+
+interface LikedPlacesResponseAdapterType {
+  likedPlaceIds: number[];
+}
+
+interface HashtagsAdapterType {
+  id: number;
+  name: string;
+  count: number;
+}
+
+interface HashtagsResponseAdapterType {
+  hashtags: HashtagsAdapterType[];
+}
 
 export type {
   SearchedPlaceType,
   PlaceDataType,
   PlaceAdapterType,
+  PlaceWithLikeType,
   PlaceListAdapterType,
   SearchPlaceAdapterType,
+  LikedPlacesResponseAdapterType,
+  HashtagsAdapterType,
+  HashtagsResponseAdapterType,
 };

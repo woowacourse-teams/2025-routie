@@ -22,9 +22,9 @@ public class ClosedDayValidator implements RoutieValidator {
             final ValidationContext validationContext,
             final ValidationStrategy validationStrategy
     ) {
-        List<TimePeriod> timePeriods = validationContext.timePeriods().orderedList();
+        final List<TimePeriod> timePeriods = validationContext.timePeriods().orderedList();
 
-        List<RoutiePlace> invalidRoutiePlaces = timePeriods.stream()
+        final List<RoutiePlace> invalidRoutiePlaces = timePeriods.stream()
                 .filter(timePeriod -> !this.isTimePeriodNotClosedDays(timePeriod))
                 .map(TimePeriod::routiePlace)
                 .toList();
@@ -36,11 +36,10 @@ public class ClosedDayValidator implements RoutieValidator {
         );
     }
 
-
     private boolean isTimePeriodNotClosedDays(final TimePeriod timePeriod) {
-        List<DayOfWeek> closedDayOfWeeks = List.of(); // 검증 필드 제거에 따른 구현
+        final List<DayOfWeek> closedDayOfWeeks = List.of(); // 검증 필드 제거에 따른 구현
 
-        DayOfWeek startDay = timePeriod.startTime().getDayOfWeek();
+        final DayOfWeek startDay = timePeriod.startTime().getDayOfWeek();
 
         return !closedDayOfWeeks.contains(startDay);
     }

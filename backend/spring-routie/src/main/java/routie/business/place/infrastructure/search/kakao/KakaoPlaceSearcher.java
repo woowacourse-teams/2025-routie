@@ -30,7 +30,7 @@ public class KakaoPlaceSearcher implements PlaceSearcher {
         validateQuery(query);
         validateSize(size);
 
-        KakaoPlaceSearchApiResponse kakaoPlaceSearchApiResponse = kakaoPlaceSearchApiClient.search(
+        final KakaoPlaceSearchApiResponse kakaoPlaceSearchApiResponse = kakaoPlaceSearchApiClient.search(
                 new KakaoPlaceSearchApiRequest(query, size)
         );
 

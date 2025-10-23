@@ -1,12 +1,15 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 import { useToastContext } from '@/@common/contexts/useToastContext';
-
 import {
   createRoutieSpace,
+  deleteRoutieSpace,
   editRoutieSpaceName,
   getRoutieSpace,
-} from '../apis/routieSpace';
+  getRoutieSpaceList,
+} from '@/domains/routieSpace/apis/routieSpace';
+
+import { UseRoutieSpaceQueryOptions } from '../types/useRoutieQuery.types';
 
 import { routieSpaceKeys } from './key';
 
@@ -16,7 +19,7 @@ const useCreateRoutieSpaceQuery = () => {
   return useMutation({
     mutationKey: routieSpaceKeys.all,
     mutationFn: createRoutieSpace,
-    onSuccess: (data) => {
+    onSuccess: () => {
       showToast({
         message: '루티 스페이스가 생성되었습니다.',
         type: 'success',
@@ -32,26 +35,27 @@ const useCreateRoutieSpaceQuery = () => {
   });
 };
 
-const useRoutieSpaceQuery = () => {
+const useRoutieSpaceQuery = ({
+  enabled = true,
+}: UseRoutieSpaceQueryOptions = {}) => {
   return useQuery({
     queryKey: routieSpaceKeys.all,
     queryFn: getRoutieSpace,
+    enabled,
   });
 };
 
 const useEditRoutieSpaceNameQuery = (name: string) => {
   const { showToast } = useToastContext();
-  const queryClient = useQueryClient();
 
   return useMutation({
     mutationKey: routieSpaceKeys.edit(name),
     mutationFn: () => editRoutieSpaceName({ name }),
-    onSuccess: (data) => {
+    onSuccess: () => {
       showToast({
         message: '루티 스페이스 이름이 수정되었습니다.',
         type: 'success',
       });
-      queryClient.setQueryData(routieSpaceKeys.all, data);
     },
     onError: (error) => {
       showToast({
@@ -63,8 +67,41 @@ const useEditRoutieSpaceNameQuery = (name: string) => {
   });
 };
 
+const useGetRoutieSpaceListQuery = () => {
+  return useQuery({
+    queryKey: routieSpaceKeys.list(),
+    queryFn: getRoutieSpaceList,
+  });
+};
+
+const useDeleteRoutieSpaceMutation = () => {
+  const { showToast } = useToastContext();
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationKey: routieSpaceKeys.all,
+    mutationFn: (routieSpaceUuid: string) =>
+      deleteRoutieSpace({ routieSpaceUuid }),
+    onSuccess: () => {
+      showToast({
+        message: '루티 스페이스가 삭제되었습니다.',
+        type: 'success',
+      });
+      queryClient.invalidateQueries({ queryKey: routieSpaceKeys.all });
+    },
+    onError: (error) => {
+      showToast({
+        message: error.message,
+        type: 'error',
+      });
+    },
+  });
+};
+
 export {
-  useRoutieSpaceQuery,
   useCreateRoutieSpaceQuery,
+  useDeleteRoutieSpaceMutation,
   useEditRoutieSpaceNameQuery,
+  useGetRoutieSpaceListQuery,
+  useRoutieSpaceQuery,
 };

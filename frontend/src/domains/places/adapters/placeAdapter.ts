@@ -1,9 +1,14 @@
+import { addHashtagPrefix } from '@/@common/utils/format';
 import type {
   FetchPlaceListResponseType,
   FetchPlaceResponseType,
+  HashtagsResponseType,
+  LikedPlacesResponseType,
   SearchPlaceResponseType,
 } from '@/domains/places/types/api.types';
 import type {
+  HashtagsResponseAdapterType,
+  LikedPlacesResponseAdapterType,
   PlaceAdapterType,
   PlaceListAdapterType,
   SearchPlaceAdapterType,
@@ -16,6 +21,8 @@ const getPlaceAdapter = (data: FetchPlaceResponseType): PlaceAdapterType => {
     addressName: data.addressName,
     latitude: data.latitude,
     longitude: data.longitude,
+    hashtags: data.hashtags?.map(addHashtagPrefix) ?? [],
+    kakaoPlaceId: data.kakaoPlaceId,
   };
 };
 
@@ -30,6 +37,9 @@ const getPlaceListAdapter = (
       addressName: item.addressName,
       latitude: item.latitude,
       longitude: item.longitude,
+      likeCount: item.likeCount,
+      hashtags: item.hashtags?.map(addHashtagPrefix) ?? [],
+      kakaoPlaceId: item.kakaoPlaceId,
     };
   });
 };
@@ -49,4 +59,33 @@ const searchPlaceAdapter = (
   });
 };
 
-export { getPlaceAdapter, getPlaceListAdapter, searchPlaceAdapter };
+const likedPlacesAdapter = (
+  data: LikedPlacesResponseType,
+): LikedPlacesResponseAdapterType => {
+  return { likedPlaceIds: data.likedPlaceIds };
+};
+
+const hashtagsAdapter = (
+  data: HashtagsResponseType,
+): HashtagsResponseAdapterType => {
+  return {
+    hashtags: data.hashtags.map((hashtag) => ({
+      id: hashtag.id,
+      name: addHashtagPrefix(hashtag.name),
+      count: hashtag.count,
+    })),
+  };
+};
+
+const popularHashtagsAdapter = (data: { hashtags: string[] }): string[] => {
+  return data.hashtags.map(addHashtagPrefix);
+};
+
+export {
+  getPlaceAdapter,
+  getPlaceListAdapter,
+  searchPlaceAdapter,
+  likedPlacesAdapter,
+  hashtagsAdapter,
+  popularHashtagsAdapter,
+};

@@ -14,9 +14,11 @@ import type {
 } from '../types/routieSpace.types';
 
 const useRoutieSpace = (): UseRoutieSpaceReturn => {
-  const { data: routieSpace, isLoading } = useRoutieSpaceQuery();
+  const { data: routieSpace, isLoading } = useRoutieSpaceQuery({
+    enabled: false,
+  });
   const [currentName, setCurrentName] = useState('');
-  const { mutateAsync: editRoutieSpaceName } =
+  const { mutate: editRoutieSpaceName } =
     useEditRoutieSpaceNameQuery(currentName);
   const [isEditing, setIsEditing] = useState(false);
   const { showToast } = useToastContext();
@@ -53,7 +55,7 @@ const useRoutieSpace = (): UseRoutieSpaceReturn => {
   };
 
   const saveNameEdit = async (): Promise<void> => {
-    await editRoutieSpaceName();
+    editRoutieSpaceName();
     setIsEditing(false);
   };
 

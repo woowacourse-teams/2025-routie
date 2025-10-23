@@ -10,8 +10,7 @@ import routie.global.exception.domain.BusinessException;
 import routie.global.exception.domain.ErrorCode;
 
 public class Routes {
-    private static final Comparator<RoutiePlace> ROUTE_COMPARATOR =
-            Comparator.comparing(RoutiePlace::getSequence);
+    private static final Comparator<RoutiePlace> ROUTE_COMPARATOR = Comparator.comparing(RoutiePlace::getSequence);
 
     private final TreeMap<RoutiePlace, Route> routes;
 
@@ -34,7 +33,7 @@ public class Routes {
     public Routes withAdded(final RoutiePlace routiePlace, final Route route) {
         validateRoutiePlace(routiePlace);
         validateRoute(route);
-        Map<RoutiePlace, Route> newRoutes = new TreeMap<>(ROUTE_COMPARATOR);
+        final Map<RoutiePlace, Route> newRoutes = new TreeMap<>(ROUTE_COMPARATOR);
         newRoutes.putAll(this.routes);
         newRoutes.put(routiePlace, route);
 
@@ -71,9 +70,9 @@ public class Routes {
         if (routes.isEmpty()) {
             return List.of();
         }
-        List<RoutiePlace> orderedRoutiePlaces = new ArrayList<>();
+        final List<RoutiePlace> orderedRoutiePlaces = new ArrayList<>();
 
-        RoutiePlace first = routes.firstKey();
+        final RoutiePlace first = routes.firstKey();
         orderedRoutiePlaces.add(first);
 
         routes.values().forEach(route -> orderedRoutiePlaces.add(route.to()));

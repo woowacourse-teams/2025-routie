@@ -7,13 +7,16 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import routie.business.place.ui.dto.request.PlaceCreateRequest;
+import routie.business.place.ui.dto.request.HashtagsUpdateRequest;
 import routie.business.place.ui.dto.response.PlaceCreateResponse;
 import routie.business.place.ui.dto.response.PlaceListResponse;
 import routie.business.place.ui.dto.response.PlaceReadResponse;
+import routie.business.place.ui.dto.response.HashtagsUpdateResponse;
 import routie.business.place.application.PlaceService;
 
 @RestController
@@ -57,5 +60,19 @@ public class PlaceControllerV1 {
     ) {
         placeService.removePlace(routieSpaceIdentifier, placeId);
         return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/{placeId}/hashtags")
+    public ResponseEntity<HashtagsUpdateResponse> updateHashtags(
+            @PathVariable final String routieSpaceIdentifier,
+            @PathVariable final long placeId,
+            @RequestBody @Valid final HashtagsUpdateRequest hashTagsUpdateRequest
+    ) {
+        final HashtagsUpdateResponse response = placeService.modifyHashtags(
+                routieSpaceIdentifier,
+                placeId,
+                hashTagsUpdateRequest
+        );
+        return ResponseEntity.ok(response);
     }
 }

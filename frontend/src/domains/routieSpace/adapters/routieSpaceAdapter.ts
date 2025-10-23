@@ -1,13 +1,15 @@
 import type {
   CreateRoutieResponseType,
   EditRoutieSpaceNameResponseType,
+  GetRoutieSpaceListResponseType,
   GetRoutieSpaceResponseType,
-} from '../types/api.types';
+} from '@/domains/routieSpace/types/api.types';
 import type {
   CreateRoutieSpaceAdapterType,
+  GetRoutieSpaceListAdapterType,
   RoutieSpaceAdapterType,
   RoutieSpaceNameType,
-} from '../types/routieSpace.types';
+} from '@/domains/routieSpace/types/routieSpace.types';
 
 const createRoutieSpaceAdapter = (
   data: CreateRoutieResponseType,
@@ -33,8 +35,21 @@ const editRoutieSpaceNameAdapter = (
   };
 };
 
+const getRoutieSpaceListAdapter = (
+  data: GetRoutieSpaceListResponseType,
+): GetRoutieSpaceListAdapterType[] => {
+  return data.routieSpaces.map((item) => {
+    return {
+      routieSpaceUuid: item.identifier,
+      name: item.name,
+      date: new Date(item.createdTime),
+    };
+  });
+};
+
 export {
   createRoutieSpaceAdapter,
   routieSpaceAdapter,
   editRoutieSpaceNameAdapter,
+  getRoutieSpaceListAdapter,
 };

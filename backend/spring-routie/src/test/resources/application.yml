@@ -7,7 +7,7 @@ spring:
     active: test
   
   datasource:
-    url: jdbc:h2:mem:testdb
+    url: jdbc:h2:mem:testdb;MODE=MYSQL
     username: test
     password: test
 
@@ -20,6 +20,9 @@ spring:
         dialect: org.hibernate.dialect.H2Dialect
     show-sql: true
 
+  flyway:
+    enabled: true
+
 kakao:
   api:
     key: test-api-key
@@ -31,3 +34,12 @@ google:
 v-world:
   api:
     key: test-api-key
+
+authentication:
+  jwt:
+    secret: 02ff097348d559b2d5df6cdb91e7fd05f19b1ded7dbefeed1e6209db9a63987a
+    expiration: 604800000 # 7 days
+  external:
+    kakao:
+      client-id: client-id
+      redirect-uri: redirect-uri

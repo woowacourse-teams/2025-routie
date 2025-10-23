@@ -171,7 +171,6 @@ class ExceptionHandlerPostProcessorTest {
                             "invalidControllerAdvice"));
         }
 
-
         @Nested
         @DisplayName("중복 핸들러 검증")
         class DuplicateHandlerTests {

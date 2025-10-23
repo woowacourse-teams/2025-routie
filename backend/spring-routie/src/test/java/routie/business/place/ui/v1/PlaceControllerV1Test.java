@@ -3,8 +3,12 @@ package routie.business.place.ui.v1;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import io.restassured.RestAssured;
+import io.restassured.http.ContentType;
 import io.restassured.response.Response;
+
+import java.util.List;
 import java.util.Map;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -15,9 +19,18 @@ import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
+import routie.business.hashtag.domain.HashtagRepository;
+import routie.business.like.domain.PlaceLikeBuilder;
+import routie.business.like.domain.PlaceLikeRepository;
+import routie.business.participant.domain.User;
+import routie.business.participant.domain.UserFixture;
+import routie.business.participant.domain.UserRepository;
+import routie.business.hashtag.domain.Hashtag;
 import routie.business.place.domain.Place;
 import routie.business.place.domain.PlaceBuilder;
 import routie.business.place.domain.PlaceRepository;
+import routie.business.place.ui.dto.request.HashtagsUpdateRequest;
+import routie.business.place.ui.dto.response.HashtagsUpdateResponse;
 import routie.business.routiespace.domain.RoutieSpace;
 import routie.business.routiespace.domain.RoutieSpaceIdentifierProvider;
 import routie.business.routiespace.domain.RoutieSpaceRepository;
@@ -38,8 +51,16 @@ public class PlaceControllerV1Test {
     @Autowired
     private RoutieSpaceIdentifierProvider routieSpaceIdentifierProvider;
 
+    @Autowired
+    private PlaceLikeRepository placeLikeRepository;
+
+    @Autowired
+    private UserRepository userRepository;
+
     private Place testPlace;
     private RoutieSpace testRoutieSpace;
+    @Autowired
+    private HashtagRepository hashtagRepository;
 
     @BeforeEach
     void setUp() {
@@ -48,6 +69,8 @@ public class PlaceControllerV1Test {
         testRoutieSpace = routieSpaceRepository.save(RoutieSpace.withIdentifierProvider(
                 null, routieSpaceIdentifierProvider
         ));
+        final Hashtag hashtag1 = hashtagRepository.save(new Hashtag("hash", testRoutieSpace));
+        final Hashtag hashtag2 = hashtagRepository.save(new Hashtag("tag", testRoutieSpace));
         testPlace = new PlaceBuilder()
                 .name("테스트 카페")
                 .roadAddressName("서울시 강남구 테스트로 123")
@@ -55,25 +78,34 @@ public class PlaceControllerV1Test {
                 .latitude(10.123)
                 .routieSpace(testRoutieSpace)
                 .build();
+        testPlace.addHashtags(List.of(hashtag1, hashtag2));
         placeRepository.save(testPlace);
+
+        final User user = userRepository.save(UserFixture.emptyUser());
+
+        placeLikeRepository.save(new PlaceLikeBuilder()
+                .place(testPlace)
+                .user(user)
+                .build()
+        );
     }
 
     @Test
     @DisplayName("V1 API로 장소를 삭제한다")
     public void deletePlace() {
         // given
-        long placeId = testPlace.getId();
+        final long placeId = testPlace.getId();
 
         // when
-        Response response = RestAssured
+        final Response response = RestAssured
                 .when()
                 .delete("/v1/routie-spaces/" + testRoutieSpace.getIdentifier() + "/places/" + placeId)
                 .then()
                 .log().all()
                 .extract().response();
 
-        HttpStatus actualHttpStatus = HttpStatus.valueOf(response.getStatusCode());
-        HttpStatus expectedHttpStatus = HttpStatus.NO_CONTENT;
+        final HttpStatus actualHttpStatus = HttpStatus.valueOf(response.getStatusCode());
+        final HttpStatus expectedHttpStatus = HttpStatus.NO_CONTENT;
 
         // then
         assertThat(expectedHttpStatus).isEqualTo(actualHttpStatus);
@@ -83,20 +115,20 @@ public class PlaceControllerV1Test {
     @DisplayName("V1 API로 루티 장소에서 사용 중인 장소는 삭제할 수 없다")
     public void cannotDeletePlaceWhenUsedInRoutiePlace() {
         // given
-        long placeId = testPlace.getId();
+        final long placeId = testPlace.getId();
         testRoutieSpace.getRoutie().createLastRoutiePlace(testPlace);
         routieSpaceRepository.save(testRoutieSpace);
 
         // when
-        Response response = RestAssured
+        final Response response = RestAssured
                 .when()
                 .delete("/v1/routie-spaces/" + testRoutieSpace.getIdentifier() + "/places/" + placeId)
                 .then()
                 .log().all()
                 .extract().response();
 
-        HttpStatus actualHttpStatus = HttpStatus.valueOf(response.getStatusCode());
-        HttpStatus expectedHttpStatus = HttpStatus.BAD_REQUEST;
+        final HttpStatus actualHttpStatus = HttpStatus.valueOf(response.getStatusCode());
+        final HttpStatus expectedHttpStatus = HttpStatus.BAD_REQUEST;
 
         // then
         assertThat(expectedHttpStatus).isEqualTo(actualHttpStatus);
@@ -106,18 +138,18 @@ public class PlaceControllerV1Test {
     @DisplayName("V1 API로 존재하지 않는 장소 삭제 시 예외가 발생한다")
     public void deleteNonExistentPlace() {
         // given
-        long nonExistentPlaceId = 999999L;
+        final long nonExistentPlaceId = 999999L;
 
         // when
-        Response response = RestAssured
+        final Response response = RestAssured
                 .when()
                 .delete("/v1/routie-spaces/" + testRoutieSpace.getIdentifier() + "/places/" + nonExistentPlaceId)
                 .then()
                 .log().all()
                 .extract().response();
 
-        HttpStatus actualHttpStatus = HttpStatus.valueOf(response.getStatusCode());
-        HttpStatus expectedHttpStatus = HttpStatus.NOT_FOUND;
+        final HttpStatus actualHttpStatus = HttpStatus.valueOf(response.getStatusCode());
+        final HttpStatus expectedHttpStatus = HttpStatus.NOT_FOUND;
 
         // then
         assertThat(expectedHttpStatus).isEqualTo(actualHttpStatus);
@@ -127,20 +159,20 @@ public class PlaceControllerV1Test {
     @DisplayName("V1 API로 장소를 조회한다")
     public void readPlace() {
         // given
-        long placeId = testPlace.getId();
+        final long placeId = testPlace.getId();
 
         // when
-        Response response = RestAssured
+        final Response response = RestAssured
                 .when()
                 .get("/v1/routie-spaces/" + testRoutieSpace.getIdentifier() + "/places/" + placeId)
                 .then()
                 .log().all()
                 .extract().response();
 
-        HttpStatus actualHttpStatus = HttpStatus.valueOf(response.getStatusCode());
-        HttpStatus expectedHttpStatus = HttpStatus.OK;
+        final HttpStatus actualHttpStatus = HttpStatus.valueOf(response.getStatusCode());
+        final HttpStatus expectedHttpStatus = HttpStatus.OK;
 
-        String responseBody = response.getBody().asString();
+        final String responseBody = response.getBody().asString();
 
         // then
         assertThat(expectedHttpStatus).isEqualTo(actualHttpStatus);
@@ -149,26 +181,27 @@ public class PlaceControllerV1Test {
         assertThat(responseBody).contains("roadAddressName");
         assertThat(responseBody).contains("longitude");
         assertThat(responseBody).contains("latitude");
+        assertThat(responseBody).contains("hashtags");
     }
 
     @Test
     @DisplayName("V1 API로 장소를 조회한다 - 응답 구조 검증")
     public void readPlaceWithDetailValidation() {
         // given
-        long placeId = testPlace.getId();
+        final long placeId = testPlace.getId();
 
         // when
-        Response response = RestAssured
+        final Response response = RestAssured
                 .when()
                 .get("/v1/routie-spaces/" + testRoutieSpace.getIdentifier() + "/places/" + placeId)
                 .then()
                 .log().all()
                 .extract().response();
 
-        HttpStatus actualHttpStatus = HttpStatus.valueOf(response.getStatusCode());
-        HttpStatus expectedHttpStatus = HttpStatus.OK;
+        final HttpStatus actualHttpStatus = HttpStatus.valueOf(response.getStatusCode());
+        final HttpStatus expectedHttpStatus = HttpStatus.OK;
 
-        Map<String, Object> responseBody = response.jsonPath().getMap("");
+        final Map<String, Object> responseBody = response.jsonPath().getMap("");
 
         // then
         assertThat(expectedHttpStatus).isEqualTo(actualHttpStatus);
@@ -178,5 +211,69 @@ public class PlaceControllerV1Test {
                 "longitude",
                 "latitude"
         );
+    }
+
+    @Test
+    @DisplayName("V1 API로 장소의 해시태그를 수정할 수 있다.")
+    public void updateHashtagTest() {
+        // given
+        final String routieSpaceIdentifier = testPlace.getRoutieSpace().getIdentifier();
+        final Long placeId = testPlace.getId();
+        final HashtagsUpdateRequest hashtagsUpdateRequest = new HashtagsUpdateRequest(List.of("new", "hash", "tags"));
+
+        // when
+        final Response response = RestAssured
+                .given()
+                .contentType(ContentType.JSON)
+                .body(hashtagsUpdateRequest)
+                .when()
+                .put(
+                        "/v1/routie-spaces/{routieSpaceIdentifier}/places/{placeId}/hashtags",
+                        routieSpaceIdentifier,
+                        placeId
+                )
+                .then()
+                .log().all()
+                .extract().response();
+
+        final HttpStatus actualHttpStatus = HttpStatus.valueOf(response.getStatusCode());
+        final HttpStatus expectedHttpStatus = HttpStatus.OK;
+
+        final HashtagsUpdateResponse hashtagsUpdateResponse = response.as(HashtagsUpdateResponse.class);
+
+        // then
+        assertThat(actualHttpStatus).isEqualTo(expectedHttpStatus);
+        assertThat(hashtagsUpdateResponse.hashtags()).hasSize(3);
+        assertThat(hashtagsUpdateResponse.hashtags()).containsExactlyInAnyOrder("new", "hash", "tags");
+    }
+
+    @Test
+    @DisplayName("V1 API로 장소의 해시태그를 수정할 수 있다.")
+    public void updateHashtagWithInvalidLengthTest() {
+        // given
+        final String routieSpaceIdentifier = testPlace.getRoutieSpace().getIdentifier();
+        final Long placeId = testPlace.getId();
+        final HashtagsUpdateRequest hashtagsUpdateRequest = new HashtagsUpdateRequest(List.of("new", "longHashtags"));
+
+        // when
+        final Response response = RestAssured
+                .given()
+                .contentType(ContentType.JSON)
+                .body(hashtagsUpdateRequest)
+                .when()
+                .put(
+                        "/v1/routie-spaces/{routieSpaceIdentifier}/places/{placeId}/hashtags",
+                        routieSpaceIdentifier,
+                        placeId
+                )
+                .then()
+                .log().all()
+                .extract().response();
+
+        final HttpStatus actualHttpStatus = HttpStatus.valueOf(response.getStatusCode());
+        final HttpStatus expectedHttpStatus = HttpStatus.BAD_REQUEST;
+
+        // then
+        assertThat(actualHttpStatus).isEqualTo(expectedHttpStatus);
     }
 }

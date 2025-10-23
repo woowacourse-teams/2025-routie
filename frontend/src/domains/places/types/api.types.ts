@@ -4,6 +4,7 @@ interface ApiPlaceBaseType {
   addressName: string;
   longitude: number;
   latitude: number;
+  hashtags?: string[];
 }
 
 interface SearchPlaceRequestType {
@@ -22,14 +23,49 @@ interface FetchPlaceRequestType {
   placeId: number;
 }
 
-type FetchPlaceResponseType = ApiPlaceBaseType;
+interface FetchPlaceResponseType extends ApiPlaceBaseType {
+  kakaoPlaceId: string;
+}
 
 interface FetchPlaceListResponseType extends ApiPlaceBaseType {
   id: number;
+  likeCount: number;
+  kakaoPlaceId: string;
 }
 
 interface DeletePlaceRequestType {
   placeId: number;
+}
+
+interface LikePlaceRequestType {
+  placeId: number;
+}
+
+interface UnlikePlaceRequestType {
+  placeId: number;
+}
+
+interface LikedPlacesResponseType {
+  likedPlaceIds: number[];
+}
+
+interface UpdatePlaceHashtagsRequestType {
+  placeId: number;
+  hashtags: string[];
+}
+
+interface HashtagWithCountType {
+  id: number;
+  name: string;
+  count: number;
+}
+
+interface HashtagsResponseType {
+  hashtags: HashtagWithCountType[];
+}
+
+interface DeleteHashtagRequestType {
+  hashtagId: number;
 }
 
 export type {
@@ -40,4 +76,11 @@ export type {
   FetchPlaceResponseType,
   FetchPlaceListResponseType,
   DeletePlaceRequestType,
+  LikePlaceRequestType,
+  UnlikePlaceRequestType,
+  LikedPlacesResponseType,
+  UpdatePlaceHashtagsRequestType,
+  HashtagsResponseType,
+  HashtagWithCountType,
+  DeleteHashtagRequestType,
 };

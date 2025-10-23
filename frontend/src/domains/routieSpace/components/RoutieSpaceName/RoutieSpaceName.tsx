@@ -1,6 +1,7 @@
 import Button from '@/@common/components/Button/Button';
 import Flex from '@/@common/components/Flex/Flex';
 import Text from '@/@common/components/Text/Text';
+import { getAccessToken } from '@/@common/utils/getAccessToken';
 import theme from '@/styles/theme';
 
 import { useRoutieSpace } from '../../hooks/useRoutieSpace';
@@ -18,9 +19,11 @@ const RoutieSpaceName = () => {
     handleClick,
     handleChange,
   } = useRoutieSpace();
+  const accessToken = getAccessToken();
+  const role = localStorage.getItem('role');
 
   return (
-    <Flex justifyContent="space-between" margin={0.4} gap={3}>
+    <Flex justifyContent="space-between" gap={3} padding="0 1rem">
       {isEditing ? (
         <input
           ref={inputRef}
@@ -31,21 +34,23 @@ const RoutieSpaceName = () => {
           onKeyDown={handleEnter}
         />
       ) : (
-        <Flex justifyContent="flex-start" padding={0.4}>
+        <Flex justifyContent="flex-start" maxWidth="41rem" padding={0.4}>
           <Text variant="subTitle">{name}</Text>
         </Flex>
       )}
-      <Button
-        variant="primary"
-        onClick={handleClick}
-        width="5rem"
-        disabled={isLoading}
-        padding="0.8rem 0.6rem"
-      >
-        <Text variant="caption" color={theme.colors.white}>
-          {isEditing ? '저장' : '수정'}
-        </Text>
-      </Button>
+      {accessToken && role === 'USER' && (
+        <Button
+          variant="primary"
+          onClick={handleClick}
+          width="5rem"
+          disabled={isLoading}
+          padding="0.6rem 0.8rem"
+        >
+          <Text variant="label" color={theme.colors.white}>
+            {isEditing ? '저장' : '수정'}
+          </Text>
+        </Button>
+      )}
     </Flex>
   );
 };

@@ -21,10 +21,10 @@ const blinkBackground = css`
 
 const inputVariant: Record<InputVariantType, SerializedStyles> = {
   primary: css`
-    border-color: ${theme.colors.purple[400]};
+    border-color: ${theme.colors.blue[450]};
 
     &:focus {
-      border-color: ${theme.colors.purple[400]};
+      border-color: ${theme.colors.blue[450]};
     }
   `,
   disabled: css`
@@ -47,24 +47,25 @@ const inputVariant: Record<InputVariantType, SerializedStyles> = {
 
 const InputStyle = ({ variant, icon }: InputStyleProps) => css`
   width: 100%;
-  height: 3.5rem;
-  padding: 0.4rem 0.8rem;
+  height: 4rem;
+  padding: 0.4rem 1.2rem;
   border: 1px solid;
-  border-radius: 8px;
+  border-radius: ${theme.radius.lg};
+
+  font-size: ${theme.font.size.caption};
   ${icon ? 'padding-left: 2.5rem;' : ''}
 
   &::placeholder {
-    font-size: ${theme.font.size.label};
+    font-size: ${theme.font.size.caption};
     font-weight: ${theme.font.weight.medium};
-    color: ${theme.colors.gray[50]};
+    color: ${theme.colors.gray[150]};
   }
 
   &:focus {
     width: 100%;
-    height: 3.5rem;
-    padding: 0.4rem 0.8rem;
+    height: 4rem;
+    padding: 0.4rem 1.2rem;
     border: 3px solid;
-    border-radius: 8px;
     ${icon ? 'padding-left: 2.5rem;' : ''}
 
     outline: none;

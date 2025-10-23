@@ -1,6 +1,8 @@
+/** @jsxImportSource @emotion/react */
 import { useState } from 'react';
 
 import Icon from '@/@common/components/IconSvg/Icon';
+import { logout } from '@/@common/utils/logout';
 import UserMenu from '@/domains/auth/components/UserMenu/UserMenu';
 
 import {
@@ -13,10 +15,10 @@ import type { UserMenuButtonProps } from './UserMenuButton.types';
 
 const UserMenuButton = ({
   onClick,
-  userName,
   positioning = 'absolute',
 }: UserMenuButtonProps) => {
   const [isUserInfoOpen, setIsUserInfoOpen] = useState(false);
+  const handleLogout = () => logout();
 
   const handleProfileClick = () => {
     if (onClick) {
@@ -24,10 +26,6 @@ const UserMenuButton = ({
     } else {
       setIsUserInfoOpen((prev) => !prev);
     }
-  };
-
-  const handleLogout = () => {
-    alert('로그아웃 버튼 클릭됨!');
   };
 
   const wrapperStyle =
@@ -38,14 +36,12 @@ const UserMenuButton = ({
   return (
     <div css={wrapperStyle}>
       <Icon
-        name="user"
+        name="menu"
         size={40}
         css={UserMenuIconStyle}
         onClick={handleProfileClick}
       />
-      {isUserInfoOpen && userName && (
-        <UserMenu userName={userName} onClick={handleLogout} />
-      )}
+      {isUserInfoOpen && <UserMenu onClick={handleLogout} />}
     </div>
   );
 };

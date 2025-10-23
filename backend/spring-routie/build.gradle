@@ -55,11 +55,19 @@ dependencies {
     // Validation
     implementation 'org.springframework.boot:spring-boot-starter-validation'
 
+    // JWT
+    implementation 'io.jsonwebtoken:jjwt-api:0.12.5'
+    runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.12.5'
+    runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.12.5'
+
     // MySQL
     runtimeOnly 'com.mysql:mysql-connector-j'
 
     // Actuator
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
+
+    // Metric
+    implementation 'io.micrometer:micrometer-registry-cloudwatch2:1.15.5'
 
     // Test
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
@@ -80,6 +88,9 @@ dependencies {
     // Flyway
     implementation 'org.flywaydb:flyway-core'
     implementation 'org.flywaydb:flyway-mysql'
+
+    // BCrypt Password Encoder
+    implementation 'org.springframework.security:spring-security-crypto:6.5.5'
 }
 
 tasks.named('test') {
@@ -90,7 +101,6 @@ tasks.named('test') {
 spotless {
     java {
         eclipse().configFile("config/formatter/eclipse-java-routie-style.xml")
-        importOrder()
         removeUnusedImports()
         trimTrailingWhitespace()
         endWithNewline()

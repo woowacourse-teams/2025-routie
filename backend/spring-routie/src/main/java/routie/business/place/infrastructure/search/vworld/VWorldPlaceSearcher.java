@@ -27,7 +27,7 @@ public class VWorldPlaceSearcher implements PlaceSearcher {
         validateQuery(query);
         validateSize(size);
 
-        VWorldPlaceSearchApiResponse vWorldPlaceSearchApiResponse = vWorldPlaceSearchApiClient.search(
+        final VWorldPlaceSearchApiResponse vWorldPlaceSearchApiResponse = vWorldPlaceSearchApiClient.search(
                 new VWorldPlaceSearchApiRequest(query, size)
         );
         if (vWorldPlaceSearchApiResponse.isDataNotFound()) {

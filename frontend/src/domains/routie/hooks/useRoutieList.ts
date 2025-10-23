@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo } from 'react';
 
 import { useToastContext } from '@/@common/contexts/useToastContext';
+import { useAccessTokenGuard } from '@/@common/hooks/useAccessTokenGuard';
 import { useAsyncLock } from '@/@common/hooks/useAsyncLock';
 import {
   useAddRoutieQuery,
@@ -8,11 +9,11 @@ import {
   useDeleteRoutieQuery,
   useRoutieQuery,
 } from '@/domains/routie/queries/useRoutieQuery';
-import { RoutieType } from '@/domains/routie/types/routie.types';
+import type { RoutieType } from '@/domains/routie/types/routie.types';
 import { useGoogleEventTrigger } from '@/libs/googleAnalytics/hooks/useGoogleEventTrigger';
 
 const useRoutieList = () => {
-  const { data: routie, error } = useRoutieQuery();
+  const { data: routie, error } = useRoutieQuery({ enabled: false });
   const { mutateAsync: addRoutie } = useAddRoutieQuery();
   const { mutateAsync: deleteRoutie } = useDeleteRoutieQuery();
   const { mutateAsync: changeRoutie } = useChangeRoutieQuery();
@@ -21,6 +22,7 @@ const useRoutieList = () => {
   const { runWithLock: runChangeWithLock } = useAsyncLock();
   const { showToast } = useToastContext();
   const { triggerEvent } = useGoogleEventTrigger();
+  const requireAccessToken = useAccessTokenGuard();
   const routieIdList = useMemo(
     () => routie.routiePlaces.map((routiePlace) => routiePlace.placeId),
     [routie.routiePlaces],
@@ -29,6 +31,10 @@ const useRoutieList = () => {
   const handleAddRoutie = useCallback(
     async (placeId: number) => {
       return await runAddWithLock(async () => {
+        const accessToken = requireAccessToken();
+
+        if (!accessToken) return;
+
         await addRoutie({ placeId });
         triggerEvent({
           action: 'click',
@@ -51,6 +57,10 @@ const useRoutieList = () => {
   const handleChangeRoutie = useCallback(
     async (routiePlaces: RoutieType[]) => {
       return await runChangeWithLock(async () => {
+        const accessToken = requireAccessToken();
+
+        if (!accessToken) return;
+
         await changeRoutie(organizeRoutie(routiePlaces));
       });
     },
@@ -60,6 +70,10 @@ const useRoutieList = () => {
   const handleDeleteRoutie = useCallback(
     async (placeId: number) => {
       return await runDeleteWithLock(async () => {
+        const accessToken = requireAccessToken();
+
+        if (!accessToken) return;
+
         await deleteRoutie({ placeId });
         triggerEvent({
           action: 'click',
@@ -83,7 +97,6 @@ const useRoutieList = () => {
 
   return {
     routiePlaces: routie.routiePlaces,
-    routes: routie.routes,
     routieIdList,
     handleAddRoutie,
     handleChangeRoutie,

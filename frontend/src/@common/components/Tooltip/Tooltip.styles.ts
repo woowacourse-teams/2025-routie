@@ -15,7 +15,7 @@ const TooltipStyle = css`
 
   padding: 0.6rem 1.4rem;
   border: 0.1rem solid ${theme.colors.gray[50]};
-  border-radius: 1rem;
+  border-radius: ${theme.radius.sm};
 
   color: ${theme.colors.black};
   white-space: nowrap;

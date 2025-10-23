@@ -6,6 +6,7 @@ import { usePlaceSearchQuery } from '@/domains/places/queries/usePlaceQuery';
 const useSearchPlace = () => {
   const [keyword, setKeyword] = useState('');
   const [searchedKeyword, setSearchedKeyword] = useState('');
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const { data: searchResults, error } = usePlaceSearchQuery(searchedKeyword);
 
@@ -27,6 +28,7 @@ const useSearchPlace = () => {
     if (!keyword.trim()) return;
 
     setSearchedKeyword(keyword);
+    setIsDropdownOpen(true);
   };
 
   const handleChangeKeyword = (keyword: string) => {
@@ -44,6 +46,10 @@ const useSearchPlace = () => {
     }
   };
 
+  const handleCloseDropdown = () => {
+    setIsDropdownOpen(false);
+  };
+
   return {
     keyword,
     handleChangeKeyword,
@@ -52,6 +58,8 @@ const useSearchPlace = () => {
     handleSearch,
     handleReset,
     searchedKeyword,
+    isDropdownOpen,
+    handleCloseDropdown,
   };
 };
 

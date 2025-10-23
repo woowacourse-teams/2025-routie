@@ -29,7 +29,7 @@ public class GoogleTransitRouteApiClientConfig {
 
     @Bean
     public GoogleTransitRouteApiClient googleTransitApiClient() {
-        RestClient restClient = RestClient.builder()
+        final RestClient restClient = RestClient.builder()
                 .baseUrl("https://routes.googleapis.com")
                 .defaultHeader(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON_VALUE)
                 .defaultHeader("X-Goog-Api-Key", googleApiKey)

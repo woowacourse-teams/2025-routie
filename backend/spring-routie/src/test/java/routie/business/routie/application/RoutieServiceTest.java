@@ -11,6 +11,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -21,6 +22,9 @@ import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.TransactionTemplate;
+import routie.business.participant.domain.User;
+import routie.business.participant.domain.UserBuilder;
+import routie.business.participant.domain.UserRepository;
 import routie.business.place.domain.Place;
 import routie.business.place.domain.PlaceBuilder;
 import routie.business.place.domain.PlaceRepository;
@@ -33,9 +37,6 @@ import routie.business.routiespace.domain.RoutieSpace;
 import routie.business.routiespace.domain.RoutieSpaceBuilder;
 import routie.business.routiespace.domain.RoutieSpaceFixture;
 import routie.business.routiespace.domain.RoutieSpaceRepository;
-import routie.business.user.domain.User;
-import routie.business.user.domain.UserBuilder;
-import routie.business.user.domain.UserRepository;
 import routie.global.exception.domain.BusinessException;
 
 @SpringBootTest
@@ -103,15 +104,15 @@ class RoutieServiceTest {
     @DisplayName("루티 장소 추가 시 동시성 테스트")
     void testConcurrentAddRoutiePlace() throws InterruptedException {
         // Given
-        String routieSpaceIdentifier = testRoutieSpace.getIdentifier();
-        RoutiePlaceCreateRequest request = new RoutiePlaceCreateRequest(testPlace1.getId());
+        final String routieSpaceIdentifier = testRoutieSpace.getIdentifier();
+        final RoutiePlaceCreateRequest request = new RoutiePlaceCreateRequest(testPlace1.getId());
 
-        int threadCount = 10;
-        CountDownLatch latch = new CountDownLatch(threadCount);
-        AtomicInteger successCount = new AtomicInteger(0);
+        final int threadCount = 10;
+        final CountDownLatch latch = new CountDownLatch(threadCount);
+        final AtomicInteger successCount = new AtomicInteger(0);
 
-        CyclicBarrier barrier = new CyclicBarrier(threadCount);
-        try (ExecutorService executorService = Executors.newFixedThreadPool(threadCount)) {
+        final CyclicBarrier barrier = new CyclicBarrier(threadCount);
+        try (final ExecutorService executorService = Executors.newFixedThreadPool(threadCount)) {
             // When
             for (int i = 0; i < threadCount; i++) {
                 executorService.submit(() -> {
@@ -129,15 +130,14 @@ class RoutieServiceTest {
                     }
                 });
             }
-            boolean finished = latch.await(10, TimeUnit.SECONDS);
+            final boolean finished = latch.await(10, TimeUnit.SECONDS);
 
             // Then
             assertThat(finished).isTrue();
             assertThat(successCount.get()).isEqualTo(1);
         }
 
-        Long finalCount = transactionTemplate.execute(status ->
-                (long) routiePlaceRepository.findAll().size());
+        final Long finalCount = transactionTemplate.execute(status -> (long) routiePlaceRepository.findAll().size());
         assertThat(finalCount).isEqualTo(1);
     }
 
@@ -146,17 +146,17 @@ class RoutieServiceTest {
     @Transactional
     void testModifyRoutieOrder() {
         // Given
-        String routieSpaceIdentifier = testRoutieSpace.getIdentifier();
+        final String routieSpaceIdentifier = testRoutieSpace.getIdentifier();
 
         routieService.addRoutiePlace(routieSpaceIdentifier, new RoutiePlaceCreateRequest(testPlace1.getId()));
         routieService.addRoutiePlace(routieSpaceIdentifier, new RoutiePlaceCreateRequest(testPlace2.getId()));
         routieService.addRoutiePlace(routieSpaceIdentifier, new RoutiePlaceCreateRequest(testPlace3.getId()));
 
-        List<RoutiePlace> initialPlaces = routiePlaceRepository.findAll();
+        final List<RoutiePlace> initialPlaces = routiePlaceRepository.findAll();
         assertThat(initialPlaces).hasSize(3);
 
         // When
-        RoutieUpdateRequest updateRequest = new RoutieUpdateRequest(List.of(
+        final RoutieUpdateRequest updateRequest = new RoutieUpdateRequest(List.of(
                 new RoutiePlaceRequest(testPlace3.getId(), 1),
                 new RoutiePlaceRequest(testPlace1.getId(), 2),
                 new RoutiePlaceRequest(testPlace2.getId(), 3)
@@ -165,7 +165,7 @@ class RoutieServiceTest {
         routieService.modifyRoutie(routieSpaceIdentifier, updateRequest);
 
         // Then
-        List<RoutiePlace> updatedPlaces = routiePlaceRepository.findAll();
+        final List<RoutiePlace> updatedPlaces = routiePlaceRepository.findAll();
         updatedPlaces.sort(Comparator.comparingInt(RoutiePlace::getSequence));
 
         assertThat(updatedPlaces).hasSize(3);
@@ -185,20 +185,20 @@ class RoutieServiceTest {
     @Transactional
     void testModifyRoutieCompleteReplacement() {
         // Given
-        String routieSpaceIdentifier = testRoutieSpace.getIdentifier();
+        final String routieSpaceIdentifier = testRoutieSpace.getIdentifier();
 
         routieService.addRoutiePlace(routieSpaceIdentifier, new RoutiePlaceCreateRequest(testPlace1.getId()));
         routieService.addRoutiePlace(routieSpaceIdentifier, new RoutiePlaceCreateRequest(testPlace2.getId()));
 
         // When
-        RoutieUpdateRequest updateRequest = new RoutieUpdateRequest(List.of(
+        final RoutieUpdateRequest updateRequest = new RoutieUpdateRequest(List.of(
                 new RoutiePlaceRequest(testPlace3.getId(), 1)
         ));
 
         routieService.modifyRoutie(routieSpaceIdentifier, updateRequest);
 
         // Then
-        List<RoutiePlace> updatedPlaces = routiePlaceRepository.findAll();
+        final List<RoutiePlace> updatedPlaces = routiePlaceRepository.findAll();
         assertThat(updatedPlaces).hasSize(1);
         assertThat(updatedPlaces.getFirst().getPlace().getId()).isEqualTo(testPlace3.getId());
         assertThat(updatedPlaces.getFirst().getSequence()).isEqualTo(1);
@@ -208,16 +208,16 @@ class RoutieServiceTest {
     @DisplayName("루티 수정 시 DELETE 성공 후 INSERT 실패 시 롤백 테스트")
     void testModifyRoutieRollbackOnFailure() {
         // Given
-        String routieSpaceIdentifier = testRoutieSpace.getIdentifier();
+        final String routieSpaceIdentifier = testRoutieSpace.getIdentifier();
 
         routieService.addRoutiePlace(routieSpaceIdentifier, new RoutiePlaceCreateRequest(testPlace1.getId()));
         routieService.addRoutiePlace(routieSpaceIdentifier, new RoutiePlaceCreateRequest(testPlace2.getId()));
 
-        List<RoutiePlace> initialPlaces = routiePlaceRepository.findAll();
+        final List<RoutiePlace> initialPlaces = routiePlaceRepository.findAll();
         assertThat(initialPlaces).hasSize(2);
 
         // When
-        RoutieUpdateRequest invalidRequest = new RoutieUpdateRequest(List.of(
+        final RoutieUpdateRequest invalidRequest = new RoutieUpdateRequest(List.of(
                 new RoutiePlaceRequest(testPlace1.getId(), 1),
                 new RoutiePlaceRequest(99999L, 2)
         ));
@@ -226,7 +226,7 @@ class RoutieServiceTest {
         assertThatThrownBy(() -> routieService.modifyRoutie(routieSpaceIdentifier, invalidRequest))
                 .isInstanceOf(BusinessException.class);
 
-        List<RoutiePlace> afterFailurePlaces = routiePlaceRepository.findAll();
+        final List<RoutiePlace> afterFailurePlaces = routiePlaceRepository.findAll();
         assertThat(afterFailurePlaces).hasSize(2);
 
         afterFailurePlaces.sort(Comparator.comparingInt(RoutiePlace::getSequence));

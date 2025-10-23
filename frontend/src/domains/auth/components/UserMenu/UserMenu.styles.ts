@@ -17,9 +17,10 @@ const UserMenuStyle = css`
 
   width: 18rem;
   padding: 1rem;
-  border-radius: 8px;
+  border-radius: ${theme.radius.sm};
 
   background-color: ${theme.colors.white};
+  box-shadow: 0 0 10px 0 rgb(0 0 0 / 10%);
 `;
 
 export { DividerStyle, UserMenuStyle };

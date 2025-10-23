@@ -1,13 +1,7 @@
 package routie.business.routie.application;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import routie.business.place.domain.Place;
@@ -15,6 +9,9 @@ import routie.business.place.domain.PlaceRepository;
 import routie.business.routie.domain.Routie;
 import routie.business.routie.domain.RoutiePlace;
 import routie.business.routie.domain.RoutiePlaceRepository;
+import routie.business.routie.domain.event.RoutePlaceCreateEvent;
+import routie.business.routie.domain.event.RoutePlaceDeleteEvent;
+import routie.business.routie.domain.event.RoutieUpdateEvent;
 import routie.business.routie.domain.route.MovingStrategy;
 import routie.business.routie.domain.route.RouteCalculationContext;
 import routie.business.routie.domain.route.RouteCalculator;
@@ -36,6 +33,14 @@ import routie.business.routiespace.domain.RoutieSpaceRepository;
 import routie.global.exception.domain.BusinessException;
 import routie.global.exception.domain.ErrorCode;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -43,23 +48,25 @@ public class RoutieService {
 
     private static final int MIN_ROUTIE_PLACES_FOR_ROUTE = 2;
 
-    private final RoutieSpaceRepository routieSpaceRepository;
-    private final PlaceRepository placeRepository;
-    private final RoutiePlaceRepository routiePlaceRepository;
-    private final TimePeriodCalculator timePeriodCalculator;
-    private final RouteCalculator routeCalculator;
     private final RoutieValidator routieValidator;
+    private final PlaceRepository placeRepository;
+    private final RouteCalculator routeCalculator;
+    private final TimePeriodCalculator timePeriodCalculator;
+    private final RoutiePlaceRepository routiePlaceRepository;
+    private final RoutieSpaceRepository routieSpaceRepository;
+    private final ApplicationEventPublisher applicationEventPublisher;
 
     @Transactional
     public RoutiePlaceCreateResponse addRoutiePlace(
             final String routieSpaceIdentifier,
             final RoutiePlaceCreateRequest routiePlaceCreateRequest
     ) {
-        RoutieSpace routieSpace = getRoutieSpaceByIdentifier(routieSpaceIdentifier);
-        Routie routie = routieSpace.getRoutie();
-        Place place = getPlaceByRoutieSpaceAndPlaceId(routieSpace, routiePlaceCreateRequest.placeId());
-        RoutiePlace routiePlace = routie.createLastRoutiePlace(place);
+        final RoutieSpace routieSpace = getRoutieSpaceByIdentifier(routieSpaceIdentifier);
+        final Routie routie = routieSpace.getRoutie();
+        final Place place = getPlaceByRoutieSpaceAndPlaceId(routieSpace, routiePlaceCreateRequest.placeId());
+        final RoutiePlace routiePlace = routie.createLastRoutiePlace(place);
         routiePlaceRepository.save(routiePlace);
+        applicationEventPublisher.publishEvent(new RoutePlaceCreateEvent(this, place.getId(), routieSpaceIdentifier));
         return RoutiePlaceCreateResponse.from(routiePlace);
     }
 
@@ -76,11 +83,10 @@ public class RoutieService {
             final LocalDateTime startDateTime,
             final MovingStrategy movingStrategy
     ) {
-        Routie routie = getRoutieSpaceByIdentifier(routieSpaceIdentifier).getRoutie();
-        List<RoutiePlace> routiePlaces = routie.getRoutiePlaces();
-
-        Routes routes = getRoutes(startDateTime, routiePlaces, movingStrategy);
-        TimePeriods timePeriods = getTimePeriods(startDateTime, movingStrategy, routes, routiePlaces);
+        final Routie routie = getRoutieSpaceByIdentifier(routieSpaceIdentifier).getRoutie();
+        final List<RoutiePlace> routiePlaces = routie.getRoutiePlaces();
+        final Routes routes = getRoutes(startDateTime, routiePlaces, movingStrategy);
+        final TimePeriods timePeriods = getTimePeriods(startDateTime, movingStrategy, routes, routiePlaces);
 
         return RoutieReadResponse.from(routie, routes.orderedList(), timePeriods);
     }
@@ -91,7 +97,7 @@ public class RoutieService {
             final MovingStrategy movingStrategy
     ) {
         Routes routes = Routes.empty();
-        RouteCalculationContext routeCalculationContext = new RouteCalculationContext(
+        final RouteCalculationContext routeCalculationContext = new RouteCalculationContext(
                 startDateTime,
                 routiePlaces,
                 movingStrategy
@@ -118,17 +124,18 @@ public class RoutieService {
 
     @Transactional
     public void modifyRoutie(final String routieSpaceIdentifier, final RoutieUpdateRequest routieUpdateRequest) {
-        RoutieSpace routieSpace = getRoutieSpaceByIdentifier(routieSpaceIdentifier);
+        final RoutieSpace routieSpace = getRoutieSpaceByIdentifier(routieSpaceIdentifier);
         routiePlaceRepository.deleteByRoutieSpaceId(routieSpace.getId());
 
-        Map<Long, Place> placeMap = getPlaceMap(routieUpdateRequest);
-        List<RoutiePlace> newRoutiePlaces = createNewRoutiePlaces(routieUpdateRequest, placeMap);
+        final Map<Long, Place> placeMap = getPlaceMap(routieUpdateRequest);
+        final List<RoutiePlace> newRoutiePlaces = createNewRoutiePlaces(routieUpdateRequest, placeMap);
 
         routieSpace.getRoutie().getRoutiePlaces().addAll(newRoutiePlaces);
+        applicationEventPublisher.publishEvent(new RoutieUpdateEvent(this, routieSpaceIdentifier));
     }
 
     private Map<Long, Place> getPlaceMap(final RoutieUpdateRequest request) {
-        List<Long> placeIds = request.routiePlaces().stream()
+        final List<Long> placeIds = request.routiePlaces().stream()
                 .map(RoutiePlaceRequest::placeId)
                 .toList();
 
@@ -136,8 +143,10 @@ public class RoutieService {
                 .collect(Collectors.toMap(Place::getId, Function.identity()));
     }
 
-    private List<RoutiePlace> createNewRoutiePlaces(final RoutieUpdateRequest request,
-                                                    final Map<Long, Place> placeMap) {
+    private List<RoutiePlace> createNewRoutiePlaces(
+            final RoutieUpdateRequest request,
+            final Map<Long, Place> placeMap
+    ) {
         return request.routiePlaces().stream()
                 .map(r -> new RoutiePlace(
                         r.sequence(),
@@ -160,16 +169,16 @@ public class RoutieService {
             final LocalDateTime endDateTime,
             final MovingStrategy movingStrategy
     ) {
-        Routie routie = getRoutieSpaceByIdentifier(routieSpaceIdentifier).getRoutie();
-        List<RoutiePlace> routiePlaces = routie.getRoutiePlaces();
-        Routes routes = getRoutes(startDateTime, routiePlaces, movingStrategy);
-        TimePeriods timePeriods = timePeriodCalculator.calculateTimePeriods(startDateTime, routes, routiePlaces);
+        final Routie routie = getRoutieSpaceByIdentifier(routieSpaceIdentifier).getRoutie();
+        final List<RoutiePlace> routiePlaces = routie.getRoutiePlaces();
+        final Routes routes = getRoutes(startDateTime, routiePlaces, movingStrategy);
+        final TimePeriods timePeriods = timePeriodCalculator.calculateTimePeriods(startDateTime, routes, routiePlaces);
 
-        ValidationContext validationContext = new ValidationContext(startDateTime, endDateTime, timePeriods);
-        List<ValidationResult> validationResults = new ArrayList<>();
+        final ValidationContext validationContext = new ValidationContext(startDateTime, endDateTime, timePeriods);
+        final List<ValidationResult> validationResults = new ArrayList<>();
 
         for (final ValidationStrategy validationStrategy : ValidationStrategy.values()) {
-            ValidationResult validationResult = routieValidator.validate(validationContext, validationStrategy);
+            final ValidationResult validationResult = routieValidator.validate(validationContext, validationStrategy);
             validationResults.add(validationResult);
         }
 
@@ -178,9 +187,10 @@ public class RoutieService {
 
     @Transactional
     public void removeRoutiePlace(final String routieSpaceIdentifier, final Long placeId) {
-        RoutieSpace routieSpace = getRoutieSpaceByIdentifier(routieSpaceIdentifier);
-        Place place = getPlaceByRoutieSpaceAndPlaceId(routieSpace, placeId);
-        Routie routie = routieSpace.getRoutie();
+        final RoutieSpace routieSpace = getRoutieSpaceByIdentifier(routieSpaceIdentifier);
+        final Place place = getPlaceByRoutieSpaceAndPlaceId(routieSpace, placeId);
+        final Routie routie = routieSpace.getRoutie();
         routie.removePlace(place);
+        applicationEventPublisher.publishEvent(new RoutePlaceDeleteEvent(this, placeId, routieSpaceIdentifier));
     }
 }

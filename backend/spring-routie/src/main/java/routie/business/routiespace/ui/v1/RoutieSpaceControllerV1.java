@@ -3,6 +3,7 @@ package routie.business.routiespace.ui.v1;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -10,43 +11,68 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import routie.business.authentication.domain.Role;
+import routie.business.authentication.ui.argument.annotation.AuthenticatedParticipant;
+import routie.business.participant.domain.User;
+import routie.business.routiespace.application.RoutieSpaceService;
 import routie.business.routiespace.ui.dto.request.RoutieSpaceUpdateRequest;
 import routie.business.routiespace.ui.dto.response.RoutieSpaceCreateResponse;
+import routie.business.routiespace.ui.dto.response.RoutieSpaceListResponse;
 import routie.business.routiespace.ui.dto.response.RoutieSpaceReadResponse;
 import routie.business.routiespace.ui.dto.response.RoutieSpaceUpdateResponse;
-import routie.business.routiespace.application.RoutieSpaceService;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/v1/routie-spaces")
+@RequestMapping("/v1")
 public class RoutieSpaceControllerV1 {
 
     private final RoutieSpaceService routieSpaceService;
 
-    @PostMapping
+    @PostMapping("/routie-spaces")
     public ResponseEntity<RoutieSpaceCreateResponse> createRoutieSpace() {
-        RoutieSpaceCreateResponse routieSpaceCreateResponse = routieSpaceService.addRoutieSpace();
+        final RoutieSpaceCreateResponse routieSpaceCreateResponse = routieSpaceService.addRoutieSpace();
+
         return ResponseEntity.ok(routieSpaceCreateResponse);
     }
 
-    @GetMapping("/{routieSpaceIdentifier}")
+    @GetMapping("/routie-spaces/{routieSpaceIdentifier}")
     public ResponseEntity<RoutieSpaceReadResponse> readRoutieSpace(
             @PathVariable final String routieSpaceIdentifier
     ) {
-        RoutieSpaceReadResponse routieSpaceReadResponse = routieSpaceService.getRoutieSpace(routieSpaceIdentifier);
+        final RoutieSpaceReadResponse routieSpaceReadResponse = routieSpaceService.getRoutieSpace(
+                routieSpaceIdentifier);
         return ResponseEntity.ok(routieSpaceReadResponse);
     }
 
-    @PatchMapping("/{routieSpaceIdentifier}")
+    @GetMapping("/my-routie-spaces")
+    public ResponseEntity<RoutieSpaceListResponse> readRoutieSpaces(
+            @AuthenticatedParticipant(roles = Role.USER) final User user
+    ) {
+        final RoutieSpaceListResponse routieSpaceListResponse = routieSpaceService.getRoutieSpaces(user);
+
+        return ResponseEntity.ok(routieSpaceListResponse);
+    }
+
+    @PatchMapping("/routie-spaces/{routieSpaceIdentifier}")
     public ResponseEntity<RoutieSpaceUpdateResponse> updateRoutieSpace(
             @PathVariable final String routieSpaceIdentifier,
             @RequestBody @Valid final RoutieSpaceUpdateRequest routieSpaceUpdateRequest
     ) {
-        RoutieSpaceUpdateResponse routieSpaceUpdateResponse = routieSpaceService.modifyRoutieSpace(
+        final RoutieSpaceUpdateResponse routieSpaceUpdateResponse = routieSpaceService.modifyRoutieSpace(
                 routieSpaceIdentifier,
                 routieSpaceUpdateRequest
         );
 
         return ResponseEntity.ok(routieSpaceUpdateResponse);
+    }
+
+    @DeleteMapping("/routie-spaces/{routieSpaceIdentifier}")
+    public ResponseEntity<Void> deleteRoutieSpace(
+            @PathVariable final String routieSpaceIdentifier,
+            @AuthenticatedParticipant(roles = Role.USER) final User user
+    ) {
+        routieSpaceService.deleteRoutieSpace(routieSpaceIdentifier, user);
+
+        return ResponseEntity.noContent().build();
     }
 }

@@ -34,7 +34,7 @@ public class RoutieControllerV1 {
             @PathVariable final String routieSpaceIdentifier,
             @RequestBody @Valid final RoutiePlaceCreateRequest routiePlaceCreateRequest
     ) {
-        RoutiePlaceCreateResponse routiePlaceCreateResponse = routieService.addRoutiePlace(
+        final RoutiePlaceCreateResponse routiePlaceCreateResponse = routieService.addRoutiePlace(
                 routieSpaceIdentifier,
                 routiePlaceCreateRequest
         );
@@ -57,7 +57,7 @@ public class RoutieControllerV1 {
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) final LocalDateTime endDateTime,
             @RequestParam final MovingStrategy movingStrategy
     ) {
-        RoutieValidationResponse routieValidationResponse = routieService.validateRoutie(
+        final RoutieValidationResponse routieValidationResponse = routieService.validateRoutie(
                 routieSpaceIdentifier,
                 startDateTime,
                 endDateTime,

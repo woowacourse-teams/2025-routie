@@ -3,9 +3,13 @@ import { css } from '@emotion/react';
 import theme from '@/styles/theme';
 
 const HeaderStyle = css`
+  position: relative;
+  z-index: 100;
+
   width: 100%;
-  height: 7rem;
-  background-color: ${theme.home.gray};
+  height: 8rem;
+
+  background-color: ${theme.colors.white};
 `;
 
 const HomeButtonStyle = css`

@@ -1,18 +1,34 @@
 import { lazy, Suspense } from 'react';
-import { createBrowserRouter, RouterProvider } from 'react-router';
+import { createBrowserRouter, Navigate, RouterProvider } from 'react-router';
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
+import ModalManager from '@/@common/components/ModalManager/ModalManager';
 import Toast from '@/@common/components/Toast/Toast';
+import ModalProvider from '@/@common/contexts/ModalProvider';
 import ToastProvider from '@/@common/contexts/ToastProvider';
+import { getAccessToken } from '@/@common/utils/getAccessToken';
 import { useGoogleAnalytics } from '@/libs/googleAnalytics/hooks/useGoogleAnalytics';
 import Home from '@/pages/Home/Home';
+import KakaoAuthCallback from '@/pages/KakaoAuthCallback/KakaoAuthCallback';
+import ManageRoutieSpaces from '@/pages/ManageRoutieSpaces/ManageRoutieSpaces';
+import RoutieSpaceNotFound from '@/pages/RoutieSpaceNotFound/RoutieSpaceNotFound';
 import VersionInfo from '@/pages/VersionInfo/VersionInfo';
 
 const RoutieSpace = lazy(() => import('@/pages/RoutieSpace/RoutieSpace'));
 
 const LayoutWithAnalytics = ({ children }: { children: React.ReactNode }) => {
   useGoogleAnalytics();
+  return <>{children}</>;
+};
+
+const RequireAccessToken = ({ children }: { children: React.ReactNode }) => {
+  const accessToken = getAccessToken();
+
+  if (!accessToken) {
+    return <Navigate to="/" replace />;
+  }
+
   return <>{children}</>;
 };
 
@@ -38,10 +54,36 @@ const router = createBrowserRouter([
     ),
   },
   {
+    path: '/auth/kakao/callback',
+    element: (
+      <LayoutWithAnalytics>
+        <KakaoAuthCallback />
+      </LayoutWithAnalytics>
+    ),
+  },
+  {
     path: '/version',
     element: (
       <LayoutWithAnalytics>
         <VersionInfo />
+      </LayoutWithAnalytics>
+    ),
+  },
+  {
+    path: '/manage-routie-spaces',
+    element: (
+      <LayoutWithAnalytics>
+        <RequireAccessToken>
+          <ManageRoutieSpaces />
+        </RequireAccessToken>
+      </LayoutWithAnalytics>
+    ),
+  },
+  {
+    path: '/routie-space-not-found',
+    element: (
+      <LayoutWithAnalytics>
+        <RoutieSpaceNotFound />
       </LayoutWithAnalytics>
     ),
   },
@@ -50,10 +92,13 @@ const router = createBrowserRouter([
 const Route = () => {
   return (
     <QueryClientProvider client={queryClient}>
-      <ToastProvider>
-        <RouterProvider router={router} />
-        <Toast />
-      </ToastProvider>
+      <ModalProvider>
+        <ToastProvider>
+          <RouterProvider router={router} />
+          <Toast />
+          <ModalManager />
+        </ToastProvider>
+      </ModalProvider>
     </QueryClientProvider>
   );
 };

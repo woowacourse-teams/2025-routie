@@ -1,20 +1,28 @@
+import { getAccessTokenOrThrow } from '@/@common/utils/getAccessTokenOrThrow';
 import { apiClient } from '@/apis';
-
 import {
   createRoutieSpaceAdapter,
   editRoutieSpaceNameAdapter,
+  getRoutieSpaceListAdapter,
   routieSpaceAdapter,
-} from '../adapters/routieSpaceAdapter';
-import {
+} from '@/domains/routieSpace/adapters/routieSpaceAdapter';
+import type {
+  DeleteRoutieSpaceRequestType,
+  EditRoutieSpaceNameRequestType,
+} from '@/domains/routieSpace/types/api.types';
+import type {
   CreateRoutieSpaceAdapterType,
   EditRoutieSpaceNameAdapterType,
+  GetRoutieSpaceListAdapterType,
   RoutieSpaceAdapterType,
-} from '../types/routieSpace.types';
-
-import type { EditRoutieSpaceNameRequestType } from '../types/api.types';
+} from '@/domains/routieSpace/types/routieSpace.types';
 
 const createRoutieSpace = async (): Promise<CreateRoutieSpaceAdapterType> => {
-  const response = await apiClient.post('/routie-spaces');
+  const accessToken = getAccessTokenOrThrow();
+
+  const response = await apiClient.post('/v2/routie-spaces', null, {
+    Authorization: `Bearer ${accessToken}`,
+  });
 
   const data = await response.json();
 
@@ -32,7 +40,7 @@ const getRoutieSpace = async (): Promise<RoutieSpaceAdapterType> => {
     throw new Error('루티 스페이스 uuid가 없습니다.');
   }
 
-  const response = await apiClient.get(`/routie-spaces/${routieSpaceUuid}`);
+  const response = await apiClient.get(`/v1/routie-spaces/${routieSpaceUuid}`);
 
   const data = await response.json();
 
@@ -43,18 +51,55 @@ const editRoutieSpaceName = async ({
   name,
 }: EditRoutieSpaceNameRequestType): Promise<EditRoutieSpaceNameAdapterType> => {
   const routieSpaceUuid = localStorage.getItem('routieSpaceUuid');
+  const accessToken = getAccessTokenOrThrow();
 
   if (!routieSpaceUuid) {
     throw new Error('루티 스페이스 uuid가 없습니다.');
   }
 
-  const response = await apiClient.patch(`/routie-spaces/${routieSpaceUuid}`, {
-    name,
-  });
+  const response = await apiClient.patch(
+    `/v2/routie-spaces/${routieSpaceUuid}`,
+    {
+      name,
+    },
+    {
+      Authorization: `Bearer ${accessToken}`,
+    },
+  );
 
   const data = await response.json();
 
   return editRoutieSpaceNameAdapter(data);
 };
 
-export { createRoutieSpace, getRoutieSpace, editRoutieSpaceName };
+const getRoutieSpaceList = async (): Promise<
+  GetRoutieSpaceListAdapterType[]
+> => {
+  const accessToken = getAccessTokenOrThrow();
+
+  const response = await apiClient.get('/v1/my-routie-spaces', undefined, {
+    Authorization: `Bearer ${accessToken}`,
+  });
+
+  const data = await response.json();
+
+  return getRoutieSpaceListAdapter(data);
+};
+
+const deleteRoutieSpace = async ({
+  routieSpaceUuid,
+}: DeleteRoutieSpaceRequestType): Promise<void> => {
+  const accessToken = getAccessTokenOrThrow();
+
+  await apiClient.delete(`/v1/routie-spaces/${routieSpaceUuid}`, undefined, {
+    Authorization: `Bearer ${accessToken}`,
+  });
+};
+
+export {
+  createRoutieSpace,
+  deleteRoutieSpace,
+  editRoutieSpaceName,
+  getRoutieSpace,
+  getRoutieSpaceList,
+};

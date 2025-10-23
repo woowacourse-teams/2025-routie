@@ -1,11 +1,13 @@
 import { css } from '@emotion/react';
 
+import theme from '@/styles/theme';
+
 const KakaoMapWrapperStyle = css`
   position: relative;
 
   overflow: hidden;
 
-  width: calc(100vw - 50rem);
+  width: 100vw;
   height: 100vh;
   margin: 0;
 `;
@@ -19,7 +21,7 @@ const KakaoMapLoadingStyle = css`
   position: absolute;
   inset: 0;
 
-  border-radius: 8px;
+  border-radius: ${theme.radius.sm};
 
   color: #6c757d;
 
@@ -30,7 +32,7 @@ const KakaoMapErrorStyle = css`
   position: absolute;
   inset: 0;
 
-  border-radius: 8px;
+  border-radius: ${theme.radius.sm};
 
   color: #6c757d;
 

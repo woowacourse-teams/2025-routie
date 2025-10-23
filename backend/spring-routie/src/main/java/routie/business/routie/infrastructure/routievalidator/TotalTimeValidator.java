@@ -23,7 +23,7 @@ public class TotalTimeValidator implements RoutieValidator {
             final ValidationContext validationContext,
             final ValidationStrategy validationStrategy
     ) {
-        TimePeriods timePeriods = validationContext.timePeriods();
+        final TimePeriods timePeriods = validationContext.timePeriods();
 
         return ValidationResult.withoutRoutiePlaces(
                 isWithinTotalTime(validationContext.startDateTime(), validationContext.endDateTime(), timePeriods),
@@ -35,14 +35,14 @@ public class TotalTimeValidator implements RoutieValidator {
             final LocalDateTime endDateTime,
             final TimePeriods timePeriods
     ) {
-        List<TimePeriod> orderedTimePeriods = timePeriods.orderedList();
+        final List<TimePeriod> orderedTimePeriods = timePeriods.orderedList();
 
         if (orderedTimePeriods.isEmpty()) {
             return true;
         }
 
-        LocalDateTime firstPeriodStartTime = orderedTimePeriods.getFirst().startTime();
-        LocalDateTime lastPeriodEndTime = orderedTimePeriods.getLast().endTime();
+        final LocalDateTime firstPeriodStartTime = orderedTimePeriods.getFirst().startTime();
+        final LocalDateTime lastPeriodEndTime = orderedTimePeriods.getLast().endTime();
 
         return !firstPeriodStartTime.isBefore(startDateTime) && !lastPeriodEndTime.isAfter(endDateTime);
     }

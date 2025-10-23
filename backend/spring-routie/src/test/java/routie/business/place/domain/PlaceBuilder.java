@@ -9,6 +9,7 @@ public class PlaceBuilder {
     private String addressName = PlaceFixture.anyAddressName();
     private Double longitude = PlaceFixture.anyLongitude();
     private Double latitude = PlaceFixture.anyLatitude();
+    private String kakaoPlaceId = PlaceFixture.anyKakaoPlaceId();
     private RoutieSpace routieSpace = PlaceFixture.anyRoutieSpace();
 
     public PlaceBuilder name(final String name) {
@@ -36,19 +37,17 @@ public class PlaceBuilder {
         return this;
     }
 
+    public PlaceBuilder kakaoPlaceId(final String kakaoPlaceId) {
+        this.kakaoPlaceId = kakaoPlaceId;
+        return this;
+    }
+
     public PlaceBuilder routieSpace(final RoutieSpace routieSpace) {
         this.routieSpace = routieSpace;
         return this;
     }
 
     public Place build() {
-        return new Place(
-                name,
-                roadAddressName,
-                addressName,
-                longitude,
-                latitude,
-                routieSpace
-        );
+        return new Place(name, roadAddressName, addressName, longitude, latitude, kakaoPlaceId, routieSpace);
     }
 }
