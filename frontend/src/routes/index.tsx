@@ -12,6 +12,7 @@ import { useGoogleAnalytics } from '@/libs/googleAnalytics/hooks/useGoogleAnalyt
 import Home from '@/pages/Home/Home';
 import KakaoAuthCallback from '@/pages/KakaoAuthCallback/KakaoAuthCallback';
 import ManageRoutieSpaces from '@/pages/ManageRoutieSpaces/ManageRoutieSpaces';
+import RoutieSpaceNotFound from '@/pages/RoutieSpaceNotFound/RoutieSpaceNotFound';
 import VersionInfo from '@/pages/VersionInfo/VersionInfo';
 
 const RoutieSpace = lazy(() => import('@/pages/RoutieSpace/RoutieSpace'));
@@ -75,6 +76,14 @@ const router = createBrowserRouter([
         <RequireAccessToken>
           <ManageRoutieSpaces />
         </RequireAccessToken>
+      </LayoutWithAnalytics>
+    ),
+  },
+  {
+    path: '/routie-space-not-found',
+    element: (
+      <LayoutWithAnalytics>
+        <RoutieSpaceNotFound />
       </LayoutWithAnalytics>
     ),
   },
