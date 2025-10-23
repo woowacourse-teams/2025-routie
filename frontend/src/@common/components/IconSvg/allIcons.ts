@@ -32,6 +32,7 @@ import disableTrash from '@/assets/icons/trash-disable.svg';
 import trash from '@/assets/icons/trash.svg';
 import user from '@/assets/icons/user.svg';
 import logo from '@/assets/images/routie-logo.png';
+import mascot from '@/assets/images/routie-mascot.png';
 
 const allIcons = {
   allSelect,
@@ -68,6 +69,7 @@ const allIcons = {
   user,
   share,
   shareTabSelect,
+  mascot,
 } as const;
 
 export default allIcons;
