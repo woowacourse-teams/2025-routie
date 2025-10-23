@@ -5,6 +5,7 @@ import Button from '@/@common/components/Button/Button';
 import Flex from '@/@common/components/Flex/Flex';
 import Text from '@/@common/components/Text/Text';
 import { useModal } from '@/@common/contexts/ModalContext';
+import { sessionStorageUtils } from '@/@common/utils/sessionStorage';
 import theme from '@/styles/theme';
 
 import { ErrorPageContainerStyle } from './RoutieSpaceNotFound.styles';
@@ -14,7 +15,7 @@ const RoutieSpaceNotFound = () => {
   const { closeModal } = useModal();
 
   useEffect(() => {
-    localStorage.removeItem('routieSpaceUuid');
+    sessionStorageUtils.remove('routieSpaceUuid');
     closeModal();
   }, []);
 

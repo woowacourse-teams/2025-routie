@@ -99,7 +99,7 @@ const PlaceCard = ({
           padding="0.6rem 1.2rem"
           width="10rem"
         >
-          <Text variant="label" color={theme.colors.white}>
+          <Text variant="label" color="inherit">
             {selected ? '동선에서 삭제' : '동선에 추가'}
           </Text>
         </Button>
@@ -121,11 +121,10 @@ const PlaceCard = ({
           />
           <Flex justifyContent="flex-end" width="15rem" gap={0.8}>
             <Button
-              variant="secondary"
               onClick={() => handleKakaoPlaceClick(props.kakaoPlaceId)}
               padding="0.6rem 0.8rem"
             >
-              <Text variant="label" color={theme.colors.gray[300]}>
+              <Text variant="label" color="inherit">
                 카카오맵
               </Text>
             </Button>
@@ -136,7 +135,7 @@ const PlaceCard = ({
               width="8rem"
               disabled={selected}
             >
-              <Text variant="label" color={theme.colors.white}>
+              <Text variant="label" color="inherit">
                 삭제
               </Text>
             </Button>

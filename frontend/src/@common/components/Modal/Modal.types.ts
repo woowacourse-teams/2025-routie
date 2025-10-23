@@ -2,6 +2,7 @@ interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
   children: React.ReactNode;
+  closable?: boolean;
 }
 
 type ModalType = 'login' | 'addPlace' | 'socialLogin';

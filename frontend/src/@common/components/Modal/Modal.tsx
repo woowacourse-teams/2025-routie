@@ -5,13 +5,13 @@ import { ModalStyle, ModalOverlayStyle } from './Modal.style';
 
 import type { ModalProps } from './Modal.types';
 
-const Modal = ({ isOpen, onClose, children }: ModalProps) => {
+const Modal = ({ isOpen, onClose, children, closable = true }: ModalProps) => {
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden';
 
       const handleEsc = (event: KeyboardEvent) => {
-        if (event.key === 'Escape') {
+        if (event.key === 'Escape' && closable) {
           onClose();
         }
       };
@@ -23,13 +23,13 @@ const Modal = ({ isOpen, onClose, children }: ModalProps) => {
         document.removeEventListener('keydown', handleEsc);
       };
     }
-  }, [isOpen, onClose]);
+  }, [isOpen, onClose, closable]);
 
   if (!isOpen) return null;
 
   return createPortal(
     <>
-      <div onClick={onClose} css={ModalOverlayStyle} />
+      <div onClick={closable ? onClose : undefined} css={ModalOverlayStyle} />
       <div css={ModalStyle}>{children}</div>
     </>,
     document.body,
