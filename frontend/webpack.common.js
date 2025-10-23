@@ -50,6 +50,10 @@ module.exports = () => {
             from: 'public/favicon',
             to: 'favicon',
           },
+          {
+            from: 'public/images',
+            to: 'images',
+          },
         ],
       }),
       new DefinePlugin({
