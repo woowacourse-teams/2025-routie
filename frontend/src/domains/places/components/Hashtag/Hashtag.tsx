@@ -25,7 +25,6 @@ const Hashtag = ({
 
     onClick();
   };
-
   return (
     <div css={ContainerStyle}>
       <Button
@@ -40,9 +39,16 @@ const Hashtag = ({
           <Text
             variant="caption"
             color={isSelected ? theme.colors.white : theme.colors.gray[300]}
+            aria-hidden
           >
             {tag}
           </Text>
+          <span className="hide">
+            이전 태그 기록 {tag},
+            {isSelected
+              ? 'enter를 누르면 태그가 해제됩니다.'
+              : 'enter를 누르면 태그가 선택됩니다.'}
+          </span>
           {count !== undefined && (
             <Text
               variant="caption"

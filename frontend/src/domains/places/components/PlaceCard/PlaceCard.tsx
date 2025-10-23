@@ -28,15 +28,12 @@ const PlaceCard = ({
   const handlePlaceSelect = async (placeId: number, selected: boolean) => {
     await onSelect(placeId, selected);
   };
-
   const handleDeleteRoutie = async (placeId: number) => {
     await onDeleteRoutie(placeId);
   };
-
   const handleKakaoPlaceClick = (kakaoPlaceId: string) => {
     openKakaoPlace(kakaoPlaceId);
   };
-
   return (
     <Flex
       id={props.id.toString()}
@@ -102,9 +99,13 @@ const PlaceCard = ({
           <Text variant="label" color={theme.colors.white}>
             {selected ? '동선에서 삭제' : '동선에 추가'}
           </Text>
+          <span className="hide">
+            , 장소명 {props.name}, 주소
+            {props.roadAddressName ?? props.addressName}, 엔터를 눌러 동선에
+            추가할 수 있습니다.
+          </span>
         </Button>
       </Flex>
-
       <Flex direction="column" gap={1.6}>
         {isEditing && onCancelEdit && onUpdateHashtags && (
           <EditHashtagDropdown
@@ -136,7 +137,11 @@ const PlaceCard = ({
               width="8rem"
               disabled={selected}
             >
-              <Text variant="label" color={theme.colors.white}>
+              <Text
+                variant="label"
+                color={theme.colors.white}
+                aria-label="장소 삭제"
+              >
                 삭제
               </Text>
             </Button>

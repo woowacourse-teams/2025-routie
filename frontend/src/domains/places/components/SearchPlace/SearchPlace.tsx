@@ -27,9 +27,12 @@ const SearchPlace = ({
         width="20%"
         padding="0.6rem 0.8rem"
       >
-        <Text variant="label" color={theme.colors.white}>
+        <Text variant="label" color={theme.colors.white} aria-hidden>
           선택하기
         </Text>
+        <span className="hide">
+          {`장소명 ${searchResult.name}, ${addressType} ${address}, 엔터를 누르면 장소가 추가됩니다.`}
+        </span>
       </Button>
     </Flex>
   );

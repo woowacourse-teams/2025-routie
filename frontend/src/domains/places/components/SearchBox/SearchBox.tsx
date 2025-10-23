@@ -87,7 +87,7 @@ const SearchBox = () => {
   }, [isDropdownOpen, handleCloseDropdown]);
 
   return (
-    <div
+    <section
       ref={containerRef}
       css={css`
         width: 100%;
@@ -158,7 +158,7 @@ const SearchBox = () => {
           </Flex>
         )}
       </Flex>
-    </div>
+    </section>
   );
 };
 

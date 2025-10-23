@@ -4,11 +4,18 @@ import Text from '@/@common/components/Text/Text';
 import theme from '@/styles/theme';
 
 import { TabButtonStyle } from './TabButton.styles';
-import { TabButtonProps } from './TabButton.types';
 
-const TabButton = ({ name, icon, onClick, isActive }: TabButtonProps) => {
+import type { TabButtonProps } from './TabButton.types';
+
+const TabButton = ({
+  name,
+  icon,
+  onClick,
+  isActive,
+  ...props
+}: TabButtonProps) => {
   return (
-    <button onClick={onClick} css={TabButtonStyle({ isActive })}>
+    <button onClick={onClick} css={TabButtonStyle({ isActive })} {...props}>
       <Icon name={icon} size={30} />
       <Text
         variant="description"

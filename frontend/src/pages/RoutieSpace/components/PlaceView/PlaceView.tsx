@@ -102,6 +102,10 @@ const PlaceView = () => {
     [handleUpdatePlaceHashtags],
   );
 
+  const handleReturnFocusToSidebar = useCallback(() => {
+    document.getElementById('sideBar')?.focus();
+  }, []);
+
   return (
     <Flex direction="column" height="100%" css={PlaceViewContainerStyle}>
       <SearchBox />
@@ -137,7 +141,7 @@ const PlaceView = () => {
             const isEditing = editingPlaceId === place.id;
 
             return (
-              <div key={place.id} css={PlaceCardContainerStyle}>
+              <section key={place.id} css={PlaceCardContainerStyle}>
                 <PlaceCard
                   {...place}
                   selected={selected}
@@ -155,9 +159,15 @@ const PlaceView = () => {
                     handleUpdateHashtags(place.id, hashtags)
                   }
                 />
-              </div>
+              </section>
             );
           })}
+          <span
+            tabIndex={0}
+            onFocus={handleReturnFocusToSidebar}
+            className="hide"
+            aria-label="사이드바로 이동"
+          />
         </Flex>
       )}
     </Flex>

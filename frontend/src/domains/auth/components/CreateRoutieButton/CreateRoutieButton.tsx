@@ -14,6 +14,7 @@ const CreateRoutieButton = ({ onClick }: CreateRoutieButtonProps) => {
       css={CreateRoutieButtonStyle}
       width="36rem"
       padding="2rem"
+      autoFocus
     >
       <Text color={theme.colors.white} variant="subTitle">
         친구들과 동선 만들러 가기
