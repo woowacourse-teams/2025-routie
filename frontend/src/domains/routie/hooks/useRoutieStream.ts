@@ -4,9 +4,9 @@ import { useSearchParams } from 'react-router-dom';
 import { useQueryClient } from '@tanstack/react-query';
 
 import { useToastContext } from '@/@common/contexts/useToastContext';
-import { placesKeys } from '@/domains/places/queries/key';
-import type { PlaceListAdapterType } from '@/domains/places/types/place.types';
+import { getSubjectParticle } from '@/@common/utils/koreanParticle';
 import { ensureRoutieSpaceUuid } from '@/domains/utils/routieSpaceUuid';
+import { useFindPlaceName } from '@/libs/sse/hooks/useFindPlaceName';
 import { useSse } from '@/libs/sse/hooks/useSse';
 
 import { routieAdapter } from '../adapters/routieAdapter';
@@ -23,6 +23,8 @@ const useRoutieStream = () => {
   const queryClient = useQueryClient();
   const [searchParams] = useSearchParams();
   const { showToast } = useToastContext();
+  const findPlaceName = useFindPlaceName();
+
   const routieSpaceUuid = searchParams.get('routieSpaceIdentifier');
 
   const sseUrl = useMemo(
@@ -31,13 +33,6 @@ const useRoutieStream = () => {
   );
   const replaceRoutie = (routie: RoutieHistoryEvent) => {
     queryClient.setQueryData(routiesKeys.all, routieAdapter(routie));
-  };
-
-  const findPlaceName = (placeId: number) => {
-    const placeList =
-      queryClient.getQueryData<PlaceListAdapterType>(placesKeys.list()) ?? [];
-
-    return placeList.find((place) => place.id === placeId)?.name;
   };
 
   useEffect(() => {
@@ -57,7 +52,9 @@ const useRoutieStream = () => {
       replaceRoutie(routieData);
       const placeName = findPlaceName(createdRoutiePlaceId);
       showToast({
-        message: `동선에 "${placeName ?? '장소'}"이/가 추가되었습니다.`,
+        message: `${placeName ?? '장소'}${getSubjectParticle(
+          placeName,
+        )} 동선에 추가되었습니다.`,
         type: 'success',
       });
     },
@@ -82,7 +79,9 @@ const useRoutieStream = () => {
       replaceRoutie(routieData);
       const placeName = findPlaceName(deletedRoutiePlaceId);
       showToast({
-        message: `"${placeName ?? '장소'}"이/가 동선에서 삭제되었습니다.`,
+        message: `${placeName ?? '장소'}${getSubjectParticle(
+          placeName,
+        )} 동선에서 삭제되었습니다.`,
         type: 'success',
       });
     },

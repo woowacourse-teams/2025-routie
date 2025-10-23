@@ -4,6 +4,7 @@ import { useSearchParams } from 'react-router-dom';
 import { useQueryClient } from '@tanstack/react-query';
 
 import { useToastContext } from '@/@common/contexts/useToastContext';
+import { getSubjectParticle } from '@/@common/utils/koreanParticle';
 import { getPlaceListAdapter } from '@/domains/places/adapters/placeAdapter';
 import { placesKeys } from '@/domains/places/queries/key';
 import type {
@@ -13,12 +14,14 @@ import type {
   PlaceUpdatedEvent,
 } from '@/domains/places/types/placeStream.types';
 import { ensureRoutieSpaceUuid } from '@/domains/utils/routieSpaceUuid';
+import { useFindPlaceName } from '@/libs/sse/hooks/useFindPlaceName';
 import { useSse } from '@/libs/sse/hooks/useSse';
 
 const usePlaceStream = () => {
   const queryClient = useQueryClient();
   const [searchParams] = useSearchParams();
   const { showToast } = useToastContext();
+  const findPlaceName = useFindPlaceName();
 
   const routieSpaceUuid = searchParams.get('routieSpaceIdentifier');
 
@@ -52,7 +55,9 @@ const usePlaceStream = () => {
 
       replacePlaceList({ places });
       showToast({
-        message: `"${createdPlace?.name ?? '장소'}" 추가되었습니다.`,
+        message: `${createdPlace?.name ?? '장소'}${getSubjectParticle(
+          createdPlace?.name,
+        )} 동선에 추가되었습니다.`,
         type: 'success',
       });
     },
@@ -70,15 +75,14 @@ const usePlaceStream = () => {
     url: sseUrl,
     eventName: 'PLACE_DELETED',
     onMessage: ({ deletedPlaceId, places }) => {
-      const adaptedPlaces = getPlaceListAdapter(places);
-      const deletedPlace = adaptedPlaces.find(
-        (place) => place.id === deletedPlaceId,
-      );
-      replacePlaceList({ places });
+      const deletedPlaceName = findPlaceName(deletedPlaceId);
       showToast({
-        message: `"${deletedPlace?.name ?? '장소'}" 삭제되었습니다.`,
+        message: `${deletedPlaceName ?? '장소'}${getSubjectParticle(
+          deletedPlaceName,
+        )} 삭제되었습니다.`,
         type: 'success',
       });
+      replacePlaceList({ places });
     },
   });
 };
