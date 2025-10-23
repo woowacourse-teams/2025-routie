@@ -83,6 +83,7 @@ const usePlaceStream = () => {
         type: 'success',
       });
       replacePlaceList({ places });
+      queryClient.invalidateQueries({ queryKey: placesKeys.hashtags() });
     },
   });
 };
