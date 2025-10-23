@@ -8,6 +8,6 @@ public class NonStopDeployController {
 
     @GetMapping("/non-stop-deploy/test")
     public String test() {
-        return "test2!";
+        return "test3!";
     }
 }
