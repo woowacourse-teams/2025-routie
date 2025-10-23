@@ -5,7 +5,6 @@ import { memo, useCallback } from 'react';
 import Button from '@/@common/components/Button/Button';
 import Flex from '@/@common/components/Flex/Flex';
 import Text from '@/@common/components/Text/Text';
-import theme from '@/styles/theme';
 
 import { RoutieSpaceListItemStyle } from './RoutieSpaceListItem.styles';
 
@@ -61,7 +60,7 @@ const RoutieSpaceListItem = ({
           padding="0.8rem 0.6rem"
           onClick={handleDelete}
         >
-          <Text variant="caption" color={theme.colors.white}>
+          <Text variant="caption" color="inherit">
             삭제
           </Text>
         </Button>
