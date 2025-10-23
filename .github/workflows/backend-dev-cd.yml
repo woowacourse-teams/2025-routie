@@ -82,10 +82,10 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: spring-routie-jar
-          path: /home/ubuntu/deployment/green
+          path: /home/ubuntu/deployment/new
 
       - name: Copy application.yml
-        run: cp routie-backend-private/dev/application.yml /home/ubuntu/deployment/green/application.yml
+        run: cp routie-backend-private/dev/application.yml /home/ubuntu/deployment/new/application.yml
 
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
