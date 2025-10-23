@@ -9,7 +9,7 @@ import { LoginModalStyle } from './LoginModal.styles';
 
 const LoginModal = ({ onClose }: Pick<ModalProps, 'onClose'>) => {
   return (
-    <ModalLayout onClose={onClose} showCloseButton={true} width="36rem">
+    <ModalLayout onClose={onClose} showCloseButton={false} width="36rem">
       <div css={LoginModalStyle}>
         <Flex direction="column" gap={3}>
           <Flex direction="column" gap={1}>

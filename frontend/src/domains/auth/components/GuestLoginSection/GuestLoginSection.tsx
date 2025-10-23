@@ -6,6 +6,7 @@ import Input from '@/@common/components/Input/Input';
 import Text from '@/@common/components/Text/Text';
 import { useToastContext } from '@/@common/contexts/useToastContext';
 import { useGuestLoginMutation } from '@/domains/auth/queries/useAuthQuery';
+import { getRoutieSpaceUuid } from '@/domains/utils/routieSpaceUuid';
 import theme from '@/styles/theme';
 
 import type { GuestLoginSectionProps } from './GuestLoginSection.types';
@@ -30,7 +31,7 @@ const GuestLoginSection = ({ onClose }: GuestLoginSectionProps) => {
       return;
     }
 
-    const routieSpaceIdentifier = localStorage.getItem('routieSpaceUuid');
+    const routieSpaceIdentifier = getRoutieSpaceUuid();
 
     if (!routieSpaceIdentifier) {
       showToast({

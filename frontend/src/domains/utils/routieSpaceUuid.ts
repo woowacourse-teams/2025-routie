@@ -1,6 +1,8 @@
+import { sessionStorageUtils } from '@/@common/utils/sessionStorage';
+
 const getRoutieSpaceUuid = (): string | null => {
   return typeof window !== 'undefined'
-    ? localStorage.getItem('routieSpaceUuid')
+    ? sessionStorageUtils.get('routieSpaceUuid', null)
     : null;
 };
 

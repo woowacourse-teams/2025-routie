@@ -2,13 +2,13 @@ import { useCallback, useMemo } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
 import { useToastContext } from '@/@common/contexts/useToastContext';
+import { getRoutieSpaceUuid } from '@/domains/utils/routieSpaceUuid';
 
 const useShareLink = () => {
   const [searchParams] = useSearchParams();
   const { showToast } = useToastContext();
   const routieSpaceIdentifier =
-    searchParams.get('routieSpaceIdentifier') ??
-    localStorage.getItem('routieSpaceUuid');
+    searchParams.get('routieSpaceIdentifier') ?? getRoutieSpaceUuid();
 
   const shareLink = useMemo(() => {
     if (!routieSpaceIdentifier) return '';
