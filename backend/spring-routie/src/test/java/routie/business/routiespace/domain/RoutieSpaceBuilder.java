@@ -5,6 +5,8 @@ import routie.business.participant.domain.User;
 import routie.business.participant.domain.UserFixture;
 import routie.business.place.domain.Place;
 import routie.business.routie.domain.Routie;
+import routie.business.user.domain.User;
+import routie.business.user.domain.UserFixture;
 
 public class RoutieSpaceBuilder {
 

@@ -26,6 +26,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import routie.business.participant.domain.User;
 import routie.business.place.domain.Place;
 import routie.business.routie.domain.Routie;
+import routie.business.user.domain.User;
 import routie.global.exception.domain.BusinessException;
 import routie.global.exception.domain.ErrorCode;
 

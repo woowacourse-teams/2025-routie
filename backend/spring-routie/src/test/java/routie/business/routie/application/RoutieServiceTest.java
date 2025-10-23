@@ -36,6 +36,9 @@ import routie.business.routiespace.domain.RoutieSpace;
 import routie.business.routiespace.domain.RoutieSpaceBuilder;
 import routie.business.routiespace.domain.RoutieSpaceFixture;
 import routie.business.routiespace.domain.RoutieSpaceRepository;
+import routie.business.user.domain.User;
+import routie.business.user.domain.UserBuilder;
+import routie.business.user.domain.UserRepository;
 import routie.global.exception.domain.BusinessException;
 
 @SpringBootTest
