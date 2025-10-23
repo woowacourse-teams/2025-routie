@@ -88,8 +88,15 @@ const GuestLoginSection = ({ onClose }: GuestLoginSectionProps) => {
         <Text variant="label" color={theme.colors.gray[300]}>
           닉네임과 비밀번호는 다음 입장 시 사용해야 하니 꼭 기억해주세요!
         </Text>
-        <Button type="button" onClick={handleGuestLogin} disabled={isPending}>
-          <Text variant="caption">비회원으로 계속하기</Text>
+        <Button
+          variant="primary"
+          type="button"
+          onClick={handleGuestLogin}
+          disabled={isPending}
+        >
+          <Text color="inherit" variant="caption">
+            비회원으로 계속하기
+          </Text>
         </Button>
       </Flex>
     </Flex>
