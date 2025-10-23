@@ -19,7 +19,12 @@ const RoutieSpace = lazy(() => import('@/pages/RoutieSpace/RoutieSpace'));
 
 const LayoutWithAnalytics = ({ children }: { children: React.ReactNode }) => {
   useGoogleAnalytics();
-  return <>{children}</>;
+  return (
+    <>
+      {children}
+      <ModalManager />
+    </>
+  );
 };
 
 const RequireAccessToken = ({ children }: { children: React.ReactNode }) => {
@@ -96,7 +101,6 @@ const Route = () => {
         <ToastProvider>
           <RouterProvider router={router} />
           <Toast />
-          <ModalManager />
         </ToastProvider>
       </ModalProvider>
     </QueryClientProvider>
