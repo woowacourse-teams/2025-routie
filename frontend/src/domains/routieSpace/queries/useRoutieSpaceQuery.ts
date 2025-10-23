@@ -9,6 +9,8 @@ import {
   getRoutieSpaceList,
 } from '@/domains/routieSpace/apis/routieSpace';
 
+import { UseRoutieSpaceQueryOptions } from '../types/useRoutieQuery.types';
+
 import { routieSpaceKeys } from './key';
 
 const useCreateRoutieSpaceQuery = () => {
@@ -33,10 +35,13 @@ const useCreateRoutieSpaceQuery = () => {
   });
 };
 
-const useRoutieSpaceQuery = () => {
+const useRoutieSpaceQuery = ({
+  enabled = true,
+}: UseRoutieSpaceQueryOptions = {}) => {
   return useQuery({
     queryKey: routieSpaceKeys.all,
     queryFn: getRoutieSpace,
+    enabled,
   });
 };
 

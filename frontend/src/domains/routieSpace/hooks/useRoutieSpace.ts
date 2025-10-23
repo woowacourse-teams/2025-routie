@@ -14,7 +14,9 @@ import type {
 } from '../types/routieSpace.types';
 
 const useRoutieSpace = (): UseRoutieSpaceReturn => {
-  const { data: routieSpace, isLoading } = useRoutieSpaceQuery();
+  const { data: routieSpace, isLoading } = useRoutieSpaceQuery({
+    enabled: false,
+  });
   const [currentName, setCurrentName] = useState('');
   const { mutate: editRoutieSpaceName } =
     useEditRoutieSpaceNameQuery(currentName);
