@@ -54,7 +54,7 @@ jobs:
       - name: Upload JAR Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: spring-boot-app
+          name: spring-routie-jar
           path: backend/spring-routie/build/libs/
 
   download-and-deploy:
@@ -78,19 +78,14 @@ jobs:
       - name: Run Containers
         run: sudo docker compose -f routie-backend-private/prod/docker-compose.yml up -d
 
-      - name: Clean old JARs
-        run: rm -f build/libs/*.jar
-
       - name: Download JAR Artifact
         uses: actions/download-artifact@v4
         with:
-          name: spring-boot-app
-          path: backend/spring-routie/build/libs
+          name: spring-routie-jar
+          path: /home/ubuntu/deployment/new
 
       - name: Copy application.yml
-        run: |
-          mkdir -p config
-          cp routie-backend-private/prod/application.yml config/application.yml
+        run: cp routie-backend-private/prod/application.yml /home/ubuntu/deployment/new/application.yml
 
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
@@ -102,25 +97,5 @@ jobs:
           MYSQL_USERNAME: ${{ secrets.FLYWAY_USERNAME_PROD }}
           MYSQL_PASSWORD: ${{ secrets.FLYWAY_PASSWORD_PROD }}
 
-      - name: Kill existing Spring Process
-        run: |
-          PID=$(sudo lsof -ti:8080 || true)
-          if [ -n "$PID" ]; then
-            echo "Killing process on port 8080: $PID"
-            sudo kill -9 "$PID"
-          else
-            echo "No process found on port 8080"
-          fi
-
-      - name: Start Spring Boot Application with external config
-        run: |
-          JAR_NAME=$(ls build/libs/*.jar 2>/dev/null | head -n 1)
-          if [ -z "$JAR_NAME" ]; then
-            echo "No JAR file found. Deployment aborted."
-            exit 1
-          fi
-          echo "Starting $JAR_NAME"
-          sudo nohup java -jar "$JAR_NAME" \
-            --spring.profiles.active=prod \
-            --server.port=8080 \
-            --spring.config.location=./config/application.yml > app.log 2>&1 &
+      - name: Execute Deployment Script
+        run: sudo /home/ubuntu/commands/deploy/script.sh
