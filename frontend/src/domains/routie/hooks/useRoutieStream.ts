@@ -4,9 +4,8 @@ import { useSearchParams } from 'react-router-dom';
 import { useQueryClient } from '@tanstack/react-query';
 
 import { useToastContext } from '@/@common/contexts/useToastContext';
-import { placesKeys } from '@/domains/places/queries/key';
-import type { PlaceListAdapterType } from '@/domains/places/types/place.types';
 import { ensureRoutieSpaceUuid } from '@/domains/utils/routieSpaceUuid';
+import { useFindPlaceName } from '@/libs/sse/hooks/useFindPlaceName';
 import { useSse } from '@/libs/sse/hooks/useSse';
 
 import { routieAdapter } from '../adapters/routieAdapter';
@@ -23,6 +22,8 @@ const useRoutieStream = () => {
   const queryClient = useQueryClient();
   const [searchParams] = useSearchParams();
   const { showToast } = useToastContext();
+  const findPlaceName = useFindPlaceName();
+
   const routieSpaceUuid = searchParams.get('routieSpaceIdentifier');
 
   const sseUrl = useMemo(
@@ -31,13 +32,6 @@ const useRoutieStream = () => {
   );
   const replaceRoutie = (routie: RoutieHistoryEvent) => {
     queryClient.setQueryData(routiesKeys.all, routieAdapter(routie));
-  };
-
-  const findPlaceName = (placeId: number) => {
-    const placeList =
-      queryClient.getQueryData<PlaceListAdapterType>(placesKeys.list()) ?? [];
-
-    return placeList.find((place) => place.id === placeId)?.name;
   };
 
   useEffect(() => {

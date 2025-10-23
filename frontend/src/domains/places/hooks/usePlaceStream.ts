@@ -13,12 +13,14 @@ import type {
   PlaceUpdatedEvent,
 } from '@/domains/places/types/placeStream.types';
 import { ensureRoutieSpaceUuid } from '@/domains/utils/routieSpaceUuid';
+import { useFindPlaceName } from '@/libs/sse/hooks/useFindPlaceName';
 import { useSse } from '@/libs/sse/hooks/useSse';
 
 const usePlaceStream = () => {
   const queryClient = useQueryClient();
   const [searchParams] = useSearchParams();
   const { showToast } = useToastContext();
+  const findPlaceName = useFindPlaceName();
 
   const routieSpaceUuid = searchParams.get('routieSpaceIdentifier');
 
@@ -70,15 +72,12 @@ const usePlaceStream = () => {
     url: sseUrl,
     eventName: 'PLACE_DELETED',
     onMessage: ({ deletedPlaceId, places }) => {
-      const adaptedPlaces = getPlaceListAdapter(places);
-      const deletedPlace = adaptedPlaces.find(
-        (place) => place.id === deletedPlaceId,
-      );
-      replacePlaceList({ places });
+      const deletedPlaceName = findPlaceName(deletedPlaceId);
       showToast({
-        message: `"${deletedPlace?.name ?? '장소'}" 삭제되었습니다.`,
+        message: `"${deletedPlaceName ?? '장소'}" 삭제되었습니다.`,
         type: 'success',
       });
+      replacePlaceList({ places });
     },
   });
 };
