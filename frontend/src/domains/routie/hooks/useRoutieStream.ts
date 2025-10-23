@@ -4,6 +4,7 @@ import { useSearchParams } from 'react-router-dom';
 import { useQueryClient } from '@tanstack/react-query';
 
 import { useToastContext } from '@/@common/contexts/useToastContext';
+import { getSubjectParticle } from '@/@common/utils/koreanParticle';
 import { ensureRoutieSpaceUuid } from '@/domains/utils/routieSpaceUuid';
 import { useFindPlaceName } from '@/libs/sse/hooks/useFindPlaceName';
 import { useSse } from '@/libs/sse/hooks/useSse';
@@ -51,7 +52,9 @@ const useRoutieStream = () => {
       replaceRoutie(routieData);
       const placeName = findPlaceName(createdRoutiePlaceId);
       showToast({
-        message: `${placeName ?? '장소가'}이/가 동선에 추가되었습니다.`,
+        message: `${placeName ?? '장소'}${getSubjectParticle(
+          placeName,
+        )} 동선에 추가되었습니다.`,
         type: 'success',
       });
     },
@@ -76,7 +79,9 @@ const useRoutieStream = () => {
       replaceRoutie(routieData);
       const placeName = findPlaceName(deletedRoutiePlaceId);
       showToast({
-        message: `${placeName ?? '장소가'}이/가 동선에서 삭제되었습니다.`,
+        message: `${placeName ?? '장소'}${getSubjectParticle(
+          placeName,
+        )} 동선에서 삭제되었습니다.`,
         type: 'success',
       });
     },

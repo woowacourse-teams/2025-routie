@@ -4,6 +4,7 @@ import { useSearchParams } from 'react-router-dom';
 import { useQueryClient } from '@tanstack/react-query';
 
 import { useToastContext } from '@/@common/contexts/useToastContext';
+import { getSubjectParticle } from '@/@common/utils/koreanParticle';
 import { getPlaceListAdapter } from '@/domains/places/adapters/placeAdapter';
 import { placesKeys } from '@/domains/places/queries/key';
 import type {
@@ -54,7 +55,9 @@ const usePlaceStream = () => {
 
       replacePlaceList({ places });
       showToast({
-        message: `${createdPlace?.name ?? '장소가'}이/가 추가되었습니다.`,
+        message: `${createdPlace?.name ?? '장소'}${getSubjectParticle(
+          createdPlace?.name,
+        )} 동선에 추가되었습니다.`,
         type: 'success',
       });
     },
@@ -74,7 +77,9 @@ const usePlaceStream = () => {
     onMessage: ({ deletedPlaceId, places }) => {
       const deletedPlaceName = findPlaceName(deletedPlaceId);
       showToast({
-        message: `${deletedPlaceName ?? '장소가'}이/가 삭제되었습니다.`,
+        message: `${deletedPlaceName ?? '장소'}${getSubjectParticle(
+          deletedPlaceName,
+        )} 삭제되었습니다.`,
         type: 'success',
       });
       replacePlaceList({ places });
