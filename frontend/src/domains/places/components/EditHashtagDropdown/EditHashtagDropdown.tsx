@@ -124,7 +124,7 @@ const EditHashtagDropdown = ({
         )}
       </Flex>
       <Flex gap={1}>
-        <Button variant="secondary" onClick={onCancel} radius="lg">
+        <Button onClick={onCancel} radius="lg">
           <Text variant="caption">닫기</Text>
         </Button>
         <Button
