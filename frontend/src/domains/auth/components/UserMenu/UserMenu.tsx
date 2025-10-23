@@ -34,13 +34,17 @@ const UserMenu = ({ onClick }: UserMenuProps) => {
         <div css={DividerStyle} />
         {role === 'USER' && (
           <Button onClick={handleMoveToManageRoutieSpace}>
-            <Text variant="caption">내 동선 목록</Text>
+            <Text variant="caption" color="inherit">
+              내 동선 목록
+            </Text>
           </Button>
         )}
         <Button onClick={onClick}>
           <Flex gap={1}>
-            <Icon name="logout" size={20} />
-            <Text variant="caption">로그아웃</Text>
+            <Icon name="logout" size={16} />
+            <Text variant="caption" color="inherit">
+              로그아웃
+            </Text>
           </Flex>
         </Button>
       </Flex>
