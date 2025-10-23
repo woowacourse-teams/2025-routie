@@ -37,7 +37,7 @@ const RoutieSpace = () => {
 
   useLayoutEffect(() => {
     if (routieSpaceIdentifier) {
-      localStorage.setItem('routieSpaceUuid', routieSpaceIdentifier);
+      sessionStorageUtils.set('routieSpaceUuid', routieSpaceIdentifier);
     }
   }, [routieSpaceIdentifier]);
 

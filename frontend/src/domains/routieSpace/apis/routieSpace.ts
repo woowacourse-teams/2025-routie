@@ -16,6 +16,10 @@ import type {
   GetRoutieSpaceListAdapterType,
   RoutieSpaceAdapterType,
 } from '@/domains/routieSpace/types/routieSpace.types';
+import {
+  ensureRoutieSpaceUuid,
+  getRoutieSpaceUuid,
+} from '@/domains/utils/routieSpaceUuid';
 
 const createRoutieSpace = async (): Promise<CreateRoutieSpaceAdapterType> => {
   const accessToken = getAccessTokenOrThrow();
@@ -34,11 +38,9 @@ const createRoutieSpace = async (): Promise<CreateRoutieSpaceAdapterType> => {
 };
 
 const getRoutieSpace = async (): Promise<RoutieSpaceAdapterType> => {
-  const routieSpaceUuid = localStorage.getItem('routieSpaceUuid');
+  const routieSpaceUuid = getRoutieSpaceUuid();
 
-  if (!routieSpaceUuid) {
-    throw new Error('루티 스페이스 uuid가 없습니다.');
-  }
+  ensureRoutieSpaceUuid(routieSpaceUuid);
 
   const response = await apiClient.get(`/v1/routie-spaces/${routieSpaceUuid}`);
 
@@ -50,12 +52,10 @@ const getRoutieSpace = async (): Promise<RoutieSpaceAdapterType> => {
 const editRoutieSpaceName = async ({
   name,
 }: EditRoutieSpaceNameRequestType): Promise<EditRoutieSpaceNameAdapterType> => {
-  const routieSpaceUuid = localStorage.getItem('routieSpaceUuid');
+  const routieSpaceUuid = getRoutieSpaceUuid();
   const accessToken = getAccessTokenOrThrow();
 
-  if (!routieSpaceUuid) {
-    throw new Error('루티 스페이스 uuid가 없습니다.');
-  }
+  ensureRoutieSpaceUuid(routieSpaceUuid);
 
   const response = await apiClient.patch(
     `/v2/routie-spaces/${routieSpaceUuid}`,
