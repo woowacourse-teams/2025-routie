@@ -54,7 +54,7 @@ const usePlaceStream = () => {
 
       replacePlaceList({ places });
       showToast({
-        message: `"${createdPlace?.name ?? '장소'}" 추가되었습니다.`,
+        message: `${createdPlace?.name ?? '장소가'}이/가 추가되었습니다.`,
         type: 'success',
       });
     },
@@ -74,7 +74,7 @@ const usePlaceStream = () => {
     onMessage: ({ deletedPlaceId, places }) => {
       const deletedPlaceName = findPlaceName(deletedPlaceId);
       showToast({
-        message: `"${deletedPlaceName ?? '장소'}" 삭제되었습니다.`,
+        message: `${deletedPlaceName ?? '장소가'}이/가 삭제되었습니다.`,
         type: 'success',
       });
       replacePlaceList({ places });

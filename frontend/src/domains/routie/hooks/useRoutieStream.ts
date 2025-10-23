@@ -51,7 +51,7 @@ const useRoutieStream = () => {
       replaceRoutie(routieData);
       const placeName = findPlaceName(createdRoutiePlaceId);
       showToast({
-        message: `동선에 "${placeName ?? '장소'}"이/가 추가되었습니다.`,
+        message: `${placeName ?? '장소가'}이/가 동선에 추가되었습니다.`,
         type: 'success',
       });
     },
@@ -76,7 +76,7 @@ const useRoutieStream = () => {
       replaceRoutie(routieData);
       const placeName = findPlaceName(deletedRoutiePlaceId);
       showToast({
-        message: `"${placeName ?? '장소'}"이/가 동선에서 삭제되었습니다.`,
+        message: `${placeName ?? '장소가'}이/가 동선에서 삭제되었습니다.`,
         type: 'success',
       });
     },
