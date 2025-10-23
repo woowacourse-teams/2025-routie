@@ -18,7 +18,11 @@ const ModalManager = () => {
   };
 
   return (
-    <Modal isOpen={modalState.isOpen} onClose={closeModal}>
+    <Modal
+      isOpen={modalState.isOpen}
+      onClose={closeModal}
+      closable={modalState.type !== 'login'}
+    >
       {renderModalContent()}
     </Modal>
   );
