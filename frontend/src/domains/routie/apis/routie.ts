@@ -7,13 +7,15 @@ import type {
   EditRoutieRequestType,
 } from '@/domains/routie/types/api.types';
 import type { RoutieAdapterType } from '@/domains/routie/types/routie.types';
+import {
+  ensureRoutieSpaceUuid,
+  getRoutieSpaceUuid,
+} from '@/domains/utils/routieSpaceUuid';
 
 const getRoutie = async (): Promise<RoutieAdapterType> => {
-  const routieSpaceUuid = localStorage.getItem('routieSpaceUuid');
+  const routieSpaceUuid = getRoutieSpaceUuid();
 
-  if (!routieSpaceUuid) {
-    throw new Error('루티 스페이스 uuid가 없습니다.');
-  }
+  ensureRoutieSpaceUuid(routieSpaceUuid);
 
   const queryParams = new URLSearchParams();
 
@@ -29,11 +31,9 @@ const getRoutie = async (): Promise<RoutieAdapterType> => {
 };
 
 const editRoutieSequence = async ({ routiePlaces }: EditRoutieRequestType) => {
-  const routieSpaceUuid = localStorage.getItem('routieSpaceUuid');
+  const routieSpaceUuid = getRoutieSpaceUuid();
 
-  if (!routieSpaceUuid) {
-    throw new Error('루티 스페이스 uuid가 없습니다.');
-  }
+  ensureRoutieSpaceUuid(routieSpaceUuid);
 
   await apiClient.patch(`/v1/routie-spaces/${routieSpaceUuid}/routie`, {
     routiePlaces,
@@ -43,11 +43,9 @@ const editRoutieSequence = async ({ routiePlaces }: EditRoutieRequestType) => {
 const addRoutiePlace = async ({
   placeId,
 }: AddRoutiePlaceRequestType): Promise<AddRoutiePlaceResponseType> => {
-  const routieSpaceUuid = localStorage.getItem('routieSpaceUuid');
+  const routieSpaceUuid = getRoutieSpaceUuid();
 
-  if (!routieSpaceUuid) {
-    throw new Error('루티 스페이스 uuid가 없습니다.');
-  }
+  ensureRoutieSpaceUuid(routieSpaceUuid);
 
   const response = await apiClient.post(
     `/v1/routie-spaces/${routieSpaceUuid}/routie/places`,
@@ -62,11 +60,9 @@ const addRoutiePlace = async ({
 };
 
 const deleteRoutiePlace = async ({ placeId }: DeleteRoutiePlaceRequestType) => {
-  const routieSpaceUuid = localStorage.getItem('routieSpaceUuid');
+  const routieSpaceUuid = getRoutieSpaceUuid();
 
-  if (!routieSpaceUuid) {
-    throw new Error('루티 스페이스 uuid가 없습니다.');
-  }
+  ensureRoutieSpaceUuid(routieSpaceUuid);
 
   return await apiClient.delete(
     `/v1/routie-spaces/${routieSpaceUuid}/routie/places/${placeId}`,
