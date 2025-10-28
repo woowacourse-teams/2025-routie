@@ -2,6 +2,7 @@ import { useCallback, useMemo } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
 import { useToastContext } from '@/@common/contexts/useToastContext';
+import { useRoutieSpaceQuery } from '@/domains/routieSpace/queries/useRoutieSpaceQuery';
 import { getRoutieSpaceUuid } from '@/domains/utils/routieSpaceUuid';
 
 const useShareLink = () => {
@@ -9,11 +10,21 @@ const useShareLink = () => {
   const { showToast } = useToastContext();
   const routieSpaceIdentifier =
     searchParams.get('routieSpaceIdentifier') ?? getRoutieSpaceUuid();
+  const { data: routieSpace } = useRoutieSpaceQuery({ enabled: false });
 
   const shareLink = useMemo(() => {
     if (!routieSpaceIdentifier) return '';
-    return `${window.location.origin}/routie-spaces?routieSpaceIdentifier=${routieSpaceIdentifier}`;
-  }, [routieSpaceIdentifier]);
+
+    const params = new URLSearchParams({
+      routieSpaceIdentifier,
+    });
+
+    if (routieSpace?.name) {
+      params.set('name', routieSpace.name);
+    }
+
+    return `${window.location.origin}/routie-spaces?${params.toString()}`;
+  }, [routieSpaceIdentifier, routieSpace?.name]);
 
   const handleCopyLink = useCallback(async () => {
     try {
