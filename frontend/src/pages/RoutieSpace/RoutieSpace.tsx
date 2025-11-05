@@ -77,8 +77,6 @@ const RoutieSpace = () => {
     }
   }, [routieSpaceError, navigate]);
 
-  console.log('for CD');
-
   return (
     <HashtagFilterProvider>
       <div css={RoutieSpaceContainerStyle}>
