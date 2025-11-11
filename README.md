@@ -1,10 +1,8 @@
-<div align="center">
-<img src="/frontend/src/assets/images/thumbnail.jpeg">
 <h1>루티</h1>
-</div>
+<img src="/frontend/src/assets/images/thumbnail.jpeg" alt="thumbnail.jpeg">
 <br />
 
-## 🏝️ 친구들과 함께하는 동선 계획
+# 친구들과 함께하는 동선 계획
 
 메신저로 여행을 계획할 때, 장소 링크나 일정에 대한 의견이 일상적인 대화와 뒤섞여버려 나중에 정보를 다시 확인하기 어렵다는 불편함이 있습니다.
 
@@ -13,8 +11,6 @@
 <img src="/assets/gifs/routie-kakao.gif" alt="routie_kakao_gif.gif">
 
 <br />
-
-## 🧑‍🍳 기능 소개
 
 | 링크 공유                                                                                                                   | 장소 추가                                                                                                                   |
 | --------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------- |
@@ -28,21 +24,22 @@
 
 <br />
 
-## 프론트엔드 기술 스택
+# 기술 스택
+## 프론트엔드
 <img src="/assets/images/frontend-tech-stack.jpeg" alt="frontend-tech-stack.jpeg">
 
-## 백엔드 기술 스택
+## 백엔드
 <img src="/assets/images/backend-tech-stack.jpeg" alt="backend-tech-stack.jpeg">
 
-## 🧑‍🧑‍🧒‍🧒 팀원 소개
+## 팀원
 
-### FE
+### 프론트엔드
 
 | <img src="https://github.com/aydenote.png" width="100" height="100"/> | <img src="https://github.com/ohgus.png" width="100" height="100"/> | <img src="https://github.com/AHHYUNJU.png" width="100" height="100"/> | <img src="https://github.com/jeongyou.png" width="100" height="100"/> |
 |:---------------------------------------------------------------------:|:------------------------------------------------------------------:| :-------------------------------------------------------------------: | :-------------------------------------------------------------------: |
 |                [앵버(최승수)](https://github.com/aydenote)                 |                [오거스(오명석)](https://github.com/ohgus)                |              [주렁(주아현)](https://github.com/AHHYUNJU)              |              [기린(정유정)](https://github.com/jeongyou)              |
 
-### BE
+### 백엔드
 
 | <img src="https://github.com/cookie-meringue.png" width="100" height="100"/> | <img src="https://github.com/threepebbles.png" width="100" height="100"/> | <img src="https://github.com/DongchannN.png" width="100" height="100"/> | <img src="https://github.com/goohong.png" width="100" height="100"/> |
 | :--------------------------------------------------------------------------: | :-----------------------------------------------------------------------: | :---------------------------------------------------------------------: | :------------------------------------------------------------------: |
