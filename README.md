@@ -1,5 +1,5 @@
 <div align="center">
-<h1>Routie 루티</h1>
+<h1>루티</h1>
 </div>
 
 <img src="/frontend/src/assets/images/thumbnail.jpeg">
