@@ -1,4 +1,4 @@
-<h1>루티</h1>
+<h1>루티(Routie)</h1>
 <img src="/frontend/src/assets/images/thumbnail.jpeg" alt="thumbnail.jpeg">
 <br />
 
