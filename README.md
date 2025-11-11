@@ -10,7 +10,7 @@
 
 루티는 여행을 계획할 때 장소와 동선 의견을 모으기 힘든 문제를 해소하기 위해 시작된 프로젝트입니다.
 
-<img src="/frontend/src/assets/gif/routie_kakao_gif.gif" alt="routie_kakao_gif.gif">
+<img src="/assets/gifs/routie-kakao.gif" alt="routie_kakao_gif.gif">
 
 <br />
 
@@ -27,6 +27,12 @@
 | <video src="https://github.com/user-attachments/assets/54a18bc5-d960-4cb6-a31e-e04f5617d6cd" controls width="100%"></video> | <video src="https://github.com/user-attachments/assets/37639f29-37a2-47c4-a3f7-181f01373392" controls width="100%"></video> |
 
 <br />
+
+## 프론트엔드 기술 스택
+<img src="/assets/images/frontend-tech-stack.jpeg" alt="frontend-tech-stack.jpeg">
+
+## 백엔드 기술 스택
+<img src="/assets/images/backend-tech-stack.jpeg" alt="backend-tech-stack.jpeg">
 
 ## 🧑‍🧑‍🧒‍🧒 팀원 소개
 
