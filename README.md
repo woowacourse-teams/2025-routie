@@ -1,8 +1,7 @@
 <div align="center">
+<img src="/frontend/src/assets/images/thumbnail.jpeg">
 <h1>루티</h1>
 </div>
-
-<img src="/frontend/src/assets/images/thumbnail.jpeg">
 <br />
 
 ## 🏝️ 친구들과 함께하는 동선 계획
