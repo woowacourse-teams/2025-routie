@@ -34,3 +34,13 @@
 | --------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------- |
 | 가고 싶은 장소에 대한 선호도를 좋아요 버튼으로 표현해보세요!                                                                | 친구들과 함께 동선을 만들어보세요! 동선을 지도에서 시각적으로 확인할 수 있습니다.                                           |
 | <video src="https://github.com/user-attachments/assets/54a18bc5-d960-4cb6-a31e-e04f5617d6cd" controls width="100%"></video> | <video src="https://github.com/user-attachments/assets/37639f29-37a2-47c4-a3f7-181f01373392" controls width="100%"></video> |
+
+FE
+|<img src="https://github.com/aydenote.png" width="150" height="150"/>|<img src="https://github.com/ohgus.png" width="150" height="150"/>|<img src="https://github.com/AHHYUNJU.png" width="150" height="150"/>|<img src="https://github.com/jeongyou.png" width="150" height="150"/>|
+|:-:|:-:|:-:|:-:|
+|[앵버(최승수)](https://github.com/aydenote)|[오거스(오명석)](https://github.com/ohgus)|[주렁(주아현)](https://github.com/AHHYUNJU)|[기린(정유정)](https://github.com/jeongyou)|
+
+BE
+|<img src="https://github.com/cookie-meringue.png" width="150" height="150"/>|<img src="https://github.com/threepebbles.png" width="150" height="150"/>|<img src="https://github.com/DongchannN.png" width="150" height="150"/>|<img src="https://github.com/goohong.png" width="150" height="150"/>|
+|:-:|:-:|:-:|:-:|
+|[머랭(김대현)](https://github.com/cookie-meringue)|[헤일러(민서현)](https://github.com/threepebbles)|[차니(이동찬)](https://github.com/DongchannN)|[대니(정구홍)](https://github.com/goohong)|
