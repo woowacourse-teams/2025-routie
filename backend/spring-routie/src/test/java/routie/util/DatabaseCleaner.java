@@ -24,7 +24,7 @@ public class DatabaseCleaner {
         this.tableNames = entityManager.getMetamodel().getEntities().stream()
                 .filter(e -> e.getJavaType().getAnnotation(Entity.class) != null)
                 .map(e -> {
-                    Table tableAnnotation = e.getJavaType().getAnnotation(Table.class);
+                    final Table tableAnnotation = e.getJavaType().getAnnotation(Table.class);
                     if (tableAnnotation != null && tableAnnotation.name() != null) {
                         return tableAnnotation.name();
                     }
@@ -38,22 +38,22 @@ public class DatabaseCleaner {
         entityManager.flush();
         entityManager.createNativeQuery("SET REFERENTIAL_INTEGRITY FALSE").executeUpdate();
 
-        for (String tableName : tableNames) {
+        for (final String tableName : tableNames) {
             entityManager.createNativeQuery("TRUNCATE TABLE " + tableName).executeUpdate();
         }
 
         entityManager.createNativeQuery("SET REFERENTIAL_INTEGRITY TRUE").executeUpdate();
     }
 
-    private String convertCamelToSnake(String camelCase) {
+    private String convertCamelToSnake(final String camelCase) {
         if (camelCase == null) {
             return null;
         }
-        StringBuilder snakeCase = new StringBuilder();
+        final StringBuilder snakeCase = new StringBuilder();
         snakeCase.append(Character.toLowerCase(camelCase.charAt(0)));
 
         for (int i = 1; i < camelCase.length(); i++) {
-            char c = camelCase.charAt(i);
+            final char c = camelCase.charAt(i);
             if (Character.isUpperCase(c)) {
                 snakeCase.append('_');
                 snakeCase.append(Character.toLowerCase(c));
