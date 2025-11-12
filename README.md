@@ -1,5 +1,5 @@
-<h1>친구들과 함께하는 동선 계획, 루티</h1>
 <img src="/frontend/src/assets/images/thumbnail.jpeg" alt="thumbnail.jpeg">
+<h1>친구들과 함께하는 동선 계획, 루티</h1>
 <br />
 
 ## ✨ 프로젝트 소개
