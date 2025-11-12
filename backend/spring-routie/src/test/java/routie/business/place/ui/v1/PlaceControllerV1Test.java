@@ -1,14 +1,9 @@
 package routie.business.place.ui.v1;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
-
-import java.util.List;
-import java.util.Map;
-
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -17,15 +12,13 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
-import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.annotation.DirtiesContext.ClassMode;
+import routie.business.hashtag.domain.Hashtag;
 import routie.business.hashtag.domain.HashtagRepository;
 import routie.business.like.domain.PlaceLikeBuilder;
 import routie.business.like.domain.PlaceLikeRepository;
 import routie.business.participant.domain.User;
 import routie.business.participant.domain.UserFixture;
 import routie.business.participant.domain.UserRepository;
-import routie.business.hashtag.domain.Hashtag;
 import routie.business.place.domain.Place;
 import routie.business.place.domain.PlaceBuilder;
 import routie.business.place.domain.PlaceRepository;
@@ -34,14 +27,20 @@ import routie.business.place.ui.dto.response.HashtagsUpdateResponse;
 import routie.business.routiespace.domain.RoutieSpace;
 import routie.business.routiespace.domain.RoutieSpaceIdentifierProvider;
 import routie.business.routiespace.domain.RoutieSpaceRepository;
+import routie.util.DatabaseCleaner;
 
-@DirtiesContext(classMode = ClassMode.AFTER_CLASS)
+import java.util.List;
+import java.util.Map;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 public class PlaceControllerV1Test {
 
+    @Autowired
+    DatabaseCleaner databaseCleaner;
     @LocalServerPort
     private int port;
-
     @Autowired
     private PlaceRepository placeRepository;
 
@@ -88,6 +87,11 @@ public class PlaceControllerV1Test {
                 .user(user)
                 .build()
         );
+    }
+
+    @AfterEach
+    void tearDown() {
+        databaseCleaner.execute();
     }
 
     @Test

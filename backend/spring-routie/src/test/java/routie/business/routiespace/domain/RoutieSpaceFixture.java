@@ -1,12 +1,13 @@
 package routie.business.routiespace.domain;
 
+import routie.business.place.domain.Place;
+import routie.business.routie.domain.Routie;
+import routie.business.routie.domain.RoutieFixture;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicLong;
-import routie.business.place.domain.Place;
-import routie.business.routie.domain.Routie;
-import routie.business.routie.domain.RoutieFixture;
 
 public class RoutieSpaceFixture {
 

@@ -1,8 +1,9 @@
 package routie.business.routie.infrastructure.routecalculator.driving.kakaodrivingapi;
 
-import java.util.List;
 import routie.business.routie.infrastructure.routecalculator.driving.kakaodrivingapi.KakaoDrivingRouteApiResponse.RouteResponse;
 import routie.business.routie.infrastructure.routecalculator.driving.kakaodrivingapi.KakaoDrivingRouteApiResponse.SectionResponse;
+
+import java.util.List;
 
 public class FakeKakaoDrivingRouteApiClient extends KakaoDrivingRouteApiClient {
 

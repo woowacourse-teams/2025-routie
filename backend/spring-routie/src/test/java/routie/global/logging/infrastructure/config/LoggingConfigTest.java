@@ -1,8 +1,5 @@
 package routie.global.logging.infrastructure.config;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -18,6 +15,9 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import routie.global.logging.infrastructure.ClientRequestLogger;
 import routie.global.logging.infrastructure.aspect.RequestLoggingAspect;
 import routie.global.logging.infrastructure.interceptor.RequestLoggingInterceptor;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = LoggingConfig.class)
