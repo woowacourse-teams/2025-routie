@@ -1,6 +1,6 @@
 <img src="/frontend/src/assets/images/thumbnail.jpeg" alt="thumbnail.jpeg">
 
-<img src="/assets/gifs/routie_thumbnail.gif" alt="routie_thumbnail.gif" width="100" />
+<img src="/assets/gifs/routie_thumbnail.gif" alt="routie_thumbnail.gif" width="100%" />
 
 <br />
 
