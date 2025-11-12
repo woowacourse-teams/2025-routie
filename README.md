@@ -4,22 +4,15 @@
 
 ## 친구들과 함께하는 동선 계획
 
-<table style="border: none; border-collapse: collapse;">
-<tr>
-<td width="50%" valign="top" style="border: none;">
-
-메신저로 여행을 계획할 때, 장소 링크나 일정에 대한 의견이 일상적인 대화와 뒤섞여버려 나중에 정보를 다시 확인하기 어렵다는 불편함이 있습니다.
-
-루티는 여행을 계획할 때 장소와 동선 의견을 모으기 힘든 문제를 해소하기 위해 시작된 프로젝트입니다.
-
-</td>
-<td width="50%" style="border: none;">
-
-<img src="/assets/gifs/routie-kakao.gif" alt="routie_kakao_gif.gif" width="100%">
-
-</td>
-</tr>
-</table>
+<div style="display: flex; align-items: flex-start; gap: 20px;">
+  <div style="flex: 1;">
+    <p>메신저로 여행을 계획할 때, 장소 링크나 일정에 대한 의견이 일상적인 대화와 뒤섞여버려 나중에 정보를 다시 확인하기 어렵다는 불편함이 있습니다.</p>
+    <p>루티는 여행을 계획할 때 장소와 동선 의견을 모으기 힘든 문제를 해소하기 위해 시작된 프로젝트입니다.</p>
+  </div>
+  <div style="flex: 1;">
+    <img src="/assets/gifs/routie-kakao.gif" alt="routie_kakao_gif.gif" width="100%">
+  </div>
+</div>
 
 <br />
 
