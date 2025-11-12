@@ -1,12 +1,6 @@
 <img src="/frontend/src/assets/images/thumbnail.jpeg" alt="thumbnail.jpeg">
-<h1>친구들과 함께하는 동선 계획, 루티</h1>
-<br />
 
-## ✨ 프로젝트 소개
-
-메신저로 여행을 계획할 때, 장소 링크나 일정에 대한 의견이 일상적인 대화와 뒤섞여 나중에 정보를 다시 확인하기 어렵다는 불편함이 있습니다.
-
-루티는 여행을 계획할 때 장소와 동선 의견을 모으기 힘든 문제를 해소하기 위해 시작된 프로젝트입니다.
+<img src="/assets/gifs/routie_thumbnail.gif" alt="routie_thumbnail.gif" />
 
 <br />
 
