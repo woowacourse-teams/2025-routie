@@ -1,10 +1,8 @@
 package routie.business.place.ui;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
-import java.util.Map;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -13,22 +11,25 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
-import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import routie.business.place.domain.Place;
 import routie.business.place.domain.PlaceBuilder;
 import routie.business.place.domain.PlaceRepository;
 import routie.business.routiespace.domain.RoutieSpace;
 import routie.business.routiespace.domain.RoutieSpaceIdentifierProvider;
 import routie.business.routiespace.domain.RoutieSpaceRepository;
+import routie.util.DatabaseCleaner;
 
-@DirtiesContext(classMode = ClassMode.AFTER_CLASS)
+import java.util.Map;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 public class PlaceControllerTest {
 
+    @Autowired
+    DatabaseCleaner databaseCleaner;
     @LocalServerPort
     private int port;
-
     @Autowired
     private PlaceRepository placeRepository;
 
@@ -45,17 +46,16 @@ public class PlaceControllerTest {
     void setUp() {
         RestAssured.port = port;
 
-        testRoutieSpace = routieSpaceRepository.save(RoutieSpace.withIdentifierProvider(
-                null, routieSpaceIdentifierProvider
-        ));
-        testPlace = new PlaceBuilder()
-                .name("테스트 카페")
-                .roadAddressName("서울시 강남구 테스트로 123")
-                .longitude(10.123)
-                .latitude(10.123)
-                .routieSpace(testRoutieSpace)
-                .build();
+        testRoutieSpace = routieSpaceRepository.save(
+                RoutieSpace.withIdentifierProvider(null, routieSpaceIdentifierProvider));
+        testPlace = new PlaceBuilder().name("테스트 카페").roadAddressName("서울시 강남구 테스트로 123").longitude(10.123)
+                .latitude(10.123).routieSpace(testRoutieSpace).build();
         placeRepository.save(testPlace);
+    }
+
+    @AfterEach
+    void tearDown() {
+        databaseCleaner.execute();
     }
 
     @Test
@@ -65,11 +65,8 @@ public class PlaceControllerTest {
         final long placeId = testPlace.getId();
 
         // when
-        final Response response = RestAssured
-                .when()
-                .delete("/routie-spaces/" + testRoutieSpace.getIdentifier() + "/places/" + placeId)
-                .then()
-                .log().all()
+        final Response response = RestAssured.when()
+                .delete("/routie-spaces/" + testRoutieSpace.getIdentifier() + "/places/" + placeId).then().log().all()
                 .extract().response();
 
         final HttpStatus actualHttpStatus = HttpStatus.valueOf(response.getStatusCode());
@@ -88,11 +85,8 @@ public class PlaceControllerTest {
         routieSpaceRepository.save(testRoutieSpace);
 
         // when
-        final Response response = RestAssured
-                .when()
-                .delete("/routie-spaces/" + testRoutieSpace.getIdentifier() + "/places/" + placeId)
-                .then()
-                .log().all()
+        final Response response = RestAssured.when()
+                .delete("/routie-spaces/" + testRoutieSpace.getIdentifier() + "/places/" + placeId).then().log().all()
                 .extract().response();
 
         final HttpStatus actualHttpStatus = HttpStatus.valueOf(response.getStatusCode());
@@ -109,12 +103,9 @@ public class PlaceControllerTest {
         final long nonExistentPlaceId = 999999L;
 
         // when
-        final Response response = RestAssured
-                .when()
-                .delete("/routie-spaces/" + testRoutieSpace.getIdentifier() + "/places/" + nonExistentPlaceId)
-                .then()
-                .log().all()
-                .extract().response();
+        final Response response = RestAssured.when()
+                .delete("/routie-spaces/" + testRoutieSpace.getIdentifier() + "/places/" + nonExistentPlaceId).then()
+                .log().all().extract().response();
 
         final HttpStatus actualHttpStatus = HttpStatus.valueOf(response.getStatusCode());
         final HttpStatus expectedHttpStatus = HttpStatus.NOT_FOUND;
@@ -130,11 +121,8 @@ public class PlaceControllerTest {
         final long placeId = testPlace.getId();
 
         // when
-        final Response response = RestAssured
-                .when()
-                .get("/routie-spaces/" + testRoutieSpace.getIdentifier() + "/places/" + placeId)
-                .then()
-                .log().all()
+        final Response response = RestAssured.when()
+                .get("/routie-spaces/" + testRoutieSpace.getIdentifier() + "/places/" + placeId).then().log().all()
                 .extract().response();
 
         final HttpStatus actualHttpStatus = HttpStatus.valueOf(response.getStatusCode());
@@ -158,11 +146,8 @@ public class PlaceControllerTest {
         final long placeId = testPlace.getId();
 
         // when
-        final Response response = RestAssured
-                .when()
-                .get("/routie-spaces/" + testRoutieSpace.getIdentifier() + "/places/" + placeId)
-                .then()
-                .log().all()
+        final Response response = RestAssured.when()
+                .get("/routie-spaces/" + testRoutieSpace.getIdentifier() + "/places/" + placeId).then().log().all()
                 .extract().response();
 
         final HttpStatus actualHttpStatus = HttpStatus.valueOf(response.getStatusCode());
@@ -172,11 +157,6 @@ public class PlaceControllerTest {
 
         // then
         assertThat(expectedHttpStatus).isEqualTo(actualHttpStatus);
-        assertThat(responseBody).containsKeys(
-                "name",
-                "roadAddressName",
-                "longitude",
-                "latitude"
-        );
+        assertThat(responseBody).containsKeys("name", "roadAddressName", "longitude", "latitude");
     }
 }
