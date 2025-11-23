@@ -131,7 +131,7 @@ public class RoutieService {
         final List<RoutiePlace> routiePlaces = routie.getRoutiePlaces();
 
         final Map<Long, RoutiePlace> existingRoutiePlacesByPlaceId = routiePlaces.stream()
-                .collect(Collectors.toMap(rp -> rp.getPlace().getId(), Function.identity()));
+                .collect(Collectors.toMap(routiePlace -> routiePlace.getPlace().getId(), Function.identity()));
 
         final Set<Long> requestedPlaceIds = routieUpdateRequest.routiePlaces().stream()
                 .map(RoutiePlaceRequest::placeId)
