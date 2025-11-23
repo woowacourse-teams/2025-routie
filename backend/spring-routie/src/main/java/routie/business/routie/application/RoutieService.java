@@ -131,27 +131,51 @@ public class RoutieService {
         final Routie routie = routieSpace.getRoutie();
         final List<RoutiePlace> routiePlaces = routie.getRoutiePlaces();
 
-        final Map<Long, RoutiePlace> routiePlacesWithId = routiePlaces.stream()
+        final Map<Long, RoutiePlace> existingRoutiePlacesByPlaceId = routiePlaces.stream()
                 .collect(Collectors.toMap(rp -> rp.getPlace().getId(), Function.identity()));
 
         final Set<Long> requestedPlaceIds = routieUpdateRequest.routiePlaces().stream()
                 .map(RoutiePlaceRequest::placeId)
                 .collect(Collectors.toSet());
 
+        removeUnrequestedPlaces(routiePlaces, requestedPlaceIds);
+
+        final Map<Long, Place> newPlacesByPlaceId = fetchNewPlaces(
+                existingRoutiePlacesByPlaceId.keySet(),
+                requestedPlaceIds
+        );
+
+        applyRoutiePlaceChanges(
+                routieUpdateRequest.routiePlaces(),
+                routiePlaces,
+                existingRoutiePlacesByPlaceId,
+                newPlacesByPlaceId
+        );
+
+        applicationEventPublisher.publishEvent(new RoutieUpdateEvent(this, routieSpaceIdentifier));
+    }
+
+    private void removeUnrequestedPlaces(final List<RoutiePlace> routiePlaces, final Set<Long> requestedPlaceIds) {
         final List<RoutiePlace> toRemove = routiePlaces.stream()
                 .filter(routiePlace -> !requestedPlaceIds.contains(routiePlace.getPlace().getId()))
                 .toList();
-        routiePlaces.removeAll(toRemove);
 
+        if (!toRemove.isEmpty()) {
+            final List<Long> idsToRemove = toRemove.stream()
+                    .map(RoutiePlace::getId)
+                    .toList();
+            routiePlaceRepository.deleteAllById(idsToRemove);
+            routiePlaces.removeAll(toRemove);
+        }
+    }
+
+    private Map<Long, Place> fetchNewPlaces(final Set<Long> existingPlaceIds, final Set<Long> requestedPlaceIds) {
         final Set<Long> newPlaceIds = requestedPlaceIds.stream()
-                .filter(id -> !routiePlacesWithId.containsKey(id))
+                .filter(id -> !existingPlaceIds.contains(id))
                 .collect(Collectors.toSet());
-        final Map<Long, Place> newPlacesWithId = placeRepository.findAllById(newPlaceIds).stream()
+
+        return placeRepository.findAllById(newPlaceIds).stream()
                 .collect(Collectors.toMap(Place::getId, Function.identity()));
-
-        applyRoutiePlaceChanges(routieUpdateRequest.routiePlaces(), routiePlaces, routiePlacesWithId, newPlacesWithId);
-
-        applicationEventPublisher.publishEvent(new RoutieUpdateEvent(this, routieSpaceIdentifier));
     }
 
     private void applyRoutiePlaceChanges(
