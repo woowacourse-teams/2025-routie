@@ -47,6 +47,7 @@ jobs:
         with:
           node-version: 22
           cache: npm # npm 캐시로 설치 속도 개선
+          cache-dependency-path: frontend/package-lock.json
 
       # 3) 의존성 설치 (package-lock 기준)
       - name: Install deps
