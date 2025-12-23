@@ -29,10 +29,12 @@
 # 아키텍처
 
 ## ci/cd
+
 <img src="/assets/images/ci-flow.png" alt="ci-flow.png">
 <img src="/assets/images/cd-flow.png" alt="cd-flow.png">
 
 ## 로깅 및 모니터링
+
 <img src="/assets/images/logging-architecture.png" width="100%" alt="logging-architecture.png">
 
 ## 🤼 팀원
