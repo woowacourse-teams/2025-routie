@@ -1,10 +1,10 @@
 name: Frontend Prod CD - Deploy to S3 and Invalidate CloudFront (Access Key)
 
 on:
-  # CI 워크플로가 끝난 뒤에만 CD가 트리거됨
-  workflow_run:
-    workflows: ['Front CI on main branch'] # ci.yml의 name과 정확히 일치해야 함
-    types: [completed]
+  push:
+    branches: ['main']
+    paths:
+      - 'frontend/**'
 
 # Access Key 방식은 OIDC를 안 쓰므로 id-token 권한 불필요
 permissions:
@@ -12,11 +12,6 @@ permissions:
 
 jobs:
   deploy:
-    # CI 성공 + main 브랜치에서 실행된 CI일 때만
-    if: >
-      github.event.workflow_run.conclusion == 'success' &&
-      github.event.workflow_run.head_branch == 'main'
-
     # GitHub Settings > Environments > production
     # - Environment secrets/vars 사용 가능
     # - Required reviewers(승인)도 여기서 걸 수 있음
@@ -38,15 +33,13 @@ jobs:
       # 1) 레포 코드 체크아웃
       - name: Checkout
         uses: actions/checkout@v4
-        with:
-          ref: ${{ github.event.workflow_run.head_sha }}
 
       # 배포 시작 알림
       - name: Notify deploy started (PROD)
         run: |
           curl -X POST -H "Content-Type: application/json" \
               -d '{
-                "content": ":rocket: **PROD 배포 시작**\n브랜치: main\n커밋: ${{ github.event.workflow_run.head_sha }}"
+                "content": ":rocket: **PROD 배포 시작**\n브랜치: main\n커밋: ${{ github.sha }}"
               }' \
               ${{ secrets.DISCORD_WEBHOOK_FRONTEND_CD }}
 
@@ -94,7 +87,7 @@ jobs:
         run: |
           curl -X POST -H "Content-Type: application/json" \
             -d '{
-              "content": "✅ **PROD 배포 성공**\n커밋: ${{ github.event.workflow_run.head_sha }}"
+              "content": "✅ **PROD 배포 성공**\n커밋: ${{ github.sha }}"
             }' \
             ${{ secrets.DISCORD_WEBHOOK_FRONTEND_CD }}
 
@@ -104,6 +97,6 @@ jobs:
         run: |
           curl -X POST -H "Content-Type: application/json" \
             -d '{
-              "content": "❌ **PROD 배포 실패**\n커밋: ${{ github.event.workflow_run.head_sha }}\n확인: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+              "content": "❌ **PROD 배포 실패**\n커밋: ${{ github.sha }}\n확인: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
             }' \
             ${{ secrets.DISCORD_WEBHOOK_FRONTEND_CD }}
