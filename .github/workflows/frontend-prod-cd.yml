@@ -41,6 +41,15 @@ jobs:
         with:
           ref: ${{ github.event.workflow_run.head_sha }}
 
+      # 배포 시작 알림
+      - name: Notify deploy started (PROD)
+        run: |
+          curl -X POST -H "Content-Type: application/json" \
+              -d '{
+                "content": ":rocket: **PROD 배포 시작**\n브랜치: main\n커밋: ${{ github.event.workflow_run.head_sha }}"
+              }' \
+              ${{ secrets.DISCORD_WEBHOOK_FRONTEND_CD }}
+
       # 2) Node 설치 (Webpack 프로젝트 빌드용)
       - name: Setup Node
         uses: actions/setup-node@v4
@@ -78,3 +87,23 @@ jobs:
           aws cloudfront create-invalidation \
             --distribution-id "${CLOUDFRONT_DIST_ID}" \
             --paths "/" "/index.html"
+
+      # 배포 성공 알림
+      - name: Notify deploy success (PROD)
+        if: success()
+        run: |
+          curl -X POST -H "Content-Type: application/json" \
+            -d '{
+              "content": "✅ **PROD 배포 성공**\n커밋: ${{ github.event.workflow_run.head_sha }}"
+            }' \
+            ${{ secrets.DISCORD_WEBHOOK_FRONTEND_CD }}
+
+      # 배포 실패 알림
+      - name: Notify deploy failure (PROD)
+        if: failure()
+        run: |
+          curl -X POST -H "Content-Type: application/json" \
+            -d '{
+              "content": "❌ **PROD 배포 실패**\n커밋: ${{ github.event.workflow_run.head_sha }}\n확인: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+            }' \
+            ${{ secrets.DISCORD_WEBHOOK_FRONTEND_CD }}
