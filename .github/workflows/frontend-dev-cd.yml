@@ -65,6 +65,9 @@ jobs:
       # 4) 빌드
       # - 이 단계가 실패하면 이후 배포 단계는 실행되지 않음
       - name: Build
+        env:
+          REACT_APP_API_URL: ${{ vars.REACT_APP_API_URL }}
+          REACT_APP_SENTRY_DSN: ${{ vars.REACT_APP_SENTRY_DSN }}
         run: npm run build:dev
 
       # 5) AWS 인증 (Access Key 방식)
