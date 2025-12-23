@@ -35,6 +35,12 @@ jobs:
       CLOUDFRONT_DIST_ID: ${{ secrets.CLOUDFRONT_DIST_ID }}
 
     steps:
+      # 1) 레포 코드 체크아웃
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.workflow_run.head_sha }}
+
       # 배포 시작 알림
       - name: Notify deploy started (DEV)
         run: |
@@ -43,12 +49,6 @@ jobs:
                 "content": ":rocket: **DEV 배포 시작**\n브랜치: develop\n커밋: ${{ github.event.workflow_run.head_sha }}"
               }' \
               ${{ secrets.DISCORD_WEBHOOK_FRONTEND_CD }}
-              
-      # 1) 레포 코드 체크아웃
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          ref: ${{ github.event.workflow_run.head_sha }}
 
       # 2) Node 설치 (Webpack 프로젝트 빌드용)
       - name: Setup Node
