@@ -33,6 +33,8 @@ jobs:
       AWS_REGION: ${{ secrets.AWS_REGION }}
       S3_BUCKET: ${{ secrets.S3_BUCKET }}
       CLOUDFRONT_DIST_ID: ${{ secrets.CLOUDFRONT_DIST_ID }}
+      REACT_APP_API_URL: ${{ vars.REACT_APP_API_URL }}
+      REACT_APP_SENTRY_DSN: ${{ vars.REACT_APP_SENTRY_DSN }}
 
     steps:
       # 1) 레포 코드 체크아웃
@@ -65,9 +67,6 @@ jobs:
       # 4) 빌드
       # - 이 단계가 실패하면 이후 배포 단계는 실행되지 않음
       - name: Build
-        env:
-          REACT_APP_API_URL: ${{ vars.REACT_APP_API_URL }}
-          REACT_APP_SENTRY_DSN: ${{ vars.REACT_APP_SENTRY_DSN }}
         run: npm run build:dev
 
       # 5) AWS 인증 (Access Key 방식)
