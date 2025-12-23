@@ -35,6 +35,15 @@ jobs:
       CLOUDFRONT_DIST_ID: ${{ secrets.CLOUDFRONT_DIST_ID }}
 
     steps:
+      # 배포 시작 알림
+      - name: Notify deploy started (DEV)
+        run: |
+          curl -X POST -H "Content-Type: application/json" \
+              -d '{
+                "content": ":rocket: **DEV 배포 시작**\n브랜치: develop\n커밋: ${{ github.event.workflow_run.head_sha }}"
+              }' \
+              ${{ secrets.DISCORD_WEBHOOK_FRONTEND_CD }}
+              
       # 1) 레포 코드 체크아웃
       - name: Checkout
         uses: actions/checkout@v4
@@ -78,3 +87,23 @@ jobs:
           aws cloudfront create-invalidation \
             --distribution-id "${CLOUDFRONT_DIST_ID}" \
             --paths "/" "/index.html"
+
+      # 배포 성공 알림
+      - name: Notify deploy success (DEV)
+        if: success()
+        run: |
+          curl -X POST -H "Content-Type: application/json" \
+            -d '{
+              "content": "✅ **DEV 배포 성공**\n커밋: ${{ github.event.workflow_run.head_sha }}"
+            }' \
+            ${{ secrets.DISCORD_WEBHOOK_FRONTEND_CD }}
+
+      # 배포 실패 알림
+      - name: Notify deploy failure (DEV)
+        if: failure()
+        run: |
+          curl -X POST -H "Content-Type: application/json" \
+            -d '{
+              "content": "❌ **DEV 배포 실패**\n커밋: ${{ github.event.workflow_run.head_sha }}\n확인: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+            }' \
+            ${{ secrets.DISCORD_WEBHOOK_FRONTEND_CD }}
