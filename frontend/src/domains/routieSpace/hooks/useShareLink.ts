@@ -12,7 +12,12 @@ const useShareLink = () => {
 
   const shareLink = useMemo(() => {
     if (!routieSpaceIdentifier) return '';
-    return `${window.location.origin}/routie-spaces?routieSpaceIdentifier=${routieSpaceIdentifier}`;
+
+    const params = new URLSearchParams({
+      routieSpaceIdentifier,
+    });
+
+    return `${window.location.origin}/routie-spaces?${params.toString()}`;
   }, [routieSpaceIdentifier]);
 
   const handleCopyLink = useCallback(async () => {

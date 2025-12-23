@@ -1,27 +1,52 @@
-<div align="center">
-<h1>Routie 루티</h1>
-</div>
+<img src="/frontend/src/assets/images/thumbnail.jpeg" alt="thumbnail.jpeg">
 
-## 🌟 핵심 가치
-### 팀 루티 핵심 가치
-사람들은 종종 “익숙한 방식이니까..” 라는 생각으로 불편을 겪으며 살아갑니다.<br/>
-우리는 그 익숙한 방식 안에 감춰진 불편을 주의 깊게 바라보고, 더 나은 방법을 고민합니다.<br/>
-“익숙함에 가려진 불편을 해결하는 것” 이 팀 루티가 추구하는 핵심 가치입니다.
+<img src="/assets/gifs/routie_thumbnail.gif" alt="routie_thumbnail.gif" width="100%" />
 
-### 루티 핵심 가치
+<br />
 
-우리는 여행 계획을 세울 때 메신저, 메모장, 지도, SNS 등을 오가며 작업합니다.<br/>
-여러 화면을 오가며 장소 이동 순서를 계획하는 것은 익숙하지만 비효율적입니다.<br/>
-루티는 사람들이 당연하게 여겨온 이러한 과정에서 벗어나, “장소 간의 이동 순서를 보다 쉽게 계획할 수 있도록 돕는 것” 을 목표로 합니다.
+| 🔗 링크 공유                                                             | 📌 장소 추가                                                               |
+| ------------------------------------------------------------------------ | -------------------------------------------------------------------------- |
+| 링크를 공유해 하나의 작업 공간에서 같이 계획을 만들어보아요!             | 가고 싶은 장소를 검색한 후, 나만의 해시태그를 달아 장소를 추가해보세요!    |
+| <img src="/assets/gifs/link.gif" alt="link.gif" controls width="100%" /> | <img src="/assets/gifs/place.gif" alt="place.gif" controls width="100%" /> |
 
+| 👍 좋아요                                                                | 🗺️ 지도                                                                           |
+| ------------------------------------------------------------------------ | --------------------------------------------------------------------------------- |
+| 가고 싶은 장소에 대한 선호도를 좋아요 버튼으로 표현해보세요!             | 친구들과 함께 동선을 만들어보세요! 동선을 지도에서 시각적으로 확인할 수 있습니다. |
+| <img src="/assets/gifs/like.gif" alt="like.gif" controls width="100%" /> | <img src="/assets/gifs/map.gif" alt="map.gif" controls width="100%" />            |
 
-## 🤼 루티 8계명
+<br />
 
-1. 팀이 가장 먼저다.
-2. 주말 헌납을 강요하지 말자.
-3. 나만 알지 않는다, 나만 모르지 않는다.
-4. 의미 없는 질문은 없다. 편하게 질문하자.
-5. 모든 소통은 가급적 공개 채널에서 하자.
-6. 함께 결정하고 함께 책임진다.
-7. 기록은 다 같이 하자.
-8. 같이 밥 먹자.
+# 🛠️ 기술 스택
+
+## 🌐 프론트엔드
+
+<img src="/assets/images/frontend-tech-stack.jpeg" alt="frontend-tech-stack.jpeg">
+
+## 🔙🔚 백엔드
+
+<img src="/assets/images/backend-tech-stack.jpeg" alt="backend-tech-stack.jpeg">
+
+# 아키텍처
+
+## ci/cd
+<img src="/assets/images/ci-flow.png" alt="ci-flow.png">
+<img src="/assets/images/cd-flow.png" alt="cd-flow.png">
+
+## 로깅 및 모니터링
+<img src="/assets/images/logging-architecture.png" width="100%" alt="logging-architecture.png">
+
+## 🤼 팀원
+
+### 프론트엔드
+
+| <img src="https://github.com/aydenote.png" width="100" height="100"/> | <img src="https://github.com/ohgus.png" width="100" height="100"/> | <img src="https://github.com/AHHYUNJU.png" width="100" height="100"/> | <img src="https://github.com/jeongyou.png" width="100" height="100"/> |
+| :-------------------------------------------------------------------: | :----------------------------------------------------------------: | :-------------------------------------------------------------------: | :-------------------------------------------------------------------: |
+|              [앵버(최승수)](https://github.com/aydenote)              |             [오거스(오명석)](https://github.com/ohgus)             |              [주렁(주아현)](https://github.com/AHHYUNJU)              |              [기린(정유정)](https://github.com/jeongyou)              |
+
+### 백엔드
+
+| <img src="https://github.com/cookie-meringue.png" width="100" height="100"/> | <img src="https://github.com/threepebbles.png" width="100" height="100"/> | <img src="https://github.com/DongchannN.png" width="100" height="100"/> | <img src="https://github.com/goohong.png" width="100" height="100"/> |
+| :--------------------------------------------------------------------------: | :-----------------------------------------------------------------------: | :---------------------------------------------------------------------: | :------------------------------------------------------------------: |
+|              [머랭(김대현)](https://github.com/cookie-meringue)              |             [헤일러(민서현)](https://github.com/threepebbles)             |              [차니(이동찬)](https://github.com/DongchannN)              |              [대니(정구홍)](https://github.com/goohong)              |
+
+<br />

@@ -3,6 +3,7 @@ package routie.business.place.ui.v2;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -11,8 +12,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
-import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import routie.business.like.domain.PlaceLike;
 import routie.business.like.domain.PlaceLikeBuilder;
 import routie.business.like.domain.PlaceLikeRepository;
@@ -30,18 +29,19 @@ import routie.business.place.ui.dto.response.PlaceReadResponse;
 import routie.business.routiespace.domain.RoutieSpace;
 import routie.business.routiespace.domain.RoutieSpaceIdentifierProvider;
 import routie.business.routiespace.domain.RoutieSpaceRepository;
+import routie.util.DatabaseCleaner;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@DirtiesContext(classMode = ClassMode.AFTER_CLASS)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 public class PlaceControllerV2Test {
 
+    @Autowired
+    DatabaseCleaner databaseCleaner;
     @LocalServerPort
     private int port;
-
     @Autowired
     private PlaceRepository placeRepository;
 
@@ -86,6 +86,11 @@ public class PlaceControllerV2Test {
                 .routieSpace(testRoutieSpace)
                 .build();
         placeRepository.save(place2);
+    }
+
+    @AfterEach
+    void tearDown() {
+        databaseCleaner.execute();
     }
 
     @Test

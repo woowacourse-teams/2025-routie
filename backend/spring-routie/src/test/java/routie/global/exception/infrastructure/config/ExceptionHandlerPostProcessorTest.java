@@ -1,8 +1,5 @@
 package routie.global.exception.infrastructure.config;
 
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.junit.jupiter.api.BeforeEach;
@@ -12,6 +9,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.support.BeanDefinitionValidationException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class ExceptionHandlerPostProcessorTest {
 
@@ -40,8 +40,10 @@ class ExceptionHandlerPostProcessorTest {
 
             // when & then
             assertDoesNotThrow(
-                    () -> validator.postProcessBeforeInitialization(new ValidControllerAdvice(),
-                            "validControllerAdvice"));
+                    () -> validator.postProcessBeforeInitialization(
+                            new ValidControllerAdvice(),
+                            "validControllerAdvice"
+                    ));
         }
 
         @Test
@@ -58,8 +60,10 @@ class ExceptionHandlerPostProcessorTest {
 
             // when & then
             assertDoesNotThrow(
-                    () -> validator.postProcessBeforeInitialization(new ValidControllerAdvice(),
-                            "validControllerAdvice"));
+                    () -> validator.postProcessBeforeInitialization(
+                            new ValidControllerAdvice(),
+                            "validControllerAdvice"
+                    ));
         }
 
         @Test
@@ -80,8 +84,10 @@ class ExceptionHandlerPostProcessorTest {
 
             // when & then
             assertDoesNotThrow(
-                    () -> validator.postProcessBeforeInitialization(new ValidControllerAdvice(),
-                            "validControllerAdvice"));
+                    () -> validator.postProcessBeforeInitialization(
+                            new ValidControllerAdvice(),
+                            "validControllerAdvice"
+                    ));
         }
     }
 
@@ -124,7 +130,8 @@ class ExceptionHandlerPostProcessorTest {
             }
 
             // when & then
-            assertThrows(BeanDefinitionValidationException.class,
+            assertThrows(
+                    BeanDefinitionValidationException.class,
                     () -> validator.postProcessBeforeInitialization(
                             new InvalidControllerAdvice(),
                             "invalidControllerAdvice"
@@ -148,9 +155,13 @@ class ExceptionHandlerPostProcessorTest {
             }
 
             // when & then
-            assertThrows(BeanDefinitionValidationException.class,
-                    () -> validator.postProcessBeforeInitialization(new InvalidControllerAdvice(),
-                            "invalidControllerAdvice"));
+            assertThrows(
+                    BeanDefinitionValidationException.class,
+                    () -> validator.postProcessBeforeInitialization(
+                            new InvalidControllerAdvice(),
+                            "invalidControllerAdvice"
+                    )
+            );
         }
 
         @Test
@@ -166,9 +177,13 @@ class ExceptionHandlerPostProcessorTest {
             }
 
             // when & then
-            assertThrows(BeanDefinitionValidationException.class,
-                    () -> validator.postProcessBeforeInitialization(new InvalidControllerAdvice(),
-                            "invalidControllerAdvice"));
+            assertThrows(
+                    BeanDefinitionValidationException.class,
+                    () -> validator.postProcessBeforeInitialization(
+                            new InvalidControllerAdvice(),
+                            "invalidControllerAdvice"
+                    )
+            );
         }
 
         @Nested
@@ -196,13 +211,19 @@ class ExceptionHandlerPostProcessorTest {
                 }
 
                 // when & then
-                assertThrows(BeanDefinitionValidationException.class,
+                assertThrows(
+                        BeanDefinitionValidationException.class,
                         () -> {
-                            validator.postProcessBeforeInitialization(new ValidControllerAdvice1(),
-                                    "validControllerAdvice1");
-                            validator.postProcessBeforeInitialization(new ValidControllerAdvice2(),
-                                    "validControllerAdvice2");
-                        });
+                            validator.postProcessBeforeInitialization(
+                                    new ValidControllerAdvice1(),
+                                    "validControllerAdvice1"
+                            );
+                            validator.postProcessBeforeInitialization(
+                                    new ValidControllerAdvice2(),
+                                    "validControllerAdvice2"
+                            );
+                        }
+                );
             }
         }
     }

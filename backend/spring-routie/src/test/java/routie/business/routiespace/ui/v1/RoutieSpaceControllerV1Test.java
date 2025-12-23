@@ -1,14 +1,9 @@
 package routie.business.routiespace.ui.v1;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
-
-import java.util.List;
-import java.util.regex.Pattern;
-
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -17,8 +12,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
-import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import routie.business.authentication.domain.jwt.JwtProcessor;
 import routie.business.participant.domain.User;
 import routie.business.participant.domain.UserFixture;
@@ -28,13 +21,21 @@ import routie.business.place.ui.dto.request.PlaceCreateRequest;
 import routie.business.place.ui.dto.request.PlaceCreateRequestV2;
 import routie.business.place.ui.dto.response.PlaceCreateResponse;
 import routie.business.routiespace.ui.dto.response.RoutieSpaceListResponse;
+import routie.util.DatabaseCleaner;
 
-@DirtiesContext(classMode = ClassMode.AFTER_CLASS)
+import java.util.List;
+import java.util.regex.Pattern;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 public class RoutieSpaceControllerV1Test {
 
     @LocalServerPort
     private int port;
+
+    @Autowired
+    private DatabaseCleaner databaseCleaner;
 
     @Autowired
     private UserRepository userRepository;
@@ -56,6 +57,11 @@ public class RoutieSpaceControllerV1Test {
                 .extract().response();
 
         routieSpaceIdentifier = createSpaceResponse.jsonPath().getString("routieSpaceIdentifier");
+    }
+
+    @AfterEach
+    void tearDown() {
+        databaseCleaner.execute();
     }
 
     @Test

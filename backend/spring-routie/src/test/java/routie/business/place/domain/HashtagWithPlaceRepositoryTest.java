@@ -1,10 +1,6 @@
 package routie.business.place.domain;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import jakarta.persistence.EntityManager;
-import java.util.List;
-import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -21,11 +17,18 @@ import routie.business.routiespace.domain.RoutieSpace;
 import routie.business.routiespace.domain.RoutieSpaceBuilder;
 import routie.business.routiespace.domain.RoutieSpaceRepository;
 
+import java.util.List;
+import java.util.Optional;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
 @DataJpaTest
 @Transactional
-@TestPropertySource(properties = {
-        "spring.flyway.enabled=false"
-})
+@TestPropertySource(
+        properties = {
+                "spring.flyway.enabled=false"
+        }
+)
 class HashtagWithPlaceRepositoryTest {
 
     @Autowired

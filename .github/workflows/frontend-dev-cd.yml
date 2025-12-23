@@ -1,0 +1,109 @@
+name: CD - Deploy to S3 and Invalidate CloudFront (Access Key)
+
+on:
+  # CI 워크플로가 끝난 뒤에만 CD가 트리거됨
+  workflow_run:
+    workflows: ['Front CI on develop branch'] # ci.yml의 name과 정확히 일치해야 함
+    types: [completed]
+
+# Access Key 방식은 OIDC를 안 쓰므로 id-token 권한 불필요
+permissions:
+  contents: read # checkout에 필요
+
+jobs:
+  deploy:
+    # CI 성공 + develop 브랜치에서 실행된 CI일 때만
+    if: >
+      github.event.workflow_run.conclusion == 'success' &&
+      github.event.workflow_run.head_branch == 'develop'
+
+    # GitHub Settings > Environments > production
+    # - Environment secrets/vars 사용 가능
+    # - Required reviewers(승인)도 여기서 걸 수 있음
+    environment: DEV
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: ./frontend
+
+    # Environment variables(평문 설정값)에서 가져옴
+    # Settings > Environments > production > Variables
+    env:
+      AWS_REGION: ${{ secrets.AWS_REGION }}
+      S3_BUCKET: ${{ secrets.S3_BUCKET }}
+      CLOUDFRONT_DIST_ID: ${{ secrets.CLOUDFRONT_DIST_ID }}
+
+    steps:
+      # 1) 레포 코드 체크아웃
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.workflow_run.head_sha }}
+
+      # 배포 시작 알림
+      - name: Notify deploy started (DEV)
+        run: |
+          curl -X POST -H "Content-Type: application/json" \
+              -d '{
+                "content": ":rocket: **DEV 배포 시작**\n브랜치: develop\n커밋: ${{ github.event.workflow_run.head_sha }}"
+              }' \
+              ${{ secrets.DISCORD_WEBHOOK_FRONTEND_CD }}
+
+      # 2) Node 설치 (Webpack 프로젝트 빌드용)
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm # npm 캐시로 설치 속도 개선
+          cache-dependency-path: frontend/package-lock.json
+
+      # 3) 의존성 설치 (package-lock 기준)
+      - name: Install deps
+        run: npm ci
+
+      # 4) 빌드
+      # - 이 단계가 실패하면 이후 배포 단계는 실행되지 않음
+      - name: Build
+        run: npm run build:dev
+
+      # 5) AWS 인증 (Access Key 방식)
+      - name: Configure AWS credentials (Access Key)
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      # 6) S3 배포
+      # - --delete: S3에 남아있는 오래된 파일 정리 (정적 배포에서 보통 필요)
+      - name: Deploy to S3
+        run: |
+          aws s3 sync dist "s3://${S3_BUCKET}" --delete
+
+      # 7) CloudFront 무효화 (해시 파일 전략)
+      - name: Invalidate CloudFront
+        run: |
+          aws cloudfront create-invalidation \
+            --distribution-id "${CLOUDFRONT_DIST_ID}" \
+            --paths "/" "/index.html"
+
+      # 배포 성공 알림
+      - name: Notify deploy success (DEV)
+        if: success()
+        run: |
+          curl -X POST -H "Content-Type: application/json" \
+            -d '{
+              "content": "✅ **DEV 배포 성공**\n커밋: ${{ github.event.workflow_run.head_sha }}"
+            }' \
+            ${{ secrets.DISCORD_WEBHOOK_FRONTEND_CD }}
+
+      # 배포 실패 알림
+      - name: Notify deploy failure (DEV)
+        if: failure()
+        run: |
+          curl -X POST -H "Content-Type: application/json" \
+            -d '{
+              "content": "❌ **DEV 배포 실패**\n커밋: ${{ github.event.workflow_run.head_sha }}\n확인: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+            }' \
+            ${{ secrets.DISCORD_WEBHOOK_FRONTEND_CD }}
