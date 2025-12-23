@@ -21,8 +21,11 @@ jobs:
     # - Environment secrets/vars 사용 가능
     # - Required reviewers(승인)도 여기서 걸 수 있음
     environment: DEV
-
     runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: ./frontend
 
     # Environment variables(평문 설정값)에서 가져옴
     # Settings > Environments > production > Variables
@@ -35,6 +38,8 @@ jobs:
       # 1) 레포 코드 체크아웃
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.workflow_run.head_sha }}
 
       # 2) Node 설치 (Webpack 프로젝트 빌드용)
       - name: Setup Node
@@ -50,7 +55,7 @@ jobs:
       # 4) 빌드
       # - 이 단계가 실패하면 이후 배포 단계는 실행되지 않음
       - name: Build
-        run: npm run build
+        run: npm run build:dev
 
       # 5) AWS 인증 (Access Key 방식)
       - name: Configure AWS credentials (Access Key)
