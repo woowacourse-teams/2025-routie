@@ -15,7 +15,8 @@ jobs:
     # CI 성공 + develop 브랜치에서 실행된 CI일 때만
     if: >
       github.event.workflow_run.conclusion == 'success' &&
-      github.event.workflow_run.head_branch == 'develop'
+      github.event.workflow_run.head_branch == 'develop' &&
+      github.event.workflow_run.event == 'push'
 
     # GitHub Settings > Environments > production
     # - Environment secrets/vars 사용 가능
