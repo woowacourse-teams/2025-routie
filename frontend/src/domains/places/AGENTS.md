@@ -21,6 +21,7 @@
 - `utils/`: 도메인 유틸
 
 ## API/Adapter 규칙 (places 한정)
+- 서버 응답이 추가될 때는 adapter를 반드시 추가
 - 해시태그 요청 전 `removeHashtagPrefix`로 포맷 정리
 - 해시태그 응답은 `addHashtagPrefix`로 표시 포맷 유지
 
