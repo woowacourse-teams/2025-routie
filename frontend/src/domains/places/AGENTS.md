@@ -14,7 +14,7 @@
 - `adapters/`: 서버 응답 → UI 모델 변환 (`placeAdapter.ts`)
 - `apis/`: 도메인 API 호출 (`place.ts`)
 - `components/`: 도메인 공용 컴포넌트 (스토리 포함)
-- `contexts/`: 도메인 컨텍스트
+- `contexts/`: 도메인 내 여러 곳에서 공유되는 전역 상태 관리
 - `hooks/`: 도메인 훅
 - `queries/`: React Query hooks (`key.ts`에서 query key 관리)
 - `types/`: 도메인 타입
