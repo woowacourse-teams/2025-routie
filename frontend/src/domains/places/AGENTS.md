@@ -20,22 +20,8 @@
 - `types/`: 도메인 타입
 - `utils/`: 도메인 유틸
 
-## 타입 규칙 (places 한정)
-- API 타입: `types/api.types.ts` (Request/Response 분리)
-- 클라이언트 타입: `types/places.types.ts`
-- 객체는 interface, 나머지는 type
-- export/import는 `export type` / `import type` 사용
-
-## API 규칙
-- 공통 `apiClient` 사용
-- 에러 처리: `handleApiError` 필수
-- 인증 필요 시 `getAccessTokenOrThrow`
-- Routie Space 필요 시 `getRoutieSpaceUuid` / `ensureRoutieSpaceUuid`
+## API/Adapter 규칙 (places 한정)
 - 해시태그 요청 전 `removeHashtagPrefix`로 포맷 정리
-
-## Adapter 규칙
-- 서버 모델 → UI 모델 변환은 반드시 adapter로 분리
-- adapter 함수명: `convertXxxResponseToXxx`
 - 해시태그 응답은 `addHashtagPrefix`로 표시 포맷 유지
 
 ## React Query 규칙
@@ -44,12 +30,6 @@
 - 데이터 변환은 `select` 또는 adapter 사용
 - mutation 성공 시 관련 query invalidate
 - 장소 삭제 시 GA 이벤트 트리거가 필요하면 `usePlaceQuery.ts` 패턴 유지
-
-## 네이밍 규칙 (places 한정)
-- boolean: `is/has/can`
-- handler: `handleXxx`
-- props: `XxxProps`
-- params: `XxxParams`
 
 ## 도메인 정책 (places 한정)
 - 해시태그 입력: 최대 5개, 최대 7자 제한
