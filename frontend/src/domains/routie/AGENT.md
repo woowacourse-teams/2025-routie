@@ -40,6 +40,17 @@ src/domains/routie/
 - routie 도메인의 모든 API는 인증이 필요 없음
 - 루티 스페이스 UUID만 있으면 됨
 
+### 4. SSE 기반 실시간 동기화
+
+- 동선 상태는 SSE 메시지가 SSoT(Single Source of Truth)
+- API mutation 후 응답을 사용하지 않고, SSE 이벤트로 상태 업데이트
+- `useRoutieStream` 훅이 4가지 이벤트 수신:
+  - `ROUTIE_HISTORY`: 전체 동선 히스토리
+  - `ROUTIE_PLACE_CREATED`: 장소 추가 시
+  - `ROUTIE_UPDATED`: 순서 변경 시
+  - `ROUTIE_PLACE_DELETED`: 장소 삭제 시
+- 모든 이벤트는 `replaceRoutie()`를 통해 React Query 캐시 직접 업데이트
+
 ## 새 기능 추가 순서
 
 1. **타입 정의** → `types/api.types.ts`, `types/routie.types.ts`
