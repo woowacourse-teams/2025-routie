@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 
-import { kakaoMapAdapter } from '@/libs/map-sdk/adapters/kakaoMapAdapter';
 import type { UseKakaoMapSDKReturnType } from '@/domains/maps/types/api.types';
+import { kakaoMapAdapter } from '@/libs/map-sdk/adapters/kakaoMapAdapter';
 
 const MAX_ATTEMPTS = 10;
 const RETRY_DELAY = 500;

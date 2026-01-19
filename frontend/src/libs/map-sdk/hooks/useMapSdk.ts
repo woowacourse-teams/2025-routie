@@ -1,5 +1,5 @@
-import type { UseKakaoMapSDKReturnType } from '@/domains/maps/types/api.types';
 import { useKakaoMapSDK } from '@/domains/maps/hooks/useKakaoMapSDK';
+import type { UseKakaoMapSDKReturnType } from '@/domains/maps/types/api.types';
 
 const useMapSdk = (): UseKakaoMapSDKReturnType => useKakaoMapSDK();
 
