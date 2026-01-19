@@ -2,7 +2,7 @@ import type {
   LatLngInstanceType,
   MapAdapter,
   MapInstanceType,
-} from '@/domains/maps/libs/types/adapter.types';
+} from '@/libs/map-sdk/types/adapter.types';
 
 const kakaoMapAdapter: MapAdapter = {
   isLoaded: () => Boolean(window.kakao?.maps),

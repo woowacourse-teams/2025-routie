@@ -1,12 +1,15 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
+import {
+  createMap,
+  relayout,
+} from '@/libs/map-sdk/controllers/mapController';
 import type {
   KakaoMapType,
   MapStateType,
   UseKakaoMapInitProps,
   UseKakaoMapInitReturnType,
 } from '@/domains/maps/types/api.types';
-import { createMap, relayout } from '@/domains/maps/libs/controllers/mapController';
 
 const useKakaoMapInit = ({
   containerRef,

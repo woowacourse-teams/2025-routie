@@ -1,8 +1,8 @@
-import { kakaoMapAdapter } from '@/domains/maps/libs/adapters/kakaoMapAdapter';
+import { kakaoMapAdapter } from '@/libs/map-sdk/adapters/kakaoMapAdapter';
 import type {
   LatLngLiteral,
   MapInstanceType,
-} from '@/domains/maps/libs/types/adapter.types';
+} from '@/libs/map-sdk/types/adapter.types';
 
 const createMap = (
   container: HTMLDivElement,
