@@ -6,6 +6,7 @@ import type {
   UseKakaoMapInitProps,
   UseKakaoMapInitReturnType,
 } from '@/domains/maps/types/api.types';
+import { createMap, relayout } from '@/domains/maps/libs/controllers/mapController';
 
 const useKakaoMapInit = ({
   containerRef,
@@ -27,22 +28,20 @@ const useKakaoMapInit = ({
     }
 
     try {
-      const options = {
-        center: new window.kakao.maps.LatLng(
-          INITIAL_LAT_LNG.lat,
-          INITIAL_LAT_LNG.lng,
-        ),
-        level: INITIAL_LEVEL,
-      };
+      const mapInstance = createMap(
+        containerRef.current,
+        INITIAL_LAT_LNG,
+        INITIAL_LEVEL,
+      ) as KakaoMapType;
 
-      mapRef.current = new window.kakao.maps.Map(containerRef.current, options);
+      mapRef.current = mapInstance;
       isInitializedRef.current = true;
       setMapState('ready');
       setErrorMessage(null);
 
       setTimeout(() => {
         if (mapRef.current) {
-          mapRef.current.relayout();
+          relayout(mapRef.current);
         }
       }, 100);
     } catch (error) {

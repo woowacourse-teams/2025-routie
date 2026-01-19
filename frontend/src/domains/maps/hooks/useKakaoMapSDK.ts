@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 
+import { kakaoMapAdapter } from '@/domains/maps/libs/adapters/kakaoMapAdapter';
 import type { UseKakaoMapSDKReturnType } from '@/domains/maps/types/api.types';
 
 const MAX_ATTEMPTS = 10;
@@ -14,8 +15,8 @@ const useKakaoMapSDK = (): UseKakaoMapSDKReturnType => {
 
   useEffect(() => {
     const loadSdk = () => {
-      if (window.kakao?.maps) {
-        window.kakao.maps.load(() => {
+      if (kakaoMapAdapter.isLoaded()) {
+        kakaoMapAdapter.load(() => {
           setSdkReady(true);
           setSdkError(null);
         });
