@@ -5,12 +5,12 @@ import type {
   UseMapStateProps,
   UseMapStateReturn,
 } from '@/domains/maps/types/map.types';
+import { useMapSdk } from '@/libs/map-sdk/hooks/useMapSdk';
 
 import { useKakaoMapInit } from './useKakaoMapInit';
-import { useKakaoMapSDK } from './useKakaoMapSDK';
 
 const useMapState = ({ containerRef }: UseMapStateProps): UseMapStateReturn => {
-  const { sdkReady, sdkError } = useKakaoMapSDK();
+  const { sdkReady, sdkError } = useMapSdk();
   const { mapRef, mapState, errorMessage, initializeMap } = useKakaoMapInit({
     containerRef,
     sdkReady,
