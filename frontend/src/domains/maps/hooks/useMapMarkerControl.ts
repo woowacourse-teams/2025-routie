@@ -96,7 +96,9 @@ const useMapMarkerControl = (map: MapRefType) => {
     const position = new window.kakao.maps.LatLng(lat, lng);
 
     setTimeout(() => {
-      map.current.panTo(position);
+      if (map.current) {
+        map.current.panTo(position);
+      }
     }, 120);
   }, []);
 
