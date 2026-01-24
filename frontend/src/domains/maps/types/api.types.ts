@@ -39,7 +39,7 @@ interface RoutiePlaceWithDetails extends PlaceDataType {
   routieId: number;
 }
 
-type MapRefType = RefObject<KakaoMapType>;
+type MapRefType = RefObject<KakaoMapType | null>;
 
 export type {
   KakaoMapType,
