@@ -189,6 +189,7 @@ class MapSdkLoader {
    * @description
    * 에러 상태에서 SDK 로드를 다시 시도합니다.
    * 에러 상태가 아닌 경우 기존 load()와 동일하게 동작합니다.
+   * idle 중간 상태 없이 바로 loading 상태로 전이하여 불필요한 리렌더링을 방지합니다.
    *
    * @returns 로딩 완료 Promise
    *
@@ -202,9 +203,20 @@ class MapSdkLoader {
    * ```
    */
   retry(): Promise<void> {
-    if (this.status === 'error') {
-      this.resetError();
+    // 이미 로딩 중이면 기존 Promise 반환 (동시 retry 호출 방지)
+    if (this.status === 'loading' && this.loadPromise) {
+      return this.loadPromise;
     }
+
+    // 이미 로드 완료면 즉시 resolve
+    if (this.status === 'loaded') {
+      return Promise.resolve();
+    }
+
+    // 에러 상태 초기화 (idle 중간 상태 없이 바로 loading으로 전이)
+    this.error = null;
+    this.loadPromise = null;
+
     return this.load();
   }
 

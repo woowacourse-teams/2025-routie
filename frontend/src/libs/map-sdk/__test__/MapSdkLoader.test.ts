@@ -181,8 +181,8 @@ describe('MapSdkLoader', () => {
       await loader.retry();
 
       expect(loader.getSnapshot().status).toBe('loaded');
-      // loading → error → idle(resetError) → loading → loaded 순서
-      expect(states).toEqual(['loading', 'error', 'idle', 'loading', 'loaded']);
+      // loading → error → loading → loaded 순서 (idle 중간 상태 없음)
+      expect(states).toEqual(['loading', 'error', 'loading', 'loaded']);
     });
 
     it('loadPromise가 실패 후 null로 초기화되어야 한다', async () => {
