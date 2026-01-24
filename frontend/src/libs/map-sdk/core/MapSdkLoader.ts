@@ -89,14 +89,21 @@ class MapSdkLoader {
    * @description
    * 앱 시작 시 1회만 호출합니다.
    * 이후 load()가 자동으로 호출되어 SDK를 로드합니다.
+   * 에러 상태에서 다시 호출하면 재시도합니다.
    *
    * @param options - 초기화 옵션
    * @param options.appkey - 지도 API 앱 키
    * @param options.libraries - 추가 라이브러리 배열 (선택)
    */
   init(options: LoaderOptions): void {
-    if (this.status !== 'idle') {
+    // 로딩 중이거나 이미 로드된 경우 무시
+    if (this.status === 'loading' || this.status === 'loaded') {
       return;
+    }
+
+    // 에러 상태인 경우 상태 초기화 후 재시도
+    if (this.status === 'error') {
+      this.resetError();
     }
 
     this.appkey = options.appkey;
@@ -135,6 +142,8 @@ class MapSdkLoader {
       })
       .catch((error: Error) => {
         this.setError(error);
+        // 재시도를 위해 loadPromise 초기화
+        this.loadPromise = null;
         throw error;
       });
 
@@ -160,6 +169,43 @@ class MapSdkLoader {
     this.error = error;
     this.updateCachedSnapshot();
     this.notifySubscribers();
+  }
+
+  /**
+   * 에러 상태 초기화
+   * @description 재시도를 위해 에러 상태를 초기화합니다.
+   */
+  private resetError(): void {
+    this.status = 'idle';
+    this.error = null;
+    this.loadPromise = null;
+    this.updateCachedSnapshot();
+    this.notifySubscribers();
+  }
+
+  /**
+   * SDK 로드 재시도
+   *
+   * @description
+   * 에러 상태에서 SDK 로드를 다시 시도합니다.
+   * 에러 상태가 아닌 경우 기존 load()와 동일하게 동작합니다.
+   *
+   * @returns 로딩 완료 Promise
+   *
+   * @example
+   * ```typescript
+   * const { isError, retry } = useMapSdkLoader();
+   *
+   * if (isError) {
+   *   return <button onClick={retry}>다시 시도</button>;
+   * }
+   * ```
+   */
+  retry(): Promise<void> {
+    if (this.status === 'error') {
+      this.resetError();
+    }
+    return this.load();
   }
 
   /**
@@ -237,6 +283,17 @@ class MapSdkLoader {
    */
   getAdapter(): MapAdapter {
     return this.adapter;
+  }
+
+  /**
+   * 싱글톤 인스턴스 초기화 (테스트 전용)
+   * @internal
+   */
+  static resetForTesting(): void {
+    if (MapSdkLoader.instance) {
+      MapSdkLoader.instance.subscribers.clear();
+      MapSdkLoader.instance = null;
+    }
   }
 }
 

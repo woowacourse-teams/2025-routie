@@ -20,6 +20,8 @@ interface UseMapSdkLoaderReturn {
   isError: boolean;
   /** SDK 로드 시작 함수 */
   load: () => Promise<void>;
+  /** SDK 로드 재시도 함수 (에러 상태에서 사용) */
+  retry: () => Promise<void>;
 }
 
 /**
@@ -36,13 +38,14 @@ interface UseMapSdkLoaderReturn {
  * @returns isLoading - SDK 로딩 중 여부
  * @returns isError - 에러 발생 여부
  * @returns load - SDK 로드 시작 함수
+ * @returns retry - SDK 로드 재시도 함수 (에러 상태에서 사용)
  *
  * @example
  * ```typescript
- * const { isLoaded, isLoading, isError, error } = useMapSdkLoader();
+ * const { isLoaded, isLoading, isError, error, retry } = useMapSdkLoader();
  *
  * if (isLoading) return <Loading />;
- * if (isError) return <Error message={error?.message} />;
+ * if (isError) return <button onClick={retry}>다시 시도</button>;
  * if (isLoaded) return <Map />;
  * ```
  */
@@ -60,6 +63,7 @@ const useMapSdkLoader = (): UseMapSdkLoaderReturn => {
     isLoading: snapshot.status === 'loading',
     isError: snapshot.status === 'error',
     load: () => mapSdkLoader.load(),
+    retry: () => mapSdkLoader.retry(),
   };
 };
 
