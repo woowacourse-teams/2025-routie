@@ -2,14 +2,14 @@ import { useCallback, useRef } from 'react';
 
 import type {
   DrawMarkerProps,
-  MarkerType,
   MapRefType,
   CustomOverlayType,
 } from '@/domains/maps/types/api.types';
 import { createCustomMarkerElement } from '@/domains/maps/utils/createCustomMarkerElement';
 
 const useMapMarkerControl = (map: MapRefType) => {
-  const markersRef = useRef<(MarkerType | CustomOverlayType)[]>([]);
+  // 숫자 마커(CustomOverlay)만 관리 - 기본 마커는 Marker 컴포넌트에서 관리
+  const markersRef = useRef<CustomOverlayType[]>([]);
 
   const clearMarkers = useCallback(() => {
     markersRef.current.forEach((marker) => {
@@ -18,51 +18,40 @@ const useMapMarkerControl = (map: MapRefType) => {
     markersRef.current = [];
   }, []);
 
+  /**
+   * 숫자 마커 (routieSequence가 있는 경우)만 그립니다.
+   * 기본 마커는 Marker 컴포넌트로 선언적 렌더링합니다.
+   */
   const drawMarkers = useCallback(
     ({ place, routieSequence, onClick }: DrawMarkerProps) => {
       if (!map.current) return;
+
+      // routieSequence가 없으면 기본 마커 → Marker 컴포넌트에서 처리
+      if (!routieSequence) return;
 
       const position = new window.kakao.maps.LatLng(
         place.latitude,
         place.longitude,
       );
 
-      if (routieSequence) {
-        const content = createCustomMarkerElement(routieSequence);
+      const content = createCustomMarkerElement(routieSequence);
 
-        const overlay = new window.kakao.maps.CustomOverlay({
-          position,
-          content,
-          yAnchor: 0.5,
-          xAnchor: 0.5,
+      const overlay = new window.kakao.maps.CustomOverlay({
+        position,
+        content,
+        yAnchor: 0.5,
+        xAnchor: 0.5,
+      });
+
+      overlay.setMap(map.current);
+
+      if (onClick) {
+        content.addEventListener('click', () => {
+          onClick();
         });
-
-        overlay.setMap(map.current);
-
-        if (onClick) {
-          content.addEventListener('click', () => {
-            onClick();
-          });
-        }
-        markersRef.current.push(overlay);
-        return overlay;
-      } else {
-        const marker = new window.kakao.maps.Marker({
-          position,
-          title: place.name,
-        });
-
-        marker.setMap(map.current);
-
-        if (onClick) {
-          window.kakao.maps.event.addListener(marker, 'click', () => {
-            onClick();
-          });
-        }
-
-        markersRef.current.push(marker);
-        return marker;
       }
+      markersRef.current.push(overlay);
+      return overlay;
     },
     [map],
   );
@@ -87,6 +76,8 @@ const useMapMarkerControl = (map: MapRefType) => {
         }
       }, 100);
     },
+    // map은 ref 객체로 변경되지 않으므로 의존성에서 제외해도 안전함
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [],
   );
 
@@ -100,6 +91,8 @@ const useMapMarkerControl = (map: MapRefType) => {
         map.current.panTo(position);
       }
     }, 120);
+    // map은 ref 객체로 변경되지 않으므로 의존성에서 제외해도 안전함
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return { drawMarkers, fitBoundsToMarkers, clearMarkers, panToMarker };
