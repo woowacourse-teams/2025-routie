@@ -1,8 +1,14 @@
 import type {
+  CustomOverlayCreateOptions,
+  CustomOverlayInstanceType,
+  EventListenerType,
   LatLngInstanceType,
+  LatLngLiteral,
   MapAdapter,
   MapCreateOptions,
   MapInstanceType,
+  MarkerCreateOptions,
+  MarkerInstanceType,
 } from '../types/adapter.types';
 
 /**
@@ -91,6 +97,117 @@ const kakaoMapAdapter: MapAdapter = {
    */
   relayout(map: MapInstanceType): void {
     map.relayout();
+  },
+
+  /**
+   * 마커 생성
+   * @param map - 지도 인스턴스
+   * @param options - 마커 생성 옵션
+   */
+  createMarker(map: MapInstanceType, options: MarkerCreateOptions): MarkerInstanceType {
+    const position = this.createLatLng(options.position.lat, options.position.lng);
+
+    const marker = new window.kakao.maps.Marker({
+      position,
+      title: options.title,
+      clickable: options.clickable ?? true,
+      draggable: options.draggable ?? false,
+      opacity: options.opacity,
+      zIndex: options.zIndex,
+    });
+
+    marker.setMap(map);
+    return marker;
+  },
+
+  /**
+   * 마커 제거
+   * @param marker - 마커 인스턴스
+   */
+  removeMarker(marker: MarkerInstanceType): void {
+    marker.setMap(null);
+  },
+
+  /**
+   * 마커 위치 변경
+   * @param marker - 마커 인스턴스
+   * @param position - 새 위치
+   */
+  setMarkerPosition(marker: MarkerInstanceType, position: LatLngLiteral): void {
+    const newPosition = this.createLatLng(position.lat, position.lng);
+    marker.setPosition(newPosition);
+  },
+
+  /**
+   * 마커 이벤트 리스너 등록
+   * @param marker - 마커 인스턴스
+   * @param event - 이벤트 타입
+   * @param handler - 이벤트 핸들러
+   */
+  addMarkerListener(
+    marker: MarkerInstanceType,
+    event: string,
+    handler: EventListenerType,
+  ): void {
+    window.kakao.maps.event.addListener(marker, event, handler);
+  },
+
+  /**
+   * 마커 이벤트 리스너 제거
+   * @param marker - 마커 인스턴스
+   * @param event - 이벤트 타입
+   * @param handler - 이벤트 핸들러
+   */
+  removeMarkerListener(
+    marker: MarkerInstanceType,
+    event: string,
+    handler: EventListenerType,
+  ): void {
+    window.kakao.maps.event.removeListener(marker, event, handler);
+  },
+
+  /**
+   * 커스텀 오버레이 생성
+   * @param map - 지도 인스턴스
+   * @param options - 오버레이 생성 옵션
+   */
+  createCustomOverlay(
+    map: MapInstanceType,
+    options: CustomOverlayCreateOptions,
+  ): CustomOverlayInstanceType {
+    const position = this.createLatLng(options.position.lat, options.position.lng);
+
+    const overlay = new window.kakao.maps.CustomOverlay({
+      position,
+      content: options.content,
+      xAnchor: options.xAnchor ?? 0.5,
+      yAnchor: options.yAnchor ?? 0.5,
+      zIndex: options.zIndex,
+    });
+
+    overlay.setMap(map);
+    return overlay;
+  },
+
+  /**
+   * 커스텀 오버레이 제거
+   * @param overlay - 오버레이 인스턴스
+   */
+  removeCustomOverlay(overlay: CustomOverlayInstanceType): void {
+    overlay.setMap(null);
+  },
+
+  /**
+   * 커스텀 오버레이 위치 변경
+   * @param overlay - 오버레이 인스턴스
+   * @param position - 새 위치
+   */
+  setCustomOverlayPosition(
+    overlay: CustomOverlayInstanceType,
+    position: LatLngLiteral,
+  ): void {
+    const newPosition = this.createLatLng(position.lat, position.lng);
+    overlay.setPosition(newPosition);
   },
 };
 

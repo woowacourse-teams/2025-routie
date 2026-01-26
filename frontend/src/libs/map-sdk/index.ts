@@ -21,4 +21,9 @@ export type {
   LoaderStatus,
   LoaderSnapshot,
   LoaderOptions,
+  MarkerInstanceType,
+  MarkerCreateOptions,
+  EventListenerType,
+  CustomOverlayInstanceType,
+  CustomOverlayCreateOptions,
 } from './types/adapter.types';
