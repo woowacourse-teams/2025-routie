@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 
 import Flex from '@/@common/components/Flex/Flex';
@@ -6,11 +6,20 @@ import Text from '@/@common/components/Text/Text';
 import HashtagFilter from '@/domains/maps/components/HashtagFilter/HashtagFilter';
 import KakaoMapLoadBoundary from '@/domains/maps/components/KakaoMapLoadBoundary/KakaoMapLoadBoundary';
 import Map from '@/domains/maps/components/Map/Map';
+import Marker from '@/domains/maps/components/Marker/Marker';
+import NumberMarker from '@/domains/maps/components/Marker/NumberMarker';
 import PlaceOverlayCard from '@/domains/maps/components/PlaceOverlayCard/PlaceOverlayCard';
 import { useClickedPlace } from '@/domains/maps/hooks/useClickedPlace';
 import { useCustomOverlay } from '@/domains/maps/hooks/useCustomOverlay';
 import { useMap } from '@/domains/maps/hooks/useMap';
+import { useMapNavigation } from '@/domains/maps/hooks/useMapNavigation';
 import { useMapRenderer } from '@/domains/maps/hooks/useMapRenderer';
+import { useRoutePlacesWithDetails } from '@/domains/maps/hooks/useRoutePlacesWithDetails';
+import { useHashtagFilterContext } from '@/domains/places/contexts/useHashtagFilterContext';
+import { usePlaceList } from '@/domains/places/hooks/usePlaceList';
+import type { PlaceDataType } from '@/domains/places/types/place.types';
+import { filterPlacesByHashtags } from '@/domains/places/utils/filterPlaces';
+
 
 
 import {
@@ -57,7 +66,7 @@ const MapError = ({ error }: { error: Error }) => (
  *
  * @description
  * Map 컴포넌트 내부에서 렌더링되며 useMap()을 통해 지도 인스턴스에 접근합니다.
- * 기존 훅들과의 호환성을 위해 mapRef 패턴을 유지합니다.
+ * 마커는 Marker/NumberMarker 컴포넌트로 선언적 렌더링합니다.
  *
  * @param props - 컴포넌트 Props
  * @param props.isSidebarOpen - 사이드바 열림 상태
@@ -70,17 +79,54 @@ const MapContent = ({ isSidebarOpen }: { isSidebarOpen: boolean }) => {
   const mapRef = useRef<KakaoMapType | null>(null);
   mapRef.current = map;
 
+  // 장소 데이터
+  const { placeList } = usePlaceList();
+  const { routiePlacesWithDetails } = useRoutePlacesWithDetails();
+  const { selectedHashtags } = useHashtagFilterContext();
+
   const { containerEl, openAt, close } = useCustomOverlay(mapRef);
   const { clickedPlace, handleMapClick, handleMarkerClick } = useClickedPlace({
     openAt,
     close,
   });
+
+  // 마커 클릭 시 지도 이동을 위한 navigateToPlace
+  const { navigateToPlace } = useMapNavigation({
+    mapRef,
+    isInitialLoad,
+    setIsInitialLoad,
+  });
+
   const { renderMapElements } = useMapRenderer({
     mapRef,
     isInitialLoad,
     setIsInitialLoad,
-    handleMarkerClick,
   });
+
+  // 마커 클릭 핸들러 (오버레이 표시 + 지도 이동)
+  const handleMarkerClickWithNavigation = useCallback(
+    (place: PlaceDataType) => {
+      handleMarkerClick(place);
+      navigateToPlace(place);
+    },
+    [handleMarkerClick, navigateToPlace],
+  );
+
+  // 필터링된 장소 목록 (기본 마커용 - routieSequence 없는 것만)
+  const basicMarkerPlaces = useMemo(() => {
+    if (!placeList) return [];
+
+    const routiePlaceIds = new Set(routiePlacesWithDetails.map((rp) => rp.id));
+
+    const filteredPlaces = filterPlacesByHashtags({
+      places: placeList,
+      selectedHashtags,
+      priorityPlaceIds: [...routiePlaceIds],
+    });
+
+    // routieSequence가 없는 장소만 (기본 마커)
+    return filteredPlaces.filter((place) => !routiePlaceIds.has(place.id));
+  }, [placeList, routiePlacesWithDetails, selectedHashtags]);
 
   // 지도 클릭 이벤트 등록
   useEffect(() => {
@@ -93,7 +139,7 @@ const MapContent = ({ isSidebarOpen }: { isSidebarOpen: boolean }) => {
     };
   }, [map, handleMapClick]);
 
-  // 맵 요소 렌더링 (마커, 폴리라인 등)
+  // 맵 요소 렌더링 (폴리라인, 맵 피팅 등 - 마커는 선언적 컴포넌트로 처리)
   useEffect(() => {
     if (!map) return;
     renderMapElements();
@@ -113,6 +159,27 @@ const MapContent = ({ isSidebarOpen }: { isSidebarOpen: boolean }) => {
   return (
     <>
       <HashtagFilter isSidebarOpen={isSidebarOpen} />
+
+      {/* 기본 마커 - 선언적 Marker 컴포넌트 */}
+      {basicMarkerPlaces.map((place) => (
+        <Marker
+          key={place.id}
+          position={{ lat: place.latitude, lng: place.longitude }}
+          title={place.name}
+          onClick={() => handleMarkerClickWithNavigation(place)}
+        />
+      ))}
+
+      {/* 숫자 마커 - 선언적 NumberMarker 컴포넌트 */}
+      {routiePlacesWithDetails.map((place) => (
+        <NumberMarker
+          key={`number-${place.id}`}
+          position={{ lat: place.latitude, lng: place.longitude }}
+          sequence={place.sequence}
+          onClick={() => handleMarkerClickWithNavigation(place)}
+        />
+      ))}
+
       {containerEl &&
         clickedPlace &&
         createPortal(
