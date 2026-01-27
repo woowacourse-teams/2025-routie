@@ -10,6 +10,7 @@ export { mapController } from './controllers/mapController';
 // Hooks
 export { useMapSdkLoader } from './hooks/useMapSdkLoader';
 export type { UseMapSdkLoaderReturn } from './hooks/useMapSdkLoader';
+export { useMap } from './hooks/useMap';
 
 // Types
 export type {
