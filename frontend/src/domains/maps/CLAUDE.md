@@ -33,7 +33,7 @@ src/domains/maps/types/api.types.ts    - API 관련 타입
 |---|---|
 | `useKakaoLoader` | SDK 로딩 상태 (status, error, load) |
 | `useMap` | Context에서 map 인스턴스 획득 |
-| `useMapMarkerControl` | 마커 제어 |
+| `useMapNavigationControl` | 지도 이동 제어 |
 
 ### 컴포넌트
 
@@ -109,7 +109,7 @@ src/
     ├── hooks/
     │   ├── useKakaoLoader.ts        # SDK 로딩 상태 훅
     │   ├── useMap.ts                # useMap re-export
-    │   └── useMapMarkerControl.ts   # 마커 제어
+    │   └── useMapNavigationControl.ts   # 지도 이동 제어
     ├── components/
     │   ├── KakaoMapLoadBoundary/    # SDK 로딩 래퍼
     │   ├── Map/                     # 선언적 지도 컴포넌트

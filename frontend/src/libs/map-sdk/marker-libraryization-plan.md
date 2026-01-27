@@ -201,7 +201,7 @@ src/libs/map-sdk/
 ### 단계 5-1: 도메인 마커 렌더링 로직 제거
 - 목표: 도메인에서 SDK 접근을 제거한다.
 - 변경 파일 목록(예상)
-  - `src/domains/maps/hooks/useMapMarkerControl.ts`
+  - `src/domains/maps/hooks/useMapNavigationControl.ts`
   - `src/domains/maps/hooks/useMapRenderer.ts`
   - `src/domains/maps/types/api.types.ts`
 - 작업 상세(체크리스트)
