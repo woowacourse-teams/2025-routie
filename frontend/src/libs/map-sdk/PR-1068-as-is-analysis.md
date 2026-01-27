@@ -16,7 +16,7 @@
 - 다른 지도 SDK로 전환 시 `kakaoMapAdapter`만 교체하도록 구조를 고정한다.
 
 ## 3. Map 인스턴스 생성/생명주기
-- 생성 위치: `src/domains/maps/components/Map/Map.tsx`
+- 생성 위치: `src/libs/map-sdk/components/Map/Map.tsx`
 - 생성 API: `mapController.createMap` → adapter 경유
 - 수명주기: Map 컴포넌트 mount 시 생성, unmount 시 DOM 제거에 의존
 - 상태 동기화: `center/level/draggable/scrollwheel`을 `useEffect`로 동기화

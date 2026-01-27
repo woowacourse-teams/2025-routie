@@ -46,8 +46,8 @@ src/libs/map-sdk/
 - 변경 파일 목록(예상)
   - `src/libs/map-sdk/contexts/KakaoMapContext.ts`
   - `src/libs/map-sdk/hooks/useMap.ts`
-  - `src/domains/maps/contexts/KakaoMapContext.ts`
-  - `src/domains/maps/hooks/useMap.ts`
+  - `src/domains/maps/contexts/KakaoMapContext.ts` (제거됨)
+  - `src/domains/maps/hooks/useMap.ts` (제거됨)
 - 작업 상세(체크리스트)
   - [ ] `KakaoMapContext`를 libs로 이동
   - [ ] `useMap`을 libs에서 제공
@@ -70,8 +70,8 @@ src/libs/map-sdk/
 - 변경 파일 목록(예상)
   - `src/libs/map-sdk/components/Map/Map.tsx`
   - `src/libs/map-sdk/components/Map/Map.types.ts`
-  - `src/domains/maps/components/Map/Map.tsx`
-  - `src/domains/maps/components/Map/Map.types.ts`
+  - `src/domains/maps/components/Map/Map.tsx` (제거됨)
+  - `src/domains/maps/components/Map/Map.types.ts` (제거됨)
 - 작업 상세(체크리스트)
   - [ ] Map 컴포넌트를 libs로 이동
   - [ ] 도메인 Map 컴포넌트는 re-export만 유지
