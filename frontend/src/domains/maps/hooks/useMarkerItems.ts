@@ -7,7 +7,10 @@ import type { MarkerItemType } from '@/libs/map-sdk';
 
 import { useRoutePlacesWithDetails } from './useRoutePlacesWithDetails';
 
-const useMarkerRenderer = () => {
+/**
+ * 마커 입력 데이터 생성 훅
+ */
+const useMarkerItems = () => {
   const { placeList } = usePlaceList();
   const { routiePlacesWithDetails } = useRoutePlacesWithDetails();
   const { selectedHashtags } = useHashtagFilterContext();
@@ -38,4 +41,4 @@ const useMarkerRenderer = () => {
   return { markerItems };
 };
 
-export { useMarkerRenderer };
+export { useMarkerItems };

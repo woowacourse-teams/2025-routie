@@ -169,7 +169,7 @@ src/libs/map-sdk/
 ### 단계 4-1: 도메인에 markerItems 생성 훅 추가
 - 목표: 도메인은 마커 입력 데이터만 생성하도록 한다.
 - 변경 파일 목록(예상)
-  - `src/domains/maps/hooks/useMarkerRenderer.ts`
+  - `src/domains/maps/hooks/useMarkerItems.ts`
   - `src/domains/maps/types/map.types.ts`
 - 작업 상세(체크리스트)
   - [ ] 마커 리스트를 `MarkerItemType[]`로 변환

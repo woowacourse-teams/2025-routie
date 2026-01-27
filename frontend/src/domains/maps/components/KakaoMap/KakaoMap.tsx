@@ -9,7 +9,7 @@ import PlaceOverlayCard from '@/domains/maps/components/PlaceOverlayCard/PlaceOv
 import { useClickedPlace } from '@/domains/maps/hooks/useClickedPlace';
 import { useCustomOverlay } from '@/domains/maps/hooks/useCustomOverlay';
 import { useMapRenderer } from '@/domains/maps/hooks/useMapRenderer';
-import { useMarkerRenderer } from '@/domains/maps/hooks/useMarkerRenderer';
+import { useMarkerItems } from '@/domains/maps/hooks/useMarkerItems';
 import type { PlaceDataType } from '@/domains/places/types/place.types';
 import { useMap, Map, MarkerLayer } from '@/libs/map-sdk';
 
@@ -80,7 +80,7 @@ const MapContent = ({ isSidebarOpen }: { isSidebarOpen: boolean }) => {
     isInitialLoad,
     setIsInitialLoad,
   });
-  const { markerItems } = useMarkerRenderer();
+  const { markerItems } = useMarkerItems();
 
   const handleMarkerClickWithNavigate = useCallback(
     (place: PlaceDataType) => {
