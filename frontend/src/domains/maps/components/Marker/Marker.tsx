@@ -18,10 +18,6 @@ import type { MarkerProps } from './Marker.types';
  * @param props.position - 마커 위치 { lat, lng }
  * @param props.title - 마커 제목 (툴팁)
  * @param props.onClick - 클릭 이벤트 핸들러
- * @param props.clickable - 클릭 가능 여부 @default true
- * @param props.draggable - 드래그 가능 여부 @default false
- * @param props.opacity - 투명도 (0~1)
- * @param props.zIndex - z-index
  *
  * @example
  * ```tsx
@@ -34,15 +30,7 @@ import type { MarkerProps } from './Marker.types';
  * </Map>
  * ```
  */
-const Marker = ({
-  position,
-  title,
-  onClick,
-  clickable = true,
-  draggable = false,
-  opacity,
-  zIndex,
-}: MarkerProps) => {
+const Marker = ({ position, title, onClick }: MarkerProps) => {
   const map = useMap();
   const markerRef = useRef<MarkerInstanceType | null>(null);
   const onClickRef = useRef(onClick);
@@ -57,10 +45,6 @@ const Marker = ({
     const marker = kakaoMapAdapter.createMarker(map, {
       position,
       title,
-      clickable,
-      draggable,
-      opacity,
-      zIndex,
     });
 
     markerRef.current = marker;

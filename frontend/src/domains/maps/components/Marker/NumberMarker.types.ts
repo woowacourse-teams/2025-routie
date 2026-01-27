@@ -10,8 +10,6 @@ interface NumberMarkerProps {
   sequence: number;
   /** 클릭 이벤트 핸들러 */
   onClick?: () => void;
-  /** z-index */
-  zIndex?: number;
 }
 
 export type { NumberMarkerProps };

@@ -41,7 +41,6 @@ const createNumberMarkerElement = (sequence: number): HTMLElement => {
  * @param props.position - 마커 위치 { lat, lng }
  * @param props.sequence - 표시할 숫자
  * @param props.onClick - 클릭 이벤트 핸들러
- * @param props.zIndex - z-index
  *
  * @example
  * ```tsx
@@ -54,12 +53,7 @@ const createNumberMarkerElement = (sequence: number): HTMLElement => {
  * </Map>
  * ```
  */
-const NumberMarker = ({
-  position,
-  sequence,
-  onClick,
-  zIndex,
-}: NumberMarkerProps) => {
+const NumberMarker = ({ position, sequence, onClick }: NumberMarkerProps) => {
   const map = useMap();
   const overlayRef = useRef<CustomOverlayInstanceType | null>(null);
   const contentRef = useRef<HTMLElement | null>(null);
@@ -80,7 +74,6 @@ const NumberMarker = ({
       content,
       xAnchor: 0.5,
       yAnchor: 0.5,
-      zIndex,
     });
 
     overlayRef.current = overlay;
