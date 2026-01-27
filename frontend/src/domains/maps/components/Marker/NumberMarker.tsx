@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useRef, useMemo } from 'react';
+import { memo, useEffect, useLayoutEffect, useRef, useMemo } from 'react';
 
 import { useMap } from '@/domains/maps/hooks/useMap';
 import { kakaoMapAdapter } from '@/libs/map-sdk';
@@ -53,7 +53,7 @@ const createNumberMarkerElement = (sequence: number): HTMLElement => {
  * </Map>
  * ```
  */
-const NumberMarker = ({ position, sequence, onClick }: NumberMarkerProps) => {
+const NumberMarker = memo(({ position, sequence, onClick }: NumberMarkerProps) => {
   const map = useMap();
   const overlayRef = useRef<CustomOverlayInstanceType | null>(null);
   const contentRef = useRef<HTMLElement | null>(null);
@@ -116,6 +116,16 @@ const NumberMarker = ({ position, sequence, onClick }: NumberMarkerProps) => {
 
   // UI를 렌더링하지 않음
   return null;
-};
+}, (prevProps, nextProps) => {
+  // true 반환 = 리렌더링 스킵
+  // onClick은 내부에서 ref로 처리하므로 비교하지 않음
+  return (
+    prevProps.position.lat === nextProps.position.lat &&
+    prevProps.position.lng === nextProps.position.lng &&
+    prevProps.sequence === nextProps.sequence
+  );
+});
+
+NumberMarker.displayName = 'NumberMarker';
 
 export default NumberMarker;

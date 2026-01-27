@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useRef } from 'react';
+import { memo, useEffect, useLayoutEffect, useRef } from 'react';
 
 import { useMap } from '@/domains/maps/hooks/useMap';
 import { kakaoMapAdapter } from '@/libs/map-sdk';
@@ -13,6 +13,7 @@ import type { MarkerProps } from './Marker.types';
  * 카카오 지도에 마커를 선언적으로 렌더링하는 컴포넌트입니다.
  * Map 컴포넌트의 자식으로 사용해야 합니다.
  * 컴포넌트가 언마운트되면 마커가 자동으로 제거됩니다.
+ * memo로 감싸서 position/title이 변경될 때만 리렌더링됩니다.
  *
  * @param props - 컴포넌트 Props
  * @param props.position - 마커 위치 { lat, lng }
@@ -30,7 +31,7 @@ import type { MarkerProps } from './Marker.types';
  * </Map>
  * ```
  */
-const Marker = ({ position, title, onClick }: MarkerProps) => {
+const Marker = memo(({ position, title, onClick }: MarkerProps) => {
   const map = useMap();
   const markerRef = useRef<MarkerInstanceType | null>(null);
   const onClickRef = useRef(onClick);
@@ -85,6 +86,16 @@ const Marker = ({ position, title, onClick }: MarkerProps) => {
 
   // UI를 렌더링하지 않음
   return null;
-};
+}, (prevProps, nextProps) => {
+  // true 반환 = 리렌더링 스킵
+  // onClick은 내부에서 ref로 처리하므로 비교하지 않음
+  return (
+    prevProps.position.lat === nextProps.position.lat &&
+    prevProps.position.lng === nextProps.position.lng &&
+    prevProps.title === nextProps.title
+  );
+});
+
+Marker.displayName = 'Marker';
 
 export default Marker;
