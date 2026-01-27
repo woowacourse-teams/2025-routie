@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 
 import Flex from '@/@common/components/Flex/Flex';
@@ -11,7 +11,9 @@ import { useClickedPlace } from '@/domains/maps/hooks/useClickedPlace';
 import { useCustomOverlay } from '@/domains/maps/hooks/useCustomOverlay';
 import { useMap } from '@/domains/maps/hooks/useMap';
 import { useMapRenderer } from '@/domains/maps/hooks/useMapRenderer';
-
+import { useMarkerRenderer } from '@/domains/maps/hooks/useMarkerRenderer';
+import type { PlaceDataType } from '@/domains/places/types/place.types';
+import { MarkerLayer } from '@/libs/map-sdk';
 
 import {
   KakaoMapContainerStyle,
@@ -75,12 +77,20 @@ const MapContent = ({ isSidebarOpen }: { isSidebarOpen: boolean }) => {
     openAt,
     close,
   });
-  const { renderMapElements } = useMapRenderer({
+  const { renderMapElements, navigateToPlace } = useMapRenderer({
     mapRef,
     isInitialLoad,
     setIsInitialLoad,
-    handleMarkerClick,
   });
+  const { markerItems } = useMarkerRenderer();
+
+  const handleMarkerClickWithNavigate = useCallback(
+    (place: PlaceDataType) => {
+      handleMarkerClick(place);
+      navigateToPlace(place);
+    },
+    [handleMarkerClick, navigateToPlace],
+  );
 
   // 지도 클릭 이벤트 등록
   useEffect(() => {
@@ -113,6 +123,10 @@ const MapContent = ({ isSidebarOpen }: { isSidebarOpen: boolean }) => {
   return (
     <>
       <HashtagFilter isSidebarOpen={isSidebarOpen} />
+      <MarkerLayer
+        markerItems={markerItems}
+        onMarkerClick={handleMarkerClickWithNavigate}
+      />
       {containerEl &&
         clickedPlace &&
         createPortal(
@@ -145,7 +159,11 @@ const KakaoMap = ({ isSidebarOpen }: KakaoMapProps) => {
         fallback={<MapLoading />}
         errorFallback={(error) => <MapError error={error} />}
       >
-        <Map center={INITIAL_CENTER} level={INITIAL_LEVEL} css={KakaoMapContainerStyle}>
+        <Map
+          center={INITIAL_CENTER}
+          level={INITIAL_LEVEL}
+          css={KakaoMapContainerStyle}
+        >
           <MapContent isSidebarOpen={isSidebarOpen} />
         </Map>
       </KakaoMapLoadBoundary>

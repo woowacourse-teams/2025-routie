@@ -12,7 +12,6 @@ interface UseMapRendererProps {
   mapRef: MapRefType;
   isInitialLoad: boolean;
   setIsInitialLoad: (value: boolean) => void;
-  handleMarkerClick: (place: PlaceDataType) => void;
 }
 
 interface UsePolylineRendererProps {
@@ -41,10 +40,6 @@ interface UseClickedPlaceReturn {
   handleMarkerClick: (place: PlaceDataType) => void;
 }
 
-interface UseMarkerRendererProps {
-  mapRef: MapRefType;
-  handleMarkerClick: (place: PlaceDataType) => void;
-}
 
 interface PlaceOverlayCardProps {
   place: PlaceDataType;
@@ -59,6 +54,5 @@ export type {
   UseMapStateReturn,
   UseClickedPlaceProps,
   UseClickedPlaceReturn,
-  UseMarkerRendererProps,
   PlaceOverlayCardProps,
 };

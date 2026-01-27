@@ -4,8 +4,8 @@ import { describe, expect, it, vi, beforeEach, afterEach } from 'vitest';
 import KakaoMapContext from '../../../contexts/KakaoMapContext';
 import MarkerLayer from '../MarkerLayer';
 
-import type { MarkerItemType } from '../../../types/marker.types';
 import type { KakaoMap } from '../../../../../../kakao.d';
+import type { MarkerItemType } from '../../../types/marker.types';
 
 let mockOverlayContent: HTMLDivElement | null = null;
 
@@ -31,7 +31,10 @@ describe('MarkerLayer', () => {
     window.kakao = {
       maps: {
         LatLng: class {
-          constructor(private lat: number, private lng: number) {}
+          constructor(
+            private lat: number,
+            private lng: number,
+          ) {}
           getLat() {
             return this.lat;
           }
@@ -52,11 +55,19 @@ describe('MarkerLayer', () => {
           }
         },
         event: {
-          addListener: (target: unknown, _event: string, handler: () => void) => {
+          addListener: (
+            target: unknown,
+            _event: string,
+            handler: () => void,
+          ) => {
             addListener(target, _event, handler);
             markerHandlers.set(target, handler);
           },
-          removeListener: (target: unknown, event: string, handler: () => void) => {
+          removeListener: (
+            target: unknown,
+            event: string,
+            handler: () => void,
+          ) => {
             removeListener(target, event, handler);
           },
         },
@@ -68,7 +79,10 @@ describe('MarkerLayer', () => {
     vi.clearAllMocks();
   });
 
-  const renderWithMap = (items: MarkerItemType[], onClick?: (place: MarkerItemType['place']) => void) => {
+  const renderWithMap = (
+    items: MarkerItemType[],
+    onClick?: (place: MarkerItemType['place']) => void,
+  ) => {
     const map = {} as unknown as KakaoMap;
 
     return render(
@@ -81,10 +95,20 @@ describe('MarkerLayer', () => {
   it('markerItems에 따라 Marker/CustomOverlay를 생성하고 setMap을 호출한다', () => {
     const items: MarkerItemType[] = [
       {
-        place: { id: 1, name: 'A', latitude: 37.5, longitude: 127.0 } as MarkerItemType['place'],
+        place: {
+          id: 1,
+          name: 'A',
+          latitude: 37.5,
+          longitude: 127.0,
+        } as MarkerItemType['place'],
       },
       {
-        place: { id: 2, name: 'B', latitude: 37.6, longitude: 127.1 } as MarkerItemType['place'],
+        place: {
+          id: 2,
+          name: 'B',
+          latitude: 37.6,
+          longitude: 127.1,
+        } as MarkerItemType['place'],
         routieSequence: 2,
       },
     ];
@@ -100,10 +124,20 @@ describe('MarkerLayer', () => {
   it('언마운트 시 마커 제거와 이벤트 cleanup을 수행한다', () => {
     const items: MarkerItemType[] = [
       {
-        place: { id: 1, name: 'A', latitude: 37.5, longitude: 127.0 } as MarkerItemType['place'],
+        place: {
+          id: 1,
+          name: 'A',
+          latitude: 37.5,
+          longitude: 127.0,
+        } as MarkerItemType['place'],
       },
       {
-        place: { id: 2, name: 'B', latitude: 37.6, longitude: 127.1 } as MarkerItemType['place'],
+        place: {
+          id: 2,
+          name: 'B',
+          latitude: 37.6,
+          longitude: 127.1,
+        } as MarkerItemType['place'],
         routieSequence: 2,
       },
     ];
@@ -111,7 +145,9 @@ describe('MarkerLayer', () => {
     const { unmount } = renderWithMap(items, vi.fn());
 
     const overlayElement = mockOverlayContent;
-    const removeListenerSpy = overlayElement ? vi.spyOn(overlayElement, 'removeEventListener') : null;
+    const removeListenerSpy = overlayElement
+      ? vi.spyOn(overlayElement, 'removeEventListener')
+      : null;
 
     unmount();
 
@@ -127,10 +163,20 @@ describe('MarkerLayer', () => {
     const handleClick = vi.fn();
     const items: MarkerItemType[] = [
       {
-        place: { id: 1, name: 'A', latitude: 37.5, longitude: 127.0 } as MarkerItemType['place'],
+        place: {
+          id: 1,
+          name: 'A',
+          latitude: 37.5,
+          longitude: 127.0,
+        } as MarkerItemType['place'],
       },
       {
-        place: { id: 2, name: 'B', latitude: 37.6, longitude: 127.1 } as MarkerItemType['place'],
+        place: {
+          id: 2,
+          name: 'B',
+          latitude: 37.6,
+          longitude: 127.1,
+        } as MarkerItemType['place'],
         routieSequence: 2,
       },
     ];
