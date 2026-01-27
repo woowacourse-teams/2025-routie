@@ -32,6 +32,8 @@ src/libs/map-sdk/
 - 작업 상세(체크리스트)
   - [ ] `components` 폴더 생성
   - [ ] 빈 파일로 디렉터리 추적
+- 테스트 필요 여부: X
+- 테스트 생략 사유: 단순 디렉터리 준비로 로직 없음
 - 로컬 확인 방법
   - `ls src/libs/map-sdk/components`
 - 커밋 메시지 예시
@@ -48,10 +50,18 @@ src/libs/map-sdk/
   - [ ] `KakaoMapContext`를 libs로 이동
   - [ ] `useMap`을 libs에서 제공
   - [ ] 도메인 파일은 libs re-export로 변경
+- 테스트 필요 여부: O
+- 테스트 대상:
+  - `useMap`
+- 테스트 범위:
+  - 컨텍스트 제공 시 map 인스턴스 반환
+  - Provider 외부 사용 시 null 반환
+- 테스트 파일 경로(예상)
+  - `src/libs/map-sdk/hooks/__tests__/useMap.test.ts`
 - 로컬 확인 방법
   - `npm run lint`
 - 커밋 메시지 예시
-  - map sdk context libs로 이동
+  - map sdk context libs로 이동 및 useMap 테스트 추가
 
 ### 단계 1-3: Map 컴포넌트를 libs로 이동
 - 목표: Map 생성과 Context 제공을 libs로 고정한다.
@@ -64,10 +74,18 @@ src/libs/map-sdk/
   - [ ] Map 컴포넌트를 libs로 이동
   - [ ] 도메인 Map 컴포넌트는 re-export만 유지
   - [ ] 기존 import 경로 변경 없음 확인
+- 테스트 필요 여부: O
+- 테스트 대상:
+  - `Map`
+- 테스트 범위:
+  - map 생성 호출 여부
+  - unmount 시 cleanup 동작 유지
+- 테스트 파일 경로(예상)
+  - `src/libs/map-sdk/components/Map/__tests__/Map.test.tsx`
 - 로컬 확인 방법
   - `npm run lint`
 - 커밋 메시지 예시
-  - map 컴포넌트 libs로 이동
+  - map 컴포넌트 libs로 이동 및 테스트 추가
 
 ### 단계 2-1: 마커 타입 추가
 - 목표: 도메인과 공유할 최소 타입을 libs에 정의한다.
@@ -78,6 +96,8 @@ src/libs/map-sdk/
   - [ ] `MarkerItemType` 정의
   - [ ] `MarkerClickHandlerType` 정의
   - [ ] libs public export에 추가
+- 테스트 필요 여부: X
+- 테스트 생략 사유: 타입 정의만 변경
 - 로컬 확인 방법
   - `npm run lint`
 - 커밋 메시지 예시
@@ -91,10 +111,18 @@ src/libs/map-sdk/
 - 작업 상세(체크리스트)
   - [ ] 유틸을 libs로 이동
   - [ ] 도메인은 libs 유틸 re-export로 변경
+- 테스트 필요 여부: O
+- 테스트 대상:
+  - `createCustomMarkerElement`
+- 테스트 범위:
+  - DOM 요소 생성 여부
+  - 기본 스타일/텍스트 적용 여부
+- 테스트 파일 경로(예상)
+  - `src/libs/map-sdk/utils/__tests__/createCustomMarkerElement.test.ts`
 - 로컬 확인 방법
   - `npm run lint`
 - 커밋 메시지 예시
-  - 마커 DOM 유틸 libs로 이동
+  - 마커 DOM 유틸 libs로 이동 및 테스트 추가
 
 ### 단계 3-1: MarkerLayer 컴포넌트 스켈레톤 추가
 - 목표: 마커 렌더링 전용 컴포넌트를 libs에 추가한다.
@@ -106,6 +134,8 @@ src/libs/map-sdk/
   - [ ] `markerItems` props 정의
   - [ ] `onMarkerClick` props 정의
   - [ ] `useMap()`으로 map 인스턴스 접근
+- 테스트 필요 여부: X
+- 테스트 생략 사유: 렌더링 로직 없는 스켈레톤
 - 로컬 확인 방법
   - `npm run lint`
 - 커밋 메시지 예시
@@ -119,11 +149,20 @@ src/libs/map-sdk/
   - [ ] Marker/CustomOverlay 생성 로직 추가
   - [ ] 이벤트 등록/해제 로직 추가
   - [ ] cleanup 시 마커 제거
+- 테스트 필요 여부: O
+- 테스트 대상:
+  - `MarkerLayer`
+- 테스트 범위:
+  - markerItems 변경 시 생성 호출
+  - unmount 시 setMap(null) 호출
+  - 클릭 이벤트 등록 및 콜백 호출
+- 테스트 파일 경로(예상)
+  - `src/libs/map-sdk/components/MarkerLayer/__tests__/MarkerLayer.test.tsx`
 - 로컬 확인 방법
   - `npm run start`
   - RoutieSpace에서 마커 표시 확인
 - 커밋 메시지 예시
-  - map sdk 마커 렌더링 구현
+  - map sdk 마커 렌더링 구현 및 테스트 추가
 
 ### 단계 4-1: 도메인에 markerItems 생성 훅 추가
 - 목표: 도메인은 마커 입력 데이터만 생성하도록 한다.
@@ -134,6 +173,8 @@ src/libs/map-sdk/
   - [ ] 마커 리스트를 `MarkerItemType[]`로 변환
   - [ ] 필터링/정렬 로직은 도메인에 유지
   - [ ] 기존 렌더링 훅은 유지
+- 테스트 필요 여부: X
+- 테스트 생략 사유: 도메인 조합 로직은 기존 테스트 범위 유지
 - 로컬 확인 방법
   - `npm run lint`
 - 커밋 메시지 예시
@@ -147,6 +188,8 @@ src/libs/map-sdk/
   - [ ] `MarkerLayer` 컴포넌트 추가
   - [ ] `markerItems`와 클릭 콜백 연결
   - [ ] 기존 렌더링 흐름 유지
+- 테스트 필요 여부: X
+- 테스트 생략 사유: 도메인 UI 연결 변경으로 로직 없음
 - 로컬 확인 방법
   - `npm run start`
   - RoutieSpace에서 마커 클릭 동작 확인
@@ -163,7 +206,9 @@ src/libs/map-sdk/
   - [ ] 마커 생성/삭제 코드 제거
   - [ ] 남은 네비게이션 유틸만 유지
   - [ ] 불필요 타입 정리
+- 테스트 필요 여부: X
+- 테스트 생략 사유: 제거 작업이며 신규 로직 없음
 - 로컬 확인 방법
   - `npm run lint`
 - 커밋 메시지 예시
-  - 도메인 마커 렌더링 제거
+  - 도메인 마커 렌더링 제거 및 정리
