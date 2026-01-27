@@ -6,6 +6,9 @@ import type { MarkerInstanceType } from '@/libs/map-sdk';
 
 import type { MarkerProps } from './Marker.types';
 
+// 🔬 리렌더링 측정용 (테스트 후 삭제)
+let markerRenderCount = 0;
+
 /**
  * 선언적 마커 컴포넌트
  *
@@ -32,6 +35,10 @@ import type { MarkerProps } from './Marker.types';
  * ```
  */
 const Marker = memo(({ position, title, onClick }: MarkerProps) => {
+  // 🔬 리렌더링 측정용 (테스트 후 삭제)
+  markerRenderCount += 1;
+  console.log(`[Marker "${title}"] render count: ${markerRenderCount}`);
+
   const map = useMap();
   const markerRef = useRef<MarkerInstanceType | null>(null);
   const onClickRef = useRef(onClick);

@@ -35,6 +35,22 @@ import type { KakaoMap as KakaoMapType } from '../../../../../kakao.d';
 const INITIAL_CENTER = { lat: 37.554, lng: 126.97 };
 const INITIAL_LEVEL = 7;
 
+// 🔬 리렌더링 측정용 (테스트 후 삭제)
+let mapContentRenderCount = 0;
+
+// 🔬 스트레스 테스트용 더미 마커 (테스트 후 삭제)
+const DUMMY_PLACES: PlaceDataType[] = Array.from({ length: 50 }, (_, i) => ({
+  id: 10000 + i,
+  kakaoPlaceId: `dummy-${i}`,
+  name: `더미 장소 ${i + 1}`,
+  latitude: 35.5 + (i % 10) * 0.3,
+  longitude: 127.0 + Math.floor(i / 10) * 0.5,
+  roadAddressName: null,
+  addressName: `더미 주소 ${i + 1}`,
+  hashtags: [],
+  likeCount: 0,
+}));
+
 /**
  * 지도 로딩 중 표시되는 컴포넌트
  */
@@ -72,6 +88,10 @@ const MapError = ({ error }: { error: Error }) => (
  * @param props.isSidebarOpen - 사이드바 열림 상태
  */
 const MapContent = ({ isSidebarOpen }: { isSidebarOpen: boolean }) => {
+  // 🔬 리렌더링 측정용 (테스트 후 삭제)
+  mapContentRenderCount += 1;
+  console.log(`[MapContent] render count: ${mapContentRenderCount}`);
+
   const map = useMap();
   const [isInitialLoad, setIsInitialLoad] = useState(true);
 
@@ -177,6 +197,15 @@ const MapContent = ({ isSidebarOpen }: { isSidebarOpen: boolean }) => {
           position={{ lat: place.latitude, lng: place.longitude }}
           sequence={place.sequence}
           onClick={() => handleMarkerClickWithNavigation(place)}
+        />
+      ))}
+
+      {/* 🔬 스트레스 테스트용 더미 마커 (테스트 후 삭제) */}
+      {DUMMY_PLACES.map((place) => (
+        <Marker
+          key={`dummy-${place.id}`}
+          position={{ lat: place.latitude, lng: place.longitude }}
+          title={place.name}
         />
       ))}
 

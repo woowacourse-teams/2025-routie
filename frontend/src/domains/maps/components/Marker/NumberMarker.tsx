@@ -6,6 +6,9 @@ import type { CustomOverlayInstanceType } from '@/libs/map-sdk';
 
 import type { NumberMarkerProps } from './NumberMarker.types';
 
+// 🔬 리렌더링 측정용 (테스트 후 삭제)
+let numberMarkerRenderCount = 0;
+
 /**
  * 숫자 마커 요소 생성
  */
@@ -54,6 +57,10 @@ const createNumberMarkerElement = (sequence: number): HTMLElement => {
  * ```
  */
 const NumberMarker = memo(({ position, sequence, onClick }: NumberMarkerProps) => {
+  // 🔬 리렌더링 측정용 (테스트 후 삭제)
+  numberMarkerRenderCount += 1;
+  console.log(`[NumberMarker #${sequence}] render count: ${numberMarkerRenderCount}`);
+
   const map = useMap();
   const overlayRef = useRef<CustomOverlayInstanceType | null>(null);
   const contentRef = useRef<HTMLElement | null>(null);
