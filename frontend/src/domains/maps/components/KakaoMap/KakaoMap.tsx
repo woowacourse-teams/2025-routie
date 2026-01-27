@@ -5,15 +5,13 @@ import Flex from '@/@common/components/Flex/Flex';
 import Text from '@/@common/components/Text/Text';
 import HashtagFilter from '@/domains/maps/components/HashtagFilter/HashtagFilter';
 import KakaoMapLoadBoundary from '@/domains/maps/components/KakaoMapLoadBoundary/KakaoMapLoadBoundary';
-import Map from '@/domains/maps/components/Map/Map';
 import PlaceOverlayCard from '@/domains/maps/components/PlaceOverlayCard/PlaceOverlayCard';
 import { useClickedPlace } from '@/domains/maps/hooks/useClickedPlace';
 import { useCustomOverlay } from '@/domains/maps/hooks/useCustomOverlay';
-import { useMap } from '@/domains/maps/hooks/useMap';
 import { useMapRenderer } from '@/domains/maps/hooks/useMapRenderer';
 import { useMarkerRenderer } from '@/domains/maps/hooks/useMarkerRenderer';
 import type { PlaceDataType } from '@/domains/places/types/place.types';
-import { MarkerLayer } from '@/libs/map-sdk';
+import { useMap, Map, MarkerLayer } from '@/libs/map-sdk';
 
 import {
   KakaoMapContainerStyle,

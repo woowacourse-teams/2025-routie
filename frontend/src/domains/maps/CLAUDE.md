@@ -57,7 +57,7 @@ import KakaoMap from '@/domains/maps/components/KakaoMap/KakaoMap';
 
 ```tsx
 import KakaoMapLoadBoundary from '@/domains/maps/components/KakaoMapLoadBoundary/KakaoMapLoadBoundary';
-import Map from '@/domains/maps/components/Map/Map';
+import { Map } from '@/libs/map-sdk';
 
 <KakaoMapLoadBoundary
   fallback={<div>로딩 중...</div>}
@@ -77,7 +77,7 @@ import Map from '@/domains/maps/components/Map/Map';
 ### useMap 훅으로 map 인스턴스 접근
 
 ```tsx
-import { useMap } from '@/domains/maps/hooks/useMap';
+import { useMap } from '@/libs/map-sdk';
 
 const MyComponent = () => {
   const map = useMap(); // Map 컴포넌트 내부에서만 사용 가능
