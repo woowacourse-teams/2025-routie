@@ -27,3 +27,5 @@ export type {
   LoaderSnapshot,
   LoaderOptions,
 } from './types/adapter.types';
+
+export type { MarkerItemType, MarkerClickHandlerType } from './types/marker.types';
