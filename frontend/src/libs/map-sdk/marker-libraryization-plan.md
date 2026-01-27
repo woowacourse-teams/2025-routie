@@ -214,3 +214,18 @@ src/libs/map-sdk/
   - `npm run lint`
 - 커밋 메시지 예시
   - 도메인 마커 렌더링 제거 및 정리
+
+### 단계 5-2: 도메인 import 경로를 libs로 전환
+- 목표: 도메인에서 libs 직접 import로 전환한다.
+- 변경 파일 목록(예상)
+  - `src/domains/maps/**`
+- 작업 상세(체크리스트)
+  - [ ] `@/domains/maps` re-export 의존 제거
+  - [ ] libs 경로로 import 변경
+  - [ ] 불필요한 re-export 파일 정리
+- 테스트 필요 여부: X
+- 테스트 생략 사유: import 경로 변경으로 로직 없음
+- 로컬 확인 방법
+  - `npm run lint`
+- 커밋 메시지 예시
+  - 도메인 map-sdk import 경로 정리
