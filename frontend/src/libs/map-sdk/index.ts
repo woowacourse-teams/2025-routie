@@ -10,6 +10,8 @@ export { mapController } from './controllers/mapController';
 // Components
 export { default as Map } from './components/Map/Map';
 export type { MapProps, LatLng } from './components/Map/Map.types';
+export { default as MarkerLayer } from './components/MarkerLayer/MarkerLayer';
+export type { MarkerLayerProps } from './components/MarkerLayer/MarkerLayer.types';
 
 // Hooks
 export { useMapSdkLoader } from './hooks/useMapSdkLoader';
