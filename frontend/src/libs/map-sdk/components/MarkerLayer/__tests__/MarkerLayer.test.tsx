@@ -1,20 +1,14 @@
-import { render } from '@testing-library/react';
+import { render, act, cleanup } from '@testing-library/react';
 import { describe, expect, it, vi, beforeEach, afterEach } from 'vitest';
 
 import KakaoMapContext from '../../../contexts/KakaoMapContext';
+import { markerEngine } from '../../../core/MarkerEngine';
 import MarkerLayer from '../MarkerLayer';
 
 import type { KakaoMap } from '../../../../../../kakao.d';
 import type { MarkerItemType } from '../../../types/marker.types';
 
 let mockOverlayContent: HTMLDivElement | null = null;
-
-vi.mock('../../../utils/createCustomMarkerElement', () => ({
-  createCustomMarkerElement: vi.fn(() => {
-    mockOverlayContent = document.createElement('div');
-    return mockOverlayContent;
-  }),
-}));
 
 describe('MarkerLayer', () => {
   const addListener = vi.fn();
@@ -30,6 +24,9 @@ describe('MarkerLayer', () => {
   const markerHandlers = new Map<unknown, () => void>();
 
   beforeEach(() => {
+    // fake timer 설정 (RAF 포함)
+    vi.useFakeTimers();
+
     markerInstances.length = 0;
     overlayInstances.length = 0;
     markerHandlers.clear();
@@ -58,8 +55,9 @@ describe('MarkerLayer', () => {
         CustomOverlay: class {
           setMap = vi.fn();
           setPosition = vi.fn();
-          constructor() {
+          constructor(options: { content: HTMLElement }) {
             overlayInstances.push(this);
+            mockOverlayContent = options.content as HTMLDivElement;
           }
         },
         event: {
@@ -84,7 +82,10 @@ describe('MarkerLayer', () => {
   });
 
   afterEach(() => {
+    cleanup();
+    markerEngine.reset();
     vi.clearAllMocks();
+    vi.useRealTimers();
   });
 
   const renderWithMap = (
@@ -92,6 +93,9 @@ describe('MarkerLayer', () => {
     onClick?: (place: MarkerItemType['place']) => void,
   ) => {
     const map = {} as unknown as KakaoMap;
+
+    // 엔진에 map 설정
+    markerEngine.setMap(map);
 
     return render(
       <KakaoMapContext.Provider value={{ map }}>
@@ -123,6 +127,11 @@ describe('MarkerLayer', () => {
 
     renderWithMap(items);
 
+    // requestAnimationFrame 콜백 실행
+    act(() => {
+      vi.runAllTimers();
+    });
+
     expect(markerInstances).toHaveLength(1);
     expect(overlayInstances).toHaveLength(1);
     expect(markerInstances[0].setMap).toHaveBeenCalled();
@@ -152,12 +161,25 @@ describe('MarkerLayer', () => {
 
     const { unmount } = renderWithMap(items, vi.fn());
 
+    // 마커 생성
+    act(() => {
+      vi.runAllTimers();
+    });
+
+    expect(markerInstances).toHaveLength(1);
+    expect(overlayInstances).toHaveLength(1);
+
     const overlayElement = mockOverlayContent;
     const removeListenerSpy = overlayElement
       ? vi.spyOn(overlayElement, 'removeEventListener')
       : null;
 
     unmount();
+
+    // 언마운트 후 flush
+    act(() => {
+      vi.runAllTimers();
+    });
 
     expect(markerInstances[0].setMap).toHaveBeenCalledWith(null);
     expect(overlayInstances[0].setMap).toHaveBeenCalledWith(null);
@@ -191,11 +213,18 @@ describe('MarkerLayer', () => {
 
     renderWithMap(items, handleClick);
 
+    // 마커 생성
+    act(() => {
+      vi.runAllTimers();
+    });
+
+    // 기본 마커 클릭
     const markerHandler = markerHandlers.get(markerInstances[0]);
     markerHandler?.();
 
+    // 숫자 마커 클릭
     if (mockOverlayContent) {
-      mockOverlayContent.dispatchEvent(new MouseEvent('click'));
+      mockOverlayContent.click();
     }
 
     expect(handleClick).toHaveBeenCalledTimes(2);
