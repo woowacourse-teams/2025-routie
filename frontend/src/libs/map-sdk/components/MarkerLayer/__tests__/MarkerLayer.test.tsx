@@ -19,8 +19,14 @@ vi.mock('../../../utils/createCustomMarkerElement', () => ({
 describe('MarkerLayer', () => {
   const addListener = vi.fn();
   const removeListener = vi.fn();
-  const markerInstances: Array<{ setMap: ReturnType<typeof vi.fn> }> = [];
-  const overlayInstances: Array<{ setMap: ReturnType<typeof vi.fn> }> = [];
+  const markerInstances: Array<{
+    setMap: ReturnType<typeof vi.fn>;
+    setPosition: ReturnType<typeof vi.fn>;
+  }> = [];
+  const overlayInstances: Array<{
+    setMap: ReturnType<typeof vi.fn>;
+    setPosition: ReturnType<typeof vi.fn>;
+  }> = [];
   const markerHandlers = new Map<unknown, () => void>();
 
   beforeEach(() => {
@@ -44,12 +50,14 @@ describe('MarkerLayer', () => {
         },
         Marker: class {
           setMap = vi.fn();
+          setPosition = vi.fn();
           constructor() {
             markerInstances.push(this);
           }
         },
         CustomOverlay: class {
           setMap = vi.fn();
+          setPosition = vi.fn();
           constructor() {
             overlayInstances.push(this);
           }

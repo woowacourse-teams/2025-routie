@@ -1,96 +1,57 @@
-import { useEffect, useRef } from 'react';
-
-import { useMap } from '../../hooks/useMap';
-import { createCustomMarkerElement } from '../../utils/createCustomMarkerElement';
+import Marker from '../Marker/Marker';
+import NumberMarker from '../NumberMarker/NumberMarker';
 
 import type { MarkerLayerProps } from './MarkerLayer.types';
-
-type MarkerEntry = {
-  instance:
-    | InstanceType<typeof window.kakao.maps.Marker>
-    | InstanceType<typeof window.kakao.maps.CustomOverlay>;
-  cleanup?: () => void;
-};
 
 /**
  * 마커 렌더링 전용 레이어 컴포넌트
  *
  * @description
- * markerItems 변경에 따라 카카오 마커/오버레이를 생성하고 cleanup 시 제거합니다.
+ * markerItems 배열을 받아 Marker 또는 NumberMarker 컴포넌트를 선언적으로 렌더링합니다.
+ * routieSequence가 있으면 NumberMarker, 없으면 Marker를 렌더링합니다.
+ * React의 reconciliation을 통해 자동으로 추가/삭제/변경을 처리합니다.
+ *
+ * @example
+ * ```tsx
+ * <Map center={{ lat: 37.5, lng: 127.0 }}>
+ *   <MarkerLayer
+ *     markerItems={items}
+ *     onMarkerClick={(place) => console.log(place)}
+ *   />
+ * </Map>
+ * ```
  */
 const MarkerLayer = ({ markerItems, onMarkerClick }: MarkerLayerProps) => {
-  const map = useMap();
-  const markersRef = useRef<MarkerEntry[]>([]);
-
-  const clearMarkers = () => {
-    markersRef.current.forEach(({ instance, cleanup }) => {
-      instance.setMap(null);
-      cleanup?.();
-    });
-    markersRef.current = [];
-  };
-
-  useEffect(() => {
-    if (!map) return undefined;
-
-    clearMarkers();
-
-    markerItems.forEach((item) => {
-      const position = new window.kakao.maps.LatLng(
-        item.place.latitude,
-        item.place.longitude,
-      );
-
-      if (item.routieSequence) {
-        const content = createCustomMarkerElement(item.routieSequence);
-        const overlay = new window.kakao.maps.CustomOverlay({
-          position,
-          content,
-          yAnchor: 0.5,
-          xAnchor: 0.5,
-        });
-
-        overlay.setMap(map);
-
-        const handleClick = () => {
-          onMarkerClick?.(item.place);
+  return (
+    <>
+      {markerItems.map((item) => {
+        const position = {
+          lat: item.place.latitude,
+          lng: item.place.longitude,
         };
 
-        content.addEventListener('click', handleClick);
+        if (item.routieSequence) {
+          return (
+            <NumberMarker
+              key={`number-${item.place.id}`}
+              position={position}
+              sequence={item.routieSequence}
+              onClick={() => onMarkerClick?.(item.place)}
+            />
+          );
+        }
 
-        markersRef.current.push({
-          instance: overlay,
-          cleanup: () => content.removeEventListener('click', handleClick),
-        });
-        return;
-      }
-
-      const marker = new window.kakao.maps.Marker({
-        position,
-        title: item.place.name,
-      });
-
-      marker.setMap(map);
-
-      const handleClick = () => {
-        onMarkerClick?.(item.place);
-      };
-
-      window.kakao.maps.event.addListener(marker, 'click', handleClick);
-
-      markersRef.current.push({
-        instance: marker,
-        cleanup: () =>
-          window.kakao.maps.event.removeListener(marker, 'click', handleClick),
-      });
-    });
-
-    return () => {
-      clearMarkers();
-    };
-  }, [map, markerItems, onMarkerClick]);
-
-  return null;
+        return (
+          <Marker
+            key={item.place.id}
+            position={position}
+            title={item.place.name}
+            onClick={() => onMarkerClick?.(item.place)}
+          />
+        );
+      })}
+    </>
+  );
 };
 
 export default MarkerLayer;
