@@ -16,8 +16,6 @@ export { default as Marker } from './components/Marker/Marker';
 export type { MarkerProps } from './components/Marker/Marker.types';
 export { default as NumberMarker } from './components/NumberMarker/NumberMarker';
 export type { NumberMarkerProps } from './components/NumberMarker/NumberMarker.types';
-export { default as MarkerLayer } from './components/MarkerLayer/MarkerLayer';
-export type { MarkerLayerProps } from './components/MarkerLayer/MarkerLayer.types';
 
 // Hooks
 export { useMapSdkLoader } from './hooks/useMapSdkLoader';
@@ -41,4 +39,3 @@ export type {
   CustomOverlayCreateOptions,
 } from './types/adapter.types';
 
-export type { MarkerItemType, MarkerClickHandlerType } from './types/marker.types';

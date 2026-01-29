@@ -11,7 +11,9 @@ import { useCustomOverlay } from '@/domains/maps/hooks/useCustomOverlay';
 import { useMapRenderer } from '@/domains/maps/hooks/useMapRenderer';
 import { useMarkerItems } from '@/domains/maps/hooks/useMarkerItems';
 import type { PlaceDataType } from '@/domains/places/types/place.types';
-import { useMap, Map, MarkerLayer } from '@/libs/map-sdk';
+import { useMap, Map } from '@/libs/map-sdk';
+
+import MarkerLayer from '../MarkerLayer/MarkerLayer';
 
 import {
   KakaoMapContainerStyle,

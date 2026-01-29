@@ -1,12 +1,13 @@
 import { render, act, cleanup } from '@testing-library/react';
 import { describe, expect, it, vi, beforeEach, afterEach } from 'vitest';
 
-import KakaoMapContext from '../../../contexts/KakaoMapContext';
-import { markerEngine } from '../../../core/MarkerEngine';
+import { markerEngine } from '@/libs/map-sdk';
+import KakaoMapContext from '@/libs/map-sdk/contexts/KakaoMapContext';
+
 import MarkerLayer from '../MarkerLayer';
 
 import type { KakaoMap } from '../../../../../../kakao.d';
-import type { MarkerItemType } from '../../../types/marker.types';
+import type { MarkerItemType } from '../MarkerLayer.types';
 
 let mockOverlayContent: HTMLDivElement | null = null;
 

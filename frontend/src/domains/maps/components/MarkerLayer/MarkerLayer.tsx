@@ -1,5 +1,4 @@
-import Marker from '../Marker/Marker';
-import NumberMarker from '../NumberMarker/NumberMarker';
+import { Marker, NumberMarker } from '@/libs/map-sdk';
 
 import type { MarkerLayerProps } from './MarkerLayer.types';
 

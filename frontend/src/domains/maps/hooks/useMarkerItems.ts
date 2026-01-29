@@ -1,9 +1,9 @@
 import { useMemo } from 'react';
 
+import type { MarkerItemType } from '@/domains/maps/components/MarkerLayer/MarkerLayer.types';
 import { useHashtagFilterContext } from '@/domains/places/contexts/useHashtagFilterContext';
 import { usePlaceList } from '@/domains/places/hooks/usePlaceList';
 import { filterPlacesByHashtags } from '@/domains/places/utils/filterPlaces';
-import type { MarkerItemType } from '@/libs/map-sdk';
 
 import { useRoutePlacesWithDetails } from './useRoutePlacesWithDetails';
 
