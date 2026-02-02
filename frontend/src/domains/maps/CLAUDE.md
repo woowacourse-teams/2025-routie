@@ -123,3 +123,4 @@ src/
 1. **init() 필수**: `mapSdkLoader.init()`은 앱 시작 시 `src/index.tsx`에서 1회만 호출
 2. **Context 범위**: `useMap()`은 `Map` 컴포넌트 내부에서만 사용 가능
 3. **SDK 로딩 완료 후 사용**: `status === 'loaded'` 확인 후 `window.kakao.maps` 사용
+4. **Import 규칙**: map-sdk 경로는 `@/libs/map-sdk` alias를 사용

@@ -1,12 +1,12 @@
 import { render } from '@testing-library/react';
 import { describe, expect, it, vi, beforeEach, afterEach } from 'vitest';
 
-import { mapController } from '../../../controllers/mapController';
-import Map from '../Map';
+import Map from '@/libs/map-sdk/components/Map/Map';
+import { mapController } from '@/libs/map-sdk/controllers/mapController';
 
 import type { KakaoMap } from '../../../../../../kakao.d';
 
-vi.mock('../../../controllers/mapController', () => ({
+vi.mock('@/libs/map-sdk/controllers/mapController', () => ({
   mapController: {
     createMap: vi.fn(),
     relayout: vi.fn(),

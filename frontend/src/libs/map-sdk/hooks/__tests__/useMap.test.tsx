@@ -1,8 +1,8 @@
 import { renderHook } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
 
-import KakaoMapContext from '../../contexts/KakaoMapContext';
-import { useMap } from '../useMap';
+import KakaoMapContext from '@/libs/map-sdk/contexts/KakaoMapContext';
+import { useMap } from '@/libs/map-sdk/hooks/useMap';
 
 import type { KakaoMap } from '../../../../../kakao.d';
 

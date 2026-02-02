@@ -27,6 +27,7 @@
 ## 경로 별칭
 
 - `@/*` → `src/*` (tsconfig paths)
+- `libs/map-sdk` 관련 import는 `@/libs/map-sdk` alias 사용
 
 ## 폴더 및 파일 구조
 

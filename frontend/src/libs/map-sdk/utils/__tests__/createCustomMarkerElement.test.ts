@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { createCustomMarkerElement } from '../createCustomMarkerElement';
+import { createCustomMarkerElement } from '@/libs/map-sdk/utils/createCustomMarkerElement';
 
 describe('createCustomMarkerElement', () => {
   it('순서 번호가 반영된 마커 요소를 생성한다', () => {
