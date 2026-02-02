@@ -8,8 +8,9 @@ import {
   useState,
 } from 'react';
 
-import KakaoMapContext from '@/domains/maps/contexts/KakaoMapContext';
-import { mapController } from '@/libs/map-sdk';
+import KakaoMapContext from '../../contexts/KakaoMapContext';
+import { mapController } from '../../controllers/mapController';
+import { markerEngine } from '../../core/MarkerEngine';
 
 import type { MapProps } from './Map.types';
 import type { KakaoMap } from '../../../../../kakao.d';
@@ -177,6 +178,15 @@ const Map = forwardRef<HTMLDivElement, MapProps>(
         );
       };
     }, [map, onZoomChanged]);
+
+    // 마커 엔진에 map 인스턴스 설정
+    useEffect(() => {
+      markerEngine.setMap(map);
+
+      return () => {
+        markerEngine.setMap(null);
+      };
+    }, [map]);
 
     // Context 값 메모이제이션
     const contextValue = useMemo(() => ({ map }), [map]);

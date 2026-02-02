@@ -4,7 +4,6 @@ import type { PlaceDataType } from '@/domains/places/types/place.types';
 
 type KakaoMapType = InstanceType<typeof window.kakao.maps.Map>;
 type MapStateType = 'loading' | 'ready' | 'error';
-type MarkerType = InstanceType<typeof window.kakao.maps.Marker>;
 type CustomOverlayType = InstanceType<typeof window.kakao.maps.CustomOverlay>;
 
 interface UseKakaoMapSDKReturnType {
@@ -24,16 +23,6 @@ interface UseKakaoMapInitReturnType {
   initializeMap: () => void;
 }
 
-interface DrawMarkerProps {
-  place: {
-    latitude: number;
-    longitude: number;
-    name: string;
-  };
-  routieSequence?: number;
-  onClick?: () => void;
-}
-
 interface RoutiePlaceWithDetails extends PlaceDataType {
   sequence: number;
   routieId: number;
@@ -44,12 +33,10 @@ type MapRefType = RefObject<KakaoMapType | null>;
 export type {
   KakaoMapType,
   MapStateType,
-  MarkerType,
   CustomOverlayType,
   UseKakaoMapSDKReturnType,
   UseKakaoMapInitProps,
   UseKakaoMapInitReturnType,
-  DrawMarkerProps,
   RoutiePlaceWithDetails,
   MapRefType,
 };

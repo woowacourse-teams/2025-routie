@@ -1,4 +1,10 @@
-import type { KakaoMap, KakaoLatLng } from '../../../../kakao.d';
+import type {
+  KakaoMap,
+  KakaoLatLng,
+  KakaoMarker,
+  KakaoCustomOverlay,
+  KakaoEventListener,
+} from '../../../../kakao.d';
 
 /**
  * 위경도 좌표 리터럴 타입
@@ -17,6 +23,55 @@ type MapInstanceType = KakaoMap;
  * LatLng 인스턴스 타입
  */
 type LatLngInstanceType = KakaoLatLng;
+
+/**
+ * 마커 인스턴스 타입
+ */
+type MarkerInstanceType = KakaoMarker;
+
+/**
+ * 이벤트 리스너 타입
+ */
+type EventListenerType = KakaoEventListener;
+
+/**
+ * 커스텀 오버레이 인스턴스 타입
+ */
+type CustomOverlayInstanceType = KakaoCustomOverlay;
+
+/**
+ * 커스텀 오버레이 생성 옵션
+ */
+interface CustomOverlayCreateOptions {
+  /** 오버레이 위치 */
+  position: LatLngLiteral;
+  /** 오버레이 내용 (HTML 요소) */
+  content: HTMLElement;
+  /** x축 기준점 (0~1) @default 0.5 */
+  xAnchor?: number;
+  /** y축 기준점 (0~1) @default 0.5 */
+  yAnchor?: number;
+  /** z-index */
+  zIndex?: number;
+}
+
+/**
+ * 마커 생성 옵션
+ */
+interface MarkerCreateOptions {
+  /** 마커 위치 */
+  position: LatLngLiteral;
+  /** 마커 제목 (툴팁) */
+  title?: string;
+  /** 클릭 가능 여부 @default true */
+  clickable?: boolean;
+  /** 드래그 가능 여부 @default false */
+  draggable?: boolean;
+  /** 투명도 (0~1) */
+  opacity?: number;
+  /** z-index */
+  zIndex?: number;
+}
 
 /**
  * 지도 생성 옵션
@@ -71,6 +126,76 @@ interface MapAdapter {
    * @param map - 지도 인스턴스
    */
   relayout(map: MapInstanceType): void;
+
+  /**
+   * 마커 생성
+   * @param map - 지도 인스턴스
+   * @param options - 마커 생성 옵션
+   */
+  createMarker(map: MapInstanceType, options: MarkerCreateOptions): MarkerInstanceType;
+
+  /**
+   * 마커 제거
+   * @param marker - 마커 인스턴스
+   */
+  removeMarker(marker: MarkerInstanceType): void;
+
+  /**
+   * 마커 위치 변경
+   * @param marker - 마커 인스턴스
+   * @param position - 새 위치
+   */
+  setMarkerPosition(marker: MarkerInstanceType, position: LatLngLiteral): void;
+
+  /**
+   * 마커 이벤트 리스너 등록
+   * @param marker - 마커 인스턴스
+   * @param event - 이벤트 타입
+   * @param handler - 이벤트 핸들러
+   */
+  addMarkerListener(
+    marker: MarkerInstanceType,
+    event: string,
+    handler: EventListenerType,
+  ): void;
+
+  /**
+   * 마커 이벤트 리스너 제거
+   * @param marker - 마커 인스턴스
+   * @param event - 이벤트 타입
+   * @param handler - 이벤트 핸들러
+   */
+  removeMarkerListener(
+    marker: MarkerInstanceType,
+    event: string,
+    handler: EventListenerType,
+  ): void;
+
+  /**
+   * 커스텀 오버레이 생성
+   * @param map - 지도 인스턴스
+   * @param options - 오버레이 생성 옵션
+   */
+  createCustomOverlay(
+    map: MapInstanceType,
+    options: CustomOverlayCreateOptions,
+  ): CustomOverlayInstanceType;
+
+  /**
+   * 커스텀 오버레이 제거
+   * @param overlay - 오버레이 인스턴스
+   */
+  removeCustomOverlay(overlay: CustomOverlayInstanceType): void;
+
+  /**
+   * 커스텀 오버레이 위치 변경
+   * @param overlay - 오버레이 인스턴스
+   * @param position - 새 위치
+   */
+  setCustomOverlayPosition(
+    overlay: CustomOverlayInstanceType,
+    position: LatLngLiteral,
+  ): void;
 }
 
 /**
@@ -107,4 +232,9 @@ export type {
   LoaderStatus,
   LoaderSnapshot,
   LoaderOptions,
+  MarkerInstanceType,
+  MarkerCreateOptions,
+  EventListenerType,
+  CustomOverlayInstanceType,
+  CustomOverlayCreateOptions,
 };

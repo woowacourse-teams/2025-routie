@@ -33,7 +33,7 @@ src/domains/maps/types/api.types.ts    - API 관련 타입
 |---|---|
 | `useKakaoLoader` | SDK 로딩 상태 (status, error, load) |
 | `useMap` | Context에서 map 인스턴스 획득 |
-| `useMapMarkerControl` | 마커 제어 |
+| `useMapNavigationControl` | 지도 이동 제어 |
 
 ### 컴포넌트
 
@@ -57,7 +57,7 @@ import KakaoMap from '@/domains/maps/components/KakaoMap/KakaoMap';
 
 ```tsx
 import KakaoMapLoadBoundary from '@/domains/maps/components/KakaoMapLoadBoundary/KakaoMapLoadBoundary';
-import Map from '@/domains/maps/components/Map/Map';
+import { Map } from '@/libs/map-sdk';
 
 <KakaoMapLoadBoundary
   fallback={<div>로딩 중...</div>}
@@ -77,7 +77,7 @@ import Map from '@/domains/maps/components/Map/Map';
 ### useMap 훅으로 map 인스턴스 접근
 
 ```tsx
-import { useMap } from '@/domains/maps/hooks/useMap';
+import { useMap } from '@/libs/map-sdk';
 
 const MyComponent = () => {
   const map = useMap(); // Map 컴포넌트 내부에서만 사용 가능
@@ -109,7 +109,7 @@ src/
     ├── hooks/
     │   ├── useKakaoLoader.ts        # SDK 로딩 상태 훅
     │   ├── useMap.ts                # useMap re-export
-    │   └── useMapMarkerControl.ts   # 마커 제어
+    │   └── useMapNavigationControl.ts   # 지도 이동 제어
     ├── components/
     │   ├── KakaoMapLoadBoundary/    # SDK 로딩 래퍼
     │   ├── Map/                     # 선언적 지도 컴포넌트
@@ -123,3 +123,4 @@ src/
 1. **init() 필수**: `mapSdkLoader.init()`은 앱 시작 시 `src/index.tsx`에서 1회만 호출
 2. **Context 범위**: `useMap()`은 `Map` 컴포넌트 내부에서만 사용 가능
 3. **SDK 로딩 완료 후 사용**: `status === 'loaded'` 확인 후 `window.kakao.maps` 사용
+4. **Import 규칙**: map-sdk 경로는 `@/libs/map-sdk` alias를 사용

@@ -27,27 +27,6 @@ const KakaoMapContext = createContext<KakaoMapContextValue | null>(null);
  * Map 컴포넌트 외부에서 사용하면 null을 반환합니다.
  *
  * @returns 카카오 지도 인스턴스 또는 null
- *
- * @example
- * ```typescript
- * const MapContent = () => {
- *   const map = useMap();
- *
- *   const handleCenter = () => {
- *     if (map) {
- *       const center = new window.kakao.maps.LatLng(37.5, 127.0);
- *       map.setCenter(center);
- *     }
- *   };
- *
- *   return <button onClick={handleCenter}>중심 이동</button>;
- * };
- *
- * // Map 컴포넌트 내부에서 사용
- * <Map center={{ lat: 37.5, lng: 127.0 }}>
- *   <MapContent />
- * </Map>
- * ```
  */
 const useMap = (): KakaoMap | null => {
   const context = useContext(KakaoMapContext);

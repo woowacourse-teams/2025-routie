@@ -3,7 +3,6 @@ import type { ReactNode } from 'react';
 import type { KakaoMap } from '../../../../../kakao.d';
 import type { SerializedStyles } from '@emotion/react';
 
-
 /**
  * 위경도 좌표 타입
  */

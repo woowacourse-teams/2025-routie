@@ -19,6 +19,14 @@ const createMockAdapter = (
   createLatLng: vi.fn(),
   createMap: vi.fn(),
   relayout: vi.fn(),
+  createMarker: vi.fn(),
+  removeMarker: vi.fn(),
+  setMarkerPosition: vi.fn(),
+  addMarkerListener: vi.fn(),
+  removeMarkerListener: vi.fn(),
+  createCustomOverlay: vi.fn(),
+  removeCustomOverlay: vi.fn(),
+  setCustomOverlayPosition: vi.fn(),
 });
 
 describe('MapSdkLoader', () => {
