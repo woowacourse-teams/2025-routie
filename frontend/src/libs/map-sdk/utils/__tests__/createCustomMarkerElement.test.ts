@@ -1,6 +1,9 @@
 import { describe, expect, it } from 'vitest';
 
-import { createCustomMarkerElement } from '@/libs/map-sdk/utils/createCustomMarkerElement';
+import {
+  createCustomMarkerElement,
+  MARKER_STYLE,
+} from '@/libs/map-sdk/utils/createCustomMarkerElement';
 
 describe('createCustomMarkerElement', () => {
   it('순서 번호가 반영된 마커 요소를 생성한다', () => {
@@ -13,16 +16,17 @@ describe('createCustomMarkerElement', () => {
   it('기본 스타일이 적용된다', () => {
     const element = createCustomMarkerElement(1);
 
-    expect(element.style.cursor).toBe('pointer');
-    expect(element.style.display).toBe('flex');
-    expect(element.style.alignItems).toBe('center');
-    expect(element.style.justifyContent).toBe('center');
-    expect(element.style.width).toBe('3rem');
-    expect(element.style.height).toBe('3rem');
-    expect(element.style.borderRadius).toBe('50%');
-    expect(element.style.fontSize).toBe('1.6rem');
-    expect(element.style.fontWeight).toBe('bold');
+    expect(element.style.cursor).toBe(MARKER_STYLE.cursor);
+    expect(element.style.display).toBe(MARKER_STYLE.display);
+    expect(element.style.alignItems).toBe(MARKER_STYLE.alignItems);
+    expect(element.style.justifyContent).toBe(MARKER_STYLE.justifyContent);
+    expect(element.style.width).toBe(MARKER_STYLE.width);
+    expect(element.style.height).toBe(MARKER_STYLE.height);
+    expect(element.style.borderRadius).toBe(MARKER_STYLE.borderRadius);
+    expect(element.style.fontSize).toBe(MARKER_STYLE.fontSize);
+    expect(element.style.fontWeight).toBe(MARKER_STYLE.fontWeight);
     expect(element.style.background).toBe('rgb(43, 108, 176)');
-    expect(element.style.color).toBe('white');
+    expect(element.style.color).toBe(MARKER_STYLE.color);
   });
+
 });
