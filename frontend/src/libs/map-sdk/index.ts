@@ -16,6 +16,8 @@ export { default as Marker } from './components/Marker/Marker';
 export type { MarkerProps } from './components/Marker/Marker.types';
 export { default as NumberMarker } from './components/NumberMarker/NumberMarker';
 export type { NumberMarkerProps } from './components/NumberMarker/NumberMarker.types';
+export { default as Polyline } from './components/Polyline/Polyline';
+export type { PolylineProps } from './components/Polyline/Polyline.types';
 
 // Hooks
 export { useMapSdkLoader } from './hooks/useMapSdkLoader';
@@ -37,5 +39,8 @@ export type {
   EventListenerType,
   CustomOverlayInstanceType,
   CustomOverlayCreateOptions,
+  PolylineInstanceType,
+  PolylineCreateOptions,
+  StrokeStyle,
 } from './types/adapter.types';
 
