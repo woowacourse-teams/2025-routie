@@ -9,6 +9,8 @@ import type {
   MapInstanceType,
   MarkerCreateOptions,
   MarkerInstanceType,
+  PolylineCreateOptions,
+  PolylineInstanceType,
 } from '../types/adapter.types';
 
 /**
@@ -208,6 +210,74 @@ const kakaoMapAdapter: MapAdapter = {
   ): void {
     const newPosition = this.createLatLng(position.lat, position.lng);
     overlay.setPosition(newPosition);
+  },
+
+  /**
+   * 폴리라인 생성
+   * @param map - 지도 인스턴스
+   * @param options - 폴리라인 생성 옵션
+   */
+  createPolyline(
+    map: MapInstanceType,
+    options: PolylineCreateOptions,
+  ): PolylineInstanceType {
+    const path = options.path.map((p) => this.createLatLng(p.lat, p.lng));
+
+    const polyline = new window.kakao.maps.Polyline({
+      map,
+      path,
+      strokeColor: options.strokeColor ?? '#F10000',
+      strokeWeight: options.strokeWeight ?? 3,
+      strokeOpacity: options.strokeOpacity ?? 0.6,
+      strokeStyle: options.strokeStyle ?? 'solid',
+      zIndex: options.zIndex,
+    });
+
+    return polyline;
+  },
+
+  /**
+   * 폴리라인 제거
+   * @param polyline - 폴리라인 인스턴스
+   */
+  removePolyline(polyline: PolylineInstanceType): void {
+    polyline.setMap(null);
+  },
+
+  /**
+   * 폴리라인 경로 변경
+   * @param polyline - 폴리라인 인스턴스
+   * @param path - 새 경로
+   */
+  setPolylinePath(polyline: PolylineInstanceType, path: LatLngLiteral[]): void {
+    const kakaoPath = path.map((p) => this.createLatLng(p.lat, p.lng));
+    polyline.setPath(kakaoPath);
+  },
+
+  /**
+   * 폴리라인 스타일 옵션 변경
+   * @param polyline - 폴리라인 인스턴스
+   * @param options - 변경할 옵션
+   */
+  setPolylineOptions(
+    polyline: PolylineInstanceType,
+    options: Partial<Omit<PolylineCreateOptions, 'path'>>,
+  ): void {
+    if (options.strokeColor !== undefined) {
+      polyline.setStrokeColor(options.strokeColor);
+    }
+    if (options.strokeWeight !== undefined) {
+      polyline.setStrokeWeight(options.strokeWeight);
+    }
+    if (options.strokeOpacity !== undefined) {
+      polyline.setStrokeOpacity(options.strokeOpacity);
+    }
+    if (options.strokeStyle !== undefined) {
+      polyline.setStrokeStyle(options.strokeStyle);
+    }
+    if (options.zIndex !== undefined) {
+      polyline.setZIndex(options.zIndex);
+    }
   },
 };
 

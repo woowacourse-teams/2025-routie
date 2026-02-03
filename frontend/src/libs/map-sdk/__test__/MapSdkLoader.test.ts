@@ -27,6 +27,10 @@ const createMockAdapter = (
   createCustomOverlay: vi.fn(),
   removeCustomOverlay: vi.fn(),
   setCustomOverlayPosition: vi.fn(),
+  createPolyline: vi.fn(),
+  removePolyline: vi.fn(),
+  setPolylinePath: vi.fn(),
+  setPolylineOptions: vi.fn(),
 });
 
 describe('MapSdkLoader', () => {
