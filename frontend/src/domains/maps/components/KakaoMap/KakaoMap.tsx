@@ -14,6 +14,7 @@ import type { PlaceDataType } from '@/domains/places/types/place.types';
 import { useMap, Map } from '@/libs/map-sdk';
 
 import MarkerLayer from '../MarkerLayer/MarkerLayer';
+import PolylineLayer from '../PolylineLayer/PolylineLayer';
 
 import {
   KakaoMapContainerStyle,
@@ -127,6 +128,7 @@ const MapContent = ({ isSidebarOpen }: { isSidebarOpen: boolean }) => {
         markerItems={markerItems}
         onMarkerClick={handleMarkerClickWithNavigate}
       />
+      <PolylineLayer />
       {containerEl &&
         clickedPlace &&
         createPortal(
