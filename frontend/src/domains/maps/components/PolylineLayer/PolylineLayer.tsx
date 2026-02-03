@@ -15,6 +15,7 @@ const PolylineLayer = ({
   strokeColor = '#3B82F6',
   strokeWeight = 4,
   strokeOpacity = 0.8,
+  zIndex = 1,
 }: PolylineLayerProps) => {
   const { routiePlacesWithDetails } = useRoutePlacesWithDetails();
 
@@ -31,6 +32,7 @@ const PolylineLayer = ({
       strokeColor={strokeColor}
       strokeWeight={strokeWeight}
       strokeOpacity={strokeOpacity}
+      zIndex={zIndex}
     />
   );
 };
