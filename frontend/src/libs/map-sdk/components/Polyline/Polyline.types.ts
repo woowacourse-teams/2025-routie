@@ -1,4 +1,4 @@
-import type { LatLngLiteral, StrokeStyle } from '../../types/adapter.types';
+import type { LatLngLiteral } from '../../types/adapter.types';
 
 interface PolylineProps {
   /** 폴리라인 경로 좌표 배열 (최소 2개 이상) */
@@ -9,8 +9,6 @@ interface PolylineProps {
   strokeWeight?: number;
   /** 선 투명도 (0~1) @default 0.6 */
   strokeOpacity?: number;
-  /** 선 스타일 @default 'solid' */
-  strokeStyle?: StrokeStyle;
   /** z-index */
   zIndex?: number;
 }

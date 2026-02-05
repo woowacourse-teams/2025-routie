@@ -30,7 +30,6 @@ const createMockPolyline = () =>
     setStrokeColor: vi.fn(),
     setStrokeWeight: vi.fn(),
     setStrokeOpacity: vi.fn(),
-    setStrokeStyle: vi.fn(),
     setZIndex: vi.fn(),
   }) as unknown as KakaoPolyline;
 
@@ -61,7 +60,6 @@ describe('Polyline', () => {
       strokeColor: '#F10000',
       strokeWeight: 3,
       strokeOpacity: 0.6,
-      strokeStyle: 'solid',
       zIndex: undefined,
     });
   });
@@ -127,7 +125,6 @@ describe('Polyline', () => {
         strokeColor: '#00FF00',
         strokeWeight: 5,
         strokeOpacity: 0.6,
-        strokeStyle: 'solid',
         zIndex: undefined,
       },
     );

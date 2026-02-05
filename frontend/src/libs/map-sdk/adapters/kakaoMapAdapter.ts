@@ -229,7 +229,7 @@ const kakaoMapAdapter: MapAdapter = {
       strokeColor: options.strokeColor ?? '#F10000',
       strokeWeight: options.strokeWeight ?? 3,
       strokeOpacity: options.strokeOpacity ?? 0.6,
-      strokeStyle: options.strokeStyle ?? 'solid',
+      strokeStyle: 'solid',
       zIndex: options.zIndex,
     });
 
@@ -271,9 +271,6 @@ const kakaoMapAdapter: MapAdapter = {
     }
     if (options.strokeOpacity !== undefined) {
       polyline.setStrokeOpacity(options.strokeOpacity);
-    }
-    if (options.strokeStyle !== undefined) {
-      polyline.setStrokeStyle(options.strokeStyle);
     }
     if (options.zIndex !== undefined) {
       polyline.setZIndex(options.zIndex);

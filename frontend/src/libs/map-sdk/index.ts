@@ -41,6 +41,5 @@ export type {
   CustomOverlayCreateOptions,
   PolylineInstanceType,
   PolylineCreateOptions,
-  StrokeStyle,
 } from './types/adapter.types';
 

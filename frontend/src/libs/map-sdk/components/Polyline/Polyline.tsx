@@ -11,7 +11,6 @@ const Polyline = ({
   strokeColor = '#F10000',
   strokeWeight = 3,
   strokeOpacity = 0.6,
-  strokeStyle = 'solid',
   zIndex,
 }: PolylineProps) => {
   const map = useMap();
@@ -27,8 +26,8 @@ const Polyline = ({
 
   // style을 문자열로 직렬화하여 의존성 비교
   const styleKey = useMemo(
-    () => `${strokeColor}-${strokeWeight}-${strokeOpacity}-${strokeStyle}-${zIndex}`,
-    [strokeColor, strokeWeight, strokeOpacity, strokeStyle, zIndex],
+    () => `${strokeColor}-${strokeWeight}-${strokeOpacity}-${zIndex}`,
+    [strokeColor, strokeWeight, strokeOpacity, zIndex],
   );
 
   const isValidPath = path.length >= 2;
@@ -52,7 +51,6 @@ const Polyline = ({
       strokeColor,
       strokeWeight,
       strokeOpacity,
-      strokeStyle,
       zIndex,
     });
     polylineRef.current = polyline;
@@ -96,7 +94,6 @@ const Polyline = ({
       strokeColor,
       strokeWeight,
       strokeOpacity,
-      strokeStyle,
       zIndex,
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps

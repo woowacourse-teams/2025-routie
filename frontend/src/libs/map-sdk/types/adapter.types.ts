@@ -46,22 +46,6 @@ type CustomOverlayInstanceType = KakaoCustomOverlay;
 type PolylineInstanceType = KakaoPolyline;
 
 /**
- * 폴리라인 선 스타일
- */
-type StrokeStyle =
-  | 'solid'
-  | 'shortdash'
-  | 'shortdot'
-  | 'shortdashdot'
-  | 'shortdashdotdot'
-  | 'dot'
-  | 'dash'
-  | 'dashdot'
-  | 'longdash'
-  | 'longdashdot'
-  | 'longdashdotdot';
-
-/**
  * 폴리라인 생성 옵션
  */
 interface PolylineCreateOptions {
@@ -73,8 +57,6 @@ interface PolylineCreateOptions {
   strokeWeight?: number;
   /** 선 투명도 (0~1) @default 0.6 */
   strokeOpacity?: number;
-  /** 선 스타일 @default 'solid' */
-  strokeStyle?: StrokeStyle;
   /** z-index */
   zIndex?: number;
 }
@@ -312,5 +294,4 @@ export type {
   CustomOverlayCreateOptions,
   PolylineInstanceType,
   PolylineCreateOptions,
-  StrokeStyle,
 };
