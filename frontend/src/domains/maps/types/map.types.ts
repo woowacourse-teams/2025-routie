@@ -14,10 +14,6 @@ interface UseMapRendererProps {
   setIsInitialLoad: (value: boolean) => void;
 }
 
-interface UsePolylineRendererProps {
-  mapRef: MapRefType;
-}
-
 interface UseMapStateProps {
   containerRef: React.RefObject<HTMLDivElement | null>;
 }
@@ -49,7 +45,6 @@ interface PlaceOverlayCardProps {
 export type {
   UseMapNavigationProps,
   UseMapRendererProps,
-  UsePolylineRendererProps,
   UseMapStateProps,
   UseMapStateReturn,
   UseClickedPlaceProps,

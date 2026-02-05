@@ -4,6 +4,7 @@ import type {
   KakaoMarker,
   KakaoCustomOverlay,
   KakaoEventListener,
+  KakaoPolyline,
 } from '../../../../kakao.d';
 
 /**
@@ -38,6 +39,27 @@ type EventListenerType = KakaoEventListener;
  * 커스텀 오버레이 인스턴스 타입
  */
 type CustomOverlayInstanceType = KakaoCustomOverlay;
+
+/**
+ * 폴리라인 인스턴스 타입
+ */
+type PolylineInstanceType = KakaoPolyline;
+
+/**
+ * 폴리라인 생성 옵션
+ */
+interface PolylineCreateOptions {
+  /** 폴리라인 경로 좌표 배열 */
+  path: LatLngLiteral[];
+  /** 선 색상 @default '#F10000' */
+  strokeColor?: string;
+  /** 선 굵기 @default 3 */
+  strokeWeight?: number;
+  /** 선 투명도 (0~1) @default 0.6 */
+  strokeOpacity?: number;
+  /** z-index */
+  zIndex?: number;
+}
 
 /**
  * 커스텀 오버레이 생성 옵션
@@ -196,6 +218,39 @@ interface MapAdapter {
     overlay: CustomOverlayInstanceType,
     position: LatLngLiteral,
   ): void;
+
+  /**
+   * 폴리라인 생성
+   * @param map - 지도 인스턴스
+   * @param options - 폴리라인 생성 옵션
+   */
+  createPolyline(
+    map: MapInstanceType,
+    options: PolylineCreateOptions,
+  ): PolylineInstanceType;
+
+  /**
+   * 폴리라인 제거
+   * @param polyline - 폴리라인 인스턴스
+   */
+  removePolyline(polyline: PolylineInstanceType): void;
+
+  /**
+   * 폴리라인 경로 변경
+   * @param polyline - 폴리라인 인스턴스
+   * @param path - 새 경로
+   */
+  setPolylinePath(polyline: PolylineInstanceType, path: LatLngLiteral[]): void;
+
+  /**
+   * 폴리라인 스타일 옵션 변경
+   * @param polyline - 폴리라인 인스턴스
+   * @param options - 변경할 옵션
+   */
+  setPolylineOptions(
+    polyline: PolylineInstanceType,
+    options: Partial<Omit<PolylineCreateOptions, 'path'>>,
+  ): void;
 }
 
 /**
@@ -237,4 +292,6 @@ export type {
   EventListenerType,
   CustomOverlayInstanceType,
   CustomOverlayCreateOptions,
+  PolylineInstanceType,
+  PolylineCreateOptions,
 };
