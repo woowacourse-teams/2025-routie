@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 
 import { kakaoMapAdapter } from '../../adapters/kakaoMapAdapter';
@@ -19,7 +19,7 @@ const getOptionsKey = (item: OverlayItemType) =>
 const OverlayLayer = ({ overlayItem }: OverlayLayerProps) => {
   const map = useMap();
   const overlayRef = useRef<CustomOverlayInstanceType | null>(null);
-  const containerRef = useRef<HTMLDivElement | null>(null);
+  const [containerEl, setContainerEl] = useState<HTMLDivElement | null>(null);
   const prevOptionsKeyRef = useRef<string | null>(null);
   const prevPositionKeyRef = useRef<string | null>(null);
 
@@ -29,7 +29,7 @@ const OverlayLayer = ({ overlayItem }: OverlayLayerProps) => {
         kakaoMapAdapter.removeCustomOverlay(overlayRef.current);
         overlayRef.current = null;
       }
-      containerRef.current = null;
+      setContainerEl(null);
       prevOptionsKeyRef.current = null;
       prevPositionKeyRef.current = null;
     };
@@ -41,7 +41,7 @@ const OverlayLayer = ({ overlayItem }: OverlayLayerProps) => {
         kakaoMapAdapter.removeCustomOverlay(overlayRef.current);
         overlayRef.current = null;
       }
-      containerRef.current = null;
+      setContainerEl(null);
       prevOptionsKeyRef.current = null;
       prevPositionKeyRef.current = null;
       return;
@@ -54,7 +54,7 @@ const OverlayLayer = ({ overlayItem }: OverlayLayerProps) => {
       const container = document.createElement('div');
       container.style.pointerEvents =
         overlayItem.clickable === false ? 'none' : 'auto';
-      containerRef.current = container;
+      setContainerEl(container);
 
       overlayRef.current = kakaoMapAdapter.createCustomOverlay(map, {
         position: overlayItem.position,
@@ -70,15 +70,15 @@ const OverlayLayer = ({ overlayItem }: OverlayLayerProps) => {
       return;
     }
 
-    if (prevOptionsKeyRef.current !== optionsKey && containerRef.current) {
+    if (prevOptionsKeyRef.current !== optionsKey && containerEl) {
       kakaoMapAdapter.removeCustomOverlay(overlayRef.current);
 
-      containerRef.current.style.pointerEvents =
+      containerEl.style.pointerEvents =
         overlayItem.clickable === false ? 'none' : 'auto';
 
       overlayRef.current = kakaoMapAdapter.createCustomOverlay(map, {
         position: overlayItem.position,
-        content: containerRef.current,
+        content: containerEl,
         xAnchor: overlayItem.xAnchor,
         yAnchor: overlayItem.yAnchor,
         zIndex: overlayItem.zIndex,
@@ -97,14 +97,14 @@ const OverlayLayer = ({ overlayItem }: OverlayLayerProps) => {
       );
       prevPositionKeyRef.current = positionKey;
     }
-  }, [map, overlayItem]);
+  }, [map, overlayItem, containerEl]);
 
   const overlayContent = useMemo(() => overlayItem?.content ?? null, [overlayItem]);
 
   return (
     <>
-      {overlayContent && containerRef.current
-        ? createPortal(overlayContent, containerRef.current)
+      {overlayContent && containerEl
+        ? createPortal(overlayContent, containerEl)
         : null}
     </>
   );
