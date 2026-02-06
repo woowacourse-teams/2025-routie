@@ -1,7 +1,7 @@
-import type { OverlayItemListType } from '../../types/overlay.types';
+import type { OverlayItemType } from '../../types/overlay.types';
 
 interface OverlayLayerProps {
-  overlayItemList: OverlayItemListType;
+  overlayItem: OverlayItemType | null;
 }
 
 export type { OverlayLayerProps };
