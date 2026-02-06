@@ -45,7 +45,4 @@ export type {
   PolylineCreateOptions,
 } from './types/adapter.types';
 
-export type {
-  OverlayItemType,
-  OverlayItemListType,
-} from './types/overlay.types';
+export type { OverlayItemType } from './types/overlay.types';

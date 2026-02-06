@@ -12,6 +12,4 @@ interface OverlayItemType {
   clickable?: boolean;
 }
 
-type OverlayItemListType = OverlayItemType[];
-
-export type { OverlayItemType, OverlayItemListType };
+export type { OverlayItemType };
