@@ -69,6 +69,8 @@ interface CustomOverlayCreateOptions {
   position: LatLngLiteral;
   /** 오버레이 내용 (HTML 요소) */
   content: HTMLElement;
+  /** 클릭 가능 여부 @default false */
+  clickable?: boolean;
   /** x축 기준점 (0~1) @default 0.5 */
   xAnchor?: number;
   /** y축 기준점 (0~1) @default 0.5 */
