@@ -4,7 +4,6 @@ import type { PlaceDataType } from '@/domains/places/types/place.types';
 
 type KakaoMapType = InstanceType<typeof window.kakao.maps.Map>;
 type MapStateType = 'loading' | 'ready' | 'error';
-type CustomOverlayType = InstanceType<typeof window.kakao.maps.CustomOverlay>;
 
 interface UseKakaoMapSDKReturnType {
   sdkReady: boolean;
@@ -33,7 +32,6 @@ type MapRefType = RefObject<KakaoMapType | null>;
 export type {
   KakaoMapType,
   MapStateType,
-  CustomOverlayType,
   UseKakaoMapSDKReturnType,
   UseKakaoMapInitProps,
   UseKakaoMapInitReturnType,
