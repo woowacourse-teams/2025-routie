@@ -42,6 +42,13 @@ interface PlaceOverlayCardProps {
   onClose: () => void;
 }
 
+interface UseCustomOverlayReturn {
+  openAt: (lat: number, lng: number) => void;
+  close: () => void;
+  containerEl: HTMLDivElement | null;
+  position: { lat: number; lng: number } | null;
+}
+
 export type {
   UseMapNavigationProps,
   UseMapRendererProps,
@@ -50,4 +57,5 @@ export type {
   UseClickedPlaceProps,
   UseClickedPlaceReturn,
   PlaceOverlayCardProps,
+  UseCustomOverlayReturn,
 };

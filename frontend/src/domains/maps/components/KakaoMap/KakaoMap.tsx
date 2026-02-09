@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { createPortal } from 'react-dom';
 
 import Flex from '@/@common/components/Flex/Flex';
 import Text from '@/@common/components/Text/Text';
@@ -11,7 +10,7 @@ import { useCustomOverlay } from '@/domains/maps/hooks/useCustomOverlay';
 import { useMapRenderer } from '@/domains/maps/hooks/useMapRenderer';
 import { useMarkerItems } from '@/domains/maps/hooks/useMarkerItems';
 import type { PlaceDataType } from '@/domains/places/types/place.types';
-import { useMap, Map } from '@/libs/map-sdk';
+import { useMap, Map, OverlayLayer, MapEventLayer } from '@/libs/map-sdk';
 
 import MarkerLayer from '../MarkerLayer/MarkerLayer';
 import PolylineLayer from '../PolylineLayer/PolylineLayer';
@@ -66,18 +65,17 @@ const MapError = ({ error }: { error: Error }) => (
  * @param props.isSidebarOpen - 사이드바 열림 상태
  */
 const MapContent = ({ isSidebarOpen }: { isSidebarOpen: boolean }) => {
-  const map = useMap();
   const [isInitialLoad, setIsInitialLoad] = useState(true);
 
-  // 기존 훅들과 호환성을 위해 ref 패턴 유지
-  const mapRef = useRef<KakaoMapType | null>(null);
-  mapRef.current = map;
-
-  const { containerEl, openAt, close } = useCustomOverlay(mapRef);
+  const { containerEl, openAt, close, position } = useCustomOverlay();
   const { clickedPlace, handleMapClick, handleMarkerClick } = useClickedPlace({
     openAt,
     close,
   });
+  const map = useMap();
+  const mapRef = useRef<KakaoMapType | null>(null);
+  mapRef.current = map;
+
   const { renderMapElements, navigateToPlace } = useMapRenderer({
     mapRef,
     isInitialLoad,
@@ -92,17 +90,6 @@ const MapContent = ({ isSidebarOpen }: { isSidebarOpen: boolean }) => {
     },
     [handleMarkerClick, navigateToPlace],
   );
-
-  // 지도 클릭 이벤트 등록
-  useEffect(() => {
-    if (!map) return;
-
-    window.kakao.maps.event.addListener(map, 'click', handleMapClick);
-
-    return () => {
-      window.kakao.maps.event.removeListener(map, 'click', handleMapClick);
-    };
-  }, [map, handleMapClick]);
 
   // 맵 요소 렌더링 (마커, 폴리라인 등)
   useEffect(() => {
@@ -124,17 +111,29 @@ const MapContent = ({ isSidebarOpen }: { isSidebarOpen: boolean }) => {
   return (
     <>
       <HashtagFilter isSidebarOpen={isSidebarOpen} />
+      <MapEventLayer onClick={handleMapClick} />
       <MarkerLayer
         markerItems={markerItems}
         onMarkerClick={handleMarkerClickWithNavigate}
       />
       <PolylineLayer />
-      {containerEl &&
-        clickedPlace &&
-        createPortal(
-          <PlaceOverlayCard place={clickedPlace} onClose={handleMapClick} />,
-          containerEl,
-        )}
+      <OverlayLayer
+        overlayItem={
+          containerEl && position && clickedPlace
+            ? {
+                id: 'place-overlay',
+                position,
+                content: (
+                  <PlaceOverlayCard place={clickedPlace} onClose={handleMapClick} />
+                ),
+                xAnchor: 0.5,
+                yAnchor: 1,
+                zIndex: 3000,
+                clickable: true,
+              }
+            : null
+        }
+      />
     </>
   );
 };

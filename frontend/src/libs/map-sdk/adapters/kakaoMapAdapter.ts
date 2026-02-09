@@ -182,6 +182,7 @@ const kakaoMapAdapter: MapAdapter = {
     const overlay = new window.kakao.maps.CustomOverlay({
       position,
       content: options.content,
+      clickable: options.clickable,
       xAnchor: options.xAnchor ?? 0.5,
       yAnchor: options.yAnchor ?? 0.5,
       zIndex: options.zIndex,
