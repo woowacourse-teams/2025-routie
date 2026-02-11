@@ -2,7 +2,7 @@ import Button from '@/@common/components/Button/Button';
 import Flex from '@/@common/components/Flex/Flex';
 import Icon from '@/@common/components/IconSvg/Icon';
 import Text from '@/@common/components/Text/Text';
-import { useUserQuery } from '@/domains/auth/queries/useAuthQuery';
+import { useSuspenseUserQuery } from '@/domains/auth/queries/useAuthQuery';
 import { useRoutieSpaceNavigation } from '@/pages/Home/hooks/useRoutieSpaceNavigation';
 
 import { DividerStyle, UserMenuStyle } from './UserMenu.styles';
@@ -10,27 +10,15 @@ import { DividerStyle, UserMenuStyle } from './UserMenu.styles';
 import type { UserMenuProps } from './UserMenu.types';
 
 const UserMenu = ({ onClick }: UserMenuProps) => {
-  const { data: user, error, isLoading } = useUserQuery();
+  const { data: user } = useSuspenseUserQuery();
   const { handleMoveToManageRoutieSpace } = useRoutieSpaceNavigation();
 
   const role = localStorage.getItem('role');
 
-  const renderUserName = () => {
-    if (isLoading) {
-      return <Text variant="body">로딩중...</Text>;
-    }
-
-    if (error) {
-      return <Text variant="body">닉네임 불러오기 오류</Text>;
-    }
-
-    return <Text variant="body">{user?.nickname}</Text>;
-  };
-
   return (
     <div id="userMenu" css={UserMenuStyle}>
       <Flex direction="column" width="10" gap={1}>
-        {renderUserName()}
+        <Text variant="body">{user.nickname}</Text>
         <div css={DividerStyle} />
         {role === 'USER' && (
           <Button onClick={handleMoveToManageRoutieSpace}>
