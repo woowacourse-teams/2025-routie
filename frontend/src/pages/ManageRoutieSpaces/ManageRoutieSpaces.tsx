@@ -1,5 +1,6 @@
-import { useCallback } from 'react';
+import { Suspense, useCallback } from 'react';
 
+import ErrorBoundary from '@/@common/components/ErrorBoundary/ErrorBoundary';
 import Flex from '@/@common/components/Flex/Flex';
 import Header from '@/@common/components/Header/Header';
 import Text from '@/@common/components/Text/Text';
@@ -43,7 +44,11 @@ const ManageRoutieSpaces = () => {
   return (
     <div css={ManageRoutieSpacesStyle}>
       <Header isLoggedIn={true} onLogoClick={handleMoveToHome} />
-      <ManageRoutieSpaceBanner />
+      <ErrorBoundary fallback={null}>
+        <Suspense fallback={null}>
+          <ManageRoutieSpaceBanner />
+        </Suspense>
+      </ErrorBoundary>
       <ManageRoutieSpacesLayout>
         <Flex justifyContent="space-between" margin="1.2rem 0 0 0">
           <Text variant="subTitle">동선 목록</Text>

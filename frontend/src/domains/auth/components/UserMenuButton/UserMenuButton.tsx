@@ -1,6 +1,7 @@
 /** @jsxImportSource @emotion/react */
-import { useState } from 'react';
+import { Suspense, useState } from 'react';
 
+import ErrorBoundary from '@/@common/components/ErrorBoundary/ErrorBoundary';
 import Icon from '@/@common/components/IconSvg/Icon';
 import { logout } from '@/@common/utils/logout';
 import UserMenu from '@/domains/auth/components/UserMenu/UserMenu';
@@ -41,7 +42,13 @@ const UserMenuButton = ({
         css={UserMenuIconStyle}
         onClick={handleProfileClick}
       />
-      {isUserInfoOpen && <UserMenu onClick={handleLogout} />}
+      {isUserInfoOpen && (
+        <ErrorBoundary fallback={null}>
+          <Suspense fallback={null}>
+            <UserMenu onClick={handleLogout} />
+          </Suspense>
+        </ErrorBoundary>
+      )}
     </div>
   );
 };
