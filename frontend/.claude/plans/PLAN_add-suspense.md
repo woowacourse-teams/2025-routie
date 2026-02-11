@@ -2,7 +2,7 @@
 
 **Status**: 🔄 In Progress
 **Started**: 2026-02-11
-**Last Updated**: 2026-02-11
+**Last Updated**: 2026-02-11 (Phase 4 완료)
 
 ---
 
@@ -244,24 +244,24 @@ SSE 기반 도메인(장소 목록, 루티 목록, 루티 스페이스 이름)�
 ### Phase 4: 루티 스페이스 이름 Suspense 전환 (SSE 기반)
 
 **Goal**: useRoutieSpace 훅과 RoutieSpaceName에 Suspense를 적용하고, SSE 기반에서 REST 초기 fetch로 전환한다
-**Status**: ⏳ Pending
+**Status**: ✅ Complete
 
 #### Tasks
 
 **🟢 GREEN: Implement**
 
-- [ ] **Task 4.1**: useRoutieSpace 훅 수정
+- [x] **Task 4.1**: useRoutieSpace 훅 수정
   - File: `src/domains/routieSpace/hooks/useRoutieSpace.ts`
   - `useRoutieSpaceQuery({ enabled: false })` → `useSuspenseRoutieSpaceQuery()`
   - `isLoading` 반환값 제거 (Suspense가 처리)
   - `routieSpace?.name` → `routieSpace.name` (non-nullable)
   - `UseRoutieSpaceReturn` 타입에서 `isLoading` 제거
 
-- [ ] **Task 4.2**: RoutieSpaceName 컴포넌트 수정
+- [x] **Task 4.2**: RoutieSpaceName 컴포넌트 수정
   - File: `src/domains/routieSpace/components/RoutieSpaceName/RoutieSpaceName.tsx`
   - `isLoading` 사용처 제거 (저장 버튼 disabled 조건 조정)
 
-- [ ] **Task 4.3**: RoutieSpace 페이지의 routieSpaceQuery 호출 수정
+- [x] **Task 4.3**: RoutieSpace 페이지의 routieSpaceQuery 호출 수정
   - File: `src/pages/RoutieSpace/RoutieSpace.tsx`
   - 기존: `const { error: routieSpaceError } = useRoutieSpaceQuery()`
   - 변경: `useSuspenseRoutieSpaceQuery()`로 전환 → 에러는 ErrorBoundary에서 처리
@@ -270,14 +270,15 @@ SSE 기반 도메인(장소 목록, 루티 목록, 루티 스페이스 이름)�
 
 **🔵 REFACTOR: Clean Up Code**
 
-- [ ] **Task 4.4**: UseRoutieSpaceQueryOptions 타입 정리 (enabled 옵션 불필요 시)
+- [x] **Task 4.4**: UseRoutieSpaceQueryOptions 타입 정리 (enabled 옵션 불필요 시)
   - File: `src/domains/routieSpace/types/useRoutieQuery.types.ts`
+  - `useRoutieSpaceQuery`에서 여전히 사용하므로 타입 유지
 
 #### Quality Gate ✋
 
 **Build & Tests**:
-- [ ] `npm run test:run` — 100% passing
-- [ ] `npm run lint` — no errors
+- [x] `npm run test:run` — 100% passing (51 tests)
+- [x] `npm run lint` — no errors (기존 warning만)
 
 **Manual Testing**:
 - [ ] `/routie-spaces?routieSpaceIdentifier=...` 접속 → Suspense fallback → 스페이스 이름 표시
@@ -287,8 +288,8 @@ SSE 기반 도메인(장소 목록, 루티 목록, 루티 스페이스 이름)�
 - [ ] 깜빡임 없이 데이터 전환되는지 확인
 
 **🔍 Frontend Code Review**:
-- [ ] `/frontend-code-review src/domains/routieSpace/hooks/`
-- [ ] `/frontend-code-review src/domains/routieSpace/components/RoutieSpaceName/`
+- [x] `/frontend-code-review src/domains/routieSpace/hooks/` — `?? ''` 불필요한 null coalescing 제거 반영
+- [x] `/frontend-code-review src/domains/routieSpace/components/RoutieSpaceName/` — 이슈 없음
 
 ---
 
@@ -474,12 +475,12 @@ SSE 기반 도메인(장소 목록, 루티 목록, 루티 스페이스 이름)�
 - **Phase 1**: ✅ 100%
 - **Phase 2**: ✅ 100%
 - **Phase 3**: ✅ 100%
-- **Phase 4**: ⏳ 0%
+- **Phase 4**: ✅ 100%
 - **Phase 5**: ⏳ 0%
 - **Phase 6**: ⏳ 0%
 - **Phase 7**: ⏳ 0%
 
-**Overall Progress**: 43% complete
+**Overall Progress**: 57% complete
 
 ---
 
@@ -510,7 +511,7 @@ SSE 기반 도메인(장소 목록, 루티 목록, 루티 스페이스 이름)�
 
 ### Implementation Notes
 
-- (구현 중 추가)
+- Phase 4에서 RoutieSpace 페이지의 `routieSpaceError` 기반 에러 처리(not-found 네비게이션)를 제거하고 범용 ErrorBoundary로 대체함. 기존에는 에러 메시지를 케이스별로 구분하여 `'방 찾기에 실패했습니다'`, `'방을 찾을 수 없습니다'`, `'존재하지 않는 방입니다'` → `/routie-space-not-found`로 이동하는 로직이 있었음. **추후 ErrorBoundary 고도화 시 에러 타입별 분기 처리를 다시 추가해야 함.**
 
 ### 🔍 Code Review Learnings
 
@@ -547,5 +548,5 @@ SSE 기반 도메인(장소 목록, 루티 목록, 루티 스페이스 이름)�
 ---
 
 **Plan Status**: 🔄 In Progress
-**Next Action**: Phase 4 시작 (루티 스페이스 이름 Suspense 전환)
+**Next Action**: Phase 5 시작 (장소 목록 + 루티 목록 Suspense 전환)
 **Blocked By**: None
