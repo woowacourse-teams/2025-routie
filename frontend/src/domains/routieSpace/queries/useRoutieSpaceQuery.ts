@@ -1,4 +1,10 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import {
+  queryOptions,
+  useMutation,
+  useQuery,
+  useQueryClient,
+  useSuspenseQuery,
+} from '@tanstack/react-query';
 
 import { useToastContext } from '@/@common/contexts/useToastContext';
 import {
@@ -12,6 +18,16 @@ import {
 import { UseRoutieSpaceQueryOptions } from '../types/useRoutieQuery.types';
 
 import { routieSpaceKeys } from './key';
+
+const routieSpaceQueryOptions = queryOptions({
+  queryKey: routieSpaceKeys.all,
+  queryFn: getRoutieSpace,
+});
+
+const routieSpaceListQueryOptions = queryOptions({
+  queryKey: routieSpaceKeys.list(),
+  queryFn: getRoutieSpaceList,
+});
 
 const useCreateRoutieSpaceQuery = () => {
   const { showToast } = useToastContext();
@@ -39,10 +55,13 @@ const useRoutieSpaceQuery = ({
   enabled = true,
 }: UseRoutieSpaceQueryOptions = {}) => {
   return useQuery({
-    queryKey: routieSpaceKeys.all,
-    queryFn: getRoutieSpace,
+    ...routieSpaceQueryOptions,
     enabled,
   });
+};
+
+const useSuspenseRoutieSpaceQuery = () => {
+  return useSuspenseQuery(routieSpaceQueryOptions);
 };
 
 const useEditRoutieSpaceNameQuery = (name: string) => {
@@ -68,10 +87,11 @@ const useEditRoutieSpaceNameQuery = (name: string) => {
 };
 
 const useGetRoutieSpaceListQuery = () => {
-  return useQuery({
-    queryKey: routieSpaceKeys.list(),
-    queryFn: getRoutieSpaceList,
-  });
+  return useQuery(routieSpaceListQueryOptions);
+};
+
+const useSuspenseGetRoutieSpaceListQuery = () => {
+  return useSuspenseQuery(routieSpaceListQueryOptions);
 };
 
 const useDeleteRoutieSpaceMutation = () => {
@@ -99,9 +119,13 @@ const useDeleteRoutieSpaceMutation = () => {
 };
 
 export {
+  routieSpaceListQueryOptions,
+  routieSpaceQueryOptions,
   useCreateRoutieSpaceQuery,
   useDeleteRoutieSpaceMutation,
   useEditRoutieSpaceNameQuery,
   useGetRoutieSpaceListQuery,
   useRoutieSpaceQuery,
+  useSuspenseGetRoutieSpaceListQuery,
+  useSuspenseRoutieSpaceQuery,
 };
