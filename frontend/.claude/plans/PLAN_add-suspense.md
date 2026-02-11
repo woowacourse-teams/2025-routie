@@ -87,7 +87,7 @@ SSE 기반 도메인(장소 목록, 루티 목록, 루티 스페이스 이름)�
 ### Phase 1: 인프라 컴포넌트 (SuspenseFallback + ErrorBoundary)
 
 **Goal**: Suspense/ErrorBoundary 인프라 컴포넌트를 생성하고 테스트한다
-**Status**: ⏳ Pending
+**Status**: ✅ Complete
 
 #### Tasks
 
@@ -471,7 +471,7 @@ SSE 기반 도메인(장소 목록, 루티 목록, 루티 스페이스 이름)�
 
 ### Completion Status
 
-- **Phase 1**: ⏳ 0%
+- **Phase 1**: ✅ 100%
 - **Phase 2**: ⏳ 0%
 - **Phase 3**: ⏳ 0%
 - **Phase 4**: ⏳ 0%
@@ -479,7 +479,7 @@ SSE 기반 도메인(장소 목록, 루티 목록, 루티 스페이스 이름)�
 - **Phase 6**: ⏳ 0%
 - **Phase 7**: ⏳ 0%
 
-**Overall Progress**: 0% complete
+**Overall Progress**: 14% complete
 
 ---
 
@@ -547,5 +547,5 @@ SSE 기반 도메인(장소 목록, 루티 목록, 루티 스페이스 이름)�
 ---
 
 **Plan Status**: 🔄 In Progress
-**Next Action**: Phase 1 시작 (인프라 컴포넌트)
+**Next Action**: Phase 2 시작 (queryOptions 팩토리 + useSuspense 훅)
 **Blocked By**: None
