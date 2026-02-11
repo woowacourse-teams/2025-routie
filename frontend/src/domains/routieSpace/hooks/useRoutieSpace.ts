@@ -5,7 +5,7 @@ import { useToastContext } from '@/@common/contexts/useToastContext';
 import { MAX_NAME_LENGTH, ERROR_MESSAGE } from '../constants/routieSpace';
 import {
   useEditRoutieSpaceNameQuery,
-  useRoutieSpaceQuery,
+  useSuspenseRoutieSpaceQuery,
 } from '../queries/useRoutieSpaceQuery';
 
 import type {
@@ -14,9 +14,7 @@ import type {
 } from '../types/routieSpace.types';
 
 const useRoutieSpace = (): UseRoutieSpaceReturn => {
-  const { data: routieSpace, isLoading } = useRoutieSpaceQuery({
-    enabled: false,
-  });
+  const { data: routieSpace } = useSuspenseRoutieSpaceQuery();
   const [currentName, setCurrentName] = useState('');
   const { mutate: editRoutieSpaceName } =
     useEditRoutieSpaceNameQuery(currentName);
@@ -51,7 +49,7 @@ const useRoutieSpace = (): UseRoutieSpaceReturn => {
   };
 
   const hasNameChanged = (): boolean => {
-    return currentName !== (routieSpace?.name ?? '');
+    return currentName !== (routieSpace.name);
   };
 
   const saveNameEdit = async (): Promise<void> => {
@@ -60,8 +58,6 @@ const useRoutieSpace = (): UseRoutieSpaceReturn => {
   };
 
   const handleSaveNameEdit = async () => {
-    if (isLoading) return;
-
     if (!validateNameEdit()) return;
 
     if (!hasNameChanged()) {
@@ -86,7 +82,7 @@ const useRoutieSpace = (): UseRoutieSpaceReturn => {
     if (isEditing) {
       await handleSaveNameEdit();
     } else {
-      setCurrentName(routieSpace?.name ?? '');
+      setCurrentName(routieSpace.name);
       setIsEditing(true);
     }
   };
@@ -97,14 +93,13 @@ const useRoutieSpace = (): UseRoutieSpaceReturn => {
 
   useEffect(() => {
     if (!isEditing) {
-      setCurrentName(routieSpace?.name ?? '');
+      setCurrentName(routieSpace.name);
     }
-  }, [routieSpace?.name, isEditing]);
+  }, [routieSpace.name, isEditing]);
 
   return {
     name: currentName,
     isEditing,
-    isLoading,
     errorCase,
     inputRef,
     handleEnter,
