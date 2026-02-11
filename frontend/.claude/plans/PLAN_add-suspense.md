@@ -93,13 +93,13 @@ SSE 기반 도메인(장소 목록, 루티 목록, 루티 스페이스 이름)�
 
 **🔴 RED: Write Failing Tests First**
 
-- [ ] **Test 1.1**: SuspenseFallback 렌더링 테스트
+- [x] **Test 1.1**: SuspenseFallback 렌더링 테스트
   - File: `src/@common/components/SuspenseFallback/__tests__/SuspenseFallback.test.tsx`
   - Expected: Tests FAIL (컴포넌트 미존재)
   - Cases:
     - Spinner가 렌더링되는지 확인
 
-- [ ] **Test 1.2**: ErrorBoundary 에러 캐치 테스트
+- [x] **Test 1.2**: ErrorBoundary 에러 캐치 테스트
   - File: `src/@common/components/ErrorBoundary/__tests__/ErrorBoundary.test.tsx`
   - Expected: Tests FAIL (컴포넌트 미존재)
   - Cases:
@@ -108,34 +108,34 @@ SSE 기반 도메인(장소 목록, 루티 목록, 루티 스페이스 이름)�
 
 **🟢 GREEN: Implement to Make Tests Pass**
 
-- [ ] **Task 1.3**: SuspenseFallback 컴포넌트 구현
+- [x] **Task 1.3**: SuspenseFallback 컴포넌트 구현
   - File: `src/@common/components/SuspenseFallback/SuspenseFallback.tsx`
   - 기존 `Spinner` 컴포넌트(`src/@common/components/Spinner/Spinner.tsx`) 활용
   - `Flex` + `Spinner` 조합
 
-- [ ] **Task 1.4**: ErrorBoundary 컴포넌트 구현
+- [x] **Task 1.4**: ErrorBoundary 컴포넌트 구현
   - File: `src/@common/components/ErrorBoundary/ErrorBoundary.tsx`
   - Class component, `getDerivedStateFromError` + `componentDidCatch`
   - Props: `children`, `fallback`
 
 **🔵 REFACTOR: Clean Up Code**
 
-- [ ] **Task 1.5**: 코드 정리
+- [x] **Task 1.5**: 코드 정리
   - 타입 분리 필요 시 `.types.ts` 파일 생성
   - export default 패턴 확인
 
 #### Quality Gate ✋
 
 **Build & Tests**:
-- [ ] `npm run test:run` — 100% passing
-- [ ] `npm run lint` — no errors
+- [x] `npm run test:run` — 100% passing
+- [x] `npm run lint` — no errors
 
 **Manual Testing**:
-- [ ] Storybook에서 SuspenseFallback 시각 확인 (선택)
+- [x] Storybook에서 SuspenseFallback 시각 확인 (선택)
 
 **🔍 Frontend Code Review**:
-- [ ] `/frontend-code-review src/@common/components/SuspenseFallback/`
-- [ ] `/frontend-code-review src/@common/components/ErrorBoundary/`
+- [x] `/frontend-code-review src/@common/components/SuspenseFallback/`
+- [x] `/frontend-code-review src/@common/components/ErrorBoundary/`
 
 ---
 
@@ -148,33 +148,33 @@ SSE 기반 도메인(장소 목록, 루티 목록, 루티 스페이스 이름)�
 
 **🔴 RED: Write Failing Tests First**
 
-- [ ] **Test 2.1**: 각 useSuspense 훅이 useSuspenseQuery를 호출하는지 테스트
+- [x] **Test 2.1**: 각 useSuspense 훅이 useSuspenseQuery를 호출하는지 테스트
   - Files: 각 도메인의 queries 디렉토리에 테스트 추가
   - Expected: Tests FAIL (훅 미존재)
 
 **🟢 GREEN: Implement to Make Tests Pass**
 
-- [ ] **Task 2.2**: places 도메인 queryOptions + useSuspensePlaceListQuery
+- [x] **Task 2.2**: places 도메인 queryOptions + useSuspensePlaceListQuery
   - File: `src/domains/places/queries/usePlaceQuery.ts`
   - `queryOptions` import 추가
   - `placeListQueryOptions` 팩토리 생성 (queryKey + queryFn)
   - `useSuspensePlaceListQuery` 훅 생성
   - export에 추가
 
-- [ ] **Task 2.3**: routie 도메인 queryOptions + useSuspenseRoutieQuery
+- [x] **Task 2.3**: routie 도메인 queryOptions + useSuspenseRoutieQuery
   - File: `src/domains/routie/queries/useRoutieQuery.ts`
   - `routieQueryOptions` 팩토리 생성 (queryKey + queryFn + select)
   - `useSuspenseRoutieQuery` 훅 생성
   - export에 추가
 
-- [ ] **Task 2.4**: routieSpace 도메인 queryOptions 2개 + useSuspense 훅 2개
+- [x] **Task 2.4**: routieSpace 도메인 queryOptions 2개 + useSuspense 훅 2개
   - File: `src/domains/routieSpace/queries/useRoutieSpaceQuery.ts`
   - `routieSpaceQueryOptions` (단일 스페이스 조회)
   - `routieSpaceListQueryOptions` (스페이스 목록 조회)
   - `useSuspenseRoutieSpaceQuery`, `useSuspenseGetRoutieSpaceListQuery`
   - export에 추가
 
-- [ ] **Task 2.5**: auth 도메인 queryOptions + useSuspenseUserQuery
+- [x] **Task 2.5**: auth 도메인 queryOptions + useSuspenseUserQuery
   - File: `src/domains/auth/queries/useAuthQuery.ts`
   - `userQueryOptions` 팩토리 생성
   - `useSuspenseUserQuery` 훅 생성
@@ -182,7 +182,7 @@ SSE 기반 도메인(장소 목록, 루티 목록, 루티 스페이스 이름)�
 
 **🔵 REFACTOR: Clean Up Code**
 
-- [ ] **Task 2.6**: 기존 useQuery 훅이 queryOptions 팩토리 재사용하도록 정리
+- [x] **Task 2.6**: 기존 useQuery 훅이 queryOptions 팩토리 재사용하도록 정리
   - `usePlaceListQuery` → `useQuery({ ...placeListQueryOptions, enabled })`
   - `useRoutieQuery` → `useQuery({ ...routieQueryOptions, enabled })` + `initialData` 제거
   - `useRoutieSpaceQuery` → `useQuery({ ...routieSpaceQueryOptions, enabled })`
@@ -191,45 +191,45 @@ SSE 기반 도메인(장소 목록, 루티 목록, 루티 스페이스 이름)�
 #### Quality Gate ✋
 
 **Build & Tests**:
-- [ ] `npm run test:run` — 100% passing
-- [ ] `npm run lint` — no errors
-- [ ] `npm run build:prod` — 빌드 성공
+- [x] `npm run test:run` — 100% passing
+- [x] `npm run lint` — no errors
+- [x] `npm run build:prod` — 빌드 성공
 
 **Manual Testing**:
-- [ ] 기존 기능 정상 동작 확인 (이 Phase에서는 컴포넌트 미변경이므로 regression 없어야 함)
+- [x] 기존 기능 정상 동작 확인 (이 Phase에서는 컴포넌트 미변경이므로 regression 없어야 함)
 
 ---
 
 ### Phase 3: 루티 스페이스 목록 Suspense 전환
 
 **Goal**: ManageRoutieSpaces 페이지에 Suspense를 적용한다 (가장 단순한 케이스, SSE 없음)
-**Status**: ⏳ Pending
+**Status**: ✅ Complete
 
 #### Tasks
 
 **🟢 GREEN: Implement**
 
-- [ ] **Task 3.1**: ManageRoutieSpaces 페이지 수정
+- [x] **Task 3.1**: ManageRoutieSpaces 페이지 수정
   - File: `src/pages/ManageRoutieSpaces/ManageRoutieSpaces.tsx`
   - `useGetRoutieSpaceListQuery()` → `useSuspenseGetRoutieSpaceListQuery()`
   - `isLoading` 분기 제거 (Suspense가 처리)
   - `error` 분기 제거 (ErrorBoundary가 처리)
   - `data: routieSpaces = []` → `data: routieSpaces` (항상 존재)
 
-- [ ] **Task 3.2**: routes에 Suspense/ErrorBoundary 경계 추가
+- [x] **Task 3.2**: routes에 Suspense/ErrorBoundary 경계 추가
   - File: `src/routes/index.tsx`
   - `/manage-routie-spaces` 라우트에 `<ErrorBoundary>` + `<Suspense fallback={<SuspenseFallback />}>` 래핑
   - 에러 fallback으로 기존 에러 UI 유사 컴포넌트 제공
 
 **🔵 REFACTOR: Clean Up Code**
 
-- [ ] **Task 3.3**: 불필요한 import 정리
+- [x] **Task 3.3**: 불필요한 import 정리 (Button import 제거됨)
 
 #### Quality Gate ✋
 
 **Build & Tests**:
-- [ ] `npm run test:run` — 100% passing
-- [ ] `npm run lint` — no errors
+- [x] `npm run test:run` — 100% passing (51 tests)
+- [x] `npm run lint` — no errors (기존 warning만)
 
 **Manual Testing**:
 - [ ] `/manage-routie-spaces` 접속 → Suspense fallback(Spinner) 표시 → 스페이스 목록 로딩
@@ -237,7 +237,7 @@ SSE 기반 도메인(장소 목록, 루티 목록, 루티 스페이스 이름)�
 - [ ] 스페이스 생성/삭제 정상 동작
 
 **🔍 Frontend Code Review**:
-- [ ] `/frontend-code-review src/pages/ManageRoutieSpaces/`
+- [x] `/frontend-code-review src/pages/ManageRoutieSpaces/` — 에러 fallback 홈 이동 링크 추가 반영
 
 ---
 
@@ -473,13 +473,13 @@ SSE 기반 도메인(장소 목록, 루티 목록, 루티 스페이스 이름)�
 
 - **Phase 1**: ✅ 100%
 - **Phase 2**: ✅ 100%
-- **Phase 3**: ⏳ 0%
+- **Phase 3**: ✅ 100%
 - **Phase 4**: ⏳ 0%
 - **Phase 5**: ⏳ 0%
 - **Phase 6**: ⏳ 0%
 - **Phase 7**: ⏳ 0%
 
-**Overall Progress**: 28% complete
+**Overall Progress**: 43% complete
 
 ---
 
@@ -547,5 +547,5 @@ SSE 기반 도메인(장소 목록, 루티 목록, 루티 스페이스 이름)�
 ---
 
 **Plan Status**: 🔄 In Progress
-**Next Action**: Phase 3 시작 (루티 스페이스 목록 Suspense 전환)
+**Next Action**: Phase 4 시작 (루티 스페이스 이름 Suspense 전환)
 **Blocked By**: None
