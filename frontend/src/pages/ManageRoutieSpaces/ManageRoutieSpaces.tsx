@@ -18,6 +18,7 @@ import {
 } from './ManageRoutieSpaces.styles';
 import CreateRoutieSpaceButton from './components/CreateRoutieSpaceButton/CreateRoutieSpaceButton';
 import ManageRoutieSpaceBanner from './components/ManageRoutieSpaceBanner/ManageRoutieSpaceBanner';
+import ManageRoutieSpaceBannerSkeleton from './components/ManageRoutieSpaceBanner/ManageRoutieSpaceBannerSkeleton';
 import ManageRoutieSpacesLayout from './layouts/ManageRoutieSpacesLayout';
 
 const ManageRoutieSpaces = () => {
@@ -44,8 +45,8 @@ const ManageRoutieSpaces = () => {
   return (
     <div css={ManageRoutieSpacesStyle}>
       <Header isLoggedIn={true} onLogoClick={handleMoveToHome} />
-      <ErrorBoundary fallback={null}>
-        <Suspense fallback={null}>
+      <ErrorBoundary fallback={<ManageRoutieSpaceBannerSkeleton />}>
+        <Suspense fallback={<ManageRoutieSpaceBannerSkeleton />}>
           <ManageRoutieSpaceBanner />
         </Suspense>
       </ErrorBoundary>

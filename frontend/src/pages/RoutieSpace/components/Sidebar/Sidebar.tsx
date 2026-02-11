@@ -3,11 +3,13 @@ import { Suspense, useState } from 'react';
 import ErrorBoundary from '@/@common/components/ErrorBoundary/ErrorBoundary';
 import Flex from '@/@common/components/Flex/Flex';
 import Icon from '@/@common/components/IconSvg/Icon';
-import SuspenseFallback from '@/@common/components/SuspenseFallback/SuspenseFallback';
+import SectionErrorFallback from '@/@common/components/SectionErrorFallback/SectionErrorFallback';
 import RoutieSpaceName from '@/domains/routieSpace/components/RoutieSpaceName/RoutieSpaceName';
 import { useRoutieSpaceNavigation } from '@/pages/Home/hooks/useRoutieSpaceNavigation';
 import PlaceView from '@/pages/RoutieSpace/components/PlaceView/PlaceView';
+import PlaceViewSkeleton from '@/pages/RoutieSpace/components/PlaceView/PlaceViewSkeleton';
 import RouteView from '@/pages/RoutieSpace/components/RouteView/RouteView';
+import RouteViewSkeleton from '@/pages/RoutieSpace/components/RouteView/RouteViewSkeleton';
 import ShareView from '@/pages/RoutieSpace/components/ShareView/ShareView';
 import SidebarToggleButton from '@/pages/RoutieSpace/components/SidebarToggleButton/SidebarToggleButton';
 import TabButton from '@/pages/RoutieSpace/components/TabButton/TabButton';
@@ -83,14 +85,17 @@ const Sidebar = ({ isOpen, onToggle }: SidebarProps) => {
           <RoutieSpaceName />
           <ErrorBoundary
             resetKeys={[activeTab]}
-            fallbackRender={({ error, resetErrorBoundary }) => (
-              <Flex direction="column" gap={0.5} padding="2rem">
-                <span>오류가 발생했습니다: {error.message}</span>
-                <button onClick={resetErrorBoundary}>재시도</button>
-              </Flex>
-            )}
+            fallbackRender={SectionErrorFallback}
           >
-            <Suspense fallback={<SuspenseFallback />}>
+            <Suspense
+              fallback={
+                activeTab === 'route' ? (
+                  <RouteViewSkeleton />
+                ) : (
+                  <PlaceViewSkeleton />
+                )
+              }
+            >
               {activeTab === 'route' && <RouteView />}
               {activeTab === 'place' && <PlaceView />}
               {activeTab === 'share' && <ShareView />}
