@@ -1,4 +1,10 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import {
+  queryOptions,
+  useMutation,
+  useQuery,
+  useQueryClient,
+  useSuspenseQuery,
+} from '@tanstack/react-query';
 
 import { useToastContext } from '@/@common/contexts/useToastContext';
 import type {
@@ -18,22 +24,31 @@ import { routiesKeys } from './key';
 
 import type { UseRoutieQueryOptions } from '../types/useRoutieQuery.types';
 
+const sortBySequence = (a: RoutieType, b: RoutieType) =>
+  a.sequence - b.sequence;
+
+const routieQueryOptions = queryOptions({
+  queryKey: routiesKeys.all,
+  queryFn: getRoutie,
+  select: (routie) => {
+    const sortedPlaces = [...routie.routiePlaces].sort(sortBySequence);
+
+    return { ...routie, routiePlaces: sortedPlaces };
+  },
+});
+
 const useRoutieQuery = ({ enabled = true }: UseRoutieQueryOptions = {}) => {
   return useQuery({
-    queryKey: routiesKeys.all,
-    queryFn: getRoutie,
+    ...routieQueryOptions,
     initialData: {
       routiePlaces: [],
     },
-    select: (routie) => {
-      const sortBySequence = (a: RoutieType, b: RoutieType) =>
-        a.sequence - b.sequence;
-      const sortedPlaces = [...routie.routiePlaces].sort(sortBySequence);
-
-      return { ...routie, routiePlaces: sortedPlaces };
-    },
     enabled,
   });
+};
+
+const useSuspenseRoutieQuery = () => {
+  return useSuspenseQuery(routieQueryOptions);
 };
 
 const useAddRoutieQuery = () => {
@@ -82,8 +97,10 @@ const useDeleteRoutieQuery = () => {
 };
 
 export {
+  routieQueryOptions,
   useRoutieQuery,
   useAddRoutieQuery,
   useChangeRoutieQuery,
   useDeleteRoutieQuery,
+  useSuspenseRoutieQuery,
 };
