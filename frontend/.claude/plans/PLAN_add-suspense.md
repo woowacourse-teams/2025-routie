@@ -2,7 +2,7 @@
 
 **Status**: 🔄 In Progress
 **Started**: 2026-02-11
-**Last Updated**: 2026-02-11 (Phase 4 완료)
+**Last Updated**: 2026-02-11 (Phase 5 완료)
 
 ---
 
@@ -296,37 +296,39 @@ SSE 기반 도메인(장소 목록, 루티 목록, 루티 스페이스 이름)�
 ### Phase 5: 장소 목록 + 루티 목록 Suspense 전환 (SSE 기반)
 
 **Goal**: usePlaceList, useRoutieList 훅에 Suspense를 적용하고, SSE 기반에서 REST 초기 fetch로 전환한다
-**Status**: ⏳ Pending
+**Status**: ✅ Complete
 
 #### Tasks
 
 **🟢 GREEN: Implement**
 
-- [ ] **Task 5.1**: usePlaceList 훅 수정
+- [x] **Task 5.1**: usePlaceList 훅 수정
   - File: `src/domains/places/hooks/usePlaceList.ts`
   - `usePlaceListQuery({ enabled: false })` → `useSuspensePlaceListQuery()`
   - `error` + `useEffect` 토스트 처리 제거 (ErrorBoundary가 처리)
   - `placeList`가 항상 존재 (non-nullable)
 
-- [ ] **Task 5.2**: useRoutieList 훅 수정
+- [x] **Task 5.2**: useRoutieList 훅 수정
   - File: `src/domains/routie/hooks/useRoutieList.ts`
   - `useRoutieQuery({ enabled: false })` → `useSuspenseRoutieQuery()`
   - `error` + `useEffect` 토스트 처리 제거
   - `routie.routiePlaces`가 항상 존재
 
-- [ ] **Task 5.3**: useRoutieQuery의 initialData 제거
+- [x] **Task 5.3**: useRoutieQuery의 initialData 제거
   - File: `src/domains/routie/queries/useRoutieQuery.ts`
   - `useRoutieQuery`에서 `initialData: { routiePlaces: [] }` 제거 (Suspense가 로딩 처리)
 
 **🔵 REFACTOR: Clean Up Code**
 
-- [ ] **Task 5.4**: UsePlaceListQueryOptions, UseRoutieQueryOptions 타입 정리
+- [x] **Task 5.4**: UsePlaceListQueryOptions, UseRoutieQueryOptions 타입 정리
+  - 타입은 `usePlaceListQuery`, `useRoutieQuery` (non-suspense 버전)에서 여전히 사용 → 유지
+  - `useRoutieQuery.ts`에서 미사용 `useQueryClient` import 제거
 
 #### Quality Gate ✋
 
 **Build & Tests**:
-- [ ] `npm run test:run` — 100% passing
-- [ ] `npm run lint` — no errors
+- [x] `npm run test:run` — 100% passing (51 tests)
+- [x] `npm run lint` — no errors (기존 warning만)
 
 **Manual Testing**:
 - [ ] `/routie-spaces?routieSpaceIdentifier=...` 접속 → 장소 목록, 루티 목록 정상 로딩
@@ -335,8 +337,8 @@ SSE 기반 도메인(장소 목록, 루티 목록, 루티 스페이스 이름)�
 - [ ] 깜빡임 없이 SSE HISTORY 데이터 전환 확인
 
 **🔍 Frontend Code Review**:
-- [ ] `/frontend-code-review src/domains/places/hooks/`
-- [ ] `/frontend-code-review src/domains/routie/hooks/`
+- [x] `/frontend-code-review src/domains/places/hooks/` — 이슈 없음
+- [x] `/frontend-code-review src/domains/routie/hooks/` — 이슈 없음
 
 ---
 
@@ -476,11 +478,11 @@ SSE 기반 도메인(장소 목록, 루티 목록, 루티 스페이스 이름)�
 - **Phase 2**: ✅ 100%
 - **Phase 3**: ✅ 100%
 - **Phase 4**: ✅ 100%
-- **Phase 5**: ⏳ 0%
+- **Phase 5**: ✅ 100%
 - **Phase 6**: ⏳ 0%
 - **Phase 7**: ⏳ 0%
 
-**Overall Progress**: 57% complete
+**Overall Progress**: 71% complete
 
 ---
 
@@ -512,6 +514,7 @@ SSE 기반 도메인(장소 목록, 루티 목록, 루티 스페이스 이름)�
 ### Implementation Notes
 
 - Phase 4에서 RoutieSpace 페이지의 `routieSpaceError` 기반 에러 처리(not-found 네비게이션)를 제거하고 범용 ErrorBoundary로 대체함. 기존에는 에러 메시지를 케이스별로 구분하여 `'방 찾기에 실패했습니다'`, `'방을 찾을 수 없습니다'`, `'존재하지 않는 방입니다'` → `/routie-space-not-found`로 이동하는 로직이 있었음. **추후 ErrorBoundary 고도화 시 에러 타입별 분기 처리를 다시 추가해야 함.**
+- Phase 7에서 RoutieSpace 페이지의 Suspense 경계를 세분화해야 함. 현재 페이지 전체가 하나의 Suspense로 묶여 있어 장소 목록/루티 목록/스페이스 이름이 모두 하나의 Spinner로 로딩됨. 각 영역별로 독립적인 Suspense 경계를 두어 부분 로딩이 가능하도록 개선 필요.
 
 ### 🔍 Code Review Learnings
 
@@ -548,5 +551,5 @@ SSE 기반 도메인(장소 목록, 루티 목록, 루티 스페이스 이름)�
 ---
 
 **Plan Status**: 🔄 In Progress
-**Next Action**: Phase 5 시작 (장소 목록 + 루티 목록 Suspense 전환)
+**Next Action**: Phase 6 시작 (userId Suspense 전환)
 **Blocked By**: None
