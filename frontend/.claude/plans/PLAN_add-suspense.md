@@ -32,7 +32,8 @@ SSE 기반 도메인(장소 목록, 루티 목록, 루티 스페이스 이름)�
 - [ ] 5개 도메인(장소 목록, 루티 목록, 루티 스페이스 목록, 루티 스페이스 이름, userId) queryOptions 팩토리 + useSuspenseQuery 훅 완성
 - [ ] SSE 기반 도메인에서 REST 초기 로딩 → SSE 업데이트 패턴 정상 동작
 - [ ] 컴포넌트에서 수동 `isLoading` 분기 제거, Suspense fallback으로 대체
-- [ ] SuspenseFallback 컴포넌트 + 최소 ErrorBoundary 컴포넌트 추가
+- [ ] SuspenseFallback 컴포넌트 + ErrorBoundary 컴포넌트 (resetKeys, fallbackRender 지원)
+- [ ] 섹션별 Suspense/ErrorBoundary 경계 분리 (Sidebar 탭, UserMenu, 배너)
 - [ ] 기존 테스트 통과, 새 인프라 컴포넌트 테스트 추가
 
 ### User Impact
@@ -391,33 +392,100 @@ SSE 기반 도메인(장소 목록, 루티 목록, 루티 스페이스 이름)�
 
 ---
 
-### Phase 7: RoutieSpace 페이지 Suspense 경계 통합 + 문서 업데이트
+### Phase 7: Suspense/ErrorBoundary 경계 분리 + ErrorBoundary 고도화
 
-**Goal**: RoutieSpace 라우트의 Suspense/ErrorBoundary 경계를 정리하고, 도메인 CLAUDE.md를 업데이트한다
+**Goal**: 라우트 레벨 단일 경계를 섹션별로 분리하고, ErrorBoundary에 재시도 메커니즘을 추가한다
 **Status**: ⏳ Pending
+
+#### 현재 문제점
+
+- RoutieSpace: routieSpace/placeList/routieList/user 쿼리가 **모두 같은 Suspense**에 묶임 → 탭 전환 시 전체 페이지 스피너
+- ManageRoutieSpaces: routieSpaceList + user 쿼리가 **같은 Suspense** → 배너/목록 독립 불가
+- ErrorBoundary에 에러 정보 미전달, 재시도 메커니즘 없음
+- 모든 곳에서 동일한 SuspenseFallback/에러 UI 사용
+
+#### 변경 후 경계 구조
+
+**RoutieSpace 페이지:**
+```
+ErrorBoundary (route - lazy load + routieSpace 에러, fallbackRender)
+  Suspense (route - lazy load + useSuspenseRoutieSpaceQuery)
+    RoutieSpace
+      KakaoMap
+      ErrorBoundary (UserMenu)        ← NEW
+        Suspense (UserMenu)           ← NEW
+          UserMenuButton → UserMenu
+      Sidebar
+        RoutieSpaceName (캐시 히트, suspend 안 함)
+        ErrorBoundary (탭 콘텐츠, resetKeys=[activeTab])  ← NEW
+          Suspense (탭 콘텐츠)                             ← NEW
+            PlaceView / RouteView / ShareView
+```
+
+**ManageRoutieSpaces 페이지:**
+```
+RequireAccessToken
+  ErrorBoundary (route - routieSpaceList 에러, fallbackRender)
+    Suspense (route - useSuspenseGetRoutieSpaceListQuery)
+      ManageRoutieSpaces
+        Header
+        ErrorBoundary (배너)    ← NEW
+          Suspense (배너)       ← NEW
+            ManageRoutieSpaceBanner
+        목록 콘텐츠
+```
 
 #### Tasks
 
+**🔴 RED: Write Failing Tests First**
+
+- [ ] **Test 7.1**: ErrorBoundary 고도화 테스트
+  - File: `src/@common/components/ErrorBoundary/__tests__/ErrorBoundary.test.tsx`
+  - Cases:
+    - `fallbackRender`에 error 객체 + resetErrorBoundary 함수 전달 확인
+    - resetErrorBoundary 호출 시 children 재렌더링 확인
+    - `resetKeys` 변경 시 에러 상태 자동 리셋 확인
+
 **🟢 GREEN: Implement**
 
-- [ ] **Task 7.1**: RoutieSpace 라우트 Suspense/ErrorBoundary 정리
+- [ ] **Task 7.2**: ErrorBoundary 고도화
+  - Files: `src/@common/components/ErrorBoundary/ErrorBoundary.tsx`, `ErrorBoundary.types.ts`
+  - `fallbackRender` prop 추가: `(props: { error: Error; resetErrorBoundary: () => void }) => ReactNode`
+    - 기존 `fallback` (ReactNode)과 병행 지원, `fallbackRender` 우선
+  - `resetKeys` prop 추가: `unknown[]` — 키 변경 시 에러 상태 자동 리셋
+    - `componentDidUpdate`에서 이전 resetKeys 비교
+  - `onReset` callback 추가
+  - `getDerivedStateFromError`에서 error 객체 저장 (state에 `error: Error | null`)
+
+- [ ] **Task 7.3**: RoutieSpace Sidebar 탭 콘텐츠 경계 분리
+  - File: `src/pages/RoutieSpace/components/Sidebar/Sidebar.tsx`
+  - 탭 콘텐츠 영역(PlaceView/RouteView/ShareView)을 `ErrorBoundary + Suspense`로 래핑
+  - `resetKeys={[activeTab]}`: 탭 전환 시 에러 상태 자동 리셋
+  - fallback: 임시 텍스트 + 재시도 버튼 (Phase 8에서 스켈레톤/커스텀 UI로 교체)
+
+- [ ] **Task 7.4**: UserMenuButton 내 UserMenu Suspense 경계
+  - File: `src/domains/auth/components/UserMenuButton/UserMenuButton.tsx`
+  - `isUserInfoOpen && <UserMenu>` 를 `ErrorBoundary + Suspense`로 래핑
+  - UserMenu의 useSuspenseUserQuery 캐시 히트 가능성 높지만 안전장치
+
+- [ ] **Task 7.5**: ManageRoutieSpaces 배너 경계 분리
+  - File: `src/pages/ManageRoutieSpaces/ManageRoutieSpaces.tsx`
+  - `ManageRoutieSpaceBanner`를 `ErrorBoundary + Suspense`로 래핑
+  - 로딩/에러 시 빈 배너 영역 유지 (레이아웃 시프트 방지)
+
+- [ ] **Task 7.6**: routes/index.tsx 에러 fallback에 fallbackRender 적용
   - File: `src/routes/index.tsx`
-  - 기존 `<Suspense fallback={<div>Loading...</div>}>` → `<ErrorBoundary>` + `<Suspense fallback={<SuspenseFallback />}>`
-  - 코드 스플리팅 + 데이터 페칭 모두 커버
+  - 기존 인라인 `fallback` JSX → `fallbackRender` 사용 (재시도 버튼 포함)
+  - `/routie-spaces`, `/manage-routie-spaces` 두 라우트 모두 적용
 
-- [ ] **Task 7.2**: RoutieSpace 페이지의 수동 에러 처리 정리
-  - File: `src/pages/RoutieSpace/RoutieSpace.tsx`
-  - userQuery 에러 useEffect → 유지 (useQuery 그대로 사용)
-  - routieSpaceError 기반 네비게이션 → Phase 4에서 이미 정리
-
-- [ ] **Task 7.3**: 도메인 CLAUDE.md 업데이트
-  - `src/domains/places/CLAUDE.md`: "초기 데이터 fetch는 기본적으로 비활성화" → "useSuspenseQuery로 REST 초기 fetch, SSE는 실시간 동기화"
-  - `src/domains/routie/CLAUDE.md`: SSE SSOT 관련 문구에 Suspense 패턴 추가
+- [ ] **Task 7.7**: 도메인 CLAUDE.md 업데이트
+  - `src/domains/places/CLAUDE.md`: "초기 데이터 fetch 비활성화" → "useSuspenseQuery로 REST 초기 fetch, SSE는 실시간 동기화"
+  - `src/domains/routie/CLAUDE.md`: SSE SSOT 문구에 Suspense 패턴 추가
   - `src/domains/routieSpace/CLAUDE.md`: Suspense 패턴 반영
 
 **🔵 REFACTOR: Clean Up Code**
 
-- [ ] **Task 7.4**: 전체 import 정리, 미사용 타입 제거
+- [ ] **Task 7.8**: 전체 import 정리, 미사용 타입 제거
 
 #### Quality Gate ✋
 
@@ -428,15 +496,47 @@ SSE 기반 도메인(장소 목록, 루티 목록, 루티 스페이스 이름)�
 
 **Manual Testing (전체 통합)**:
 - [ ] `/` (Home) — 비로그인/로그인 상태 정상 렌더링
-- [ ] `/routie-spaces?routieSpaceIdentifier=...` — Suspense fallback → 데이터 로딩 → SSE 실시간 동기화
-- [ ] `/manage-routie-spaces` — Suspense fallback → 스페이스 목록 로딩
-- [ ] SSE 실시간 동기화: 다른 사용자 변경 시 반영
-- [ ] 에러 케이스: 네트워크 끊김 시 ErrorBoundary 표시
-- [ ] 존재하지 않는 routieSpace UUID 접속 시 에러 처리
+- [ ] `/routie-spaces` — route Suspense(Spinner) → 페이지 로딩 → 탭 전환 시 **탭 영역만** 로딩
+- [ ] `/routie-spaces` — 탭 콘텐츠 에러 시 탭 영역만 에러 표시 + 재시도 버튼 동작
+- [ ] `/routie-spaces` — UserMenu 클릭 시 정상 표시 (Suspense 영향 없음)
+- [ ] `/manage-routie-spaces` — 배너와 목록이 독립적으로 로딩
+- [ ] SSE 실시간 동기화 정상 동작
+- [ ] 에러 케이스: 재시도 버튼 클릭 시 복구
 
-**🔍 Frontend Code Review (최종)**:
+**🔍 Frontend Code Review**:
+- [ ] `/frontend-code-review src/@common/components/ErrorBoundary/`
+- [ ] `/frontend-code-review src/pages/RoutieSpace/components/Sidebar/`
 - [ ] `/frontend-code-review src/routes/`
-- [ ] `/frontend-code-review src/pages/RoutieSpace/`
+
+---
+
+### Phase 8: 섹션별 커스텀 UI (스켈레톤 + 에러 UI)
+
+**Goal**: 각 Suspense/ErrorBoundary 경계에 맞는 스켈레톤 로딩 UI와 에러 UI를 적용한다
+**Status**: ⏳ Pending (Phase 7 이후)
+
+#### Tasks
+
+- [ ] **Task 8.1**: 스켈레톤 UI 컴포넌트 생성
+  - 장소 목록 스켈레톤 (PlaceView용)
+  - 동선 목록 스켈레톤 (RouteView용)
+  - 배너 스켈레톤 (ManageRoutieSpaceBanner용)
+
+- [ ] **Task 8.2**: 각 Suspense fallback을 스켈레톤으로 교체
+  - Sidebar 탭 콘텐츠: 탭별 스켈레톤
+  - ManageRoutieSpaceBanner: 배너 스켈레톤
+  - ManageRoutieSpaces 페이지: 목록 스켈레톤
+
+- [ ] **Task 8.3**: 각 ErrorBoundary fallback을 섹션 맞춤 에러 UI로 교체
+
+- [ ] **Task 8.4**: 도메인 CLAUDE.md 최종 업데이트
+
+#### Quality Gate ✋
+
+- [ ] `npm run test:run` — 100% passing
+- [ ] `npm run lint` — no errors
+- [ ] `npm run build:prod` — 빌드 성공
+- [ ] `/frontend-code-review` 최종 실행
 
 ---
 
@@ -465,8 +565,14 @@ SSE 기반 도메인(장소 목록, 루티 목록, 루티 스페이스 이름)�
 - `git stash` 또는 `git checkout -- <file>` 으로 파일 단위 롤백
 
 ### If Phase 7 Fails
-- routes/index.tsx의 Suspense/ErrorBoundary 래핑 제거
+- ErrorBoundary 고도화: 기존 ErrorBoundary.tsx 원복
+- 경계 분리: Sidebar.tsx, UserMenuButton.tsx, ManageRoutieSpaces.tsx에서 추가한 ErrorBoundary/Suspense 래핑 제거
+- routes/index.tsx: fallbackRender → 기존 fallback 원복
 - CLAUDE.md 원복
+
+### If Phase 8 Fails
+- 스켈레톤 컴포넌트 삭제
+- 각 Suspense/ErrorBoundary fallback을 Phase 7 상태로 원복
 
 ---
 
@@ -481,8 +587,9 @@ SSE 기반 도메인(장소 목록, 루티 목록, 루티 스페이스 이름)�
 - **Phase 5**: ✅ 100%
 - **Phase 6**: ✅ 100%
 - **Phase 7**: ⏳ 0%
+- **Phase 8**: ⏳ 0%
 
-**Overall Progress**: 86% complete
+**Overall Progress**: 75% complete
 
 ---
 
@@ -504,7 +611,10 @@ SSE 기반 도메인(장소 목록, 루티 목록, 루티 스페이스 이름)�
 | `src/domains/routie/hooks/useRoutieList.ts` | 5 | useSuspense 전환, error 처리 제거 |
 | `src/pages/ManageRoutieSpaces/.../ManageRoutieSpaceBanner.tsx` | 6 | useSuspenseUserQuery 전환 |
 | `src/domains/auth/components/UserMenu/UserMenu.tsx` | 6 | useSuspenseUserQuery 전환 |
-| `src/routes/index.tsx` | 3,7 | Suspense/ErrorBoundary 경계 배치 |
+| `src/routes/index.tsx` | 3,7 | Suspense/ErrorBoundary 경계 배치, fallbackRender 전환 |
+| `src/@common/components/ErrorBoundary/ErrorBoundary.tsx` | 7 | resetKeys, onReset, fallbackRender, error 저장 |
+| `src/pages/RoutieSpace/components/Sidebar/Sidebar.tsx` | 7 | 탭 콘텐츠 ErrorBoundary + Suspense 래핑 |
+| `src/domains/auth/components/UserMenuButton/UserMenuButton.tsx` | 7 | UserMenu ErrorBoundary + Suspense 래핑 |
 | 도메인 CLAUDE.md 3개 | 7 | SSE + Suspense 패턴 문서 업데이트 |
 
 ---
