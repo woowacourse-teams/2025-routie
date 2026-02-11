@@ -3,7 +3,11 @@ import { createBrowserRouter, Navigate, RouterProvider } from 'react-router';
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
+import ErrorBoundary from '@/@common/components/ErrorBoundary/ErrorBoundary';
+import Flex from '@/@common/components/Flex/Flex';
 import ModalManager from '@/@common/components/ModalManager/ModalManager';
+import SuspenseFallback from '@/@common/components/SuspenseFallback/SuspenseFallback';
+import Text from '@/@common/components/Text/Text';
 import Toast from '@/@common/components/Toast/Toast';
 import ModalProvider from '@/@common/contexts/ModalProvider';
 import ToastProvider from '@/@common/contexts/ToastProvider';
@@ -79,7 +83,21 @@ const router = createBrowserRouter([
     element: (
       <LayoutWithAnalytics>
         <RequireAccessToken>
-          <ManageRoutieSpaces />
+          <ErrorBoundary
+            fallback={
+              <Flex gap={1} direction="column" height="100dvh">
+                <Text variant="title">일시적인 오류가 발생했습니다.</Text>
+                <Text variant="body">잠시 후 다시 시도해주세요.</Text>
+                <a href="/">
+                  <Text variant="body">홈으로 돌아가기</Text>
+                </a>
+              </Flex>
+            }
+          >
+            <Suspense fallback={<SuspenseFallback />}>
+              <ManageRoutieSpaces />
+            </Suspense>
+          </ErrorBoundary>
         </RequireAccessToken>
       </LayoutWithAnalytics>
     ),
