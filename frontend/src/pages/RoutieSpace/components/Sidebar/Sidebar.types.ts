@@ -1,6 +1,6 @@
 interface SidebarProps {
   isOpen: boolean;
-  handleToggle: () => void;
+  onToggle: () => void;
 }
 
 export type { SidebarProps };

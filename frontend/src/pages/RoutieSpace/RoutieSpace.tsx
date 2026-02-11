@@ -67,7 +67,7 @@ const RoutieSpace = () => {
       <div css={RoutieSpaceContainerStyle}>
         <KakaoMap isSidebarOpen={isSidebarOpen} />
         {accessToken && <UserMenuButton />}
-        <Sidebar isOpen={isSidebarOpen} handleToggle={handleSidebarToggle} />
+        <Sidebar isOpen={isSidebarOpen} onToggle={handleSidebarToggle} />
       </div>
       <FeedbackWidget />
     </HashtagFilterProvider>
