@@ -2,7 +2,7 @@
 
 **Status**: 🔄 In Progress
 **Started**: 2026-02-11
-**Last Updated**: 2026-02-11 (Phase 5 완료)
+**Last Updated**: 2026-02-11 (Phase 6 완료)
 
 ---
 
@@ -345,39 +345,39 @@ SSE 기반 도메인(장소 목록, 루티 목록, 루티 스페이스 이름)�
 ### Phase 6: userId Suspense 전환 (조건부)
 
 **Goal**: 로그인 보장 컨텍스트(ManageRoutieSpaceBanner, UserMenu)에서 useSuspenseUserQuery로 전환한다
-**Status**: ⏳ Pending
+**Status**: ✅ Complete
 
 #### Tasks
 
 **🟢 GREEN: Implement**
 
-- [ ] **Task 6.1**: ManageRoutieSpaceBanner 수정
+- [x] **Task 6.1**: ManageRoutieSpaceBanner 수정
   - File: `src/pages/ManageRoutieSpaces/components/ManageRoutieSpaceBanner/ManageRoutieSpaceBanner.tsx`
   - `useUserQuery()` → `useSuspenseUserQuery()`
   - `isLoading` 분기 제거
   - `user?.nickname` → `user.nickname` (non-nullable)
   - 이미 `RequireAccessToken` 가드 뒤에 있으므로 accessToken 보장됨
 
-- [ ] **Task 6.2**: UserMenu 수정
+- [x] **Task 6.2**: UserMenu 수정
   - File: `src/domains/auth/components/UserMenu/UserMenu.tsx`
   - `useUserQuery()` → `useSuspenseUserQuery()`
   - `isLoading`, `error` 분기 제거
   - `user?.nickname` → `user.nickname`
   - UserMenu는 `accessToken &&` 조건 뒤에서만 렌더링됨 (`RoutieSpace.tsx:84`)
 
-- [ ] **Task 6.3**: Home.tsx, RoutieSpace.tsx의 useUserQuery는 유지
+- [x] **Task 6.3**: Home.tsx, RoutieSpace.tsx의 useUserQuery는 유지
   - 비로그인 사용자도 접근하는 페이지 → `enabled: Boolean(accessToken)` 필요
   - 변경 없음 (확인만)
 
 **🔵 REFACTOR: Clean Up Code**
 
-- [ ] **Task 6.4**: import 정리
+- [x] **Task 6.4**: import 정리
 
 #### Quality Gate ✋
 
 **Build & Tests**:
-- [ ] `npm run test:run` — 100% passing
-- [ ] `npm run lint` — no errors
+- [x] `npm run test:run` — 100% passing (51 tests)
+- [x] `npm run lint` — no errors (기존 warning만)
 
 **Manual Testing**:
 - [ ] `/manage-routie-spaces` → 배너에 닉네임 정상 표시 (Suspense fallback → 닉네임)
@@ -386,8 +386,8 @@ SSE 기반 도메인(장소 목록, 루티 목록, 루티 스페이스 이름)�
 - [ ] Home 페이지 → 로그인 상태에서 정상 동작
 
 **🔍 Frontend Code Review**:
-- [ ] `/frontend-code-review src/pages/ManageRoutieSpaces/components/ManageRoutieSpaceBanner/`
-- [ ] `/frontend-code-review src/domains/auth/components/UserMenu/`
+- [x] `/frontend-code-review src/pages/ManageRoutieSpaces/components/ManageRoutieSpaceBanner/` — 이슈 없음. Suspense/ErrorBoundary 경계 분리는 Notes에 기록
+- [x] `/frontend-code-review src/domains/auth/components/UserMenu/` — 이슈 없음
 
 ---
 
@@ -479,10 +479,10 @@ SSE 기반 도메인(장소 목록, 루티 목록, 루티 스페이스 이름)�
 - **Phase 3**: ✅ 100%
 - **Phase 4**: ✅ 100%
 - **Phase 5**: ✅ 100%
-- **Phase 6**: ⏳ 0%
+- **Phase 6**: ✅ 100%
 - **Phase 7**: ⏳ 0%
 
-**Overall Progress**: 71% complete
+**Overall Progress**: 86% complete
 
 ---
 
@@ -515,6 +515,7 @@ SSE 기반 도메인(장소 목록, 루티 목록, 루티 스페이스 이름)�
 
 - Phase 4에서 RoutieSpace 페이지의 `routieSpaceError` 기반 에러 처리(not-found 네비게이션)를 제거하고 범용 ErrorBoundary로 대체함. 기존에는 에러 메시지를 케이스별로 구분하여 `'방 찾기에 실패했습니다'`, `'방을 찾을 수 없습니다'`, `'존재하지 않는 방입니다'` → `/routie-space-not-found`로 이동하는 로직이 있었음. **추후 ErrorBoundary 고도화 시 에러 타입별 분기 처리를 다시 추가해야 함.**
 - Phase 7에서 RoutieSpace 페이지의 Suspense 경계를 세분화해야 함. 현재 페이지 전체가 하나의 Suspense로 묶여 있어 장소 목록/루티 목록/스페이스 이름이 모두 하나의 Spinner로 로딩됨. 각 영역별로 독립적인 Suspense 경계를 두어 부분 로딩이 가능하도록 개선 필요.
+- Phase 6에서 ManageRoutieSpaces 페이지의 Suspense/ErrorBoundary 경계가 페이지 전체를 하나로 감싸고 있음. `useSuspenseGetRoutieSpaceListQuery`(목록)와 `useSuspenseUserQuery`(배너 닉네임)가 같은 경계에 묶여 있어 유저 쿼리 실패 시에도 전체 에러 fallback이 표시됨. **Phase 7 또는 추후 ErrorBoundary 고도화 시 배너/목록 영역 별로 Suspense/ErrorBoundary 경계 분리를 검토해야 함.** (단, RequireAccessToken 가드 뒤이므로 유저 쿼리 실패 가능성은 낮음)
 
 ### 🔍 Code Review Learnings
 
@@ -551,5 +552,5 @@ SSE 기반 도메인(장소 목록, 루티 목록, 루티 스페이스 이름)�
 ---
 
 **Plan Status**: 🔄 In Progress
-**Next Action**: Phase 6 시작 (userId Suspense 전환)
+**Next Action**: Phase 7 시작 (RoutieSpace Suspense 경계 통합 + 문서 업데이트)
 **Blocked By**: None
