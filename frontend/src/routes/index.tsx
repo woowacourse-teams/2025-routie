@@ -56,9 +56,21 @@ const router = createBrowserRouter([
     path: '/routie-spaces',
     element: (
       <LayoutWithAnalytics>
-        <Suspense fallback={<div>Loading...</div>}>
-          <RoutieSpace />
-        </Suspense>
+        <ErrorBoundary
+          fallback={
+            <Flex gap={1} direction="column" height="100dvh">
+              <Text variant="title">일시적인 오류가 발생했습니다.</Text>
+              <Text variant="body">잠시 후 다시 시도해주세요.</Text>
+              <a href="/">
+                <Text variant="body">홈으로 돌아가기</Text>
+              </a>
+            </Flex>
+          }
+        >
+          <Suspense fallback={<SuspenseFallback />}>
+            <RoutieSpace />
+          </Suspense>
+        </ErrorBoundary>
       </LayoutWithAnalytics>
     ),
   },
