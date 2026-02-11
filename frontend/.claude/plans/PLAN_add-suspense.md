@@ -539,7 +539,7 @@ RequireAccessToken
 - [x] `npm run test:run` — 54 tests passed
 - [x] `npm run lint` — 0 errors
 - [x] `npm run build:prod` — 빌드 성공
-- [ ] `/frontend-code-review` 최종 실행
+- [x] `/frontend-code-review` 최종 실행 — 매직 넘버 2건 수정 완료
 
 ---
 
