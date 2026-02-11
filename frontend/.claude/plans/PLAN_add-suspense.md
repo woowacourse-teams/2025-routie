@@ -142,7 +142,7 @@ SSE 기반 도메인(장소 목록, 루티 목록, 루티 스페이스 이름)�
 ### Phase 2: queryOptions 팩토리 + useSuspense 훅 생성 (전체 도메인)
 
 **Goal**: 5개 도메인의 queryOptions 팩토리와 useSuspenseQuery 훅을 생성한다
-**Status**: ⏳ Pending
+**Status**: ✅ Complete
 
 #### Tasks
 
@@ -472,14 +472,14 @@ SSE 기반 도메인(장소 목록, 루티 목록, 루티 스페이스 이름)�
 ### Completion Status
 
 - **Phase 1**: ✅ 100%
-- **Phase 2**: ⏳ 0%
+- **Phase 2**: ✅ 100%
 - **Phase 3**: ⏳ 0%
 - **Phase 4**: ⏳ 0%
 - **Phase 5**: ⏳ 0%
 - **Phase 6**: ⏳ 0%
 - **Phase 7**: ⏳ 0%
 
-**Overall Progress**: 14% complete
+**Overall Progress**: 28% complete
 
 ---
 
@@ -547,5 +547,5 @@ SSE 기반 도메인(장소 목록, 루티 목록, 루티 스페이스 이름)�
 ---
 
 **Plan Status**: 🔄 In Progress
-**Next Action**: Phase 2 시작 (queryOptions 팩토리 + useSuspense 훅)
+**Next Action**: Phase 3 시작 (루티 스페이스 목록 Suspense 전환)
 **Blocked By**: None
