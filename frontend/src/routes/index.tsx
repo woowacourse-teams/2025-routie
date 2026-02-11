@@ -4,6 +4,7 @@ import { createBrowserRouter, Navigate, RouterProvider } from 'react-router';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 import ErrorBoundary from '@/@common/components/ErrorBoundary/ErrorBoundary';
+import type { FallbackRenderProps } from '@/@common/components/ErrorBoundary/ErrorBoundary.types';
 import Flex from '@/@common/components/Flex/Flex';
 import ModalManager from '@/@common/components/ModalManager/ModalManager';
 import SuspenseFallback from '@/@common/components/SuspenseFallback/SuspenseFallback';
@@ -19,7 +20,21 @@ import ManageRoutieSpaces from '@/pages/ManageRoutieSpaces/ManageRoutieSpaces';
 import RoutieSpaceNotFound from '@/pages/RoutieSpaceNotFound/RoutieSpaceNotFound';
 import VersionInfo from '@/pages/VersionInfo/VersionInfo';
 
+
 const RoutieSpace = lazy(() => import('@/pages/RoutieSpace/RoutieSpace'));
+
+const RouteErrorFallback = ({ resetErrorBoundary }: FallbackRenderProps) => (
+  <Flex gap={1} direction="column" height="100dvh">
+    <Text variant="title">일시적인 오류가 발생했습니다.</Text>
+    <Text variant="body">잠시 후 다시 시도해주세요.</Text>
+    <button onClick={resetErrorBoundary}>
+      <Text variant="body">다시 시도</Text>
+    </button>
+    <a href="/">
+      <Text variant="body">홈으로 돌아가기</Text>
+    </a>
+  </Flex>
+);
 
 const LayoutWithAnalytics = ({ children }: { children: React.ReactNode }) => {
   useGoogleAnalytics();
@@ -56,17 +71,7 @@ const router = createBrowserRouter([
     path: '/routie-spaces',
     element: (
       <LayoutWithAnalytics>
-        <ErrorBoundary
-          fallback={
-            <Flex gap={1} direction="column" height="100dvh">
-              <Text variant="title">일시적인 오류가 발생했습니다.</Text>
-              <Text variant="body">잠시 후 다시 시도해주세요.</Text>
-              <a href="/">
-                <Text variant="body">홈으로 돌아가기</Text>
-              </a>
-            </Flex>
-          }
-        >
+        <ErrorBoundary fallbackRender={RouteErrorFallback}>
           <Suspense fallback={<SuspenseFallback />}>
             <RoutieSpace />
           </Suspense>
@@ -95,17 +100,7 @@ const router = createBrowserRouter([
     element: (
       <LayoutWithAnalytics>
         <RequireAccessToken>
-          <ErrorBoundary
-            fallback={
-              <Flex gap={1} direction="column" height="100dvh">
-                <Text variant="title">일시적인 오류가 발생했습니다.</Text>
-                <Text variant="body">잠시 후 다시 시도해주세요.</Text>
-                <a href="/">
-                  <Text variant="body">홈으로 돌아가기</Text>
-                </a>
-              </Flex>
-            }
-          >
+          <ErrorBoundary fallbackRender={RouteErrorFallback}>
             <Suspense fallback={<SuspenseFallback />}>
               <ManageRoutieSpaces />
             </Suspense>
