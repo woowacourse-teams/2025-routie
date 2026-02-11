@@ -7,7 +7,6 @@ import ErrorBoundary from '@/@common/components/ErrorBoundary/ErrorBoundary';
 import type { FallbackRenderProps } from '@/@common/components/ErrorBoundary/ErrorBoundary.types';
 import Flex from '@/@common/components/Flex/Flex';
 import ModalManager from '@/@common/components/ModalManager/ModalManager';
-import SuspenseFallback from '@/@common/components/SuspenseFallback/SuspenseFallback';
 import Text from '@/@common/components/Text/Text';
 import Toast from '@/@common/components/Toast/Toast';
 import ModalProvider from '@/@common/contexts/ModalProvider';
@@ -17,6 +16,8 @@ import { useGoogleAnalytics } from '@/libs/googleAnalytics/hooks/useGoogleAnalyt
 import Home from '@/pages/Home/Home';
 import KakaoAuthCallback from '@/pages/KakaoAuthCallback/KakaoAuthCallback';
 import ManageRoutieSpaces from '@/pages/ManageRoutieSpaces/ManageRoutieSpaces';
+import ManageRoutieSpacesSkeleton from '@/pages/ManageRoutieSpaces/ManageRoutieSpacesSkeleton';
+import RoutieSpaceSkeleton from '@/pages/RoutieSpace/RoutieSpaceSkeleton';
 import RoutieSpaceNotFound from '@/pages/RoutieSpaceNotFound/RoutieSpaceNotFound';
 import VersionInfo from '@/pages/VersionInfo/VersionInfo';
 
@@ -72,7 +73,7 @@ const router = createBrowserRouter([
     element: (
       <LayoutWithAnalytics>
         <ErrorBoundary fallbackRender={RouteErrorFallback}>
-          <Suspense fallback={<SuspenseFallback />}>
+          <Suspense fallback={<RoutieSpaceSkeleton />}>
             <RoutieSpace />
           </Suspense>
         </ErrorBoundary>
@@ -101,7 +102,7 @@ const router = createBrowserRouter([
       <LayoutWithAnalytics>
         <RequireAccessToken>
           <ErrorBoundary fallbackRender={RouteErrorFallback}>
-            <Suspense fallback={<SuspenseFallback />}>
+            <Suspense fallback={<ManageRoutieSpacesSkeleton />}>
               <ManageRoutieSpaces />
             </Suspense>
           </ErrorBoundary>
