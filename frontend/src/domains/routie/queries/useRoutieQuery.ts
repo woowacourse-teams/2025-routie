@@ -2,7 +2,6 @@ import {
   queryOptions,
   useMutation,
   useQuery,
-  useQueryClient,
   useSuspenseQuery,
 } from '@tanstack/react-query';
 
@@ -40,9 +39,6 @@ const routieQueryOptions = queryOptions({
 const useRoutieQuery = ({ enabled = true }: UseRoutieQueryOptions = {}) => {
   return useQuery({
     ...routieQueryOptions,
-    initialData: {
-      routiePlaces: [],
-    },
     enabled,
   });
 };

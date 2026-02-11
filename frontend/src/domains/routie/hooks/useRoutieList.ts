@@ -1,26 +1,24 @@
-import { useCallback, useEffect, useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 
-import { useToastContext } from '@/@common/contexts/useToastContext';
 import { useAccessTokenGuard } from '@/@common/hooks/useAccessTokenGuard';
 import { useAsyncLock } from '@/@common/hooks/useAsyncLock';
 import {
   useAddRoutieQuery,
   useChangeRoutieQuery,
   useDeleteRoutieQuery,
-  useRoutieQuery,
+  useSuspenseRoutieQuery,
 } from '@/domains/routie/queries/useRoutieQuery';
 import type { RoutieType } from '@/domains/routie/types/routie.types';
 import { useGoogleEventTrigger } from '@/libs/googleAnalytics/hooks/useGoogleEventTrigger';
 
 const useRoutieList = () => {
-  const { data: routie, error } = useRoutieQuery({ enabled: false });
+  const { data: routie } = useSuspenseRoutieQuery();
   const { mutateAsync: addRoutie } = useAddRoutieQuery();
   const { mutateAsync: deleteRoutie } = useDeleteRoutieQuery();
   const { mutateAsync: changeRoutie } = useChangeRoutieQuery();
   const { runWithLock: runAddWithLock } = useAsyncLock();
   const { runWithLock: runDeleteWithLock } = useAsyncLock();
   const { runWithLock: runChangeWithLock } = useAsyncLock();
-  const { showToast } = useToastContext();
   const { triggerEvent } = useGoogleEventTrigger();
   const requireAccessToken = useAccessTokenGuard();
   const routieIdList = useMemo(
@@ -84,16 +82,6 @@ const useRoutieList = () => {
     },
     [deleteRoutie],
   );
-
-  useEffect(() => {
-    if (error) {
-      console.error(error);
-      showToast({
-        message: error.message,
-        type: 'error',
-      });
-    }
-  }, [error]);
 
   return {
     routiePlaces: routie.routiePlaces,
