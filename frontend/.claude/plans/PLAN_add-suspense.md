@@ -395,7 +395,7 @@ SSE 기반 도메인(장소 목록, 루티 목록, 루티 스페이스 이름)�
 ### Phase 7: Suspense/ErrorBoundary 경계 분리 + ErrorBoundary 고도화
 
 **Goal**: 라우트 레벨 단일 경계를 섹션별로 분리하고, ErrorBoundary에 재시도 메커니즘을 추가한다
-**Status**: ⏳ Pending
+**Status**: ✅ Complete (Manual Testing / Code Review 잔여)
 
 #### 현재 문제점
 
@@ -439,7 +439,7 @@ RequireAccessToken
 
 **🔴 RED: Write Failing Tests First**
 
-- [ ] **Test 7.1**: ErrorBoundary 고도화 테스트
+- [x] **Test 7.1**: ErrorBoundary 고도화 테스트
   - File: `src/@common/components/ErrorBoundary/__tests__/ErrorBoundary.test.tsx`
   - Cases:
     - `fallbackRender`에 error 객체 + resetErrorBoundary 함수 전달 확인
@@ -448,7 +448,7 @@ RequireAccessToken
 
 **🟢 GREEN: Implement**
 
-- [ ] **Task 7.2**: ErrorBoundary 고도화
+- [x] **Task 7.2**: ErrorBoundary 고도화
   - Files: `src/@common/components/ErrorBoundary/ErrorBoundary.tsx`, `ErrorBoundary.types.ts`
   - `fallbackRender` prop 추가: `(props: { error: Error; resetErrorBoundary: () => void }) => ReactNode`
     - 기존 `fallback` (ReactNode)과 병행 지원, `fallbackRender` 우선
@@ -457,42 +457,42 @@ RequireAccessToken
   - `onReset` callback 추가
   - `getDerivedStateFromError`에서 error 객체 저장 (state에 `error: Error | null`)
 
-- [ ] **Task 7.3**: RoutieSpace Sidebar 탭 콘텐츠 경계 분리
+- [x] **Task 7.3**: RoutieSpace Sidebar 탭 콘텐츠 경계 분리
   - File: `src/pages/RoutieSpace/components/Sidebar/Sidebar.tsx`
   - 탭 콘텐츠 영역(PlaceView/RouteView/ShareView)을 `ErrorBoundary + Suspense`로 래핑
   - `resetKeys={[activeTab]}`: 탭 전환 시 에러 상태 자동 리셋
   - fallback: 임시 텍스트 + 재시도 버튼 (Phase 8에서 스켈레톤/커스텀 UI로 교체)
 
-- [ ] **Task 7.4**: UserMenuButton 내 UserMenu Suspense 경계
+- [x] **Task 7.4**: UserMenuButton 내 UserMenu Suspense 경계
   - File: `src/domains/auth/components/UserMenuButton/UserMenuButton.tsx`
   - `isUserInfoOpen && <UserMenu>` 를 `ErrorBoundary + Suspense`로 래핑
   - UserMenu의 useSuspenseUserQuery 캐시 히트 가능성 높지만 안전장치
 
-- [ ] **Task 7.5**: ManageRoutieSpaces 배너 경계 분리
+- [x] **Task 7.5**: ManageRoutieSpaces 배너 경계 분리
   - File: `src/pages/ManageRoutieSpaces/ManageRoutieSpaces.tsx`
   - `ManageRoutieSpaceBanner`를 `ErrorBoundary + Suspense`로 래핑
   - 로딩/에러 시 빈 배너 영역 유지 (레이아웃 시프트 방지)
 
-- [ ] **Task 7.6**: routes/index.tsx 에러 fallback에 fallbackRender 적용
+- [x] **Task 7.6**: routes/index.tsx 에러 fallback에 fallbackRender 적용
   - File: `src/routes/index.tsx`
   - 기존 인라인 `fallback` JSX → `fallbackRender` 사용 (재시도 버튼 포함)
   - `/routie-spaces`, `/manage-routie-spaces` 두 라우트 모두 적용
 
-- [ ] **Task 7.7**: 도메인 CLAUDE.md 업데이트
+- [x] **Task 7.7**: 도메인 CLAUDE.md 업데이트
   - `src/domains/places/CLAUDE.md`: "초기 데이터 fetch 비활성화" → "useSuspenseQuery로 REST 초기 fetch, SSE는 실시간 동기화"
   - `src/domains/routie/CLAUDE.md`: SSE SSOT 문구에 Suspense 패턴 추가
   - `src/domains/routieSpace/CLAUDE.md`: Suspense 패턴 반영
 
 **🔵 REFACTOR: Clean Up Code**
 
-- [ ] **Task 7.8**: 전체 import 정리, 미사용 타입 제거
+- [x] **Task 7.8**: 전체 import 정리, 미사용 타입 제거
 
 #### Quality Gate ✋
 
 **Build & Tests**:
-- [ ] `npm run test:run` — 100% passing
-- [ ] `npm run lint` — no errors
-- [ ] `npm run build:prod` — 빌드 성공
+- [x] `npm run test:run` — 54 tests passed
+- [x] `npm run lint` — 0 errors (33 warnings, 기존)
+- [x] `npm run build:prod` — 빌드 성공
 
 **Manual Testing (전체 통합)**:
 - [ ] `/` (Home) — 비로그인/로그인 상태 정상 렌더링
@@ -504,9 +504,9 @@ RequireAccessToken
 - [ ] 에러 케이스: 재시도 버튼 클릭 시 복구
 
 **🔍 Frontend Code Review**:
-- [ ] `/frontend-code-review src/@common/components/ErrorBoundary/`
-- [ ] `/frontend-code-review src/pages/RoutieSpace/components/Sidebar/`
-- [ ] `/frontend-code-review src/routes/`
+- [x] `/frontend-code-review src/@common/components/ErrorBoundary/` — discriminated union 적용
+- [x] `/frontend-code-review src/pages/RoutieSpace/components/Sidebar/` — handleToggle→onToggle 리팩터링
+- [x] `/frontend-code-review src/routes/` — RouteErrorFallback 컴포넌트 추출
 
 ---
 
@@ -586,10 +586,10 @@ RequireAccessToken
 - **Phase 4**: ✅ 100%
 - **Phase 5**: ✅ 100%
 - **Phase 6**: ✅ 100%
-- **Phase 7**: ⏳ 0%
+- **Phase 7**: ✅ 100% (코드 완료, Manual Testing/Code Review 잔여)
 - **Phase 8**: ⏳ 0%
 
-**Overall Progress**: 75% complete
+**Overall Progress**: 88% complete
 
 ---
 
