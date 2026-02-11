@@ -7,9 +7,11 @@ const ManageRoutieSpacesSkeletonStyle = css`
   background-color: ${theme.colors.white};
 `;
 
+const HEADER_HEIGHT = '8rem';
+
 const HeaderSkeletonStyle = css`
   width: 100%;
-  height: 8rem;
+  height: ${HEADER_HEIGHT};
   padding: 0 1.6rem;
   display: flex;
   align-items: center;
