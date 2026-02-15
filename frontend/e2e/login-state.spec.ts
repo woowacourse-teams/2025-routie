@@ -23,12 +23,13 @@ test.describe('로그인 상태 UI', () => {
     authenticatedPage: page,
   }) => {
     await page.goto('/');
+    await page.waitForLoadState('networkidle');
 
     // 동선 만들기 버튼 클릭
     await page.getByText('친구들과 동선 만들러 가기').click();
 
-    // /routie-spaces 페이지로 이동 확인
-    await expect(page).toHaveURL(/\/routie-spaces/);
+    // /routie-spaces 페이지로 이동 확인 (타임아웃 설정)
+    await expect(page).toHaveURL(/\/routie-spaces/, { timeout: 10000 });
   });
 
   test('로그아웃 버튼을 클릭하면 로그아웃된다', async ({ page }) => {

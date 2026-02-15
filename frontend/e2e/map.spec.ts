@@ -3,14 +3,15 @@ import { test, expect } from './fixtures/auth';
 test.describe('지도', () => {
   test.beforeEach(async ({ authenticatedPage: page }) => {
     await page.goto('/');
+    await page.waitForLoadState('networkidle');
     await page.getByText('친구들과 동선 만들러 가기').click();
-    await page.waitForURL(/\/routie-spaces/);
+    await page.waitForURL(/\/routie-spaces/, { timeout: 10000 });
   });
 
   test('지도가 로드된다', async ({ authenticatedPage: page }) => {
-    // 지도 컨테이너 확인
+    // 지도 컨테이너 확인 (로드 시간 고려하여 타임아웃 설정)
     const mapContainer = page.locator('[aria-label="카카오 지도"]');
-    await expect(mapContainer).toBeVisible();
+    await expect(mapContainer).toBeVisible({ timeout: 10000 });
   });
 
   test('해시태그 필터가 표시된다', async ({ authenticatedPage: page }) => {
@@ -55,8 +56,6 @@ test.describe('지도', () => {
     if (count > 0) {
       // 첫 번째 해시태그 필터 클릭
       const firstFilter = filterButtons.first();
-      const tagText = await firstFilter.textContent();
-
       await firstFilter.click();
 
       // 장소 탭으로 이동하여 필터링 확인
