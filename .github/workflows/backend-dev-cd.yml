@@ -102,7 +102,7 @@ jobs:
       - name: Prepare Deployment Package
         run: |
           DEPLOY_DIR=$GITHUB_WORKSPACE/deployment
-          SUBMODULE_DIR=./routie-docker-submodule/dev
+          SUBMODULE_DIR=./routie-backend-private/dev
           
           mkdir -p $DEPLOY_DIR/migration
 
@@ -122,7 +122,7 @@ jobs:
 
       - name: Upload Config to S3
         run: |
-          aws s3 cp $GITHUB_WORKSPACE/deploy.zip s3://routie-docker-test/deployments/${{ github.sha }}/deploy.zip
+          aws s3 cp $GITHUB_WORKSPACE/deploy.zip s3://routie-dev-deployment/${{ github.sha }}/deploy.zip
 
   deploy-to-ec2:
     name: 3. Deploy to EC2
