@@ -9,7 +9,7 @@ import {
 const SectionErrorFallback = ({ resetErrorBoundary }: FallbackRenderProps) => (
   <div css={SectionErrorFallbackStyle}>
     <span>데이터를 불러오지 못했습니다.</span>
-    <button css={RetryButtonStyle} onClick={resetErrorBoundary}>
+    <button type="button" css={RetryButtonStyle} onClick={resetErrorBoundary}>
       다시 시도
     </button>
   </div>

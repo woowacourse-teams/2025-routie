@@ -49,7 +49,7 @@ const useRoutieSpace = (): UseRoutieSpaceReturn => {
   };
 
   const hasNameChanged = (): boolean => {
-    return currentName !== (routieSpace.name);
+    return currentName !== routieSpace.name;
   };
 
   const saveNameEdit = async (): Promise<void> => {

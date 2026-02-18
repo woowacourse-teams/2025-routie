@@ -1,5 +1,10 @@
 import { lazy, Suspense } from 'react';
-import { createBrowserRouter, Navigate, RouterProvider } from 'react-router';
+import {
+  createBrowserRouter,
+  Navigate,
+  RouterProvider,
+  useSearchParams,
+} from 'react-router';
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
@@ -28,7 +33,7 @@ const RouteErrorFallback = ({ resetErrorBoundary }: FallbackRenderProps) => (
   <Flex gap={1} direction="column" height="100dvh">
     <Text variant="title">일시적인 오류가 발생했습니다.</Text>
     <Text variant="body">잠시 후 다시 시도해주세요.</Text>
-    <button onClick={resetErrorBoundary}>
+    <button type="button" onClick={resetErrorBoundary}>
       <Text variant="body">다시 시도</Text>
     </button>
     <a href="/">
@@ -57,6 +62,21 @@ const RequireAccessToken = ({ children }: { children: React.ReactNode }) => {
   return <>{children}</>;
 };
 
+const RoutieSpaceRoute = () => {
+  const [searchParams] = useSearchParams();
+
+  return (
+    <ErrorBoundary
+      resetKeys={[searchParams.get('routieSpaceIdentifier')]}
+      fallbackRender={RouteErrorFallback}
+    >
+      <Suspense fallback={<RoutieSpaceSkeleton />}>
+        <RoutieSpace />
+      </Suspense>
+    </ErrorBoundary>
+  );
+};
+
 const queryClient = new QueryClient();
 
 const router = createBrowserRouter([
@@ -72,11 +92,7 @@ const router = createBrowserRouter([
     path: '/routie-spaces',
     element: (
       <LayoutWithAnalytics>
-        <ErrorBoundary fallbackRender={RouteErrorFallback}>
-          <Suspense fallback={<RoutieSpaceSkeleton />}>
-            <RoutieSpace />
-          </Suspense>
-        </ErrorBoundary>
+        <RoutieSpaceRoute />
       </LayoutWithAnalytics>
     ),
   },

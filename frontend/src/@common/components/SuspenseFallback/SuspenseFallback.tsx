@@ -8,6 +8,7 @@ const SuspenseFallback = () => {
       alignItems="center"
       height="100%"
       role="status"
+      aria-label="로딩 중"
     >
       <Spinner />
     </Flex>
