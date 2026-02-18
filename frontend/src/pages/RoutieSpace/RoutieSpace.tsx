@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect } from 'react';
+import { useEffect } from 'react';
 import { useSearchParams } from 'react-router';
 
 import FeedbackWidget from '@/@common/components/FeedbackWidget/FeedbackWidget';
@@ -21,11 +21,16 @@ import { RoutieSpaceContainerStyle } from './RoutieSpace.styles';
 
 const RoutieSpace = () => {
   const [searchParams] = useSearchParams();
+  const routieSpaceIdentifier = searchParams.get('routieSpaceIdentifier');
+
+  if (routieSpaceIdentifier) {
+    sessionStorageUtils.set('routieSpaceUuid', routieSpaceIdentifier);
+  }
+
   const { openModal } = useModal();
   const { showToast } = useToastContext();
   const { error } = useUserQuery();
   useSuspenseRoutieSpaceQuery();
-  const routieSpaceIdentifier = searchParams.get('routieSpaceIdentifier');
   const accessToken = getAccessToken();
   const { isOpen: isSidebarOpen, handleToggle: handleSidebarToggle } =
     useToggle();
@@ -33,12 +38,6 @@ const RoutieSpace = () => {
   usePlaceStream();
   useRoutieStream();
   useRoutieSpaceStream();
-
-  useLayoutEffect(() => {
-    if (routieSpaceIdentifier) {
-      sessionStorageUtils.set('routieSpaceUuid', routieSpaceIdentifier);
-    }
-  }, [routieSpaceIdentifier]);
 
   useEffect(() => {
     if (!accessToken) {
