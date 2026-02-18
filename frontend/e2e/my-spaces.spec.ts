@@ -4,23 +4,10 @@ test.describe('내 동선 목록', () => {
   test('메뉴에서 내 동선 목록 버튼으로 페이지 이동', async ({ authenticatedPage: page }) => {
     await page.goto('/');
 
-    // 메뉴 버튼 클릭
     await page.getByAltText('menu').click();
-
-    // 내 동선 목록 버튼 클릭
     await page.getByText('내 동선 목록').click();
 
-    // 페이지 이동 확인
     await expect(page).toHaveURL(/\/manage-routie-spaces/);
-  });
-
-  test('내 동선 목록 페이지에서 유저 이름을 확인할 수 있다', async ({
-    authenticatedPage: page,
-  }) => {
-    await page.goto('/manage-routie-spaces');
-
-    // 페이지가 로드되는지 확인
-    await page.waitForTimeout(1000);
   });
 
   test('새 동선 만들기 버튼으로 새로운 스페이스를 만들 수 있다', async ({
@@ -28,15 +15,27 @@ test.describe('내 동선 목록', () => {
   }) => {
     await page.goto('/manage-routie-spaces');
 
-    // 새 동선 만들기 버튼 찾기
     const createButton = page.getByText(/새 동선 만들기|새로 만들기/i);
+    await expect(createButton).toBeVisible();
+    await createButton.click();
 
-    if (await createButton.isVisible()) {
-      await createButton.click();
+    await expect(page).toHaveURL(/\/routie-spaces\?routieSpaceIdentifier=/, { timeout: 10000 });
+  });
 
-      // 새 스페이스 페이지로 이동
-      await expect(page).toHaveURL(/\/routie-spaces/);
-    }
+  test('내 동선 목록에서 스페이스를 삭제할 수 있다', async ({
+    spaceWithPlaces: { page },
+  }) => {
+    await page.goto('/manage-routie-spaces');
+    await page.waitForLoadState('networkidle');
+
+    const deleteButtons = page.getByRole('button', { name: '삭제' });
+    const initialCount = await deleteButtons.count();
+    expect(initialCount).toBeGreaterThan(0);
+
+    await page.evaluate(() => { window.confirm = () => true; });
+    await deleteButtons.first().click();
+
+    await expect(deleteButtons).toHaveCount(initialCount - 1, { timeout: 10000 });
   });
 });
 
@@ -49,7 +48,6 @@ test.describe('GUEST 역할 제한', () => {
     await page.getByText('친구들과 동선 만들러 가기').click();
     await page.waitForURL(/\/routie-spaces/);
 
-    // URL에서 routieSpaceIdentifier 추출
     const url = page.url();
     const identifier = new URL(url).searchParams.get('routieSpaceIdentifier');
 
@@ -59,26 +57,18 @@ test.describe('GUEST 역할 제한', () => {
 
     await guestPage.goto(`/routie-spaces?routieSpaceIdentifier=${identifier}`);
 
-    // 로그인 모달 대기
     await expect(guestPage.getByPlaceholder('사용할 닉네임을 입력해주세요.')).toBeVisible();
-
-    // 닉네임 입력
     await guestPage.getByPlaceholder('사용할 닉네임을 입력해주세요.').fill('테스트게스트');
-
-    // 비회원으로 계속하기 클릭
     await guestPage.getByText('비회원으로 계속하기').click();
 
-    // 로그인 완료 대기
     await guestPage.waitForTimeout(2000);
 
-    // 3. 메뉴 버튼 클릭
+    // 3. 메뉴 버튼 클릭 후 내 동선 목록 버튼 없음 확인
     await guestPage.getByAltText('menu').click();
 
-    // 4. 유저 메뉴가 열리면 "내 동선 목록" 버튼이 없는지 확인
     await expect(guestPage.locator('#userMenu')).toBeVisible();
     await expect(guestPage.getByText('내 동선 목록')).not.toBeVisible();
 
-    // role이 GUEST인지 확인
     const role = await guestPage.evaluate(() => localStorage.getItem('role'));
     expect(role).toBe('GUEST');
 
