@@ -11,6 +11,7 @@ import PlaceViewSkeleton from '@/pages/RoutieSpace/components/PlaceView/PlaceVie
 import RouteView from '@/pages/RoutieSpace/components/RouteView/RouteView';
 import RouteViewSkeleton from '@/pages/RoutieSpace/components/RouteView/RouteViewSkeleton';
 import ShareView from '@/pages/RoutieSpace/components/ShareView/ShareView';
+import ShareViewSkeleton from '@/pages/RoutieSpace/components/ShareView/ShareViewSkeleton';
 import SidebarToggleButton from '@/pages/RoutieSpace/components/SidebarToggleButton/SidebarToggleButton';
 import TabButton from '@/pages/RoutieSpace/components/TabButton/TabButton';
 
@@ -91,6 +92,8 @@ const Sidebar = ({ isOpen, onToggle }: SidebarProps) => {
               fallback={
                 activeTab === 'route' ? (
                   <RouteViewSkeleton />
+                ) : activeTab === 'share' ? (
+                  <ShareViewSkeleton />
                 ) : (
                   <PlaceViewSkeleton />
                 )

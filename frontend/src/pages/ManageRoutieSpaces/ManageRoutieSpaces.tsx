@@ -3,6 +3,7 @@ import { Suspense, useCallback } from 'react';
 import ErrorBoundary from '@/@common/components/ErrorBoundary/ErrorBoundary';
 import Flex from '@/@common/components/Flex/Flex';
 import Header from '@/@common/components/Header/Header';
+import SectionErrorFallback from '@/@common/components/SectionErrorFallback/SectionErrorFallback';
 import Text from '@/@common/components/Text/Text';
 import { useCheckLogin } from '@/@common/hooks/useCheckLogin';
 import {
@@ -45,7 +46,7 @@ const ManageRoutieSpaces = () => {
   return (
     <div css={ManageRoutieSpacesStyle}>
       <Header isLoggedIn={true} onLogoClick={handleMoveToHome} />
-      <ErrorBoundary fallback={<ManageRoutieSpaceBannerSkeleton />}>
+      <ErrorBoundary fallbackRender={SectionErrorFallback}>
         <Suspense fallback={<ManageRoutieSpaceBannerSkeleton />}>
           <ManageRoutieSpaceBanner />
         </Suspense>
