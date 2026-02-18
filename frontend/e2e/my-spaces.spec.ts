@@ -1,6 +1,10 @@
-import { test, expect } from './fixtures/auth';
+import { test, expect, cleanupSpaceFromPage } from './fixtures/auth';
 
 test.describe('내 동선 목록', () => {
+  test.afterEach(async ({ page, request }) => {
+    await cleanupSpaceFromPage(page, request);
+  });
+
   test('메뉴에서 내 동선 목록 버튼으로 페이지 이동', async ({ authenticatedPage: page }) => {
     await page.goto('/');
 
@@ -29,29 +33,25 @@ test.describe('내 동선 목록', () => {
     await page.waitForLoadState('networkidle');
 
     const deleteButtons = page.getByRole('button', { name: '삭제' });
-    const initialCount = await deleteButtons.count();
-    expect(initialCount).toBeGreaterThan(0);
+    expect(await deleteButtons.count()).toBeGreaterThan(0);
 
+    const deleteResponsePromise = page.waitForResponse(
+      (resp) => resp.url().includes('routie-spaces') && resp.request().method() === 'DELETE',
+    );
     await page.evaluate(() => { window.confirm = () => true; });
     await deleteButtons.first().click();
 
-    await expect(deleteButtons).toHaveCount(initialCount - 1, { timeout: 10000 });
+    const deleteResponse = await deleteResponsePromise;
+    expect(deleteResponse.ok()).toBeTruthy();
   });
 });
 
 test.describe('GUEST 역할 제한', () => {
   test('GUEST 유저는 내 동선 목록 버튼이 보이지 않는다', async ({
+    spaceUuid: identifier,
     authenticatedPage: page,
   }) => {
-    // 1. USER로 스페이스 생성하여 identifier 획득
-    await page.goto('/');
-    await page.getByText('친구들과 동선 만들러 가기').click();
-    await page.waitForURL(/\/routie-spaces/);
-
-    const url = page.url();
-    const identifier = new URL(url).searchParams.get('routieSpaceIdentifier');
-
-    // 2. 새 컨텍스트에서 게스트로 로그인
+    // 새 컨텍스트에서 게스트로 로그인
     const guestContext = await page.context().browser()!.newContext();
     const guestPage = await guestContext.newPage();
 

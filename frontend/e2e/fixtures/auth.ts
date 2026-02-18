@@ -70,8 +70,31 @@ const addRoutiePlace = async (
 
 type SpaceFixture = { page: Page; spaceUuid: string };
 
+const deleteSpace = async (request: APIRequestContext, spaceUuid: string): Promise<void> => {
+  await request.delete(`${API_BASE_URL}/v1/routie-spaces/${spaceUuid}`, {
+    headers: { Authorization: `Bearer ${USER_ACCESS_TOKEN}` },
+  });
+};
+
+// UI로 스페이스를 생성하는 테스트의 afterEach에서 사용
+export const cleanupSpaceFromPage = async (
+  page: Page,
+  request: APIRequestContext,
+): Promise<void> => {
+  try {
+    const url = new URL(page.url());
+    const identifier = url.searchParams.get('routieSpaceIdentifier');
+    if (identifier) {
+      await deleteSpace(request, identifier);
+    }
+  } catch {
+    // cleanup 실패는 무시
+  }
+};
+
 export const test = base.extend<{
   authenticatedPage: Page;
+  authenticatedPageInSpace: Page;
   spaceWithPlaces: SpaceFixture;
   spaceWithRoutie: SpaceFixture;
   spaceUuid: string;
@@ -79,6 +102,19 @@ export const test = base.extend<{
   authenticatedPage: async ({ page }, use) => {
     await setupUserAuth(page);
     await use(page);
+  },
+
+  // 빈 스페이스에 입장한 상태 (장소 없음) - API로 생성 후 teardown까지
+  authenticatedPageInSpace: async ({ page, request }, use) => {
+    await setupUserAuth(page);
+    const spaceUuid = await createSpace(request);
+    await page.goto(`/routie-spaces?routieSpaceIdentifier=${spaceUuid}`);
+    await page.waitForURL(/\/routie-spaces/);
+
+    await use(page);
+
+    // Teardown: 테스트 종료 후 생성된 스페이스 삭제
+    await deleteSpace(request, spaceUuid);
   },
 
   // 장소 2개가 장소 목록에 미리 추가된 스페이스
@@ -91,7 +127,11 @@ export const test = base.extend<{
     await page.waitForURL(/\/routie-spaces/);
     // SSE로 장소 데이터가 도착할 때까지 대기
     await page.getByText('스타벅스 강남점').waitFor({ state: 'visible', timeout: 10000 });
+
     await use({ page, spaceUuid });
+
+    // Teardown: 테스트 종료 후 생성된 스페이스 삭제
+    await deleteSpace(request, spaceUuid);
   },
 
   // 장소 2개가 동선에도 추가된 스페이스
@@ -106,13 +146,21 @@ export const test = base.extend<{
     await page.waitForURL(/\/routie-spaces/);
     // SSE로 장소 데이터가 도착할 때까지 대기
     await page.getByText('스타벅스 강남점').waitFor({ state: 'visible', timeout: 10000 });
+
     await use({ page, spaceUuid });
+
+    // Teardown: 테스트 종료 후 생성된 스페이스 삭제
+    await deleteSpace(request, spaceUuid);
   },
 
   // 스페이스 UUID만 필요한 경우 (페이지 없이 API로만 생성)
   spaceUuid: async ({ request }, use) => {
     const uuid = await createSpace(request);
+
     await use(uuid);
+
+    // Teardown: 테스트 종료 후 생성된 스페이스 삭제
+    await deleteSpace(request, uuid);
   },
 });
 

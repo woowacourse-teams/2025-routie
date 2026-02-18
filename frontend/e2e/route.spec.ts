@@ -1,11 +1,7 @@
 import { test, expect } from './fixtures/auth';
 
 test.describe('동선탭 - 기본', () => {
-  test('동선 탭을 클릭하면 동선 탭 컨텐츠가 표시된다', async ({ authenticatedPage: page }) => {
-    await page.goto('/');
-    await page.getByText('친구들과 동선 만들러 가기').click();
-    await page.waitForURL(/\/routie-spaces/);
-
+  test('동선 탭을 클릭하면 동선 탭 컨텐츠가 표시된다', async ({ authenticatedPageInSpace: page }) => {
     await page.getByText('동선', { exact: true }).click();
     await page.waitForTimeout(500);
   });

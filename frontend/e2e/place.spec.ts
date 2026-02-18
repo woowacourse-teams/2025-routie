@@ -1,13 +1,7 @@
 import { test, expect } from './fixtures/auth';
 
 test.describe('장소탭 - 장소 검색', () => {
-  test.beforeEach(async ({ authenticatedPage: page }) => {
-    await page.goto('/');
-    await page.getByText('친구들과 동선 만들러 가기').click();
-    await page.waitForURL(/\/routie-spaces/);
-  });
-
-  test('장소를 검색하고 검색 결과를 볼 수 있다', async ({ authenticatedPage: page }) => {
+  test('장소를 검색하고 검색 결과를 볼 수 있다', async ({ authenticatedPageInSpace: page }) => {
     const searchInput = page.getByPlaceholder('장소를 검색하세요');
     await searchInput.click();
     await searchInput.fill('강남역');
@@ -26,7 +20,7 @@ test.describe('장소탭 - 장소 검색', () => {
   });
 
   test('검색 결과에서 장소를 선택하면 해시태그 입력 화면이 나타난다', async ({
-    authenticatedPage: page,
+    authenticatedPageInSpace: page,
   }) => {
     const searchInput = page.getByPlaceholder('장소를 검색하세요');
     await searchInput.fill('스타벅스');
@@ -45,14 +39,8 @@ test.describe('장소탭 - 장소 검색', () => {
 });
 
 test.describe('장소탭 - 해시태그', () => {
-  test.beforeEach(async ({ authenticatedPage: page }) => {
-    await page.goto('/');
-    await page.getByText('친구들과 동선 만들러 가기').click();
-    await page.waitForURL(/\/routie-spaces/);
-  });
-
   test('해시태그 입력 후 추가 버튼으로 태그를 추가할 수 있다', async ({
-    authenticatedPage: page,
+    authenticatedPageInSpace: page,
   }) => {
     const searchInput = page.getByPlaceholder('장소를 검색하세요');
     await searchInput.fill('카페');
@@ -71,7 +59,7 @@ test.describe('장소탭 - 해시태그', () => {
     }
   });
 
-  test('해시태그는 엔터키로도 추가할 수 있다', async ({ authenticatedPage: page }) => {
+  test('해시태그는 엔터키로도 추가할 수 있다', async ({ authenticatedPageInSpace: page }) => {
     const searchInput = page.getByPlaceholder('장소를 검색하세요');
     await searchInput.fill('카페');
     await page.getByText('검색').click();
@@ -89,7 +77,7 @@ test.describe('장소탭 - 해시태그', () => {
     }
   });
 
-  test('해시태그는 최대 7자까지만 입력된다', async ({ authenticatedPage: page }) => {
+  test('해시태그는 최대 7자까지만 입력된다', async ({ authenticatedPageInSpace: page }) => {
     const searchInput = page.getByPlaceholder('장소를 검색하세요');
     await searchInput.fill('카페');
     await page.getByText('검색').click();
@@ -107,7 +95,7 @@ test.describe('장소탭 - 해시태그', () => {
     }
   });
 
-  test('해시태그는 최대 5개까지 추가 가능하다', async ({ authenticatedPage: page }) => {
+  test('해시태그는 최대 5개까지 추가 가능하다', async ({ authenticatedPageInSpace: page }) => {
     const searchInput = page.getByPlaceholder('장소를 검색하세요');
     await searchInput.fill('카페');
     await page.getByText('검색').click();

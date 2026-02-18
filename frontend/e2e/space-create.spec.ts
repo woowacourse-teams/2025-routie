@@ -1,6 +1,10 @@
-import { test, expect } from './fixtures/auth';
+import { test, expect, cleanupSpaceFromPage } from './fixtures/auth';
 
 test.describe('루티스페이스 생성', () => {
+  test.afterEach(async ({ page, request }) => {
+    await cleanupSpaceFromPage(page, request);
+  });
+
   test('버튼 클릭 시 루티스페이스가 생성되고 입장된다', async ({ authenticatedPage: page }) => {
     await page.goto('/');
     await page.getByText('친구들과 동선 만들러 가기').click();
@@ -13,14 +17,8 @@ test.describe('루티스페이스 생성', () => {
 });
 
 test.describe('루티스페이스 이름 수정', () => {
-  test.beforeEach(async ({ authenticatedPage: page }) => {
-    await page.goto('/');
-    await page.getByText('친구들과 동선 만들러 가기').click();
-    await page.waitForURL(/\/routie-spaces/);
-  });
-
   test('방장은 수정 버튼으로 루티스페이스 이름을 수정할 수 있다', async ({
-    authenticatedPage: page,
+    authenticatedPageInSpace: page,
   }) => {
     await page.getByText('수정').click();
 
@@ -35,7 +33,7 @@ test.describe('루티스페이스 이름 수정', () => {
     await expect(page.getByText('테스트 스페이스')).toBeVisible();
   });
 
-  test('루티스페이스 이름은 15자를 초과할 수 없다', async ({ authenticatedPage: page }) => {
+  test('루티스페이스 이름은 15자를 초과할 수 없다', async ({ authenticatedPageInSpace: page }) => {
     await page.getByText('수정').click();
 
     const nameInput = page.getByRole('textbox').first();
@@ -46,7 +44,7 @@ test.describe('루티스페이스 이름 수정', () => {
     await expect(page.getByText(/15자 이하/)).toBeVisible();
   });
 
-  test('루티스페이스 이름은 비어있을 수 없다', async ({ authenticatedPage: page }) => {
+  test('루티스페이스 이름은 비어있을 수 없다', async ({ authenticatedPageInSpace: page }) => {
     await page.getByText('수정').click();
 
     const nameInput = page.getByRole('textbox').first();

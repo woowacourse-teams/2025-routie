@@ -1,20 +1,13 @@
 import { test, expect } from './fixtures/auth';
 
 test.describe('지도', () => {
-  test.beforeEach(async ({ authenticatedPage: page }) => {
-    await page.goto('/');
-    await page.waitForLoadState('networkidle');
-    await page.getByText('친구들과 동선 만들러 가기').click();
-    await page.waitForURL(/\/routie-spaces/, { timeout: 10000 });
-  });
-
-  test('지도가 로드된다', async ({ authenticatedPage: page }) => {
+  test('지도가 로드된다', async ({ authenticatedPageInSpace: page }) => {
     // 지도 컨테이너 확인 (로드 시간 고려하여 타임아웃 설정)
     const mapContainer = page.locator('[aria-label="카카오 지도"]');
     await expect(mapContainer).toBeVisible({ timeout: 10000 });
   });
 
-  test('해시태그 필터가 표시된다', async ({ authenticatedPage: page }) => {
+  test('해시태그 필터가 표시된다', async ({ authenticatedPageInSpace: page }) => {
     // 해시태그 필터 영역 확인 (장소에 해시태그가 있는 경우)
     await page.waitForTimeout(1000);
 
@@ -27,7 +20,7 @@ test.describe('지도', () => {
   });
 
   test('지도에서 마커를 클릭하면 장소 정보 오버레이가 표시된다', async ({
-    authenticatedPage: page,
+    authenticatedPageInSpace: page,
   }) => {
     // 지도 로드 대기
     await page.waitForTimeout(2000);
@@ -45,7 +38,7 @@ test.describe('지도', () => {
   });
 
   test('해시태그 필터 클릭 시 해당 태그의 장소만 필터링된다', async ({
-    authenticatedPage: page,
+    authenticatedPageInSpace: page,
   }) => {
     await page.waitForTimeout(1000);
 

@@ -1,6 +1,10 @@
-import { test, expect } from './fixtures/auth';
+import { test, expect, cleanupSpaceFromPage } from './fixtures/auth';
 
 test.describe('로그인 상태 UI', () => {
+  test.afterEach(async ({ page, request }) => {
+    await cleanupSpaceFromPage(page, request);
+  });
+
   test('로그인된 유저는 유저이름, 내동선목록, 로그아웃 버튼을 볼 수 있다', async ({
     authenticatedPage: page,
   }) => {
