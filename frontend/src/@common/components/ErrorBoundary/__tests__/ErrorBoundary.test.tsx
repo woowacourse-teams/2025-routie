@@ -95,6 +95,45 @@ describe('ErrorBoundary', () => {
     vi.restoreAllMocks();
   });
 
+  it('resetKeys 배열이 축소되면 에러 상태를 자동 리셋한다', () => {
+    vi.spyOn(console, 'error').mockImplementation(() => {});
+
+    let shouldThrow = true;
+
+    const MaybeThrow = () => {
+      if (shouldThrow) {
+        throw new Error('Test error');
+      }
+      return <div>복구됨</div>;
+    };
+
+    const { rerender } = render(
+      <ErrorBoundary
+        resetKeys={['key1', 'key2']}
+        fallbackRender={({ error }) => <div>에러: {error.message}</div>}
+      >
+        <MaybeThrow />
+      </ErrorBoundary>,
+    );
+
+    expect(screen.getByText('에러: Test error')).toBeInTheDocument();
+
+    shouldThrow = false;
+    rerender(
+      <ErrorBoundary
+        resetKeys={['key1']}
+        fallbackRender={({ error }) => <div>에러: {error.message}</div>}
+      >
+        <MaybeThrow />
+      </ErrorBoundary>,
+    );
+
+    expect(screen.getByText('복구됨')).toBeInTheDocument();
+    expect(screen.queryByText('에러: Test error')).not.toBeInTheDocument();
+
+    vi.restoreAllMocks();
+  });
+
   it('resetKeys 변경 시 에러 상태를 자동 리셋한다', () => {
     vi.spyOn(console, 'error').mockImplementation(() => {});
 
