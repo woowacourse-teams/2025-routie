@@ -1,9 +1,10 @@
 import { test, expect } from './fixtures/auth';
 
 test.describe('동선탭 - 기본', () => {
-  test('동선 탭을 클릭하면 동선 탭 컨텐츠가 표시된다', async ({ authenticatedPageInSpace: page }) => {
+  test('동선 탭을 클릭하면 동선 탭 컨텐츠가 표시된다', async ({ spaceWithRoutie: { page } }) => {
     await page.getByText('동선', { exact: true }).click();
-    await page.waitForTimeout(500);
+
+    await expect(page.getByText('스타벅스 강남점').first()).toBeVisible();
   });
 });
 
@@ -69,11 +70,18 @@ test.describe('동선탭 - 동선 내 장소 관리', () => {
     const firstHandle = dragHandles.nth(0);
     const secondHandle = dragHandles.nth(1);
 
-    await firstHandle.dragTo(secondHandle);
-    await page.waitForTimeout(1000);
+    // 드래그 전 순서 확인 (스타벅스가 위, 강남역이 아래)
+    const starbucksBefore = await page.getByText('스타벅스 강남점').first().boundingBox();
+    const gangnamBefore = await page.getByText('강남역').first().boundingBox();
+    expect(starbucksBefore!.y).toBeLessThan(gangnamBefore!.y);
 
-    // 드래그 후 두 장소가 여전히 표시되는지 확인
-    await expect(page.getByText('스타벅스 강남점')).toBeVisible();
-    await expect(page.getByText('강남역')).toBeVisible();
+    await firstHandle.dragTo(secondHandle);
+
+    // 드래그 후 순서가 바뀌었는지 확인
+    await expect(async () => {
+      const starbucksAfter = await page.getByText('스타벅스 강남점').first().boundingBox();
+      const gangnamAfter = await page.getByText('강남역').first().boundingBox();
+      expect(gangnamAfter!.y).toBeLessThan(starbucksAfter!.y);
+    }).toPass({ timeout: 3000 });
   });
 });

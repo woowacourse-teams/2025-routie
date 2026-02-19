@@ -163,3 +163,4 @@ storybook-static
 # Playwright
 playwright-report/
 test-results/
+.env.e2e

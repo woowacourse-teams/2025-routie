@@ -1,7 +1,6 @@
 import { test as base, Page, APIRequestContext } from '@playwright/test';
 
-const USER_ACCESS_TOKEN =
-  'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyOSIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzYwMDAzNzg0LCJleHAiOjE4MjA0ODM3ODR9.VYRnzW1teqgtkVolRL2-CCCalzopE47-Jt1OwD7IDSkKDfPLa5KGK3zro4PdQiazXLjh0FtYS-cdeFK5RCnsCw';
+const USER_ACCESS_TOKEN = process.env.E2E_ACCESS_TOKEN ?? '';
 
 const API_BASE_URL = 'https://dapi.routie.me';
 

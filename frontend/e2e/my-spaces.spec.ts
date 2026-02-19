@@ -52,7 +52,12 @@ test.describe('GUEST 역할 제한', () => {
     authenticatedPage: page,
   }) => {
     // 새 컨텍스트에서 게스트로 로그인
-    const guestContext = await page.context().browser()!.newContext();
+    const browser = page.context().browser();
+    if (!browser) {
+      test.skip(true, 'browser 인스턴스를 가져올 수 없습니다');
+      return;
+    }
+    const guestContext = await browser.newContext();
     const guestPage = await guestContext.newPage();
 
     await guestPage.goto(`/routie-spaces?routieSpaceIdentifier=${identifier}`);

@@ -5,6 +5,7 @@ test.describe('토스트 메시지', () => {
     // 공유 탭에서 복사 버튼 클릭
     await page.getByText('공유').click();
     await page.context().grantPermissions(['clipboard-read', 'clipboard-write']);
+    await expect(page.getByText('Copy')).toBeEnabled();
     await page.getByText('Copy').click();
 
     // 복사 성공 확인 (Copied로 변경)
