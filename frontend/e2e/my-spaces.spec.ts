@@ -49,14 +49,9 @@ test.describe('내 동선 목록', () => {
 test.describe('GUEST 역할 제한', () => {
   test('GUEST 유저는 내 동선 목록 버튼이 보이지 않는다', async ({
     spaceUuid: identifier,
-    authenticatedPage: page,
+    browser,
   }) => {
     // 새 컨텍스트에서 게스트로 로그인
-    const browser = page.context().browser();
-    if (!browser) {
-      test.skip(true, 'browser 인스턴스를 가져올 수 없습니다');
-      return;
-    }
     const guestContext = await browser.newContext();
     const guestPage = await guestContext.newPage();
 
