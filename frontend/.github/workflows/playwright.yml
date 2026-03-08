@@ -43,10 +43,7 @@ jobs:
         run: npx playwright install --with-deps chromium
 
       - name: Create .env.e2e
-        run: |
-          cp .env.dev .env.e2e
-          echo "" >> .env.e2e
-          echo "E2E_ACCESS_TOKEN=${{ secrets.E2E_ACCESS_TOKEN }}" >> .env.e2e
+        run: echo "E2E_ACCESS_TOKEN=${{ secrets.E2E_ACCESS_TOKEN }}" > .env.e2e
 
       - name: Run Playwright tests
         run: npm run e2e
