@@ -44,6 +44,12 @@ jobs:
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps chromium
 
+      - name: Create .env.dev
+        run: |
+          echo "REACT_APP_API_URL=${{ secrets.E2E_API_URL }}" > .env.dev
+          echo "REACT_APP_GA4_MEASUREMENT_ID=" >> .env.dev
+          echo "REACT_APP_SENTRY_DSN=" >> .env.dev
+
       - name: Create .env.e2e
         run: echo "E2E_ACCESS_TOKEN=${{ secrets.E2E_ACCESS_TOKEN }}" > .env.e2e
 
