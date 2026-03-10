@@ -47,6 +47,7 @@ jobs:
       - name: Create .env.dev
         run: |
           echo "REACT_APP_API_URL=${{ secrets.E2E_API_URL }}" > .env.dev
+          echo "REACT_APP_KAKAO_MAP_APPKEY=${{ secrets.E2E_KAKAO_MAP_APPKEY }}" >> .env.dev
           echo "REACT_APP_GA4_MEASUREMENT_ID=" >> .env.dev
           echo "REACT_APP_SENTRY_DSN=" >> .env.dev
 
