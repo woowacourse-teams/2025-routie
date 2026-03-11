@@ -61,7 +61,7 @@ test.describe('GUEST 역할 제한', () => {
     await guestPage.getByPlaceholder('사용할 닉네임을 입력해주세요.').fill('테스트게스트');
     await guestPage.getByText('비회원으로 계속하기').click();
 
-    await guestPage.waitForTimeout(2000);
+    await guestPage.waitForURL(/\/routie-spaces\?routieSpaceIdentifier=/, { timeout: 15000 });
 
     // 3. 메뉴 버튼 클릭 후 내 동선 목록 버튼 없음 확인
     await guestPage.getByAltText('menu').click();

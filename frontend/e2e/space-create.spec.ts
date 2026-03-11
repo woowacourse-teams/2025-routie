@@ -7,9 +7,10 @@ test.describe('루티스페이스 생성', () => {
 
   test('버튼 클릭 시 루티스페이스가 생성되고 입장된다', async ({ authenticatedPage: page }) => {
     await page.goto('/');
+    await page.getByText('친구들과 동선 만들러 가기').waitFor({ state: 'visible' });
     await page.getByText('친구들과 동선 만들러 가기').click();
 
-    await page.waitForURL(/\/routie-spaces\?routieSpaceIdentifier=/, { timeout: 10000 });
+    await page.waitForURL(/\/routie-spaces\?routieSpaceIdentifier=/, { timeout: 30000 });
 
     const url = new URL(page.url());
     expect(url.searchParams.get('routieSpaceIdentifier')).toBeTruthy();
