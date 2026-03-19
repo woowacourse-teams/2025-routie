@@ -6,7 +6,10 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 // 기본 도메인은 운영 주소를 사용하고, 필요하면 CI/스테이징에서 환경변수로 덮어쓴다.
-const SITE_URL = process.env.SITEMAP_SITE_URL || 'https://routie.me';
+const SITE_URL = (process.env.SITEMAP_SITE_URL || 'https://routie.me').replace(
+  /\/+$/,
+  '',
+);
 // 검색 인덱싱 대상인 공개 정적 라우트만 유지한다.
 const STATIC_PATHS = ['/', '/routie-spaces', '/version'];
 // 동적 라우트 사이트맵은 현재 비활성화 상태다.
