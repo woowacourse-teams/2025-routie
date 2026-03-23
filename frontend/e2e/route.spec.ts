@@ -50,13 +50,13 @@ test.describe('동선탭 - 동선 내 장소 관리', () => {
   }) => {
     await page.getByText('동선', { exact: true }).click();
 
-    await expect(page.getByText('스타벅스 강남점')).toBeVisible();
+    await expect(page.getByText('스타벅스 강남점', { exact: true })).toBeVisible();
 
     const menuButton = page.getByLabel('메뉴 열기').first();
     await menuButton.click();
     await page.getByLabel('동선에서 장소 삭제').click();
 
-    await expect(page.getByText('스타벅스 강남점')).not.toBeVisible({ timeout: 5000 });
+    await expect(page.getByText('스타벅스 강남점', { exact: true })).not.toBeVisible({ timeout: 5000 });
   });
 
   test('동선탭에서 드래그앤드롭으로 순서를 변경할 수 있다', async ({
