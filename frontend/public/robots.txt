@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /auth/
+Disallow: /manage-routie-spaces
+
+Sitemap: https://routie.me/sitemap.xml

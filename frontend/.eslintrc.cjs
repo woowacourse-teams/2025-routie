@@ -131,6 +131,7 @@ module.exports = {
   },
   ignorePatterns: [
     'dist',
+    'scripts/**/*.mjs',
     'webpack.common.js',
     'webpack.dev.js',
     'webpack.prod.js',
