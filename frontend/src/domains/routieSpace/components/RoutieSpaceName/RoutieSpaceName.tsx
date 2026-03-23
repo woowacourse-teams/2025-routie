@@ -14,7 +14,6 @@ const RoutieSpaceName = () => {
   const {
     name,
     isEditing,
-    isLoading,
     errorCase,
     inputRef,
     handleEnter,
@@ -55,7 +54,6 @@ const RoutieSpaceName = () => {
           variant="primary"
           onClick={handleClick}
           width="5rem"
-          disabled={isLoading}
           padding="0.6rem 0.8rem"
         >
           <Text variant="label" color={theme.colors.white}>

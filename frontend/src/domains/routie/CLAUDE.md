@@ -43,6 +43,8 @@ src/domains/routie/
 ### 4. SSE 기반 실시간 동기화
 
 - 동선 상태는 SSE 메시지가 SSoT(Single Source of Truth)
+- 초기 데이터는 useSuspenseQuery로 REST fetch 후 SSE로 실시간 동기화
+- Suspense 경계: Sidebar 탭 콘텐츠 레벨에서 ErrorBoundary + Suspense로 래핑
 - API mutation 후 응답을 사용하지 않고, SSE 이벤트로 상태 업데이트
 - `useRoutieStream` 훅이 4가지 이벤트 수신:
   - `ROUTIE_HISTORY`: 전체 동선 히스토리

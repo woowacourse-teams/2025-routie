@@ -37,7 +37,8 @@
 - 해시태그 필터 상태는 `sessionStorage`의 `selectedHashtags` 키로 유지
 - 좋아요는 인증 필요하며, 토큰이 없으면 요청을 중단
 - SSE 이벤트(PLACE_HISTORY/CREATED/UPDATED/DELETED)로 장소 목록 동기화
-- 데이터 SSOT는 SSE이며, 초기 데이터 fetch는 기본적으로 비활성화하고 SSE 결과만 사용
+- 데이터 SSOT는 SSE이며, 초기 데이터는 useSuspenseQuery로 REST fetch 후 SSE로 실시간 동기화
+- Suspense 경계: Sidebar 탭 콘텐츠 레벨에서 ErrorBoundary + Suspense로 래핑
 
 ## 변경 시 체크리스트
 - 타입 먼저 추가 → API 연결 → adapter → hook → UI

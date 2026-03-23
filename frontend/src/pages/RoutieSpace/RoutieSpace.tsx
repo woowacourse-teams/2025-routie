@@ -1,5 +1,5 @@
-import { useEffect, useLayoutEffect } from 'react';
-import { useNavigate, useSearchParams } from 'react-router';
+import { useEffect } from 'react';
+import { useSearchParams } from 'react-router';
 
 import FeedbackWidget from '@/@common/components/FeedbackWidget/FeedbackWidget';
 import { useModal } from '@/@common/contexts/ModalContext';
@@ -14,19 +14,23 @@ import HashtagFilterProvider from '@/domains/places/contexts/HashtagFilterProvid
 import { usePlaceStream } from '@/domains/places/hooks/usePlaceStream';
 import { useRoutieStream } from '@/domains/routie/hooks/useRoutieStream';
 import { useRoutieSpaceStream } from '@/domains/routieSpace/hooks/useRoutieSpaceStream';
-import { useRoutieSpaceQuery } from '@/domains/routieSpace/queries/useRoutieSpaceQuery';
+import { useSuspenseRoutieSpaceQuery } from '@/domains/routieSpace/queries/useRoutieSpaceQuery';
 import Sidebar from '@/pages/RoutieSpace/components/Sidebar/Sidebar';
 
 import { RoutieSpaceContainerStyle } from './RoutieSpace.styles';
 
 const RoutieSpace = () => {
   const [searchParams] = useSearchParams();
-  const navigate = useNavigate();
+  const routieSpaceIdentifier = searchParams.get('routieSpaceIdentifier');
+
+  if (routieSpaceIdentifier) {
+    sessionStorageUtils.set('routieSpaceUuid', routieSpaceIdentifier);
+  }
+
   const { openModal } = useModal();
   const { showToast } = useToastContext();
   const { error } = useUserQuery();
-  const { error: routieSpaceError } = useRoutieSpaceQuery();
-  const routieSpaceIdentifier = searchParams.get('routieSpaceIdentifier');
+  useSuspenseRoutieSpaceQuery();
   const accessToken = getAccessToken();
   const { isOpen: isSidebarOpen, handleToggle: handleSidebarToggle } =
     useToggle();
@@ -34,12 +38,6 @@ const RoutieSpace = () => {
   usePlaceStream();
   useRoutieStream();
   useRoutieSpaceStream();
-
-  useLayoutEffect(() => {
-    if (routieSpaceIdentifier) {
-      sessionStorageUtils.set('routieSpaceUuid', routieSpaceIdentifier);
-    }
-  }, [routieSpaceIdentifier]);
 
   useEffect(() => {
     if (!accessToken) {
@@ -63,26 +61,12 @@ const RoutieSpace = () => {
     };
   }, []);
 
-  useEffect(() => {
-    if (routieSpaceError) {
-      const errorMessage = routieSpaceError.message;
-      const isNotFoundError =
-        errorMessage.includes('방 찾기에 실패했습니다') ||
-        errorMessage.includes('방을 찾을 수 없습니다') ||
-        errorMessage.includes('존재하지 않는 방입니다');
-
-      if (isNotFoundError) {
-        navigate('/routie-space-not-found');
-      }
-    }
-  }, [routieSpaceError, navigate]);
-
   return (
     <HashtagFilterProvider>
       <div css={RoutieSpaceContainerStyle}>
         <KakaoMap isSidebarOpen={isSidebarOpen} />
         {accessToken && <UserMenuButton />}
-        <Sidebar isOpen={isSidebarOpen} handleToggle={handleSidebarToggle} />
+        <Sidebar isOpen={isSidebarOpen} onToggle={handleSidebarToggle} />
       </div>
       <FeedbackWidget />
     </HashtagFilterProvider>

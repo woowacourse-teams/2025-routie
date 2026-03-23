@@ -1,4 +1,10 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import {
+  queryOptions,
+  useMutation,
+  useQuery,
+  useQueryClient,
+  useSuspenseQuery,
+} from '@tanstack/react-query';
 
 import { useToastContext } from '@/@common/contexts/useToastContext';
 import { getAccessToken } from '@/@common/utils/getAccessToken';
@@ -34,14 +40,22 @@ const useKakaoLoginMutation = () => {
   });
 };
 
+const userQueryOptions = queryOptions({
+  queryKey: userKey.all,
+  queryFn: () => getUser(),
+});
+
 const useUserQuery = () => {
   const accessToken = getAccessToken();
 
   return useQuery({
-    queryKey: userKey.all,
-    queryFn: () => getUser(),
+    ...userQueryOptions,
     enabled: Boolean(accessToken),
   });
+};
+
+const useSuspenseUserQuery = () => {
+  return useSuspenseQuery(userQueryOptions);
 };
 
 const useGuestLoginMutation = () => {
@@ -72,5 +86,7 @@ export {
   useGuestLoginMutation,
   useKakaoLoginMutation,
   useKakaoLoginUriQuery,
+  useSuspenseUserQuery,
   useUserQuery,
+  userQueryOptions,
 };

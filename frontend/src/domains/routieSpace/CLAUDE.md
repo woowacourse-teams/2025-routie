@@ -40,13 +40,19 @@ src/domains/routieSpace/
 - **인증 필요**: `getAccessTokenOrThrow()` + Authorization 헤더
 - **인증 불필요**: `getRoutieSpaceUuid()` + `ensureRoutieSpaceUuid()`
 
+### 3. Suspense 패턴
+
+- routieSpace 조회: useSuspenseQuery로 라우트 레벨 Suspense에서 처리
+- routieSpace 목록: useSuspenseQuery로 라우트 레벨 Suspense에서 처리
+- 각 라우트에 ErrorBoundary(fallbackRender) + Suspense 경계 배치
+
 ### 2. identifier → routieSpaceUuid 변환 필수
 
 - 서버: `identifier` 사용
 - 클라이언트: `routieSpaceUuid` 사용
 - Adapter에서 반드시 변환
 
-### 3. UUID는 URL 쿼리 파라미터 name으로 관리
+### 4. UUID는 URL 쿼리 파라미터 name으로 관리
 
 ```
 https://routie.com/?name={uuid}

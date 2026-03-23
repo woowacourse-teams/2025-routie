@@ -1,21 +1,19 @@
-import { useCallback, useEffect } from 'react';
+import { useCallback } from 'react';
 
-import { useToastContext } from '@/@common/contexts/useToastContext';
 import { useAsyncLock } from '@/@common/hooks/useAsyncLock';
 import {
   useAddPlaceQuery,
   useDeletePlaceQuery,
-  usePlaceListQuery,
+  useSuspensePlaceListQuery,
   useUpdatePlaceHashtagsMutation,
 } from '@/domains/places/queries/usePlaceQuery';
 import type { SearchedPlaceType } from '@/domains/places/types/place.types';
 
 const usePlaceList = () => {
-  const { data: placeList, error } = usePlaceListQuery({ enabled: false });
+  const { data: placeList } = useSuspensePlaceListQuery();
   const { mutate: addPlace, data: addedPlaceId } = useAddPlaceQuery();
   const { mutate: deletePlace } = useDeletePlaceQuery();
   const { mutate: updatePlaceHashtags } = useUpdatePlaceHashtagsMutation();
-  const { showToast } = useToastContext();
   const { runWithLock: runDeleteWithLock } = useAsyncLock();
   const { runWithLock: runAddWithLock } = useAsyncLock();
   const { runWithLock: runUpdateWithLock } = useAsyncLock();
@@ -47,16 +45,6 @@ const usePlaceList = () => {
     },
     [updatePlaceHashtags, runUpdateWithLock],
   );
-
-  useEffect(() => {
-    if (error) {
-      console.error(error);
-      showToast({
-        message: error.message,
-        type: 'error',
-      });
-    }
-  }, [error, showToast]);
 
   return {
     placeList,
