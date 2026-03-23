@@ -2,6 +2,25 @@ import { css } from '@emotion/react';
 
 import theme from '@/styles/theme';
 
+const UserMenuTriggerButtonStyle = css`
+  display: flex;
+
+  padding: 0;
+  border: none;
+  border-radius: ${theme.radius.sm};
+
+  background: transparent;
+
+  &:focus {
+    outline: none;
+  }
+
+  &:focus-visible {
+    outline: 0.2rem solid ${theme.colors.blue[450]};
+    outline-offset: 0.2rem;
+  }
+`;
+
 const UserMenuIconStyle = css`
   cursor: pointer;
 
@@ -29,6 +48,7 @@ const UserMenuButtonAbsoluteStyle = css`
 `;
 
 export {
+  UserMenuTriggerButtonStyle,
   UserMenuIconStyle,
   UserMenuButtonWrapperStyle,
   UserMenuButtonAbsoluteStyle,

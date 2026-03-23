@@ -1,5 +1,5 @@
 /** @jsxImportSource @emotion/react */
-import { Suspense, useState } from 'react';
+import { Suspense } from 'react';
 
 import Button from '@/@common/components/Button/Button';
 import ErrorBoundary from '@/@common/components/ErrorBoundary/ErrorBoundary';
@@ -9,9 +9,11 @@ import Text from '@/@common/components/Text/Text';
 import { logout } from '@/@common/utils/logout';
 import UserMenu from '@/domains/auth/components/UserMenu/UserMenu';
 import { UserMenuStyle } from '@/domains/auth/components/UserMenu/UserMenu.styles';
+import { useUserMenuVisibility } from '@/domains/auth/hooks/useUserMenuVisibility';
 
 import {
   UserMenuIconStyle,
+  UserMenuTriggerButtonStyle,
   UserMenuButtonWrapperStyle,
   UserMenuButtonAbsoluteStyle,
 } from './UserMenuButton.styles';
@@ -22,14 +24,19 @@ const UserMenuButton = ({
   onClick,
   positioning = 'absolute',
 }: UserMenuButtonProps) => {
-  const [isUserInfoOpen, setIsUserInfoOpen] = useState(false);
+  const {
+    isUserMenuOpen,
+    userMenuRef,
+    userMenuTriggerButtonRef,
+    toggleUserMenu,
+  } = useUserMenuVisibility();
   const handleLogout = () => logout();
 
   const handleProfileClick = () => {
     if (onClick) {
       onClick();
     } else {
-      setIsUserInfoOpen((prev) => !prev);
+      toggleUserMenu();
     }
   };
 
@@ -39,14 +46,20 @@ const UserMenuButton = ({
       : UserMenuButtonWrapperStyle;
 
   return (
-    <div css={wrapperStyle}>
-      <Icon
-        name="menu"
-        size={40}
-        css={UserMenuIconStyle}
+    <div css={wrapperStyle} ref={userMenuRef}>
+      <button
+        type="button"
+        ref={userMenuTriggerButtonRef}
+        css={UserMenuTriggerButtonStyle}
         onClick={handleProfileClick}
-      />
-      {isUserInfoOpen && (
+        aria-label="사용자 메뉴 열기"
+        aria-haspopup="menu"
+        aria-controls="userMenu"
+        aria-expanded={isUserMenuOpen}
+      >
+        <Icon name="menu" size={40} css={UserMenuIconStyle} />
+      </button>
+      {isUserMenuOpen && (
         <ErrorBoundary
           fallbackRender={() => (
             <div css={UserMenuStyle}>
