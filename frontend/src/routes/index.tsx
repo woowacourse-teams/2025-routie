@@ -17,6 +17,7 @@ import Toast from '@/@common/components/Toast/Toast';
 import ModalProvider from '@/@common/contexts/ModalProvider';
 import ToastProvider from '@/@common/contexts/ToastProvider';
 import { getAccessToken } from '@/@common/utils/getAccessToken';
+import { RoutieSpaceNotFoundError } from '@/apis';
 import { useGoogleAnalytics } from '@/libs/googleAnalytics/hooks/useGoogleAnalytics';
 import Home from '@/pages/Home/Home';
 import KakaoAuthCallback from '@/pages/KakaoAuthCallback/KakaoAuthCallback';
@@ -29,18 +30,24 @@ import VersionInfo from '@/pages/VersionInfo/VersionInfo';
 
 const RoutieSpace = lazy(() => import('@/pages/RoutieSpace/RoutieSpace'));
 
-const RouteErrorFallback = ({ resetErrorBoundary }: FallbackRenderProps) => (
-  <Flex gap={1} direction="column" height="100dvh">
-    <Text variant="title">일시적인 오류가 발생했습니다.</Text>
-    <Text variant="body">잠시 후 다시 시도해주세요.</Text>
-    <button type="button" onClick={resetErrorBoundary}>
-      <Text variant="body">다시 시도</Text>
-    </button>
-    <a href="/">
-      <Text variant="body">홈으로 돌아가기</Text>
-    </a>
-  </Flex>
-);
+const RouteErrorFallback = ({ error, resetErrorBoundary }: FallbackRenderProps) => {
+  if (error instanceof RoutieSpaceNotFoundError) {
+    return <Navigate to="/routie-space-not-found" replace />;
+  }
+
+  return (
+    <Flex gap={1} direction="column" height="100dvh">
+      <Text variant="title">일시적인 오류가 발생했습니다.</Text>
+      <Text variant="body">잠시 후 다시 시도해주세요.</Text>
+      <button type="button" onClick={resetErrorBoundary}>
+        <Text variant="body">다시 시도</Text>
+      </button>
+      <a href="/">
+        <Text variant="body">홈으로 돌아가기</Text>
+      </a>
+    </Flex>
+  );
+};
 
 const LayoutWithAnalytics = ({ children }: { children: React.ReactNode }) => {
   useGoogleAnalytics();
