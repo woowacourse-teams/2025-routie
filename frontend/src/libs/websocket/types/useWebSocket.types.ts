@@ -1,3 +1,5 @@
+import type { IFrame } from '@stomp/stompjs';
+
 interface UseWebSocketOptions<T> {
   url: string;
   token: string;
@@ -6,10 +8,11 @@ interface UseWebSocketOptions<T> {
   onMessage?: (data: T) => void;
   onConnect?: () => void;
   onDisconnect?: () => void;
+  onError?: (frame: IFrame) => void;
 }
 
 interface UseWebSocketReturn {
-  send: (data: unknown) => void;
+  send: (data: unknown) => boolean;
 }
 
 export type { UseWebSocketOptions, UseWebSocketReturn };

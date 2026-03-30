@@ -63,9 +63,15 @@ export const chatHandlers = [
 
       // 3. SEND → 메시지 처리
       if (command === 'SEND') {
-        const data = JSON.parse(body);
+        let data: Record<string, unknown>;
+        try {
+          data = JSON.parse(body);
+        } catch {
+          console.error('[MSW] SEND body 파싱 실패:', body);
+          return;
+        }
 
-        if (data.type === 'CHAT') {
+        if (data['type'] === 'CHAT') {
           const destination = headers['destination'] ?? '';
 
           // CHAT_ACK
@@ -75,12 +81,12 @@ export const chatHandlers = [
               {
                 destination,
                 subscription: subscriptionId,
-                'message-id': `ack-${Date.now()}`,
+                'message-id': crypto.randomUUID(),
               },
               JSON.stringify({
                 type: 'CHAT_ACK',
-                tempId: data.tempId,
-                messageId: `msg_${Date.now()}`,
+                tempId: data['tempId'],
+                messageId: crypto.randomUUID(),
                 timestamp: new Date().toISOString(),
               }),
             ),
@@ -94,14 +100,14 @@ export const chatHandlers = [
                 {
                   destination,
                   subscription: subscriptionId,
-                  'message-id': `broadcast-${Date.now()}`,
+                  'message-id': crypto.randomUUID(),
                 },
                 JSON.stringify({
                   type: 'CHAT',
-                  messageId: `msg_${Date.now() + 1}`,
+                  messageId: crypto.randomUUID(),
                   senderId: 'user_mock',
                   senderName: '루티봇',
-                  content: `"${data.content}" 받았어요!`,
+                  content: `"${data['content']}" 받았어요!`,
                   timestamp: new Date().toISOString(),
                 }),
               ),
