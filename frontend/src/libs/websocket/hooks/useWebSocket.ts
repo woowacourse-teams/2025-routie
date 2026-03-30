@@ -69,7 +69,9 @@ const useWebSocket = <T>({
   }, [url, token, subscribeDestination]);
 
   const send = useCallback((data: unknown) => {
-    clientRef.current?.publish({
+    if (!clientRef.current?.connected) return;
+
+    clientRef.current.publish({
       destination: publishDestinationRef.current,
       body: JSON.stringify(data),
     });
