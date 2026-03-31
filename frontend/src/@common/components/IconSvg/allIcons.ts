@@ -1,6 +1,7 @@
 import allSelect from '@/assets/icons/all-select.svg';
 import allUnselect from '@/assets/icons/all-unselect.svg';
 import arrow from '@/assets/icons/arrow.svg';
+import chatTab from '@/assets/icons/chat-tab.svg';
 import checkHome from '@/assets/icons/check-home.svg';
 import check from '@/assets/icons/check.svg';
 import clockHome from '@/assets/icons/clock-home.svg';
@@ -36,6 +37,7 @@ import mascot from '@/assets/images/routie-mascot.png';
 
 const allIcons = {
   allSelect,
+  chatTab,
   allUnselect,
   arrow,
   check,
