@@ -68,10 +68,10 @@ const RoutieSpace = () => {
         {accessToken && <UserMenuButton />}
         <Sidebar isOpen={isSidebarOpen} onToggle={handleSidebarToggle} />
       </div>
-      {accessToken && (
+      {accessToken && user?.nickname && (
         <ChatView
           accessToken={accessToken}
-          myNickname={user?.nickname ?? ''}
+          myNickname={user.nickname}
         />
       )}
     </HashtagFilterProvider>
