@@ -55,7 +55,6 @@ const ChatView = ({ accessToken, myNickname }: ChatViewProps) => {
             messages.map((msg) => <ChatMessage key={msg.messageId} {...msg} />)
           )}
         </div>
-        ㅁ
         <ChatInput onSend={sendMessage} />
       </div>
 
