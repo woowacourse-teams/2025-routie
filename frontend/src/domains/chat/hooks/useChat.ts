@@ -17,33 +17,41 @@ const useChat = ({ routieSpaceUuid, accessToken, myNickname }: UseChatParams) =>
   const [messages, setMessages] = useState<ChatMessageType[]>([]);
   const [isConnected, setIsConnected] = useState(false);
 
-  const handleMessage = useCallback((data: ChatIncomingMessageType) => {
-    if (data.type === 'CHAT_ACK') {
-      setMessages((prev) =>
-        prev.map((msg) =>
-          msg.tempId === data.tempId
-            ? { ...msg, messageId: data.messageId, timestamp: data.timestamp, status: 'sent', tempId: undefined }
-            : msg,
-        ),
-      );
-      return;
-    }
+  const handleMessage = useCallback(
+    (data: ChatIncomingMessageType) => {
+      if (data.type === 'CHAT_ACK') {
+        setMessages((prev) =>
+          prev.map((msg) =>
+            msg.tempId === data.tempId
+              ? { ...msg, messageId: data.messageId, timestamp: data.timestamp, status: 'sent', tempId: undefined }
+              : msg,
+          ),
+        );
+        return;
+      }
 
-    if (data.type === 'CHAT') {
-      setMessages((prev) => [
-        ...prev,
-        {
-          messageId: data.messageId,
-          senderId: data.senderId,
-          senderName: data.senderName,
-          content: data.content,
-          timestamp: data.timestamp,
-          status: 'sent',
-          isMine: false,
-        },
-      ]);
-    }
-  }, []);
+      if (data.type === 'CHAT') {
+        setMessages((prev) => {
+          const alreadyExists = prev.some((msg) => msg.messageId === data.messageId);
+          if (alreadyExists) return prev;
+
+          return [
+            ...prev,
+            {
+              messageId: data.messageId,
+              senderId: data.senderId,
+              senderName: data.senderName,
+              content: data.content,
+              timestamp: data.timestamp,
+              status: 'sent',
+              isMine: data.senderId === myNickname,
+            },
+          ];
+        });
+      }
+    },
+    [myNickname],
+  );
 
   const { send } = useWebSocket<ChatIncomingMessageType>({
     url: WS_CHAT_URL,
@@ -78,7 +86,10 @@ const useChat = ({ routieSpaceUuid, accessToken, myNickname }: UseChatParams) =>
         return;
       }
 
-      send({ type: 'CHAT', tempId, content });
+      const isSent = send({ type: 'CHAT', tempId, content });
+      if (!isSent) {
+        setMessages((prev) => prev.filter((msg) => msg.tempId !== tempId));
+      }
     },
     [send, myNickname, isConnected],
   );

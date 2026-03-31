@@ -15,6 +15,7 @@ const chatIconButtonStyle = css`
   justify-content: center;
 
   padding: 0.8rem;
+  border: none;
   border-radius: 50%;
 
   background-color: ${theme.colors.white};

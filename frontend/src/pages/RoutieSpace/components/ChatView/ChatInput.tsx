@@ -42,7 +42,7 @@ const ChatInput = ({ onSend }: ChatInputProps) => {
         placeholder="메시지를 입력하세요"
         rows={1}
       />
-      <button css={sendButtonStyle(isEmpty)} onClick={handleSend} disabled={isEmpty}>
+      <button type="button" aria-label="메시지 전송" css={sendButtonStyle(isEmpty)} onClick={handleSend} disabled={isEmpty}>
         <svg css={sendIconStyle} viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
           <path d="M2 21L23 12 2 3v7l15 2-15 2z" />
         </svg>

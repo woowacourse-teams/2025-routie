@@ -21,11 +21,11 @@ import type { ChatViewProps } from './ChatView.types';
 
 const ChatView = ({ accessToken, myNickname }: ChatViewProps) => {
   const [isOpen, setIsOpen] = useState(false);
-  const routieSpaceUuid = getRoutieSpaceUuid() ?? '';
+  const routieSpaceUuid = getRoutieSpaceUuid();
   const messageListRef = useRef<HTMLDivElement>(null);
 
   const { messages, sendMessage } = useChat({
-    routieSpaceUuid,
+    routieSpaceUuid: routieSpaceUuid ?? '',
     accessToken,
     myNickname,
   });
@@ -36,12 +36,15 @@ const ChatView = ({ accessToken, myNickname }: ChatViewProps) => {
     }
   }, [messages]);
 
+  if (!routieSpaceUuid) return null;
+
   return (
     <>
       <div css={chatPanelStyle(isOpen)}>
         <div css={chatPanelHeaderStyle}>
           <span css={chatPanelHeaderTitleStyle}>채팅</span>
           <button
+            type="button"
             css={chatPanelCloseButtonStyle}
             onClick={() => setIsOpen(false)}
           >
@@ -59,14 +62,14 @@ const ChatView = ({ accessToken, myNickname }: ChatViewProps) => {
       </div>
 
       {!isOpen && (
-        <div
+        <button
+          type="button"
+          aria-label="채팅 열기"
           css={chatIconButtonStyle}
-          role="button"
-          tabIndex={0}
           onClick={() => setIsOpen(true)}
         >
           <Icon name="chatTab" size={36} />
-        </div>
+        </button>
       )}
     </>
   );
