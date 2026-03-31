@@ -38,7 +38,7 @@ test.describe('동선탭 - 동선 내 장소 관리', () => {
   }) => {
     await page.getByText('동선', { exact: true }).click();
 
-    const menuButton = page.getByLabel('메뉴 열기').first();
+    const menuButton = page.getByLabel('메뉴 열기', { exact: true }).first();
     await expect(menuButton).toBeVisible();
     await menuButton.click();
 
@@ -52,7 +52,7 @@ test.describe('동선탭 - 동선 내 장소 관리', () => {
 
     await expect(page.getByText('스타벅스 강남점', { exact: true })).toBeVisible();
 
-    const menuButton = page.getByLabel('메뉴 열기').first();
+    const menuButton = page.getByLabel('메뉴 열기', { exact: true }).first();
     await menuButton.click();
     await page.getByLabel('동선에서 장소 삭제').click();
 
