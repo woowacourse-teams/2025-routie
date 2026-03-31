@@ -17,15 +17,18 @@ import {
   messageListStyle,
 } from './ChatView.styles';
 
-import type { ChatViewProps } from './ChatView.types';
+import type { ChatViewProps, ChatViewInnerProps } from './ChatView.types';
 
-const ChatView = ({ accessToken, myNickname }: ChatViewProps) => {
+const ChatViewInner = ({
+  routieSpaceUuid,
+  accessToken,
+  myNickname,
+}: ChatViewInnerProps) => {
   const [isOpen, setIsOpen] = useState(false);
-  const routieSpaceUuid = getRoutieSpaceUuid();
   const messageListRef = useRef<HTMLDivElement>(null);
 
   const { messages, sendMessage } = useChat({
-    routieSpaceUuid: routieSpaceUuid ?? '',
+    routieSpaceUuid,
     accessToken,
     myNickname,
   });
@@ -35,8 +38,6 @@ const ChatView = ({ accessToken, myNickname }: ChatViewProps) => {
       messageListRef.current.scrollTop = messageListRef.current.scrollHeight;
     }
   }, [messages]);
-
-  if (!routieSpaceUuid) return null;
 
   return (
     <>
@@ -72,6 +73,20 @@ const ChatView = ({ accessToken, myNickname }: ChatViewProps) => {
         </button>
       )}
     </>
+  );
+};
+
+const ChatView = ({ accessToken, myNickname }: ChatViewProps) => {
+  const routieSpaceUuid = getRoutieSpaceUuid();
+
+  if (!routieSpaceUuid) return null;
+
+  return (
+    <ChatViewInner
+      routieSpaceUuid={routieSpaceUuid}
+      accessToken={accessToken}
+      myNickname={myNickname}
+    />
   );
 };
 

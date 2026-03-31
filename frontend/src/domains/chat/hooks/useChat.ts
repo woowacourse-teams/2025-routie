@@ -32,7 +32,9 @@ const useChat = ({ routieSpaceUuid, accessToken, myNickname }: UseChatParams) =>
 
       if (data.type === 'CHAT') {
         setMessages((prev) => {
-          const alreadyExists = prev.some((msg) => msg.messageId === data.messageId);
+          const alreadyExists = prev.some(
+            (msg) => msg.messageId === data.messageId || msg.tempId === data.messageId,
+          );
           if (alreadyExists) return prev;
 
           return [

@@ -3,4 +3,8 @@ interface ChatViewProps {
   myNickname: string;
 }
 
-export type { ChatViewProps };
+interface ChatViewInnerProps extends ChatViewProps {
+  routieSpaceUuid: string;
+}
+
+export type { ChatViewProps, ChatViewInnerProps };

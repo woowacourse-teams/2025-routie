@@ -49,9 +49,9 @@ const sendButtonStyle = (disabled: boolean) => css`
   align-items: center;
   justify-content: center;
 
-  aspect-ratio: 1;
-  width: 2.2rem;
-  height: 3.2rem;
+
+  width: 2.8rem;
+  height: 2.8rem;
   border: none;
   border-radius: 50%;
 
