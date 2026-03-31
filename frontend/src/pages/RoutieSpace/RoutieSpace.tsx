@@ -1,7 +1,6 @@
 import { useEffect } from 'react';
 import { useSearchParams } from 'react-router';
 
-import FeedbackWidget from '@/@common/components/FeedbackWidget/FeedbackWidget';
 import { useModal } from '@/@common/contexts/ModalContext';
 import { useToastContext } from '@/@common/contexts/useToastContext';
 import { useToggle } from '@/@common/hooks/useToggle';
@@ -15,6 +14,7 @@ import { usePlaceStream } from '@/domains/places/hooks/usePlaceStream';
 import { useRoutieStream } from '@/domains/routie/hooks/useRoutieStream';
 import { useRoutieSpaceStream } from '@/domains/routieSpace/hooks/useRoutieSpaceStream';
 import { useSuspenseRoutieSpaceQuery } from '@/domains/routieSpace/queries/useRoutieSpaceQuery';
+import ChatView from '@/pages/RoutieSpace/components/ChatView/ChatView';
 import Sidebar from '@/pages/RoutieSpace/components/Sidebar/Sidebar';
 
 import { RoutieSpaceContainerStyle } from './RoutieSpace.styles';
@@ -29,7 +29,7 @@ const RoutieSpace = () => {
 
   const { openModal } = useModal();
   const { showToast } = useToastContext();
-  const { error } = useUserQuery();
+  const { error, data: user } = useUserQuery();
   useSuspenseRoutieSpaceQuery();
   const accessToken = getAccessToken();
   const { isOpen: isSidebarOpen, handleToggle: handleSidebarToggle } =
@@ -68,7 +68,12 @@ const RoutieSpace = () => {
         {accessToken && <UserMenuButton />}
         <Sidebar isOpen={isSidebarOpen} onToggle={handleSidebarToggle} />
       </div>
-      <FeedbackWidget />
+      {accessToken && (
+        <ChatView
+          accessToken={accessToken}
+          myNickname={user?.nickname ?? ''}
+        />
+      )}
     </HashtagFilterProvider>
   );
 };
