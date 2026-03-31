@@ -58,14 +58,16 @@ const ChatView = ({ accessToken, myNickname }: ChatViewProps) => {
         <ChatInput onSend={sendMessage} />
       </div>
 
-      <div
-        css={chatIconButtonStyle}
-        role="button"
-        tabIndex={0}
-        onClick={() => setIsOpen((prev) => !prev)}
-      >
-        <Icon name="chatTab" size={36} />
-      </div>
+      {!isOpen && (
+        <div
+          css={chatIconButtonStyle}
+          role="button"
+          tabIndex={0}
+          onClick={() => setIsOpen(true)}
+        >
+          <Icon name="chatTab" size={36} />
+        </div>
+      )}
     </>
   );
 };
