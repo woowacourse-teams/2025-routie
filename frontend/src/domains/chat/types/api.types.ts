@@ -1,5 +1,6 @@
 interface ChatSendRequest {
   type: 'CHAT';
+  routieSpaceId: string;
   tempId: string;
   content: string;
 }
