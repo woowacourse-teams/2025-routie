@@ -88,12 +88,12 @@ const useChat = ({ routieSpaceUuid, accessToken, myNickname }: UseChatParams) =>
         return;
       }
 
-      const isSent = send({ type: 'CHAT', tempId, content });
+      const isSent = send({ type: 'CHAT', routieSpaceId: routieSpaceUuid, tempId, content });
       if (!isSent) {
         setMessages((prev) => prev.filter((msg) => msg.tempId !== tempId));
       }
     },
-    [send, myNickname, isConnected],
+    [send, myNickname, isConnected, routieSpaceUuid],
   );
 
   return { messages, sendMessage };
