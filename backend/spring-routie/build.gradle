@@ -91,6 +91,9 @@ dependencies {
 
     // BCrypt Password Encoder
     implementation 'org.springframework.security:spring-security-crypto:6.5.5'
+
+    // WebSocket
+    implementation 'org.springframework.boot:spring-boot-starter-websocket'
 }
 
 tasks.named('test') {
