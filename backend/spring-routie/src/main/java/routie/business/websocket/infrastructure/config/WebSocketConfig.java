@@ -42,7 +42,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     public void configureClientInboundChannel(final ChannelRegistration registration) {
         registration.interceptors(stompAuthInterceptor);
     }
-    
+
     @Override
     public void addArgumentResolvers(final List<HandlerMethodArgumentResolver> argumentResolvers) {
         argumentResolvers.add(webSocketAuthenticatedParticipantArgumentResolver);

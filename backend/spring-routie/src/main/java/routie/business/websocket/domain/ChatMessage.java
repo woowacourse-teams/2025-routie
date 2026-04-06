@@ -30,8 +30,8 @@ import java.time.LocalDateTime;
 @Getter
 @Table(
         name = "chat_messages", indexes = {
-        @Index(name = "idx_chat_messages_space_time", columnList = "routie_space_id, created_at")
-}
+                @Index(name = "idx_chat_messages_space_time", columnList = "routie_space_id, created_at")
+        }
 )
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EntityListeners(AuditingEntityListener.class)

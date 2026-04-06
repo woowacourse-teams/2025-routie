@@ -103,4 +103,3 @@ class ChatServiceTest {
                 .hasFieldOrPropertyWithValue("errorCode", ErrorCode.ROUTIE_SPACE_NOT_FOUND);
     }
 }
-
