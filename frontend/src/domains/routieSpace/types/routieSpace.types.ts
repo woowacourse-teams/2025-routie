@@ -5,7 +5,6 @@ type ERROR_CASE = keyof typeof ERROR_MESSAGE;
 interface UseRoutieSpaceReturn {
   name: string;
   isEditing: boolean;
-  isLoading: boolean;
   errorCase: ERROR_CASE | null;
   inputRef: React.RefObject<HTMLInputElement | null>;
   handleEnter: (e: React.KeyboardEvent<HTMLInputElement>) => void;

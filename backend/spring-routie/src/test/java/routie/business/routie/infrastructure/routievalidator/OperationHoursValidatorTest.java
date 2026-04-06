@@ -1,14 +1,5 @@
 package routie.business.routie.infrastructure.routievalidator;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.List;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -20,6 +11,16 @@ import routie.business.routie.domain.routievalidator.ValidationResult;
 import routie.business.routie.domain.routievalidator.ValidationStrategy;
 import routie.business.routie.domain.timeperiod.TimePeriod;
 import routie.business.routie.domain.timeperiod.TimePeriods;
+
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 @Disabled("검증 기능 제거에 따른 비활성화")
 class OperationHoursValidatorTest {
@@ -71,8 +72,10 @@ class OperationHoursValidatorTest {
         final ValidationContext validationContext = createValidationContext(timePeriod);
 
         // when
-        final ValidationResult result = validator.validate(validationContext,
-                ValidationStrategy.IS_WITHIN_OPERATION_HOURS);
+        final ValidationResult result = validator.validate(
+                validationContext,
+                ValidationStrategy.IS_WITHIN_OPERATION_HOURS
+        );
 
         // then
         assertThat(result.isValid()).isTrue();
@@ -100,8 +103,10 @@ class OperationHoursValidatorTest {
             final ValidationContext validationContext = createValidationContext(timePeriod);
 
             // when
-            final ValidationResult result = validator.validate(validationContext,
-                    ValidationStrategy.IS_WITHIN_OPERATION_HOURS);
+            final ValidationResult result = validator.validate(
+                    validationContext,
+                    ValidationStrategy.IS_WITHIN_OPERATION_HOURS
+            );
 
             // then
             assertThat(result.isValid()).isTrue();
@@ -122,8 +127,10 @@ class OperationHoursValidatorTest {
             final ValidationContext validationContext = createValidationContext(timePeriod);
 
             // when
-            final ValidationResult result = validator.validate(validationContext,
-                    ValidationStrategy.IS_WITHIN_OPERATION_HOURS);
+            final ValidationResult result = validator.validate(
+                    validationContext,
+                    ValidationStrategy.IS_WITHIN_OPERATION_HOURS
+            );
 
             // then
             assertThat(result.isValid()).isFalse();
@@ -152,8 +159,10 @@ class OperationHoursValidatorTest {
             final ValidationContext validationContext = createValidationContext(timePeriod);
 
             // when
-            final ValidationResult result = validator.validate(validationContext,
-                    ValidationStrategy.IS_WITHIN_OPERATION_HOURS);
+            final ValidationResult result = validator.validate(
+                    validationContext,
+                    ValidationStrategy.IS_WITHIN_OPERATION_HOURS
+            );
 
             // then
             assertThat(result.isValid()).isTrue();
@@ -174,8 +183,10 @@ class OperationHoursValidatorTest {
             final ValidationContext validationContext = createValidationContext(timePeriod);
 
             // when
-            final ValidationResult result = validator.validate(validationContext,
-                    ValidationStrategy.IS_WITHIN_OPERATION_HOURS);
+            final ValidationResult result = validator.validate(
+                    validationContext,
+                    ValidationStrategy.IS_WITHIN_OPERATION_HOURS
+            );
 
             // then
             assertThat(result.isValid()).isFalse();
@@ -215,8 +226,10 @@ class OperationHoursValidatorTest {
             final ValidationContext validationContext = createValidationContext(validPeriod, invalidPeriod);
 
             // when
-            final ValidationResult result = validator.validate(validationContext,
-                    ValidationStrategy.IS_WITHIN_OPERATION_HOURS);
+            final ValidationResult result = validator.validate(
+                    validationContext,
+                    ValidationStrategy.IS_WITHIN_OPERATION_HOURS
+            );
 
             // then
             assertThat(result.isValid()).isFalse();
@@ -248,8 +261,10 @@ class OperationHoursValidatorTest {
             final ValidationContext validationContext = createValidationContext(timePeriod);
 
             // when
-            final ValidationResult result = validator.validate(validationContext,
-                    ValidationStrategy.IS_WITHIN_OPERATION_HOURS);
+            final ValidationResult result = validator.validate(
+                    validationContext,
+                    ValidationStrategy.IS_WITHIN_OPERATION_HOURS
+            );
 
             // then
             assertThat(result.isValid()).isFalse();

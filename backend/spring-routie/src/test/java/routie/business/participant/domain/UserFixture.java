@@ -1,11 +1,12 @@
 package routie.business.participant.domain;
 
+import routie.business.authentication.domain.external.ExternalAuthenticationProvider;
+import routie.business.routiespace.domain.RoutieSpace;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicLong;
-import routie.business.authentication.domain.external.ExternalAuthenticationProvider;
-import routie.business.routiespace.domain.RoutieSpace;
 
 public class UserFixture {
 

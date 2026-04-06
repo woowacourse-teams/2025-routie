@@ -1,11 +1,10 @@
 package routie.business.authentication.ui.v1;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -15,8 +14,6 @@ import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import routie.business.authentication.ui.v1.dto.request.GuestAuthenticationRequest;
 import routie.business.participant.domain.Guest;
 import routie.business.participant.domain.GuestBuilder;
@@ -24,13 +21,18 @@ import routie.business.participant.domain.GuestRepository;
 import routie.business.routiespace.domain.RoutieSpace;
 import routie.business.routiespace.domain.RoutieSpaceIdentifierProvider;
 import routie.business.routiespace.domain.RoutieSpaceRepository;
+import routie.util.DatabaseCleaner;
 
-@DirtiesContext(classMode = ClassMode.AFTER_CLASS)
+import static org.assertj.core.api.Assertions.assertThat;
+
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 public class AuthenticationControllerV1Test {
 
     @LocalServerPort
     private int port;
+
+    @Autowired
+    private DatabaseCleaner databaseCleaner;
 
     @Autowired
     private RoutieSpaceRepository routieSpaceRepository;
@@ -80,6 +82,11 @@ public class AuthenticationControllerV1Test {
                         .routieSpace(testRoutieSpace)
                         .build()
         );
+    }
+
+    @AfterEach
+    void tearDown() {
+        databaseCleaner.execute();
     }
 
     @Test

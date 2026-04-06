@@ -1,13 +1,8 @@
 package routie.business.routie.ui;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.List;
-import java.util.Map;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
@@ -18,8 +13,6 @@ import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpStatus;
-import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import routie.business.participant.domain.User;
 import routie.business.participant.domain.UserFixture;
 import routie.business.participant.domain.UserRepository;
@@ -35,14 +28,24 @@ import routie.business.routie.ui.dto.response.RoutieReadResponse.RoutiePlaceResp
 import routie.business.routiespace.domain.RoutieSpace;
 import routie.business.routiespace.domain.RoutieSpaceBuilder;
 import routie.business.routiespace.domain.RoutieSpaceRepository;
+import routie.util.DatabaseCleaner;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+import java.util.Map;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 @Import(TestRouteApiConfig.class)
-@DirtiesContext(classMode = ClassMode.AFTER_CLASS)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 class RoutieControllerTest {
 
     @LocalServerPort
     private int port;
+
+    @Autowired
+    private DatabaseCleaner databaseCleaner;
 
     @Autowired
     private RoutieSpaceRepository routieSpaceRepository;
@@ -111,6 +114,11 @@ class RoutieControllerTest {
         routieSpaceRepository.save(routieSpaceWithOneRoutiePlace);
 
         routie = routieSpace.getRoutie();
+    }
+
+    @AfterEach
+    void tearDown() {
+        databaseCleaner.execute();
     }
 
     @Test

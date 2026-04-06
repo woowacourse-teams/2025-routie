@@ -1,16 +1,17 @@
 package routie.global.logging.domain;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import jakarta.servlet.http.HttpServletRequest;
-import java.util.List;
-import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.mock.web.MockHttpServletRequest;
 import routie.global.logging.domain.extractor.HandlerParameter;
 import routie.global.logging.infrastructure.strategy.DevLoggingStrategy;
+
+import java.util.List;
+import java.util.Map;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 class LogDataBuilderTest {
 
@@ -151,6 +152,10 @@ class LogDataBuilderTest {
             this.handlerParameters = handlerParameters;
         }
 
+        public static Builder builder() {
+            return new Builder();
+        }
+
         @Override
         public HttpServletRequest getRequest() {
             return request;
@@ -174,10 +179,6 @@ class LogDataBuilderTest {
         @Override
         public List<HandlerParameter> getHandlerParameters() {
             return handlerParameters;
-        }
-
-        public static Builder builder() {
-            return new Builder();
         }
 
         public static class Builder {

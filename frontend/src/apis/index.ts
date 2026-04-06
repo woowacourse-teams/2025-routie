@@ -2,6 +2,15 @@ import { ERROR_MESSAGES } from '@/@common/constants/message';
 import { logout } from '@/@common/utils/logout';
 import type { ErrorResponseType } from '@/apis/types/apIResponse.types';
 
+const ROUTIE_SPACE_NOT_FOUND_CODES = ['RTS-005', 'RTS-006'] as const;
+
+class RoutieSpaceNotFoundError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = 'RoutieSpaceNotFoundError';
+  }
+}
+
 const createApiMethod =
   (method: string) =>
   async (url: string, body?: any, headers?: Record<string, string>) => {
@@ -32,8 +41,15 @@ const handleApiError = async (response: Response) => {
   const errorMessage =
     ERROR_MESSAGES[errorData.code as keyof typeof ERROR_MESSAGES] ||
     '알 수 없는 오류가 발생했습니다. 다시 시도해 주세요.';
+
+  if (ROUTIE_SPACE_NOT_FOUND_CODES.includes(errorData.code as (typeof ROUTIE_SPACE_NOT_FOUND_CODES)[number])) {
+    throw new RoutieSpaceNotFoundError(errorMessage);
+  }
+
   throw new Error(errorMessage);
 };
+
+export { RoutieSpaceNotFoundError };
 
 export const apiClient = {
   get: createApiMethod('GET'),

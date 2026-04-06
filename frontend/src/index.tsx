@@ -4,7 +4,13 @@ import { createRoot } from 'react-dom/client';
 import './styles/reset.css';
 import './styles/font.css';
 
+import { mapSdkLoader } from '@/libs/map-sdk';
+
 import Route from './routes';
+
+mapSdkLoader.init({
+  appkey: process.env.REACT_APP_KAKAO_MAP_APPKEY || '',
+});
 
 if (process.env.NODE_ENV === 'production') {
   Sentry.init({

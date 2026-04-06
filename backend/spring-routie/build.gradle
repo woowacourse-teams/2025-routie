@@ -121,3 +121,7 @@ flyway {
     password = System.getenv('MYSQL_PASSWORD')
     locations = ["filesystem:src/main/resources/db/migration"]
 }
+
+tasks.named("jar") {
+    enabled = false
+}

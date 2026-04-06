@@ -9,10 +9,10 @@ import type { SidebarToggleButtonProps } from './SidebarToggleButton.types';
 
 const SidebarToggleButton = ({
   isOpen,
-  handleToggle,
+  onToggle,
 }: SidebarToggleButtonProps) => {
   return (
-    <button type="button" css={ToggleButtonStyle} onClick={handleToggle}>
+    <button type="button" css={ToggleButtonStyle} onClick={onToggle}>
       <Icon name="arrow" size={20} css={ToggleButtonIconStyle(isOpen)} />
     </button>
   );

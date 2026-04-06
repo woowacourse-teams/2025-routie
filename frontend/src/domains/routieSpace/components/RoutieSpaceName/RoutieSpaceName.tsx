@@ -1,3 +1,5 @@
+import { useEffect } from 'react';
+
 import Button from '@/@common/components/Button/Button';
 import Flex from '@/@common/components/Flex/Flex';
 import Text from '@/@common/components/Text/Text';
@@ -12,7 +14,6 @@ const RoutieSpaceName = () => {
   const {
     name,
     isEditing,
-    isLoading,
     errorCase,
     inputRef,
     handleEnter,
@@ -21,6 +22,16 @@ const RoutieSpaceName = () => {
   } = useRoutieSpace();
   const accessToken = getAccessToken();
   const role = localStorage.getItem('role');
+
+  useEffect(() => {
+    if (name) {
+      const params = new URLSearchParams(window.location.search);
+      params.set('name', name);
+
+      const newUrl = `${window.location.pathname}?${params.toString()}`;
+      window.history.replaceState(null, '', newUrl);
+    }
+  }, [name]);
 
   return (
     <Flex justifyContent="space-between" gap={3} padding="0 1rem">
@@ -43,7 +54,6 @@ const RoutieSpaceName = () => {
           variant="primary"
           onClick={handleClick}
           width="5rem"
-          disabled={isLoading}
           padding="0.6rem 0.8rem"
         >
           <Text variant="label" color={theme.colors.white}>

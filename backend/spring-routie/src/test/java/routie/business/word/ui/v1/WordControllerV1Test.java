@@ -1,12 +1,10 @@
 package routie.business.word.ui.v1;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
-import java.util.List;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -15,20 +13,25 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
-import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import routie.business.word.application.WordService;
 import routie.business.word.domain.WordRepository;
 import routie.business.word.domain.WordType;
 import routie.business.word.ui.dto.WordCreateRequest;
 import routie.business.word.ui.dto.WordReplaceRequest;
+import routie.util.DatabaseCleaner;
 
-@DirtiesContext(classMode = ClassMode.AFTER_CLASS)
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 class WordControllerV1Test {
 
     @LocalServerPort
     private int port;
+
+    @Autowired
+    private DatabaseCleaner databaseCleaner;
 
     @Autowired
     private WordRepository wordRepository;
@@ -40,6 +43,11 @@ class WordControllerV1Test {
     void setUp() {
         RestAssured.port = port;
         wordRepository.deleteAll();
+    }
+
+    @AfterEach
+    void tearDown() {
+        databaseCleaner.execute();
     }
 
     @Test

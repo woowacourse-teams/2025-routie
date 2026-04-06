@@ -1,12 +1,17 @@
-import { useState } from 'react';
+import { Suspense, useState } from 'react';
 
+import ErrorBoundary from '@/@common/components/ErrorBoundary/ErrorBoundary';
 import Flex from '@/@common/components/Flex/Flex';
 import Icon from '@/@common/components/IconSvg/Icon';
+import SectionErrorFallback from '@/@common/components/SectionErrorFallback/SectionErrorFallback';
 import RoutieSpaceName from '@/domains/routieSpace/components/RoutieSpaceName/RoutieSpaceName';
 import { useRoutieSpaceNavigation } from '@/pages/Home/hooks/useRoutieSpaceNavigation';
 import PlaceView from '@/pages/RoutieSpace/components/PlaceView/PlaceView';
+import PlaceViewSkeleton from '@/pages/RoutieSpace/components/PlaceView/PlaceViewSkeleton';
 import RouteView from '@/pages/RoutieSpace/components/RouteView/RouteView';
+import RouteViewSkeleton from '@/pages/RoutieSpace/components/RouteView/RouteViewSkeleton';
 import ShareView from '@/pages/RoutieSpace/components/ShareView/ShareView';
+import ShareViewSkeleton from '@/pages/RoutieSpace/components/ShareView/ShareViewSkeleton';
 import SidebarToggleButton from '@/pages/RoutieSpace/components/SidebarToggleButton/SidebarToggleButton';
 import TabButton from '@/pages/RoutieSpace/components/TabButton/TabButton';
 
@@ -19,7 +24,7 @@ import { CONTENT_WIDTH, SIDEBAR_WIDTH_CLOSED } from './width';
 
 import type { SidebarProps } from './Sidebar.types';
 
-const Sidebar = ({ isOpen, handleToggle }: SidebarProps) => {
+const Sidebar = ({ isOpen, onToggle }: SidebarProps) => {
   const [activeTab, setActiveTab] = useState<'place' | 'route' | 'share'>(
     'place',
   );
@@ -27,14 +32,14 @@ const Sidebar = ({ isOpen, handleToggle }: SidebarProps) => {
 
   const handleTabClick = (tab: 'place' | 'route' | 'share') => {
     if (!isOpen) {
-      handleToggle();
+      onToggle();
     }
     setActiveTab(tab);
   };
 
   return (
     <div css={SidebarContainerStyle(isOpen)}>
-      <SidebarToggleButton isOpen={isOpen} handleToggle={handleToggle} />
+      <SidebarToggleButton isOpen={isOpen} onToggle={onToggle} />
       <Flex justifyContent="flex-start" height="100%">
         <Flex
           width={SIDEBAR_WIDTH_CLOSED}
@@ -79,9 +84,26 @@ const Sidebar = ({ isOpen, handleToggle }: SidebarProps) => {
           css={SidebarContentContainerStyle(isOpen)}
         >
           <RoutieSpaceName />
-          {activeTab === 'route' && <RouteView />}
-          {activeTab === 'place' && <PlaceView />}
-          {activeTab === 'share' && <ShareView />}
+          <ErrorBoundary
+            resetKeys={[activeTab]}
+            fallbackRender={SectionErrorFallback}
+          >
+            <Suspense
+              fallback={
+                activeTab === 'route' ? (
+                  <RouteViewSkeleton />
+                ) : activeTab === 'share' ? (
+                  <ShareViewSkeleton />
+                ) : (
+                  <PlaceViewSkeleton />
+                )
+              }
+            >
+              {activeTab === 'route' && <RouteView />}
+              {activeTab === 'place' && <PlaceView />}
+              {activeTab === 'share' && <ShareView />}
+            </Suspense>
+          </ErrorBoundary>
         </Flex>
       </Flex>
     </div>

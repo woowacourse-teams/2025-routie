@@ -1,12 +1,12 @@
 import Flex from '@/@common/components/Flex/Flex';
 import Text from '@/@common/components/Text/Text';
-import { useUserQuery } from '@/domains/auth/queries/useAuthQuery';
+import { useSuspenseUserQuery } from '@/domains/auth/queries/useAuthQuery';
 import theme from '@/styles/theme';
 
 import { BannerContainerStyle } from './ManageRoutieSpaceBanner.styles';
 
 const ManageRoutieSpaceBanner = () => {
-  const { data: user, isLoading } = useUserQuery();
+  const { data: user } = useSuspenseUserQuery();
 
   return (
     <div css={BannerContainerStyle}>
@@ -20,7 +20,7 @@ const ManageRoutieSpaceBanner = () => {
         alignItems="flex-end"
       >
         <Text variant="title" color={theme.colors.white}>
-          {isLoading ? '닉네임 로딩중...' : user?.nickname}
+          {user.nickname}
         </Text>
       </Flex>
     </div>

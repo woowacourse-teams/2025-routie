@@ -1,14 +1,5 @@
 package routie.business.routie.infrastructure.routievalidator;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-
-import java.time.DayOfWeek;
-import java.time.LocalDateTime;
-import java.util.List;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -20,6 +11,14 @@ import routie.business.routie.domain.routievalidator.ValidationResult;
 import routie.business.routie.domain.routievalidator.ValidationStrategy;
 import routie.business.routie.domain.timeperiod.TimePeriod;
 import routie.business.routie.domain.timeperiod.TimePeriods;
+
+import java.time.DayOfWeek;
+import java.time.LocalDateTime;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 @Disabled("검증 기능 제거에 따른 비활성화")
 class ClosedDayValidatorTest {
@@ -93,14 +92,18 @@ class ClosedDayValidatorTest {
         final Place openPlace = mock(Place.class);
         final RoutiePlace validRoutiePlace = mock(RoutiePlace.class);
         when(validRoutiePlace.getPlace()).thenReturn(openPlace);
-        final TimePeriod validPeriod = new TimePeriod(validRoutiePlace, LocalDateTime.of(2025, 8, 20, 10, 0),
-                LocalDateTime.of(2025, 8, 20, 12, 0));
+        final TimePeriod validPeriod = new TimePeriod(
+                validRoutiePlace, LocalDateTime.of(2025, 8, 20, 10, 0),
+                LocalDateTime.of(2025, 8, 20, 12, 0)
+        );
 
         final Place closedPlace = mock(Place.class);
         final RoutiePlace invalidRoutiePlace = mock(RoutiePlace.class);
         when(invalidRoutiePlace.getPlace()).thenReturn(closedPlace);
-        final TimePeriod invalidPeriod = new TimePeriod(invalidRoutiePlace, LocalDateTime.of(2025, 8, 19, 14, 0),
-                LocalDateTime.of(2025, 8, 19, 16, 0));
+        final TimePeriod invalidPeriod = new TimePeriod(
+                invalidRoutiePlace, LocalDateTime.of(2025, 8, 19, 14, 0),
+                LocalDateTime.of(2025, 8, 19, 16, 0)
+        );
 
         final TimePeriods timePeriods = mock(TimePeriods.class);
         when(timePeriods.orderedList()).thenReturn(List.of(validPeriod, invalidPeriod));

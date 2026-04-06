@@ -1,11 +1,11 @@
 package routie.business.routiespace.domain;
 
-import java.util.List;
-
 import routie.business.participant.domain.User;
 import routie.business.participant.domain.UserFixture;
 import routie.business.place.domain.Place;
 import routie.business.routie.domain.Routie;
+
+import java.util.List;
 
 public class RoutieSpaceBuilder {
 

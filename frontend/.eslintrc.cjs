@@ -131,8 +131,34 @@ module.exports = {
   },
   ignorePatterns: [
     'dist',
+    'scripts/**/*.mjs',
     'webpack.common.js',
     'webpack.dev.js',
     'webpack.prod.js',
+  ],
+  overrides: [
+    {
+      files: ['e2e/**/*.ts'],
+      parserOptions: {
+        project: './e2e/tsconfig.json',
+      },
+      rules: {
+        '@emotion/no-vanilla': 'off',
+        '@emotion/import-from-emotion': 'off',
+        'import/no-extraneous-dependencies': 'off',
+        'react-hooks/rules-of-hooks': 'off',
+      },
+    },
+    {
+      files: ['playwright.config.ts'],
+      parserOptions: {
+        project: './e2e/tsconfig.json',
+      },
+      rules: {
+        '@emotion/no-vanilla': 'off',
+        '@emotion/import-from-emotion': 'off',
+        'import/no-extraneous-dependencies': 'off',
+      },
+    },
   ],
 };

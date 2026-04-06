@@ -1,9 +1,10 @@
 package routie.business.participant.domain;
 
-import java.util.UUID;
-import java.util.concurrent.atomic.AtomicLong;
 import routie.business.routiespace.domain.RoutieSpace;
 import routie.business.routiespace.domain.RoutieSpaceFixture;
+
+import java.util.UUID;
+import java.util.concurrent.atomic.AtomicLong;
 
 public class GuestFixture {
 

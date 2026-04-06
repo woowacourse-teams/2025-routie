@@ -1,8 +1,9 @@
 package routie.business.participant.domain;
 
-import java.util.List;
 import routie.business.authentication.domain.external.ExternalAuthenticationProvider;
 import routie.business.routiespace.domain.RoutieSpace;
+
+import java.util.List;
 
 public class UserBuilder {
 
@@ -23,7 +24,8 @@ public class UserBuilder {
     }
 
     public UserBuilder externalAuthenticationProvider(
-            final ExternalAuthenticationProvider externalAuthenticationProvider) {
+            final ExternalAuthenticationProvider externalAuthenticationProvider
+    ) {
         this.externalAuthenticationProvider = externalAuthenticationProvider;
         return this;
     }

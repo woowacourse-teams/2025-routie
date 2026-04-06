@@ -1,30 +1,34 @@
 package routie.business.routiespace.ui;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
-import java.util.List;
-import java.util.regex.Pattern;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
-import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import routie.business.place.ui.dto.request.PlaceCreateRequest;
 import routie.business.place.ui.dto.response.PlaceCreateResponse;
+import routie.util.DatabaseCleaner;
 
-@DirtiesContext(classMode = ClassMode.AFTER_CLASS)
+import java.util.List;
+import java.util.regex.Pattern;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 public class RoutieSpaceControllerTest {
 
     @LocalServerPort
     private int port;
+
+    @Autowired
+    private DatabaseCleaner databaseCleaner;
 
     private String routieSpaceIdentifier;
 
@@ -40,6 +44,11 @@ public class RoutieSpaceControllerTest {
                 .extract().response();
 
         routieSpaceIdentifier = createSpaceResponse.jsonPath().getString("routieSpaceIdentifier");
+    }
+
+    @AfterEach
+    void tearDown() {
+        databaseCleaner.execute();
     }
 
     @Test

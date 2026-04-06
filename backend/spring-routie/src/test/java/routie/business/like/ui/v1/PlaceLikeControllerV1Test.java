@@ -1,9 +1,8 @@
 package routie.business.like.ui.v1;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -12,8 +11,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
-import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import routie.business.authentication.domain.jwt.JwtProcessor;
 import routie.business.like.domain.PlaceLikeRepository;
 import routie.business.participant.domain.User;
@@ -25,13 +22,18 @@ import routie.business.place.domain.PlaceRepository;
 import routie.business.routiespace.domain.RoutieSpace;
 import routie.business.routiespace.domain.RoutieSpaceIdentifierProvider;
 import routie.business.routiespace.domain.RoutieSpaceRepository;
+import routie.util.DatabaseCleaner;
 
-@DirtiesContext(classMode = ClassMode.AFTER_CLASS)
+import static org.assertj.core.api.Assertions.assertThat;
+
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 public class PlaceLikeControllerV1Test {
 
     @LocalServerPort
     private int port;
+
+    @Autowired
+    private DatabaseCleaner databaseCleaner;
 
     @Autowired
     private PlaceRepository placeRepository;
@@ -72,6 +74,11 @@ public class PlaceLikeControllerV1Test {
 
         // UserPlaceLikeService.likePlaceV0 제거 시 같이 제거해도 됨
         userRepository.save(UserFixture.emptyUser());
+    }
+
+    @AfterEach
+    void tearDown() {
+        databaseCleaner.execute();
     }
 
     @Test

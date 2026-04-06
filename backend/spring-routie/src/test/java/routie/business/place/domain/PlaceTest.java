@@ -1,13 +1,13 @@
 package routie.business.place.domain;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import routie.business.routiespace.domain.RoutieSpace;
 import routie.global.exception.domain.BusinessException;
 import routie.global.exception.domain.ErrorCode;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class PlaceTest {
 

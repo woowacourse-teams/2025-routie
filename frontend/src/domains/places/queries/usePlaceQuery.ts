@@ -1,4 +1,10 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import {
+  queryOptions,
+  useMutation,
+  useQuery,
+  useQueryClient,
+  useSuspenseQuery,
+} from '@tanstack/react-query';
 
 import { useToastContext } from '@/@common/contexts/useToastContext';
 import {
@@ -28,14 +34,22 @@ import { placesKeys } from './key';
 
 import type { UsePlaceListQueryOptions } from '../types/usePlaceQuery.types';
 
+const placeListQueryOptions = queryOptions({
+  queryKey: placesKeys.list(),
+  queryFn: getPlaceList,
+});
+
 const usePlaceListQuery = ({
   enabled = true,
 }: UsePlaceListQueryOptions = {}) => {
   return useQuery({
-    queryKey: placesKeys.list(),
-    queryFn: getPlaceList,
+    ...placeListQueryOptions,
     enabled,
   });
+};
+
+const useSuspensePlaceListQuery = () => {
+  return useSuspenseQuery(placeListQueryOptions);
 };
 
 const usePlaceDetailQuery = (placeId: number) => {
@@ -214,6 +228,7 @@ const usePopularHashtagsQuery = () => {
 };
 
 export {
+  placeListQueryOptions,
   useAddPlaceQuery,
   useDeleteLikePlaceMutation,
   useDeletePlaceQuery,
@@ -222,6 +237,7 @@ export {
   usePlaceDetailQuery,
   usePlaceListQuery,
   usePlaceSearchQuery,
+  useSuspensePlaceListQuery,
   useUpdatePlaceHashtagsMutation,
   useHashtagsQuery,
   useDeleteHashtagMutation,

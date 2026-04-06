@@ -12,11 +12,6 @@ interface UseMapRendererProps {
   mapRef: MapRefType;
   isInitialLoad: boolean;
   setIsInitialLoad: (value: boolean) => void;
-  handleMarkerClick: (place: PlaceDataType) => void;
-}
-
-interface UsePolylineRendererProps {
-  mapRef: MapRefType;
 }
 
 interface UseMapStateProps {
@@ -41,24 +36,26 @@ interface UseClickedPlaceReturn {
   handleMarkerClick: (place: PlaceDataType) => void;
 }
 
-interface UseMarkerRendererProps {
-  mapRef: MapRefType;
-  handleMarkerClick: (place: PlaceDataType) => void;
-}
 
 interface PlaceOverlayCardProps {
   place: PlaceDataType;
   onClose: () => void;
 }
 
+interface UseCustomOverlayReturn {
+  openAt: (lat: number, lng: number) => void;
+  close: () => void;
+  containerEl: HTMLDivElement | null;
+  position: { lat: number; lng: number } | null;
+}
+
 export type {
   UseMapNavigationProps,
   UseMapRendererProps,
-  UsePolylineRendererProps,
   UseMapStateProps,
   UseMapStateReturn,
   UseClickedPlaceProps,
   UseClickedPlaceReturn,
-  UseMarkerRendererProps,
   PlaceOverlayCardProps,
+  UseCustomOverlayReturn,
 };
