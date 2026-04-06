@@ -530,6 +530,30 @@ public enum ErrorCode {
             "해당 SSE Emitter를 찾을 수 없습니다.",
             HttpStatus.NOT_FOUND
     ),
+
+    /**
+     * CHT: Chat
+     */
+    CHAT_CONTENT_EMPTY(
+            "CHT-001",
+            "채팅 내용은 비어있을 수 없습니다.",
+            HttpStatus.BAD_REQUEST
+    ),
+    CHAT_CONTENT_TOO_LONG(
+            "CHT-002",
+            "채팅 내용은 1,000자를 초과할 수 없습니다.",
+            HttpStatus.BAD_REQUEST
+    ),
+    CHAT_SENDER_DUPLICATED(
+            "CHT-003",
+            "채팅 발신자는 회원과 게스트 중 하나에만 지정될 수 있습니다.",
+            HttpStatus.BAD_REQUEST
+    ),
+    CHAT_MESSAGE_NOT_FOUND(
+            "CHT-004",
+            "해당 채팅 메시지를 찾을 수 없습니다.",
+            HttpStatus.NOT_FOUND
+    ),
     ;
 
     private final String code;
