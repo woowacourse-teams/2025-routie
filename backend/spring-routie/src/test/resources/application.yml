@@ -43,3 +43,14 @@ authentication:
     kakao:
       client-id: client-id
       redirect-uri: redirect-uri
+
+jwt:
+  secret-key: ${JWT_SECRET_KEY:ThisIsASecretKeyForTestingItNeedsToBeAtLeast32BytesLong}
+  expiration: ${JWT_EXPIRATION:3600000}
+
+websocket:
+  cors:
+    allowed-origins: "*"
+
+cloud:
+

@@ -1,15 +1,13 @@
-package routie.business.authentication.ui.argument.resolver;
+package routie.business.authentication.ui.argument.resolver.websocket;
 
-import jakarta.servlet.http.HttpServletRequest;
-import lombok.RequiredArgsConstructor;
 import org.springframework.core.MethodParameter;
+import org.springframework.messaging.Message;
+import org.springframework.messaging.handler.invocation.HandlerMethodArgumentResolver;
+import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
+import org.springframework.messaging.support.MessageHeaderAccessor;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.support.WebDataBinderFactory;
-import org.springframework.web.context.request.NativeWebRequest;
-import org.springframework.web.method.support.HandlerMethodArgumentResolver;
-import org.springframework.web.method.support.ModelAndViewContainer;
+
 import routie.business.authentication.domain.Role;
-import routie.business.authentication.domain.jwt.JwtProcessor;
 import routie.business.authentication.ui.argument.annotation.AuthenticatedParticipant;
 import routie.business.participant.domain.Participant;
 import routie.global.exception.domain.BusinessException;
@@ -19,10 +17,7 @@ import java.util.Arrays;
 import java.util.Optional;
 
 @Component
-@RequiredArgsConstructor
-public class AuthenticatedParticipantArgumentResolver implements HandlerMethodArgumentResolver {
-
-    private final JwtProcessor jwtProcessor;
+public class WebSocketAuthenticatedParticipantArgumentResolver implements HandlerMethodArgumentResolver {
 
     @Override
     public boolean supportsParameter(final MethodParameter parameter) {
@@ -31,15 +26,12 @@ public class AuthenticatedParticipantArgumentResolver implements HandlerMethodAr
     }
 
     @Override
-    public Participant resolveArgument(
+    public Object resolveArgument(
             final MethodParameter parameter,
-            final ModelAndViewContainer mavContainer,
-            final NativeWebRequest webRequest,
-            final WebDataBinderFactory binderFactory
+            final Message<?> message
     ) {
-        final HttpServletRequest request = getRequest(webRequest);
-        final String jwt = getJwt(request);
-        final Participant participant = jwtProcessor.parseParticipant(jwt);
+        final StompHeaderAccessor accessor = getAccessor(message);
+        final Participant participant = getParticipant(accessor);
         final AuthenticatedParticipant annotation = parameter.getParameterAnnotation(AuthenticatedParticipant.class);
         final Role[] requiredRoles = annotation.roles();
 
@@ -55,14 +47,16 @@ public class AuthenticatedParticipantArgumentResolver implements HandlerMethodAr
         return participant;
     }
 
-    private HttpServletRequest getRequest(final NativeWebRequest webRequest) {
-        return Optional.ofNullable(webRequest.getNativeRequest(HttpServletRequest.class))
+    private StompHeaderAccessor getAccessor(final Message<?> message) {
+        return Optional.ofNullable(MessageHeaderAccessor.getAccessor(message, StompHeaderAccessor.class))
                 .orElseThrow(() -> new BusinessException(ErrorCode.UNEXPECTED_EXCEPTION));
     }
 
-    private String getJwt(final HttpServletRequest request) {
-        return Optional.ofNullable(request.getAttribute("jwt"))
-                .map(Object::toString)
+    private Participant getParticipant(final StompHeaderAccessor accessor) {
+        return Optional.ofNullable(accessor.getSessionAttributes())
+                .map(attributes -> attributes.get("participant"))
+                .filter(obj -> obj instanceof Participant)
+                .map(obj -> (Participant) obj)
                 .orElseThrow(() -> new BusinessException(ErrorCode.AUTHENTICATION_REQUIRED));
     }
 }
