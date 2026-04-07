@@ -2,6 +2,8 @@ import { useCallback, useState } from 'react';
 
 import { useWebSocket } from '@/libs/websocket/hooks/useWebSocket';
 
+import type { UserRole } from '@/domains/auth/types/api.types';
+
 import type { ChatIncomingMessageType } from '../types/api.types';
 import type { ChatMessageType } from '../types/chat.types';
 
@@ -11,9 +13,10 @@ interface UseChatParams {
   routieSpaceUuid: string;
   accessToken: string;
   myNickname: string;
+  myRole: UserRole;
 }
 
-const useChat = ({ routieSpaceUuid, accessToken, myNickname }: UseChatParams) => {
+const useChat = ({ routieSpaceUuid, accessToken, myNickname, myRole }: UseChatParams) => {
   const [messages, setMessages] = useState<ChatMessageType[]>([]);
   const [isConnected, setIsConnected] = useState(false);
 
@@ -42,6 +45,7 @@ const useChat = ({ routieSpaceUuid, accessToken, myNickname }: UseChatParams) =>
             {
               messageId: data.messageId,
               senderId: data.senderId,
+              senderRole: data.senderRole,
               senderName: data.senderName,
               content: data.content,
               timestamp: data.timestamp,
@@ -75,6 +79,7 @@ const useChat = ({ routieSpaceUuid, accessToken, myNickname }: UseChatParams) =>
           messageId: tempId,
           tempId,
           senderId: myNickname,
+          senderRole: myRole,
           senderName: myNickname,
           content,
           timestamp: new Date().toISOString(),

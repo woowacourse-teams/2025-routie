@@ -23,6 +23,7 @@ const ChatViewInner = ({
   routieSpaceUuid,
   accessToken,
   myNickname,
+  myRole,
 }: ChatViewInnerProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const messageListRef = useRef<HTMLDivElement>(null);
@@ -31,6 +32,7 @@ const ChatViewInner = ({
     routieSpaceUuid,
     accessToken,
     myNickname,
+    myRole,
   });
 
   useEffect(() => {
@@ -76,7 +78,7 @@ const ChatViewInner = ({
   );
 };
 
-const ChatView = ({ accessToken, myNickname }: ChatViewProps) => {
+const ChatView = ({ accessToken, myNickname, myRole }: ChatViewProps) => {
   const routieSpaceUuid = getRoutieSpaceUuid();
 
   if (!routieSpaceUuid) return null;
@@ -86,6 +88,7 @@ const ChatView = ({ accessToken, myNickname }: ChatViewProps) => {
       routieSpaceUuid={routieSpaceUuid}
       accessToken={accessToken}
       myNickname={myNickname}
+      myRole={myRole}
     />
   );
 };

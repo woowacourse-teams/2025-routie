@@ -106,6 +106,7 @@ export const chatHandlers = [
                   type: 'CHAT',
                   messageId: crypto.randomUUID(),
                   senderId: 'user_mock',
+                  senderRole: 'USER',
                   senderName: '루티봇',
                   content: `"${data['content']}" 받았어요!`,
                   timestamp: new Date().toISOString(),

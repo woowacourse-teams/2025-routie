@@ -12,10 +12,13 @@ interface ChatAckResponse {
   timestamp: string;
 }
 
+import type { UserRole } from '@/domains/auth/types/api.types';
+
 interface ChatMessageResponse {
   type: 'CHAT';
   messageId: string;
   senderId: string;
+  senderRole: UserRole;
   senderName: string;
   content: string;
   timestamp: string;
