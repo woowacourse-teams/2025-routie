@@ -1,3 +1,5 @@
+import type { UserRole } from '@/domains/auth/types/api.types';
+
 interface ChatSendRequest {
   type: 'CHAT';
   routieSpaceId: string;
@@ -5,17 +7,9 @@ interface ChatSendRequest {
   content: string;
 }
 
-interface ChatAckResponse {
-  type: 'CHAT_ACK';
-  tempId: string;
-  messageId: string;
-  timestamp: string;
-}
-
-import type { UserRole } from '@/domains/auth/types/api.types';
-
 interface ChatMessageResponse {
   type: 'CHAT';
+  tempId?: string;
   messageId: string;
   senderId: string;
   senderRole: UserRole;
@@ -24,11 +18,4 @@ interface ChatMessageResponse {
   timestamp: string;
 }
 
-type ChatIncomingMessageType = ChatAckResponse | ChatMessageResponse;
-
-export type {
-  ChatSendRequest,
-  ChatAckResponse,
-  ChatMessageResponse,
-  ChatIncomingMessageType,
-};
+export type { ChatSendRequest, ChatMessageResponse };

@@ -73,8 +73,9 @@ export const chatHandlers = [
 
         if (data['type'] === 'CHAT') {
           const destination = headers['destination'] ?? '';
+          const messageId = crypto.randomUUID();
 
-          // CHAT_ACK
+          // 브로드캐스트 (tempId 포함 → 발신자는 pending 메시지 대체)
           client.send(
             buildStompFrame(
               'MESSAGE',
@@ -84,9 +85,13 @@ export const chatHandlers = [
                 'message-id': crypto.randomUUID(),
               },
               JSON.stringify({
-                type: 'CHAT_ACK',
+                type: 'CHAT',
                 tempId: data['tempId'],
-                messageId: crypto.randomUUID(),
+                messageId,
+                senderId: 'user_mock',
+                senderRole: 'USER',
+                senderName: '나',
+                content: data['content'],
                 timestamp: new Date().toISOString(),
               }),
             ),
@@ -105,7 +110,7 @@ export const chatHandlers = [
                 JSON.stringify({
                   type: 'CHAT',
                   messageId: crypto.randomUUID(),
-                  senderId: 'user_mock',
+                  senderId: 'bot_mock',
                   senderRole: 'USER',
                   senderName: '루티봇',
                   content: `"${data['content']}" 받았어요!`,

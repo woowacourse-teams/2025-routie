@@ -4,7 +4,7 @@ import { useWebSocket } from '@/libs/websocket/hooks/useWebSocket';
 
 import type { UserRole } from '@/domains/auth/types/api.types';
 
-import type { ChatIncomingMessageType } from '../types/api.types';
+import type { ChatMessageResponse } from '../types/api.types';
 import type { ChatMessageType } from '../types/chat.types';
 
 const WS_CHAT_URL = `${process.env.REACT_APP_API_URL?.replace(/^http/, 'ws') ?? 'ws://localhost:8080'}/ws/chat/v1`;
@@ -21,45 +21,40 @@ const useChat = ({ routieSpaceUuid, accessToken, myNickname, myRole }: UseChatPa
   const [isConnected, setIsConnected] = useState(false);
 
   const handleMessage = useCallback(
-    (data: ChatIncomingMessageType) => {
-      if (data.type === 'CHAT_ACK') {
-        setMessages((prev) =>
-          prev.map((msg) =>
-            msg.tempId === data.tempId
-              ? { ...msg, messageId: data.messageId, timestamp: data.timestamp, status: 'sent', tempId: undefined }
-              : msg,
-          ),
-        );
-        return;
-      }
+    (data: ChatMessageResponse) => {
+      setMessages((prev) => {
+        if (data.tempId) {
+          const pendingIndex = prev.findIndex((msg) => msg.tempId === data.tempId);
+          if (pendingIndex !== -1) {
+            return prev.map((msg) =>
+              msg.tempId === data.tempId
+                ? { ...msg, messageId: data.messageId, timestamp: data.timestamp, status: 'sent', tempId: undefined }
+                : msg,
+            );
+          }
+        }
 
-      if (data.type === 'CHAT') {
-        setMessages((prev) => {
-          const alreadyExists = prev.some(
-            (msg) => msg.messageId === data.messageId || msg.tempId === data.messageId,
-          );
-          if (alreadyExists) return prev;
+        if (prev.some((msg) => msg.messageId === data.messageId)) return prev;
 
-          return [
-            ...prev,
-            {
-              messageId: data.messageId,
-              senderId: data.senderId,
-              senderRole: data.senderRole,
-              senderName: data.senderName,
-              content: data.content,
-              timestamp: data.timestamp,
-              status: 'sent',
-              isMine: data.senderId === myNickname,
-            },
-          ];
-        });
-      }
+        return [
+          ...prev,
+          {
+            messageId: data.messageId,
+            senderId: data.senderId,
+            senderRole: data.senderRole,
+            senderName: data.senderName,
+            content: data.content,
+            timestamp: data.timestamp,
+            status: 'sent',
+            isMine: false,
+          },
+        ];
+      });
     },
-    [myNickname],
+    [],
   );
 
-  const { send } = useWebSocket<ChatIncomingMessageType>({
+  const { send } = useWebSocket<ChatMessageResponse>({
     url: WS_CHAT_URL,
     token: accessToken,
     subscribeDestination: `/topic/chat/${routieSpaceUuid}`,
@@ -98,7 +93,7 @@ const useChat = ({ routieSpaceUuid, accessToken, myNickname, myRole }: UseChatPa
         setMessages((prev) => prev.filter((msg) => msg.tempId !== tempId));
       }
     },
-    [send, myNickname, isConnected, routieSpaceUuid],
+    [send, myNickname, myRole, isConnected, routieSpaceUuid],
   );
 
   return { messages, sendMessage };
