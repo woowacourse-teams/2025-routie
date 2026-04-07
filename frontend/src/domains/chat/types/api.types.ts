@@ -2,14 +2,13 @@ import type { UserRole } from '@/domains/auth/types/api.types';
 
 interface ChatSendRequest {
   type: 'CHAT';
-  routieSpaceId: string;
   tempId: string;
   content: string;
 }
 
 interface ChatMessageResponse {
   type: 'CHAT';
-  tempId?: string;
+  tempId: string;
   messageId: string;
   senderId: string;
   senderRole: UserRole;

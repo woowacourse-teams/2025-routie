@@ -1,8 +1,7 @@
 import { useCallback, useState } from 'react';
 
-import { useWebSocket } from '@/libs/websocket/hooks/useWebSocket';
-
 import type { UserRole } from '@/domains/auth/types/api.types';
+import { useWebSocket } from '@/libs/websocket/hooks/useWebSocket';
 
 import type { ChatMessageResponse } from '../types/api.types';
 import type { ChatMessageType } from '../types/chat.types';
@@ -88,12 +87,12 @@ const useChat = ({ routieSpaceUuid, accessToken, myNickname, myRole }: UseChatPa
         return;
       }
 
-      const isSent = send({ type: 'CHAT', routieSpaceId: routieSpaceUuid, tempId, content });
+      const isSent = send({ type: 'CHAT', tempId, content });
       if (!isSent) {
         setMessages((prev) => prev.filter((msg) => msg.tempId !== tempId));
       }
     },
-    [send, myNickname, myRole, isConnected, routieSpaceUuid],
+    [send, myNickname, myRole, isConnected],
   );
 
   return { messages, sendMessage };
