@@ -6,7 +6,7 @@ import { useWebSocket } from '@/libs/websocket/hooks/useWebSocket';
 import type { ChatMessageResponse } from '../types/api.types';
 import type { ChatMessageType } from '../types/chat.types';
 
-const WS_CHAT_URL = `${process.env.REACT_APP_API_URL?.replace(/^http/, 'ws') ?? 'ws://localhost:8080'}/ws/chat/v1`;
+const WS_CHAT_URL = `${process.env.REACT_APP_API_URL?.replace(/^http/, 'ws') ?? 'ws://localhost:8080'}/ws/v1`;
 
 interface UseChatParams {
   routieSpaceUuid: string;
