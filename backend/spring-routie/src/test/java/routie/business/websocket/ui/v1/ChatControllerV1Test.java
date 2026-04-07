@@ -16,9 +16,6 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.web.socket.WebSocketHttpHeaders;
 import org.springframework.web.socket.client.standard.StandardWebSocketClient;
 import org.springframework.web.socket.messaging.WebSocketStompClient;
-import org.springframework.web.socket.sockjs.client.SockJsClient;
-import org.springframework.web.socket.sockjs.client.Transport;
-import org.springframework.web.socket.sockjs.client.WebSocketTransport;
 import routie.business.authentication.domain.Role;
 import routie.business.authentication.domain.jwt.JwtProcessor;
 import routie.business.participant.domain.User;
@@ -68,10 +65,7 @@ public class ChatControllerV1Test {
 
     @BeforeEach
     void setUp() {
-        final List<Transport> transports = List.of(new WebSocketTransport(new StandardWebSocketClient()));
-        final SockJsClient sockJsClient = new SockJsClient(transports);
-
-        stompClient = new WebSocketStompClient(sockJsClient);
+        stompClient = new WebSocketStompClient(new StandardWebSocketClient());
 
         final MappingJackson2MessageConverter converter = new MappingJackson2MessageConverter();
         converter.getObjectMapper().registerModule(new com.fasterxml.jackson.datatype.jsr310.JavaTimeModule());
