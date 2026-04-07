@@ -15,49 +15,59 @@ interface UseChatParams {
   myRole: UserRole;
 }
 
-const useChat = ({ routieSpaceUuid, accessToken, myNickname, myRole }: UseChatParams) => {
+const useChat = ({
+  routieSpaceUuid,
+  accessToken,
+  myNickname,
+  myRole,
+}: UseChatParams) => {
   const [messages, setMessages] = useState<ChatMessageType[]>([]);
   const [isConnected, setIsConnected] = useState(false);
 
-  const handleMessage = useCallback(
-    (data: ChatMessageResponse) => {
-      setMessages((prev) => {
-        if (data.tempId) {
-          const pendingIndex = prev.findIndex((msg) => msg.tempId === data.tempId);
-          if (pendingIndex !== -1) {
-            return prev.map((msg) =>
-              msg.tempId === data.tempId
-                ? { ...msg, messageId: data.messageId, timestamp: data.timestamp, status: 'sent', tempId: undefined }
-                : msg,
-            );
-          }
+  const handleMessage = useCallback((data: ChatMessageResponse) => {
+    setMessages((prev) => {
+      if (data.tempId) {
+        const pendingIndex = prev.findIndex(
+          (msg) => msg.tempId === data.tempId,
+        );
+        if (pendingIndex !== -1) {
+          return prev.map((msg) =>
+            msg.tempId === data.tempId
+              ? {
+                  ...msg,
+                  messageId: data.messageId,
+                  timestamp: data.timestamp,
+                  status: 'sent',
+                  tempId: undefined,
+                }
+              : msg,
+          );
         }
+      }
 
-        if (prev.some((msg) => msg.messageId === data.messageId)) return prev;
+      if (prev.some((msg) => msg.messageId === data.messageId)) return prev;
 
-        return [
-          ...prev,
-          {
-            messageId: data.messageId,
-            senderId: data.senderId,
-            senderRole: data.senderRole,
-            senderName: data.senderName,
-            content: data.content,
-            timestamp: data.timestamp,
-            status: 'sent',
-            isMine: false,
-          },
-        ];
-      });
-    },
-    [],
-  );
+      return [
+        ...prev,
+        {
+          messageId: data.messageId,
+          senderId: data.senderId,
+          senderRole: data.senderRole,
+          senderName: data.senderName,
+          content: data.content,
+          timestamp: data.timestamp,
+          status: 'sent',
+          isMine: false,
+        },
+      ];
+    });
+  }, []);
 
   const { send } = useWebSocket<ChatMessageResponse>({
     url: WS_CHAT_URL,
     token: accessToken,
-    subscribeDestination: `/topic/chat/${routieSpaceUuid}`,
-    publishDestination: `/app/chat/${routieSpaceUuid}`,
+    subscribeDestination: `/topic/chat/room/${routieSpaceUuid}`,
+    publishDestination: `/app/chat/room/${routieSpaceUuid}`,
     onMessage: handleMessage,
     onConnect: useCallback(() => setIsConnected(true), []),
     onDisconnect: useCallback(() => setIsConnected(false), []),
