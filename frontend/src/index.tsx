@@ -22,16 +22,5 @@ if (process.env.NODE_ENV === 'production') {
   });
 }
 
-async function enableMocking() {
-  if (window.location.hostname !== 'localhost') {
-    return;
-  }
-
-  const { worker } = await import('./mocks/browser');
-  return worker.start();
-}
-
-enableMocking().then(() => {
-  const root = createRoot(document.getElementById('root')!);
-  root.render(<Route />);
-});
+const root = createRoot(document.getElementById('root')!);
+root.render(<Route />);

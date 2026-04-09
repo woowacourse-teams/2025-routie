@@ -64,6 +64,12 @@ const useWebSocket = <T>({
         console.error('[WS] STOMP 오류:', frame.headers['message']);
         onErrorRef.current?.(frame);
       },
+      onWebSocketError: (event) => {
+        console.error('[WS] WebSocket 오류:', event);
+      },
+      onWebSocketClose: (event) => {
+        console.warn('[WS] WebSocket 닫힘:', event.code, event.reason);
+      },
     });
 
     client.activate();
