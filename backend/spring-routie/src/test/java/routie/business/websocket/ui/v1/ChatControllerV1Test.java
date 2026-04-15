@@ -27,7 +27,8 @@ import routie.business.routiespace.domain.RoutieSpaceRepository;
 import routie.business.websocket.domain.ChatMessageRepository;
 import routie.business.websocket.domain.MessageType;
 import routie.business.websocket.ui.dto.request.ChatRequest;
-import routie.business.websocket.ui.dto.response.ChatResponse;
+
+import java.util.Map;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 
 import java.lang.reflect.Type;
@@ -92,7 +93,7 @@ public class ChatControllerV1Test {
         );
         final String jwt = jwtProcessor.createJwt(user);
 
-        final BlockingQueue<ChatResponse> blockingQueue = new LinkedBlockingQueue<>();
+        final BlockingQueue<Map<String, Object>> blockingQueue = new LinkedBlockingQueue<>();
         final String wsUrl = "ws://localhost:" + port + "/ws/v1";
 
         // CONNECT 헤더에 토큰 삽입
@@ -118,12 +119,13 @@ public class ChatControllerV1Test {
                 subscribeDestination, new StompFrameHandler() {
                     @Override
                     public Type getPayloadType(final StompHeaders headers) {
-                        return ChatResponse.class;
+                        return Map.class;
                     }
 
                     @Override
+                    @SuppressWarnings("unchecked")
                     public void handleFrame(final StompHeaders headers, final Object payload) {
-                        blockingQueue.add((ChatResponse) payload);
+                        blockingQueue.add((Map<String, Object>) payload);
                     }
                 }
         );
@@ -143,14 +145,27 @@ public class ChatControllerV1Test {
         session.send(stompHeaders, request);
 
         // then
-        final ChatResponse response = blockingQueue.poll(5, TimeUnit.SECONDS);
+        Map<String, Object> response = null;
+        final long deadline = System.currentTimeMillis() + 5000;
+        while (System.currentTimeMillis() < deadline) {
+            final Map<String, Object> message = blockingQueue.poll(
+                    Math.max(1, deadline - System.currentTimeMillis()), TimeUnit.MILLISECONDS
+            );
+            if (message == null) {
+                break;
+            }
+            if (MessageType.CHAT.name().equals(message.get("type"))) {
+                response = message;
+                break;
+            }
+        }
 
         assertThat(response).isNotNull();
-        assertThat(response.content()).isEqualTo("통합테스트 메시지");
-        assertThat(response.senderId()).isEqualTo(user.getId());
-        assertThat(response.senderRole()).isEqualTo(Role.USER.name());
-        assertThat(response.type()).isEqualTo(MessageType.CHAT.name());
-        assertThat(response.tempId()).isEqualTo("temp-10");
-        assertThat(response.senderName()).isEqualTo(user.getNickname());
+        assertThat(response.get("content")).isEqualTo("통합테스트 메시지");
+        assertThat(((Number) response.get("senderId")).longValue()).isEqualTo(user.getId());
+        assertThat(response.get("senderRole")).isEqualTo(Role.USER.name());
+        assertThat(response.get("type")).isEqualTo(MessageType.CHAT.name());
+        assertThat(response.get("tempId")).isEqualTo("temp-10");
+        assertThat(response.get("senderName")).isEqualTo(user.getNickname());
     }
 }
