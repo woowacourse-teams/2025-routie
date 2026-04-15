@@ -11,8 +11,13 @@ import routie.business.authentication.ui.argument.annotation.AuthenticatedPartic
 import routie.business.participant.domain.Participant;
 import routie.business.websocket.application.ChatService;
 import routie.business.websocket.domain.ChatMessage;
+import routie.business.websocket.domain.MessageType;
 import routie.business.websocket.ui.dto.request.ChatRequest;
+import routie.business.websocket.ui.dto.request.TypingRequest;
 import routie.business.websocket.ui.dto.response.ChatResponse;
+import routie.business.websocket.ui.dto.response.TypingResponse;
+
+import java.time.Instant;
 
 @Slf4j
 @Controller
@@ -46,6 +51,28 @@ public class ChatControllerV1 {
                 senderName,
                 savedMessage.getContent(),
                 savedMessage.getCreatedAt()
+        );
+    }
+
+    @MessageMapping("/chat/room/{routieSpaceId}/typing")
+    @SendTo("/topic/chat/room/{routieSpaceId}")
+    public TypingResponse typing(
+            @DestinationVariable("routieSpaceId") final Long routieSpaceId,
+            @AuthenticatedParticipant final Participant participant,
+            @Payload final TypingRequest request
+    ) {
+        log.info(
+                "타이핑 이벤트 Space ID: {}, Sender: {}, isTyping: {}",
+                routieSpaceId, participant.getId(), request.isTyping()
+        );
+
+        return new TypingResponse(
+                MessageType.TYPING,
+                participant.getId(),
+                participant.getNickname(),
+                participant.getRole().name(),
+                request.isTyping(),
+                Instant.now().toString()
         );
     }
 }
